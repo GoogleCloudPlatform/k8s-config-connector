@@ -19,6 +19,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 )
 
@@ -34,7 +35,17 @@ func (a *FileAnnotation) FormatGo() string {
 	var sb strings.Builder
 
 	fmt.Fprintf(&sb, "// %s\n", a.Key)
-	for k, values := range a.Attributes {
+
+	// Get all keys and sort them for consistent ordering
+	keys := make([]string, 0, len(a.Attributes))
+	for k := range a.Attributes {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	// Write attributes in sorted key order
+	for _, k := range keys {
+		values := a.Attributes[k]
 		for _, v := range values {
 			fmt.Fprintf(&sb, "// %s: %s\n", k, v)
 		}

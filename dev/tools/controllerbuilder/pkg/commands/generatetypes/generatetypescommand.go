@@ -20,6 +20,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
@@ -122,16 +123,29 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	typeGenerator := codegen.NewTypeGenerator(goPackage, o.OutputAPIDirectory, api)
 
+	resourceAnnotations := make([]string, 0, len(o.Resources))
 	for _, resource := range o.Resources {
 		resourceProtoFullName := resource.ProtoMessageFullName(o.ServiceName)
 		log.Info("visiting proto", "name", resourceProtoFullName)
 		if err := typeGenerator.VisitProto(resourceProtoFullName); err != nil {
 			return err
 		}
+		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
 	if err := typeGenerator.WriteVisitedMessages(); err != nil {
 		return err
 	}
+
+	generatedFileAnnotation := &annotations.FileAnnotation{
+		Key: "+generated:types",
+		Attributes: map[string][]string{
+			"proto.service": {o.ServiceName},
+			"krm.group":     {gv.Group},
+			"krm.version":   {gv.Version},
+			"resource":      resourceAnnotations,
+		},
+	}
+	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
 	if err := typeGenerator.WriteOutputMessages(); err != nil {
 		return err
 	}

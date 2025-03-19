@@ -18,3 +18,5 @@ generateMapper: true
 resources:
   - kind: ManagedKafkaCluster
     protoName: Cluster
+  - kind: ManagedKafkaTopic
+    protoName: Topic

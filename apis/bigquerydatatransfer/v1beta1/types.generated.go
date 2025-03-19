@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: bigquerydatatransfer.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.bigquery.datatransfer.v1
+// resource: BigQueryDataTransferConfig:TransferConfig
+
 package v1beta1
 
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.EmailPreferences
