@@ -37,10 +37,10 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *VmwareEngineV1
+	v1 *VMwareEngineV1
 }
 
-type VmwareEngineV1 struct {
+type VMwareEngineV1 struct {
 	*MockService
 	pb.UnimplementedVmwareEngineServer
 }
@@ -52,7 +52,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &VmwareEngineV1{MockService: s}
+	s.v1 = &VMwareEngineV1{MockService: s}
 	return s
 }
 
@@ -68,9 +68,15 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterVmwareEngineHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
-
 	if err != nil {
 		return nil, err
 	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
 }

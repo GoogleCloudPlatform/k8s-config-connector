@@ -22,6 +22,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -29,12 +30,14 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/vmwareengine/v1"
+	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *VmwareEngine) GetVmwareEngineNetwork(ctx context.Context, req *pb.GetVmwareEngineNetworkRequest) (*pb.VmwareEngineNetwork, error) {
+func (s *VMwareEngineV1) GetVmwareEngineNetwork(ctx context.Context, req *pb.GetVmwareEngineNetworkRequest) (*pb.VmwareEngineNetwork, error) {
 	name, err := s.parseVmwareEngineNetworkName(req.Name)
 	if err != nil {
 		return nil, err
@@ -44,13 +47,16 @@ func (s *VmwareEngine) GetVmwareEngineNetwork(ctx context.Context, req *pb.GetVm
 
 	obj := &pb.VmwareEngineNetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
 }
 
-func (s *VmwareEngine) CreateVmwareEngineNetwork(ctx context.Context, req *pb.CreateVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
+func (s *VMwareEngineV1) CreateVmwareEngineNetwork(ctx context.Context, req *pb.CreateVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/vmwareEngineNetworks/" + req.VmwareEngineNetworkId
 	name, err := s.parseVmwareEngineNetworkName(reqName)
 	if err != nil {
@@ -64,25 +70,25 @@ func (s *VmwareEngine) CreateVmwareEngineNetwork(ctx context.Context, req *pb.Cr
 	obj := proto.Clone(req.GetVmwareEngineNetwork()).(*pb.VmwareEngineNetwork)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.VmwareEngineNetwork_ACTIVE
-	obj.Uid = "111aa111-2b22-333c-4444-55d5e6ff6f66"
+	obj.Uid = "111111111111111111111"
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	s.generateVPCNetworks(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	lroMetadata := &pb.OperationMetadata{
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		lroMetadata.EndTime = timestamppb.Now()
-		if err := s.storage.Get(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		obj.UpdateTime = timestamppb.New(now)
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
@@ -90,7 +96,7 @@ func (s *VmwareEngine) CreateVmwareEngineNetwork(ctx context.Context, req *pb.Cr
 	})
 }
 
-func (s *VmwareEngine) UpdateVmwareEngineNetwork(ctx context.Context, req *pb.UpdateVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
+func (s *VMwareEngineV1) UpdateVmwareEngineNetwork(ctx context.Context, req *pb.UpdateVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseVmwareEngineNetworkName(req.GetVmwareEngineNetwork().GetName())
 	if err != nil {
 		return nil, err
@@ -106,7 +112,6 @@ func (s *VmwareEngine) UpdateVmwareEngineNetwork(ctx context.Context, req *pb.Up
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "description":
@@ -126,6 +131,7 @@ func (s *VmwareEngine) UpdateVmwareEngineNetwork(ctx context.Context, req *pb.Up
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
 		Verb:       "update",
@@ -136,7 +142,7 @@ func (s *VmwareEngine) UpdateVmwareEngineNetwork(ctx context.Context, req *pb.Up
 	})
 }
 
-func (s *VmwareEngine) DeleteVmwareEngineNetwork(ctx context.Context, req *pb.DeleteVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
+func (s *VMwareEngineV1) DeleteVmwareEngineNetwork(ctx context.Context, req *pb.DeleteVmwareEngineNetworkRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseVmwareEngineNetworkName(req.Name)
 	if err != nil {
 		return nil, err
@@ -153,6 +159,7 @@ func (s *VmwareEngine) DeleteVmwareEngineNetwork(ctx context.Context, req *pb.De
 	metadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.Now(),
 		Target:     fqn,
+		ApiVersion: "v1",
 		Verb:       "delete",
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
@@ -194,7 +201,23 @@ func (s *MockService) parseVmwareEngineNetworkName(name string) (*vmwareEngineNe
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-```
-</out>
-
-
+func (s *VMwareEngineV1) generateVPCNetworks(obj *pb.VmwareEngineNetwork) {
+	if obj.VpcNetworks == nil || len(obj.VpcNetworks) == 0 {
+		uuid := uuid.New().String()
+		projectID := "b3e854f0b4bedfea6-tp"
+		obj.VpcNetworks = []*pb.VmwareEngineNetwork_VpcNetwork{
+			{
+				Network: fmt.Sprintf("projects/%s/global/networks/internet-%s", projectID, uuid),
+				Type:    pb.VmwareEngineNetwork_VpcNetwork_INTERNET,
+			},
+			{
+				Network: fmt.Sprintf("projects/%s/global/networks/intranet-%s", projectID, uuid),
+				Type:    pb.VmwareEngineNetwork_VpcNetwork_INTRANET,
+			},
+			{
+				Network: fmt.Sprintf("projects/%s/global/networks/gcp-%s", projectID, uuid),
+				Type:    pb.VmwareEngineNetwork_VpcNetwork_GOOGLE_CLOUD,
+			},
+		}
+	}
+}
