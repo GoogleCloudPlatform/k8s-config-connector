@@ -40,6 +40,18 @@ type EntryRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type TagTemplateRef struct {
+	// A reference to an externally managed DataCatalogTag resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tags/{{tagID}}".
+	External string `json:"external,omitempty"`
+
+	// The name of a DataCatalogTag resource.
+	Name string `json:"name,omitempty"`
+
+	// The namespace of a DataCatalogTag resource.
+	Namespace string `json:"namespace,omitempty"`
+}
+
 // TagRef defines the resource reference to DataCatalogTag, which "External" field
 // holds the GCP identifier for the KRM object.
 type TagRef struct {

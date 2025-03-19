@@ -56,3 +56,12 @@ type TagField_EnumValue struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagField.EnumValue.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
+
+// +kcc:proto=google.cloud.datacatalog.v1.TagField
+type TagFieldObservedState struct {
+	// The display name of the enum value.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagFieldObservedState.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	Field TagField `json:",inline"`
+}
