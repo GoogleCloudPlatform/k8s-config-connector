@@ -32,9 +32,12 @@ type Parent struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
+// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
+// +kcc:alias=datacatalog-entrygroup
 type DataCatalogEntryGroupSpec struct {
 	Parent `json:",inline"`
 	// The DataCatalogEntryGroup name. If not given, the metadata.name will be used.
+	//+required
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// A short name to identify the entry group, for example,
