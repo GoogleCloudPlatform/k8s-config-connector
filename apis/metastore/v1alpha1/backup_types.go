@@ -33,9 +33,15 @@ type Parent struct {
 
 	// +required
 	ServiceRef *ServiceRef `json:"serviceRef"`
+
+	// +required
+	BackupID *string `json:"backupId"`
 }
 
 type MetastoreBackupSpec struct {
+	// +required
+	BackupID *string `json:"backupId"`
+
 	Parent `json:",inline"`
 
 	// The description of the backup.
