@@ -95,13 +95,6 @@ type APIQuotaPreferenceSpec struct {
 	//  `QuotaDetails.reset_value`.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.contact_email
 	ContactEmail *string `json:"contactEmail,omitempty"`
-	// Required except in the CREATE requests.
-	//  The resource name of the quota preference.
-	//  The ID component following "locations/" must be "global".
-	//  Example:
-	//  `projects/123/locations/global/quotaPreferences/my-config-for-us-east1`
-	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.name
-	Name *string `json:"name,omitempty"`
 }
 
 // APIQuotaPreferenceStatus defines the config connector machine state of APIQuotaPreference
