@@ -36,10 +36,6 @@ type NetworkConnectivityInternalRangeSpec struct {
 	// +required
 	Location string `json:"location"`
 
-	// Time when the internal range was created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
 	// A description of this resource.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.description
 	Description *string `json:"description,omitempty"`
@@ -80,14 +76,9 @@ type NetworkConnectivityInternalRangeSpec struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.target_cidr_range
 	TargetCIDRRange []string `json:"targetCIDRRange,omitempty"`
 
-	// Time when the internal range was updated.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
 	// The type of usage set for this InternalRange.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.usage
 	Usage *string `json:"usage,omitempty"`
-
 }
 
 // NetworkConnectivityInternalRangeStatus defines the config connector machine state of NetworkConnectivityInternalRange
@@ -112,6 +103,14 @@ type NetworkConnectivityInternalRangeObservedState struct {
 	// Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.users
 	Users []string `json:"users,omitempty"`
+
+	// Time when the internal range was created.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Time when the internal range was updated.
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
