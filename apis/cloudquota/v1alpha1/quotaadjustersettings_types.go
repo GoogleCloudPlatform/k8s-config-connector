@@ -46,7 +46,6 @@ type APIQuotaAdjusterSettingsSpec struct {
 	//  will be returned. See https://google.aip.dev/134#etags for more details on
 	//  etags.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.etag
-	Etag *string `json:"etag,omitempty"`
 }
 
 // APIQuotaAdjusterSettingsStatus defines the config connector machine state of APIQuotaAdjusterSettings
@@ -71,6 +70,13 @@ type APIQuotaAdjusterSettingsObservedState struct {
 	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+	// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
+	//  provided on update and does not match the current server's etag of the
+	//  QuotaAdjusterSettings, the request will be blocked and an ABORTED error
+	//  will be returned. See https://google.aip.dev/134#etags for more details on
+	//  etags.
+	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
