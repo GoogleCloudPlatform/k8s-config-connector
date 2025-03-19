@@ -80,10 +80,6 @@ type EssentialContactsContactStatus struct {
 // EssentialContactsContactObservedState is the state of the EssentialContactsContact resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactObservedState struct {
-	// Output only. The identifier for the contact.
-	//  Format: {resource_type}/{resource_id}/contacts/{contact_id}
-	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.name
-	Name *string `json:"name,omitempty"`
 
 	// Output only. The validity of the contact. A contact is considered valid if
 	//  it is the correct recipient for notifications for a particular resource.
