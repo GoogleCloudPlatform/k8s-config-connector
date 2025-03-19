@@ -60,6 +60,7 @@ type DataCatalogTagTemplateSpec struct {
 
 	// Optional. Transfer status of the TagTemplate
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
+	// +kubebuilder:validation:Enum=TRANSFERRED
 	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 

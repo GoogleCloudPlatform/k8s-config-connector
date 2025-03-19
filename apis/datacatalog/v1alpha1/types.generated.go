@@ -18,6 +18,7 @@ package v1alpha1
 type FieldType struct {
 	// Primitive types, such as string, boolean, etc.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.FieldType.primitive_type
+	// +kubebuilder:validation:Enum=STRING;BOOL;DOUBLE;TIMESTAMP;RICHTEXT
 	PrimitiveType *string `json:"primitiveType,omitempty"`
 
 	// An enum type.
@@ -66,6 +67,7 @@ type TagTemplateField struct {
 	//  or underscores (_), and must start with a letter or underscore.
 	//  The maximum length is 64 characters.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.name
+	// +required
 	Name *string `json:"name,omitempty"`
 
 	// The display name for this field. Defaults to an empty string.
@@ -78,6 +80,7 @@ type TagTemplateField struct {
 
 	// Required. The type of value this tag field can contain.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.type
+	// +required
 	Type *FieldType `json:"type,omitempty"`
 
 	// If true, this field is required. Defaults to false.
