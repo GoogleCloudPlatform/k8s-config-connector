@@ -66,6 +66,7 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := bucketRef.Location
+	bucketID := bucketRef.LoggingLogBucketID
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -99,7 +100,7 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 		parent: &LinkParent{
 			ProjectID:          projectID,
 			Location:           location,
-			LoggingLogBucketID: resourceID,
+			LoggingLogBucketID: bucketID,
 		},
 		id: resourceID,
 	}, nil
