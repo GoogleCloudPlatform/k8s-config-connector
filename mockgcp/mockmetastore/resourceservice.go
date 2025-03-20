@@ -90,12 +90,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 
 	obj.EncryptionConfig = &pb.EncryptionConfig{}
 
-	if req.Service.GetMetadataIntegration() != nil && req.Service.GetMetadataIntegration().GetDataCatalogConfig() != nil && req.Service.GetMetadataIntegration().GetDataCatalogConfig().GetEnabled() {
-		obj.MetadataIntegration = &pb.MetadataIntegration{DataCatalogConfig: &pb.DataCatalogConfig{Enabled: true}}
-	} else {
-		obj.MetadataIntegration = nil
-	}
-
 	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
 	// Remove unnecessary fields
 
