@@ -16,7 +16,7 @@
 // proto.message: google.storage.control.v2.Folder
 // api.group: storage.cnrm.cloud.google.com
 
-package storage
+package storagecontrol
 
 import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
