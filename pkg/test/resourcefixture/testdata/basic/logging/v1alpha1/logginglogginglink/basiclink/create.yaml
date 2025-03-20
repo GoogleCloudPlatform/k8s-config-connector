@@ -15,7 +15,7 @@
 apiVersion: logging.cnrm.cloud.google.com/v1alpha1
 kind: LoggingLink
 metadata:
-  name: logginglink-${uniqueId} # no hyphen here as link ids can only have alphanumeric and underscores
+  name: logginglink${uniqueId} # no hyphen here as link ids can only have alphanumeric and underscores
 spec:
   resourceId: logginglink${uniqueId}
   loggingLogBucketRef:
