@@ -1,9 +1,9 @@
 apiVersion: storage.cnrm.cloud.google.com/v1alpha1
 kind: StorageFolder
 metadata:
-  name: storagefolder-minimal-${uniqueId}
+  name: folder-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  locationID: us-west2
-  description: "Updated description"
+  storagebucketRef:
+    name: bucket-${uniqueId}
