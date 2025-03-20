@@ -76,10 +76,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.ArtifactGcsUri = "gs://mock-bucket/"
 	obj.EndpointUri = "thrift://mock-endpoint:9083"
 	obj.DatabaseType = pb.Service_MYSQL
-	if obj.HiveMetastoreConfig == nil {
-		obj.HiveMetastoreConfig = &pb.HiveMetastoreConfig{}
-	}
-	obj.HiveMetastoreConfig.EndpointProtocol = HiveMetastoreConfig_THRIFT
 	obj.Port = 9083
 	obj.StateMessage = "The service is being created"
 	obj.ReleaseChannel = pb.Service_STABLE
