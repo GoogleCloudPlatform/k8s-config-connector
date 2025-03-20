@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build mockgcp
-// +build mockgcp
-
+// +tool:mockgcp-support
 // proto.service: google.cloud.vmwareengine.v1.VmwareEngine
 // proto.message: google.cloud.vmwareengine.v1.NetworkPeering
 
@@ -47,31 +45,12 @@ func (s *VMwareEngineV1) GetNetworkPeering(ctx context.Context, req *pb.GetNetwo
 	obj := &pb.NetworkPeering{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "NetworkPeering '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
 
 	return obj, nil
-}
-
-func (s *VMwareEngineV1) ListNetworkPeerings(ctx context.Context, req *pb.ListNetworkPeeringsRequest) (*pb.ListNetworkPeeringsResponse, error) {
-	parent, err := s.parseNetworkPeeringParent(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := parent.String() + "/"
-
-	var objs []*pb.NetworkPeering
-	if err := s.storage.List(ctx, fqn, func(obj *pb.NetworkPeering) error {
-		objs = append(objs, obj)
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return &pb.ListNetworkPeeringsResponse{NetworkPeerings: objs}, nil
 }
 
 func (s *VMwareEngineV1) CreateNetworkPeering(ctx context.Context, req *pb.CreateNetworkPeeringRequest) (*longrunningpb.Operation, error) {
@@ -83,15 +62,11 @@ func (s *VMwareEngineV1) CreateNetworkPeering(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	if !strings.HasPrefix(req.GetNetworkPeering().VmwareEngineNetwork, "projects/") {
-		req.GetNetworkPeering().VmwareEngineNetwork = fmt.Sprintf("projects/%s/locations/%s/vmwareEngineNetworks/%s", name.Project.ID, name.Location, req.GetNetworkPeering().VmwareEngineNetwork)
-	}
-
 	obj := proto.Clone(req.GetNetworkPeering()).(*pb.NetworkPeering)
-
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.State = pb.NetworkPeering_ACTIVE
+	s.setNetworkPeeringFields(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -111,6 +86,54 @@ func (s *VMwareEngineV1) CreateNetworkPeering(ctx context.Context, req *pb.Creat
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
+		return obj, nil
+	})
+}
+
+func (s *VMwareEngineV1) UpdateNetworkPeering(ctx context.Context, req *pb.UpdateNetworkPeeringRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseNetworkPeeringName(req.GetNetworkPeering().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.NetworkPeering{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
+
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetNetworkPeering().Description
+		// TODO: add support for other fields
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	obj.UpdateTime = timestamppb.Now()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     name.String(),
+		Verb:       "update",
+	}
+
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
 }
@@ -138,53 +161,6 @@ func (s *VMwareEngineV1) DeleteNetworkPeering(ctx context.Context, req *pb.Delet
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
-	})
-}
-
-func (s *VMwareEngineV1) UpdateNetworkPeering(ctx context.Context, req *pb.UpdateNetworkPeeringRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseNetworkPeeringName(req.GetNetworkPeering().GetName())
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
-	obj := &pb.NetworkPeering{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	paths := req.GetUpdateMask().GetPaths()
-	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
-	}
-
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetNetworkPeering().Description
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
-	}
-
-	obj.UpdateTime = timestamppb.Now()
-
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.Now(),
-		Target:     name.String(),
-		Verb:       "update",
-	}
-
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
-		return obj, nil
 	})
 }
 
@@ -228,22 +204,25 @@ func (s *MockService) parseNetworkPeeringName(name string) (*networkPeeringName,
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-func (s *MockService) parseNetworkPeeringParent(parent string) (*networkPeeringParent, error) {
-	tokens := strings.Split(parent, "/")
-
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		parent := &networkPeeringParent{
-			Project:  project,
-			Location: tokens[3],
-		}
-
-		return parent, nil
+func (s *MockService) setNetworkPeeringFields(obj *pb.NetworkPeering) {
+	if obj.ExchangeSubnetRoutes == nil {
+		obj.ExchangeSubnetRoutes = proto.Bool(true)
 	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
+	if obj.ExportCustomRoutes == nil {
+		obj.ExportCustomRoutes = proto.Bool(true)
+	}
+	if obj.ExportCustomRoutesWithPublicIp == nil {
+		obj.ExportCustomRoutesWithPublicIp = proto.Bool(true)
+	}
+	if obj.ImportCustomRoutes == nil {
+		obj.ImportCustomRoutes = proto.Bool(true)
+	}
+	if obj.ImportCustomRoutesWithPublicIp == nil {
+		obj.ImportCustomRoutesWithPublicIp = proto.Bool(true)
+	}
+	if obj.PeerMtu == 0 {
+		obj.PeerMtu = 1500
+	}
+	obj.StateDetails = "[2025-01-02T03:04:05.678-09:00]: Connected."
+	obj.Uid = "111111111111111111111"
 }
