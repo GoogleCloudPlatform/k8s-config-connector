@@ -468,6 +468,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "apphub.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "AppHubDiscoveredService",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "apphub.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "AppHubDiscoveredWorkload",
 	}: {
 		Labels: map[string]string{
