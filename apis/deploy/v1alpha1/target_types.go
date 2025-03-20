@@ -15,21 +15,59 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+
+
+// DeployTargetSpec defines the desired state of DeployTarget
+// +kcc:proto=google.cloud.deploy.v1.Target
+
+
+// DeployTargetSpec defines the desired state of DeployTarget
+// +kcc:proto=google.cloud.deploy.v1.Target
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var DeployTargetGVK = GroupVersion.WithKind("DeployTarget")
 
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // DeployTargetSpec defines the desired state of DeployTarget
 // +kcc:proto=google.cloud.deploy.v1.Target
-type DeployTargetSpec struct {
-	//ProjectId:"!{{project}}"
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef"`
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
 
-	Location *string `json:"location"`
+// +k8s:openapi-gen=true
+type DeployTargetSpec struct {
+	Parent `json:",inline"`
+	// +required
+	Parent `json:",inline"`
+	// +required
+	Parent `json:",inline"`
+
+	//ProjectId:"!{{project}}"
 
 	// The DeployTarget name. If not given, the metadata.name will be used.
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Optional. Name of the `Target`. Format is
 	//  `projects/{project}/locations/{location}/targets/{target}`.
@@ -109,7 +147,12 @@ type DeployTargetSpec struct {
 	DeployParameters map[string]string `json:"deployParameters,omitempty"`
 }
 
-// DeployTargetStatus defines the config connector machine state of DeployTarget
+// +k8s:openapi-gen=true
+type TargetStatus struct {
+	// Conditions represent the latest available observations of the
+	// Target's current state.
+	// +optional
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
 type DeployTargetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -145,6 +188,19 @@ type DeployTargetObservedState struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// TargetList contains a list of Target
+type TargetList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []Target `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&Target{}, &TargetList{})
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
@@ -162,9 +218,8 @@ type DeployTarget struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	// +required
-	Spec   DeployTargetSpec   `json:"spec,omitempty"`
-	Status DeployTargetStatus `json:"status,omitempty"`
+	Spec   DeployTargetSpec   `json:",inline"`
+	Status TargetStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
