@@ -7,7 +7,7 @@ toolchain go1.23.4
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
-	cloud.google.com/go/aiplatform v1.74.0
+	cloud.google.com/go/aiplatform v1.78.0
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.3
@@ -94,7 +94,7 @@ require (
 	google.golang.org/api v0.224.0
 	google.golang.org/genproto v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0

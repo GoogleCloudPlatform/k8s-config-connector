@@ -14,3 +14,8 @@ spec:
       name: computenetwork-${uniqueId}
     subnetworkRef:
       name: computesubnetwork-${uniqueId}
+# The only updatable field is encryptionSpec.kmsKeyRef, but setting the field
+# triggers a quota issue so update can't be tested.
+#  encryptionSpec:
+#    kmsKeyRef:
+#      name: kmscryptokey-1-${uniqueId}

@@ -24,3 +24,35 @@ spec:
   region: us-central1
   networkRef:
     name: computenetwork-${uniqueId}
+#---
+#apiVersion: iam.cnrm.cloud.google.com/v1beta1
+#kind: IAMPolicyMember
+#metadata:
+#  name: iampolicymember-${uniqueId}
+#spec:
+#  member: serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com
+#  role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by cloud run service agent to access KMS keys
+#  resourceRef:
+#    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+#    kind: Project
+#    external: projects/${projectId}
+#---
+#apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#kind: KMSKeyRing
+#metadata:
+#  annotations:
+#    cnrm.cloud.google.com/project-id: ${projectId}
+#  name: kmskeyring-${uniqueId}
+#spec:
+#  location: us-central1
+#---
+#apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#kind: KMSCryptoKey
+#metadata:
+#  annotations:
+#    cnrm.cloud.google.com/project-id: ${projectId}
+#  name: kmscryptokey-1-${uniqueId}
+#spec:
+#  keyRingRef:
+#    name: kmskeyring-${uniqueId}
+#  purpose: ENCRYPT_DECRYPT
