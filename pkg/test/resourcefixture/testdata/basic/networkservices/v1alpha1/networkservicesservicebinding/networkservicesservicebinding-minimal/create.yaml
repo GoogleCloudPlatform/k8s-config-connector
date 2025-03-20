@@ -1,0 +1,9 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesServiceBinding
+metadata:
+  name: networkservicesservicebinding-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  locationID: us-west2
+  description: "Initial description"
