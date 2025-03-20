@@ -189,7 +189,7 @@ branches:
       package: google.cloud.datastream.v1
       proto: PrivateConnection
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.PrivateConnection
       host-name: ""
       apis-enabled:
@@ -207,7 +207,7 @@ branches:
       package: google.cloud.datastream.v1
       proto: Route
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.Route
       host-name: ""
       apis-enabled:
@@ -227,7 +227,7 @@ branches:
       package: google.cloud.datastream.v1
       proto: ConnectionProfile
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.ConnectionProfile
       host-name: ""
       apis-enabled:
@@ -246,13 +246,30 @@ branches:
       package: google.cloud.datastream.v1
       proto: Stream
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.Stream
       host-name: ""
       apis-enabled:
         - "datastream.googleapis.com"
       notes:
         - long running operation
+      skip: true # NOTYET
+    - name: datastream-object
+      local: resource-datastream-object
+      remote: resource-datastream-object
+      command: gcloud datastream objects
+      group: datastream
+      resource: object
+      controller: Unknown
+      kind: DatastreamStreamObject
+      package: google.cloud.datastream.v1
+      proto: StreamObject
+      proto-path: google/cloud/datastream/v1/datastream.proto
+      proto-service: "google.cloud.datastream.v1.Datastream"
+      proto-msg: google.cloud.datastream.v1.StreamObject
+      host-name: ""
+      notes: 
+        - subresource of stream
       skip: true # NOTYET
     - name: gkebackup-backup
       local: resource-gkebackup-backup
@@ -723,91 +740,6 @@ branches:
       remote: resource-backupdr-operations
       command: gcloud backup-dr operations
       group: backupdr
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: datastream-locations
-      local: resource-datastream-locations
-      remote: resource-datastream-locations
-      command: gcloud datastream locations
-      group: datastream
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: datastream-objects
-      local: resource-datastream-objects
-      remote: resource-datastream-objects
-      command: gcloud datastream objects
-      group: datastream
-      resource: objects
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: datastream-operations
-      local: resource-datastream-operations
-      remote: resource-datastream-operations
-      command: gcloud datastream operations
-      group: datastream
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: gkebackup-locations
-      local: resource-gkebackup-locations
-      remote: resource-gkebackup-locations
-      command: gcloud beta container backup-restore locations
-      group: gkebackup
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: gkebackup-operations
-      local: resource-gkebackup-operations
-      remote: resource-gkebackup-operations
-      command: gcloud beta container backup-restore operations
-      group: gkebackup
       resource: operations
       controller: Unknown
       kind: ""
