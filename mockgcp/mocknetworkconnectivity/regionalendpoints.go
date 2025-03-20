@@ -37,15 +37,15 @@ type regionalEndpoints struct {
 	pb.UnimplementedProjectsLocationsRegionalEndpointsServerServer
 }
 
-func (r *regionalEndpoints) GetProjectsLocationsInternalRange(ctx context.Context, req *pb.GetProjectsLocationsInternalRangeRequest) (*pb.InternalRange, error) {
-	name, err := r.parseInternalRangeName(req.Name)
+func (r *regionalEndpoints) GetProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.GetProjectsLocationsRegionalEndpointRequest) (*pb.RegionalEndpoint, error) {
+	name, err := r.parseRegionalEndpointName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.InternalRange{}
+	obj := &pb.RegionalEndpoint{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
@@ -56,9 +56,9 @@ func (r *regionalEndpoints) GetProjectsLocationsInternalRange(ctx context.Contex
 	return obj, nil
 }
 
-func (r *regionalEndpoints) CreateProjectsLocationsInternalRange(ctx context.Context, req *pb.CreateProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
-	reqName := fmt.Sprintf("%s/regionalEndpoints/%s", req.GetParent(), req.GetInternalRangeId())
-	name, err := r.parseInternalRangeName(reqName)
+func (r *regionalEndpoints) CreateProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.CreateProjectsLocationsRegionalEndpointRequest) (*longrunning.Operation, error) {
+	reqName := fmt.Sprintf("%s/regionalEndpoints/%s", req.GetParent(), req.GetRegionalEndpointId())
+	name, err := r.parseRegionalEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (r *regionalEndpoints) CreateProjectsLocationsInternalRange(ctx context.Con
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetProjectsLocationsInternalRange()).(*pb.InternalRange)
+	obj := proto.Clone(req.GetProjectsLocationsRegionalEndpoint()).(*pb.RegionalEndpoint)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -94,12 +94,12 @@ func (r *regionalEndpoints) CreateProjectsLocationsInternalRange(ctx context.Con
 	})
 }
 
-func (r *regionalEndpoints) PatchProjectsLocationsInternalRange(ctx context.Context, req *pb.PatchProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
+func (r *regionalEndpoints) PatchProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.PatchProjectsLocationsRegionalEndpointRequest) (*longrunning.Operation, error) {
 	log := klog.FromContext(ctx)
 
 	reqName := req.GetName()
 
-	name, err := r.parseInternalRangeName(reqName)
+	name, err := r.parseRegionalEndpointName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func (r *regionalEndpoints) PatchProjectsLocationsInternalRange(ctx context.Cont
 
 	now := time.Now()
 
-	obj := &pb.InternalRange{}
+	obj := &pb.RegionalEndpoint{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -117,11 +117,11 @@ func (r *regionalEndpoints) PatchProjectsLocationsInternalRange(ctx context.Cont
 	if req.GetUpdateMask() != "" {
 		paths := strings.Split(req.GetUpdateMask(), ",")
 
-		patch := req.GetProjectsLocationsInternalRange()
+		patch := req.GetProjectsLocationsRegionalEndpoint()
 		// TODO: Some sort of helper for fieldmask?
 		for _, path := range paths {
 			switch path {
-			case "prefixLength":
+			case "description":
 				obj.PrefixLength = patch.PrefixLength
 
 			default:
@@ -149,8 +149,8 @@ func (r *regionalEndpoints) PatchProjectsLocationsInternalRange(ctx context.Cont
 	})
 }
 
-func (r *regionalEndpoints) DeleteProjectsLocationsInternalRange(ctx context.Context, req *pb.DeleteProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
-	name, err := r.parseInternalRangeName(req.GetName())
+func (r *regionalEndpoints) DeleteProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.DeleteProjectsLocationsRegionalEndpointRequest) (*longrunning.Operation, error) {
+	name, err := r.parseRegionalEndpointName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +158,7 @@ func (r *regionalEndpoints) DeleteProjectsLocationsInternalRange(ctx context.Con
 
 	now := time.Now()
 
-	oldObj := &pb.InternalRange{}
+	oldObj := &pb.RegionalEndpoint{}
 	if err := r.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
@@ -177,19 +177,19 @@ func (r *regionalEndpoints) DeleteProjectsLocationsInternalRange(ctx context.Con
 	})
 }
 
-type internalRangeName struct {
+type regionalEndpointName struct {
 	Project           *projects.ProjectData
 	Location          string
-	InternalRangeName string
+	RegionalEndpointName string
 }
 
-func (n *internalRangeName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/regionalEndpoints/" + n.InternalRangeName
+func (n *regionalEndpointName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/regionalEndpoints/" + n.RegionalEndpointName
 }
 
-// parseInternalRangeName parses a string into an internalRangeName.
+// parseRegionalEndpointName parses a string into an regionalEndpointName.
 // The expected form is `projects/*/locations/*/regionalEndpoints/*`.
-func (r *regionalEndpoints) parseInternalRangeName(name string) (*internalRangeName, error) {
+func (r *regionalEndpoints) parseRegionalEndpointName(name string) (*regionalEndpointName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "regionalEndpoints" {
@@ -198,10 +198,10 @@ func (r *regionalEndpoints) parseInternalRangeName(name string) (*internalRangeN
 			return nil, err
 		}
 
-		name := &internalRangeName{
+		name := &regionalEndpointName{
 			Project:           project,
 			Location:          tokens[3],
-			InternalRangeName: tokens[5],
+			RegionalEndpointName: tokens[5],
 		}
 
 		return name, nil
