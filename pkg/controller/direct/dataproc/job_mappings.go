@@ -122,7 +122,7 @@ func FlinkJob_FromProto(mapCtx *direct.MapContext, in *pb.FlinkJob) *krm.FlinkJo
 	out := &krm.FlinkJob{}
 	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
 	out.MainClass = direct.LazyPtr(in.GetMainClass())
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileURIs = in.GetJarFileUris()
 	out.SavepointURI = direct.LazyPtr(in.GetSavepointUri())
 	out.Properties = in.Properties
@@ -140,6 +140,7 @@ func FlinkJob_ToProto(mapCtx *direct.MapContext, in *krm.FlinkJob) *pb.FlinkJob 
 	if oneof := FlinkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileUris = in.JarFileURIs
 	out.SavepointUri = direct.ValueOf(in.SavepointURI)
 	out.Properties = in.Properties
