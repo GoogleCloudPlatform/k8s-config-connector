@@ -26,6 +26,10 @@ var BatchTaskGVK = GroupVersion.WithKind("BatchTask")
 type BatchTaskSpec struct {
 	// The BatchTask name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Task Status.
+	// +kcc:proto:field=google.cloud.batch.v1.Task.status
+	Status *TaskStatus `json:"status,omitempty"`
 }
 
 // BatchTaskStatus defines the config connector machine state of BatchTask
@@ -40,13 +44,25 @@ type BatchTaskStatus struct {
 	// A unique specifier for the BatchTask resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// Task name.
+	//  The name is generated from the parent TaskGroup name and 'id' field.
+	//  For example:
+	//  "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01".
+	// +kcc:proto:field=google.cloud.batch.v1.Task.name
+	Name          *string                 `json:"name,omitempty"`
 	ObservedState *BatchTaskObservedState `json:"observedState,omitempty"`
 }
 
 // BatchTaskObservedState is the state of the BatchTask resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.batch.v1.Task
 type BatchTaskObservedState struct {
+	// Task state.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Detailed info about why the state is reached.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
+	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
 }
 
 // +genclient
