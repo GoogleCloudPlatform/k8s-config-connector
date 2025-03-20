@@ -82,12 +82,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.ReleaseChannel = pb.Service_STABLE
 
 	// Remove unnecessary fields
-	// obj.EncryptionConfig = &pb.EncryptionConfig{}
-	// obj.MetadataIntegration = &pb.Service_MetadataIntegration{DataCatalogConfig: &pb.DataCatalogConfig{}}
-	// obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
-	// obj.Network = "projects/" + name.Project.ID + "/global/networks/default"
-	// obj.NetworkConfig = &pb.NetworkConfig{}
-	// obj.TelemetryConfig = &pb.TelemetryConfig{LogFormat: pb.TelemetryConfig_JSON}
 
 	// Add HiveMetastoreConfig with endpointProtocol
 	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
