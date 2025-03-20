@@ -240,6 +240,19 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to VMwareEngineNetwork
+	// normalize "observedState.vpcNetworks[].network"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".observedState.vpcNetworks[].network") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
+				tokens[len(tokens)-1] = "${networkId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")

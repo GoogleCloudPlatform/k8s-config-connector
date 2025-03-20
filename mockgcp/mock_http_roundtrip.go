@@ -105,6 +105,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
@@ -261,6 +262,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mocknetapp.New(env, storage))
 	services = append(services, mockdataplex.New(env, storage))
 	services = append(services, mockclouddms.New(env, storage))
+	services = append(services, mockvmwareengine.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)

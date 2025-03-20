@@ -922,6 +922,71 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to VMwareEngineNetwork
+					// normalize "vpcNetworks[].network"
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						if val, found, _ := unstructured.NestedString(obj, "name"); found {
+							tokens := strings.Split(val, "/")
+							if len(tokens) < 2 || tokens[len(tokens)-2] != "vmwareEngineNetworks" {
+								return
+							}
+						}
+						vpcNetworks, found, _ := unstructured.NestedSlice(obj, "vpcNetworks")
+						if !found {
+							return
+						}
+						for _, vpcNetwork := range vpcNetworks {
+							if vpcNetworkMap, ok := vpcNetwork.(map[string]any); ok {
+								if val, found, _ := unstructured.NestedString(vpcNetworkMap, "network"); found {
+									tokens := strings.Split(val, "/")
+									if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
+										tokens[len(tokens)-1] = "${networkId}"
+										if err := unstructured.SetNestedField(vpcNetworkMap, strings.Join(tokens, "/"), "network"); err != nil {
+											t.Fatalf("FAIL: setting nested field: %v", err)
+										}
+									}
+								}
+							}
+						}
+						if err := unstructured.SetNestedSlice(obj, vpcNetworks, "vpcNetworks"); err != nil {
+							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+					})
+					// normalize "response.vpcNetworks[].network"
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						responseObj, found, _ := unstructured.NestedMap(obj, "response")
+						if !found {
+							return
+						}
+						name, found, _ := unstructured.NestedString(responseObj, "name")
+						if !found || !strings.Contains(name, "vmwareEngineNetworks") {
+							return
+						}
+						vpcNetworks, found, _ := unstructured.NestedSlice(responseObj, "vpcNetworks")
+						if !found {
+							return
+						}
+						for _, vpcNetwork := range vpcNetworks {
+							if vpcNetworkMap, ok := vpcNetwork.(map[string]any); ok {
+								if val, found, _ := unstructured.NestedString(vpcNetworkMap, "network"); found {
+									tokens := strings.Split(val, "/")
+									if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
+										tokens[len(tokens)-1] = "${networkId}"
+										if err := unstructured.SetNestedField(vpcNetworkMap, strings.Join(tokens, "/"), "network"); err != nil {
+											t.Fatalf("FAIL: setting nested field: %v", err)
+										}
+									}
+								}
+							}
+						}
+						if err := unstructured.SetNestedSlice(responseObj, vpcNetworks, "vpcNetworks"); err != nil {
+							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+						if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
+							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+					})
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["error"]
