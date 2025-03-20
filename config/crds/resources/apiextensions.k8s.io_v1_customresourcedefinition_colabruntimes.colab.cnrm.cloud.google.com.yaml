@@ -1,0 +1,296 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: colabruntimes.colab.cnrm.cloud.google.com
+spec:
+  group: colab.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ColabRuntime
+    listKind: ColabRuntimeList
+    plural: colabruntimes
+    shortNames:
+    - gcpcolabruntime
+    - gcpcolabruntimes
+    singular: colabruntime
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ColabRuntime is the Schema for the ColabRuntime API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ColabRuntimeSpec defines the desired state of ColabRuntime
+            properties:
+              description:
+                description: The description of the NotebookRuntime.
+                type: string
+              displayName:
+                description: Required. The display name of the NotebookRuntime. The
+                  name can be up to 128 characters long and can consist of any UTF-8
+                  characters.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  The labels with user-defined metadata to organize your
+                   NotebookRuntime.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+                   No more than 64 user labels can be associated with one NotebookRuntime
+                   (System labels are excluded).
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+                   System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+                   and are immutable. Following system labels exist for NotebookRuntime:
+
+                   * "aiplatform.googleapis.com/notebook_runtime_gce_instance_id": output
+                   only, its value is the Compute Engine instance id.
+                   * "aiplatform.googleapis.com/colab_enterprise_entry_service": its value is
+                   either "bigquery" or "vertex"; if absent, it should be "vertex". This is to
+                   describe the entry service, either BigQuery or Vertex.
+                type: object
+              location:
+                description: Immutable. The name of the location where the Runtime
+                  will be created. Required.
+                type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
+              networkTags:
+                description: Optional. The Compute Engine tags to add to runtime (see
+                  [Tagging instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).
+                items:
+                  type: string
+                type: array
+              notebookRuntimeTemplateRef:
+                description: The pointer to NotebookRuntimeTemplate this NotebookRuntime
+                  is created from.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ColabRuntimeTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}".
+                    type: string
+                  name:
+                    description: The name of a ColabRuntimeTemplate resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ColabRuntimeTemplate resource.
+                    type: string
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ColabRuntime name. If not given, the metadata.name
+                  will be used.
+                type: string
+              runtimeUser:
+                description: Required. The user email of the NotebookRuntime.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ColabRuntimeStatus defines the config connector machine state
+              of ColabRuntime
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ColabRuntime resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this NotebookRuntime
+                      was created.
+                    type: string
+                  encryptionSpec:
+                    description: Output only. Customer-managed encryption key spec
+                      for the notebook runtime.
+                    properties:
+                      kmsKeyName:
+                        description: 'The Cloud KMS resource identifier of the customer
+                          managed encryption key used to protect a resource. Has the
+                          form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+                          The key needs to be in the same region as where the compute
+                          resource is created.'
+                        type: string
+                    type: object
+                  expirationTime:
+                    description: 'Output only. Timestamp when this NotebookRuntime
+                      will be expired: 1. System Predefined NotebookRuntime: 24 hours
+                      after creation. After expiration, system predifined runtime
+                      will be deleted. 2. User created NotebookRuntime: 6 months after
+                      last upgrade. After expiration, user created runtime will be
+                      stopped and allowed for upgrade.'
+                    type: string
+                  healthState:
+                    description: Output only. The health state of the NotebookRuntime.
+                    type: string
+                  idleShutdownConfig:
+                    description: Output only. The idle shutdown configuration of the
+                      notebook runtime.
+                    properties:
+                      idleShutdownDisabled:
+                        description: Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+                        type: boolean
+                      idleTimeout:
+                        description: 'Required. Duration is accurate to the second.
+                          In Notebook, Idle Timeout is accurate to minute so the range
+                          of idle_timeout (second) is: 10 * 60 ~ 1440 * 60.'
+                        type: string
+                    type: object
+                  isUpgradable:
+                    description: Output only. Whether NotebookRuntime is upgradable.
+                    type: boolean
+                  notebookRuntimeType:
+                    description: Output only. The type of the notebook runtime.
+                    type: string
+                  proxyURI:
+                    description: Output only. The proxy endpoint used to access the
+                      NotebookRuntime.
+                    type: string
+                  runtimeState:
+                    description: Output only. The runtime (instance) state of the
+                      NotebookRuntime.
+                    type: string
+                  serviceAccount:
+                    description: Output only. The service account that the NotebookRuntime
+                      workload runs as.
+                    type: string
+                  updateTime:
+                    description: Output only. Timestamp when this NotebookRuntime
+                      was most recently updated.
+                    type: string
+                  version:
+                    description: Output only. The VM os image version of NotebookRuntime.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

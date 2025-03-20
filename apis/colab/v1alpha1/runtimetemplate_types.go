@@ -22,7 +22,7 @@ import (
 
 var ColabRuntimeTemplateGVK = GroupVersion.WithKind("ColabRuntimeTemplate")
 
-type Parent struct {
+type RuntimeTemplate_Parent struct {
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
@@ -35,7 +35,7 @@ type Parent struct {
 // ColabRuntimeTemplateSpec defines the desired state of ColabRuntimeTemplate
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
 type ColabRuntimeTemplateSpec struct {
-	Parent `json:",inline"`
+	RuntimeTemplate_Parent `json:",inline"`
 
 	// Required. The display name of the NotebookRuntimeTemplate.
 	//  The name can be up to 128 characters long and can consist of any UTF-8

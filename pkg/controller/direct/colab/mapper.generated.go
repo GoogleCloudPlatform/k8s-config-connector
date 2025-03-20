@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // +generated:mapper
-// proto.service: google.cloud.aiplatform.v1beta1
 // krm.group: colab.cnrm.cloud.google.com
 // krm.version: v1alpha1
+// proto.service: google.cloud.aiplatform.v1beta1
 
 package colab
 
@@ -26,6 +26,82 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ColabRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.ColabRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ColabRuntimeObservedState{}
+	// MISSING: Name
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.RuntimeState = direct.Enum_FromProto(mapCtx, in.GetRuntimeState())
+	out.IsUpgradable = direct.LazyPtr(in.GetIsUpgradable())
+	out.ExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpirationTime())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
+	out.EncryptionSpec = EncryptionSpecObservedState_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: SatisfiesPZS
+	// MISSING: SatisfiesPZI
+	return out
+}
+func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeObservedState) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	// MISSING: Name
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.HealthState = direct.Enum_ToProto[pb.NotebookRuntime_HealthState](mapCtx, in.HealthState)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.RuntimeState = direct.Enum_ToProto[pb.NotebookRuntime_RuntimeState](mapCtx, in.RuntimeState)
+	out.IsUpgradable = direct.ValueOf(in.IsUpgradable)
+	out.ExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpirationTime)
+	out.Version = direct.ValueOf(in.Version)
+	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
+	out.EncryptionSpec = EncryptionSpecObservedState_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: SatisfiesPZS
+	// MISSING: SatisfiesPZI
+	return out
+}
+func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.ColabRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ColabRuntimeSpec{}
+	// MISSING: Name
+	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.NetworkTags = in.NetworkTags
+	// MISSING: SatisfiesPZS
+	// MISSING: SatisfiesPZI
+	return out
+}
+func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpec) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	// MISSING: Name
+	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.NotebookRuntimeTemplateRef)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.NetworkTags = in.NetworkTags
+	// MISSING: SatisfiesPZS
+	// MISSING: SatisfiesPZI
+	return out
+}
 func ColabRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.ColabRuntimeTemplateObservedState {
 	if in == nil {
 		return nil
@@ -114,6 +190,22 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	}
 	out := &pb.EncryptionSpec{}
 	// MISSING: KMSKeyName
+	return out
+}
+func EncryptionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionSpecObservedState{}
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	return out
+}
+func EncryptionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpecObservedState) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
 	return out
 }
 func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {

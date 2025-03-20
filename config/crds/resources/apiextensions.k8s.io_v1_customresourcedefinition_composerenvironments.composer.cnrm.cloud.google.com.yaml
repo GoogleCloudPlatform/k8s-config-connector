@@ -1159,10 +1159,10 @@ spec:
                     description: Output only. The time at which this environment was
                       created.
                     type: string
-                  satisfiesPzi:
+                  satisfiesPZI:
                     description: Output only. Reserved for future use.
                     type: boolean
-                  satisfiesPzs:
+                  satisfiesPZS:
                     description: Output only. Reserved for future use.
                     type: boolean
                   state:
