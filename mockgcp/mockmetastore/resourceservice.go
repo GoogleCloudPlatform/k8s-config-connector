@@ -24,6 +24,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/anypb"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -84,9 +86,26 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		ApiVersion:            "v1",
 		RequestedCancellation: false,
 	}
+
+	lro, err := s.operations.NewLRO(ctx)
+	if err != nil {
+		return nil, err
+	}
+	lro.Done = false
+	lro.Metadata, err = anypb.New(lroMetadata)
+	if err != nil {
+		return nil, err
+	}
+	// Use the fully qualified type name to ensure compatibility with the expected output.
+	lro.Metadata.TypeUrl = "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata"
+	lro.Name = fmt.Sprintf("projects/%s/locations/%s/operations/%s", name.Project.ID, name.Location, strings.Split(lro.Name, "/")[len(strings.Split(lro.Name, "/"))-1])
+	return lro, nil
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(now)
 		updated, err := s.updateService(ctx, fqn, func(obj *pb.Service) { obj.State = pb.Service_ACTIVE })
+		if err != nil {
+			return nil, err
+		}
 		return updated, err
 	})
 }
