@@ -111,21 +111,22 @@ type ServiceProperties struct {
 type ServiceReference struct {
 }
 
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
-type DiscoveredServiceObservedState struct {
-	// Output only. Reference to an underlying networking resource that can
-	//  comprise a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
-
-	// Output only. Properties of an underlying compute resource that can comprise
-	//  a Service. These are immutable.
-	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.ServiceProperties
 type ServicePropertiesObservedState struct {
+	// Output only. The service project identifier that the underlying cloud
+	//  resource resides in.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
+	GcpProject *string `json:"gcpProject,omitempty"`
+
+	// Output only. The location that the underlying resource resides in, for
+	//  example, us-west1.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The location that the underlying resource resides in if it is
+	//  zonal, for example, us-west1-a).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
+	Zone *string `json:"zone,omitempty"`
 }
 
 // +kcc:proto=google.cloud.apphub.v1.ServiceReference
