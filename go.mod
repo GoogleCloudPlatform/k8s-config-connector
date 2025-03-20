@@ -35,7 +35,7 @@ require (
 	cloud.google.com/go/kms v1.21.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.24.0
-	cloud.google.com/go/netapp v1.7.0
+	cloud.google.com/go/netapp v1.7.1
 	cloud.google.com/go/networksecurity v0.10.3
 	cloud.google.com/go/networkservices v0.2.4
 	cloud.google.com/go/notebooks v1.12.3
