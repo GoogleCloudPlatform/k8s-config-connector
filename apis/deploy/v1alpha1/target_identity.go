@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type TargetIdentity struct {
 	parent *TargetParent
-	id string
+	id     string
 }
 
 func (i *TargetIdentity) String() string {
-	return  i.parent.String() + "/targets/" + i.id
+	return i.parent.String() + "/targets/" + i.id
 }
 
 func (i *TargetIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *TargetIdentity) ID() string {
 }
 
 func (i *TargetIdentity) Parent() *TargetParent {
-	return  i.parent
+	return i.parent
 }
 
 type TargetParent struct {
@@ -51,7 +51,6 @@ type TargetParent struct {
 func (p *TargetParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a TargetIdentity from the Config Connector Target object.
 func NewTargetIdentity(ctx context.Context, reader client.Reader, obj *DeployTarget) (*TargetIdentity, error) {

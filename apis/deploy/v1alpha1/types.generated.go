@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.deploy.v1.AnthosCluster
 type AnthosCluster struct {
 	// Optional. Membership of the GKE Hub-registered cluster to which to apply
@@ -230,7 +229,6 @@ type Target struct {
 	CustomTarget *CustomTarget `json:"customTarget,omitempty"`
 
 	// TODO: unsupported map type with key string and value message
-
 
 	// Optional. This checksum is computed by the server based on the value of
 	//  other fields, and may be sent on update and delete requests to ensure the
