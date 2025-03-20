@@ -43,6 +43,8 @@ func (i *DiscoveredServiceIdentity) Parent() *DiscoveredServiceParent {
 	return i.parent
 }
 
+// No changes were needed to the DiscoveredServiceParent struct, String() method, or ParseDiscoveredServiceExternal function.
+// No changes were needed to the DiscoveredServiceParent struct, String() method, or ParseDiscoveredServiceExternal function.
 type DiscoveredServiceParent struct {
 	ProjectID string
 	Location  string
