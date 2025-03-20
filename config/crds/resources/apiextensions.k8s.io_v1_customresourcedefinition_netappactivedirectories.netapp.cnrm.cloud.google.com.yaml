@@ -1,0 +1,236 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: netappactivedirectories.netapp.cnrm.cloud.google.com
+spec:
+  group: netapp.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetAppActiveDirectory
+    listKind: NetAppActiveDirectoryList
+    plural: netappactivedirectories
+    shortNames:
+    - gcpnetappactivedirectory
+    - gcpnetappactivedirectories
+    singular: netappactivedirectory
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetAppActiveDirectory is the Schema for the NetAppActiveDirectory
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ActiveDirectorySpec defines the desired state of NetAppActiveDirectory
+            properties:
+              administrators:
+                description: Optional. Users to be added to the Built-in Admininstrators
+                  group.
+                items:
+                  type: string
+                type: array
+              aesEncryption:
+                description: If enabled, AES encryption will be enabled for SMB communication.
+                type: boolean
+              backupOperators:
+                description: Optional. Users to be added to the Built-in Backup Operator
+                  active directory group.
+                items:
+                  type: string
+                type: array
+              description:
+                description: Description of the active directory.
+                type: string
+              dns:
+                description: Required. Comma separated list of DNS server IP addresses
+                  for the Active Directory domain.
+                type: string
+              domain:
+                description: Required. Name of the Active Directory domain
+                type: string
+              encryptDcConnections:
+                description: If enabled, traffic between the SMB server to Domain
+                  Controller (DC) will be encrypted.
+                type: boolean
+              kdcHostname:
+                description: Name of the active directory machine. This optional parameter
+                  is used only while creating kerberos volume
+                type: string
+              kdcIP:
+                description: KDC server IP address for the active directory machine.
+                type: string
+              ldapSigning:
+                description: Specifies whether or not the LDAP traffic needs to be
+                  signed.
+                type: boolean
+              location:
+                description: Immutable. The name of the location this active directory.
+                type: string
+              netBiosPrefix:
+                description: Required. NetBIOSPrefix is used as a prefix for SMB server
+                  name.
+                type: string
+              nfsUsersWithLdap:
+                description: If enabled, will allow access to local users and LDAP
+                  users. If access is needed for only LDAP users, it has to be disabled.
+                type: boolean
+              organizationalUnit:
+                description: The Organizational Unit (OU) within the Windows Active
+                  Directory the user belongs to.
+                type: string
+              password:
+                description: Required. Password of the Active Directory domain administrator.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The NetAppActiveDirectory name. If not given, the metadata.name
+                  will be used.
+                type: string
+              securityOperators:
+                description: Optional. Domain users to be given the SeSecurityPrivilege.
+                items:
+                  type: string
+                type: array
+              site:
+                description: The Active Directory site the service will limit Domain
+                  Controller discovery too.
+                type: string
+              username:
+                description: Required. Username of the Active Directory domain administrator.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ActiveDirectoryStatus defines the config connector machine
+              state of NetAppActiveDirectory
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the NetAppActiveDirectory resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time of the active directory.
+                    type: string
+                  state:
+                    description: Output only. The state of the AD.
+                    type: string
+                  stateDetails:
+                    description: Output only. The state details of the Active Directory.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

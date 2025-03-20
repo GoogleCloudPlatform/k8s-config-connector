@@ -103,8 +103,8 @@ cloud.google.com/go/managedkafka v0.4.0 h1:/snDok/h6TZKw0ubmfj/LYIwSn16mWBoBI2OE
 cloud.google.com/go/managedkafka v0.4.0/go.mod h1:AUCV9FeT5IbuIf4ctH6TsnovE/KuIPE6Mp/YowkTyx0=
 cloud.google.com/go/monitoring v1.24.0 h1:csSKiCJ+WVRgNkRzzz3BPoGjFhjPY23ZTcaenToJxMM=
 cloud.google.com/go/monitoring v1.24.0/go.mod h1:Bd1PRK5bmQBQNnuGwHBfUamAV1ys9049oEPHnn4pcsc=
-cloud.google.com/go/netapp v1.7.0 h1:go1/+KlHagFTea6yG7qzPeEvwUi6dVh16UPo2t4LmtM=
-cloud.google.com/go/netapp v1.7.0/go.mod h1:oNr0SvlU0vTA8gClrNM22cZa0YPk1FzJ9MIsl/zkxF4=
+cloud.google.com/go/netapp v1.7.1 h1:3MxBolN91fsXtzIQRsp8UZfLF0zTrCUpl+DnYC7/qBU=
+cloud.google.com/go/netapp v1.7.1/go.mod h1:8l21nS/sQ+7wtFYR6hNcJWk5ksc8gNJ2o4/dVkeg3Vg=
 cloud.google.com/go/networksecurity v0.10.3 h1:JLJBFbxc8D7/OS81MyRoKhc2OvnVJxy5VMoQqqAhA7k=
 cloud.google.com/go/networksecurity v0.10.3/go.mod h1:G85ABVcPscEgpw+gcu+HUxNZJWjn3yhTqEU7+SsltFM=
 cloud.google.com/go/networkservices v0.2.4 h1:3fN8arT8LBL5beo8eO6uahp7A/Ar4kEG/bkyN3MDPvc=
