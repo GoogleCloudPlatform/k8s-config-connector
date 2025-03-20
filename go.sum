@@ -101,6 +101,8 @@ cloud.google.com/go/longrunning v0.6.5 h1:sD+t8DO8j4HKW4QfouCklg7ZC1qC4uzVZt8iz3
 cloud.google.com/go/longrunning v0.6.5/go.mod h1:Et04XK+0TTLKa5IPYryKf5DkpwImy6TluQ1QTLwlKmY=
 cloud.google.com/go/managedkafka v0.4.0 h1:/snDok/h6TZKw0ubmfj/LYIwSn16mWBoBI2OEl7ldIA=
 cloud.google.com/go/managedkafka v0.4.0/go.mod h1:AUCV9FeT5IbuIf4ctH6TsnovE/KuIPE6Mp/YowkTyx0=
+cloud.google.com/go/metastore v1.14.3 h1:jDqeCw6NGDRAPT9+2Y/EjnWAB0BfCcUfmPLOyhB0eHs=
+cloud.google.com/go/metastore v1.14.3/go.mod h1:HlbGVOvg0ubBLVFRk3Otj3gtuzInuzO/TImOBwsKlG4=
 cloud.google.com/go/monitoring v1.24.0 h1:csSKiCJ+WVRgNkRzzz3BPoGjFhjPY23ZTcaenToJxMM=
 cloud.google.com/go/monitoring v1.24.0/go.mod h1:Bd1PRK5bmQBQNnuGwHBfUamAV1ys9049oEPHnn4pcsc=
 cloud.google.com/go/netapp v1.7.0 h1:go1/+KlHagFTea6yG7qzPeEvwUi6dVh16UPo2t4LmtM=
