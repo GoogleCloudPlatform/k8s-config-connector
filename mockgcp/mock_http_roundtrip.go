@@ -210,7 +210,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockedgecontainer.New(env, storage))
 	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
-	services = append(services, mockkms.New(env, storage))
 	services = append(services, mocklogging.New(env, storage))
 	services = append(services, mockmanagedkafka.New(env, storage))
 	services = append(services, mocknetworkmanagement.New(env, storage))
@@ -263,6 +262,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockdataplex.New(env, storage))
 	services = append(services, mockclouddms.New(env, storage))
 	services = append(services, mockvmwareengine.New(env, storage))
+	services = append(services, mockkms.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
