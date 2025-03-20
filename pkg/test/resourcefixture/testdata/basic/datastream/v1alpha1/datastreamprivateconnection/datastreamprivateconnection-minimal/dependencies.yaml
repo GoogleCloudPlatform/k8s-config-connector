@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: datastream.cnrm.cloud.google.com/v1alpha1
-kind: DatastreamPrivateConnection
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
 metadata:
-  name: datastreamprivateconnection-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: computenetwork-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
-  description: "Updated description"
+  description: Test network for the project
+  autoCreateSubnetworks: false

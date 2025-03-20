@@ -20,4 +20,8 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Initial description"
+  displayName: "test datastream private connection"
+  vpcPeeringConfig:
+    networkRef:
+      name: computenetwork-minimal-${uniqueId}
+    subnet: 10.0.0.0/29
