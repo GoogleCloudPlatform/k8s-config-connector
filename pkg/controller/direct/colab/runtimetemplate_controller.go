@@ -23,7 +23,6 @@ package colab
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
@@ -32,6 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -39,6 +39,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -57,26 +58,26 @@ type runtimeTemplateModel struct {
 	config config.ControllerConfig
 }
 
-func (m *runtimeTemplateModel) client(ctx context.Context, projectID string) (*gcp.NotebookClient, error) {
+func (m *runtimeTemplateModel) client(ctx context.Context, projectID, location string) (*gcp.NotebookClient, error) {
 	var opts []option.ClientOption
-
 	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
 	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 
+	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	opts = append(opts, option.WithEndpoint(endpoint))
+	// Setting the logger to debug level is the only way to figure out the error details.
+	//lvl := new(slog.LevelVar)
+	//lvl.Set(slog.LevelDebug)
+	//logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+	//	Level: lvl,
+	//}))
+	//opts = append(opts, option.WithLogger(logger))
 	gcpClient, err := gcp.NewNotebookRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building aiplatform colabruntimetemplate client: %w", err)
+		return nil, fmt.Errorf("building colabruntimetemplate client: %w", err)
 	}
 
 	return gcpClient, err
@@ -93,13 +94,7 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader clie
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := ColabRuntimeTemplateSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID, id.Parent().Location)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +102,8 @@ func (m *runtimeTemplateModel) AdapterForObject(ctx context.Context, reader clie
 	return &runtimeTemplateAdapter{
 		gcpClient: gcpClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -118,7 +114,7 @@ func (m *runtimeTemplateModel) AdapterForURL(ctx context.Context, url string) (d
 		if err != nil {
 			log.V(2).Error(err, "url did not match ColabRuntimeTemplate format", "url", url)
 		} else {
-			gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+			gcpClient, err := m.client(ctx, id.Parent().ProjectID, id.Parent().Location)
 			if err != nil {
 				return nil, err
 			}
@@ -134,15 +130,17 @@ func (m *runtimeTemplateModel) AdapterForURL(ctx context.Context, url string) (d
 type runtimeTemplateAdapter struct {
 	gcpClient *gcp.NotebookClient
 	id        *krm.NotebookRuntimeTemplateIdentity
-	desired   *pb.NotebookRuntimeTemplate
+	desired   *krm.ColabRuntimeTemplate
 	actual    *pb.NotebookRuntimeTemplate
+
+	reader client.Reader
 }
 
 var _ directbase.Adapter = &runtimeTemplateAdapter{}
 
 func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("getting colabruntimetemplate", "name", a.id)
 
 	req := &pb.GetNotebookRuntimeTemplateRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetNotebookRuntimeTemplate(ctx, req)
@@ -150,37 +148,74 @@ func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting aiplatform colabruntimetemplate %q from gcp: %w", a.id.String(), err)
+		return false, fmt.Errorf("getting colabruntimetemplate %q from gcp: %w", a.id.String(), err)
 	}
 
 	a.actual = actual
 	return true, nil
 }
 
+func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.ColabRuntimeTemplate) error {
+	if obj.Spec.NetworkSpec != nil {
+		if obj.Spec.NetworkSpec.NetworkRef != nil {
+			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
+			subnetworkRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.NetworkSpec.SubnetworkRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.NetworkSpec.SubnetworkRef = subnetworkRef
+		}
+	}
+	if obj.Spec.ServiceAccountRef != nil {
+		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.EncryptionSpec != nil && obj.Spec.EncryptionSpec.KMSKeyRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.EncryptionSpec.KMSKeyRef)
+		if err != nil {
+			return err
+		}
+		obj.Spec.EncryptionSpec.KMSKeyRef = kmsKeyRef
+	}
+	return nil
+}
+
 func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("creating colabruntimetemplate", "name", a.id)
+	mapCtx := &direct.MapContext{}
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
+	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+		return fmt.Errorf("resolving references: %w", err)
+	}
+
+	desiredPb := ColabRuntimeTemplateSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	req := &pb.CreateNotebookRuntimeTemplateRequest{
 		Parent:                    a.id.Parent().String(),
-		NotebookRuntimeTemplate:   desired,
+		NotebookRuntimeTemplate:   desiredPb,
 		NotebookRuntimeTemplateId: a.id.ID(),
 	}
+	// Note: The returned error doesn't contain any error message details.
 	op, err := a.gcpClient.CreateNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating aiplatform colabruntimetemplate %s: %w", a.id.String(), err)
+		return fmt.Errorf("creating colabruntimetemplate %s: %w", a.id.String(), err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("aiplatform colabruntimetemplate %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("colabruntimetemplate %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created aiplatform colabruntimetemplate in gcp", "name", a.id)
+	log.V(2).Info("successfully created colabruntimetemplate in gcp", "name", a.id)
 
 	status := &krm.ColabRuntimeTemplateStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = ColabRuntimeTemplateObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -191,42 +226,60 @@ func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbas
 
 func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("updating colabruntimetemplate", "name", a.id)
+	mapCtx := &direct.MapContext{}
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
-
-	// TODO(user): Update the field if applicable.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
-	}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if !reflect.DeepEqual(a.desired.Etag, a.actual.Etag) {
-		updateMask.Paths = append(updateMask.Paths, "etag")
-	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		updateMask.Paths = append(updateMask.Paths, "labels")
+	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+		return fmt.Errorf("resolving references: %w", err)
 	}
 
-	if len(updateMask.Paths) == 0 {
+	desiredPb := ColabRuntimeTemplateSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	desiredPb.Name = a.id.String()
+
+	// Set default fields.
+	if desiredPb.NotebookRuntimeType == pb.NotebookRuntimeType_NOTEBOOK_RUNTIME_TYPE_UNSPECIFIED {
+		desiredPb.NotebookRuntimeType = a.actual.NotebookRuntimeType
+	}
+	if desiredPb.IdleShutdownConfig == nil {
+		desiredPb.IdleShutdownConfig = a.actual.IdleShutdownConfig
+	}
+	if desiredPb.DataPersistentDiskSpec == nil {
+		desiredPb.DataPersistentDiskSpec = a.actual.DataPersistentDiskSpec
+	}
+
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	// Remove output-only fields.
+	// The returned "name" is in the format of "projects/{{projectNumber}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}",
+	// so there is always this unexpected diff.
+	paths.Delete("name", "etag")
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
+	}
 	req := &pb.UpdateNotebookRuntimeTemplateRequest{
 		UpdateMask:              updateMask,
-		NotebookRuntimeTemplate: desired,
+		NotebookRuntimeTemplate: desiredPb,
 	}
+	// Note: There doesn't seem to be any update mask allowed by the API.
+	// Note: The returned error doesn't contain any error message details.
 	updated, err := a.gcpClient.UpdateNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating aiplatform colabruntimetemplate %s: %w", a.id.String(), err)
+		return fmt.Errorf("updating colabruntimetemplate %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("successfully updated colabruntimetemplate", "name", a.id)
 
 	status := &krm.ColabRuntimeTemplateStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = ColabRuntimeTemplateObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -265,19 +318,22 @@ func (a *runtimeTemplateAdapter) Export(ctx context.Context) (*unstructured.Unst
 // Delete implements the Adapter interface.
 func (a *runtimeTemplateAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("deleting colabruntimetemplate", "name", a.id)
 
 	req := &pb.DeleteNotebookRuntimeTemplateRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting aiplatform colabruntimetemplate %s: %w", a.id.String(), err)
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting colabruntimetemplate %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted aiplatform colabruntimetemplate", "name", a.id)
+	log.V(2).Info("successfully deleted colabruntimetemplate", "name", a.id)
 
 	if !op.Done() {
 		err = op.Wait(ctx)
 		if err != nil {
-			return false, fmt.Errorf("waiting for deletion of aiplatform colabruntimetemplate %s: %w", a.id.String(), err)
+			return false, fmt.Errorf("waiting for deletion of colabruntimetemplate %s: %w", a.id.String(), err)
 		}
 	}
 	return true, nil

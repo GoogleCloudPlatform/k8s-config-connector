@@ -1,0 +1,26 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computenetwork-${uniqueId}
+spec:
+  resourceID: default
+  description: Default network for the project
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: computesubnetwork-${uniqueId}
+spec:
+  resourceID: default
+  ipCidrRange: 10.128.0.0/20
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}

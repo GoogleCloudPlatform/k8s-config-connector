@@ -32,7 +32,7 @@ type NotebookRuntimeTemplateIdentity struct {
 }
 
 func (i *NotebookRuntimeTemplateIdentity) String() string {
-	return i.parent.String() + "/notebookruntimetemplates/" + i.id
+	return i.parent.String() + "/notebookRuntimeTemplates/" + i.id
 }
 
 func (i *NotebookRuntimeTemplateIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewNotebookRuntimeTemplateIdentity(ctx context.Context, reader client.Reade
 
 func ParseNotebookRuntimeTemplateExternal(external string) (*NotebookRuntimeTemplateIdentity, error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookruntimetemplates" {
-		return nil, fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notebookRuntimeTemplates" {
+		return nil, fmt.Errorf("format of ColabRuntimeTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}})", external)
 	}
 	parent := &NotebookRuntimeTemplateParent{
 		ProjectID: tokens[1],
