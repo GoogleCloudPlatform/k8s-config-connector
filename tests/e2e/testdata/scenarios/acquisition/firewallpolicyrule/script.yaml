@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,31 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  name: firewallpolicy-${uniqueId}
+spec:
+  organizationRef:
+    external: "organizations/${TEST_ORG_ID}"
+  shortName: test-acquire-policy
+  description: "A basic organization firewall policy"
+
+---
+TEST: ABANDON-AND-REACQUIRE-WITH-GENERATED-ID
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicy
+metadata:
+  name: firewallpolicy-${uniqueId}
+spec:
+  organizationRef:
+    external: "organizations/${TEST_ORG_ID}"
+  resourceID: firewallPolicies/${TEST_GENERATED_ID}
+  shortName: test-acquire-policy
+  description: "A basic organization firewall policy"
+
+---
+TEST: APPLY
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicyRule
 metadata:
   name: firewallpolicyrule-${uniqueId}
@@ -23,7 +48,7 @@ spec:
     name: firewallpolicy-${uniqueId}
   match:
     layer4Configs:
-    - ipProtocol: "tcp"
+      - ipProtocol: "tcp"
     srcIPRanges:
-    - "10.100.0.1/32"
+      - "10.100.0.1/32"
   priority: 9000

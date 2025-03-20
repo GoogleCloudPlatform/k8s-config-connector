@@ -1,16 +1,16 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicyRule
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
-  labels:
-    cnrm-test: "true"
+  generation: 1
   name: firewallpolicyrule-${uniqueId}
-  namespace: ${uniqueId}
+  namespace: ${projectId}
 spec:
-  action: allow
+  action: deny
   direction: INGRESS
   firewallPolicyRef:
     name: firewallpolicy-${uniqueId}
@@ -29,5 +29,5 @@ status:
     type: Ready
   externalRef: locations/global/firewallPolicies/${firewallPolicyID}/rules/9000
   kind: compute#firewallPolicyRule
-  observedGeneration: 2
+  observedGeneration: 1
   ruleTupleCount: 2
