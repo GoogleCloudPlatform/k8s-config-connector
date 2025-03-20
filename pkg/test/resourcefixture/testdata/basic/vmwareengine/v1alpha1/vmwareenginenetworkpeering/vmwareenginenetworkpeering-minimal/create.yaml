@@ -19,5 +19,11 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  location: global
   description: "Initial description"
+  peerNetwork:
+    computeNetworkRef:
+      name: computenetwork-minimal-${uniqueId}
+  peerNetworkType: "STANDARD"
+  vmwareEngineNetworkRef:
+    name: vmwareenginenetwork-minimal-${uniqueId}
