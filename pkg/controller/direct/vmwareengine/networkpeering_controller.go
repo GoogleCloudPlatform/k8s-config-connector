@@ -62,17 +62,26 @@ func (m *networkPeeringModel) AdapterForObject(ctx context.Context, reader clien
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewVmwareEngineNetworkPeeringIdentity(ctx, reader, obj)
+	id, err := krm.NewNetworkPeeringIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	if obj.Spec.PeerNetworkRef != nil {
-		if err := obj.Spec.PeerNetworkRef.Normalize(ctx, reader, obj); err != nil {
-			return nil, err
+
+	// normalize reference fields
+	if obj.Spec.PeerNetwork != nil {
+		if obj.Spec.PeerNetwork.ComputeNetworkRef != nil {
+			if err := obj.Spec.PeerNetwork.ComputeNetworkRef.Normalize(ctx, reader, obj); err != nil {
+				return nil, err
+			}
+		}
+		if obj.Spec.PeerNetwork.VMwareEngineNetworkRef != nil {
+			if _, err := obj.Spec.PeerNetwork.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
 		}
 	}
-	if obj.Spec.VmwareEngineNetworkRef != nil {
-		if err := obj.Spec.VmwareEngineNetworkRef.Normalize(ctx, reader, obj); err != nil {
+	if obj.Spec.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
 	}
@@ -100,7 +109,7 @@ func (m *networkPeeringModel) AdapterForURL(ctx context.Context, url string) (di
 
 type networkPeeringAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.VmwareEngineNetworkPeeringIdentity
+	id        *krm.NetworkPeeringIdentity
 	desired   *krm.VMwareEngineNetworkPeering
 	actual    *pb.NetworkPeering
 }
@@ -157,7 +166,6 @@ func (a *networkPeeringAdapter) Create(ctx context.Context, createOp *directbase
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
-	return nil
 }
 
 func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -171,12 +179,15 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
+	var paths []string
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
-	if desired.Spec.PeerNetworkRef != nil && !reflect.DeepEqual(resource.PeerNetwork, a.actual.PeerNetwork) {
+	if desired.Spec.PeerNetwork != nil && !reflect.DeepEqual(resource.PeerNetwork, a.actual.PeerNetwork) {
 		paths = append(paths, "peer_network")
+	}
+	if desired.Spec.PeerNetworkType != nil && !reflect.DeepEqual(resource.PeerNetworkType, a.actual.PeerNetworkType) {
+		paths = append(paths, "peer_network_type")
 	}
 	if desired.Spec.ExportCustomRoutes != nil && !reflect.DeepEqual(resource.ExportCustomRoutes, a.actual.ExportCustomRoutes) {
 		paths = append(paths, "export_custom_routes")
@@ -187,17 +198,17 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 	if desired.Spec.ExchangeSubnetRoutes != nil && !reflect.DeepEqual(resource.ExchangeSubnetRoutes, a.actual.ExchangeSubnetRoutes) {
 		paths = append(paths, "exchange_subnet_routes")
 	}
-	if desired.Spec.ExportCustomRoutesWithPublicIp != nil && !reflect.DeepEqual(resource.ExportCustomRoutesWithPublicIp, a.actual.ExportCustomRoutesWithPublicIp) {
+	if desired.Spec.ExportCustomRoutesWithPublicIP != nil && !reflect.DeepEqual(resource.ExportCustomRoutesWithPublicIp, a.actual.ExportCustomRoutesWithPublicIp) {
 		paths = append(paths, "export_custom_routes_with_public_ip")
 	}
-	if desired.Spec.ImportCustomRoutesWithPublicIp != nil && !reflect.DeepEqual(resource.ImportCustomRoutesWithPublicIp, a.actual.ImportCustomRoutesWithPublicIp) {
+	if desired.Spec.ImportCustomRoutesWithPublicIP != nil && !reflect.DeepEqual(resource.ImportCustomRoutesWithPublicIp, a.actual.ImportCustomRoutesWithPublicIp) {
 		paths = append(paths, "import_custom_routes_with_public_ip")
 	}
-	if desired.Spec.PeerMtu != nil && !reflect.DeepEqual(resource.PeerMtu, a.actual.PeerMtu) {
+	if desired.Spec.PeerMTU != nil && !reflect.DeepEqual(resource.PeerMtu, a.actual.PeerMtu) {
 		paths = append(paths, "peer_mtu")
 	}
-	if desired.Spec.PeerNetworkType != nil && !reflect.DeepEqual(resource.PeerNetworkType, a.actual.PeerNetworkType) {
-		paths = append(paths, "peer_network_type")
+	if desired.Spec.VMwareEngineNetworkRef != nil && !reflect.DeepEqual(resource.VmwareEngineNetwork, a.actual.VmwareEngineNetwork) {
+		paths = append(paths, "vmware_engine_network")
 	}
 
 	if len(paths) == 0 {
@@ -274,7 +285,3 @@ func (a *networkPeeringAdapter) Delete(ctx context.Context, deleteOp *directbase
 	}
 	return true, nil
 }
-```
-</out>
-
-
