@@ -81,9 +81,6 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.ReleaseChannel = pb.Service_STABLE
 
 	// এগুলো যোগ করা হয়েছে :
-	obj.HiveMetastoreConfig = &pb.HiveMetastoreConfig{
-		EndpointProtocol: pb.HiveMetastoreConfig_THRIFT,
-	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
