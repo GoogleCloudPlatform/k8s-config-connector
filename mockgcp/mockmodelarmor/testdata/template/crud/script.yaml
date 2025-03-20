@@ -1,0 +1,4 @@
+- exec: gcloud model-armor templates create test-${uniqueId} --location=us-central1 --malicious-uri-filter-settings-enforcement=enabled --project=${projectId}
+- exec: gcloud model-armor templates describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud model-armor templates update test-${uniqueId} --location=us-central1 --malicious-uri-filter-settings-enforcement=disabled --project=${projectId}
+- exec: gcloud model-armor templates delete test-${uniqueId} --location=us-central1 --project=${projectId}
