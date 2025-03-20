@@ -68,13 +68,6 @@ func (m *runtimeTemplateModel) client(ctx context.Context, projectID, location s
 
 	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
 	opts = append(opts, option.WithEndpoint(endpoint))
-	// Setting the logger to debug level is the only way to figure out the error details.
-	//lvl := new(slog.LevelVar)
-	//lvl.Set(slog.LevelDebug)
-	//logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-	//	Level: lvl,
-	//}))
-	//opts = append(opts, option.WithLogger(logger))
 	gcpClient, err := gcp.NewNotebookRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building colabruntimetemplate client: %w", err)
@@ -204,7 +197,6 @@ func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbas
 		NotebookRuntimeTemplate:   desiredPb,
 		NotebookRuntimeTemplateId: a.id.ID(),
 	}
-	// Note: The returned error doesn't contain any error message details.
 	op, err := a.gcpClient.CreateNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating colabruntimetemplate %s: %w", a.id.String(), err)
@@ -271,8 +263,8 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 		UpdateMask:              updateMask,
 		NotebookRuntimeTemplate: desiredPb,
 	}
-	// Note: There doesn't seem to be any update mask allowed by the API.
-	// Note: The returned error doesn't contain any error message details.
+	// Currently, the only allowed update mask path is
+	// "encryption_spec.kms_key_name".
 	updated, err := a.gcpClient.UpdateNotebookRuntimeTemplate(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating colabruntimetemplate %s: %w", a.id.String(), err)
