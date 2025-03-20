@@ -86,6 +86,12 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		LogFormat: pb.TelemetryConfig_JSON,
 	}
 
+	obj.MetadataIntegration = &pb.MetadataIntegration{
+		DataCatalogConfig: &pb.DataCatalogConfig{},
+	}
+	obj.EncryptionConfig = &pb.EncryptionConfig{}
+	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
+
 	// Remove unnecessary fields
 
 	// Add HiveMetastoreConfig with endpointProtocol
@@ -116,10 +122,11 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	lro, err := s.operations.NewLRO(ctx)
 	lro.Done = false
@@ -174,7 +181,14 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 				obj.NetworkConfig = req.Service.NetworkConfig
 			case "scaling_config":
 				obj.ScalingConfig = req.Service.ScalingConfig
-
+			case "scheduledBackup":
+				// Ignore scheduledBackup
+			case "encryptionConfig":
+				// Ignore
+			case "networkConfig":
+				obj.NetworkConfig = req.Service.NetworkConfig
+			case "metadataIntegration":
+				// Ignore
 			}
 		}
 		obj.UpdateTime = timestamppb.New(now)
