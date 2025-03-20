@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,14 +26,129 @@ var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 
 type Parent struct {
 	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	//+required
-	// +required
-	Location string `json:"location"`
-	//+required
-	// +required
 	EntryGroupRef *EntryGroupRef `json:"entryGroupRef"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema
+type ColumnSchema struct {
+	// Required. Name of the column.
+	//
+	//  Must be a UTF-8 string without dots (.).
+	//  The maximum size is 64 bytes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.column
 	//+required
+	Column *string `json:"column,omitempty"`
+
+	// Required. Type of the column.
+	//
+	//  Must be a UTF-8 string with the maximum size of 128 bytes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.type
+	// +required
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Description of the column. Default value is an empty string.
+	//
+	//  The description must be a UTF-8 string with the maximum size of 2000
+	//  bytes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A column's mode indicates whether values in this column are
+	//  required, nullable, or repeated.
+	//
+	//  Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
+	//  Default mode is `NULLABLE`.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.mode
+	// +kubebuilder:validation:Enum=NULLABLE;REQUIRED;REPEATED
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Default value for the column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.default_value
+	DefaultValue *string `json:"defaultValue,omitempty"`
+
+	// Optional. Ordinal position
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.ordinal_position
+	OrdinalPosition *int32 `json:"ordinalPosition,omitempty"`
+
+	// Optional. Most important inclusion of this column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.highest_indexing_type
+	HighestIndexingType *string `json:"highestIndexingType,omitempty"`
+
+	// Optional. Schema of sub-columns. A column can have zero or more
+	//  sub-columns.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.subcolumns
+	Subcolumns []ColumnSchema `json:"subcolumns,omitempty"`
+
+	// Looker specific column info of this column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.looker_column_spec
+	LookerColumnSpec *ColumnSchema_LookerColumnSpec `json:"lookerColumnSpec,omitempty"`
+
+	// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
+	//  the type is RANGE, this field is required. Possible values for the field
+	//  element type of a RANGE include:
+	//  * DATE
+	//  * DATETIME
+	//  * TIMESTAMP
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.range_element_type
+	RangeElementType *ColumnSchema_FieldElementType `json:"rangeElementType,omitempty"`
+
+	// Optional. Garbage collection policy for the column or column family.
+	//  Applies to systems like Cloud Bigtable.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.gc_rule
+	GcRule *string `json:"gcRule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema.FieldElementType
+type ColumnSchema_FieldElementType struct {
+	// Required. The type of a field element. See
+	//  [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.FieldElementType.type
+	// +required
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.GcsFileSpec
+type GCSFileSpec struct {
+	// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFileSpec.file_path
+	// +required
+	FilePath *string `json:"filePath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.GcsFilesetSpec
+type GCSFilesetSpec struct {
+	// Required. Patterns to identify a set of files in Google Cloud Storage.
+	//
+	//  For more information, see [Wildcard Names]
+	//  (https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+	//
+	//  Note: Currently, bucket wildcards are not supported.
+	//
+	//  Examples of valid `file_patterns`:
+	//
+	//   * `gs://bucket_name/dir/*`: matches all files in `bucket_name/dir`
+	//                               directory
+	//   * `gs://bucket_name/dir/**`: matches all files in `bucket_name/dir`
+	//                                and all subdirectories
+	//   * `gs://bucket_name/file*`: matches files prefixed by `file` in
+	//                               `bucket_name`
+	//   * `gs://bucket_name/??.txt`: matches files with two characters followed by
+	//                                `.txt` in `bucket_name`
+	//   * `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+	//                                     vowel character followed by `.txt` in
+	//                                     `bucket_name`
+	//   * `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+	//                                   or `m` followed by `.txt` in `bucket_name`
+	//   * `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
+	//                               the `a/*/b` pattern, such as `a/c/b`, `a/d/b`
+	//   * `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+	//
+	//  You can combine wildcards to match complex sets of files, for example:
+	//
+	//  `gs://bucket_name/[a-m]??.j*g`
+	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFilesetSpec.file_patterns
+	// +required
+	FilePatterns []string `json:"filePatterns,omitempty"`
 }
 
 type DataCatalogEntrySpec struct {
