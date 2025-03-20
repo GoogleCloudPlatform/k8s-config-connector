@@ -15,20 +15,11 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var AppHubDiscoveredServiceGVK = GroupVersion.WithKind("AppHubDiscoveredService")
-
-// Parent struct for AppHubDiscoveredService
-type Parent struct {
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	// +required
-	Location string `json:"location"`
-}
 
 // AppHubDiscoveredServiceSpec defines the desired state of AppHubDiscoveredService
 // +kcc:proto=google.cloud.apphub.v1.DiscoveredService
@@ -54,18 +45,52 @@ type AppHubDiscoveredServiceStatus struct {
 	ObservedState *AppHubDiscoveredServiceObservedState `json:"observedState,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
+type ServiceProperties struct {
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceReference
+type ServiceReference struct {
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
+type ServicePropertiesObservedState struct {
+	// Output only. The service project identifier that the underlying cloud
+	//  resource resides in.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.gcp_project
+	GcpProject *string `json:"gcpProject,omitempty"`
+
+	// Output only. The location that the underlying resource resides in, for
+	//  example, us-west1.
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.location
+	Location *string `json:"location,omitempty"`
+
+	// Output only. The location that the underlying resource resides in if it is
+	//  zonal, for example, us-west1-a).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceProperties.zone
+	Zone *string `json:"zone,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.ServiceReference
+type ServiceReferenceObservedState struct {
+	// Output only. The underlying resource URI (For example, URI of Forwarding
+	//  Rule, URL Map, and Backend Service).
+	// +kcc:proto:field=google.cloud.apphub.v1.ServiceReference.uri
+	URI *string `json:"uri,omitempty"`
+}
+
 // AppHubDiscoveredServiceObservedState is the state of the AppHubDiscoveredService resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceObservedState struct {
 	// Output only. Reference to an underlying networking resource that can
 	//  comprise a Service. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_reference
-	ServiceReference *ServiceReference `json:"serviceReference,omitempty"`
+	ServiceReference *ServiceReferenceObservedState `json:"serviceReference,omitempty"`
 
 	// Output only. Properties of an underlying compute resource that can comprise
 	//  a Service. These are immutable.
 	// +kcc:proto:field=google.cloud.apphub.v1.DiscoveredService.service_properties
-	ServiceProperties *ServiceProperties `json:"serviceProperties,omitempty"`
+	ServiceProperties *ServicePropertiesObservedState `json:"serviceProperties,omitempty"`
 }
 
 // +genclient
