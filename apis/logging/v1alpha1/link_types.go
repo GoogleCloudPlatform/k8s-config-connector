@@ -25,7 +25,6 @@ var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 // LoggingLinkSpec defines the desired state of LoggingLink
 // +kcc:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -34,7 +33,7 @@ type LoggingLinkSpec struct {
 	//  The maximum length of the description is 8000 characters.
 	Description *string `json:"description,omitempty"`
 
-	// Placeholder description
+	// The LoggingLogBucket that this Link is associated with
 	LoggingLogBucketRef *refs.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 }
 
@@ -58,15 +57,21 @@ type LoggingLinkStatus struct {
 type LoggingLinkObservedState struct {
 
 	// +optional
-	// +kubebuilder:validation:Format=date-time
+	// Output only. The creation timestamp of the link.
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// the lifecycle state might be something more complicated
 	// this is an ENUM, should be safe to use a string
+
+	// Output only. The resource lifecycle state.
 	LifecycleState *string `json:"lifecycleState,omitempty"`
 
 	// this field is just a string, but its an object(string)
 	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
+
+	// The information of a BigQuery Dataset. When a link is created, a BigQuery dataset is created
+	// along with it, in the same project as the LogBucket it's linked to. This dataset will also have
+	// BigQuery Views corresponding to the LogViews in the bucket.
 	BigQueryDataset *BigQueryDatasetObservedState `json:"bigQueryDataset,omitempty"`
 }
 
