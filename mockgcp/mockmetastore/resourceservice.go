@@ -80,6 +80,10 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.Port = 9083
 	obj.StateMessage = "The service is being created"
 	obj.ReleaseChannel = pb.Service_STABLE
+	obj.Network = "projects/" + name.Project.ID + "/global/networks/default"
+	obj.TelemetryConfig = &pb.TelemetryConfig{
+		LogFormat: pb.TelemetryConfig_JSON,
+	}
 
 	// Remove unnecessary fields
 
@@ -111,18 +115,16 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(now),
-		Target:                fqn,
-		Verb:                  "create",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+		ApiVersion: "v1",
 	}
-
 	lro, err := s.operations.NewLRO(ctx)
+	lro.Done = false
 	if err != nil {
 		return nil, err
 	}
-	lro.Done = false
 	lro.Metadata, err = anypb.New(lroMetadata)
 	if err != nil {
 		return nil, err
@@ -171,6 +173,8 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 				obj.NetworkConfig = req.Service.NetworkConfig
 			case "scaling_config":
 				obj.ScalingConfig = req.Service.ScalingConfig
+			case "deletionProtection":
+				obj.DeletionProtection = req.Service.DeletionProtection
 			}
 		}
 		obj.UpdateTime = timestamppb.New(now)
@@ -255,7 +259,7 @@ func (n *serviceName) String() string {
 
 // parseServiceName parses a string into an serviceName.
 // The expected form is `projects/*/locations/*/services/*`.
-func (s *MockService) parseServiceName(name string) (*serviceName, error) {
+func (s *DataprocMetastoreV1) parseServiceName(name string) (*serviceName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "services" {
