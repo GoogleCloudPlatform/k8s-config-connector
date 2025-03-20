@@ -5,5 +5,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  locationID: us-west2
+  location: global
   description: "Initial description"
+  service:
+    external: "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
