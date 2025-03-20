@@ -23,6 +23,7 @@ package datastream
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -62,6 +63,13 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, reader cl
 	id, err := krm.NewPrivateConnectionIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// normalize reference fields
+	if obj.Spec.VPCPeeringConfig != nil && obj.Spec.VPCPeeringConfig.NetworkRef != nil {
+		if err := obj.Spec.VPCPeeringConfig.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+			return nil, err
+		}
 	}
 
 	// Get datastream GCP client
@@ -155,7 +163,39 @@ func (a *PrivateConnectionAdapter) Create(ctx context.Context, createOp *directb
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update PrivateConnection is not supported")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating PrivateConnection", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := DatastreamPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := []string{}
+	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		paths = append(paths, "display_name")
+	}
+	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		paths = append(paths, "labels")
+	}
+	if desired.Spec.VPCPeeringConfig != nil && !reflect.DeepEqual(resource.VpcPeeringConfig, a.actual.VpcPeeringConfig) {
+		paths = append(paths, "vpc_peering_config")
+	}
+
+	if len(paths) != 0 {
+		return fmt.Errorf("updating PrivateConnection is not supported, fields: %v", paths)
+	}
+
+	// still need to update status (in the event of acquiring an existing resource)
+	status := &krm.DatastreamPrivateConnectionStatus{}
+	status.ObservedState = DatastreamPrivateConnectionObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -208,7 +248,3 @@ func (a *PrivateConnectionAdapter) Delete(ctx context.Context, deleteOp *directb
 	}
 	return true, nil
 }
-```
-</out>
-
-
