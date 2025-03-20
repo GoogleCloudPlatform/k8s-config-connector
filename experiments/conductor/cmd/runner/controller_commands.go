@@ -105,7 +105,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch,
 	}
 
 	// Create the controller
-	controllerFileName := strings.ToLower(branch.Kind) + "_controller.go"
+	controllerFileName := strings.ToLower(branch.Proto) + "_controller.go"
 	outputPath := filepath.Join("pkg", "controller", "direct", branch.Group, controllerFileName)
 
 	// Create the prompt for controllerbuilder
