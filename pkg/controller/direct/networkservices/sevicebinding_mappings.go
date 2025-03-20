@@ -22,26 +22,35 @@ package networkservices
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
+func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesServiceBindingObservedState{}
+	out := &krm.NetworkServicesServiceBindingSpec{}
 	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.Service != "" {
+		out.Service = &v1alpha1.ServiceDirectoryServiceRef{
+			External: in.Service,
+		}
+	}
+	out.Labels = in.Labels
 	return out
 }
-func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ServiceBinding{}
 	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Description = direct.ValueOf(in.Description)
+	if in.Service != nil {
+		out.Service = in.Service.External
+	}
+	out.Labels = in.Labels
 	return out
 }
