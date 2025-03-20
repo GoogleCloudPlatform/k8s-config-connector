@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package storage
+package storagecontrol
 
 import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storagecontrol/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

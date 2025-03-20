@@ -64,12 +64,17 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	bucketName := obj.Spec.StorageBucketRef.Name
+	//TODO: Update to use storagebucket parseExternal once the resource is migrated to SciFi.
+	storageBucketRef, err := refsv1beta1.ResolveStorageBucketRef(ctx, reader, obj, obj.Spec.StorageBucketRef)
+	if err != nil {
+		return nil, err
+	}
+	bucketName := strings.Split(storageBucketRef.External, "/")[3]
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = obj.GetName()
+		resourceID = fmt.Sprintf("%s", obj.GetName())
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
