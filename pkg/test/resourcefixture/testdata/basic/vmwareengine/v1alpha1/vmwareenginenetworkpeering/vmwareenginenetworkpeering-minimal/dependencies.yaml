@@ -12,18 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
-kind: VMwareEngineNetworkPeering
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
 metadata:
-  name: vmwareenginenetworkpeering-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: computenetwork-minimal-${uniqueId}
+spec:
+  description: Test network for the project
+  autoCreateSubnetworks: false
+---
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineNetwork
+metadata:
+  name: vmwareenginenetwork-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: global
-  description: "Updated description"
-  peerNetwork:
-    computeNetworkRef:
-      name: computenetwork-minimal-${uniqueId}
-  peerNetworkType: "STANDARD"
-  vmwareEngineNetworkRef:
-    name: vmwareenginenetwork-minimal-${uniqueId}
+  description: "Test VMwareEngine network"
+  type: STANDARD
