@@ -1,9 +1,9 @@
-apiVersion: deploy.cnrm.cloud.google.com/v1alpha1
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
 kind: CloudDeployDeliveryPipeline
 metadata:
   name: clouddeploydeliverypipeline-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  locationID: us-west2
+  location: us-west2
   description: "Updated description"
