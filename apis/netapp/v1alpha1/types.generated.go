@@ -154,18 +154,3 @@ type ActiveDirectory struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
-
-// +kcc:proto=google.cloud.netapp.v1.ActiveDirectory
-type ActiveDirectoryObservedState struct {
-	// Output only. Create time of the active directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The state of the AD.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The state details of the Active Directory.
-	// +kcc:proto:field=google.cloud.netapp.v1.ActiveDirectory.state_details
-	StateDetails *string `json:"stateDetails,omitempty"`
-}

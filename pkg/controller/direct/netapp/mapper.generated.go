@@ -187,11 +187,11 @@ func ActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Act
 	out.StateDetails = direct.ValueOf(in.StateDetails)
 	return out
 }
-func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectoryObservedState {
+func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectoryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetAppActiveDirectoryObservedState{}
+	out := &krm.ActiveDirectoryObservedState{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: State
@@ -216,7 +216,7 @@ func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: StateDetails
 	return out
 }
-func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectoryObservedState) *pb.ActiveDirectory {
+func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectoryObservedState) *pb.ActiveDirectory {
 	if in == nil {
 		return nil
 	}
@@ -245,11 +245,11 @@ func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: StateDetails
 	return out
 }
-func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.NetAppActiveDirectorySpec {
+func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectorySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetAppActiveDirectorySpec{}
+	out := &krm.ActiveDirectorySpec{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: State
@@ -274,7 +274,7 @@ func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Activ
 	// MISSING: StateDetails
 	return out
 }
-func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetAppActiveDirectorySpec) *pb.ActiveDirectory {
+func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectorySpec) *pb.ActiveDirectory {
 	if in == nil {
 		return nil
 	}

@@ -18,7 +18,7 @@ spec:
     plural: netappactivedirectories
     shortNames:
     - gcpnetappactivedirectory
-    - gcpnetappactivedirectorys
+    - gcpnetappactivedirectories
     singular: netappactivedirectory
   preserveUnknownFields: false
   scope: Namespaced
@@ -58,16 +58,121 @@ spec:
           metadata:
             type: object
           spec:
-            description: NetAppActiveDirectorySpec defines the desired state of NetAppActiveDirectory
+            description: ActiveDirectorySpec defines the desired state of NetAppActiveDirectory
             properties:
+              administrators:
+                description: Optional. Users to be added to the Built-in Admininstrators
+                  group.
+                items:
+                  type: string
+                type: array
+              aesEncryption:
+                description: If enabled, AES encryption will be enabled for SMB communication.
+                type: boolean
+              backupOperators:
+                description: Optional. Users to be added to the Built-in Backup Operator
+                  active directory group.
+                items:
+                  type: string
+                type: array
+              description:
+                description: Description of the active directory.
+                type: string
+              dns:
+                description: Required. Comma separated list of DNS server IP addresses
+                  for the Active Directory domain.
+                type: string
+              domain:
+                description: Required. Name of the Active Directory domain
+                type: string
+              encryptDcConnections:
+                description: If enabled, traffic between the SMB server to Domain
+                  Controller (DC) will be encrypted.
+                type: boolean
+              kdcHostname:
+                description: Name of the active directory machine. This optional parameter
+                  is used only while creating kerberos volume
+                type: string
+              kdcIP:
+                description: KDC server IP address for the active directory machine.
+                type: string
+              ldapSigning:
+                description: Specifies whether or not the LDAP traffic needs to be
+                  signed.
+                type: boolean
+              location:
+                description: Immutable. The name of the location this active directory.
+                type: string
+              netBiosPrefix:
+                description: Required. NetBIOSPrefix is used as a prefix for SMB server
+                  name.
+                type: string
+              nfsUsersWithLdap:
+                description: If enabled, will allow access to local users and LDAP
+                  users. If access is needed for only LDAP users, it has to be disabled.
+                type: boolean
+              organizationalUnit:
+                description: The Organizational Unit (OU) within the Windows Active
+                  Directory the user belongs to.
+                type: string
+              password:
+                description: Required. Password of the Active Directory domain administrator.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The NetAppActiveDirectory name. If not given, the metadata.name
                   will be used.
                 type: string
+              securityOperators:
+                description: Optional. Domain users to be given the SeSecurityPrivilege.
+                items:
+                  type: string
+                type: array
+              site:
+                description: The Active Directory site the service will limit Domain
+                  Controller discovery too.
+                type: string
+              username:
+                description: Required. Username of the Active Directory domain administrator.
+                type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
-            description: NetAppActiveDirectoryStatus defines the config connector
-              machine state of NetAppActiveDirectory
+            description: ActiveDirectoryStatus defines the config connector machine
+              state of NetAppActiveDirectory
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -110,6 +215,16 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time of the active directory.
+                    type: string
+                  state:
+                    description: Output only. The state of the AD.
+                    type: string
+                  stateDetails:
+                    description: Output only. The state details of the Active Directory.
+                    type: string
                 type: object
             type: object
         required:
