@@ -34,6 +34,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/metastore/v1"
+	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -73,14 +74,33 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Service_CREATING
-	obj.ArtifactGcsUri = "gs://mock-bucket/"
+	obj.ArtifactGcsUri = "gs://gcs-bucket-" + name.Name + "/hive-warehouse"
 	obj.EndpointUri = "thrift://mock-endpoint:9083"
 	obj.DatabaseType = pb.Service_MYSQL
 	obj.Port = 9083
 	obj.StateMessage = "The service is being created"
 	obj.ReleaseChannel = pb.Service_STABLE
 
-	// এগুলো যোগ করা হয়েছে :
+	// Add HiveMetastoreConfig with endpointProtocol
+	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
+		HiveMetastoreConfig: &pb.HiveMetastoreConfig{
+			EndpointProtocol: pb.HiveMetastoreConfig_THRIFT,
+			Version:          "3.1.2",
+			ConfigOverrides: map[string]string{
+				"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
+			},
+		},
+	}
+
+	// Generate a UID if not present
+	if obj.Uid == "" {
+		obj.Uid = uuid.New().String()
+	}
+
+	// Add tier if not set
+	if obj.Tier == pb.Service_TIER_UNSPECIFIED {
+		obj.Tier = pb.Service_DEVELOPER
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -89,11 +109,10 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(now),
-		Target:                fqn,
-		Verb:                  "create",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+		ApiVersion: "v1",
 	}
 
 	lro, err := s.operations.NewLRO(ctx)
@@ -111,7 +130,10 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(now)
-		updated, err := s.updateService(ctx, fqn, func(obj *pb.Service) { obj.State = pb.Service_ACTIVE })
+		updated, err := s.updateService(ctx, fqn, func(obj *pb.Service) {
+			obj.State = pb.Service_ACTIVE
+			obj.StateMessage = "The service is ready to use"
+		})
 		if err != nil {
 			return nil, err
 		}
@@ -129,7 +151,25 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 	now := time.Now()
 
 	update := func(obj *pb.Service) {
-		proto.Merge(obj, req.Service)
+		if req.UpdateMask == nil || len(req.UpdateMask.Paths) == 0 {
+			return
+		}
+		for _, path := range req.UpdateMask.Paths {
+			switch path {
+			case "tier":
+				obj.Tier = req.Service.Tier
+			case "hive_metastore_config":
+				obj.MetastoreConfig = req.Service.MetastoreConfig
+			case "maintenance_window":
+				obj.MaintenanceWindow = req.Service.MaintenanceWindow
+			case "labels":
+				obj.Labels = req.Service.Labels
+			case "network_config":
+				obj.NetworkConfig = req.Service.NetworkConfig
+			case "scaling_config":
+				obj.ScalingConfig = req.Service.ScalingConfig
+			}
+		}
 		obj.UpdateTime = timestamppb.New(now)
 	}
 

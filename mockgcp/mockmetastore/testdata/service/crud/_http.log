@@ -76,14 +76,14 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
-    "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+    "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseType": "MYSQL",
     "encryptionConfig": {},
-    "endpointUri": "thrift://10.34.64.28:9083",
+    "endpointUri": "thrift://mock-endpoint:9083",
     "hiveMetastoreConfig": {
       "configOverrides": {
-        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
       },
       "endpointProtocol": "THRIFT",
       "version": "3.1.2"
@@ -104,7 +104,7 @@ X-Xss-Protection: 0
       "logFormat": "JSON"
     },
     "tier": "DEVELOPER",
-    "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+    "uid": "uid-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -127,14 +127,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": "MYSQL",
   "encryptionConfig": {},
-  "endpointUri": "thrift://10.34.64.28:9083",
+  "endpointUri": "thrift://mock-endpoint:9083",
   "hiveMetastoreConfig": {
     "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
     },
     "endpointProtocol": "THRIFT",
     "version": "3.1.2"
@@ -155,7 +155,7 @@ X-Xss-Protection: 0
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "uid": "uid-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -177,14 +177,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": "MYSQL",
   "encryptionConfig": {},
-  "endpointUri": "thrift://10.34.64.28:9083",
+  "endpointUri": "thrift://mock-endpoint:9083",
   "hiveMetastoreConfig": {
     "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
     },
     "endpointProtocol": "THRIFT",
     "version": "3.1.2"
@@ -205,7 +205,7 @@ X-Xss-Protection: 0
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "uid": "uid-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -227,14 +227,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": "MYSQL",
   "encryptionConfig": {},
-  "endpointUri": "thrift://10.34.64.28:9083",
+  "endpointUri": "thrift://mock-endpoint:9083",
   "hiveMetastoreConfig": {
     "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
     },
     "endpointProtocol": "THRIFT",
     "version": "3.1.2"
@@ -255,7 +255,7 @@ X-Xss-Protection: 0
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "uid": "uid-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -268,12 +268,12 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": "MYSQL",
   "deletionProtection": false,
   "encryptionConfig": {},
-  "endpointUri": "thrift://10.34.64.28:9083",
+  "endpointUri": "thrift://mock-endpoint:9083",
   "hiveMetastoreConfig": {
     "configOverrides": {},
     "endpointProtocol": "THRIFT",
@@ -304,7 +304,7 @@ Content-Type: application/json
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "uid": "uid-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -362,14 +362,14 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
-    "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+    "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseType": "MYSQL",
     "encryptionConfig": {},
-    "endpointUri": "thrift://10.34.64.28:9083",
+    "endpointUri": "thrift://mock-endpoint:9083",
     "hiveMetastoreConfig": {
       "configOverrides": {
-        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
       },
       "endpointProtocol": "THRIFT",
       "version": "3.1.2"
@@ -390,7 +390,7 @@ X-Xss-Protection: 0
       "logFormat": "JSON"
     },
     "tier": "DEVELOPER",
-    "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+    "uid": "uid-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -413,14 +413,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
+  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": "MYSQL",
   "encryptionConfig": {},
-  "endpointUri": "thrift://10.34.64.28:9083",
+  "endpointUri": "thrift://mock-endpoint:9083",
   "hiveMetastoreConfig": {
     "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0/hive-warehouse"
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
     },
     "endpointProtocol": "THRIFT",
     "version": "3.1.2"
@@ -441,7 +441,7 @@ X-Xss-Protection: 0
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "67240d7b-0cff-4dae-a4ff-3bf0f0fcf2df",
+  "uid": "uid-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
