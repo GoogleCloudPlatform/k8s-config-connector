@@ -32,7 +32,7 @@ type ServiceBindingIdentity struct {
 }
 
 func (i *ServiceBindingIdentity) String() string {
-	return i.parent.String() + "/servicebindings/" + i.id
+	return i.parent.String() + "/serviceBindings/" + i.id
 }
 
 func (i *ServiceBindingIdentity) ID() string {
@@ -105,7 +105,7 @@ func NewServiceBindingIdentity(ctx context.Context, reader client.Reader, obj *N
 
 func ParseServiceBindingExternal(external string) (parent *ServiceBindingParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "servicebindings" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "serviceBindings" {
 		return nil, "", fmt.Errorf("format of NetworkServicesServiceBinding external=%q was not known (use projects/{{projectID}}/locations/{{location}}/servicebindings/{{servicebindingID}})", external)
 	}
 	parent = &ServiceBindingParent{
