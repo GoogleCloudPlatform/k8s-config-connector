@@ -21,9 +21,25 @@ import (
 
 var BatchTaskGVK = GroupVersion.WithKind("BatchTask")
 
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+// BatchTaskSpec defines the desired state of BatchTask
+// +kcc:proto=google.cloud.batch.v1.Task
+type Parent struct {
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // BatchTaskSpec defines the desired state of BatchTask
 // +kcc:proto=google.cloud.batch.v1.Task
 type BatchTaskSpec struct {
+	Parent `json:",inline"`
 	// The BatchTask name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
