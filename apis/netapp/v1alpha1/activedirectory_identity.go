@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ActiveDirectoryIdentity struct {
 	parent *ActiveDirectoryParent
-	id string
+	id     string
 }
 
 func (i *ActiveDirectoryIdentity) String() string {
-	return  i.parent.String() + "/activedirectorys/" + i.id
+	return i.parent.String() + "/activedirectorys/" + i.id
 }
 
 func (i *ActiveDirectoryIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ActiveDirectoryIdentity) ID() string {
 }
 
 func (i *ActiveDirectoryIdentity) Parent() *ActiveDirectoryParent {
-	return  i.parent
+	return i.parent
 }
 
 type ActiveDirectoryParent struct {
@@ -51,7 +51,6 @@ type ActiveDirectoryParent struct {
 func (p *ActiveDirectoryParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ActiveDirectoryIdentity from the Config Connector ActiveDirectory object.
 func NewActiveDirectoryIdentity(ctx context.Context, reader client.Reader, obj *NetAppActiveDirectory) (*ActiveDirectoryIdentity, error) {
