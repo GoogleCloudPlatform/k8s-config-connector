@@ -26,7 +26,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
@@ -94,61 +93,6 @@ func (r *regionalEndpoints) CreateProjectsLocationsRegionalEndpoint(ctx context.
 	})
 }
 
-func (r *regionalEndpoints) PatchProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.PatchProjectsLocationsRegionalEndpointRequest) (*longrunning.Operation, error) {
-	log := klog.FromContext(ctx)
-
-	reqName := req.GetName()
-
-	name, err := r.parseRegionalEndpointName(reqName)
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-
-	now := time.Now()
-
-	obj := &pb.RegionalEndpoint{}
-	if err := r.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	obj.UpdateTime = timestamppb.New(now)
-
-	if req.GetUpdateMask() != "" {
-		paths := strings.Split(req.GetUpdateMask(), ",")
-
-		patch := req.GetProjectsLocationsRegionalEndpoint()
-		// TODO: Some sort of helper for fieldmask?
-		for _, path := range paths {
-			switch path {
-			case "description":
-				obj.PrefixLength = patch.PrefixLength
-
-			default:
-				log.Info("unsupported update_mask", "req", req)
-				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)
-			}
-		}
-	}
-
-	if err := r.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
-		CreateTime:            timestamppb.New(now),
-		Target:                fqn,
-		Verb:                  "update",
-	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
-		return obj, nil
-	})
-}
-
 func (r *regionalEndpoints) DeleteProjectsLocationsRegionalEndpoint(ctx context.Context, req *pb.DeleteProjectsLocationsRegionalEndpointRequest) (*longrunning.Operation, error) {
 	name, err := r.parseRegionalEndpointName(req.GetName())
 	if err != nil {
@@ -178,8 +122,8 @@ func (r *regionalEndpoints) DeleteProjectsLocationsRegionalEndpoint(ctx context.
 }
 
 type regionalEndpointName struct {
-	Project           *projects.ProjectData
-	Location          string
+	Project              *projects.ProjectData
+	Location             string
 	RegionalEndpointName string
 }
 
@@ -199,8 +143,8 @@ func (r *regionalEndpoints) parseRegionalEndpointName(name string) (*regionalEnd
 		}
 
 		name := &regionalEndpointName{
-			Project:           project,
-			Location:          tokens[3],
+			Project:              project,
+			Location:             tokens[3],
 			RegionalEndpointName: tokens[5],
 		}
 

@@ -1,5 +1,3 @@
 - exec: gcloud network-connectivity regional-endpoints create test-${uniqueId}  --region=us-central1 --target-google-api=cloudkms.us-central1.p.rep.googleapis.com --description="test-${uniqueId}"
 - exec: gcloud network-connectivity regional-endpoints describe test-${uniqueId} --region=us-central1
-- exec: gcloud network-connectivity regional-endpoints update test-${uniqueId}  --region=us-central1 --description="updated test-${uniqueId}"
-- exec: gcloud network-connectivity regional-endpoints describe test-${uniqueId} --region=us-central1
 - exec: gcloud network-connectivity regional-endpoints delete test-${uniqueId} --region=us-central1 --quiet
