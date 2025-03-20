@@ -89,8 +89,14 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// Removed MetadataIntegration as it is not a field in the Service proto
 
 	obj.EncryptionConfig = &pb.EncryptionConfig{}
-	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
 
+	if req.Service.GetMetadataIntegration() != nil && req.Service.GetMetadataIntegration().GetDataCatalogConfig() != nil && req.Service.GetMetadataIntegration().GetDataCatalogConfig().GetEnabled() {
+		obj.MetadataIntegration = &pb.MetadataIntegration{DataCatalogConfig: &pb.DataCatalogConfig{Enabled: true}}
+	} else {
+		obj.MetadataIntegration = nil
+	}
+
+	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
 	// Remove unnecessary fields
 
 	// Add HiveMetastoreConfig with endpointProtocol
@@ -99,7 +105,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 			EndpointProtocol: pb.HiveMetastoreConfig_THRIFT,
 			Version:          "3.1.2",
 			ConfigOverrides: map[string]string{
-				"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
+				"hive.metastore.warehouse.dir": "gs://gcs-bucket-test-" + name.Name + "/hive-warehouse",
 			},
 		},
 	}
