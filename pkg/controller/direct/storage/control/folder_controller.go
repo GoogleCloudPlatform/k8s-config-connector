@@ -1,95 +1,4 @@
-in.proto.message.definition: message Folder {
-  option (google.api.resource) = {
-    type: "storage.googleapis.com/Folder"
-    pattern: "projects/{project}/buckets/{bucket}/folders/{folder}"
-  };
-
-  // Immutable. Full path name of the folder.
-  string name = 1 [(google.api.field_behavior) = IMMUTABLE];
-
-  // User specified attributes.
-  map<string, string> custom_attributes = 8;
-
-  // Immutable. Metageneration of the Folder. The field is only populated after
-  // the Folder creation.
-  int64 metageneration = 2
-      [(google.api.field_behavior) = IMMUTABLE, (google.api.field_info) = {
-        output_only_behavior: IMMUTABLE
-      }];
-
-  // Output only. Resource creation timestamp.
-  google.protobuf.Timestamp create_time = 6
-      [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // Output only. Resource update timestamp. It may be either:
-  // 1) last time the folder metadata was changed;
-  // OR
-  // 2) if custom attributes are present, the creation time of the
-  //    representation object, i.e. the file whose name is the folder name.
-  google.protobuf.Timestamp update_time = 7
-      [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // The managed folder that this folder represents. Can only be set during
-  // folder creation, and cannot be updated.
-  string managed_folder = 9
-      [(google.api.resource_reference) = {
-        type: "storagetransfer.googleapis.com/ManagedFolder"
-      }];
-
-  // Immutable. User-provided id of the folder, part of name.
-  string folder_id = 10 [(google.api.field_behavior) = IMMUTABLE];
-}
-in.proto.service.definition: service StorageControl {
-  option (google.api.default_host) = "storagecontrol.googleapis.com";
-  option (google.api.oauth_scopes) = "https://www.googleapis.com/auth/cloud-platform";
-
-  // Creates a new folder.
-  rpc CreateFolder(CreateFolderRequest) returns (Folder) {
-    option (google.api.http) = {
-      post: "/v2/{parent=projects/*/buckets/*}/folders"
-      body: "folder"
-    };
-    option (google.api.method_signature) = "parent,folder";
-  }
-
-  // Permanently deletes a folder, and all sub-folders and objects within it.
-  // Deletion of folders with underlying objects will only be successful
-  // if "force=true" is provided in the request.
-  rpc DeleteFolder(DeleteFolderRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete: "/v2/{name=projects/*/buckets/*/folders/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Returns metadata of a folder.
-  rpc GetFolder(GetFolderRequest) returns (Folder) {
-    option (google.api.http) = {
-      get: "/v2/{name=projects/*/buckets/*/folders/*}"
-    };
-    option (google.api.method_signature) = "name";
-  }
-
-  // Returns a (possibly paginated) list of folders for a bucket.
-  // The `name` field will be the folder name and there will be no
-  // sub-folders, sub-folders can be found via the `prefixes` field.
-  rpc ListFolders(ListFoldersRequest) returns (ListFoldersResponse) {
-    option (google.api.http) = {
-      get: "/v2/{parent=projects/*/buckets/*}/folders"
-    };
-    option (google.api.method_signature) = "parent";
-  }
-
-  // Renames a folder.
-  rpc RenameFolder(RenameFolderRequest) returns (Folder) {
-    option (google.api.http) = {
-      post: "/v2/{name=projects/*/buckets/*/folders/*}:rename"
-      body: "*"
-    };
-    option (google.api.method_signature) = "name,destination_folder_id";
-  }
-}
-out: // Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -109,20 +18,20 @@ out: // Copyright 2024 Google LLC
 // crd.type: StorageFolder
 // crd.version: v1alpha1
 
-package storage
+package storagecontrol
 
 import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storagecontrol/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/storagecontrol/apiv2"
-	pb "cloud.google.com/go/storagecontrol/apiv2/storagecontrolpb"
+	gcp "cloud.google.com/go/storage/control/apiv2"
+	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -156,11 +65,11 @@ func (m *modelFolder) AdapterForObject(ctx context.Context, reader client.Reader
 	}
 
 	// Get storage GCP client
-	gcpClient, err := newGCPClient(ctx, &m.config)
+	options, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	storageControlClient, err := gcpClient.newStorageControlClient(ctx)
+	storageControlClient, err := gcp.NewStorageControlClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +89,7 @@ func (m *modelFolder) AdapterForURL(ctx context.Context, url string) (directbase
 
 type FolderAdapter struct {
 	id        *krm.FolderIdentity
-	gcpClient *gcp.Client
+	gcpClient *gcp.StorageControlClient
 	desired   *krm.StorageFolder
 	actual    *pb.Folder
 	reader    client.Reader
@@ -196,7 +105,10 @@ func (a *FolderAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Folder", "name", a.id)
 
-	req := &pb.GetFolderRequest{Name: a.id.String()}
+	// The format of the request name is verified to use the following format.
+	// Reference: https://cloud.google.com/storage/docs/create-folders#storage-create-folders-go
+	requestName := fmt.Sprintf("projects/_/buckets/%s/folders/%s", a.id.Parent().BucketName, a.id.ID())
+	req := &pb.GetFolderRequest{Name: requestName}
 	folderpb, err := a.gcpClient.GetFolder(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -221,9 +133,14 @@ func (a *FolderAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 		return mapCtx.Err()
 	}
 
+	// The format of the request name is verified to use the following format.
+	// Reference: https://cloud.google.com/storage/docs/create-folders#storage-create-folders-go
+	parent := fmt.Sprintf("projects/_/buckets/%s", a.id.Parent().BucketName)
+
+	// folderID must end with a slash
 	req := &pb.CreateFolderRequest{
-		Parent:   a.id.Parent().String(),
-		FolderId: a.id.ID(),
+		Parent:   parent,
+		FolderId: a.id.ID() + "/",
 		Folder:   resource,
 	}
 	created, err := a.gcpClient.CreateFolder(ctx, req)
@@ -244,7 +161,11 @@ func (a *FolderAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *FolderAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update is not implemented")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating SQLInstance", "desired", a.desired)
+
+	status := &krm.StorageFolderStatus{}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -277,8 +198,11 @@ func (a *FolderAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Folder", "name", a.id)
 
-	req := &pb.DeleteFolderRequest{Name: a.id.String()}
-	_, err := a.gcpClient.DeleteFolder(ctx, req)
+	// The format of the request name is verified to use the following format.
+	// Reference: https://cloud.google.com/storage/docs/create-folders#storage-create-folders-go
+	requestName := fmt.Sprintf("projects/_/buckets/%s/folders/%s", a.id.Parent().BucketName, a.id.ID())
+	req := &pb.DeleteFolderRequest{Name: requestName}
+	err := a.gcpClient.DeleteFolder(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
@@ -290,5 +214,3 @@ func (a *FolderAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	log.V(2).Info("successfully deleted Folder", "name", a.id)
 	return true, nil
 }
-
-
