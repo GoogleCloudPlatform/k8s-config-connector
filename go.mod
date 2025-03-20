@@ -16,6 +16,7 @@ require (
 	cloud.google.com/go/bigquery v1.66.2
 	cloud.google.com/go/certificatemanager v1.9.3
 	cloud.google.com/go/cloudbuild v1.22.0
+	cloud.google.com/go/cloudquotas v1.3.2
 	cloud.google.com/go/cloudtasks v1.13.3
 	cloud.google.com/go/compute v1.34.0
 	cloud.google.com/go/dataflow v0.10.3
@@ -96,6 +97,11 @@ require (
 	google.golang.org/genproto v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb
+	google.golang.org/grpc v1.71.0
+	google.golang.org/api v0.224.0
+	google.golang.org/genproto v0.0.0-20250122153221-138b5a5a4fd4
+	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
