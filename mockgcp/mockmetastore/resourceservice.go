@@ -81,6 +81,14 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.StateMessage = "The service is being created"
 	obj.ReleaseChannel = pb.Service_STABLE
 
+	// Remove unnecessary fields
+	// obj.EncryptionConfig = &pb.EncryptionConfig{}
+	// obj.MetadataIntegration = &pb.Service_MetadataIntegration{DataCatalogConfig: &pb.DataCatalogConfig{}}
+	// obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
+	// obj.Network = "projects/" + name.Project.ID + "/global/networks/default"
+	// obj.NetworkConfig = &pb.NetworkConfig{}
+	// obj.TelemetryConfig = &pb.TelemetryConfig{LogFormat: pb.TelemetryConfig_JSON}
+
 	// Add HiveMetastoreConfig with endpointProtocol
 	obj.MetastoreConfig = &pb.Service_HiveMetastoreConfig{
 		HiveMetastoreConfig: &pb.HiveMetastoreConfig{
@@ -109,10 +117,11 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 
 	lro, err := s.operations.NewLRO(ctx)
