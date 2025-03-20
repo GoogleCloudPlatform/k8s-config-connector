@@ -43,7 +43,7 @@ type LoggingLogBucket struct {
 }
 
 func (s *LoggingLogBucket) String() string {
-	return "projects/" + s.ProjectID + "locations/" + s.Location + "/buckets/" + s.LoggingLogBucketID
+	return "projects/" + s.ProjectID + "/locations/" + s.Location + "/buckets/" + s.LoggingLogBucketID
 }
 
 func ResolveLoggingLogBucketRef(ctx context.Context, reader client.Reader, obj client.Object, ref *LoggingLogBucketRef) (*LoggingLogBucket, error) {

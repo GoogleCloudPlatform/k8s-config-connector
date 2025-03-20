@@ -81,7 +81,7 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseLinkExternal(externalRef)
+		actualParent, _, err := ParseLinkExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
