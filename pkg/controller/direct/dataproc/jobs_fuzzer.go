@@ -51,7 +51,6 @@ func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusFields.Insert(".placement")
 	f.StatusFields.Insert(".status")
-	f.StatusFields.Insert(".status_history")
 	f.StatusFields.Insert(".yarn_applications")
 	f.StatusFields.Insert(".driver_output_resource_uri")
 	f.StatusFields.Insert(".driver_control_files_uri")
@@ -59,6 +58,7 @@ func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".done")
 
 	f.UnimplementedFields.Insert(".status")
+	f.UnimplementedFields.Insert(".status_history")
 
 	return f
 }
