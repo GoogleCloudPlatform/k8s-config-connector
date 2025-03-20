@@ -27,6 +27,7 @@ import (
 )
 
 type LoggingLogBucketRef struct {
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
 	/* The LoggingLogBucket selfLink, when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `LoggingLogBucket` resource. */

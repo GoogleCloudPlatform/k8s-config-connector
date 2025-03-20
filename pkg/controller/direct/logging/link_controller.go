@@ -128,7 +128,7 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating object", "u", u)
+	log.V(2).Info("creating LoggingLink", "u", u)
 
 	mapCtx := &direct.MapContext{}
 

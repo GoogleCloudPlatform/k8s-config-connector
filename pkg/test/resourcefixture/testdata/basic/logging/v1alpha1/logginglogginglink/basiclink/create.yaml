@@ -17,7 +17,7 @@ kind: LoggingLink
 metadata:
   name: logginglink${uniqueId} # no hyphen here as link ids can only have alphanumeric and underscores
 spec:
-  resourceId: logginglink${uniqueId}
+  resourceID: logginglink${uniqueId}
   loggingLogBucketRef:
     name: "logginglogbucket-${uniqueId}"
   description: "A sample log link"
