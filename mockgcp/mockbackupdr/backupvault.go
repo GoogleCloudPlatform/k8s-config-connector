@@ -72,9 +72,8 @@ func (s *BackupDRV1) CreateBackupVault(ctx context.Context, req *pb.CreateBackup
 	obj.State = pb.BackupVault_CREATING
 	obj.Etag = proto.String(fields.ComputeWeakEtag(obj))
 	obj.Deletable = proto.Bool(true) // default to true
-	s.setDefaultServiceAccount(obj, name)
 
-	s.populateDefaultsForBackupVault(obj)
+	s.populateDefaultsForBackupVault(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -177,7 +176,7 @@ func (s *BackupDRV1) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackup
 	})
 }
 
-func (s *BackupDRV1) populateDefaultsForBackupVault(obj *pb.BackupVault) {
+func (s *BackupDRV1) populateDefaultsForBackupVault(obj *pb.BackupVault, name *backupVaultName) {
 	if obj.BackupMinimumEnforcedRetentionDuration == nil {
 		obj.BackupMinimumEnforcedRetentionDuration = durationpb.New(24 * 7 * time.Hour) // 7 days
 	}
@@ -186,6 +185,9 @@ func (s *BackupDRV1) populateDefaultsForBackupVault(obj *pb.BackupVault) {
 	}
 	if obj.AccessRestriction == pb.BackupVault_ACCESS_RESTRICTION_UNSPECIFIED {
 		obj.AccessRestriction = pb.BackupVault_WITHIN_ORGANIZATION
+	}
+	if obj.ServiceAccount == "" {
+		obj.ServiceAccount = fmt.Sprintf("vault-%d-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com", name.Project.Number)
 	}
 }
 
@@ -219,10 +221,4 @@ func (s *BackupDRV1) parseBackupVaultName(name string) (*backupVaultName, error)
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-}
-
-func (s *BackupDRV1) setDefaultServiceAccount(obj *pb.BackupVault, name *backupVaultName) {
-	if obj.ServiceAccount == "" {
-		obj.ServiceAccount = fmt.Sprintf("vault-%d-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com", name.Project.Number)
-	}
 }
