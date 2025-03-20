@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,13 +30,13 @@ type BigQueryReservationAssignmentSpec struct {
 	// +required
 	ReservationRef *ReservationRef `json:"reservationRef,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self != null && has(self.ProjectRef) != has(self.FolderRef) != has(self.OrganizationRef)",message="Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified."
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"
 	// Immutable.
-	// The resource which will use the reservation. E.g.
+	// Required. The resource which will use the reservation. E.g.
 	//  `projects/myproject`, `folders/123`, or `organizations/456`.
-	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
 	// +required
-	Assignee *string `json:"assignee,omitempty"`
+	Assignee *Assignee `json:"assignee,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="jobType field is immutable"
 	// Immutable.
@@ -102,6 +103,19 @@ type BigQueryReservationAssignmentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryReservationAssignment `json:"items"`
+}
+
+// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
+type Assignee struct {
+	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef"`
+	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef"`
 }
 
 func init() {

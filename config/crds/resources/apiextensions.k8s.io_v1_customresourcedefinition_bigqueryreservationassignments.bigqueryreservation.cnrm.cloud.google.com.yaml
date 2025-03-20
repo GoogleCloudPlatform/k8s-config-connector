@@ -62,10 +62,95 @@ spec:
               of BigQueryReservationAssignment
             properties:
               assignee:
-                description: Immutable. The resource which will use the reservation.
-                  E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
-                type: string
+                description: Immutable. Required. The resource which will use the
+                  reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
+                properties:
+                  folderRef:
+                    description: Exactly one of ProjectRef or FolderRef or OrganizationRef
+                      must be specified.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The 'name' field of a folder, when not managed
+                          by Config Connector. This field must be set when 'name'
+                          field is not set.
+                        type: string
+                      name:
+                        description: The 'name' field of a 'Folder' resource. This
+                          field must be set when 'external' field is not set.
+                        type: string
+                      namespace:
+                        description: The 'namespace' field of a 'Folder' resource.
+                          If unset, the namespace is defaulted to the namespace of
+                          the referencer resource.
+                        type: string
+                    type: object
+                  organizationRef:
+                    description: Exactly one of ProjectRef or FolderRef or OrganizationRef
+                      must be specified.
+                    properties:
+                      external:
+                        description: The 'name' field of an organization, when not
+                          managed by Config Connector.
+                        type: string
+                    required:
+                    - external
+                    type: object
+                  projectRef:
+                    description: Exactly one of ProjectRef or FolderRef or OrganizationRef
+                      must be specified.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                type: object
                 x-kubernetes-validations:
+                - message: Exactly one of ProjectRef or FolderRef or OrganizationRef
+                    must be specified.
+                  rule: self != null && has(self.ProjectRef) != has(self.FolderRef)
+                    != has(self.OrganizationRef)
                 - message: assignee field is immutable
                   rule: self == oldSelf
               jobType:

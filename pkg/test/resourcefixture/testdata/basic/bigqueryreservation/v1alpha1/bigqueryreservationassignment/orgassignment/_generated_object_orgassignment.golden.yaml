@@ -10,7 +10,9 @@ metadata:
   name: bqassignment-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  assignee: organizations/${organizationID}
+  assignee:
+    organizationRef:
+      external: ${organizationID}
   jobType: QUERY
   reservationRef:
     name: bigqueryreservationreservation-${uniqueId}
