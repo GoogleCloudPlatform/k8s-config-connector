@@ -104,106 +104,7 @@ func DefaultPool_ToProto(mapCtx *direct.MapContext, in *krm.DefaultPool) *pb.Def
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
-func DeployTargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.DeployTargetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployTargetObservedState{}
-	// MISSING: Name
-	// MISSING: TargetID
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: RequireApproval
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Gke
-	// MISSING: AnthosCluster
-	// MISSING: Run
-	// MISSING: MultiTarget
-	// MISSING: CustomTarget
-	// MISSING: AssociatedEntities
-	// MISSING: Etag
-	// MISSING: ExecutionConfigs
-	// MISSING: DeployParameters
-	return out
-}
-func DeployTargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployTargetObservedState) *pb.Target {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Target{}
-	// MISSING: Name
-	// MISSING: TargetID
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: RequireApproval
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Gke
-	// MISSING: AnthosCluster
-	// MISSING: Run
-	// MISSING: MultiTarget
-	// MISSING: CustomTarget
-	// MISSING: AssociatedEntities
-	// MISSING: Etag
-	// MISSING: ExecutionConfigs
-	// MISSING: DeployParameters
-	return out
-}
-func DeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.DeployTargetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployTargetSpec{}
-	// MISSING: Name
-	// MISSING: TargetID
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: RequireApproval
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Gke
-	// MISSING: AnthosCluster
-	// MISSING: Run
-	// MISSING: MultiTarget
-	// MISSING: CustomTarget
-	// MISSING: AssociatedEntities
-	// MISSING: Etag
-	// MISSING: ExecutionConfigs
-	// MISSING: DeployParameters
-	return out
-}
-func DeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployTargetSpec) *pb.Target {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Target{}
-	// MISSING: Name
-	// MISSING: TargetID
-	// MISSING: Uid
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	// MISSING: RequireApproval
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Gke
-	// MISSING: AnthosCluster
-	// MISSING: Run
-	// MISSING: MultiTarget
-	// MISSING: CustomTarget
-	// MISSING: AssociatedEntities
-	// MISSING: Etag
-	// MISSING: ExecutionConfigs
-	// MISSING: DeployParameters
-	return out
-}
+
 func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krm.ExecutionConfig {
 	if in == nil {
 		return nil
@@ -296,17 +197,17 @@ func PrivatePool_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePool) *pb.Pri
 	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
 	return out
 }
-func Target_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.Target {
+func DeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.DeployTargetSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Target{}
+	out := &krm.DeployTargetSpec{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: TargetID
 	// MISSING: Uid
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	//out.Annotations = in.Annotations
+	//out.Labels = in.Labels
 	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -321,7 +222,7 @@ func Target_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.Target {
 	out.DeployParameters = in.DeployParameters
 	return out
 }
-func Target_ToProto(mapCtx *direct.MapContext, in *krm.Target) *pb.Target {
+func DeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployTargetSpec) *pb.Target {
 	if in == nil {
 		return nil
 	}
@@ -330,8 +231,8 @@ func Target_ToProto(mapCtx *direct.MapContext, in *krm.Target) *pb.Target {
 	// MISSING: TargetID
 	// MISSING: Uid
 	out.Description = direct.ValueOf(in.Description)
-	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	// out.Annotations = in.Annotations
+	// out.Labels = in.Labels
 	out.RequireApproval = direct.ValueOf(in.RequireApproval)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -356,11 +257,11 @@ func Target_ToProto(mapCtx *direct.MapContext, in *krm.Target) *pb.Target {
 	out.DeployParameters = in.DeployParameters
 	return out
 }
-func TargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.TargetObservedState {
+func DeployTargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.DeployTargetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TargetObservedState{}
+	out := &krm.DeployTargetObservedState{}
 	// MISSING: Name
 	out.TargetID = direct.LazyPtr(in.GetTargetId())
 	out.Uid = direct.LazyPtr(in.GetUid())
@@ -381,7 +282,7 @@ func TargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *kr
 	// MISSING: DeployParameters
 	return out
 }
-func TargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TargetObservedState) *pb.Target {
+func DeployTargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeployTargetObservedState) *pb.Target {
 	if in == nil {
 		return nil
 	}

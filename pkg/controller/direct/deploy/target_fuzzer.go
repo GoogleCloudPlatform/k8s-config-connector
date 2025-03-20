@@ -21,7 +21,6 @@ package deploy
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting/fuzzers/fieldtrimmer"
 )
 
 func init() {
@@ -51,31 +50,11 @@ func deployTargetFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 
-	f.UnimplementedFields.Insert(".associated_entities") // Map of struct.
-	f.UnimplementedFields.Insert(".etag")                // Computed checksum.
-	f.UnimplementedFields.Insert(".name")                // Handled in config-connector code
-
-	f.AddProtobufFuzzer(&fuzztesting.KstructFuzzer{}) // Field name is "gke".
-	f.AddProtobufFuzzer(&fuzztesting.KstructFuzzer{}) // Field name is "run".
-
-	// Trim fields with regex match.
-	f.SpecFields.Add(fieldtrimmer.NewFieldTrimmer(
-		".gke.cluster",
-		`^projects/[^/]+/locations/[^/]+/clusters/[^/]+$`,
-	))
-	f.SpecFields.Add(fieldtrimmer.NewFieldTrimmer(
-		".anthos_cluster.membership",
-		`^projects/[^/]+/locations/[^/]+/memberships/[^/]+$`,
-	))
-	f.SpecFields.Add(fieldtrimmer.NewFieldTrimmer(
-		".run.location",
-		"^projects/[^/]+/locations/[^/]+$",
-	))
+	f.UnimplementedFields.Insert(".labels")
+	f.UnimplementedFields.Insert(".annotations")
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".etag")
+	f.UnimplementedFields.Insert(".associated_entities")
 
 	return f
 }
-
-```
-</out>
-
-
