@@ -86,9 +86,8 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		LogFormat: pb.TelemetryConfig_JSON,
 	}
 
-	obj.MetadataIntegration = &pb.MetadataIntegration{
-		DataCatalogConfig: &pb.DataCatalogConfig{},
-	}
+	// Removed MetadataIntegration as it is not a field in the Service proto
+
 	obj.EncryptionConfig = &pb.EncryptionConfig{}
 	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
 
