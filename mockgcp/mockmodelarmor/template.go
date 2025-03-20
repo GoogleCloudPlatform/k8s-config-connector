@@ -33,6 +33,11 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/modelarmor/v1"
 )
 
+type ModelArmorV1 struct {
+	*MockService
+	pb.UnimplementedModelArmorServer
+}
+
 func (s *ModelArmorV1) GetTemplate(ctx context.Context, req *pb.GetTemplateRequest) (*pb.Template, error) {
 	name, err := s.parseTemplateName(req.Name)
 	if err != nil {
@@ -64,6 +69,9 @@ func (s *ModelArmorV1) CreateTemplate(ctx context.Context, req *pb.CreateTemplat
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	if obj.TemplateMetadata == nil {
+		obj.TemplateMetadata = &pb.Template_TemplateMetadata{}
+	}
 	s.populateDefaultsForTemplate(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -87,6 +95,9 @@ func (s *ModelArmorV1) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplat
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	proto.Merge(obj, req.Template)
+	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
