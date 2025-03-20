@@ -43,6 +43,7 @@ func (i *TargetIdentity) Parent() *TargetParent {
 	return i.parent
 }
 
+// No changes were needed for the TargetParent struct.
 type TargetParent struct {
 	ProjectID string
 	Location  string
