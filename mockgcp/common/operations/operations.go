@@ -61,7 +61,8 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 
 	fqn := op.Name
 
-	if err := s.storage.Create(ctx, fqn, op); err != nil {
+	opName := strings.Split(op.Name, "/")[len(strings.Split(op.Name, "/")) - 1]
+	if err := s.storage.Create(ctx, opName, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
 	return op, nil
