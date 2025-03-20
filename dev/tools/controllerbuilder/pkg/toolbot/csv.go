@@ -207,15 +207,31 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 // pickExamples returns the examples we should feed into the promp
 func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 	var examples []*DataPoint
+	var sameAPIGroupExamples []*DataPoint
+
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
 		}
-		if dataPoint.Type == "fuzz-gen" && dataPoint.Input["api.group"] == "" { // Hack to only include data points with "api.group" marker
-			continue
+		switch dataPoint.Type {
+		case "fuzz-gen":
+			// only include data points with "api.group" marker
+			if dataPoint.Input["api.group"] == "" {
+				continue
+			}
+		case "mockgcp-support", "controller":
+			// collect examples with the same proto service (API group)
+			if dataPoint.Input["proto.service"] == input.Input["proto.service"] {
+				sameAPIGroupExamples = append(sameAPIGroupExamples, dataPoint)
+			}
 		}
 		examples = append(examples, dataPoint)
+	}
+
+	// If we have examples with the same API group, use only those
+	if len(sameAPIGroupExamples) > 0 {
+		return sameAPIGroupExamples
 	}
 	return examples
 }
