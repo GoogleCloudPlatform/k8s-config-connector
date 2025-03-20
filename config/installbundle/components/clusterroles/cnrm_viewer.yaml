@@ -383,14 +383,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - deploy.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - deploymentmanager.cnrm.cloud.google.com
   resources:
   - '*'

@@ -38,7 +38,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/deploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/edgecontainer"

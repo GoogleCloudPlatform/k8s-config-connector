@@ -2382,7 +2382,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
-		Group:   "deploy.cnrm.cloud.google.com",
+		Group:   "clouddeploy.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "DeployTarget",
 	}: {

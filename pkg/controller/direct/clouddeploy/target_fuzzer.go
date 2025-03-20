@@ -14,9 +14,9 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.deploy.v1.Target
-// api.group: deploy.cnrm.cloud.google.com
+// api.group: clouddeploy.cnrm.cloud.google.com
 
-package deploy
+package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
