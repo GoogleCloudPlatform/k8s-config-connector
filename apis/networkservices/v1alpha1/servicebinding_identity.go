@@ -49,7 +49,7 @@ type ServiceBindingParent struct {
 }
 
 func (p *ServiceBindingParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/global"
 }
 
 // New builds a ServiceBindingIdentity from the Config Connector ServiceBinding object.
