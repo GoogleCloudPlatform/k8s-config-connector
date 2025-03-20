@@ -1,0 +1,268 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vertexaifeaturestores.vertexai.cnrm.cloud.google.com
+spec:
+  group: vertexai.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VertexAIFeaturestore
+    listKind: VertexAIFeaturestoreList
+    plural: vertexaifeaturestores
+    shortNames:
+    - gcpvertexaifeaturestore
+    - gcpvertexaifeaturestores
+    singular: vertexaifeaturestore
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VertexAIFeaturestore is the Schema for the VertexAIFeaturestore
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VertexAIFeaturestoreSpec defines the desired state of VertexAIFeaturestore
+            properties:
+              encryptionSpec:
+                description: |-
+                  Optional. Customer-managed encryption key spec for data storage. If set,
+                   both of the online and offline data storage will be secured by this key.
+                properties:
+                  kmsKeyRef:
+                    description: |-
+                      Required. The Cloud KMS resource identifier of the customer managed
+                       encryption key used to protect a resource.
+                       The key needs to be in the same region as where the compute resource is
+                       created.
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                required:
+                - kmsKeyRef
+                type: object
+              etag:
+                description: |-
+                  Optional. Used to perform consistent read-modify-write updates. If not set,
+                   a blind "overwrite" update happens.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Optional. The labels with user-defined metadata to organize your
+                   Featurestore.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information on and examples of labels.
+                   No more than 64 user labels can be associated with one Featurestore(System
+                   labels are excluded)."
+                   System reserved label keys are prefixed with "aiplatform.googleapis.com/"
+                   and are immutable.
+                type: object
+              location:
+                description: The location for the resource.
+                type: string
+              onlineServingConfig:
+                description: |-
+                  Optional. Config for online storage resources. The field should not
+                   co-exist with the field of `OnlineStoreReplicationConfig`. If both of it
+                   and OnlineStoreReplicationConfig are unset, the feature store will not have
+                   an online store and cannot be used for online serving.
+                properties:
+                  fixedNodeCount:
+                    description: |-
+                      The number of nodes for the online store. The number of nodes doesn't
+                       scale automatically, but you can manually update the number of
+                       nodes. If set to 0, the featurestore will not have an
+                       online store and cannot be used for online serving.
+                    format: int32
+                    type: integer
+                  scaling:
+                    description: |-
+                      Online serving scaling configuration.
+                       Only one of `fixed_node_count` and `scaling` can be set. Setting one will
+                       reset the other.
+                    properties:
+                      cpuUtilizationTarget:
+                        description: |-
+                          Optional. The cpu utilization that the Autoscaler should be trying to
+                           achieve. This number is on a scale from 0 (no utilization) to 100
+                           (total utilization), and is limited between 10 and 80. When a cluster's
+                           CPU utilization exceeds the target that you have set, Bigtable
+                           immediately adds nodes to the cluster. When CPU utilization is
+                           substantially lower than the target, Bigtable removes nodes. If not set
+                           or set to 0, default to 50.
+                        format: int32
+                        type: integer
+                      maxNodeCount:
+                        description: |-
+                          The maximum number of nodes to scale up to. Must be greater than
+                           min_node_count, and less than or equal to 10 times of 'min_node_count'.
+                        format: int32
+                        type: integer
+                      minNodeCount:
+                        description: |-
+                          Required. The minimum number of nodes to scale down to. Must be greater
+                           than or equal to 1.
+                        format: int32
+                        type: integer
+                    type: object
+                type: object
+              onlineStorageTTLDays:
+                description: |-
+                  Optional. TTL in days for feature values that will be stored in online
+                   serving storage. The Feature Store online storage periodically removes
+                   obsolete feature values older than `online_storage_ttl_days` since the
+                   feature generation time. Note that `online_storage_ttl_days` should be less
+                   than or equal to `offline_storage_ttl_days` for each EntityType under a
+                   featurestore. If not set, default to 4000 days
+                format: int32
+                type: integer
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VertexAIFeaturestore name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: VertexAIFeaturestoreStatus defines the config connector machine
+              state of VertexAIFeaturestore
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VertexAIFeaturestore resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this Featurestore was
+                      created.
+                    type: string
+                  state:
+                    description: Output only. State of the featurestore.
+                    type: string
+                  updateTime:
+                    description: Output only. Timestamp when this Featurestore was
+                      last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
