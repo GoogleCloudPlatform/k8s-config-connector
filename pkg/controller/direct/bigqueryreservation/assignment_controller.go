@@ -20,6 +20,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -80,6 +81,26 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, err
 	}
 
+	// NormalizeAssignee
+	if obj.Spec.Assignee.ProjectRef != nil && obj.Spec.Assignee.ProjectRef.External == "" {
+		obj.Spec.Assignee.ProjectRef.External, err = refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.Assignee.FolderRef != nil && obj.Spec.Assignee.FolderRef.External == "" {
+		obj.Spec.Assignee.FolderRef.External, err = refsv1beta1.ResolveFolderID(ctx, reader, u)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.Assignee.OrganizationRef != nil && obj.Spec.Assignee.OrganizationRef.External == "" {
+		obj.Spec.Assignee.OrganizationRef.External, err = refsv1beta1.ResolveOrganizationID(ctx, reader, u)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	var reservationName string
 	// Get the reservation name to move the assignment to
 	if obj.Spec.ReservationRef.External != "" {
@@ -90,7 +111,6 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 			return nil, err
 		}
 	}
-
 	p, name, err := krm.ParseReservationExternal(reservationName)
 	destinationId := &krm.BQReservation{
 		ProjectID:       p.ProjectID,

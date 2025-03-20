@@ -15,17 +15,70 @@
 package bigqueryreservation
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.Assignee {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Assignee{}
+	name := in.GetAssignee()
+	tokens := strings.Split(name, "/")
+	if len(tokens) != 2 {
+		return nil
+	}
+	switch tokens[0] {
+	case "projects":
+		return &krm.Assignee{
+			ProjectRef: &refsv1beta1.ProjectRef{
+				External: tokens[1],
+			},
+		}
+	case "folers":
+		return &krm.Assignee{
+			FolderRef: &refsv1beta1.FolderRef{
+				External: tokens[1],
+			},
+		}
+	case "organizations":
+		return &krm.Assignee{
+			OrganizationRef: &refsv1beta1.OrganizationRef{
+				External: tokens[1],
+			},
+		}
+	}
+	return out
+}
+
+func BigqueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) string {
+	if in == nil {
+		return ""
+	}
+
+	if in.Assignee.ProjectRef != nil {
+		return "projects/" + in.Assignee.ProjectRef.External
+	}
+	if in.Assignee.FolderRef != nil {
+		return "folders/" + in.Assignee.FolderRef.External
+	}
+	if in.Assignee.OrganizationRef != nil {
+		return "organizations/" + in.Assignee.OrganizationRef.External
+	}
+	return ""
+}
 
 func BigqueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BigQueryReservationAssignmentSpec{}
-	out.Assignee = direct.LazyPtr(in.GetAssignee())
+	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in)
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	return out
 }
@@ -35,7 +88,7 @@ func BigqueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.Assignment{}
-	out.Assignee = direct.ValueOf(in.Assignee)
+	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in)
 	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
 	return out
 }
