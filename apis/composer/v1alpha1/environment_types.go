@@ -87,11 +87,11 @@ type ComposerEnvironmentObservedState struct {
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+	SatisfiesPZS *bool `json:"satisfiesPZS,omitempty"`
 
 	// Output only. Reserved for future use.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+	SatisfiesPZI *bool `json:"satisfiesPZI,omitempty"`
 
 	// Output only. The UUID (Universally Unique IDentifier) associated with this
 	//  environment. This value is generated when the environment is created.
