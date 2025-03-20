@@ -30,6 +30,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/clouddeploy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudidentity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudtasks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/colab"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/firewallpolicyrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/forwardingrule"

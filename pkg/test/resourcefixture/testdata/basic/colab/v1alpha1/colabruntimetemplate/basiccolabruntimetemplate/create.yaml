@@ -1,0 +1,16 @@
+apiVersion: colab.cnrm.cloud.google.com/v1alpha1
+kind: ColabRuntimeTemplate
+metadata:
+  name: colabruntimetemplate-${uniqueId}
+spec:
+  projectRef:
+    external: "${projectId}"
+  location: us-central1
+  displayName: "test-${uniqueId}"
+  machineSpec:
+    machineType: e2-standard-2
+  networkSpec:
+    networkRef:
+      name: computenetwork-${uniqueId}
+    subnetworkRef:
+      name: computesubnetwork-${uniqueId}
