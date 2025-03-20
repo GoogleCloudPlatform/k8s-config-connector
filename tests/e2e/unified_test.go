@@ -118,7 +118,10 @@ func TestAllInSeries(t *testing.T) {
 					u.SetAnnotations(annotations)
 				}
 
-				create.RunCreateDeleteTest(h, create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true})
+				opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
+				// samples don't do updates so not using SSA is less problematic
+				opt.DoNotUseServerSideApplyForCreate = true
+				create.RunCreateDeleteTest(h, opt)
 			})
 		}
 	})
@@ -197,6 +200,17 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
 					}
+
+					// We want to use SSA everywhere, but some of our tests are broken by SSA
+					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
+					case "bigtable.cnrm.cloud.google.com":
+						// Use SSA
+
+					default:
+						t.Logf("not yet using SSA for create of resources in group %q", group)
+						opt.DoNotUseServerSideApplyForCreate = true
+					}
+
 					return primaryResource, opt
 				}
 
