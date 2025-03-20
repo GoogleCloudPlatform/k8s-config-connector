@@ -29,8 +29,8 @@ func init() {
 
 func netAppActiveDirectoryFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ActiveDirectory{},
-		NetAppActiveDirectorySpec_FromProto, NetAppActiveDirectorySpec_ToProto,
-		NetAppActiveDirectoryObservedState_FromProto, NetAppActiveDirectoryObservedState_ToProto,
+		ActiveDirectorySpec_FromProto, ActiveDirectorySpec_ToProto,
+		ActiveDirectoryObservedState_FromProto, ActiveDirectoryObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".domain")
@@ -40,7 +40,6 @@ func netAppActiveDirectoryFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".organizational_unit")
 	f.SpecFields.Insert(".aes_encryption")
 	f.SpecFields.Insert(".username")
-	f.SpecFields.Insert(".password")
 	f.SpecFields.Insert(".backup_operators")
 	f.SpecFields.Insert(".administrators")
 	f.SpecFields.Insert(".security_operators")
@@ -51,10 +50,12 @@ func netAppActiveDirectoryFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".ldap_signing")
 	f.SpecFields.Insert(".encrypt_dc_connections")
 
-	f.UnimplementedFields.Insert(".name")          // special field
-	f.UnimplementedFields.Insert(".create_time")   // output only
-	f.UnimplementedFields.Insert(".state")         // output only
-	f.UnimplementedFields.Insert(".state_details") // output only
-	f.UnimplementedFields.Insert(".labels")        // NOTYET
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".state_details")
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".labels")   // NOTYET
+	f.UnimplementedFields.Insert(".password") // todo acpana fix!
 	return f
 }

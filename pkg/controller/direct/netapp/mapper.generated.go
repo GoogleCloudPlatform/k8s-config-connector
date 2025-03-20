@@ -71,12 +71,13 @@ func NetAppBackupPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 
 	return out
 }
-func ActiveDirectory_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectory {
+
+func ActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectorySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ActiveDirectory{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.ActiveDirectorySpec{}
+	// out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: CreateTime
 	// MISSING: State
 	out.Domain = direct.LazyPtr(in.GetDomain())
@@ -96,16 +97,15 @@ func ActiveDirectory_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.LdapSigning = direct.LazyPtr(in.GetLdapSigning())
 	out.EncryptDcConnections = direct.LazyPtr(in.GetEncryptDcConnections())
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	// MISSING: StateDetails
 	return out
 }
-func ActiveDirectory_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectory) *pb.ActiveDirectory {
+func ActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectorySpec) *pb.ActiveDirectory {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ActiveDirectory{}
-	out.Name = direct.ValueOf(in.Name)
 	// MISSING: CreateTime
 	// MISSING: State
 	out.Domain = direct.ValueOf(in.Domain)
@@ -125,7 +125,7 @@ func ActiveDirectory_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectory)
 	out.Description = direct.ValueOf(in.Description)
 	out.LdapSigning = direct.ValueOf(in.LdapSigning)
 	out.EncryptDcConnections = direct.ValueOf(in.EncryptDcConnections)
-	out.Labels = in.Labels
+	//out.Labels = in.Labels
 	// MISSING: StateDetails
 	return out
 }
@@ -185,121 +185,5 @@ func ActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Act
 	// MISSING: EncryptDcConnections
 	// MISSING: Labels
 	out.StateDetails = direct.ValueOf(in.StateDetails)
-	return out
-}
-func NetAppActiveDirectoryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectoryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ActiveDirectoryObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: Domain
-	// MISSING: Site
-	// MISSING: DNS
-	// MISSING: NetBiosPrefix
-	// MISSING: OrganizationalUnit
-	// MISSING: AesEncryption
-	// MISSING: Username
-	// MISSING: Password
-	// MISSING: BackupOperators
-	// MISSING: Administrators
-	// MISSING: SecurityOperators
-	// MISSING: KdcHostname
-	// MISSING: KdcIP
-	// MISSING: NfsUsersWithLdap
-	// MISSING: Description
-	// MISSING: LdapSigning
-	// MISSING: EncryptDcConnections
-	// MISSING: Labels
-	// MISSING: StateDetails
-	return out
-}
-func NetAppActiveDirectoryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectoryObservedState) *pb.ActiveDirectory {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ActiveDirectory{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: Domain
-	// MISSING: Site
-	// MISSING: DNS
-	// MISSING: NetBiosPrefix
-	// MISSING: OrganizationalUnit
-	// MISSING: AesEncryption
-	// MISSING: Username
-	// MISSING: Password
-	// MISSING: BackupOperators
-	// MISSING: Administrators
-	// MISSING: SecurityOperators
-	// MISSING: KdcHostname
-	// MISSING: KdcIP
-	// MISSING: NfsUsersWithLdap
-	// MISSING: Description
-	// MISSING: LdapSigning
-	// MISSING: EncryptDcConnections
-	// MISSING: Labels
-	// MISSING: StateDetails
-	return out
-}
-func NetAppActiveDirectorySpec_FromProto(mapCtx *direct.MapContext, in *pb.ActiveDirectory) *krm.ActiveDirectorySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ActiveDirectorySpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: Domain
-	// MISSING: Site
-	// MISSING: DNS
-	// MISSING: NetBiosPrefix
-	// MISSING: OrganizationalUnit
-	// MISSING: AesEncryption
-	// MISSING: Username
-	// MISSING: Password
-	// MISSING: BackupOperators
-	// MISSING: Administrators
-	// MISSING: SecurityOperators
-	// MISSING: KdcHostname
-	// MISSING: KdcIP
-	// MISSING: NfsUsersWithLdap
-	// MISSING: Description
-	// MISSING: LdapSigning
-	// MISSING: EncryptDcConnections
-	// MISSING: Labels
-	// MISSING: StateDetails
-	return out
-}
-func NetAppActiveDirectorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ActiveDirectorySpec) *pb.ActiveDirectory {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ActiveDirectory{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: State
-	// MISSING: Domain
-	// MISSING: Site
-	// MISSING: DNS
-	// MISSING: NetBiosPrefix
-	// MISSING: OrganizationalUnit
-	// MISSING: AesEncryption
-	// MISSING: Username
-	// MISSING: Password
-	// MISSING: BackupOperators
-	// MISSING: Administrators
-	// MISSING: SecurityOperators
-	// MISSING: KdcHostname
-	// MISSING: KdcIP
-	// MISSING: NfsUsersWithLdap
-	// MISSING: Description
-	// MISSING: LdapSigning
-	// MISSING: EncryptDcConnections
-	// MISSING: Labels
-	// MISSING: StateDetails
 	return out
 }

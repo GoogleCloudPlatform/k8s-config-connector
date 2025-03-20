@@ -3677,7 +3677,6 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc": "true",
 			"cnrm.cloud.google.com/system":         "true",
 		},
-		
 	},
 	{
 		Group:   "netapp.cnrm.cloud.google.com",
@@ -3688,7 +3687,6 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc": "true",
 			"cnrm.cloud.google.com/system":         "true",
 		},
-		
 	},
 	{
 		Group:   "networkconnectivity.cnrm.cloud.google.com",
