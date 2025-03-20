@@ -12,12 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: recaptchaenterprise.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.recaptchaenterprise.v1
+
 package recaptchaenterprise
 
 import (
 	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -149,64 +153,16 @@ func FirewallAction_SubstituteAction_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Path = direct.ValueOf(in.Path)
 	return out
 }
-func FirewallPolicy_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.FirewallPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FirewallPolicy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.Condition = direct.LazyPtr(in.GetCondition())
-	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, FirewallAction_FromProto)
-	return out
-}
-func FirewallPolicy_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicy) *pb.FirewallPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirewallPolicy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Description = direct.ValueOf(in.Description)
-	out.Path = direct.ValueOf(in.Path)
-	out.Condition = direct.ValueOf(in.Condition)
-	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, FirewallAction_ToProto)
-	return out
-}
-func ReCAPTCHAEnterpriseFirewallPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ReCAPTCHAEnterpriseFirewallPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ReCAPTCHAEnterpriseFirewallPolicyObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Path
-	// MISSING: Condition
-	// MISSING: Actions
-	return out
-}
-func ReCAPTCHAEnterpriseFirewallPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReCAPTCHAEnterpriseFirewallPolicyObservedState) *pb.FirewallPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirewallPolicy{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Path
-	// MISSING: Condition
-	// MISSING: Actions
-	return out
-}
 func ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krm.ReCAPTCHAEnterpriseFirewallPolicySpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ReCAPTCHAEnterpriseFirewallPolicySpec{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Path
-	// MISSING: Condition
-	// MISSING: Actions
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, FirewallAction_FromProto)
 	return out
 }
 func ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.ReCAPTCHAEnterpriseFirewallPolicySpec) *pb.FirewallPolicy {
@@ -215,9 +171,9 @@ func ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.FirewallPolicy{}
 	// MISSING: Name
-	// MISSING: Description
-	// MISSING: Path
-	// MISSING: Condition
-	// MISSING: Actions
+	out.Description = direct.ValueOf(in.Description)
+	out.Path = direct.ValueOf(in.Path)
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, FirewallAction_ToProto)
 	return out
 }

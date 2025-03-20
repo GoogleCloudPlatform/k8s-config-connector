@@ -45,7 +45,6 @@ func (i *FirewallPolicyIdentity) Parent() *FirewallPolicyParent {
 
 type FirewallPolicyParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *FirewallPolicyParent) String() string {
@@ -63,18 +62,6 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -96,9 +83,6 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -107,7 +91,6 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 	return &FirewallPolicyIdentity{
 		parent: &FirewallPolicyParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
 		id: resourceID,
 	}, nil
@@ -120,7 +103,6 @@ func ParseFirewallPolicyExternal(external string) (parent *FirewallPolicyParent,
 	}
 	parent = &FirewallPolicyParent{
 		ProjectID: tokens[1],
-		Location:  "",
 	}
 	resourceID = tokens[3]
 	return parent, resourceID, nil
