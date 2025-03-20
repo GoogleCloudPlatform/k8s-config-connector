@@ -40,6 +40,11 @@ type MockService struct {
 	v1 *DatastreamV1
 }
 
+type DatastreamV1 struct {
+	*MockService
+	pb.UnimplementedDatastreamServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
@@ -67,14 +72,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
 }
-
-type DatastreamV1 struct {
-	*MockService
-	pb.UnimplementedDatastreamServer
-}
-```
-</out>
-
-

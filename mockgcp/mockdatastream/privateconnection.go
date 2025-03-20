@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -45,7 +46,7 @@ func (s *DatastreamV1) GetPrivateConnection(ctx context.Context, req *pb.GetPriv
 	obj := &pb.PrivateConnection{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "PrivateConnection %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -74,7 +75,6 @@ func (s *DatastreamV1) CreatePrivateConnection(ctx context.Context, req *pb.Crea
 		return nil, err
 	}
 
-	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
@@ -111,7 +111,7 @@ func (s *DatastreamV1) DeletePrivateConnection(ctx context.Context, req *pb.Dele
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return deleted, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 
@@ -129,7 +129,6 @@ func (n *privateConnectionName) String() string {
 // The expected form is `projects/*/locations/*/privateConnections/*`.
 func (s *MockService) parsePrivateConnectionName(name string) (*privateConnectionName, error) {
 	tokens := strings.Split(name, "/")
-
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "privateConnections" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
