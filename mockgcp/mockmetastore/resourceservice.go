@@ -80,6 +80,11 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.StateMessage = "The service is being created"
 	obj.ReleaseChannel = pb.Service_STABLE
 
+	// এগুলো যোগ করা হয়েছে :
+	obj.HiveMetastoreConfig = &pb.HiveMetastoreConfig{
+		EndpointProtocol: pb.HiveMetastoreConfig_THRIFT,
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -98,9 +103,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	if err != nil {
 		return nil, err
 	}
-	lroMetadata.RequestedCancellation = false
 	lro.Done = false
-	lroMetadata.RequestedCancellation = false
 	lro.Metadata, err = anypb.New(lroMetadata)
 	if err != nil {
 		return nil, err
