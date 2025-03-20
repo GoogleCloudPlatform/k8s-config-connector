@@ -16,6 +16,7 @@ package networkconnectivity
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -68,7 +69,9 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Labels = in.Labels
 	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
 	out.Name = direct.LazyPtr(in.GetName())
-	out.Network = direct.LazyPtr(in.GetNetwork())
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
 	out.Overlaps = in.Overlaps
 	out.Peering = direct.LazyPtr(in.GetPeering())
 	out.PrefixLength = direct.LazyPtr(in.GetPrefixLength())
@@ -86,7 +89,9 @@ func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.Labels = in.Labels
 	out.Migration = Migration_ToProto(mapCtx, in.Migration)
 	out.Name = direct.ValueOf(in.Name)
-	out.Network = direct.ValueOf(in.Network)
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
 	out.Overlaps = in.Overlaps
 	out.Peering = direct.ValueOf(in.Peering)
 	out.PrefixLength = direct.ValueOf(in.PrefixLength)

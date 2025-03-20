@@ -56,9 +56,9 @@ type NetworkConnectivityInternalRangeSpec struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.name
 	Name *string `json:"name,omitempty"`
 
-	// The URL or resource ID of the network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
+	// The network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.network
-	Network *string `json:"network,omitempty"`
+	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Types of resources that are allowed to overlap with the current internal range.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.overlaps
