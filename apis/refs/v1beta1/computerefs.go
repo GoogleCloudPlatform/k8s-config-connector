@@ -413,8 +413,12 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("error reading referenced ComputeFirewallPolicy %v: %w", key, err)
 	}
 
-	// Read status.selfLink to parse external reference ID. This will need to be updated once we migrate this resource
-	// to direct controller, which uses status.externalRef.
+	externalRef, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "externalRef")
+	if externalRef != "" {
+		return &ComputeFirewallPolicyRef{
+			External: externalRef}, nil
+	}
+
 	selfLink, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "selfLink")
 	if selfLink == "" {
 		return nil, k8s.NewReferenceNotFoundError(computeFirewallPolicy.GroupVersionKind(), key)
