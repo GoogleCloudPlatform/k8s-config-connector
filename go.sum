@@ -74,6 +74,8 @@ cloud.google.com/go/discoveryengine v1.15.0 h1:CHUN1mbs5iTqWJRuU6rZCvcuV5iVMr/rW
 cloud.google.com/go/discoveryengine v1.15.0/go.mod h1:WIstQLougDQ6D8cza4icHFfGGzXsI4QNwTEWdNfRJ8g=
 cloud.google.com/go/documentai v1.35.1 h1:52RfiUsoblXcE57CfKJGnITWLxRM30BcqNk/BKZl2LI=
 cloud.google.com/go/documentai v1.35.1/go.mod h1:WJjwUAQfwQPJORW8fjz7RODprMULDzEGLA2E6WxenFw=
+cloud.google.com/go/eventarc v1.15.1 h1:RMymT7R87LaxKugOKwooOoheWXUm1NMeOfh3CVU9g54=
+cloud.google.com/go/eventarc v1.15.1/go.mod h1:K2luolBpwaVOujZQyx6wdG4n2Xum4t0q1cMBmY1xVyI=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.18.0 h1:cuydCaLS7Vl2SatAeivXyhbhDEIR8BDmtn4egDhIn2s=
 cloud.google.com/go/firestore v1.18.0/go.mod h1:5ye0v48PhseZBdcl0qbl3uttu7FIEwEYVaWm0UIEOEU=
