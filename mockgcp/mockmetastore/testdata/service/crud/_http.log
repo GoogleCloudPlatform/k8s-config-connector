@@ -3,7 +3,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "databaseType": "MYSQL",
@@ -52,7 +51,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -117,7 +115,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -168,7 +165,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -219,7 +215,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -271,7 +266,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "artifactGcsUri": "gs://gcs-bucket-test-${uniqueId}-67240d7b-0cff-4dae-a4ff-3bf0f0",
@@ -343,7 +337,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -408,7 +401,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -459,7 +451,6 @@ DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-ce
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -490,7 +481,6 @@ GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
