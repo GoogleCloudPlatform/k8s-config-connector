@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.batch.v1.Job
+// proto.message: google.cloud.batch.v1.Task
 // api.group: batch.cnrm.cloud.google.com
 
 package batch
@@ -24,29 +24,21 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(batchJobFuzzer())
+	fuzztesting.RegisterKRMFuzzer(batchTaskFuzzer())
 }
 
-func batchJobFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Job{},
-		BatchJobSpec_FromProto, BatchJobSpec_ToProto,
-		BatchJobObservedState_FromProto, BatchJobObservedState_ToProto,
+func batchTaskFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Task{},
+		BatchTaskSpec_FromProto, BatchTaskSpec_ToProto,
+		BatchTaskObservedState_FromProto, BatchTaskObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".priority")
-	f.SpecFields.Insert(".task_groups")
-	f.SpecFields.Insert(".allocation_policy")
-	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".logs_policy")
-	f.SpecFields.Insert(".notifications")
-	f.SpecFields.Insert(".parent")
+	f.UnimplementedFields.Insert(".name")
 
-	f.StatusFields.Insert(".name")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".task_groups")
-	f.StatusFields.Insert(".status")
+	f.SpecFields.Insert(".status")
+
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".status_events")
 
 	return f
 }
