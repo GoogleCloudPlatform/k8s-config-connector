@@ -17,6 +17,7 @@ package mockgcp
 import (
 	"bytes"
 	"context"
+
 	"encoding/json"
 	"fmt"
 	"io"
@@ -26,6 +27,8 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatastream"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -254,6 +257,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockeventarc.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
 	services = append(services, mockdatacatalog.New(env, storage))
+	services = append(services, mockdatastream.New(env, storage))
 	services = append(services, mockessentialcontacts.New(env, storage))
 	services = append(services, mockcloudtasks.New(env, storage))
 	services = append(services, mockbackupdr.New(env, storage))
