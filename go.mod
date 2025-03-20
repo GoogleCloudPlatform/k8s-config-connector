@@ -29,6 +29,7 @@ require (
 	cloud.google.com/go/iap v1.10.3
 	cloud.google.com/go/kms v1.20.5
 	cloud.google.com/go/managedkafka v0.4.0
+	cloud.google.com/go/metastore v1.14.3
 	cloud.google.com/go/monitoring v1.23.0
 	cloud.google.com/go/netapp v1.7.0
 	cloud.google.com/go/notebooks v1.12.3
