@@ -35,6 +35,11 @@ func colabRuntimeTemplateFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")       // special field
 	f.UnimplementedFields.Insert(".is_default") // deprecated field
+	// "software_config" field is unsupported in third_party because we use an
+	// old googleapis version. Automation tools don't know this field.
+	// However, it is supported in the version of cloud.google.com/go/aiplatform
+	// we define in go.mod.
+	f.UnimplementedFields.Insert(".software_config")
 
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".description")

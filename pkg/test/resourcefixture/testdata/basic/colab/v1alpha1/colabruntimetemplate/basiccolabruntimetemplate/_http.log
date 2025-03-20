@@ -261,7 +261,6 @@ GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FnotebookRuntimeTemplates%2Fcolabruntimetemplate-${uniqueId}
-X-Goog-User-Project: ${projectId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -287,7 +286,6 @@ POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
-X-Goog-User-Project: ${projectId}
 
 {
   "displayName": "test-${uniqueId}",
@@ -332,7 +330,6 @@ GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FnotebookRuntimeTemplates%2Fcolabruntimetemplate-${uniqueId}
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -369,7 +366,6 @@ DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectI
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FnotebookRuntimeTemplates%2Fcolabruntimetemplate-${uniqueId}
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
