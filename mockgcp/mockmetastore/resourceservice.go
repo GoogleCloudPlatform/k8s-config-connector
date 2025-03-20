@@ -68,8 +68,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	fqn := name.String()
 
 	obj := proto.Clone(req.Service).(*pb.Service)
-	// deletionProtection is not a supported field.
-	obj.DeletionProtection = false
+
 	obj.Name = fqn
 
 	now := time.Now()
@@ -175,9 +174,6 @@ func (s *DataprocMetastoreV1) UpdateService(ctx context.Context, req *pb.UpdateS
 				obj.NetworkConfig = req.Service.NetworkConfig
 			case "scaling_config":
 				obj.ScalingConfig = req.Service.ScalingConfig
-			case "deletionProtection":
-				// Ignore deletionProtection in update mask
-				continue
 
 			}
 		}
