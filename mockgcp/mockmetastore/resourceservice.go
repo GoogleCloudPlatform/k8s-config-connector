@@ -78,10 +78,11 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	// By default, immediately finish the LRO with success.
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(now)
