@@ -14,6 +14,10 @@
 
 package mocknetworkconnectivity
 
+// +tool:mockgcp-service
+// http.host: networkconnectivity.googleapis.com
+// proto.service: mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRegionalEndpoints
+
 import (
 	"context"
 	"net/http"
@@ -21,16 +25,15 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked networkconnectivity service.
 type MockService struct {
 	*common.MockEnvironment
-	storage    storage.Storage
+	storage storage.Storage
+
 	operations *operations.Operations
 }
 
@@ -49,26 +52,10 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterProjectsLocationsServiceConnectionPoliciesServerServer(grpcServer, &serviceConnectionPolicies{MockService: s})
-	pb.RegisterProjectsLocationsInternalRangesServerServer(grpcServer, &internalRanges{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterProjectsLocationsServiceConnectionPoliciesServerHandler,
-		pb.RegisterProjectsLocationsInternalRangesServerHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
-
-	return mux, nil
+	return nil, nil
 }
+
+
