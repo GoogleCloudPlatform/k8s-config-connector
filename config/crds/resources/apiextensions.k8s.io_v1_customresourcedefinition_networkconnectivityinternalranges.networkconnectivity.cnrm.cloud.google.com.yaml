@@ -101,13 +101,38 @@ spec:
                 description: 'Immutable. The name of an internal range. Format: projects/{project}/locations/{location}/internalRanges/{internal_range}
                   See: https://google.aip.dev/122#fields-representing-resource-names'
                 type: string
-              network:
-                description: 'The URL or resource ID of the network in which to reserve
-                  the internal range. The network cannot be deleted if there are any
-                  reserved internal ranges referring to it. Legacy networks are not
-                  supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network}
+              networkRef:
+                description: 'The network in which to reserve the internal range.
+                  The network cannot be deleted if there are any reserved internal
+                  ranges referring to it. Legacy networks are not supported. For example:
+                  https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network}
                   projects/{project}/locations/global/networks/{network} {network}'
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                    type: string
+                  name:
+                    description: The `name` field of a `ComputeNetwork` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `ComputeNetwork` resource.
+                    type: string
+                type: object
               overlaps:
                 description: Optional. Types of resources that are allowed to overlap
                   with the current internal range.

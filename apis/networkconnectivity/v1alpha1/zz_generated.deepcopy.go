@@ -1026,9 +1026,9 @@ func (in *NetworkConnectivityInternalRangeSpec) DeepCopyInto(out *NetworkConnect
 		*out = new(string)
 		**out = **in
 	}
-	if in.Network != nil {
-		in, out := &in.Network, &out.Network
-		*out = new(string)
+	if in.NetworkRef != nil {
+		in, out := &in.NetworkRef, &out.NetworkRef
+		*out = new(v1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Overlaps != nil {
