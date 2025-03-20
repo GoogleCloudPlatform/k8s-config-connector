@@ -330,6 +330,8 @@ spec:
                     items:
                       type: string
                     type: array
+                required:
+                - filePatterns
                 type: object
               labels:
                 additionalProperties:
@@ -361,8 +363,6 @@ spec:
                    underscores (_), periods (.), colons (:), slashes (/), dashes (-),
                    and hashes (#).
                    The maximum size is 200 bytes when encoded in UTF-8.
-                type: string
-              location:
                 type: string
               lookerSystemSpec:
                 description: Specification that applies to Looker sysstem. Only settable
@@ -425,42 +425,6 @@ spec:
                         type: object
                     type: object
                 type: object
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
-              resourceID:
-                description: The DataCatalogEntry name. If not given, the metadata.name
-                  will be used.
-                type: string
               routineSpec:
                 description: Specification that applies to a user-defined function
                   or procedure. Valid only for entries with the `ROUTINE` type.
@@ -563,6 +527,10 @@ spec:
 
                              Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
                              Default mode is `NULLABLE`.
+                          enum:
+                          - NULLABLE
+                          - REQUIRED
+                          - REPEATED
                           type: string
                         ordinalPosition:
                           description: Optional. Ordinal position
@@ -578,6 +546,8 @@ spec:
                               description: Required. The type of a field element.
                                 See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
                               type: string
+                          required:
+                          - type
                           type: object
                         subcolumns:
                           description: Optional. Schema of sub-columns. A column can
@@ -590,6 +560,9 @@ spec:
 
                              Must be a UTF-8 string with the maximum size of 128 bytes.
                           type: string
+                      required:
+                      - column
+                      - type
                       type: object
                     type: array
                 type: object
@@ -712,8 +685,6 @@ spec:
                 type: string
             required:
             - entryGroupRef
-            - location
-            - projectRef
             type: object
           status:
             description: DataCatalogEntryStatus defines the config connector machine
@@ -758,8 +729,6 @@ spec:
                 format: int64
                 type: integer
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
