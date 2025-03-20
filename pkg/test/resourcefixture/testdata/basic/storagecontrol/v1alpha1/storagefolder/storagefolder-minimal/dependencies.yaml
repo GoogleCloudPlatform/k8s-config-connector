@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,3 +30,7 @@ spec:
     retentionDurationSeconds: 604800
   uniformBucketLevelAccess: true
   location: US-CENTRAL1
+  ## TODO: enable hierarchical namespace in storage bucket
+  ## To create folders in a storage bucket, hierarchical namespace must be enabled.
+  ## Reference: https://cloud.google.com/storage/docs/create-folders#before-you-begin
+  ## Currently KCC schema does not support that.
