@@ -17,6 +17,10 @@ package contexts
 func init() {
 	resourceContextMap["backupdrmanagementserver"] = ResourceContext{
 		ResourceKind: "BackupDRManagementServer",
-		SkipUpdate:   true, // This resource cannot be updated
+		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/backup-disaster-recovery/docs/reference/rest#rest-resource:-v1.projects.locations.managementservers
+	}
+	resourceContextMap["backupdrbackupplan"] = ResourceContext{
+		ResourceKind: "BackupDRBackupPlan",
+		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/backup-disaster-recovery/docs/reference/rest#rest-resource:-v1.projects.locations.backupplans
 	}
 }
