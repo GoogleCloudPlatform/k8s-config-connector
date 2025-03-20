@@ -135,6 +135,11 @@ func (a *ServiceBindingAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 	resource.Name = a.id.String()
+	resource.Labels = make(map[string]string)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		resource.Labels[k] = v
+	}
+	resource.Labels["managed-by-cnrm"] = "true"
 
 	req := &networkservicespb.CreateServiceBindingRequest{
 		Parent:           a.id.Parent().String(),
