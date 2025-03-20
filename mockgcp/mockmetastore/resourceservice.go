@@ -57,6 +57,7 @@ func (s *DataprocMetastoreV1) GetService(ctx context.Context, req *pb.GetService
 }
 
 func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateServiceRequest) (*longrunningpb.Operation, error) {
+	// This is a test comment.
 	reqName := req.Parent + "/services/" + req.ServiceId
 	name, err := s.parseServiceName(reqName)
 	if err != nil {
@@ -72,6 +73,16 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Service_CREATING
+	obj.ArtifactGcsUri = "gs://mock-bucket/"
+	obj.EndpointUri = "thrift://mock-endpoint:9083"
+	obj.DatabaseType = pb.Service_MYSQL
+	if obj.HiveMetastoreConfig == nil {
+		obj.HiveMetastoreConfig = &pb.HiveMetastoreConfig{}
+	}
+	obj.HiveMetastoreConfig.EndpointProtocol = HiveMetastoreConfig_THRIFT
+	obj.Port = 9083
+	obj.StateMessage = "The service is being created"
+	obj.ReleaseChannel = pb.Service_STABLE
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -93,6 +104,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	}
 	lroMetadata.RequestedCancellation = false
 	lro.Done = false
+	lroMetadata.RequestedCancellation = false
 	lro.Metadata, err = anypb.New(lroMetadata)
 	if err != nil {
 		return nil, err
