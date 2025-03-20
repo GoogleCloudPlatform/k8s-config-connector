@@ -30,7 +30,7 @@ type BigQueryReservationAssignmentSpec struct {
 	// +required
 	ReservationRef *ReservationRef `json:"reservationRef,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self != null && has(self.ProjectRef) != has(self.FolderRef) != has(self.OrganizationRef)",message="Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified."
+	// +kubebuilder:validation:XValidation:rule="self != null && has(self.projectRef) != has(self.folderRef) != has(self.organizationRef)",message="Exactly one of orojectRef or folderRef or organizationRef must be specified."
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"
 	// Immutable.
 	// Required. The resource which will use the reservation. E.g.

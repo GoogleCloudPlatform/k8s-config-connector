@@ -147,10 +147,10 @@ spec:
                     type: object
                 type: object
                 x-kubernetes-validations:
-                - message: Exactly one of ProjectRef or FolderRef or OrganizationRef
+                - message: Exactly one of orojectRef or folderRef or organizationRef
                     must be specified.
-                  rule: self != null && has(self.ProjectRef) != has(self.FolderRef)
-                    != has(self.OrganizationRef)
+                  rule: self != null && has(self.projectRef) != has(self.folderRef)
+                    != has(self.organizationRef)
                 - message: assignee field is immutable
                   rule: self == oldSelf
               jobType:
