@@ -43,6 +43,7 @@ func (i *TaskIdentity) Parent() *TaskParent {
 	return i.parent
 }
 
+// No changes were needed to the TaskParent struct, String() or ParseTaskExternal() methods as they already reflect the structure in task_types.go.
 type TaskParent struct {
 	ProjectID string
 	Location  string
