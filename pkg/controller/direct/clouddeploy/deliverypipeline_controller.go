@@ -137,8 +137,8 @@ func (a *DeliveryPipelineAdapter) Create(ctx context.Context, createOp *directba
 	}
 
 	req := &clouddeploypb.CreateDeliveryPipelineRequest{
-		Parent:           a.id.Parent().String(),
-		DeliveryPipeline: resource,
+		Parent:             a.id.Parent().String(),
+		DeliveryPipeline:   resource,
 		DeliveryPipelineId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateDeliveryPipeline(ctx, req)
