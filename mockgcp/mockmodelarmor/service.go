@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-service
-// http.host: modelarmor.googleapis.com
+// http.host: modelarmor.{location}.rep.googleapis.com
 // proto.service: google.cloud.modelarmor.v1.ModelArmor
 
 package mockmodelarmor
@@ -51,11 +51,12 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"modelarmor.googleapis.com"}
+	// todo: hardcode regional endpoint for noe
+	return []string{"modelarmor.us-central1.rep.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterModelArmorServer(grpcServer, &modelArmorService{MockService: s})
+	pb.RegisterModelArmorServer(grpcServer, &ModelArmorV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

@@ -14,9 +14,10 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -42,9 +43,10 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -70,9 +72,10 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -111,9 +114,10 @@ Content-Type: application/json
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -139,9 +143,10 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
