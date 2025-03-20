@@ -12,99 +12,196 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsRegionalEndpoints
-// proto.message: RegionalEndpoint
-
 package mocknetworkconnectivity
 
 import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
+	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 )
 
-func (s *networkConnectivityV1) GetRegionalEndpoint(ctx context.Context, req *pb.GetRegionalEndpointRequest) (*pb.RegionalEndpoint, error) {
-	name, err := s.parseRegionalEndpointName(req.Name)
+type regionalEndpoints struct {
+	*MockService
+	pb.UnimplementedProjectsLocationsRegionalEndpointsServerServer
+}
+
+func (r *regionalEndpoints) GetProjectsLocationsInternalRange(ctx context.Context, req *pb.GetProjectsLocationsInternalRangeRequest) (*pb.InternalRange, error) {
+	name, err := r.parseInternalRangeName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.RegionalEndpoint{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	obj := &pb.InternalRange{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
 	return obj, nil
 }
 
-func (s *networkConnectivityV1) CreateRegionalEndpoint(ctx context.Context, req *pb.CreateRegionalEndpointRequest) (*pb.RegionalEndpoint, error) {
-	reqName := fmt.Sprintf("%s/regionalEndpoints/%s", req.GetParent(), req.GetRegionalEndpointId())
-	name, err := s.parseRegionalEndpointName(reqName)
+func (r *regionalEndpoints) CreateProjectsLocationsInternalRange(ctx context.Context, req *pb.CreateProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
+	reqName := fmt.Sprintf("%s/regionalEndpoints/%s", req.GetParent(), req.GetInternalRangeId())
+	name, err := r.parseInternalRangeName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := req.GetRegionalEndpoint()
+
+	now := time.Now()
+
+	obj := proto.Clone(req.GetProjectsLocationsInternalRange()).(*pb.InternalRange)
 	obj.Name = fqn
-
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+
+		if err := r.storage.Update(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+
+		return obj, nil
+	})
 }
 
-func (s *networkConnectivityV1) DeleteRegionalEndpoint(ctx context.Context, req *pb.DeleteRegionalEndpointRequest) (*emptypb.Empty, error) {
-	name, err := s.parseRegionalEndpointName(req.Name)
+func (r *regionalEndpoints) PatchProjectsLocationsInternalRange(ctx context.Context, req *pb.PatchProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
+	log := klog.FromContext(ctx)
+
+	reqName := req.GetName()
+
+	name, err := r.parseInternalRangeName(reqName)
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
-	deleted := &pb.RegionalEndpoint{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	now := time.Now()
+
+	obj := &pb.InternalRange{}
+	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return &emptypb.Empty{}, nil
+	obj.UpdateTime = timestamppb.New(now)
+
+	if req.GetUpdateMask() != "" {
+		paths := strings.Split(req.GetUpdateMask(), ",")
+
+		patch := req.GetProjectsLocationsInternalRange()
+		// TODO: Some sort of helper for fieldmask?
+		for _, path := range paths {
+			switch path {
+			case "prefixLength":
+				obj.PrefixLength = patch.PrefixLength
+
+			default:
+				log.Info("unsupported update_mask", "req", req)
+				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)
+			}
+		}
+	}
+
+	if err := r.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "update",
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return obj, nil
+	})
 }
 
-type regionalEndpointName struct {
-	Project             *projects.ProjectData
-	Location            string
-	RegionalEndpointId string
+func (r *regionalEndpoints) DeleteProjectsLocationsInternalRange(ctx context.Context, req *pb.DeleteProjectsLocationsInternalRangeRequest) (*longrunning.Operation, error) {
+	name, err := r.parseInternalRangeName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	now := time.Now()
+
+	oldObj := &pb.InternalRange{}
+	if err := r.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "delete",
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
 }
 
-func (n *regionalEndpointName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/regionalEndpoints/" + n.RegionalEndpointId
+type internalRangeName struct {
+	Project           *projects.ProjectData
+	Location          string
+	InternalRangeName string
 }
 
-// parseRegionalEndpointName parses a string into an regionalEndpointName.
+func (n *internalRangeName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/regionalEndpoints/" + n.InternalRangeName
+}
+
+// parseInternalRangeName parses a string into an internalRangeName.
 // The expected form is `projects/*/locations/*/regionalEndpoints/*`.
-func (s *MockService) parseRegionalEndpointName(name string) (*regionalEndpointName, error) {
+func (r *regionalEndpoints) parseInternalRangeName(name string) (*internalRangeName, error) {
 	tokens := strings.Split(name, "/")
+
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "regionalEndpoints" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := r.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &regionalEndpointName{
-			Project:             project,
-			Location:            tokens[3],
-			RegionalEndpointId: tokens[5],
+		name := &internalRangeName{
+			Project:           project,
+			Location:          tokens[3],
+			InternalRangeName: tokens[5],
 		}
 
 		return name, nil
@@ -112,7 +209,3 @@ func (s *MockService) parseRegionalEndpointName(name string) (*regionalEndpointN
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-```
-
-
