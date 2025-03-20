@@ -62,9 +62,10 @@ spec:
               AppHubDiscoveredService
             properties:
               location:
+                description: Required. The location of the application.
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required. The host project of the application.
                 oneOf:
                 - not:
                     required:
@@ -99,9 +100,6 @@ spec:
                 description: The AppHubDiscoveredService name. If not given, the metadata.name
                   will be used.
                 type: string
-            required:
-            - location
-            - projectRef
             type: object
           status:
             description: AppHubDiscoveredServiceStatus defines the config connector
@@ -152,10 +150,28 @@ spec:
                   serviceProperties:
                     description: Output only. Properties of an underlying compute
                       resource that can comprise a Service. These are immutable.
+                    properties:
+                      gcpProject:
+                        description: Output only. The service project identifier that
+                          the underlying cloud resource resides in.
+                        type: string
+                      location:
+                        description: Output only. The location that the underlying
+                          resource resides in, for example, us-west1.
+                        type: string
+                      zone:
+                        description: Output only. The location that the underlying
+                          resource resides in if it is zonal, for example, us-west1-a).
+                        type: string
                     type: object
                   serviceReference:
                     description: Output only. Reference to an underlying networking
                       resource that can comprise a Service. These are immutable.
+                    properties:
+                      uri:
+                        description: Output only. The underlying resource URI (For
+                          example, URI of Forwarding Rule, URL Map, and Backend Service).
+                        type: string
                     type: object
                 type: object
             type: object
