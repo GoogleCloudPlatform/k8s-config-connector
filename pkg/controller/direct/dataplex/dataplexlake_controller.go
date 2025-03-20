@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,24 +21,24 @@
 package dataplex
 
 import (
-	gcp "cloud.google.com/go/dataplex/apiv1"
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	"context"
 	"fmt"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/klog/v2"
 	"reflect"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	gcp "cloud.google.com/go/dataplex/apiv1"
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
@@ -46,38 +46,13 @@ func init() {
 }
 
 func NewLakeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &lakeModel{config: *config}, nil
+	return &lakeModel{config: config}, nil
 }
 
 var _ directbase.Model = &lakeModel{}
 
 type lakeModel struct {
-	config config.ControllerConfig
-}
-
-func (m *lakeModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := gcp.NewClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building dataplex lake client: %w", err)
-	}
-
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -91,22 +66,24 @@ func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := DataplexLakeSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
+	lakeAdapter := &lakeAdapter{
+		id:      id,
+		desired: obj,
+		reader:  reader,
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	// Get GCP client
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
+	lakeClient, err := gcpClient.client(ctx)
 	if err != nil {
 		return nil, err
 	}
+	lakeAdapter.gcpClient = lakeClient
 
-	return &lakeAdapter{
-		gcpClient: gcpClient,
-		id:        id,
-		desired:   desired,
-	}, nil
+	return lakeAdapter, nil
 }
 
 func (m *lakeModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -115,10 +92,12 @@ func (m *lakeModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 }
 
 type lakeAdapter struct {
-	gcpClient *gcp.Client
-	id        *krm.LakeIdentity
-	desired   *pb.Lake
-	actual    *pb.Lake
+	gcpClient     *gcp.Client
+	id            *krm.LakeIdentity
+	desired       *krm.DataplexLake
+	actual        *pb.Lake
+	reader        client.Reader
+	projectClient *cloudresourcemanager.ProjectsClient
 }
 
 var _ directbase.Adapter = &lakeAdapter{}
@@ -133,7 +112,7 @@ func (a *lakeAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting dataplex lake %q from gcp: %w", a.id.String(), err)
+		return false, nil
 	}
 
 	a.actual = actual
@@ -144,26 +123,33 @@ func (a *lakeAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex lake", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
 	desired.Name = a.id.String()
+
+	lake := DataplexLakeSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	req := &pb.CreateLakeRequest{
 		Parent: a.id.Parent().String(),
-		Lake:   desired,
+		Lake:   lake,
 		LakeId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateLake(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating dataplex lake %s: %w", a.id.String(), err)
 	}
+
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("dataplex lake %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("waiting create dataplex %s failed: %w", a.id, err)
 	}
+
 	log.V(2).Info("successfully created dataplex lake in gcp", "name", a.id)
 
 	status := &krm.DataplexLakeStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = DataplexLakeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -176,21 +162,26 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex lake", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
+	mapCtx := &direct.MapContext{}
 
-	// TODO(user): Update the field if applicable.
+	desired := a.desired.DeepCopy()
+	lake := DataplexLakeSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	lake.Name = a.id.String()
+
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
+	if !reflect.DeepEqual(lake.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+	if !reflect.DeepEqual(lake.Description, a.actual.Description) {
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(lake.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if !reflect.DeepEqual(a.desired.Metastore, a.actual.Metastore) {
+	if !reflect.DeepEqual(lake.Metastore, a.actual.Metastore) {
 		updateMask.Paths = append(updateMask.Paths, "metastore")
 	}
 
@@ -200,7 +191,7 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	}
 	req := &pb.UpdateLakeRequest{
 		UpdateMask: updateMask,
-		Lake:       desired,
+		Lake:       lake,
 	}
 	op, err := a.gcpClient.UpdateLake(ctx, req)
 	if err != nil {
@@ -213,7 +204,6 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log.V(2).Info("successfully updated dataplex lake", "name", a.id)
 
 	status := &krm.DataplexLakeStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = DataplexLakeObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
