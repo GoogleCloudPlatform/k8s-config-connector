@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -32,11 +33,11 @@ type BigtableAppProfileSpec struct {
 }
 
 type Parent struct {
-    // +required
-    ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
-    // +required
-    Instance string `json:"instance"`
+	// +required
+	Instance string `json:"instance"`
 }
 
 // BigtableAppProfileStatus defines the config connector machine state of BigtableAppProfile
@@ -52,7 +53,7 @@ type BigtableAppProfileStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableAppProfileObservedState `json:"observedState,omitempty"`
+	// ObservedState *BigtableAppProfileObservedState `json:"observedState,omitempty"`
 }
 
 // BigtableAppProfileObservedState is the state of the BigtableAppProfile resource as most recently observed in GCP.
