@@ -61,9 +61,16 @@ func (m *networkPolicyModel) AdapterForObject(ctx context.Context, reader client
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewVmwareEngineNetworkPolicyIdentity(ctx, reader, obj)
+	id, err := krm.NewNetworkPolicyIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// normalize reference fields
+	if obj.Spec.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
 	}
 
 	// Get VMwareEngine GCP client
@@ -89,7 +96,7 @@ func (m *networkPolicyModel) AdapterForURL(ctx context.Context, url string) (dir
 
 type networkPolicyAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.VmwareEngineNetworkPolicyIdentity
+	id        *krm.NetworkPolicyIdentity
 	desired   *krm.VMwareEngineNetworkPolicy
 	actual    *pb.NetworkPolicy
 }
@@ -163,20 +170,16 @@ func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
-	if desired.Spec.EdgeServicesCidr != nil && !reflect.DeepEqual(resource.EdgeServicesCidr, a.actual.EdgeServicesCidr) {
+	if desired.Spec.EdgeServicesCIDR != nil && !reflect.DeepEqual(resource.EdgeServicesCidr, a.actual.EdgeServicesCidr) {
 		paths = append(paths, "edge_services_cidr")
 	}
-	if desired.Spec.InternetAccess != nil {
-		if resource.GetInternetAccess().GetEnabled() != a.actual.GetInternetAccess().GetEnabled() {
-			paths = append(paths, "internet_access.enabled")
-		}
+	if desired.Spec.InternetAccess != nil && resource.GetInternetAccess().GetEnabled() != a.actual.GetInternetAccess().GetEnabled() {
+		paths = append(paths, "internet_access.enabled")
 	}
-	if desired.Spec.ExternalIp != nil {
-		if resource.GetExternalIp().GetEnabled() != a.actual.GetExternalIp().GetEnabled() {
-			paths = append(paths, "external_ip.enabled")
-		}
+	if desired.Spec.ExternalIP != nil && resource.GetExternalIp().GetEnabled() != a.actual.GetExternalIp().GetEnabled() {
+		paths = append(paths, "external_ip.enabled")
 	}
-	if desired.Spec.VmwareEngineNetworkRef != nil && !reflect.DeepEqual(resource.VmwareEngineNetwork, a.actual.VmwareEngineNetwork) {
+	if desired.Spec.VMwareEngineNetworkRef != nil && !reflect.DeepEqual(resource.VmwareEngineNetwork, a.actual.VmwareEngineNetwork) {
 		paths = append(paths, "vmware_engine_network")
 	}
 
