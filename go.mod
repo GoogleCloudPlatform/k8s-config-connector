@@ -10,8 +10,8 @@ require (
 	cloud.google.com/go/aiplatform v1.74.0
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apikeys v1.1.12
-	cloud.google.com/go/apphub v0.2.3
-	cloud.google.com/go/backupdr v1.3.0
+	cloud.google.com/go/apphub v0.2.4
+	cloud.google.com/go/backupdr v1.3.1
 	cloud.google.com/go/batch v1.12.0
 	cloud.google.com/go/bigquery v1.66.2
 	cloud.google.com/go/certificatemanager v1.9.3
@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/dataform v0.10.3
 	cloud.google.com/go/dataplex v1.22.0
 	cloud.google.com/go/dataproc/v2 v2.11.0
-	cloud.google.com/go/datastream v1.13.1
+	cloud.google.com/go/datastream v1.13.0
 	cloud.google.com/go/deploy v1.26.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.2
@@ -33,9 +33,10 @@ require (
 	cloud.google.com/go/iam v1.4.1
 	cloud.google.com/go/iap v1.10.3
 	cloud.google.com/go/kms v1.21.0
+	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/monitoring v1.24.0
-	cloud.google.com/go/netapp v1.7.0
+	cloud.google.com/go/netapp v1.7.1
 	cloud.google.com/go/networksecurity v0.10.3
 	cloud.google.com/go/networkservices v0.2.4
 	cloud.google.com/go/notebooks v1.12.3
@@ -94,7 +95,7 @@ require (
 	google.golang.org/api v0.224.0
 	google.golang.org/genproto v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250227231956-55c901821b1e
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb
 	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.5
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
