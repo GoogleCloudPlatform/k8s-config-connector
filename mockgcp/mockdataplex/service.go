@@ -64,7 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterDataplexServiceHandler,
-		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}

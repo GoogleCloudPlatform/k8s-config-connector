@@ -196,6 +196,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to DataPlex
 	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
@@ -1009,6 +1010,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	// Dataplex
 	visitor.replacePaths[".response.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"

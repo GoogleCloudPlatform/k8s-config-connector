@@ -25,7 +25,7 @@ status:
   observedGeneration: 2
   observedState:
     assetStatus:
-      updateTime: "2025-03-21T22:48:48.085219Z"
+      updateTime: "2024-04-01T12:34:56.123456Z"
     createTime: "1970-01-01T00:00:00Z"
     metastoreStatus:
       state: NONE
