@@ -305,6 +305,11 @@ displayName:
   givenName: string
 externalRef: string
 observedGeneration: integer
+observedState:
+  roles:
+  - restrictionEvaluations:
+      memberRestrictionEvaluation:
+        state: string
 type: string
 updateTime: string
 ```
@@ -419,6 +424,48 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}The `MembershipRole`s that apply to the `Membership`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].restrictionEvaluations</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Evaluations of restrictions applied to parent group on this membership.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].restrictionEvaluations.memberRestrictionEvaluation</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].restrictionEvaluations.memberRestrictionEvaluation.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current state of the restriction{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
