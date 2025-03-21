@@ -1,0 +1,38 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRBackupPlanAssociation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: backupdrbackupplanassociation-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupPlanRef:
+    name: backupdrbackupplan-minimal-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resource:
+    computeInstanceRef:
+      name: computeinstance-minimal-${uniqueId}
+  resourceType: compute.googleapis.com/Instance
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/backupPlanAssociations/backupdrbackupplanassociation-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    dataSource: projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}/dataSources/496ccd94afd4a668dc00db1b5a7cea21f838e7cf
+    rulesConfigInfo:
+    - lastBackupState: FIRST_BACKUP_PENDING
+      ruleID: rule-1
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"
