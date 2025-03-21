@@ -1,0 +1,264 @@
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/CreateLake
+
+{
+  "lake": {
+    "description": "Initial description"
+  },
+  "lakeId": "dataplexlake-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
+    "assetStatus": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "metastore": {},
+    "metastoreStatus": {
+      "state": "NONE",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2025-03-21T22:48:48.085219Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/UpdateLake
+
+{
+  "lake": {
+    "description": "Updated description",
+    "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+  },
+  "updateMask": "description,metastore"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
+    "assetStatus": {
+      "updateTime": "2025-03-21T22:48:48.085219Z"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "metastore": {},
+    "metastoreStatus": {
+      "state": "NONE",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2025-03-21T22:48:48.085219Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/GetLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "assetStatus": {
+    "updateTime": "2025-03-21T22:48:48.085219Z"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "metastore": {},
+  "metastoreStatus": {
+    "state": "NONE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+  "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
+  "state": "ACTIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.DataplexService/DeleteLake
+
+{
+  "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
