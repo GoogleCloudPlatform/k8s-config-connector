@@ -21,9 +21,18 @@ import (
 
 var KMSImportJobGVK = GroupVersion.WithKind("KMSImportJob")
 
+// +k8s:openapi-gen=true
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+}
+
 // KMSImportJobSpec defines the desired state of KMSImportJob
 // +kcc:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobSpec struct {
+	Parent `json:",inline"`
 	// The KMSImportJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
