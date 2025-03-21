@@ -103,23 +103,11 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 		obj.Spec.Assignee.OrganizationRef.External = org.OrganizationID
 	}
 
-	var reservationName string
-	// Get the reservation name to move the assignment to
-	// Run `NormalizedExternal ` only once as it will set both `r.External` and `r.Name`.
-	if obj.Spec.ReservationRef.External != "" {
-		reservationName = obj.Spec.ReservationRef.External
-	} else {
-		reservationName, err = obj.Spec.ReservationRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	return &AssignmentAdapter{
 		id:            id,
 		gcpClient:     gcpClient,
 		desired:       obj,
-		destinationId: reservationName,
+		destinationId: obj.Spec.ReservationRef.External,
 	}, nil
 }
 
