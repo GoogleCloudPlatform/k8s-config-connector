@@ -21,3 +21,7 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Initial description"
+  edgeServicesCIDR: 192.168.30.0/26
+  vmwareEngineNetworkRef:
+    name: vmwareenginenetwork-minimal-${uniqueId}
+

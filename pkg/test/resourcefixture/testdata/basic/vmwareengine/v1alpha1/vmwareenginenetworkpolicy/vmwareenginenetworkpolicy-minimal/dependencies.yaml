@@ -13,14 +13,12 @@
 # limitations under the License.
 
 apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
-kind: VMwareEngineNetworkPolicy
+kind: VMwareEngineNetwork
 metadata:
-  name: vmwareenginenetworkpolicy-minimal-${uniqueId}
+  name: vmwareenginenetwork-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  description: "Updated description"
-  edgeServicesCIDR: 192.168.30.0/26
-  vmwareEngineNetworkRef:
-    name: vmwareenginenetwork-minimal-${uniqueId}
+  location: global
+  description: "Test VMwareEngine network"
+  type: STANDARD
