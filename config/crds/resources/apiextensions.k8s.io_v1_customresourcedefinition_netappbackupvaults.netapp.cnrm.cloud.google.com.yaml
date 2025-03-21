@@ -65,7 +65,7 @@ spec:
               location:
                 type: string
               projectRef:
-                description: The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -97,7 +97,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
+                description: The NetAppBackupVault name. If not given, the metadata.name
                   will be used.
                 type: string
             required:

@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,7 +25,12 @@ var NetAppBackupVaultGVK = GroupVersion.WithKind("NetAppBackupVault")
 // BackupVaultSpec defines the desired state of NetAppBackupVault
 // +kcc:proto=google.cloud.netapp.v1.BackupVault
 type BackupVaultSpec struct {
-	commonv1alpha1.CommonSpec `json:",inline"`
+	// The NetAppBackupVault name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The project that this resource belongs to.
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
 	// +required
 	Location string `json:"location"`
