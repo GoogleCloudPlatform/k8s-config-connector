@@ -45,7 +45,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krm.EncryptionConfig{}
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	out.KMSKey = direct.KMSCryptoKeyRef(direct.ValueOf(in.GetKmsKey()))
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
@@ -53,7 +53,7 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	out.KMSKey = EncryptionConfig_KmsKey_ToProto(mapCtx, in.KMSKey)
+	out.KmsKey = direct.ValueOf(in.KMSKey.Name)
 	return out
 }
 func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krm.HiveMetastoreConfig {
@@ -105,7 +105,7 @@ func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWi
 		return nil
 	}
 	out := &krm.MaintenanceWindow{}
-	out.HourOfDay = Int32Value_FromProto(mapCtx, in.GetHourOfDay())
+	out.HourOfDay = direct.Int32Value_FromProto(mapCtx, in.GetHourOfDay())
 	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
 	return out
 }
@@ -114,7 +114,7 @@ func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWin
 		return nil
 	}
 	out := &pb.MaintenanceWindow{}
-	out.HourOfDay = Int32Value_ToProto(mapCtx, in.HourOfDay)
+	out.HourOfDay = direct.Int32Value_ToProto(mapCtx, in.HourOfDay)
 	out.DayOfWeek = direct.Enum_ToProto[pb.DayOfWeek](mapCtx, in.DayOfWeek)
 	return out
 }
