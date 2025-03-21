@@ -57,23 +57,9 @@ func (p *ImportJobParent) String() string {
 func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImportJob) (*ImportJobIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	kmsKeyRing, err := refsv1beta1.ResolveKMSKeyRingRef(ctx, reader, obj, obj.Spec.KMSKeyRingRef)
 	if err != nil {
 		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-
-	keyRingRef := obj.Spec.KeyRingRef
-	keyRingID := keyRingRef.Name
-	if keyRingID == "" {
-		if keyRingRef.External == "" {
-			return nil, fmt.Errorf("one of spec.keyRingRef.name or spec.keyRingRef.external must be set")
-		}
-		keyRingID = keyRingRef.External
 	}
 
 	// Get desired ID
@@ -87,20 +73,16 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	var actualParent *ImportJobParent
+	var actualResourceID string
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseImportJobExternal(externalRef)
+		actualParent, actualResourceID, err = ParseImportJobExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualParent.KeyRingID != keyRingID {
-			return nil, fmt.Errorf("spec.keyRingRef changed, expect %s, got %s", actualParent.KeyRingID, keyRingID)
+		if actualParent.String() != kmsKeyRing.Ref.External {
+			return nil, fmt.Errorf("spec.kmsKeyRingRef changed, expect %s, got %s", actualParent.String(), kmsKeyRing.Ref.External)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -108,12 +90,8 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		}
 	}
 	return &ImportJobIdentity{
-		parent: &ImportJobParent{
-			ProjectID: projectID,
-			Location:  location,
-			KeyRingID: keyRingID,
-		},
-		id: resourceID,
+		parent: actualParent,
+		id:     resourceID,
 	}, nil
 }
 

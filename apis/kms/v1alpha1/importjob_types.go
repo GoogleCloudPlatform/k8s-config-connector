@@ -15,31 +15,25 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var KMSImportJobGVK = GroupVersion.WithKind("KMSImportJob")
 
-// +k8s:openapi-gen=true
-type Parent struct {
-	// +required
-	Location string `json:"location"`
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-}
-
 // KMSImportJobSpec defines the desired state of KMSImportJob
 // +kcc:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobSpec struct {
-	Parent `json:",inline"`
+	KMSKeyRingRef *refs.KMSKeyRingRef `json:"kmsKeyRingRef"`
+
 	// The KMSImportJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. Immutable. The wrapping method to be used for incoming key
 	// material.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.import_method
-	ImportMethod *string `json:"importMethod,omitempty"`
+	ImportMethod *string `json:"importMethod"`
 
 	// Required. Immutable. The protection level of the
 	// [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the
@@ -48,7 +42,7 @@ type KMSImportJobSpec struct {
 	// on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import
 	// into.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
-	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+	ProtectionLevel *string `json:"protectionLevel"`
 }
 
 // KMSImportJobStatus defines the config connector machine state of KMSImportJob
@@ -70,11 +64,6 @@ type KMSImportJobStatus struct {
 // KMSImportJobObservedState is the state of the KMSImportJob resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobObservedState struct {
-	// Output only. The resource name for this
-	//  [ImportJob][google.cloud.kms.v1.ImportJob] in the format
-	//  `projects/*/locations/*/keyRings/*/importJobs/*`.
-	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.name
-	Name *string `json:"name,omitempty"`
 
 	// Output only. The time at which this
 	//  [ImportJob][google.cloud.kms.v1.ImportJob] was created.
@@ -107,7 +96,7 @@ type KMSImportJobObservedState struct {
 	//  import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is
 	//  [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.public_key
-	PublicKey *ImportJob_WrappingPublicKey `json:"publicKey,omitempty"`
+	PublicKey *ImportJob_WrappingPublicKeyObservedState `json:"publicKey,omitempty"`
 
 	// Output only. Statement that was generated and signed by the key creator
 	//  (for example, an HSM) at key creation time. Use this statement to verify
@@ -116,7 +105,18 @@ type KMSImportJobObservedState struct {
 	//  [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a
 	//  protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.attestation
-	Attestation *KeyOperationAttestation `json:"attestation,omitempty"`
+	Attestation *KeyOperationAttestationObservedState `json:"attestation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
+type ImportJob_WrappingPublicKeyObservedState struct {
+	// The public key, encoded in PEM format. For more information, see the [RFC
+	//  7468](https://tools.ietf.org/html/rfc7468) sections for [General
+	//  Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+	//  [Textual Encoding of Subject Public Key Info]
+	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem
+	Pem *string `json:"pem,omitempty"`
 }
 
 // +genclient
