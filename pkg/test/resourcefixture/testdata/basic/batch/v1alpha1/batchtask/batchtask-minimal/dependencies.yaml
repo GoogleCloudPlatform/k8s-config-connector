@@ -13,11 +13,11 @@
 # limitations under the License.
 
 apiVersion: batch.cnrm.cloud.google.com/v1alpha1
-kind: BatchTask
+kind: BatchJob
 metadata:
-  name: batchtask-minimal-${uniqueId}
+  name: batchjob-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Updated description"
+  description: "Initial description"
