@@ -66,3 +66,20 @@ type BackupPolicyObservedState struct {
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.state
 	State *string `json:"state,omitempty"`
 }
+
+// +kcc:proto=google.cloud.netapp.v1.BackupVault
+type BackupVault struct {
+	// Identifier. The resource name of the backup vault.
+	//  Format:
+	//  `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.name
+	Name *string `json:"name,omitempty"`
+
+	// Description of the backup vault.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.description
+	Description *string `json:"description,omitempty"`
+
+	// Resource labels to represent user provided metadata.
+	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
