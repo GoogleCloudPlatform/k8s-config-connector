@@ -281,12 +281,6 @@ func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssi
 	return obj, nil
 }
 
-// Updates an existing assignment.
-func (s *ReservationV1) UpdateAssignment(ctx context.Context, req *pb.UpdateAssignmentRequest) (*pb.Assignment, error) {
-	// TODO
-	return nil, nil
-}
-
 // Lists assignments.
 // Only explicitly created assignments will be returned.
 func (s *ReservationV1) ListAssignments(ctx context.Context, req *pb.ListAssignmentsRequest) (*pb.ListAssignmentsResponse, error) {

@@ -20,7 +20,7 @@ spec:
   assignee: 
     organizationRef:
       # external: ${TEST_ORG_ID}
-      external: ${organizationID}
+      external: organizations/${organizationID}
   reservationRef:
     name: bigqueryreservationreservation-${uniqueId}
   jobType: QUERY

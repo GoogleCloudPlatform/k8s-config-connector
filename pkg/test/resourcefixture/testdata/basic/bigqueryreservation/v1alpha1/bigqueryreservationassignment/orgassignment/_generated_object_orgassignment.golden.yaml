@@ -12,7 +12,7 @@ metadata:
 spec:
   assignee:
     organizationRef:
-      external: ${organizationID}
+      external: organizations/${organizationID}
   jobType: QUERY
   reservationRef:
     name: bigqueryreservationreservation-${uniqueId}
