@@ -59,6 +59,35 @@ spec:
           spec:
             description: ColabRuntimeSpec defines the desired state of ColabRuntime
             properties:
+              colabRuntimeTemplateRef:
+                description: The pointer to NotebookRuntimeTemplate this NotebookRuntime
+                  is created from.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ColabRuntimeTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}".
+                    type: string
+                  name:
+                    description: The name of a ColabRuntimeTemplate resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ColabRuntimeTemplate resource.
+                    type: string
+                type: object
               description:
                 description: The description of the NotebookRuntime.
                 type: string
@@ -103,35 +132,6 @@ spec:
                 items:
                   type: string
                 type: array
-              notebookRuntimeTemplateRef:
-                description: The pointer to NotebookRuntimeTemplate this NotebookRuntime
-                  is created from.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed ColabRuntimeTemplate
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}".
-                    type: string
-                  name:
-                    description: The name of a ColabRuntimeTemplate resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a ColabRuntimeTemplate resource.
-                    type: string
-                type: object
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
                 oneOf:
@@ -172,8 +172,11 @@ spec:
                 description: Required. The user email of the NotebookRuntime.
                 type: string
             required:
+            - colabRuntimeTemplateRef
+            - displayName
             - location
             - projectRef
+            - runtimeUser
             type: object
           status:
             description: ColabRuntimeStatus defines the config connector machine state
