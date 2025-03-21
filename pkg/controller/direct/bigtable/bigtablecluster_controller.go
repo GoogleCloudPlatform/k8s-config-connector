@@ -25,9 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
-	gcp "cloud.google.com/go/bigtable/admin/apiv2"
+	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -39,7 +38,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
@@ -73,7 +71,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpClient.newInstanceAdminClient(ctx)
+	client, err := gcpClient.newBigtableInstanceAdminClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -131,14 +129,14 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		ClusterId: a.id.ID(),
 		Cluster:   resource,
 	}
-	op, err := a.gcpClient.CreateCluster(ctx, req)
+	err := a.gcpClient.CreateCluster(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating bigtable cluster %s: %w", a.id.String(), err)
 	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("bigtable cluster %s waiting creation: %w", a.id, err)
-	}
+	//created, err := op.Wait(ctx)
+	//if err != nil {
+	//	return fmt.Errorf("bigtable cluster %s waiting creation: %w", a.id, err)
+	//}
 	log.V(2).Info("successfully created bigtable cluster in gcp", "name", a.id)
 
 	status := &krm.BigtableClusterStatus{}
@@ -163,16 +161,16 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	resource.Name = a.actual.Name
 
 	paths := []string{}
-	if desired.Spec.ClusterConfig != nil && a.actual.ClusterConfig != nil {
-		if desired.Spec.ClusterConfig.ClusterAutoscalingConfig != nil && a.actual.ClusterConfig.ClusterAutoscalingConfig == nil {
+	if desired.Spec.ClusterConfig != nil && a.actual.Config != nil {
+		if desired.Spec.ClusterConfig.ClusterAutoscalingConfig != nil && a.actual.Config == nil {
 			// from manual scaling to autoscaling
 			// note, this switch will also need serveNodes to be zero, we check this below
 			paths = append(paths, "cluster_config.cluster_autoscaling_config")
-		} else if desired.Spec.ClusterConfig.ClusterAutoscalingConfig == nil && a.actual.ClusterConfig.ClusterAutoscalingConfig != nil {
+		} else if desired.Spec.ClusterConfig.ClusterAutoscalingConfig == nil && a.actual.Config != nil {
 			// from autoscaling to manual scaling
 			// note, this switch will also need a non-zero serveNodes, we check this below
 			paths = append(paths, "cluster_config.cluster_autoscaling_config")
-		} else if desired.Spec.ClusterConfig.ClusterAutoscalingConfig != nil && a.actual.ClusterConfig.ClusterAutoscalingConfig != nil && !reflect.DeepEqual(resource.ClusterConfig.ClusterAutoscalingConfig, a.actual.ClusterConfig.ClusterAutoscalingConfig) {
+		} else if desired.Spec.ClusterConfig.ClusterAutoscalingConfig != nil && a.actual.Config != nil && !reflect.DeepEqual(resource.ClusterConfig.ClusterAutoscalingConfig, a.actual.ClusterConfig.ClusterAutoscalingConfig) {
 			// update autoscaling config
 			paths = append(paths, "cluster_config.cluster_autoscaling_config")
 		}
@@ -195,107 +193,21 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	log.V(2).Info("updating bigtable cluster: fields", "name", a.id, "fields", paths)
-	op, err := a.gcpClient.PartialUpdateCluster(ctx, &pb.PartialUpdateClusterRequest{
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
-		Cluster:    resource,
-	})
+	err := a.gcpClient.UpdateCluster(ctx)
 	if err != nil {
 		return fmt.Errorf("updating bigtable cluster %s: %w", a.id.String(), err)
 	}
 
 	status := &krm.BigtableClusterStatus{}
-	created, err := operations.Wait(ctx, op, "Update Bigtable cluster", bigtableWaitInterval, func(res any) error {
-		r := res.(*pb.Cluster)
-		mapCtx := &direct.MapContext{}
-		observed := BigtableClusterObservedState_FromProto(mapCtx, r)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		conditions := []krm.Condition{
-			{
-				Type:   "Ready",
-				Status: "Unknown",
-				Reason: "Updating",
-			},
-		}
-		if observed != nil {
-			switch observed.State {
-			case "READY":
-				conditions = []krm.Condition{
-					{
-						Type:   "Ready",
-						Status: "True",
-					},
-				}
-			case "CREATING":
-				conditions = []krm.Condition{
-					{
-						Type:   "Ready",
-						Status: "False",
-						Reason: "Creating",
-					},
-				}
-			case "RESIZING":
-				conditions = []krm.Condition{
-					{
-						Type:   "Ready",
-						Status: "False",
-						Reason: "Resizing",
-					},
-				}
-			case "DISABLED":
-				conditions = []krm.Condition{
-					{
-						Type:   "Ready",
-						Status: "False",
-						Reason: "Disabled",
-					},
-				}
-			case "STATE_NOT_KNOWN":
-				conditions = []krm.Condition{
-					{
-						Type:    "Ready",
-						Status:  "False",
-						Reason:  "StateNotKnown",
-						Message: fmt.Sprintf("The state of the cluster is unknown"),
-					},
-				}
-			default:
-				log.V(5).Info("unknown bigtable cluster state for %v", a.id, "state", observed.State)
-				conditions = []krm.Condition{
-					{
-						Type:   "Ready",
-						Status: "False",
-						Reason: observed.State,
-					},
-				}
-			}
-		}
 
-		status.ObservedState = observed
-		status.Conditions = conditions
-		err := updateOp.UpdateStatus(ctx, status, nil)
-		if err != nil {
-			log.V(5).Error(err, "error while setting conditions")
-		}
-		return err
-	})
-	if err != nil {
-		return fmt.Errorf("bigtable cluster %s waiting for update: %w", a.id, err)
-	}
 	log.V(2).Info("successfully updated bigtable cluster", "name", a.id)
 
 	// update status as `ready` after operations succeeds
-	status.ObservedState = BigtableClusterObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigtableClusterObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.Conditions = []krm.Condition{
-		{
-			Type:   "Ready",
-			Status: "True",
-		},
-	}
+
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -312,7 +224,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.InstanceRef = &refs.InstanceRef{External: a.id.Parent().Instance}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().Parent().ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
