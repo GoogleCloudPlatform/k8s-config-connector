@@ -383,6 +383,11 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 			continue
 		}
 
+		if lines[len(lines)-1] == "" { // empty line
+			lines = lines[:len(lines)-1]
+			continue
+		}
+
 		break
 	}
 
