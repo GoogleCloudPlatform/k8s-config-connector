@@ -35,10 +35,7 @@ func batchTaskFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")
 
-	f.SpecFields.Insert(".status")
-
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".status_events")
+	f.StatusFields.Insert(".status")
 
 	return f
 }

@@ -99,52 +99,6 @@ spec:
                 description: The BatchTask name. If not given, the metadata.name will
                   be used.
                 type: string
-              status:
-                description: Task Status.
-                properties:
-                  state:
-                    description: Task state.
-                    type: string
-                  statusEvents:
-                    description: Detailed info about why the state is reached.
-                    items:
-                      properties:
-                        description:
-                          description: Description of the event.
-                          type: string
-                        eventTime:
-                          description: The time this event occurred.
-                          type: string
-                        taskExecution:
-                          description: Task Execution. This field is only defined
-                            for task-level status events where the task fails.
-                          properties:
-                            exitCode:
-                              description: |-
-                                The exit code of a finished task.
-
-                                 If the task succeeded, the exit code will be 0. If the task failed but not
-                                 due to the following reasons, the exit code will be 50000.
-
-                                 Otherwise, it can be from different sources:
-                                 * Batch known failures:
-                                 https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
-                                 * Batch runnable execution failures; you can rely on Batch logs to further
-                                 diagnose: https://cloud.google.com/batch/docs/analyze-job-using-logs. If
-                                 there are multiple runnables failures, Batch only exposes the first error.
-                              format: int32
-                              type: integer
-                          type: object
-                        taskState:
-                          description: Task State. This field is only defined for
-                            task-level status events.
-                          type: string
-                        type:
-                          description: Type of the event.
-                          type: string
-                      type: object
-                    type: array
-                type: object
             required:
             - location
             - projectRef
@@ -198,48 +152,52 @@ spec:
                 description: BatchTaskObservedState is the state of the BatchTask
                   resource as most recently observed in GCP.
                 properties:
-                  state:
-                    description: Task state.
-                    type: string
-                  statusEvents:
-                    description: Detailed info about why the state is reached.
-                    items:
-                      properties:
-                        description:
-                          description: Description of the event.
-                          type: string
-                        eventTime:
-                          description: The time this event occurred.
-                          type: string
-                        taskExecution:
-                          description: Task Execution. This field is only defined
-                            for task-level status events where the task fails.
+                  status:
+                    description: Task Status.
+                    properties:
+                      state:
+                        description: Task state.
+                        type: string
+                      statusEvents:
+                        description: Detailed info about why the state is reached.
+                        items:
                           properties:
-                            exitCode:
-                              description: |-
-                                The exit code of a finished task.
+                            description:
+                              description: Description of the event.
+                              type: string
+                            eventTime:
+                              description: The time this event occurred.
+                              type: string
+                            taskExecution:
+                              description: Task Execution. This field is only defined
+                                for task-level status events where the task fails.
+                              properties:
+                                exitCode:
+                                  description: |-
+                                    The exit code of a finished task.
 
-                                 If the task succeeded, the exit code will be 0. If the task failed but not
-                                 due to the following reasons, the exit code will be 50000.
+                                     If the task succeeded, the exit code will be 0. If the task failed but not
+                                     due to the following reasons, the exit code will be 50000.
 
-                                 Otherwise, it can be from different sources:
-                                 * Batch known failures:
-                                 https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
-                                 * Batch runnable execution failures; you can rely on Batch logs to further
-                                 diagnose: https://cloud.google.com/batch/docs/analyze-job-using-logs. If
-                                 there are multiple runnables failures, Batch only exposes the first error.
-                              format: int32
-                              type: integer
+                                     Otherwise, it can be from different sources:
+                                     * Batch known failures:
+                                     https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
+                                     * Batch runnable execution failures; you can rely on Batch logs to further
+                                     diagnose: https://cloud.google.com/batch/docs/analyze-job-using-logs. If
+                                     there are multiple runnables failures, Batch only exposes the first error.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            taskState:
+                              description: Task State. This field is only defined
+                                for task-level status events.
+                              type: string
+                            type:
+                              description: Type of the event.
+                              type: string
                           type: object
-                        taskState:
-                          description: Task State. This field is only defined for
-                            task-level status events.
-                          type: string
-                        type:
-                          description: Type of the event.
-                          type: string
-                      type: object
-                    type: array
+                        type: array
+                    type: object
                 type: object
             type: object
         required:

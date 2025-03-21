@@ -30,7 +30,7 @@ func BatchTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *k
 		return nil
 	}
 	out := &krm.BatchTaskObservedState{}
-	// MISSING: Name
+	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskObservedState) *pb.Task {
@@ -38,7 +38,7 @@ func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTask
 		return nil
 	}
 	out := &pb.Task{}
-	// MISSING: Name
+	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
 	return out
 }
 func BatchTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskSpec {
@@ -46,8 +46,6 @@ func BatchTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchT
 		return nil
 	}
 	out := &krm.BatchTaskSpec{}
-	// MISSING: Name
-	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
 	return out
 }
 func BatchTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskSpec) *pb.Task {
@@ -55,8 +53,6 @@ func BatchTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskSpec) *pb
 		return nil
 	}
 	out := &pb.Task{}
-	// MISSING: Name
-	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
 	return out
 }
 func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {

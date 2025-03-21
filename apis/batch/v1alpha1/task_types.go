@@ -27,10 +27,6 @@ type BatchTaskSpec struct {
 	Parent `json:",inline"`
 	// The BatchTask name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// Task Status.
-	// +kcc:proto:field=google.cloud.batch.v1.Task.status
-	Status *TaskStatus `json:"status,omitempty"`
 }
 
 // BatchTaskStatus defines the config connector machine state of BatchTask
@@ -57,13 +53,9 @@ type BatchTaskStatus struct {
 // BatchTaskObservedState is the state of the BatchTask resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.batch.v1.Task
 type BatchTaskObservedState struct {
-	// Task state.
-	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
-	State *string `json:"state,omitempty"`
-
-	// Detailed info about why the state is reached.
-	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
-	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
+	// Task Status.
+	// +kcc:proto:field=google.cloud.batch.v1.Task.status
+	Status *TaskStatus `json:"status,omitempty"`
 }
 
 // +genclient
