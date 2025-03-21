@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,6 +27,14 @@ var CloudDMSConversionWorkspaceGVK = GroupVersion.WithKind("CloudDMSConversionWo
 type CloudDMSConversionWorkspaceSpec struct {
 	// The CloudDMSConversionWorkspace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// The project that this resource belongs to.
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+
+	// Immutable. The location where the alloydb cluster should reside.
+	// +required
+	Location *string `json:"location,omitempty"`
 
 	// Required. The source engine details.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.source

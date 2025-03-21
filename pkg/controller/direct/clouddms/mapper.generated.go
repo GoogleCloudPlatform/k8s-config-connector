@@ -30,7 +30,6 @@ func CloudDMSConversionWorkspaceObservedState_FromProto(mapCtx *direct.MapContex
 		return nil
 	}
 	out := &krm.CloudDMSConversionWorkspaceObservedState{}
-	// MISSING: Name
 	out.HasUncommittedChanges = direct.LazyPtr(in.GetHasUncommittedChanges())
 	out.LatestCommitID = direct.LazyPtr(in.GetLatestCommitId())
 	out.LatestCommitTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLatestCommitTime())
@@ -43,7 +42,6 @@ func CloudDMSConversionWorkspaceObservedState_ToProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &pb.ConversionWorkspace{}
-	// MISSING: Name
 	out.HasUncommittedChanges = direct.ValueOf(in.HasUncommittedChanges)
 	out.LatestCommitId = direct.ValueOf(in.LatestCommitID)
 	out.LatestCommitTime = direct.StringTimestamp_ToProto(mapCtx, in.LatestCommitTime)
@@ -56,7 +54,6 @@ func CloudDMSConversionWorkspaceSpec_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.CloudDMSConversionWorkspaceSpec{}
-	// MISSING: Name
 	out.Source = DatabaseEngineInfo_FromProto(mapCtx, in.GetSource())
 	out.Destination = DatabaseEngineInfo_FromProto(mapCtx, in.GetDestination())
 	out.GlobalSettings = in.GlobalSettings
