@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}' does not exist.",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -44,14 +44,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}"
 }
 
 ---
@@ -71,14 +68,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}"
 }
 
 ---
@@ -100,7 +94,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}' does not exist.",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -129,14 +123,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "metadata": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
 }
 
 ---
@@ -156,14 +147,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "metadata": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
 }
 
 ---
@@ -186,7 +174,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The ServiceBinding does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The ServiceBinding does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -219,12 +214,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -255,7 +249,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -321,43 +314,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
----
-
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}",
     "verb": "delete"
   },
@@ -384,14 +346,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "metadata": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
 }
 
 ---
@@ -429,14 +388,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}",
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "name": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}"
 }
 
 ---
