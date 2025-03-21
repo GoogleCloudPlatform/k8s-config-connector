@@ -83,6 +83,42 @@ spec:
                   features. Such examples can be: convert_foreign_key_to_interleave=true,
                   skip_triggers=false, ignore_non_table_synonyms=true'
                 type: object
+              location:
+                description: Immutable. The location where the alloydb cluster should
+                  reside.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The CloudDMSConversionWorkspace name. If not given, the
                   metadata.name will be used.
@@ -97,6 +133,9 @@ spec:
                     description: Required. Engine named version, for example 12.c.1.
                     type: string
                 type: object
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: CloudDMSConversionWorkspaceStatus defines the config connector
