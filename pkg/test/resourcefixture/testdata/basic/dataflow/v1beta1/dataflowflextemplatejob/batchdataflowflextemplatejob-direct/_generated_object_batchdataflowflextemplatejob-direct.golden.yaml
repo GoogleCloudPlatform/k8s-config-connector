@@ -17,6 +17,7 @@ metadata:
 spec:
   containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
   parameters:
+    autoscalingAlgorithm: NONE
     inputFileFormat: csv
     inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
     outputBucket: gs://storagebucket-${uniqueId}
