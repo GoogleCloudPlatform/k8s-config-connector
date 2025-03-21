@@ -49,7 +49,7 @@ func MetastoreServiceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".release_channel")
 	f.SpecFields.Insert(".encryption_config")
 	f.SpecFields.Insert(".network_config")
-	f.RefFields.Insert(".encryption_config.kms_key")
+	f.RefFields.InsertKMSKeyRef(".encryption_config.kms_key")
 	f.RefFields.Insert(".network_config.subnetwork")
 	f.SpecFields.Insert(".database_type")
 	f.SpecFields.Insert(".telemetry_config")
