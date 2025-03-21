@@ -352,10 +352,9 @@ type SQLServerProfile struct {
 // +kcc:proto=google.cloud.datastream.v1.PrivateConnectivity
 type PrivateConnectivity struct {
 	// Required. A reference to a private connection resource.
-	//  Format: `projects/{project}/locations/{location}/privateConnections/{name}`
 	// +kcc:proto:field=google.cloud.datastream.v1.PrivateConnectivity.private_connection
 	// +required
-	PrivateConnection *string `json:"privateConnection,omitempty"`
+	PrivateConnectionRef *PrivateConnectionRef `json:"privateConnectionRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.MysqlProfile
