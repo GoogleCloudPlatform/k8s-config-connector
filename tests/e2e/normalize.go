@@ -194,6 +194,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
+	// Specific to DataPlex
+	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
 

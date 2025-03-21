@@ -1,0 +1,36 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexLake
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dataplexlake-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    assetStatus:
+      updateTime: "2025-03-21T22:48:48.085219Z"
+    createTime: "1970-01-01T00:00:00Z"
+    metastoreStatus:
+      state: NONE
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    serviceAccount: service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
