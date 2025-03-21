@@ -77,7 +77,7 @@ func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntim
 	out := &krm.ColabRuntimeSpec{}
 	// MISSING: Name
 	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
-	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
+	out.ColabRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
@@ -93,7 +93,7 @@ func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpe
 	out := &pb.NotebookRuntime{}
 	// MISSING: Name
 	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
-	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.NotebookRuntimeTemplateRef)
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.ColabRuntimeTemplateRef)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
