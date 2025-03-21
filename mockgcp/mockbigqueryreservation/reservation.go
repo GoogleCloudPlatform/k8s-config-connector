@@ -261,20 +261,18 @@ func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssi
 
 	// reqName = req.Parent + "/assignments/" + uuid.New().String()
 	// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
-	reqName := req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
-
-	name, err := s.parseAssignmentName(reqName)
-	if err != nil {
-		return nil, err
+	var name string
+	if req.AssignmentId == "" {
+		name = req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
+	} else {
+		name = req.Parent + "/assignments/" + req.AssignmentId
 	}
 
-	fqn := name.String()
-
 	obj := proto.Clone(req.Assignment).(*pb.Assignment)
-	obj.Name = fqn
+	obj.Name = name
 	obj.State = pb.Assignment_ACTIVE
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.storage.Create(ctx, name, obj); err != nil {
 		return nil, err
 	}
 
@@ -329,7 +327,7 @@ func (s *ReservationV1) MoveAssignment(ctx context.Context, req *pb.MoveAssignme
 	}
 
 	// Rebuild name for the Assignment
-	obj.Name = req.DestinationId + "/assignments/" + "27687860-6459-5709-1dfzymot3v66w8h"
+	obj.Name = req.DestinationId + "/assignments/" + name.ResourceID
 	// Delete and recreate
 	if err := s.storage.Delete(ctx, fqn, &pb.Assignment{}); err != nil {
 		return nil, err

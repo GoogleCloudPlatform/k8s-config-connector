@@ -179,8 +179,9 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	req := &pb.CreateAssignmentRequest{
-		Parent:     a.id.Parent().String(),
-		Assignment: assignment,
+		Parent:       a.id.Parent().String(),
+		AssignmentId: a.id.AssignmentID(),
+		Assignment:   assignment,
 	}
 	created, err := a.gcpClient.CreateAssignment(ctx, req)
 	if err != nil {
@@ -225,6 +226,7 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		req := &pb.MoveAssignmentRequest{
 			Name:          a.actual.GetName(),
 			DestinationId: a.destinationId,
+			AssignmentId:  a.id.AssignmentID(),
 		}
 		// if user wants to retain the assignmentID
 		if desiredSpec.ResourceID != nil {

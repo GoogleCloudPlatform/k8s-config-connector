@@ -29,15 +29,15 @@ type AssignmentIdentity struct {
 	// The reservation to which the assignment is currently attached
 	parent *BQReservation
 	// The assignment resourceID
-	id string
+	assignmentID string
 }
 
 func (i *AssignmentIdentity) String() string {
-	return i.parent.String() + "/assignments/" + i.id
+	return i.parent.String() + "/assignments/" + i.assignmentID
 }
 
-func (i *AssignmentIdentity) ID() string {
-	return i.id
+func (i *AssignmentIdentity) AssignmentID() string {
+	return i.assignmentID
 }
 
 func (i *AssignmentIdentity) Parent() *BQReservation {
@@ -85,9 +85,14 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		ReservationName: reservationID,
 	}
 
-	// Get desired assignment resourceID
-	// Only works for resource acquisition
+	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -108,18 +113,15 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		if actualParent.ReservationName != parent.ReservationName {
 			parent.ReservationName = actualParent.ReservationName
 		}
-		// For BigQueryReservationAssignment, the GCP resourceID is output only.
-		if resourceID == "" {
-			resourceID = actualResourceID
-		} else if resourceID != actualResourceID {
+		if resourceID != actualResourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
 	}
 
 	return &AssignmentIdentity{
-		parent: parent,
-		id:     resourceID,
+		parent:       parent,
+		assignmentID: resourceID,
 	}, nil
 }
 
