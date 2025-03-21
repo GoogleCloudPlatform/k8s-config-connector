@@ -20,30 +20,22 @@
 package mockpubsub
 
 import (
-        "context"
-        "encoding/json"
-        "net/http"
-        "strings"
-
-	"google.golang.org/grpc/codes"
-        "google.golang.org/grpc/status"
-        "google.golang.org/protobuf/reflect/protoreflect"
-        "google.golang.org/protobuf/types/known/emptypb"
-        pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
-)
-
-
-
-import (
 	"context"
+	"encoding/json"
+	"net/http"
 	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
-
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/storage"
 )
+
+
+
+
 
 func (s *subscriberService) GetSnapshot(ctx context.Context, req *pb.GetSnapshotRequest) (*pb.Snapshot, error) {
 	name, err := parseSnapshotName(req.Snapshot)
@@ -240,7 +232,7 @@ func (s *subscriberService) ListSnapshots(ctx context.Context, req *pb.ListSnaps
 	prefix := "projects/" + projectName.Project + "/snapshots/"
 	list := make([]*pb.Snapshot, 0)
 	snapshotKind := (&pb.Snapshot{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, snapshotKind, storage.ListOptions{
+        if err := s.storage.List(ctx, snapshotKind, storage.ListOptions{
 		Prefix: prefix,
 	}, func(obj protoreflect.ProtoMessage) error {
 		snapshot, ok := obj.(*pb.Snapshot)
