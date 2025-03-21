@@ -1,3 +1,4 @@
+
 // Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,10 @@
 
 package mocknetapp
 
+// +tool:mockgcp-service
+// http.host: netapp.googleapis.com
+// proto.service: google.cloud.netapp.v1.NetApp
+
 import (
 	"context"
 	"net/http"
@@ -27,7 +32,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 )
 
-// MockService represents a mocked bigqueryanalyticshub service.
+// MockService represents a mocked NetApp service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
