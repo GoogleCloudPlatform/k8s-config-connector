@@ -67,7 +67,7 @@ X-Xss-Protection: 0
 {
   "snapshots": [
     {
-      "expireTime": "2025-03-28T05:58:05.115Z",
+      "expireTime": "2024-04-01T12:34:56.123456Z",
       "name": "projects/${projectId}/snapshots/test-snapshot-${uniqueId}",
       "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
     }

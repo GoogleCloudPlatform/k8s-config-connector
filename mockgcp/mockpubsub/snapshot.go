@@ -16,26 +16,21 @@
 // proto.service: google.pubsub.v1.Subscriber
 // proto.message: google.pubsub.v1.Snapshot
 
-
 package mockpubsub
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
 	"strings"
+	"time"
 
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/storage"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-
-
-
 
 func (s *subscriberService) GetSnapshot(ctx context.Context, req *pb.GetSnapshotRequest) (*pb.Snapshot, error) {
 	name, err := parseSnapshotName(req.Snapshot)
@@ -60,18 +55,15 @@ func (s *subscriberService) CreateSnapshot(ctx context.Context, req *pb.CreateSn
 	if err != nil {
 		return nil, err
 	}
-	_, err = parseSubscriptionName(req.GetSubscription())
-        if err != nil {
-            return nil, err
-        }
 
 	fqn := name.String()
 
-        topicName := strings.Replace(req.GetSubscription(), "subscriptions", "topics", 1)
+	topicName := strings.Replace(strings.Replace(req.GetSubscription(), "subscriptions", "topics", 1), "subscription", "topic", 1)
 
 	obj := &pb.Snapshot{
-		Name:  fqn,
-		Topic: topicName,
+		ExpireTime: timestamppb.New(time.Now()),
+		Name:       fqn,
+		Topic:      topicName,
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -79,29 +71,6 @@ func (s *subscriberService) CreateSnapshot(ctx context.Context, req *pb.CreateSn
 	}
 
 	return obj, nil
-}
-
-type subscriptionNameForSnapshot struct {
-	Project      string
-	Subscription string
-}
-
-func (n *subscriptionNameForSnapshot) String() string {
-	return "projects/" + n.Project + "/subscriptions/" + n.Subscription
-}
-
-// parseSubscriptionName parses a string into a subscriptionNameForSnapshot.
-// The expected form is `projects/*/subscriptions/*`.
-func parseSubscriptionName(name string) (*subscriptionNameForSnapshot, error) {
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "subscriptions" {
-		name := &subscriptionNameForSnapshot{
-			Project:      tokens[1],
-			Subscription: tokens[3],
-		}
-		return name, nil
-	}
-	return nil, status.Errorf(codes.InvalidArgument, "subscription name %q is not valid", name)
 }
 
 func (s *subscriberService) DeleteSnapshot(ctx context.Context, req *pb.DeleteSnapshotRequest) (*emptypb.Empty, error) {
@@ -120,119 +89,11 @@ func (s *subscriberService) DeleteSnapshot(ctx context.Context, req *pb.DeleteSn
 	return &emptypb.Empty{}, nil
 }
 
-
-func (s *subscriberService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if strings.HasPrefix(r.URL.Path, "/v1/projects/") {
-		suffix := strings.TrimPrefix(r.URL.Path, "/v1/")
-		if strings.HasSuffix(suffix, ":get") && r.Method == http.MethodPost{
-			// get snapshot
-			var req pb.GetSnapshotRequest
-			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-			req.Snapshot = strings.TrimSuffix(suffix,":get")
-
-			resp, err := s.GetSnapshot(r.Context(), &req)
-			if err != nil {
-				status, ok := status.FromError(err)
-				if !ok {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				} else {
-					http.Error(w, err.Error(), int(status.Code()))
-				}
-				return
-			}
-			w.Header().Set("Content-Type", "application/json")
-			if err := json.NewEncoder(w).Encode(resp); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-		} else if strings.HasSuffix(suffix, ":create") && r.Method == http.MethodPost{
-			var req pb.CreateSnapshotRequest
-			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-			req.Name = strings.TrimSuffix(suffix,":create")
-
-			resp, err := s.CreateSnapshot(r.Context(), &req)
-            if err != nil {
-				status, ok := status.FromError(err)
-				if !ok {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				} else {
-					http.Error(w, err.Error(), int(status.Code()))
-				}
-				return
-			}
-			w.Header().Set("Content-Type", "application/json")
-            if err := json.NewEncoder(w).Encode(resp); err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-                return
-            }
-
-		} else if strings.HasSuffix(suffix, ":delete") && r.Method == http.MethodPost{
-			// delete snapshot
-			var req pb.DeleteSnapshotRequest
-			if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-			req.Snapshot = strings.TrimSuffix(suffix,":delete")
-			resp, err := s.DeleteSnapshot(r.Context(), &req)
-			if err != nil {
-				status, ok := status.FromError(err)
-				if !ok {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				} else {
-					http.Error(w, err.Error(), int(status.Code()))
-				}
-				return
-			}
-			w.Header().Set("Content-Type", "application/json")
-			if err := json.NewEncoder(w).Encode(resp); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-		} else if r.Method == http.MethodGet {
-			// list snapshots
-			var req pb.ListSnapshotsRequest
-			req.Project = strings.TrimSuffix(suffix, "/snapshots")
-
-			resp, err := s.ListSnapshots(r.Context(), &req)
-			if err != nil {
-				status, ok := status.FromError(err)
-				if !ok {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
-				} else {
-					http.Error(w, err.Error(), int(status.Code()))
-				}
-				return
-			}
-			w.Header().Set("Content-Type", "application/json")
-			if err := json.NewEncoder(w).Encode(resp); err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-		} else {
-			http.NotFound(w, r)
-		}
-	} else {
-		http.NotFound(w, r)
-	}
-}
-
 func (s *subscriberService) ListSnapshots(ctx context.Context, req *pb.ListSnapshotsRequest) (*pb.ListSnapshotsResponse, error) {
-
-	projectName, err := parseProjectName(req.GetProject())
-	if err != nil {
-		return nil, err
-	}
-	prefix := "projects/" + projectName.Project + "/snapshots/"
+	prefix := req.GetProject() + "/snapshots/"
 	list := make([]*pb.Snapshot, 0)
 	snapshotKind := (&pb.Snapshot{}).ProtoReflect().Descriptor()
-        if err := s.storage.List(ctx, snapshotKind, storage.ListOptions{
+	if err := s.storage.List(ctx, snapshotKind, storage.ListOptions{
 		Prefix: prefix,
 	}, func(obj protoreflect.ProtoMessage) error {
 		snapshot, ok := obj.(*pb.Snapshot)
@@ -247,23 +108,6 @@ func (s *subscriberService) ListSnapshots(ctx context.Context, req *pb.ListSnaps
 		return nil, err
 	}
 	return &pb.ListSnapshotsResponse{Snapshots: list}, nil
-}
-
-type projectName struct {
-	Project string
-}
-
-func (n *projectName) String() string {
-	return "projects/" + n.Project
-}
-
-func parseProjectName(name string) (*projectName, error) {
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 2 && tokens[0] == "projects" {
-		name := &projectName{Project: tokens[1]}
-		return name, nil
-	}
-	return nil, status.Errorf(codes.InvalidArgument, "project name %q is not valid", name)
 }
 
 type snapshotName struct {
