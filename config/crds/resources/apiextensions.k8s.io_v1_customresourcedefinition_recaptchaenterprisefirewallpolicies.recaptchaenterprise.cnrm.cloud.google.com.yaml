@@ -18,7 +18,7 @@ spec:
     plural: recaptchaenterprisefirewallpolicies
     shortNames:
     - gcprecaptchaenterprisefirewallpolicy
-    - gcprecaptchaenterprisefirewallpolicys
+    - gcprecaptchaenterprisefirewallpolicies
     singular: recaptchaenterprisefirewallpolicy
   preserveUnknownFields: false
   scope: Namespaced
