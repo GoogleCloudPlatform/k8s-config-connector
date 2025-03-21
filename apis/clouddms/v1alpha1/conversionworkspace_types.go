@@ -26,6 +26,26 @@ var CloudDMSConversionWorkspaceGVK = GroupVersion.WithKind("CloudDMSConversionWo
 type CloudDMSConversionWorkspaceSpec struct {
 	// The CloudDMSConversionWorkspace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. The source engine details.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.source
+	Source *DatabaseEngineInfo `json:"source,omitempty"`
+
+	// Required. The destination engine details.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.destination
+	Destination *DatabaseEngineInfo `json:"destination,omitempty"`
+
+	// Optional. A generic list of settings for the workspace.
+	//  The settings are database pair dependant and can indicate default behavior
+	//  for the mapping rules engine or turn on or off specific features.
+	//  Such examples can be: convert_foreign_key_to_interleave=true,
+	//  skip_triggers=false, ignore_non_table_synonyms=true
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.global_settings
+	GlobalSettings map[string]string `json:"globalSettings,omitempty"`
+
+	// Optional. The display name for the workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // CloudDMSConversionWorkspaceStatus defines the config connector machine state of CloudDMSConversionWorkspace
@@ -47,6 +67,26 @@ type CloudDMSConversionWorkspaceStatus struct {
 // CloudDMSConversionWorkspaceObservedState is the state of the CloudDMSConversionWorkspace resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspace
 type CloudDMSConversionWorkspaceObservedState struct {
+	// Output only. Whether the workspace has uncommitted changes (changes which
+	//  were made after the workspace was committed).
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.has_uncommitted_changes
+	HasUncommittedChanges *bool `json:"hasUncommittedChanges,omitempty"`
+
+	// Output only. The latest commit ID.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.latest_commit_id
+	LatestCommitID *string `json:"latestCommitID,omitempty"`
+
+	// Output only. The timestamp when the workspace was committed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.latest_commit_time
+	LatestCommitTime *string `json:"latestCommitTime,omitempty"`
+
+	// Output only. The timestamp when the workspace resource was created.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the workspace resource was last updated.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
