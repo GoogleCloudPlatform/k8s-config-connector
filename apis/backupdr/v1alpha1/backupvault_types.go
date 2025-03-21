@@ -66,6 +66,11 @@ type BackupDRBackupVaultSpec struct {
 	//  Default value is WITHIN_ORGANIZATION if not provided during creation.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.access_restriction
 	AccessRestriction *string `json:"accessRestriction,omitempty"`
+
+	// Optional. If set to true, allows deletion of a backup vault even when it contains inactive data sources.
+	// This overrides the default restriction that prevents deletion of backup vaults with any
+	// data sources, even if those data sources are inactive.
+	IgnoreInactiveDatasources *bool `json:"ignoreInactiveDatasources,omitempty"`
 }
 
 // BackupDRBackupVaultStatus defines the config connector machine state of BackupDRBackupVault

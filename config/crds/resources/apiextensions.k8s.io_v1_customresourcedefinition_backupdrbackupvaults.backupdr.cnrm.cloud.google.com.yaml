@@ -91,6 +91,12 @@ spec:
                 description: Optional. Server specified ETag for the backup vault
                   resource to prevent simultaneous updates from overwiting each other.
                 type: string
+              ignoreInactiveDatasources:
+                description: Optional. If set to true, allows deletion of a backup
+                  vault even when it contains inactive data sources. This overrides
+                  the default restriction that prevents deletion of backup vaults
+                  with any data sources, even if those data sources are inactive.
+                type: boolean
               labels:
                 additionalProperties:
                   type: string
