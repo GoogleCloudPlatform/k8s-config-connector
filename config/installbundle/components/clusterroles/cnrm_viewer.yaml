@@ -607,6 +607,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - metastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
