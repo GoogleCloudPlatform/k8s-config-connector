@@ -1,0 +1,12 @@
+apiVersion: colab.cnrm.cloud.google.com/v1alpha1
+kind: ColabRuntime
+metadata:
+  name: colabruntime-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "colabruntime ${uniqueId}"
+  runtimeUser: maqiuyu@google.com
+  colabRuntimeTemplateRef:
+    name: colabruntimetemplate-${uniqueId}

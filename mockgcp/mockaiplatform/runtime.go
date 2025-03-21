@@ -47,7 +47,7 @@ func (s *notebookService) GetNotebookRuntime(ctx context.Context, req *pb.GetNot
 	obj := &pb.NotebookRuntime{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "notebookRuntime %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "NotebookRuntime %s is not found.", fqn)
 		}
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (s *notebookService) AssignNotebookRuntime(ctx context.Context, req *pb.Ass
 		"aiplatform.googleapis.com/notebook_runtime_gce_instance_id": "1234567890",
 	}
 	obj.NotebookRuntimeTemplateRef = &pb.NotebookRuntimeTemplateRef{
-		NotebookRuntimeTemplate: "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+		NotebookRuntimeTemplate: "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/colabruntimetemplate-${uniqueId}",
 	}
 	obj.Name = fqn
 
