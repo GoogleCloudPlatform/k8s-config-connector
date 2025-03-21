@@ -19,39 +19,56 @@
 package metastore
 
 import (
-\tpb "cloud.google.com/go/metastore/apiv1/metastorepb"
-\t"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
 func init() {
-\tfuzztesting.RegisterKRMFuzzer(MetastoreServiceFuzzer())
+	fuzztesting.RegisterKRMFuzzer(MetastoreServiceFuzzer())
 }
 
 func MetastoreServiceFuzzer() fuzztesting.KRMFuzzer {
-\tf := fuzztesting.NewKRMTypedFuzzer(&pb.Service{},\n\t\tMetastoreServiceSpec_FromProto, MetastoreServiceSpec_ToProto,\n\t\tMetastoreServiceObservedState_FromProto, MetastoreServiceObservedState_ToProto,\n\t)
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Service{},
+		MetastoreServiceSpec_FromProto, MetastoreServiceSpec_ToProto,
+		MetastoreServiceObservedState_FromProto, MetastoreServiceObservedState_ToProto,
+	)
 
-\tf.SpecFields.Insert(".hive_metastore_config")
-\tf.SpecFields.Insert(".labels")
-\tf.SpecFields.Insert(".network")
-\tf.SpecFields.Insert(".port")
-\tf.SpecFields.Insert(".tier")
-\tf.SpecFields.Insert(".maintenance_window")
-\tf.SpecFields.Insert(".release_channel")
-\tf.SpecFields.Insert(".encryption_config")
-\tf.SpecFields.Insert(".network_config")
-\tf.SpecFields.Insert(".database_type")
-\tf.SpecFields.Insert(".telemetry_config")
-\tf.SpecFields.Insert(".scaling_config")
+	f.SpecFields.Insert(".hive_metastore_config")
+	f.SpecFields.Insert(".labels")
 
-\tf.StatusFields.Insert(".create_time")
-\tf.StatusFields.Insert(".update_time")
-\tf.StatusFields.Insert(".endpoint_uri")
-\tf.StatusFields.Insert(".state")
-\tf.StatusFields.Insert(".state_message")
-\tf.StatusFields.Insert(".artifact_gcs_uri")
-\tf.StatusFields.Insert(".uid")
-\tf.StatusFields.Insert(".metadata_management_activity")
-\tf.StatusFields.Insert(".network_config")
-\tf.UnimplementedFields.Insert("name")
-\treturn f
+	f.SpecFields.Insert(".port")
+	f.SpecFields.Insert(".tier")
+	f.SpecFields.Insert(".maintenance_window")
+	f.SpecFields.Insert(".release_channel")
+	f.SpecFields.Insert(".hive_metastore_config")
+	f.SpecFields.Insert(".labels")
+
+	f.SpecFields.Insert(".port")
+	f.SpecFields.Insert(".tier")
+	f.SpecFields.Insert(".maintenance_window")
+	f.SpecFields.Insert(".release_channel")
+	f.SpecFields.Insert(".encryption_config")
+	f.SpecFields.Insert(".network_config")
+	f.RefFields.Insert(".encryption_config.kms_key")
+	f.RefFields.Insert(".network_config.subnetwork")
+	f.SpecFields.Insert(".database_type")
+	f.SpecFields.Insert(".telemetry_config")
+	f.SpecFields.Insert(".scaling_config")
+
+	f.SpecFields.Insert(".maintenance_window.hour_of_day")
+	f.SpecFields.Insert(".maintenance_window.day_of_week")
+	f.StatusFields.Insert(".metadata_management_activity.metadata_exports.database_dump_type")
+	f.StatusFields.Insert(".metadata_management_activity.metadata_exports.destination_gcs_uri")
+	f.StatusFields.Insert(".metadata_management_activity.metadata_exports.start_time")
+	f.StatusFields.Insert(".metadata_management_activity.metadata_exports.end_time")
+	f.StatusFields.Insert(".metadata_management_activity.metadata_exports.state")
+
+	f.StatusFields.Insert(".endpoint_uri")
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".state_message")
+	f.StatusFields.Insert(".artifact_gcs_uri")
+	f.StatusFields.Insert(".uid")
+
+	f.UnimplementedFields.Insert("name")
+	return f
 }
