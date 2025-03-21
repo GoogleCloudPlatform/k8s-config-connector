@@ -21,15 +21,15 @@
 package colab
 
 import (
-	"context"
-	"fmt"
-	"reflect"
-
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
+	"context"
+	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -133,24 +133,34 @@ func (a *runtimeAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func normalizeReferences(ctx context.Context, reader client.Reader, obj *krm.ColabRuntime) error {
+	if obj.Spec.ColabRuntimeTemplateRef != nil {
+		if _, err := obj.Spec.ColabRuntimeTemplateRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *runtimeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ColabRuntime", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	//if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
-	//	return fmt.Errorf("resolving references: %w", err)
-	//}
+	if err := normalizeReferences(ctx, a.reader, a.desired); err != nil {
+		return fmt.Errorf("resolving references: %w", err)
+	}
 
 	desiredPb := ColabRuntimeSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	fmt.Printf("maqiuyu... create desiredPb: %+v\n", desiredPb)
 
 	req := &pb.AssignNotebookRuntimeRequest{
 		Parent:                  a.id.Parent().String(),
-		NotebookRuntimeTemplate: a.desired.Spec.NotebookRuntimeTemplateRef.External,
+		NotebookRuntimeTemplate: a.desired.Spec.ColabRuntimeTemplateRef.External,
 		NotebookRuntime:         desiredPb,
 		NotebookRuntimeId:       a.id.ID(),
 	}
@@ -179,21 +189,21 @@ func (a *runtimeAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	log.V(2).Info("updating ColabRuntime", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := ColabRuntimeSpec_ToProto(mapCtx, &desired.Spec)
+	if err := normalizeReferences(ctx, a.reader, a.desired); err != nil {
+		return fmt.Errorf("resolving references: %w", err)
+	}
+
+	desiredPb := ColabRuntimeSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.id.String()
 
-	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		paths = append(paths, "description")
-	}
-	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		paths = append(paths, "display_name")
-	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		paths = append(paths, "labels")
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	if len(paths) == 0 {
