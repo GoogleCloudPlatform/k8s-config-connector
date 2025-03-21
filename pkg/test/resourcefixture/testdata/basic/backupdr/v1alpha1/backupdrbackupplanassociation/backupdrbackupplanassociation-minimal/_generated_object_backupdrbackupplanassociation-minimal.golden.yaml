@@ -30,7 +30,7 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    dataSource: projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}/dataSources/496ccd94afd4a668dc00db1b5a7cea21f838e7cf
+    dataSource: projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupplanassociation-minimal-${uniqueId}/dataSources/${dataSourceID}
     rulesConfigInfo:
     - lastBackupState: FIRST_BACKUP_PENDING
       ruleID: rule-1
