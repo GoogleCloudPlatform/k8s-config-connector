@@ -55,10 +55,10 @@ func MetastoreServiceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".metadata_management_activity")
 	f.StatusFields.Insert(".network_config")
-
+	)
 	f.UnimplementedFields.Insert(".name")
-
 	return f
+}
 }
 
 ```
