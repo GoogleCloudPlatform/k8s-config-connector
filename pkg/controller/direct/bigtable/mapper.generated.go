@@ -128,66 +128,6 @@ func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krm.App
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
 	return out
 }
-func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krm.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
-}
-func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView) *pb.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := AuthorizedView_SubsetView_ToProto(mapCtx, in.SubsetView); oneof != nil {
-		out.AuthorizedView = &pb.AuthorizedView_SubsetView_{SubsetView: oneof}
-	}
-	out.Etag = direct.ValueOf(in.Etag)
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
-}
-func AuthorizedView_FamilySubsets_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_FamilySubsets) *krm.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
-	return out
-}
-func AuthorizedView_FamilySubsets_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView_FamilySubsets) *pb.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
-	return out
-}
-func AuthorizedView_SubsetView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krm.AuthorizedView_SubsetView {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView_SubsetView{}
-	out.RowPrefixes = in.RowPrefixes
-	// MISSING: FamilySubsets
-	return out
-}
-func AuthorizedView_SubsetView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView_SubsetView) *pb.AuthorizedView_SubsetView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView_SubsetView{}
-	out.RowPrefixes = in.RowPrefixes
-	// MISSING: FamilySubsets
-	return out
-}
 func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.Backup {
 	if in == nil {
 		return nil
