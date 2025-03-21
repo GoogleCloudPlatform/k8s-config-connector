@@ -15,9 +15,13 @@
 package metastore
 
 import (
+	"fmt"
+	"strconv"
+
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"k8s.io/klog"
 )
 
 func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetastore) *krm.BackendMetastore {
@@ -25,7 +29,9 @@ func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetasto
 		return nil
 	}
 	out := &krm.BackendMetastore{}
-	// MISSING: Name
+	out.ServiceRef = &krm.ServiceRef{
+		External: in.GetName(),
+	}
 	out.MetastoreType = direct.Enum_FromProto(mapCtx, in.GetMetastoreType())
 	return out
 }
@@ -34,7 +40,7 @@ func BackendMetastore_ToProto(mapCtx *direct.MapContext, in *krm.BackendMetastor
 		return nil
 	}
 	out := &pb.BackendMetastore{}
-	// MISSING: Name
+	out.Name = in.ServiceRef.External
 	out.MetastoreType = direct.Enum_ToProto[pb.BackendMetastore_MetastoreType](mapCtx, in.MetastoreType)
 	return out
 }
@@ -75,6 +81,10 @@ func MetastoreFederationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Federat
 	out.Labels = in.Labels
 	out.Version = direct.LazyPtr(in.GetVersion())
 	// TODO: map type int32 message for field BackendMetastores
+	out.BackendMetastores = make(map[string]krm.BackendMetastore)
+	for k, v := range in.GetBackendMetastores() {
+		out.BackendMetastores[fmt.Sprintf("%d", k)] = *BackendMetastore_FromProto(mapCtx, v)
+	}
 	return out
 }
 func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationSpec) *pb.Federation {
@@ -86,5 +96,13 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metastor
 	out.Labels = in.Labels
 	out.Version = direct.ValueOf(in.Version)
 	// TODO: map type int32 message for field BackendMetastores
+	out.BackendMetastores = make(map[int32]*pb.BackendMetastore)
+	for k, v := range in.BackendMetastores {
+		ik, err := strconv.ParseInt(k, 10, 32)
+		if err != nil {
+			klog.Fatalf("error parsing int32 key %q: %v", k, err)
+		}
+		out.BackendMetastores[int32(ik)] = BackendMetastore_ToProto(mapCtx, &v)
+	}
 	return out
 }
