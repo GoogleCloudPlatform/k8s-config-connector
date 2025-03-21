@@ -171,7 +171,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "body": "bmV3LXN0cmluZwo=",
     "contentType": "URL_ENCODED",
     "headers": {
-      "header-one": "value-one",
       "header-two": "value-two"
     },
     "maskHeaders": true,
@@ -219,7 +218,6 @@ X-Xss-Protection: 0
     "contentType": "URL_ENCODED",
     "headers": {
       "Content-Length": "******",
-      "header-one": "******",
       "header-two": "******"
     },
     "maskHeaders": true,
@@ -280,7 +278,6 @@ X-Xss-Protection: 0
     "contentType": "URL_ENCODED",
     "headers": {
       "Content-Length": "******",
-      "header-one": "******",
       "header-two": "******"
     },
     "maskHeaders": true,
