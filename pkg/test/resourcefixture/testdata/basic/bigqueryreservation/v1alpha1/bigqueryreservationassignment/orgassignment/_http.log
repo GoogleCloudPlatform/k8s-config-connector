@@ -75,7 +75,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments?%24alt=json%3Benum-encoding%3Dint
+POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments?%24alt=json%3Benum-encoding%3Dint&assignmentId=bqassignment-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 {
   "assignee": "organizations/${organizationID}",
   "jobType": 2,
-  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
+  "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/bqassignment-${uniqueId}",
   "state": 2
 }
 
@@ -123,7 +123,7 @@ X-Xss-Protection: 0
     {
       "assignee": "organizations/${organizationID}",
       "jobType": 2,
-      "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f",
+      "name": "projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/bqassignment-${uniqueId}",
       "state": 2
     }
   ]
@@ -131,10 +131,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/87687860-6689-5789-1dfzymot3v66w7f?%24alt=json%3Benum-encoding%3Dint
+DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/reservations/bigqueryreservationreservation${uniqueId}/assignments/bqassignment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}%2Fassignments%2F87687860-6689-5789-1dfzymot3v66w7f
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Freservations%2Fbigqueryreservationreservation${uniqueId}%2Fassignments%2Fbqassignment-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
