@@ -37,6 +37,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/targettcpproxy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataplex"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"
@@ -70,5 +71,4 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workstations"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataplex"
 )

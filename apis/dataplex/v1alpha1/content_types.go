@@ -22,10 +22,12 @@ import (
 
 var DataplexContentGVK = GroupVersion.WithKind("DataplexContent")
 
-type Parent struct {
+type DataplexContentParent struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	Location string `json:"location"`
+
+	LakeRef *LakeRef `json:"lakeRef,omitempty"`
 }
 
 // DataplexContentSpec defines the desired state of DataplexContent
@@ -34,7 +36,7 @@ type DataplexContentSpec struct {
 	// The DataplexContent name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	DataplexContentParent `json:",inline"`
 
 	// Required. The path for the Content file, represented as directory
 	//  structure. Unique within a lake. Limited to alphanumerics, hyphens,
