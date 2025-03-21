@@ -23,6 +23,7 @@ package backupdr
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -62,6 +63,20 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, reade
 	id, err := krm.NewBackupPlanAssociationIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// normalize reference fields
+	if obj.Spec.BackupPlanRef != nil {
+		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.Resource != nil {
+		if obj.Spec.Resource.ComputeInstanceRef != nil {
+			if _, err := obj.Spec.Resource.ComputeInstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	// Get backupdr GCP client
@@ -134,6 +149,13 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 		BackupPlanAssociationId: a.id.ID(),
 		BackupPlanAssociation:   resource,
 	}
+	if desired.Spec.Resource.ComputeInstanceRef != nil {
+		fmt.Printf("[debug] desired.spec.resource.computeInstanceRef: %+v\n", desired.Spec.Resource.ComputeInstanceRef)
+		fmt.Printf("[debug] desired.spec.resource.computeInstanceRef.external: %+v\n", desired.Spec.Resource.ComputeInstanceRef.External)
+	}
+	fmt.Printf("[debug] desired.spec.resource_type: %s\n", *desired.Spec.ResourceType)
+	fmt.Printf("[debug] resource: %+v\n", resource)
+	fmt.Printf("[debug] create request: %+v\n", req)
 	op, err := a.gcpClient.CreateBackupPlanAssociation(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating BackupPlanAssociation %s: %w", a.id, err)
@@ -143,6 +165,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 		return fmt.Errorf("BackupPlanAssociation %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created BackupPlanAssociation", "name", a.id)
+	fmt.Printf("[debug] created: %+v\n", created)
 
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
 	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, created)
@@ -155,7 +178,39 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update BackupPlanAssociation is not supported")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating BackupPlan", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := []string{}
+	if desired.Spec.ResourceType != nil && !reflect.DeepEqual(resource.ResourceType, a.actual.ResourceType) {
+		paths = append(paths, "resource_type")
+	}
+	if desired.Spec.Resource != nil && !reflect.DeepEqual(resource.Resource, a.actual.Resource) {
+		paths = append(paths, "resource")
+	}
+	if desired.Spec.BackupPlanRef != nil && !reflect.DeepEqual(resource.BackupPlan, a.actual.BackupPlan) {
+		paths = append(paths, "backup_plan")
+	}
+
+	if len(paths) != 0 {
+		return fmt.Errorf("updating BackupPlan is not supported, fields: %v", paths)
+	}
+
+	// still need to update status (in the event of acquiring an existing resource)
+	status := &krm.BackupDRBackupPlanAssociationStatus{}
+	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -208,7 +263,3 @@ func (a *BackupPlanAssociationAdapter) Delete(ctx context.Context, deleteOp *dir
 	}
 	return true, nil
 }
-```
-</out>
-
-
