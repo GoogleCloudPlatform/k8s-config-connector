@@ -128,7 +128,7 @@ require (
 	cloud.google.com/go v0.118.3 // indirect
 	cloud.google.com/go/auth v0.15.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.7 // indirect
-	cloud.google.com/go/bigtable v1.35.0 // indirect
+	cloud.google.com/go/bigtable v1.35.0
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	cloud.google.com/go/longrunning v0.6.5
 	dario.cat/mergo v1.0.0 // indirect

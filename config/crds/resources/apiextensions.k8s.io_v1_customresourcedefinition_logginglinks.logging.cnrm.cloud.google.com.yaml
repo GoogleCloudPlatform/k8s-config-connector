@@ -64,7 +64,7 @@ spec:
                   is 8000 characters.
                 type: string
               loggingLogBucketRef:
-                description: Placeholder description
+                description: The LoggingLogBucket that this Link is associated with
                 oneOf:
                 - not:
                     required:
@@ -81,8 +81,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The LoggingLogBucket selfLink, when not managed by
-                      Config Connector.
+                    description: Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
+                      The LoggingLogBucket selfLink, when not managed by Config Connector.
                     type: string
                   name:
                     description: The `name` field of a `LoggingLogBucket` resource.
@@ -95,9 +95,6 @@ spec:
                 description: Immutable. The LoggingLink name. If not given, the metadata.name
                   will be used.
                 type: string
-                x-kubernetes-validations:
-                - message: ResourceID field is immutable
-                  rule: self == oldSelf
             type: object
           status:
             description: LoggingLinkStatus defines the config connector machine state
@@ -145,8 +142,11 @@ spec:
                   observed in GCP.
                 properties:
                   bigQueryDataset:
-                    description: this field is just a string, but its an object(string)
-                      https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
+                    description: The information of a BigQuery Dataset. When a link
+                      is created, a BigQuery dataset is created along with it, in
+                      the same project as the LogBucket it's linked to. This dataset
+                      will also have BigQuery Views corresponding to the LogViews
+                      in the bucket.
                     properties:
                       datasetID:
                         description: |-
@@ -160,11 +160,10 @@ spec:
                         type: string
                     type: object
                   createTime:
-                    format: date-time
+                    description: Output only. The creation timestamp of the link.
                     type: string
                   lifecycleState:
-                    description: the lifecycle state might be something more complicated
-                      this is an ENUM, should be safe to use a string
+                    description: Output only. The resource lifecycle state.
                     type: string
                 type: object
             type: object
