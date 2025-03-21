@@ -32,8 +32,8 @@ cloud.google.com/go/alloydb v1.14.0 h1:aEmmIHmiHDs46wTr/YqXuumuUGNc5QKYA7317nEFj
 cloud.google.com/go/alloydb v1.14.0/go.mod h1:OTBY1HoL0Z8PsHoMMVhkaUPKyY8oP7hzIAe/Dna6UHk=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
 cloud.google.com/go/apikeys v1.1.12/go.mod h1:3tqZUj8CmCJm0maQyLufgyO5Ghf3AZQ6hcSkIqsSIm4=
-cloud.google.com/go/apphub v0.2.3 h1:RE0xuK6eCw815c0Pke9YCpaznhWcJbOv8HT+gJQLoms=
-cloud.google.com/go/apphub v0.2.3/go.mod h1:0X7fYzK3ZEXlyIW7Vj6HTGAbsmrBb8WvA5lZcr+DyAQ=
+cloud.google.com/go/apphub v0.2.4 h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY=
+cloud.google.com/go/apphub v0.2.4/go.mod h1:QJw0OWQIQv/NvBz2/RJGAD6iJTLamf3vqOEsvFMixHw=
 cloud.google.com/go/auth v0.15.0 h1:Ly0u4aA5vG/fsSsxu98qCQBemXtAtJf+95z9HK+cxps=
 cloud.google.com/go/auth v0.15.0/go.mod h1:WJDGqZ1o9E9wKIL+IwStfyn/+s59zl4Bi+1KQNVXLZ8=
 cloud.google.com/go/auth/oauth2adapt v0.2.7 h1:/Lc7xODdqcEw8IrZ9SvwnlLX6j9FHQM74z6cBk9Rw6M=

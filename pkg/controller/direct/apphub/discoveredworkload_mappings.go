@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: apphub.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.apphub.v1
+
 package apphub
 
 import (
@@ -56,94 +61,24 @@ func AppHubDiscoveredWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.App
 	// MISSING: Name
 	return out
 }
-func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+func WorkloadProperties_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Attributes{}
-	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
-	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
-	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
-	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
+	out := &krm.WorkloadProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
 	return out
 }
-func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
+func WorkloadProperties_ToProto(mapCtx *direct.MapContext, in *krm.WorkloadProperties) *pb.WorkloadProperties {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Attributes{}
-	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
-	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
-	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
-	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
-	return out
-}
-func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContactInfo{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Email = direct.LazyPtr(in.GetEmail())
-	return out
-}
-func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ContactInfo{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Email = direct.ValueOf(in.Email)
-	return out
-}
-func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Criticality{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Criticality{}
-	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
-	return out
-}
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Environment{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Environment{}
-	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
-	return out
-}
-func Scope_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Scope{}
-	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
-	return out
-}
-func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Scope{}
-	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
+	out := &pb.WorkloadProperties{}
+	// MISSING: GcpProject
+	// MISSING: Location
+	// MISSING: Zone
 	return out
 }
 func WorkloadPropertiesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkloadProperties) *krm.WorkloadPropertiesObservedState {
