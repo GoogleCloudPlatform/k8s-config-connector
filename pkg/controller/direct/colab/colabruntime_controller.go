@@ -1,0 +1,248 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +tool:controller
+// proto.service: google.cloud.aiplatform.v1.NotebookService
+// proto.message: google.cloud.aiplatform.v1.NotebookRuntime
+// crd.type: ColabRuntime
+// crd.version: v1alpha1
+
+package aiplatform
+
+import (
+	"context"
+	"fmt"
+	"reflect"
+
+	aiplatform "cloud.google.com/go/aiplatform/apiv1"
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+)
+
+func init() {
+	registry.RegisterModel(krm.ColabRuntimeGVK, NewColabRuntimeModel)
+}
+
+func NewColabRuntimeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelNotebookRuntime{config: *config}, nil
+}
+
+var _ directbase.Model = &modelNotebookRuntime{}
+
+type modelNotebookRuntime struct {
+	config config.ControllerConfig
+}
+
+// client returns a new GCP client for the specified project ID.
+func (m *modelNotebookRuntime) client(ctx context.Context, projectID string) (*aiplatform.NotebookClient, error) {
+	var opts []option.ClientOption
+
+	config := m.config
+
+	// Workaround for an unusual behaviour (bug?):
+	//  the service requires that a quota project be set
+	if !config.UserProjectOverride || config.BillingProject == "" {
+		config.UserProjectOverride = true
+		config.BillingProject = projectID
+	}
+
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := aiplatform.NewNotebookRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building aiplatform notebookruntime client: %w", err)
+	}
+
+	return gcpClient, err
+}
+
+func (m *modelNotebookRuntime) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	obj := &krm.ColabRuntime{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	id, err := krm.NewNotebookRuntimeIdentity(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := m.client(ctx, id.ProjectID)
+	if err != nil {
+		return nil, err
+	}
+	return &notebookRuntimeAdapter{
+		gcpClient: gcpClient,
+		id:        id,
+		desired:   obj,
+		reader:    reader,
+	}, nil
+}
+
+func (m *modelNotebookRuntime) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
+	return nil, nil
+}
+
+type notebookRuntimeAdapter struct {
+	gcpClient *aiplatform.NotebookClient
+	id        *krm.NotebookRuntimeIdentity
+	desired   *krm.ColabRuntime
+	actual    *pb.NotebookRuntime
+	reader    client.Reader
+}
+
+var _ directbase.Adapter = &notebookRuntimeAdapter{}
+
+// Find retrieves the GCP resource.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return a non-nil error requeues the requests.
+func (a *notebookRuntimeAdapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting NotebookRuntime", "name", a.id)
+
+	req := &pb.GetNotebookRuntimeRequest{Name: a.id.String()}
+	notebookRuntimePb, err := a.gcpClient.GetNotebookRuntime(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting NotebookRuntime %q: %w", a.id, err)
+	}
+
+	a.actual = notebookRuntimePb
+	return true, nil
+}
+
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *notebookRuntimeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	return fmt.Errorf("create notebookruntime is not supported")
+}
+
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *notebookRuntimeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating NotebookRuntime", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := ColabRuntimeSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := []string{}
+	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		paths = append(paths, "description")
+	}
+	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+		paths = append(paths, "display_name")
+	}
+	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		paths = append(paths, "labels")
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return nil
+	}
+
+	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+	req := &pb.UpdateNotebookRuntimeRequest{
+		NotebookRuntime: resource,
+		UpdateMask:      &fieldmaskpb.FieldMask{Paths: paths},
+	}
+	updated, err := a.gcpClient.UpdateNotebookRuntime(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating NotebookRuntime %s: %w", a.id, err)
+	}
+
+	log.V(2).Info("successfully updated NotebookRuntime", "name", a.id)
+
+	status := &krm.ColabRuntimeStatus{}
+	status.ObservedState = ColabRuntimeObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// Export maps the GCP object to a Config Connector resource `spec`.
+func (a *notebookRuntimeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.ColabRuntime{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(ColabRuntimeSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.SetName(a.actual.Name)
+	u.SetGroupVersionKind(krm.ColabRuntimeGVK)
+
+	u.Object = uObj
+	return u, nil
+}
+
+// Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
+func (a *notebookRuntimeAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting NotebookRuntime", "name", a.id)
+
+	req := &pb.DeleteNotebookRuntimeRequest{Name: a.id.String()}
+	op, err := a.gcpClient.DeleteNotebookRuntime(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent NotebookRuntime, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting NotebookRuntime %s: %w", a.id, err)
+	}
+	log.V(2).Info("successfully deleted NotebookRuntime", "name", a.id)
+
+	err = op.Wait(ctx)
+	if err != nil {
+		return false, fmt.Errorf("waiting delete NotebookRuntime %s: %w", a.id, err)
+	}
+	return true, nil
+}
+
+
