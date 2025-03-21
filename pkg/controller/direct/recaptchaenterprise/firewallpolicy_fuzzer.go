@@ -29,8 +29,8 @@ func init() {
 
 func recaptchaEnterpriseFirewallPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.FirewallPolicy{},
-		RecaptchaEnterpriseFirewallPolicySpec_FromProto, RecaptchaEnterpriseFirewallPolicySpec_ToProto,
-		RecaptchaEnterpriseFirewallPolicyObservedState_FromProto, RecaptchaEnterpriseFirewallPolicyObservedState_ToProto,
+		ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto, ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto,
+		ReCAPTCHAEnterpriseFirewallPolicyObservedState_FromProto, ReCAPTCHAEnterpriseFirewallPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
