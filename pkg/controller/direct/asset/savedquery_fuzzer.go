@@ -16,7 +16,7 @@
 // proto.message: google.cloud.asset.v1.SavedQuery
 // api.group: cloudasset.cnrm.cloud.google.com
 
-package cloudasset
+package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
