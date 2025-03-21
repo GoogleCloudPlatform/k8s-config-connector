@@ -81,12 +81,15 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, _, err := ParseLinkExternal(externalRef)
+		actualParent, actualResourceID, err := ParseLinkExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
 		if actualParent.String() != bucketRef.String() {
 			return nil, fmt.Errorf("actualParent changed, expect %s, got %s", actualParent.String(), bucketRef.String())
+		}
+		if actualResourceID != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s", resourceID, actualResourceID)
 		}
 
 	}

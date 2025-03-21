@@ -138,9 +138,6 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return mapCtx.Err()
 	}
 
-	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
-	// TODO(): 400 error needs to come through on the error
-	// TODO(): there is an implicit dependency on the bucket being active, do we need that here?
 	parent := a.id.Parent()
 
 	resourceID := direct.ValueOf(desired.Spec.ResourceID)
@@ -158,11 +155,13 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		LinkId: resourceID,
 	}
 	op, err := a.gcpClient.CreateLink(ctx, req)
+
 	if err != nil {
 		return fmt.Errorf("creating Link %s: %w\n", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
+		// there is an implicit dependency on the bucket being active, this wait captures that
 		return fmt.Errorf("Link %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Link", "name", a.id)
