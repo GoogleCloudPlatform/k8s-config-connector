@@ -7993,21 +7993,21 @@ branches:
       proto-msg: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
       host-name: ""
       notes: []
-    # - name: networksecurity-authorizationpolicy
-    #   local: resource-networksecurity-authorizationpolicy
-    #   remote: resource-networksecurity-authorizationpolicy
-    #   command: gcloud network-security authorization-policies
-    #   group: networksecurity
-    #   resource: authorizationpolicy
-    #   controller: Unknown
-    #   kind: NetworkSecurityAuthorizationPolicy
-    #   package: google.cloud.networksecurity.v1
-    #   proto: AuthorizationPolicy
-    #   proto-path: google/cloud/networksecurity/v1/network_security.proto
-    #   proto-service: ""
-    #   proto-msg: google.cloud.networksecurity.v1.AuthorizationPolicy
-    #   host-name: ""
-    #   notes: []
+    - name: networksecurity-authorizationpolicy
+      local: resource-networksecurity-authorizationpolicy
+      remote: resource-networksecurity-authorizationpolicy
+      command: gcloud network-security authorization-policies
+      group: networksecurity
+      resource: authorizationpolicy
+      controller: Unknown
+      kind: NetworkSecurityAuthorizationPolicy
+      package: google.cloud.networksecurity.v1
+      proto: AuthorizationPolicy
+      proto-path: google/cloud/networksecurity/v1/network_security.proto
+      proto-service: ""
+      proto-msg: google.cloud.networksecurity.v1.AuthorizationPolicy
+      host-name: ""
+      notes: []
     - name: networksecurity-clienttlspolicy
       local: resource-networksecurity-clienttlspolicy
       remote: resource-networksecurity-clienttlspolicy
