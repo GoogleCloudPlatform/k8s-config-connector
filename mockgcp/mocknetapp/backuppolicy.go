@@ -22,10 +22,12 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -33,7 +35,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *NetAppV1) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyRequest) (*pb.BackupPolicy, error) {
+func (s *backupVaultsService) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyRequest) (*pb.BackupPolicy, error) {
 	name, err := s.parseBackupPolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -49,7 +51,7 @@ func (s *NetAppV1) GetBackupPolicy(ctx context.Context, req *pb.GetBackupPolicyR
 	return obj, nil
 }
 
-func (s *NetAppV1) CreateBackupPolicy(ctx context.Context, req *pb.CreateBackupPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *backupVaultsService) CreateBackupPolicy(ctx context.Context, req *pb.CreateBackupPolicyRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/backupPolicies/%s", req.GetParent(), req.GetBackupPolicyId())
 	name, err := s.parseBackupPolicyName(reqName)
 	if err != nil {
@@ -87,7 +89,7 @@ func (s *NetAppV1) CreateBackupPolicy(ctx context.Context, req *pb.CreateBackupP
 	})
 }
 
-func (s *NetAppV1) UpdateBackupPolicy(ctx context.Context, req *pb.UpdateBackupPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *backupVaultsService) UpdateBackupPolicy(ctx context.Context, req *pb.UpdateBackupPolicyRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseBackupPolicyName(req.GetBackupPolicy().GetName())
 	if err != nil {
 		return nil, err
@@ -111,7 +113,7 @@ func (s *NetAppV1) UpdateBackupPolicy(ctx context.Context, req *pb.UpdateBackupP
 		}
 	}
 
-	obj.Etag = ComputeEtag(obj)
+	//obj.Etag = ComputeEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -129,7 +131,7 @@ func (s *NetAppV1) UpdateBackupPolicy(ctx context.Context, req *pb.UpdateBackupP
 	})
 }
 
-func (s *NetAppV1) DeleteBackupPolicy(ctx context.Context, req *pb.DeleteBackupPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *backupVaultsService) DeleteBackupPolicy(ctx context.Context, req *pb.DeleteBackupPolicyRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseBackupPolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -187,8 +189,3 @@ func (s *MockService) parseBackupPolicyName(name string) (*backupPolicyName, err
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
-```
-</out>
-
-
