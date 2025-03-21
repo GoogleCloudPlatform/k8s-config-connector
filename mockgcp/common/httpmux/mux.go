@@ -32,6 +32,9 @@ type Options struct {
 	// Some older APIs do this (e.g. cloudbilling)
 	// While it likely doesn't matter, it makes golden testing easier to match.
 	EmitUnpopulated bool
+
+	// DiscardUnknownFields controls whether we ignore unknown fields while parsing
+	DiscardUnknownFields bool
 }
 
 type ServeMux struct {
@@ -56,7 +59,7 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 				Resolver:        resolver,
 			},
 			UnmarshalOptions: protojson.UnmarshalOptions{
-				DiscardUnknown: true,
+				DiscardUnknown: opt.DiscardUnknownFields,
 				Resolver:       resolver,
 			},
 		},
