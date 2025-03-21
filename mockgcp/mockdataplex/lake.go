@@ -55,7 +55,7 @@ func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.L
 	obj := &pb.Lake{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", name)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
 		}
 	}
 
@@ -78,7 +78,7 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	obj.Uid = "lake-" + name.LakeID // TODO: maybe a proper random value?
 	obj.State = pb.State_ACTIVE
 	if obj.AssetStatus == nil {
-		obj.AssetStatus = &pb.AssetStatus{}
+		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
 	}
 	if obj.Metastore == nil {
 		obj.Metastore = &pb.Lake_Metastore{}
@@ -87,7 +87,6 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 		obj.MetastoreStatus = &pb.Lake_MetastoreStatus{State: pb.Lake_MetastoreStatus_NONE, UpdateTime: timestamppb.New(time.Now())}
 	}
 	obj.ServiceAccount = fmt.Sprintf("service-%d@gcp-sa-dataplex.iam.gserviceaccount.com", name.Project.Number)
-	s.populateDefaultsForLake(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -101,12 +100,10 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.RequestedCancellation = false
-		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		obj.AssetStatus = &pb.AssetStatus{}
 		return obj, nil
 	})
-}
-
-func (s *DataplexV1) populateDefaultsForLake(obj *pb.Lake) {
 }
 
 func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
@@ -139,6 +136,10 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 		}
 	}
 
+	if obj.Metastore == nil {
+		obj.Metastore = &pb.Lake_Metastore{}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -147,7 +148,6 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
 		Verb:       "update",
-		EndTime:    timestamppb.Now(),
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()

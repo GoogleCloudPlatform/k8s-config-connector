@@ -82,7 +82,7 @@ OK
 
 {
   "assetStatus": {
-    "updateTime": "2025-03-21T22:48:48.085219Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
@@ -145,7 +145,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
     "assetStatus": {
-      "updateTime": "2025-03-21T22:48:48.085219Z"
+      "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
@@ -174,7 +174,7 @@ OK
 
 {
   "assetStatus": {
-    "updateTime": "2025-03-21T22:48:48.085219Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
@@ -202,7 +202,7 @@ OK
 
 {
   "assetStatus": {
-    "updateTime": "2025-03-21T22:48:48.085219Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
