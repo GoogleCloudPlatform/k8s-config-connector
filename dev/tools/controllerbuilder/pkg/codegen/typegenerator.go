@@ -129,6 +129,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		if hasOnlyOutputFields(msg) {
+			klog.Infof("skipping generation of %q as it only contains output fields", msg.FullName())
+			continue
+		}
+
 		krmVersion := filepath.Base(g.goPackage)
 
 		k := generatedFileKey{
@@ -139,21 +144,11 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
-		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
+		skip, err := g.shouldSkipGeneration(goTypeName, string(msg.FullName()), out.OutputDir(), skipGenerated)
 		if err != nil {
-			return fmt.Errorf("looking up go type: %w", err)
+			return err
 		}
-		if goType != nil {
-			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
-			continue
-		}
-
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
-		if err != nil {
-			return fmt.Errorf("looking up go type by proto tag: %w", err)
-		}
-		if goType != nil {
-			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+		if skip {
 			continue
 		}
 
@@ -183,21 +178,11 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 
 		goTypeName := goNameForOutputProtoMessage(msg)
 		skipGenerated := true
-		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
+		skip, err := g.shouldSkipGeneration(goTypeName, string(msg.FullName()), out.OutputDir(), skipGenerated)
 		if err != nil {
-			return fmt.Errorf("looking up go type: %w", err)
+			return err
 		}
-		if goType != nil {
-			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
-			continue
-		}
-
-		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
-		if err != nil {
-			return fmt.Errorf("looking up go type by proto tag: %w", err)
-		}
-		if goType != nil {
-			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+		if skip {
 			continue
 		}
 
@@ -208,17 +193,61 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 	return errors.Join(g.errors...)
 }
 
+// shouldSkipGeneration determines if we should skip generating a Go type based on existing types
+func (g *TypeGenerator) shouldSkipGeneration(goTypeName string, protoName string, outputDir string, skipGenerated bool) (bool, error) {
+	// Check for direct type match
+	goType, err := g.findTypeDeclaration(goTypeName, outputDir, skipGenerated)
+	if err != nil {
+		return false, fmt.Errorf("looking up go type: %w", err)
+	}
+	if goType != nil {
+		klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
+		return true, nil
+	}
+
+	// Check for proto tag matches
+	existingGoTypes, err := g.findTypeDeclarationWithProtoTag(protoName, outputDir, skipGenerated)
+	if err != nil {
+		return false, fmt.Errorf("looking up go type by proto tag: %w", err)
+	}
+
+	for _, existingGoType := range existingGoTypes {
+		if (strings.HasSuffix(goTypeName, "ObservedState") && strings.HasSuffix(existingGoType, "ObservedState")) ||
+			(strings.HasSuffix(goTypeName, "ObservedState") && strings.HasSuffix(existingGoType, "Status")) ||
+			(!strings.HasSuffix(goTypeName, "ObservedState") && !strings.HasSuffix(existingGoType, "ObservedState")) {
+			klog.Infof("found existing type %q for new type %q, with the same proto tag %q, skipping generation", existingGoType, goTypeName, protoName)
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+// hasOnlyOutputFields returns true if the message only contains output fields, false otherwise.
+func hasOnlyOutputFields(msg protoreflect.MessageDescriptor) bool {
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			return false
+		}
+	}
+	return true
+}
+
 func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := GoNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
+
+	writtenFieldsCount := 0 // Keep track of the field count because fields might be split into two go structs
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// Only write non-output fields.
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, writtenFieldsCount, false)
+			writtenFieldsCount++
 		}
 	}
 	fmt.Fprintf(out, "}\n")
@@ -231,13 +260,17 @@ func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	fmt.Fprintf(out, "\n")
 	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
-	for i, field := range msgDetails.OutputFields {
+
+	writtenFieldsCount := 0 // Keep track of the field count because fields might be split into two go structs
+	for _, field := range msgDetails.OutputFields {
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
 			// If field is not explicitly listed as an output, but it appears in OutputMessageDetails,
 			// then it must be a parent message that contains a child message with an output.
-			WriteField(out, field, msg, i, true)
+			WriteField(out, field, msg, writtenFieldsCount, true)
+			writtenFieldsCount++
 		} else {
-			WriteField(out, field, msg, i, false)
+			WriteField(out, field, msg, writtenFieldsCount, false)
+			writtenFieldsCount++
 		}
 	}
 	fmt.Fprintf(out, "}\n")
