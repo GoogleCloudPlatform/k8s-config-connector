@@ -148,7 +148,7 @@ func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.ColabRuntimeTemplate) error {
+func resolveRuntimeTemplateReferences(ctx context.Context, reader client.Reader, obj *krm.ColabRuntimeTemplate) error {
 	if obj.Spec.NetworkSpec != nil {
 		if obj.Spec.NetworkSpec.NetworkRef != nil {
 			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
@@ -183,7 +183,7 @@ func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbas
 	log.V(2).Info("creating colabruntimetemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+	if err := resolveRuntimeTemplateReferences(ctx, a.reader, a.desired); err != nil {
 		return fmt.Errorf("resolving references: %w", err)
 	}
 
@@ -221,7 +221,7 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 	log.V(2).Info("updating colabruntimetemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+	if err := resolveRuntimeTemplateReferences(ctx, a.reader, a.desired); err != nil {
 		return fmt.Errorf("resolving references: %w", err)
 	}
 
