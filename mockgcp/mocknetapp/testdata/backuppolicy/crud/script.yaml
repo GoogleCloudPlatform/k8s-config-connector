@@ -1,0 +1,5 @@
+
+- exec: gcloud beta netapp backup-policies create test-${uniqueId} --location=us-central1 --daily-backup-limit=2 --weekly-backup-limit=1 --monthly-backup-limit=1 --project=${projectId}
+- exec: gcloud beta netapp backup-policies describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud beta netapp backup-policies update test-${uniqueId} --location=us-central1 --daily-backup-limit=3 --project=${projectId}
+- exec: gcloud beta netapp backup-policies delete test-${uniqueId} --location=us-central1 --project=${projectId} --async
