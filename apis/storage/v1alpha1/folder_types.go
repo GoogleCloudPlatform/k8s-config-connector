@@ -80,6 +80,17 @@ type StorageFolderObservedState struct {
 	PendingRenameInfo *PendingRenameInfoObservedState `json:"pendingRenameInfo,omitempty"`
 }
 
+// +kcc:proto=google.storage.control.v2.PendingRenameInfo
+type PendingRenameInfo struct {
+}
+
+// +kcc:proto=google.storage.control.v2.PendingRenameInfo
+type PendingRenameInfoObservedState struct {
+	// Output only. The name of the rename operation.
+	// +kcc:proto:field=google.storage.control.v2.PendingRenameInfo.operation
+	Operation *string `json:"operation,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
