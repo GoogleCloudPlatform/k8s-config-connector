@@ -43,17 +43,17 @@ type ColabRuntimeSpec struct {
 	// The pointer to NotebookRuntimeTemplate this NotebookRuntime is
 	//  created from.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.notebook_runtime_template_ref
-	NotebookRuntimeTemplateRef *NotebookRuntimeTemplateRef `json:"notebookRuntimeTemplateRef,omitempty"`
+	ColabRuntimeTemplateRef *NotebookRuntimeTemplateRef `json:"colabRuntimeTemplateRef"`
 
 	// Required. The user email of the NotebookRuntime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.runtime_user
-	RuntimeUser *string `json:"runtimeUser,omitempty"`
+	RuntimeUser *string `json:"runtimeUser"`
 
 	// Required. The display name of the NotebookRuntime.
 	//  The name can be up to 128 characters long and can consist of any UTF-8
 	//  characters.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.display_name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string `json:"displayName"`
 
 	// The description of the NotebookRuntime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.description

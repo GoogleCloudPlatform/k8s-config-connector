@@ -167,8 +167,8 @@ func (in *ColabRuntimeSpec) DeepCopyInto(out *ColabRuntimeSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.NotebookRuntimeTemplateRef != nil {
-		in, out := &in.NotebookRuntimeTemplateRef, &out.NotebookRuntimeTemplateRef
+	if in.ColabRuntimeTemplateRef != nil {
+		in, out := &in.ColabRuntimeTemplateRef, &out.ColabRuntimeTemplateRef
 		*out = new(NotebookRuntimeTemplateRef)
 		**out = **in
 	}
