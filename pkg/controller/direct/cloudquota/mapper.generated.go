@@ -107,7 +107,7 @@ func QuotaConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaC
 	out := &krm.QuotaConfigObservedState{}
 	// MISSING: PreferredValue
 	out.StateDetail = direct.LazyPtr(in.GetStateDetail())
-	out.GrantedValue = direct.Int64Value_FromProto(mapCtx, in.GetGrantedValue())
+	out.GrantedValue = direct.LazyPtr(direct.Int64Value_FromProto(mapCtx, in.GetGrantedValue()))
 	out.TraceID = direct.LazyPtr(in.GetTraceId())
 	// MISSING: Annotations
 	out.RequestOrigin = direct.Enum_FromProto(mapCtx, in.GetRequestOrigin())
@@ -120,7 +120,7 @@ func QuotaConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaCo
 	out := &pb.QuotaConfig{}
 	// MISSING: PreferredValue
 	out.StateDetail = direct.ValueOf(in.StateDetail)
-	out.GrantedValue = direct.Int64Value_ToProto(mapCtx, in.GrantedValue)
+	out.GrantedValue = direct.Int64Value_ToProto(mapCtx, *in.GrantedValue)
 	out.TraceId = direct.ValueOf(in.TraceID)
 	// MISSING: Annotations
 	out.RequestOrigin = direct.Enum_ToProto[pb.QuotaConfig_Origin](mapCtx, in.RequestOrigin)

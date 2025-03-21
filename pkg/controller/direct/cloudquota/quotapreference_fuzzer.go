@@ -16,10 +16,11 @@
 // proto.message: google.api.cloudquotas.v1beta.QuotaPreference
 // api.group: cloudquotas.cnrm.cloud.google.com
 
-package cloudquotas
+package cloudquota
 
 import (
-	pb "cloud.google.com/go/cloudquotas/apiv1beta1/cloudquotaspb"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
+	//pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/cloudquotas/v1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
