@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,58 +12,125 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: kms.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.kms.v1
+// resource: KMSImportJob:ImportJob
+
 package v1alpha1
 
-import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-)
+// +kcc:proto=google.cloud.kms.v1.ImportJob
+type ImportJob struct {
 
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
-type AutokeyConfig struct {
-	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
-	Name *string `json:"name,omitempty"`
+	// Required. Immutable. The wrapping method to be used for incoming key
+	//  material.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.import_method
+	ImportMethod *string `json:"importMethod,omitempty"`
 
-	// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
-	//  `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
-	//  [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
-	//  the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
-	//  this key project. Once configured, for Cloud KMS Autokey to function
-	//  properly, this key project must have the Cloud KMS API activated and the
-	//  Cloud KMS Service Agent for this key project must be granted the
-	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
-	//  key project field will clear the configuration.
-	KeyProject *refs.ProjectRef `json:"keyProject,omitempty"`
-
-	// Output only. The state for the AutokeyConfig.
-	State *string `json:"state,omitempty"`
+	// Required. Immutable. The protection level of the
+	//  [ImportJob][google.cloud.kms.v1.ImportJob]. This must match the
+	//  [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+	//  of the [version_template][google.cloud.kms.v1.CryptoKey.version_template]
+	//  on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to import
+	//  into.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.kms.v1.KeyHandle
-type KeyHandle struct {
-	// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
-	//  resource, e.g.
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
+// +kcc:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
+type ImportJob_WrappingPublicKey struct {
+	// The public key, encoded in PEM format. For more information, see the [RFC
+	//  7468](https://tools.ietf.org/html/rfc7468) sections for [General
+	//  Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+	//  [Textual Encoding of Subject Public Key Info]
+	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem
+	Pem *string `json:"pem,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+type KeyOperationAttestation struct {
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains
+type KeyOperationAttestation_CertificateChains struct {
+	// Cavium certificate chain corresponding to the attestation.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains.cavium_certs
+	CaviumCerts []string `json:"caviumCerts,omitempty"`
+
+	// Google card certificate chain corresponding to the attestation.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains.google_card_certs
+	GoogleCardCerts []string `json:"googleCardCerts,omitempty"`
+
+	// Google partition certificate chain corresponding to the attestation.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.CertificateChains.google_partition_certs
+	GooglePartitionCerts []string `json:"googlePartitionCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.ImportJob
+type ImportJobObservedState struct {
+	// Output only. The resource name for this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] in the format
+	//  `projects/*/locations/*/keyRings/*/importJobs/*`.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.name
 	Name *string `json:"name,omitempty"`
 
-	// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
-	//  been provisioned for Customer Managed Encryption Key (CMEK) use in the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
-	//  requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
-	//  project will reflect the value configured in the
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
-	//  project's ancestor folder at the time of the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
-	//  ancestor folder has a configured
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
-	//  configurations is used.
-	KmsKey *string `json:"kmsKey,omitempty"`
+	// Output only. The time at which this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] was created.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
 
-	// Required. Indicates the resource type that the resulting
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
-	//  `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
-	//  types.
-	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
+	// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s key
+	//  material was generated.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.generate_time
+	GenerateTime *string `json:"generateTime,omitempty"`
+
+	// Output only. The time at which this
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for expiration and
+	//  can no longer be used to import key material.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.expire_time
+	ExpireTime *string `json:"expireTime,omitempty"`
+
+	// Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]
+	//  expired. Only present if [state][google.cloud.kms.v1.ImportJob.state] is
+	//  [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.expire_event_time
+	ExpireEventTime *string `json:"expireEventTime,omitempty"`
+
+	// Output only. The current state of the
+	//  [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it can be used.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The public key with which to wrap key material prior to
+	//  import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is
+	//  [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.public_key
+	PublicKey *ImportJob_WrappingPublicKey `json:"publicKey,omitempty"`
+
+	// Output only. Statement that was generated and signed by the key creator
+	//  (for example, an HSM) at key creation time. Use this statement to verify
+	//  attributes of the key as stored on the HSM, independently of Google.
+	//  Only present if the chosen
+	//  [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is one with a
+	//  protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.attestation
+	Attestation *KeyOperationAttestation `json:"attestation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+type KeyOperationAttestationObservedState struct {
+	// Output only. The format of the attestation data.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.format
+	Format *string `json:"format,omitempty"`
+
+	// Output only. The attestation data provided by the HSM when the key
+	//  operation was performed.
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.content
+	Content []byte `json:"content,omitempty"`
+
+	// Output only. The certificate chains needed to validate the attestation
+	// +kcc:proto:field=google.cloud.kms.v1.KeyOperationAttestation.cert_chains
+	CertChains *KeyOperationAttestation_CertificateChains `json:"certChains,omitempty"`
 }
