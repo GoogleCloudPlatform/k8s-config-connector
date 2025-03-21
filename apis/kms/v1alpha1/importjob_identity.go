@@ -32,7 +32,7 @@ type ImportJobIdentity struct {
 }
 
 func (i *ImportJobIdentity) String() string {
-	return i.parent.String() + "/importjobs/" + i.id
+	return i.parent.String() + "/importJobs/" + i.id
 }
 
 func (i *ImportJobIdentity) ID() string {
@@ -46,10 +46,11 @@ func (i *ImportJobIdentity) Parent() *ImportJobParent {
 type ImportJobParent struct {
 	ProjectID string
 	Location  string
+	KeyRingID string
 }
 
 func (p *ImportJobParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/keyRings/" + p.KeyRingID
 }
 
 // New builds a ImportJobIdentity from the Config Connector ImportJob object.
@@ -65,6 +66,15 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+
+	keyRingRef := obj.Spec.KeyRingRef
+	keyRingID := keyRingRef.Name
+	if keyRingID == "" {
+		if keyRingRef.External == "" {
+			return nil, fmt.Errorf("one of spec.keyRingRef.name or spec.keyRingRef.external must be set")
+		}
+		keyRingID = keyRingRef.External
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -89,6 +99,9 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.KeyRingID != keyRingID {
+			return nil, fmt.Errorf("spec.keyRingRef changed, expect %s, got %s", actualParent.KeyRingID, keyRingID)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -98,6 +111,7 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		parent: &ImportJobParent{
 			ProjectID: projectID,
 			Location:  location,
+			KeyRingID: keyRingID,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +119,14 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 
 func ParseImportJobExternal(external string) (parent *ImportJobParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "importjobs" {
-		return nil, "", fmt.Errorf("format of KMSImportJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/importjobs/{{importjobID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "keyRings" || tokens[6] != "importJobs" {
+		return nil, "", fmt.Errorf("format of KMSImportJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/keyRings/{{keyRingID}}/importJobs/{{importJobID}})", external)
 	}
 	parent = &ImportJobParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		KeyRingID: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
