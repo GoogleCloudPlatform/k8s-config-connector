@@ -1,35 +1,5 @@
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-403 Forbidden
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "The caller does not have permission",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}:testIamPermissions?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -42,28 +12,68 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/${projectId}/billingInfo",
+  "projectId": "${projectId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
   "name": "Dependent Project",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "example-project-01"
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
 }
 
 200 OK
@@ -77,14 +87,30 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/${operationID}"
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}",
+  "parent": {
+    "id": "${folderID}",
+    "type": "folder"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -97,30 +123,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Dependent Project",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
-    "projectId": "example-project-01",
-    "state": "ACTIVE"
-  }
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
-PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+PUT https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -141,13 +153,13 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/${projectId}/billingInfo",
+  "projectId": "${projectId}"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -163,13 +175,53 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/${projectId}/billingInfo",
+  "projectId": "${projectId}"
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
+PUT https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -189,18 +241,14 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "Dependent Project",
-  "parent": {
-    "id": "${organizationID}",
-    "type": "organization"
-  },
-  "projectId": "example-project-01",
+  "name": "projects/${projectId}",
+  "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/${projectId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -216,13 +264,13 @@ X-Xss-Protection: 0
 {
   "billingAccountName": "billingAccounts/${billingAccountID}",
   "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
+  "name": "projects/${projectId}/billingInfo",
+  "projectId": "${projectId}"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -239,7 +287,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/apigee.googleapis.com:enable?alt=json&prettyPrint=false
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/apigee.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -298,7 +346,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -533,7 +581,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://apigee.googleapis.com/v1/organizations?alt=json&parent=projects%2Fexample-project-01
+POST https://apigee.googleapis.com/v1/organizations?alt=json&parent=projects%2F${projectId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -562,14 +610,14 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "IN_PROGRESS",
-    "targetResourceName": "organizations/example-project-01"
+    "targetResourceName": "organizations/${projectId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}"
+  "name": "organizations/${projectId}/operations/${operationID}"
 }
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/operations/${operationID}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -589,9 +637,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "INSERT",
     "state": "FINISHED",
-    "targetResourceName": "organizations/example-project-01"
+    "targetResourceName": "organizations/${projectId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}",
+  "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Organization",
     "analyticsRegion": "us-west1",
@@ -602,8 +650,8 @@ X-Xss-Protection: 0
     "description": "A sample organization",
     "expiresAt": "1711974896",
     "lastModifiedAt": "1711974896",
-    "name": "example-project-01",
-    "projectId": "example-project-01",
+    "name": "${projectId}",
+    "projectId": "${projectId}",
     "properties": {},
     "runtimeType": "CLOUD",
     "state": "ACTIVE",
@@ -613,7 +661,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -636,8 +684,8 @@ X-Xss-Protection: 0
   "description": "A sample organization",
   "expiresAt": "1711974896",
   "lastModifiedAt": "1711974896",
-  "name": "example-project-01",
-  "projectId": "example-project-01",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
   "properties": {},
   "runtimeType": "CLOUD",
   "state": "ACTIVE",
@@ -646,14 +694,14 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+PUT https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
   "description": "A sample organization",
-  "name": "example-project-01",
+  "name": "${projectId}",
   "properties": {
     "property": null
   }
@@ -678,8 +726,8 @@ X-Xss-Protection: 0
   "description": "A sample organization",
   "expiresAt": "1711974896",
   "lastModifiedAt": "1711974896",
-  "name": "example-project-01",
-  "projectId": "example-project-01",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
   "properties": {},
   "runtimeType": "CLOUD",
   "state": "ACTIVE",
@@ -688,7 +736,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -711,8 +759,8 @@ X-Xss-Protection: 0
   "description": "A sample organization",
   "expiresAt": "1711974896",
   "lastModifiedAt": "1711974896",
-  "name": "example-project-01",
-  "projectId": "example-project-01",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
   "properties": {},
   "runtimeType": "CLOUD",
   "state": "ACTIVE",
@@ -721,7 +769,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -738,14 +786,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "resource organizations/example-project-01/environments/apgenv-${uniqueId} not found",
+    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://apigee.googleapis.com/v1/organizations/example-project-01/environments?alt=json
+POST https://apigee.googleapis.com/v1/organizations/${projectId}/environments?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -779,9 +827,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "CREATE",
     "state": "FINISHED",
-    "targetResourceName": "organizations/example-project-01/environments/apgenv-${uniqueId}"
+    "targetResourceName": "organizations/${projectId}/environments/apgenv-${uniqueId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}",
+  "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Environment",
     "description": "A sample environment",
@@ -800,7 +848,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -830,7 +878,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+PUT https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -839,10 +887,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "displayName": "updated-sample-environment",
   "properties": {
     "property": [
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
       {
         "name": "new-key",
         "value": "A new sample value"
@@ -864,17 +908,8 @@ X-Xss-Protection: 0
 {
   "description": "An updated sample environment",
   "displayName": "updated-sample-environment",
-  "name": "apgenv-${uniqueId}",
   "properties": {
     "property": [
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
       {
         "name": "new-key",
         "value": "A new sample value"
@@ -885,7 +920,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -902,17 +937,8 @@ X-Xss-Protection: 0
 {
   "description": "An updated sample environment",
   "displayName": "updated-sample-environment",
-  "name": "apgenv-${uniqueId}",
   "properties": {
     "property": [
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
       {
         "name": "new-key",
         "value": "A new sample value"
@@ -923,7 +949,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -943,9 +969,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
-    "targetResourceName": "organizations/example-project-01/environments/apgenv-${uniqueId}"
+    "targetResourceName": "organizations/${projectId}/environments/apgenv-${uniqueId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}",
+  "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -953,7 +979,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/environments/apgenv-${uniqueId}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/environments/apgenv-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -970,14 +996,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "resource organizations/example-project-01/environments/apgenv-${uniqueId} not found",
+    "message": "resource organizations/${projectId}/environments/apgenv-${uniqueId} not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1000,8 +1026,8 @@ X-Xss-Protection: 0
   "description": "A sample organization",
   "expiresAt": "1711974896",
   "lastModifiedAt": "1711974896",
-  "name": "example-project-01",
-  "projectId": "example-project-01",
+  "name": "${projectId}",
+  "projectId": "${projectId}",
   "properties": {},
   "runtimeType": "CLOUD",
   "state": "ACTIVE",
@@ -1010,7 +1036,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+DELETE https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1029,14 +1055,14 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "IN_PROGRESS",
-    "targetResourceName": "organizations/example-project-01"
+    "targetResourceName": "organizations/${projectId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}"
+  "name": "organizations/${projectId}/operations/${operationID}"
 }
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01/operations/${operationID}?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1056,9 +1082,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
     "operationType": "DELETE",
     "state": "FINISHED",
-    "targetResourceName": "organizations/example-project-01"
+    "targetResourceName": "organizations/${projectId}"
   },
-  "name": "organizations/example-project-01/operations/${operationID}",
+  "name": "organizations/${projectId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -1066,7 +1092,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://apigee.googleapis.com/v1/organizations/example-project-01?alt=json
+GET https://apigee.googleapis.com/v1/organizations/${projectId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
@@ -1083,7 +1109,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "googleCloudApigeeV1Organization \"organizations/example-project-01\" not found",
+    "message": "googleCloudApigeeV1Organization \"organizations/${projectId}\" not found",
     "status": "NOT_FOUND"
   }
 }

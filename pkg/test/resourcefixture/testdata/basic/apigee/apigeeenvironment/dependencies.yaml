@@ -19,10 +19,12 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
-  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  resourceID: ${projectId}
   name: "Dependent Project"
-  organizationRef:
-    external: ${TEST_ORG_ID}
+  # organizationRef:
+  #   external: ${TEST_ORG_ID}
+  folderRef:
+    external: ${TEST_FOLDER_ID}
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}
 ---
