@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: MonitoringNotificationChannel
+    listKind: MonitoringNotificationChannelList
     plural: monitoringnotificationchannels
     shortNames:
     - gcpmonitoringnotificationchannel
@@ -43,20 +44,24 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: MonitoringNotificationChannel is the Schema for the MonitoringNotificationChannel
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: MonitoringNotificationChannelSpec defines the desired state
+              of MonitoringNotificationChannel
             properties:
               description:
                 description: An optional human-readable description of this notification
@@ -74,16 +79,19 @@ spec:
                   in the future.
                 type: boolean
               forceDelete:
-                description: |-
-                  If true, the notification channel will be deleted regardless
-                  of its use in alert policies (the policies will be updated
-                  to remove the channel). If false, channels that are still
-                  referenced by an existing alerting policy will fail to be
-                  deleted in a delete operation.
+                description: If true, the notification channel will be deleted regardless
+                  of its use in alert policies (the policies will be updated to remove
+                  the channel). If false, channels that are still referenced by an
+                  existing alerting policy will fail to be deleted in a delete operation.
                 type: boolean
               labels:
                 additionalProperties:
                   type: string
+                description: Configuration fields that define the channel and its
+                  behavior. The permissible and required labels are specified in the
+                  [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
+                  of the `NotificationChannelDescriptor` corresponding to the `type`
+                  field.
                 type: object
               resourceID:
                 description: Immutable. Optional. The service-generated name of the
@@ -102,18 +110,7 @@ spec:
                 properties:
                   authToken:
                     description: 'An authorization token for a notification channel.
-                      Channel types that support this field include: slack.'
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
+                      Channel types that support this field include: slack'
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -135,25 +132,14 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - name
                             - key
+                            - name
                             type: object
                         type: object
                     type: object
                   password:
-                    description: 'An password for a notification channel. Channel
-                      types that support this field include: webhook_basicauth.'
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
+                    description: 'A password for a notification channel. Channel types
+                      that support this field include: webhook_basicauth'
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -175,25 +161,14 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - name
                             - key
+                            - name
                             type: object
                         type: object
                     type: object
                   serviceKey:
-                    description: 'An servicekey token for a notification channel.
-                      Channel types that support this field include: pagerduty.'
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
+                    description: 'A servicekey token for a notification channel. Channel
+                      types that support this field include: pagerduty'
                     properties:
                       value:
                         description: Value of the field. Cannot be used if 'valueFrom'
@@ -215,25 +190,25 @@ spec:
                                   from.
                                 type: string
                             required:
-                            - name
                             - key
+                            - name
                             type: object
                         type: object
                     type: object
                 type: object
               type:
                 description: The type of the notification channel. This field matches
-                  the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list
-                  to get the list of valid values such as "email", "slack", etc...
+                  the value of the [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type]
+                  field.
                 type: string
-            required:
-            - type
             type: object
           status:
+            description: MonitoringNotificationChannelStatus defines the config connector
+              machine state of MonitoringNotificationChannel
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -258,10 +233,9 @@ spec:
                   type: object
                 type: array
               name:
-                description: |-
-                  The full REST resource name for this channel. The syntax is:
-                  projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
-                  The [CHANNEL_ID] is automatically assigned by the server on creation.
+                description: 'The full REST resource name for this channel The syntax
+                  is: projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID] The
+                  [CHANNEL_ID] is automatically assigned by the server on creation.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -269,20 +243,29 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               verificationStatus:
-                description: Indicates whether this channel has been verified or not.
-                  On a ListNotificationChannels or GetNotificationChannel operation,
-                  this field is expected to be populated.If the value is UNVERIFIED,
-                  then it indicates that the channel is non-functioning (it both requires
-                  verification and lacks verification); otherwise, it is assumed that
-                  the channel works.If the channel is neither VERIFIED nor UNVERIFIED,
-                  it implies that the channel is of a type that does not require verification
-                  or that this specific channel has been exempted from verification
-                  because it was created prior to verification being required for
-                  channels of this type.This field cannot be modified using a standard
-                  UpdateNotificationChannel operation. To change the value of this
-                  field, you must call VerifyNotificationChannel.
+                description: |-
+                  Indicates whether this channel has been verified or not. On a
+                   [`ListNotificationChannels`][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
+                   or
+                   [`GetNotificationChannel`][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
+                   operation, this field is expected to be populated.
+
+                   If the value is `UNVERIFIED`, then it indicates that the channel is
+                   non-functioning (it both requires verification and lacks verification);
+                   otherwise, it is assumed that the channel works.
+
+                   If the channel is neither `VERIFIED` nor `UNVERIFIED`, it implies that
+                   the channel is of a type that does not require verification or that
+                   this specific channel has been exempted from verification because it was
+                   created prior to verification being required for channels of this type.
+
+                   This field cannot be modified using a standard
+                   [`UpdateNotificationChannel`][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
+                   operation. To change the value of this field, you must call
+                   [`VerifyNotificationChannel`][google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel].
                 type: string
             type: object
         required:
@@ -292,9 +275,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
