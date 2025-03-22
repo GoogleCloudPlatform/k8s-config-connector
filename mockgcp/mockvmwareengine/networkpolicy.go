@@ -54,25 +54,6 @@ func (s *VMwareEngineV1) GetNetworkPolicy(ctx context.Context, req *pb.GetNetwor
 	return obj, nil
 }
 
-func (s *VMwareEngineV1) ListNetworkPolicies(ctx context.Context, req *pb.ListNetworkPoliciesRequest) (*pb.ListNetworkPoliciesResponse, error) {
-	parent, err := s.parseNetworkPolicyParent(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
-	prefix := parent.String() + "/"
-
-	var objs []*pb.NetworkPolicy
-	if err := s.storage.List(ctx, prefix, func(fqn string, obj proto.Message) error {
-		objs = append(objs, obj.(*pb.NetworkPolicy))
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return &pb.ListNetworkPoliciesResponse{NetworkPolicies: objs}, nil
-}
-
 func (s *VMwareEngineV1) CreateNetworkPolicy(ctx context.Context, req *pb.CreateNetworkPolicyRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/networkPolicies/" + req.NetworkPolicyId
 	name, err := s.parseNetworkPolicyName(reqName)
@@ -93,8 +74,16 @@ func (s *VMwareEngineV1) CreateNetworkPolicy(ctx context.Context, req *pb.Create
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Uid = "111111111111111111111"
+
+	// change project ID to project Number in VmwareEngineNetworkCanonical
 	obj.VmwareEngineNetworkCanonical = req.NetworkPolicy.VmwareEngineNetwork
+	parts := strings.Split(obj.VmwareEngineNetworkCanonical, "/")
+	if len(parts) >= 6 && parts[0] == "projects" && parts[2] == "locations" && parts[4] == "vmwareEngineNetworks" {
+		obj.VmwareEngineNetworkCanonical = fmt.Sprintf("projects/%d/locations/%s/vmwareEngineNetworks/%s",
+			name.Project.Number, parts[3], parts[5])
+	}
+
+	setDefaultNetworkPolicyFields(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -125,30 +114,19 @@ func (s *VMwareEngineV1) UpdateNetworkPolicy(ctx context.Context, req *pb.Update
 
 	fqn := name.String()
 
-	// Check that the referenced VmwareEngineNetwork exists.
-	if req.NetworkPolicy.VmwareEngineNetwork != "" {
-		if _, err := s.GetVmwareEngineNetwork(ctx, &pb.GetVmwareEngineNetworkRequest{Name: req.NetworkPolicy.VmwareEngineNetwork}); err != nil {
-			return nil, status.Errorf(codes.FailedPrecondition, "vmwareEngineNetwork '%s' not found", req.NetworkPolicy.VmwareEngineNetwork)
-		}
-	}
-
-	original := &pb.NetworkPolicy{}
-	if err := s.storage.Get(ctx, fqn, original); err != nil {
+	obj := &pb.NetworkPolicy{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	obj := proto.Clone(original).(*pb.NetworkPolicy)
-	if req.NetworkPolicy.InternetAccess != nil {
-		obj.InternetAccess = req.NetworkPolicy.InternetAccess
-	}
-	if req.NetworkPolicy.ExternalIp != nil {
-		obj.ExternalIp = req.NetworkPolicy.ExternalIp
-	}
-	if req.NetworkPolicy.EdgeServicesCidr != "" {
-		obj.EdgeServicesCidr = req.NetworkPolicy.EdgeServicesCidr
-	}
-	if req.NetworkPolicy.Description != "" {
-		obj.Description = req.NetworkPolicy.Description
+	for _, path := range req.UpdateMask.Paths {
+		switch path {
+		case "description":
+			obj.Description = req.NetworkPolicy.Description
+		default:
+			// TODO: add support for other fields
+			return nil, status.Errorf(codes.Unimplemented, "update mask field %q is not implemented in mockgcp", path)
+		}
 	}
 
 	obj.UpdateTime = timestamppb.Now()
@@ -166,9 +144,6 @@ func (s *VMwareEngineV1) UpdateNetworkPolicy(ctx context.Context, req *pb.Update
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
 		return obj, nil
 	})
 }
@@ -232,33 +207,14 @@ func (s *MockService) parseNetworkPolicyName(name string) (*networkPolicyName, e
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-type networkPolicyParent struct {
-	Project  *projects.ProjectData
-	Location string
-}
-
-func (n *networkPolicyParent) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s", n.Project.ID, n.Location)
-}
-
-// parseNetworkPolicyParent parses a string into a networkPolicyParent.
-// The expected form is `projects/*/locations/*`.
-func (s *MockService) parseNetworkPolicyParent(name string) (*networkPolicyParent, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &networkPolicyParent{
-			Project:  project,
-			Location: tokens[3],
-		}
-
-		return name, nil
+func setDefaultNetworkPolicyFields(obj *pb.NetworkPolicy) {
+	obj.Uid = "111111111111111111111"
+	obj.ExternalIp = &pb.NetworkPolicy_NetworkService{
+		Enabled: false,
+		State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
 	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "parent name %q is not valid", name)
+	obj.InternetAccess = &pb.NetworkPolicy_NetworkService{
+		Enabled: false,
+		State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
+	}
 }
