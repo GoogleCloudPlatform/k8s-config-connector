@@ -71,26 +71,6 @@ func KMSImportJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.KMSImp
 	out.Attestation = KeyOperationAttestationObservedState_ToProto(mapCtx, in.Attestation)
 	return out
 }
-func KMSImportJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krm.KMSImportJobSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KMSImportJobSpec{}
-	// MISSING: Name
-	out.ImportMethod = direct.Enum_FromProto(mapCtx, in.GetImportMethod())
-	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
-	return out
-}
-func KMSImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSImportJobSpec) *pb.ImportJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ImportJob{}
-	// MISSING: Name
-	out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
-	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
-	return out
-}
 func KeyOperationAttestationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.KeyOperationAttestation) *krm.KeyOperationAttestationObservedState {
 	if in == nil {
 		return nil
