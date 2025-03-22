@@ -759,7 +759,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupPlan"}:
 
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRBackupVault"}:
-
 			case schema.GroupKind{Group: "backupdr.cnrm.cloud.google.com", Kind: "BackupDRManagementServer"}:
 
 			case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
@@ -941,6 +940,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIFeaturestore"}:
 
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineNetwork"}:
+			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineNetworkPeering"}:
 
 			case schema.GroupKind{Group: "vpcaccess.cnrm.cloud.google.com", Kind: "VPCAccessConnector"}:
 
