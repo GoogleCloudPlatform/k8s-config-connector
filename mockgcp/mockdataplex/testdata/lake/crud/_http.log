@@ -21,7 +21,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "create"
@@ -50,7 +49,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
@@ -92,7 +90,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {},
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metastore": {},
   "metastoreStatus": {
@@ -124,7 +124,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {},
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metastore": {},
   "metastoreStatus": {
@@ -158,7 +160,9 @@ X-Xss-Protection: 0
 {
   "lakes": [
     {
-      "assetStatus": {},
+      "assetStatus": {
+        "updateTime": "2024-04-01T12:34:56.123456Z"
+      },
       "createTime": "2024-04-01T12:34:56.123456Z",
       "metastore": {},
       "metastoreStatus": {
@@ -200,9 +204,7 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "update"
   },
@@ -230,7 +232,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
@@ -239,8 +240,11 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.Lake",
-    "assetStatus": {},
+    "assetStatus": {
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "New description",
     "metastore": {},
     "metastoreStatus": {
       "state": "NONE",
@@ -272,8 +276,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "assetStatus": {},
+  "assetStatus": {
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "New description",
   "metastore": {},
   "metastoreStatus": {
     "state": "NONE",
@@ -306,7 +313,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "verb": "delete"
