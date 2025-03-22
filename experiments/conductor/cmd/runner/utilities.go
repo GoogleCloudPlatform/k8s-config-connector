@@ -169,7 +169,7 @@ func writeTemplateToFile(branch Branch, filePath string, template string) {
 	tmp = strings.ReplaceAll(tmp, "<PROTO_MESSAGE>", branch.ProtoMsg)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_PACKAGE>", branch.Package)
 	tmp = strings.ReplaceAll(tmp, "<CRD_GROUP>", fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group))
-	tmp = strings.ReplaceAll(tmp, "<CRD_VERSION>", "v1alpha1")
+	tmp = strings.ReplaceAll(tmp, "<CRD_VERSION>", branch.CRDVersion())
 	tmp = strings.ReplaceAll(tmp, "<CRD_KIND>", branch.Kind)
 	tmp = strings.ReplaceAll(tmp, "<PROTO_RESOURCE>", branch.Proto)
 

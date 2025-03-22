@@ -169,7 +169,10 @@ type Branch struct {
 	Controller string `yaml:"controller"` // Unknown
 	Skip       bool   `yaml:"skip"`       // Skip this branch in processing
 
-	Kind      string `yaml:"kind"`          // AIModel
+	Kind string `yaml:"kind"` // AIModel
+
+	RawCRDVersion string `yaml:"crd-version"` // v1beta1, defaults to v1alpha1
+
 	Package   string `yaml:"package"`       // google.ai.generativelanguage.v1beta
 	Proto     string `yaml:"proto"`         // Model
 	ProtoPath string `yaml:"proto-path"`    // google.ai.generativelanguage.v1beta.model_service
@@ -184,6 +187,14 @@ type Branch struct {
 	// - eventarc.googleapis.com
 	// - aiplatform.googleapis.com
 	ApisEnabled []string `yaml:"apis-enabled"`
+}
+
+// CRDVersion returns the version for the CRD, defaulting to v1alpha1
+func (b *Branch) CRDVersion() string {
+	if b.RawCRDVersion == "" {
+		return "v1alpha1"
+	}
+	return b.RawCRDVersion
 }
 
 // BranchModifier is a function type that takes a Branch and returns a modified Branch
