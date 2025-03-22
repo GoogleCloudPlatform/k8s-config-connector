@@ -56,7 +56,7 @@ var Acronyms = []string{
 	"MiB",
 	"NAT",
 	"OAuth2", "OIDC", "OS",
-	"PD", "PSC",
+	"PD", "PSC", "PZI", "PZS",
 	"SQL", "SSH", "SSL", "SSO",
 	"TCP", "TLS", "TTL",
 	"UDP", "URI", "URL",

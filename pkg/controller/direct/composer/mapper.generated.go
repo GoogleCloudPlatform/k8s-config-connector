@@ -66,8 +66,8 @@ func ComposerEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.SatisfiesPZS = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPZI = direct.LazyPtr(in.GetSatisfiesPzi())
 	return out
 }
 func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComposerEnvironmentObservedState) *pb.Environment {
@@ -81,8 +81,8 @@ func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPZS)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPZI)
 	return out
 }
 func ComposerEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.ComposerEnvironmentSpec {
