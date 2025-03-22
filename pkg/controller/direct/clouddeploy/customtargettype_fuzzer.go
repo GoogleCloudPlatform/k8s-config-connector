@@ -19,8 +19,8 @@
 package clouddeploy
 
 import (
+	pb "cloud.google.com/go/deploy/apiv1/deploypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/cloud/deploy/v1"
 )
 
 func init() {
@@ -29,7 +29,7 @@ func init() {
 
 func customTargetTypeFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CustomTargetType{},
-		CustomTargetTypeSpec_FromProto, CustomTargetTypeSpec_ToProto,
+		CustomTargetType_FromProto, CustomTargetType_ToProto,
 		CustomTargetTypeObservedState_FromProto, CustomTargetTypeObservedState_ToProto,
 	)
 
