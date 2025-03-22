@@ -14,6 +14,12 @@
 
 package v1alpha1
 
+// +tool:krm-reference
+// proto.service: google.cloud.tpu.v2.Tpu
+// proto.message: google.cloud.tpu.v2.Node
+// crd.type: TPUVirtualMachine
+// crd.version: v1alpha1
+
 import (
 	"context"
 	"fmt"
@@ -26,11 +32,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &NodeRef{}
+var _ refsv1beta1.ExternalNormalizer = &VirtualMachineRef{}
 
-// NodeRef defines the resource reference to TPUVirtualMachine, which "External" field
-// holds the GCP identifier for the KRM object.
-type NodeRef struct {
+// VirtualMachineRef defines a resource reference to a TPUVirtualMachine.
+type VirtualMachineRef struct {
 	// A reference to an externally managed TPUVirtualMachine resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/nodes/{{nodeID}}".
 	External string `json:"external,omitempty"`
@@ -45,13 +50,14 @@ type NodeRef struct {
 // NormalizedExternal provision the "External" value for other resource that depends on TPUVirtualMachine.
 // If the "External" is given in the other resource's spec.TPUVirtualMachineRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual TPUVirtualMachine object from the cluster.
-func (r *NodeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *VirtualMachineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", TPUVirtualMachineGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseNodeExternal(r.External); err != nil {
+		var id TPUVirtualMachineIdentity
+		if err := id.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

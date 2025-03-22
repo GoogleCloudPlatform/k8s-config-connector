@@ -1,10 +1,12 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.23.0
+go 1.23.2
 
-toolchain go1.23.4
+toolchain go1.24.1
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
+
+replace cloud.google.com/go/tpu/apiv2 => ./gcpclients/generated/cloud.google.com/go/tpu/apiv2
 
 require (
 	cloud.google.com/go/aiplatform v1.74.0
@@ -51,6 +53,7 @@ require (
 	cloud.google.com/go/spanner v1.76.1
 	cloud.google.com/go/speech v1.26.0
 	cloud.google.com/go/storage v1.50.0
+	cloud.google.com/go/tpu/apiv2 v0.0.0-00010101000000-000000000000
 	cloud.google.com/go/vmwareengine v1.3.3
 	cloud.google.com/go/workflows v1.13.3
 	cloud.google.com/go/workstations v1.1.1
@@ -172,7 +175,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/glog v1.2.4 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.4
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.3 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/gnostic v0.6.9 // indirect

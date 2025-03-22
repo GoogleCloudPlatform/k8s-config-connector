@@ -23,6 +23,8 @@ import (
 	"time"
 
 	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -257,6 +259,9 @@ func ValueOf[T any](p *T) T {
 
 // IsNotFound returns true if the given error is an HTTP 404.
 func IsNotFound(err error) bool {
+	if status.Code(err) == codes.NotFound {
+		return true
+	}
 	return HasHTTPCode(err, 404)
 }
 
