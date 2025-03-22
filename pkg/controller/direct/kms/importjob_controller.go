@@ -194,6 +194,10 @@ func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 	desiredPb.Name = a.id.String()
 
+	// Match output-only fields that are not marked as output-only in the proto.
+	desiredPb.PublicKey = a.actual.PublicKey
+	desiredPb.Attestation = a.actual.Attestation
+
 	paths := make(sets.Set[string])
 	var err error
 	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)

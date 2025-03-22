@@ -1,9 +1,0 @@
-apiVersion: kms.cnrm.cloud.google.com/v1alpha1
-kind: KMSImportJob
-metadata:
-  name: kmsimportjob-minimal-${uniqueId}
-spec:
-  projectRef:
-    external: ${projectId}
-  locationID: us-west2
-  description: "Initial description"

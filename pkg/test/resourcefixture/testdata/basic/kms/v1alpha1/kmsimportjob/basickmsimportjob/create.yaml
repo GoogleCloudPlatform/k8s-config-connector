@@ -1,0 +1,12 @@
+apiVersion: kms.cnrm.cloud.google.com/v1alpha1
+kind: KMSImportJob
+metadata:
+  name: kmsimportjob-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  locationID: us-west2
+  kmsKeyRingRef:
+    name: kmskeyring-${uniqueId}
+  importMethod: rsa_oaep_3072_sha1_aes_256
+  protectionLevel: hsm
