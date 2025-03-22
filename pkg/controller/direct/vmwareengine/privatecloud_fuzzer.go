@@ -50,6 +50,7 @@ func vmwareEnginePrivateCloudFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".management_cluster.stretched_cluster_config")
 
 	return f
 }
