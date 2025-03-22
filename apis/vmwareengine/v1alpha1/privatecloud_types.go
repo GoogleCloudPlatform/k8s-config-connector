@@ -179,7 +179,8 @@ type PrivateCloud_ManagementCluster struct {
 	// Optional. Configuration of a stretched cluster. Required for STRETCHED
 	//  private clouds.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.PrivateCloud.ManagementCluster.stretched_cluster_config
-	StretchedClusterConfig *StretchedClusterConfig `json:"stretchedClusterConfig,omitempty"`
+	// NOTYET: this field is not yet supported
+	// StretchedClusterConfig *StretchedClusterConfig `json:"stretchedClusterConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.vmwareengine.v1.NodeTypeConfig
@@ -266,12 +267,9 @@ type NetworkConfig struct {
 	// +required
 	ManagementCIDR *string `json:"managementCIDR,omitempty"`
 
-	// Optional. The relative resource name of the VMware Engine network attached
-	//  to the private cloud. Specify the name in the following form:
-	//  `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
-	//  where `{project}` can either be a project number or a project ID.
+	// Optional. The name of the VMware Engine network attached to the private cloud.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.NetworkConfig.vmware_engine_network
-	VMwareEngineNetwork *string `json:"vmwareEngineNetwork,omitempty"`
+	VMwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkConfig
