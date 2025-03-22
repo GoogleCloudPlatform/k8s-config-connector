@@ -23,6 +23,8 @@ import (
 	"time"
 
 	"github.com/googleapis/gax-go/v2/apierror"
+	grpcCode "google.golang.org/grpc/codes"
+	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -275,6 +277,12 @@ func HasHTTPCode(err error, code int) bool {
 	if errors.As(err, &apiError) {
 		if apiError.HTTPCode() == code {
 			return true
+		}
+		// Check for GRPC error code
+		if apiError.HTTPCode() == -1 {
+			if grpcStatus.Code(err) == grpcCode.NotFound {
+				return true
+			}
 		}
 	} else {
 		klog.Warningf("unexpected error type %T", err)

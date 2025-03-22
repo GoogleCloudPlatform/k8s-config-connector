@@ -14,9 +14,9 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.workflows.executions.v1.Execution
-// api.group: workflows.cnrm.cloud.google.com
+// api.group: workflowexecutions.cnrm.cloud.google.com
 
-package workflows
+package workflowexecutions
 
 import (
 	pb "cloud.google.com/go/workflows/executions/apiv1/executionspb"

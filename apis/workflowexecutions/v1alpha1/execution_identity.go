@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	workflow "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -57,7 +58,7 @@ func (p *ExecutionParent) String() string {
 func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsExecution) (*ExecutionIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.WorkflowExecutionParent.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +66,11 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.WorkflowExecutionParent.Location
+	location := obj.Spec.Location
+	_, workflow, err := workflow.ParseWorkflowsWorkflowExternal(obj.Spec.WorkflowRef.External)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -99,6 +104,7 @@ func NewExecutionIdentity(ctx context.Context, reader client.Reader, obj *Workfl
 		parent: &ExecutionParent{
 			ProjectID: projectID,
 			Location:  location,
+			Workflow:  workflow,
 		},
 		id: resourceID,
 	}, nil

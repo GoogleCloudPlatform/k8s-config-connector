@@ -15,8 +15,8 @@
 package mockworkflowexecution
 
 // +tool:mockgcp-service
-// http.host: workflows.googleapis.com
-// proto.service: google.cloud.workflows.v1.Workflows
+// http.host: workflowexecutions.googleapis.com
+// proto.service: google.cloud.workflows.executions.v1.Executions
 
 import (
 	"context"

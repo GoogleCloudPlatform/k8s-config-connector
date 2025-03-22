@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	workflow "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -66,7 +67,7 @@ type WorkflowExecutionParent struct {
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Required.
-	WorkflowRef *WorkflowsWorkflowRef `json:"workflowRef,omitempty"`
+	WorkflowRef *workflow.WorkflowsWorkflowRef `json:"workflowRef,omitempty"`
 }
 
 // WorkflowsExecutionStatus defines the config connector machine state of WorkflowsExecution

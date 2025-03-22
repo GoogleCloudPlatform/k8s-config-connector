@@ -1,0 +1,366 @@
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fworkflows%2Fworkflow-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows?%24alt=json%3Benum-encoding%3Dint&workflowId=workflow-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Example workflow",
+  "labels": {
+    "env": "test"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Example workflow",
+    "labels": {
+      "env": "test"
+    },
+    "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+    "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+    "revisionId": "revision-id-placeholder",
+    "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+    "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/CreateExecution
+
+{
+  "execution": {
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/"
+  },
+  "parent": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}"
+}
+
+OK
+
+{
+  "argument": "null",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "status": {},
+  "workflowRevisionId": "000001-383"
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2"
+}
+
+OK
+
+{
+  "argument": "null",
+  "duration": "0.064197426s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-383"
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2"
+}
+
+OK
+
+{
+  "argument": "null",
+  "duration": "0.064197426s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-383"
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2"
+}
+
+OK
+
+{
+  "argument": "null",
+  "duration": "0.064197426s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-383"
+}
+
+---
+
+GRPC /google.cloud.workflows.executions.v1.Executions/GetExecution
+
+{
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2"
+}
+
+OK
+
+{
+  "argument": "null",
+  "duration": "0.064197426s",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/3796b580-5212-4a21-9b4b-f7cbdd7383a2",
+  "result": "\"us-central1\"",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "SUCCEEDED",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "main",
+        "step": "returnOutput"
+      }
+    ]
+  },
+  "workflowRevisionId": "000001-383"
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fworkflows%2Fworkflow-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Example workflow",
+  "labels": {
+    "env": "test"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fworkflows%2Fworkflow-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
