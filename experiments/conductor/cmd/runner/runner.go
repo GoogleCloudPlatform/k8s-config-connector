@@ -341,33 +341,33 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case cmdPushBranch: // 9
 		processors := []BranchProcessor{
-			{Fn: makeReadyPR, CommitMsg: "make ready-pr"},
-			{Fn: pushBranch, CommitMsg: "push branch"},
+			{Fn: makeReadyPR, CommitMsgTemplate: "make ready-pr"},
+			{Fn: pushBranch, CommitMsgTemplate: "push branch"},
 		}
 		processBranches(ctx, opts, branches.Branches, "Pushing Branch", processors)
 	case cmdCreateScriptYaml: // 10
-		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsg: "Create gcloud script.yaml"}})
+		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsgTemplate: "mockgcp: create test script for {{command}}"}})
 	case cmdCaptureHttpLog: // 11
-		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsg: "Capture HTTP Log for mocks"}})
+		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsgTemplate: "mockgcp: golden output for TestScripts/mock{{group}}/testdata/{{resource}}/crud"}})
 	case cmdGenerateMockGo: // 12
-		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsg: "Add generated mock files"}})
+		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsgTemplate: "Add generated mock files"}})
 	case cmdAddServiceRoundTrip: // 13
-		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsg: "Add service to mock_http_roundtrip.go"}})
+		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsgTemplate: "mockgcp: Add mock{{group}} service to mock_http_roundtrip.go"}})
 	case cmdAddProtoMakefile: // 14
-		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsg: "Add proto generation to makefile", AttemptsOnNoChange: 1}})
+		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: "Add proto generation to makefile", AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
-		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsg: "Build and add generated proto files"}})
+		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: "Build and add generated proto files"}})
 	case cmdRunMockTests: // 16
-		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsg: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
-		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsg: "Add generated types"}})
+		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "Add generated types"}})
 	case cmdAdjustTypes: // 21
 		processors := []BranchProcessor{
-			{Fn: setTypeSpecStatus, CommitMsg: "Add spec and status to generated type"},
-			{Fn: setTypeParent, CommitMsg: "Add parent to generated type"},
-			{Fn: adjustIdentityParent, CommitMsg: "Adjust identity parent"},
+			{Fn: setTypeSpecStatus, CommitMsgTemplate: "Add spec and status to generated type"},
+			{Fn: setTypeParent, CommitMsgTemplate: "Add parent to generated type"},
+			{Fn: adjustIdentityParent, CommitMsgTemplate: "Adjust identity parent"},
 			//{Fn: adjustIdentityParentNewFunction, CommitMsg: "Adjust identity parent NewIdentity method"},
-			{Fn: regenerateTypes, CommitMsg: "Regenerate types"},
+			{Fn: regenerateTypes, CommitMsgTemplate: "Regenerate types"},
 			// preferred manual: Add something for Capitalization of Abbreviations: any acronyms that are not all caps should be all caps
 			// manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
 			// * https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4017/commits/cc726106aff55d41e6bc94272acc3612f2636397
@@ -375,28 +375,28 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 		processBranches(ctx, opts, branches.Branches, "Adjusting types", processors)
 	case cmdGenerateCRD: // 22
-		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsg: "Add generated CRD"}})
+		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsgTemplate: "Add generated CRD"}})
 	case cmdGenerateMapper: // 23
-		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsg: "Add generated mapper"}})
+		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsgTemplate: "Add generated mapper"}})
 		// handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
 	case cmdGenerateFuzzer: // 24
-		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsg: "Add generated fuzzer"}})
+		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsgTemplate: "Add generated fuzzer"}})
 	case cmdControllerClient: // 40
-		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsg: "Add controller client"}})
+		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsgTemplate: "Add controller client"}})
 	case cmdGenerateController: // 41
-		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsg: "Add controller"}})
+		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsgTemplate: "Add controller"}})
 	case cmdCreateIdentity: // 43
 		processBranches(ctx, opts, branches.Branches, "Identity and Reference", []BranchProcessor{
-			{Fn: generateControllerIdentity, CommitMsg: "Add controller identity"},
-			{Fn: generateControllerReference, CommitMsg: "Add controller reference"},
+			{Fn: generateControllerIdentity, CommitMsgTemplate: "Add controller identity"},
+			{Fn: generateControllerReference, CommitMsgTemplate: "Add controller reference"},
 		})
 	case cmdControllerCreateTest: // 44
 		processBranches(ctx, opts, branches.Branches, "Controller Test", []BranchProcessor{
-			{Fn: createControllerTest, CommitMsg: "Create minimal test"},
-			{Fn: updateTestHarness, CommitMsg: "Support for testing with mockgcp"},
+			{Fn: createControllerTest, CommitMsgTemplate: "Create minimal test"},
+			{Fn: updateTestHarness, CommitMsgTemplate: "Support for testing with mockgcp"},
 		})
 	case cmdCaptureGoldenTestOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsg: "Capture golden output"}})
+		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsgTemplate: "Capture golden output"}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}

@@ -207,7 +207,7 @@ func gitAdd(ctx context.Context, workDir string, files ...string) error {
 
 func gitCommit(ctx context.Context, workDir string, msg string) error {
 	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg)
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
@@ -551,11 +551,19 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 
 type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error)
 type BranchProcessor struct {
-	CommitMsg          string
+	CommitMsgTemplate  string
 	Fn                 BranchProcessorFn
 	AttemptsOnNoChange int
 	VerifyFn           BranchProcessorFn
 	VerifyAttempts     int
+}
+
+func (b *BranchProcessor) CommitMsg(branch Branch) string {
+	s := b.CommitMsgTemplate
+	s = strings.ReplaceAll(s, "{{command}}", branch.Command)
+	s = strings.ReplaceAll(s, "{{group}}", branch.Group)
+	s = strings.ReplaceAll(s, "{{resource}}", branch.Resource)
+	return s
 }
 
 // runBranchFnWithRetries runs the processor multiple times until changes are detected and commits them
@@ -563,7 +571,7 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 	// Try running processor up to N times until we see changes in all affected paths
 	var execResults *ExecResults
 	if commitMsg == "" {
-		commitMsg = processor.CommitMsg
+		commitMsg = processor.CommitMsg(branch)
 	}
 	maxAttempts := processor.AttemptsOnNoChange
 	if maxAttempts == 0 {
@@ -639,7 +647,7 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 
 // processBranch handles the processing of a single branch
 func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
-	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg)
+	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg(branch))
 
 	// Skip if branch should be skipped
 	if branch.Skip {
@@ -662,17 +670,17 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 		var err error
 		paths, execResults, err := processor.VerifyFn(ctx, opts, branch, nil)
 		if execResults == nil {
-			log.Printf("execResults is nil for branch %s, commit message: %s", branch.Name, processor.CommitMsg)
+			log.Printf("execResults is nil for branch %s, commit message: %s", branch.Name, processor.CommitMsg(branch))
 			continue
 		}
 		if execResults.ExitCode == 0 {
-			log.Printf("Verification attempt %d succeeded for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
+			log.Printf("Verification attempt %d succeeded for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg(branch))
 			break
 		}
 		if err != nil {
-			log.Printf("Verification attempt %d Error: %v for branch %s, commit message: %s", i+1, err, branch.Name, processor.CommitMsg)
+			log.Printf("Verification attempt %d Error: %v for branch %s, commit message: %s", i+1, err, branch.Name, processor.CommitMsg(branch))
 		} else {
-			log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
+			log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg(branch))
 		}
 		if len(paths) != 0 {
 			// Revert the changes for the failed verification
@@ -683,8 +691,8 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 				}
 			}
 		}
-		log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg)
-		commitMsg := fmt.Sprintf("Autofix attempt %d. %s", i+1, processor.CommitMsg)
+		log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg(branch))
+		commitMsg := fmt.Sprintf("Autofix attempt %d. %s", i+1, processor.CommitMsg(branch))
 		_, err = runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, commitMsg, execResults)
 		if err != nil {
 			log.Printf("Failed to run branch %s: %v", branch.Name, err)
