@@ -35,11 +35,6 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 )
 
-type backupVaultsService struct {
-	*MockService
-	pb.UnimplementedNetAppServer
-}
-
 func (s *backupVaultsService) GetBackupVault(ctx context.Context, req *pb.GetBackupVaultRequest) (*pb.BackupVault, error) {
 	name, err := s.parseBackupVaultName(req.Name)
 	if err != nil {
