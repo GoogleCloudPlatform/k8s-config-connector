@@ -221,7 +221,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockmonitoring.New(env, storage))
 	services = append(services, mockpubsublite.New(env, storage))
 	services = append(services, mocknetworkconnectivity.New(env, storage))
-	services = append(services, mocknetworkservices.New(env, storage))
 	services = append(services, mocknotebooks.New(env, storage))
 	services = append(services, mockprivilegedaccessmanager.New(env, storage))
 	services = append(services, mockpubsub.New(env, storage))
@@ -265,6 +264,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockvmwareengine.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
+	services = append(services, mocknetworkservices.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)

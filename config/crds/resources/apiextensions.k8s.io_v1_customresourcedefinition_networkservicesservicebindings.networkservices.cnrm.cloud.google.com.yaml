@@ -113,7 +113,32 @@ spec:
               service:
                 description: Required. The full service directory service name of
                   the format /projects/*/locations/*/namespaces/*/services/*
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataprocJob
+                      resource. Should be in the format "/projects/*/locations/*/namespaces/*/services/*".
+                    type: string
+                  name:
+                    description: The name of a DataprocJob resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataprocJob resource.
+                    type: string
+                type: object
             type: object
           status:
             description: NetworkServicesServiceBindingStatus defines the config connector
