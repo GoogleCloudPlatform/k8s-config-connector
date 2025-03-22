@@ -36,12 +36,12 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newBackupForGKEClient(ctx context.Context) (*api.Client, error) {
+func (m *gcpClient) newBackupForGKEClient(ctx context.Context) (*api.BackupForGKEClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewRESTClient(ctx, opts...)
+	client, err := api.NewBackupForGKERESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building gkebackup client: %w", err)
 	}
