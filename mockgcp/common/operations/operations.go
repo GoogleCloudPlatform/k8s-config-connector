@@ -59,8 +59,7 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
 	op.Done = true
 
-
-	opName := strings.Split(op.Name, "/")[len(strings.Split(op.Name, "/")) - 1]
+	opName := strings.Split(op.Name, "/")[len(strings.Split(op.Name, "/"))-1]
 	if err := s.storage.Create(ctx, opName, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
@@ -89,7 +88,6 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 
 		op.Metadata = metadataAny
 	}
-
 
 	if err := s.storage.Create(ctx, op.Name, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
