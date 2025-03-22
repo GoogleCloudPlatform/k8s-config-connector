@@ -43,16 +43,6 @@ func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ch
 	return out
 }
 
-func EventarcChannelObservedState_PubsubTopic_ToProto(mapCtx *direct.MapContext, s *string) *pb.Channel_Transport {
-	if s == nil {
-		return nil
-	}
-	return &pb.Channel_Transport{
-		Transport: &pb.Channel_PubsubTopic_{
-			PubsubTopic: *s,
-		},
-	}
-}
 func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelObservedState) *pb.Channel {
 	if in == nil {
 		return nil
@@ -62,8 +52,8 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	if transport := EventarcChannelObservedState_PubsubTopic_ToProto(mapCtx, in.PubsubTopic); transport != nil {
-		out.Transport = transport
+	if in.PubsubTopic != nil {
+		out.Transport = &eventarcpb.Channel_Transport_{Transport: &eventarcpb.Channel_Transport_PubsubTopic{PubsubTopic: &pb.Channel_PubsubTopic{PubsubTopic: *in.PubsubTopic}}}
 	}
 	out.State = direct.Enum_ToProto[pb.Channel_State](mapCtx, in.State)
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
