@@ -87,6 +87,9 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 
 func (c *ControllerConfig) GRPCClientOptions() ([]option.ClientOption, error) {
 	var opts []option.ClientOption
+	// Only for testing
+	opts = append(opts, option.WithoutAuthentication())
+
 	if c.UserAgent != "" {
 		opts = append(opts, option.WithUserAgent(c.UserAgent))
 	}
