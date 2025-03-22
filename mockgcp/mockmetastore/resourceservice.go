@@ -86,11 +86,17 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		LogFormat: pb.TelemetryConfig_JSON,
 	}
 
-	// Removed MetadataIntegration as it is not a field in the Service proto
-
 	obj.EncryptionConfig = &pb.EncryptionConfig{}
 
+	// gcloud response has this field, but it is not a field in the Service proto
+	// 1. MetadataIntegration as it is not a field in the Service proto
+	// 2. ScheduledBackup as it is not a field in the Service proto
+	// obj.MaintenanceWindow = &pb.MaintenanceWindow{}
+
+	obj.NetworkConfig = &pb.NetworkConfig{}
+	obj.EncryptionConfig = &pb.EncryptionConfig{}
 	obj.MetadataManagementActivity = &pb.MetadataManagementActivity{}
+	obj.NetworkConfig = &pb.NetworkConfig{}
 	// Remove unnecessary fields
 
 	// Add HiveMetastoreConfig with endpointProtocol
@@ -99,7 +105,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 			EndpointProtocol: pb.HiveMetastoreConfig_THRIFT,
 			Version:          "3.1.2",
 			ConfigOverrides: map[string]string{
-				"hive.metastore.warehouse.dir": "gs://gcs-bucket-test-" + name.Name + "/hive-warehouse",
+				"hive.metastore.warehouse.dir": "gs://gcs-bucket-" + name.Name + "/hive-warehouse",
 			},
 		},
 	}
