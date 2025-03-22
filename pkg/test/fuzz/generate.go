@@ -146,7 +146,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 						fillWithRandom0(t, randStream, el.Message())
 					}
 				}
-
+			case "int32->message":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randStream.Int31n(10000)
+					el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
+					fillWithRandom0(t, randStream, el.Message())
+				}
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
 			}
@@ -359,6 +365,30 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					return true
 				})
 			case "string->message":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+
+					v := mapVal.Get(k)
+					Visit(mapPath, v.Message(), setter, visitor)
+
+					return true
+				})
+			case "int32->message":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {
 					if v.IsValid() {
