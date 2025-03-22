@@ -1332,7 +1332,7 @@ func RegisterManagedKafkaHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1357,7 +1357,7 @@ func RegisterManagedKafkaHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateConsumerGroup", runtime.WithHTTPPathPattern("/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateConsumerGroup", runtime.WithHTTPPathPattern("/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1382,7 +1382,7 @@ func RegisterManagedKafkaHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1688,7 +1688,7 @@ func RegisterManagedKafkaHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1710,7 +1710,7 @@ func RegisterManagedKafkaHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateConsumerGroup", runtime.WithHTTPPathPattern("/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateConsumerGroup", runtime.WithHTTPPathPattern("/v1/{consumer_group.name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1732,7 +1732,7 @@ func RegisterManagedKafkaHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteConsumerGroup", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/clusters/*/consumerGroups/**}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1774,11 +1774,11 @@ var (
 
 	pattern_ManagedKafka_ListConsumerGroups_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "clusters", "parent", "consumerGroups"}, ""))
 
-	pattern_ManagedKafka_GetConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "name"}, ""))
+	pattern_ManagedKafka_GetConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 3, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "name"}, ""))
 
-	pattern_ManagedKafka_UpdateConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "consumer_group.name"}, ""))
+	pattern_ManagedKafka_UpdateConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 3, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "consumer_group.name"}, ""))
 
-	pattern_ManagedKafka_DeleteConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "name"}, ""))
+	pattern_ManagedKafka_DeleteConsumerGroup_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 3, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "clusters", "consumerGroups", "name"}, ""))
 )
 
 var (

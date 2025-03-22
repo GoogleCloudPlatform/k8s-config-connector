@@ -24,7 +24,10 @@ const _ = grpc.SupportPackageIsVersion7
 // DataCatalogClient is the client API for DataCatalog service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type DataCatalogClient interface {
+	// Deprecated: Do not use.
 	// Searches Data Catalog for multiple resources like entries and tags that
 	// match a query.
 	//
@@ -41,6 +44,7 @@ type DataCatalogClient interface {
 	// For more information, see [Data Catalog search syntax]
 	// (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 	SearchCatalog(ctx context.Context, in *SearchCatalogRequest, opts ...grpc.CallOption) (*SearchCatalogResponse, error)
+	// Deprecated: Do not use.
 	// Creates an entry group.
 	//
 	// An entry group contains logically related entries together with [Cloud
@@ -69,8 +73,10 @@ type DataCatalogClient interface {
 	// the `parent` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateEntryGroup(ctx context.Context, in *CreateEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Gets an entry group.
 	GetEntryGroup(ctx context.Context, in *GetEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Updates an entry group.
 	//
 	// You must enable the Data Catalog API in the project identified by
@@ -78,6 +84,7 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateEntryGroup(ctx context.Context, in *UpdateEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Deletes an entry group.
 	//
 	// You must enable the Data Catalog API in the project
@@ -85,8 +92,10 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteEntryGroup(ctx context.Context, in *DeleteEntryGroupRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Lists entry groups.
 	ListEntryGroups(ctx context.Context, in *ListEntryGroupsRequest, opts ...grpc.CallOption) (*ListEntryGroupsResponse, error)
+	// Deprecated: Do not use.
 	// Creates an entry.
 	//
 	// You can create entries only with 'FILESET', 'CLUSTER', 'DATA_STREAM',
@@ -99,6 +108,7 @@ type DataCatalogClient interface {
 	//
 	// An entry group can have a maximum of 100,000 entries.
 	CreateEntry(ctx context.Context, in *CreateEntryRequest, opts ...grpc.CallOption) (*Entry, error)
+	// Deprecated: Do not use.
 	// Updates an existing entry.
 	//
 	// You must enable the Data Catalog API in the project identified by
@@ -106,6 +116,7 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateEntry(ctx context.Context, in *UpdateEntryRequest, opts ...grpc.CallOption) (*Entry, error)
+	// Deprecated: Do not use.
 	// Deletes an existing entry.
 	//
 	// You can delete only the entries created by the
@@ -117,30 +128,36 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteEntry(ctx context.Context, in *DeleteEntryRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Gets an entry.
 	GetEntry(ctx context.Context, in *GetEntryRequest, opts ...grpc.CallOption) (*Entry, error)
+	// Deprecated: Do not use.
 	// Gets an entry by its target resource name.
 	//
 	// The resource name comes from the source Google Cloud Platform service.
 	LookupEntry(ctx context.Context, in *LookupEntryRequest, opts ...grpc.CallOption) (*Entry, error)
+	// Deprecated: Do not use.
 	// Lists entries.
 	//
 	// Note: Currently, this method can list only custom entries.
 	// To get a list of both custom and automatically created entries, use
 	// [SearchCatalog][mockgcp.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 	ListEntries(ctx context.Context, in *ListEntriesRequest, opts ...grpc.CallOption) (*ListEntriesResponse, error)
+	// Deprecated: Do not use.
 	// Modifies entry overview, part of the business context of an
 	// [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	//
 	// To call this method, you must have the `datacatalog.entries.updateOverview`
 	// IAM permission on the corresponding project.
 	ModifyEntryOverview(ctx context.Context, in *ModifyEntryOverviewRequest, opts ...grpc.CallOption) (*EntryOverview, error)
+	// Deprecated: Do not use.
 	// Modifies contacts, part of the business context of an
 	// [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	//
 	// To call this method, you must have the `datacatalog.entries.updateContacts`
 	// IAM permission on the corresponding project.
 	ModifyEntryContacts(ctx context.Context, in *ModifyEntryContactsRequest, opts ...grpc.CallOption) (*Contacts, error)
+	// Deprecated: Do not use.
 	// Creates a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by the
@@ -148,8 +165,10 @@ type DataCatalogClient interface {
 	// For more information, see [Data Catalog resource project]
 	// (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateTagTemplate(ctx context.Context, in *CreateTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Gets a tag template.
 	GetTagTemplate(ctx context.Context, in *GetTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Updates a tag template.
 	//
 	// You can't update template fields with this method. These fields are
@@ -160,18 +179,21 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateTagTemplate(ctx context.Context, in *UpdateTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Deletes a tag template and all tags that use it.
 	//
 	// You must enable the Data Catalog API in the project identified by
 	// the `name` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteTagTemplate(ctx context.Context, in *DeleteTagTemplateRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Creates a field in a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by
 	// the `parent` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateTagTemplateField(ctx context.Context, in *CreateTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Updates a field in a tag template.
 	//
 	// You can't update the field type with this method.
@@ -181,16 +203,19 @@ type DataCatalogClient interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateTagTemplateField(ctx context.Context, in *UpdateTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Renames a field in a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by the
 	// `name` parameter. For more information, see [Data Catalog resource project]
 	// (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	RenameTagTemplateField(ctx context.Context, in *RenameTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Renames an enum value in a tag template.
 	//
 	// Within a single enum field, enum values must be unique.
 	RenameTagTemplateFieldEnumValue(ctx context.Context, in *RenameTagTemplateFieldEnumValueRequest, opts ...grpc.CallOption) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Deletes a field in a tag template and all uses of this field from the tags
 	// based on this template.
 	//
@@ -198,6 +223,7 @@ type DataCatalogClient interface {
 	// the `name` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteTagTemplateField(ctx context.Context, in *DeleteTagTemplateFieldRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Creates a tag and assigns it to:
 	//
 	//   - An [Entry][mockgcp.cloud.datacatalog.v1.Entry] if the method name is
@@ -211,14 +237,18 @@ type DataCatalogClient interface {
 	// (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)
 	// used to create the tag must be in the same organization.
 	CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	// Deprecated: Do not use.
 	// Updates an existing tag.
 	UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*Tag, error)
+	// Deprecated: Do not use.
 	// Deletes a tag.
 	DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Lists tags assigned to an [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	// The [columns][mockgcp.cloud.datacatalog.v1.Tag.column] in the response are
 	// lowercased.
 	ListTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*ListTagsResponse, error)
+	// Deprecated: Do not use.
 	// `ReconcileTags` creates or updates a list of tags on the entry.
 	// If the
 	// [ReconcileTagsRequest.force_delete_missing][mockgcp.cloud.datacatalog.v1.ReconcileTagsRequest.force_delete_missing]
@@ -233,12 +263,15 @@ type DataCatalogClient interface {
 	// a [ReconcileTagsResponse]
 	// [mockgcp.cloud.datacatalog.v1.ReconcileTagsResponse] message.
 	ReconcileTags(ctx context.Context, in *ReconcileTagsRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Marks an [Entry][mockgcp.cloud.datacatalog.v1.Entry] as starred by
 	// the current user. Starring information is private to each user.
 	StarEntry(ctx context.Context, in *StarEntryRequest, opts ...grpc.CallOption) (*StarEntryResponse, error)
+	// Deprecated: Do not use.
 	// Marks an [Entry][mockgcp.cloud.datacatalog.v1.Entry] as NOT starred by
 	// the current user. Starring information is private to each user.
 	UnstarEntry(ctx context.Context, in *UnstarEntryRequest, opts ...grpc.CallOption) (*UnstarEntryResponse, error)
+	// Deprecated: Do not use.
 	// Sets an access control policy for a resource. Replaces any existing
 	// policy.
 	//
@@ -257,6 +290,7 @@ type DataCatalogClient interface {
 	//     templates.
 	//   - `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups.
 	SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
+	// Deprecated: Do not use.
 	// Gets the access control policy for a resource.
 	//
 	// May return:
@@ -279,6 +313,7 @@ type DataCatalogClient interface {
 	//     templates.
 	//   - `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups.
 	GetIamPolicy(ctx context.Context, in *iampb.GetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
+	// Deprecated: Do not use.
 	// Gets your permissions on a resource.
 	//
 	// Returns an empty set of permissions if the resource doesn't exist.
@@ -294,6 +329,7 @@ type DataCatalogClient interface {
 	//
 	// No Google IAM permissions are required to call this method.
 	TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
+	// Deprecated: Do not use.
 	// Imports entries from a source, such as data previously dumped into a
 	// Cloud Storage bucket, into Data Catalog. Import of entries
 	// is a sync operation that reconciles the state of the third-party system
@@ -313,13 +349,16 @@ type DataCatalogClient interface {
 	// [ImportEntriesResponse][mockgcp.cloud.datacatalog.v1.ImportEntriesResponse]
 	// message.
 	ImportEntries(ctx context.Context, in *ImportEntriesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Sets the configuration related to the migration to Dataplex for an
 	// organization or project.
 	SetConfig(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*MigrationConfig, error)
+	// Deprecated: Do not use.
 	// Retrieves the configuration related to the migration from Data Catalog to
 	// Dataplex for a specific organization, including all the projects under it
 	// which have a separate configuration set.
 	RetrieveConfig(ctx context.Context, in *RetrieveConfigRequest, opts ...grpc.CallOption) (*OrganizationConfig, error)
+	// Deprecated: Do not use.
 	// Retrieves the effective configuration related to the migration from Data
 	// Catalog to Dataplex for a specific organization or project. If there is no
 	// specific configuration set for the resource, the setting is checked
@@ -332,10 +371,12 @@ type dataCatalogClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewDataCatalogClient(cc grpc.ClientConnInterface) DataCatalogClient {
 	return &dataCatalogClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) SearchCatalog(ctx context.Context, in *SearchCatalogRequest, opts ...grpc.CallOption) (*SearchCatalogResponse, error) {
 	out := new(SearchCatalogResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/SearchCatalog", in, out, opts...)
@@ -345,6 +386,7 @@ func (c *dataCatalogClient) SearchCatalog(ctx context.Context, in *SearchCatalog
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) CreateEntryGroup(ctx context.Context, in *CreateEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error) {
 	out := new(EntryGroup)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/CreateEntryGroup", in, out, opts...)
@@ -354,6 +396,7 @@ func (c *dataCatalogClient) CreateEntryGroup(ctx context.Context, in *CreateEntr
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) GetEntryGroup(ctx context.Context, in *GetEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error) {
 	out := new(EntryGroup)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/GetEntryGroup", in, out, opts...)
@@ -363,6 +406,7 @@ func (c *dataCatalogClient) GetEntryGroup(ctx context.Context, in *GetEntryGroup
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UpdateEntryGroup(ctx context.Context, in *UpdateEntryGroupRequest, opts ...grpc.CallOption) (*EntryGroup, error) {
 	out := new(EntryGroup)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UpdateEntryGroup", in, out, opts...)
@@ -372,6 +416,7 @@ func (c *dataCatalogClient) UpdateEntryGroup(ctx context.Context, in *UpdateEntr
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) DeleteEntryGroup(ctx context.Context, in *DeleteEntryGroupRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/DeleteEntryGroup", in, out, opts...)
@@ -381,6 +426,7 @@ func (c *dataCatalogClient) DeleteEntryGroup(ctx context.Context, in *DeleteEntr
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ListEntryGroups(ctx context.Context, in *ListEntryGroupsRequest, opts ...grpc.CallOption) (*ListEntryGroupsResponse, error) {
 	out := new(ListEntryGroupsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ListEntryGroups", in, out, opts...)
@@ -390,6 +436,7 @@ func (c *dataCatalogClient) ListEntryGroups(ctx context.Context, in *ListEntryGr
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) CreateEntry(ctx context.Context, in *CreateEntryRequest, opts ...grpc.CallOption) (*Entry, error) {
 	out := new(Entry)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/CreateEntry", in, out, opts...)
@@ -399,6 +446,7 @@ func (c *dataCatalogClient) CreateEntry(ctx context.Context, in *CreateEntryRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UpdateEntry(ctx context.Context, in *UpdateEntryRequest, opts ...grpc.CallOption) (*Entry, error) {
 	out := new(Entry)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UpdateEntry", in, out, opts...)
@@ -408,6 +456,7 @@ func (c *dataCatalogClient) UpdateEntry(ctx context.Context, in *UpdateEntryRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) DeleteEntry(ctx context.Context, in *DeleteEntryRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/DeleteEntry", in, out, opts...)
@@ -417,6 +466,7 @@ func (c *dataCatalogClient) DeleteEntry(ctx context.Context, in *DeleteEntryRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) GetEntry(ctx context.Context, in *GetEntryRequest, opts ...grpc.CallOption) (*Entry, error) {
 	out := new(Entry)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/GetEntry", in, out, opts...)
@@ -426,6 +476,7 @@ func (c *dataCatalogClient) GetEntry(ctx context.Context, in *GetEntryRequest, o
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) LookupEntry(ctx context.Context, in *LookupEntryRequest, opts ...grpc.CallOption) (*Entry, error) {
 	out := new(Entry)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/LookupEntry", in, out, opts...)
@@ -435,6 +486,7 @@ func (c *dataCatalogClient) LookupEntry(ctx context.Context, in *LookupEntryRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ListEntries(ctx context.Context, in *ListEntriesRequest, opts ...grpc.CallOption) (*ListEntriesResponse, error) {
 	out := new(ListEntriesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ListEntries", in, out, opts...)
@@ -444,6 +496,7 @@ func (c *dataCatalogClient) ListEntries(ctx context.Context, in *ListEntriesRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ModifyEntryOverview(ctx context.Context, in *ModifyEntryOverviewRequest, opts ...grpc.CallOption) (*EntryOverview, error) {
 	out := new(EntryOverview)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ModifyEntryOverview", in, out, opts...)
@@ -453,6 +506,7 @@ func (c *dataCatalogClient) ModifyEntryOverview(ctx context.Context, in *ModifyE
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ModifyEntryContacts(ctx context.Context, in *ModifyEntryContactsRequest, opts ...grpc.CallOption) (*Contacts, error) {
 	out := new(Contacts)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ModifyEntryContacts", in, out, opts...)
@@ -462,6 +516,7 @@ func (c *dataCatalogClient) ModifyEntryContacts(ctx context.Context, in *ModifyE
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) CreateTagTemplate(ctx context.Context, in *CreateTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error) {
 	out := new(TagTemplate)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/CreateTagTemplate", in, out, opts...)
@@ -471,6 +526,7 @@ func (c *dataCatalogClient) CreateTagTemplate(ctx context.Context, in *CreateTag
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) GetTagTemplate(ctx context.Context, in *GetTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error) {
 	out := new(TagTemplate)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/GetTagTemplate", in, out, opts...)
@@ -480,6 +536,7 @@ func (c *dataCatalogClient) GetTagTemplate(ctx context.Context, in *GetTagTempla
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UpdateTagTemplate(ctx context.Context, in *UpdateTagTemplateRequest, opts ...grpc.CallOption) (*TagTemplate, error) {
 	out := new(TagTemplate)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UpdateTagTemplate", in, out, opts...)
@@ -489,6 +546,7 @@ func (c *dataCatalogClient) UpdateTagTemplate(ctx context.Context, in *UpdateTag
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) DeleteTagTemplate(ctx context.Context, in *DeleteTagTemplateRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplate", in, out, opts...)
@@ -498,6 +556,7 @@ func (c *dataCatalogClient) DeleteTagTemplate(ctx context.Context, in *DeleteTag
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) CreateTagTemplateField(ctx context.Context, in *CreateTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error) {
 	out := new(TagTemplateField)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/CreateTagTemplateField", in, out, opts...)
@@ -507,6 +566,7 @@ func (c *dataCatalogClient) CreateTagTemplateField(ctx context.Context, in *Crea
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UpdateTagTemplateField(ctx context.Context, in *UpdateTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error) {
 	out := new(TagTemplateField)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UpdateTagTemplateField", in, out, opts...)
@@ -516,6 +576,7 @@ func (c *dataCatalogClient) UpdateTagTemplateField(ctx context.Context, in *Upda
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) RenameTagTemplateField(ctx context.Context, in *RenameTagTemplateFieldRequest, opts ...grpc.CallOption) (*TagTemplateField, error) {
 	out := new(TagTemplateField)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateField", in, out, opts...)
@@ -525,6 +586,7 @@ func (c *dataCatalogClient) RenameTagTemplateField(ctx context.Context, in *Rena
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) RenameTagTemplateFieldEnumValue(ctx context.Context, in *RenameTagTemplateFieldEnumValueRequest, opts ...grpc.CallOption) (*TagTemplateField, error) {
 	out := new(TagTemplateField)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateFieldEnumValue", in, out, opts...)
@@ -534,6 +596,7 @@ func (c *dataCatalogClient) RenameTagTemplateFieldEnumValue(ctx context.Context,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) DeleteTagTemplateField(ctx context.Context, in *DeleteTagTemplateFieldRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplateField", in, out, opts...)
@@ -543,6 +606,7 @@ func (c *dataCatalogClient) DeleteTagTemplateField(ctx context.Context, in *Dele
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) CreateTag(ctx context.Context, in *CreateTagRequest, opts ...grpc.CallOption) (*Tag, error) {
 	out := new(Tag)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/CreateTag", in, out, opts...)
@@ -552,6 +616,7 @@ func (c *dataCatalogClient) CreateTag(ctx context.Context, in *CreateTagRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UpdateTag(ctx context.Context, in *UpdateTagRequest, opts ...grpc.CallOption) (*Tag, error) {
 	out := new(Tag)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UpdateTag", in, out, opts...)
@@ -561,6 +626,7 @@ func (c *dataCatalogClient) UpdateTag(ctx context.Context, in *UpdateTagRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) DeleteTag(ctx context.Context, in *DeleteTagRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/DeleteTag", in, out, opts...)
@@ -570,6 +636,7 @@ func (c *dataCatalogClient) DeleteTag(ctx context.Context, in *DeleteTagRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ListTags(ctx context.Context, in *ListTagsRequest, opts ...grpc.CallOption) (*ListTagsResponse, error) {
 	out := new(ListTagsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ListTags", in, out, opts...)
@@ -579,6 +646,7 @@ func (c *dataCatalogClient) ListTags(ctx context.Context, in *ListTagsRequest, o
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ReconcileTags(ctx context.Context, in *ReconcileTagsRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ReconcileTags", in, out, opts...)
@@ -588,6 +656,7 @@ func (c *dataCatalogClient) ReconcileTags(ctx context.Context, in *ReconcileTags
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) StarEntry(ctx context.Context, in *StarEntryRequest, opts ...grpc.CallOption) (*StarEntryResponse, error) {
 	out := new(StarEntryResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/StarEntry", in, out, opts...)
@@ -597,6 +666,7 @@ func (c *dataCatalogClient) StarEntry(ctx context.Context, in *StarEntryRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) UnstarEntry(ctx context.Context, in *UnstarEntryRequest, opts ...grpc.CallOption) (*UnstarEntryResponse, error) {
 	out := new(UnstarEntryResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/UnstarEntry", in, out, opts...)
@@ -606,6 +676,7 @@ func (c *dataCatalogClient) UnstarEntry(ctx context.Context, in *UnstarEntryRequ
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error) {
 	out := new(iampb.Policy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/SetIamPolicy", in, out, opts...)
@@ -615,6 +686,7 @@ func (c *dataCatalogClient) SetIamPolicy(ctx context.Context, in *iampb.SetIamPo
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) GetIamPolicy(ctx context.Context, in *iampb.GetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error) {
 	out := new(iampb.Policy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/GetIamPolicy", in, out, opts...)
@@ -624,6 +696,7 @@ func (c *dataCatalogClient) GetIamPolicy(ctx context.Context, in *iampb.GetIamPo
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error) {
 	out := new(iampb.TestIamPermissionsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/TestIamPermissions", in, out, opts...)
@@ -633,6 +706,7 @@ func (c *dataCatalogClient) TestIamPermissions(ctx context.Context, in *iampb.Te
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) ImportEntries(ctx context.Context, in *ImportEntriesRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/ImportEntries", in, out, opts...)
@@ -642,6 +716,7 @@ func (c *dataCatalogClient) ImportEntries(ctx context.Context, in *ImportEntries
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) SetConfig(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*MigrationConfig, error) {
 	out := new(MigrationConfig)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/SetConfig", in, out, opts...)
@@ -651,6 +726,7 @@ func (c *dataCatalogClient) SetConfig(ctx context.Context, in *SetConfigRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) RetrieveConfig(ctx context.Context, in *RetrieveConfigRequest, opts ...grpc.CallOption) (*OrganizationConfig, error) {
 	out := new(OrganizationConfig)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/RetrieveConfig", in, out, opts...)
@@ -660,6 +736,7 @@ func (c *dataCatalogClient) RetrieveConfig(ctx context.Context, in *RetrieveConf
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataCatalogClient) RetrieveEffectiveConfig(ctx context.Context, in *RetrieveEffectiveConfigRequest, opts ...grpc.CallOption) (*MigrationConfig, error) {
 	out := new(MigrationConfig)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.datacatalog.v1.DataCatalog/RetrieveEffectiveConfig", in, out, opts...)
@@ -672,7 +749,10 @@ func (c *dataCatalogClient) RetrieveEffectiveConfig(ctx context.Context, in *Ret
 // DataCatalogServer is the server API for DataCatalog service.
 // All implementations must embed UnimplementedDataCatalogServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type DataCatalogServer interface {
+	// Deprecated: Do not use.
 	// Searches Data Catalog for multiple resources like entries and tags that
 	// match a query.
 	//
@@ -689,6 +769,7 @@ type DataCatalogServer interface {
 	// For more information, see [Data Catalog search syntax]
 	// (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 	SearchCatalog(context.Context, *SearchCatalogRequest) (*SearchCatalogResponse, error)
+	// Deprecated: Do not use.
 	// Creates an entry group.
 	//
 	// An entry group contains logically related entries together with [Cloud
@@ -717,8 +798,10 @@ type DataCatalogServer interface {
 	// the `parent` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateEntryGroup(context.Context, *CreateEntryGroupRequest) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Gets an entry group.
 	GetEntryGroup(context.Context, *GetEntryGroupRequest) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Updates an entry group.
 	//
 	// You must enable the Data Catalog API in the project identified by
@@ -726,6 +809,7 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateEntryGroup(context.Context, *UpdateEntryGroupRequest) (*EntryGroup, error)
+	// Deprecated: Do not use.
 	// Deletes an entry group.
 	//
 	// You must enable the Data Catalog API in the project
@@ -733,8 +817,10 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteEntryGroup(context.Context, *DeleteEntryGroupRequest) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Lists entry groups.
 	ListEntryGroups(context.Context, *ListEntryGroupsRequest) (*ListEntryGroupsResponse, error)
+	// Deprecated: Do not use.
 	// Creates an entry.
 	//
 	// You can create entries only with 'FILESET', 'CLUSTER', 'DATA_STREAM',
@@ -747,6 +833,7 @@ type DataCatalogServer interface {
 	//
 	// An entry group can have a maximum of 100,000 entries.
 	CreateEntry(context.Context, *CreateEntryRequest) (*Entry, error)
+	// Deprecated: Do not use.
 	// Updates an existing entry.
 	//
 	// You must enable the Data Catalog API in the project identified by
@@ -754,6 +841,7 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateEntry(context.Context, *UpdateEntryRequest) (*Entry, error)
+	// Deprecated: Do not use.
 	// Deletes an existing entry.
 	//
 	// You can delete only the entries created by the
@@ -765,30 +853,36 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteEntry(context.Context, *DeleteEntryRequest) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Gets an entry.
 	GetEntry(context.Context, *GetEntryRequest) (*Entry, error)
+	// Deprecated: Do not use.
 	// Gets an entry by its target resource name.
 	//
 	// The resource name comes from the source Google Cloud Platform service.
 	LookupEntry(context.Context, *LookupEntryRequest) (*Entry, error)
+	// Deprecated: Do not use.
 	// Lists entries.
 	//
 	// Note: Currently, this method can list only custom entries.
 	// To get a list of both custom and automatically created entries, use
 	// [SearchCatalog][mockgcp.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 	ListEntries(context.Context, *ListEntriesRequest) (*ListEntriesResponse, error)
+	// Deprecated: Do not use.
 	// Modifies entry overview, part of the business context of an
 	// [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	//
 	// To call this method, you must have the `datacatalog.entries.updateOverview`
 	// IAM permission on the corresponding project.
 	ModifyEntryOverview(context.Context, *ModifyEntryOverviewRequest) (*EntryOverview, error)
+	// Deprecated: Do not use.
 	// Modifies contacts, part of the business context of an
 	// [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	//
 	// To call this method, you must have the `datacatalog.entries.updateContacts`
 	// IAM permission on the corresponding project.
 	ModifyEntryContacts(context.Context, *ModifyEntryContactsRequest) (*Contacts, error)
+	// Deprecated: Do not use.
 	// Creates a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by the
@@ -796,8 +890,10 @@ type DataCatalogServer interface {
 	// For more information, see [Data Catalog resource project]
 	// (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateTagTemplate(context.Context, *CreateTagTemplateRequest) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Gets a tag template.
 	GetTagTemplate(context.Context, *GetTagTemplateRequest) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Updates a tag template.
 	//
 	// You can't update template fields with this method. These fields are
@@ -808,18 +904,21 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateTagTemplate(context.Context, *UpdateTagTemplateRequest) (*TagTemplate, error)
+	// Deprecated: Do not use.
 	// Deletes a tag template and all tags that use it.
 	//
 	// You must enable the Data Catalog API in the project identified by
 	// the `name` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteTagTemplate(context.Context, *DeleteTagTemplateRequest) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Creates a field in a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by
 	// the `parent` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	CreateTagTemplateField(context.Context, *CreateTagTemplateFieldRequest) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Updates a field in a tag template.
 	//
 	// You can't update the field type with this method.
@@ -829,16 +928,19 @@ type DataCatalogServer interface {
 	// resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	UpdateTagTemplateField(context.Context, *UpdateTagTemplateFieldRequest) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Renames a field in a tag template.
 	//
 	// You must enable the Data Catalog API in the project identified by the
 	// `name` parameter. For more information, see [Data Catalog resource project]
 	// (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	RenameTagTemplateField(context.Context, *RenameTagTemplateFieldRequest) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Renames an enum value in a tag template.
 	//
 	// Within a single enum field, enum values must be unique.
 	RenameTagTemplateFieldEnumValue(context.Context, *RenameTagTemplateFieldEnumValueRequest) (*TagTemplateField, error)
+	// Deprecated: Do not use.
 	// Deletes a field in a tag template and all uses of this field from the tags
 	// based on this template.
 	//
@@ -846,6 +948,7 @@ type DataCatalogServer interface {
 	// the `name` parameter. For more information, see [Data Catalog resource
 	// project](https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 	DeleteTagTemplateField(context.Context, *DeleteTagTemplateFieldRequest) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Creates a tag and assigns it to:
 	//
 	//   - An [Entry][mockgcp.cloud.datacatalog.v1.Entry] if the method name is
@@ -859,14 +962,18 @@ type DataCatalogServer interface {
 	// (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)
 	// used to create the tag must be in the same organization.
 	CreateTag(context.Context, *CreateTagRequest) (*Tag, error)
+	// Deprecated: Do not use.
 	// Updates an existing tag.
 	UpdateTag(context.Context, *UpdateTagRequest) (*Tag, error)
+	// Deprecated: Do not use.
 	// Deletes a tag.
 	DeleteTag(context.Context, *DeleteTagRequest) (*empty.Empty, error)
+	// Deprecated: Do not use.
 	// Lists tags assigned to an [Entry][mockgcp.cloud.datacatalog.v1.Entry].
 	// The [columns][mockgcp.cloud.datacatalog.v1.Tag.column] in the response are
 	// lowercased.
 	ListTags(context.Context, *ListTagsRequest) (*ListTagsResponse, error)
+	// Deprecated: Do not use.
 	// `ReconcileTags` creates or updates a list of tags on the entry.
 	// If the
 	// [ReconcileTagsRequest.force_delete_missing][mockgcp.cloud.datacatalog.v1.ReconcileTagsRequest.force_delete_missing]
@@ -881,12 +988,15 @@ type DataCatalogServer interface {
 	// a [ReconcileTagsResponse]
 	// [mockgcp.cloud.datacatalog.v1.ReconcileTagsResponse] message.
 	ReconcileTags(context.Context, *ReconcileTagsRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Marks an [Entry][mockgcp.cloud.datacatalog.v1.Entry] as starred by
 	// the current user. Starring information is private to each user.
 	StarEntry(context.Context, *StarEntryRequest) (*StarEntryResponse, error)
+	// Deprecated: Do not use.
 	// Marks an [Entry][mockgcp.cloud.datacatalog.v1.Entry] as NOT starred by
 	// the current user. Starring information is private to each user.
 	UnstarEntry(context.Context, *UnstarEntryRequest) (*UnstarEntryResponse, error)
+	// Deprecated: Do not use.
 	// Sets an access control policy for a resource. Replaces any existing
 	// policy.
 	//
@@ -905,6 +1015,7 @@ type DataCatalogServer interface {
 	//     templates.
 	//   - `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups.
 	SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error)
+	// Deprecated: Do not use.
 	// Gets the access control policy for a resource.
 	//
 	// May return:
@@ -927,6 +1038,7 @@ type DataCatalogServer interface {
 	//     templates.
 	//   - `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups.
 	GetIamPolicy(context.Context, *iampb.GetIamPolicyRequest) (*iampb.Policy, error)
+	// Deprecated: Do not use.
 	// Gets your permissions on a resource.
 	//
 	// Returns an empty set of permissions if the resource doesn't exist.
@@ -942,6 +1054,7 @@ type DataCatalogServer interface {
 	//
 	// No Google IAM permissions are required to call this method.
 	TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
+	// Deprecated: Do not use.
 	// Imports entries from a source, such as data previously dumped into a
 	// Cloud Storage bucket, into Data Catalog. Import of entries
 	// is a sync operation that reconciles the state of the third-party system
@@ -961,13 +1074,16 @@ type DataCatalogServer interface {
 	// [ImportEntriesResponse][mockgcp.cloud.datacatalog.v1.ImportEntriesResponse]
 	// message.
 	ImportEntries(context.Context, *ImportEntriesRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Sets the configuration related to the migration to Dataplex for an
 	// organization or project.
 	SetConfig(context.Context, *SetConfigRequest) (*MigrationConfig, error)
+	// Deprecated: Do not use.
 	// Retrieves the configuration related to the migration from Data Catalog to
 	// Dataplex for a specific organization, including all the projects under it
 	// which have a separate configuration set.
 	RetrieveConfig(context.Context, *RetrieveConfigRequest) (*OrganizationConfig, error)
+	// Deprecated: Do not use.
 	// Retrieves the effective configuration related to the migration from Data
 	// Catalog to Dataplex for a specific organization or project. If there is no
 	// specific configuration set for the resource, the setting is checked
@@ -1101,6 +1217,7 @@ type UnsafeDataCatalogServer interface {
 	mustEmbedUnimplementedDataCatalogServer()
 }
 
+// Deprecated: Do not use.
 func RegisterDataCatalogServer(s grpc.ServiceRegistrar, srv DataCatalogServer) {
 	s.RegisterService(&DataCatalog_ServiceDesc, srv)
 }

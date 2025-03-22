@@ -9069,6 +9069,8 @@ type InstancesClient interface {
 	PerformMaintenance(ctx context.Context, in *PerformMaintenanceInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Removes resource policies from an instance.
 	RemoveResourcePolicies(ctx context.Context, in *RemoveResourcePoliciesInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Mark the host as faulty and try to restart the instance on a new host.
+	ReportHostAsFaulty(ctx context.Context, in *ReportHostAsFaultyInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Performs a reset on the instance. This is a hard reset. The VM does not do a graceful shutdown. For more information, see Resetting an instance.
 	Reset(ctx context.Context, in *ResetInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Resumes an instance that was suspended using the instances().suspend method.
@@ -9309,6 +9311,15 @@ func (c *instancesClient) PerformMaintenance(ctx context.Context, in *PerformMai
 func (c *instancesClient) RemoveResourcePolicies(ctx context.Context, in *RemoveResourcePoliciesInstanceRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Instances/RemoveResourcePolicies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instancesClient) ReportHostAsFaulty(ctx context.Context, in *ReportHostAsFaultyInstanceRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Instances/ReportHostAsFaulty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -9611,6 +9622,8 @@ type InstancesServer interface {
 	PerformMaintenance(context.Context, *PerformMaintenanceInstanceRequest) (*Operation, error)
 	// Removes resource policies from an instance.
 	RemoveResourcePolicies(context.Context, *RemoveResourcePoliciesInstanceRequest) (*Operation, error)
+	// Mark the host as faulty and try to restart the instance on a new host.
+	ReportHostAsFaulty(context.Context, *ReportHostAsFaultyInstanceRequest) (*Operation, error)
 	// Performs a reset on the instance. This is a hard reset. The VM does not do a graceful shutdown. For more information, see Resetting an instance.
 	Reset(context.Context, *ResetInstanceRequest) (*Operation, error)
 	// Resumes an instance that was suspended using the instances().suspend method.
@@ -9733,6 +9746,9 @@ func (UnimplementedInstancesServer) PerformMaintenance(context.Context, *Perform
 }
 func (UnimplementedInstancesServer) RemoveResourcePolicies(context.Context, *RemoveResourcePoliciesInstanceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveResourcePolicies not implemented")
+}
+func (UnimplementedInstancesServer) ReportHostAsFaulty(context.Context, *ReportHostAsFaultyInstanceRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReportHostAsFaulty not implemented")
 }
 func (UnimplementedInstancesServer) Reset(context.Context, *ResetInstanceRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Reset not implemented")
@@ -10187,6 +10203,24 @@ func _Instances_RemoveResourcePolicies_Handler(srv interface{}, ctx context.Cont
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InstancesServer).RemoveResourcePolicies(ctx, req.(*RemoveResourcePoliciesInstanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Instances_ReportHostAsFaulty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReportHostAsFaultyInstanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstancesServer).ReportHostAsFaulty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Instances/ReportHostAsFaulty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstancesServer).ReportHostAsFaulty(ctx, req.(*ReportHostAsFaultyInstanceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -10781,6 +10815,10 @@ var Instances_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveResourcePolicies",
 			Handler:    _Instances_RemoveResourcePolicies_Handler,
+		},
+		{
+			MethodName: "ReportHostAsFaulty",
+			Handler:    _Instances_ReportHostAsFaulty_Handler,
 		},
 		{
 			MethodName: "Reset",
@@ -14168,8 +14206,12 @@ var NetworkEndpointGroups_ServiceDesc = grpc.ServiceDesc{
 type NetworkFirewallPoliciesClient interface {
 	// Inserts an association for the specified firewall policy.
 	AddAssociation(ctx context.Context, in *AddAssociationNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Inserts a packet mirroring rule into a firewall policy.
+	AddPacketMirroringRule(ctx context.Context, in *AddPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Inserts a rule into a firewall policy.
 	AddRule(ctx context.Context, in *AddRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves an aggregated list of network firewall policies, listing network firewall policies from all applicable scopes (global and regional) and grouping the results per scope. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
+	AggregatedList(ctx context.Context, in *AggregatedListNetworkFirewallPoliciesRequest, opts ...grpc.CallOption) (*NetworkFirewallPolicyAggregatedList, error)
 	// Copies rules to the specified firewall policy.
 	CloneRules(ctx context.Context, in *CloneRulesNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes the specified policy.
@@ -14180,6 +14222,8 @@ type NetworkFirewallPoliciesClient interface {
 	GetAssociation(ctx context.Context, in *GetAssociationNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*FirewallPolicyAssociation, error)
 	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
 	GetIamPolicy(ctx context.Context, in *GetIamPolicyNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Gets a packet mirroring rule of the specified priority.
+	GetPacketMirroringRule(ctx context.Context, in *GetPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*FirewallPolicyRule, error)
 	// Gets a rule of the specified priority.
 	GetRule(ctx context.Context, in *GetRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*FirewallPolicyRule, error)
 	// Creates a new policy in the specified project using the data included in the request.
@@ -14188,10 +14232,14 @@ type NetworkFirewallPoliciesClient interface {
 	List(ctx context.Context, in *ListNetworkFirewallPoliciesRequest, opts ...grpc.CallOption) (*FirewallPolicyList, error)
 	// Patches the specified policy with the data included in the request.
 	Patch(ctx context.Context, in *PatchNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Patches a packet mirroring rule of the specified priority.
+	PatchPacketMirroringRule(ctx context.Context, in *PatchPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Patches a rule of the specified priority.
 	PatchRule(ctx context.Context, in *PatchRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Removes an association for the specified firewall policy.
 	RemoveAssociation(ctx context.Context, in *RemoveAssociationNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes a packet mirroring rule of the specified priority.
+	RemovePacketMirroringRule(ctx context.Context, in *RemovePacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes a rule of the specified priority.
 	RemoveRule(ctx context.Context, in *RemoveRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
@@ -14217,9 +14265,27 @@ func (c *networkFirewallPoliciesClient) AddAssociation(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *networkFirewallPoliciesClient) AddPacketMirroringRule(ctx context.Context, in *AddPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/AddPacketMirroringRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networkFirewallPoliciesClient) AddRule(ctx context.Context, in *AddRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/AddRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkFirewallPoliciesClient) AggregatedList(ctx context.Context, in *AggregatedListNetworkFirewallPoliciesRequest, opts ...grpc.CallOption) (*NetworkFirewallPolicyAggregatedList, error) {
+	out := new(NetworkFirewallPolicyAggregatedList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/AggregatedList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -14271,6 +14337,15 @@ func (c *networkFirewallPoliciesClient) GetIamPolicy(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *networkFirewallPoliciesClient) GetPacketMirroringRule(ctx context.Context, in *GetPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*FirewallPolicyRule, error) {
+	out := new(FirewallPolicyRule)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/GetPacketMirroringRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networkFirewallPoliciesClient) GetRule(ctx context.Context, in *GetRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*FirewallPolicyRule, error) {
 	out := new(FirewallPolicyRule)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/GetRule", in, out, opts...)
@@ -14307,6 +14382,15 @@ func (c *networkFirewallPoliciesClient) Patch(ctx context.Context, in *PatchNetw
 	return out, nil
 }
 
+func (c *networkFirewallPoliciesClient) PatchPacketMirroringRule(ctx context.Context, in *PatchPacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/PatchPacketMirroringRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networkFirewallPoliciesClient) PatchRule(ctx context.Context, in *PatchRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/PatchRule", in, out, opts...)
@@ -14319,6 +14403,15 @@ func (c *networkFirewallPoliciesClient) PatchRule(ctx context.Context, in *Patch
 func (c *networkFirewallPoliciesClient) RemoveAssociation(ctx context.Context, in *RemoveAssociationNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/RemoveAssociation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkFirewallPoliciesClient) RemovePacketMirroringRule(ctx context.Context, in *RemovePacketMirroringRuleNetworkFirewallPolicyRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/RemovePacketMirroringRule", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -14358,8 +14451,12 @@ func (c *networkFirewallPoliciesClient) TestIamPermissions(ctx context.Context, 
 type NetworkFirewallPoliciesServer interface {
 	// Inserts an association for the specified firewall policy.
 	AddAssociation(context.Context, *AddAssociationNetworkFirewallPolicyRequest) (*Operation, error)
+	// Inserts a packet mirroring rule into a firewall policy.
+	AddPacketMirroringRule(context.Context, *AddPacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error)
 	// Inserts a rule into a firewall policy.
 	AddRule(context.Context, *AddRuleNetworkFirewallPolicyRequest) (*Operation, error)
+	// Retrieves an aggregated list of network firewall policies, listing network firewall policies from all applicable scopes (global and regional) and grouping the results per scope. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
+	AggregatedList(context.Context, *AggregatedListNetworkFirewallPoliciesRequest) (*NetworkFirewallPolicyAggregatedList, error)
 	// Copies rules to the specified firewall policy.
 	CloneRules(context.Context, *CloneRulesNetworkFirewallPolicyRequest) (*Operation, error)
 	// Deletes the specified policy.
@@ -14370,6 +14467,8 @@ type NetworkFirewallPoliciesServer interface {
 	GetAssociation(context.Context, *GetAssociationNetworkFirewallPolicyRequest) (*FirewallPolicyAssociation, error)
 	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
 	GetIamPolicy(context.Context, *GetIamPolicyNetworkFirewallPolicyRequest) (*Policy, error)
+	// Gets a packet mirroring rule of the specified priority.
+	GetPacketMirroringRule(context.Context, *GetPacketMirroringRuleNetworkFirewallPolicyRequest) (*FirewallPolicyRule, error)
 	// Gets a rule of the specified priority.
 	GetRule(context.Context, *GetRuleNetworkFirewallPolicyRequest) (*FirewallPolicyRule, error)
 	// Creates a new policy in the specified project using the data included in the request.
@@ -14378,10 +14477,14 @@ type NetworkFirewallPoliciesServer interface {
 	List(context.Context, *ListNetworkFirewallPoliciesRequest) (*FirewallPolicyList, error)
 	// Patches the specified policy with the data included in the request.
 	Patch(context.Context, *PatchNetworkFirewallPolicyRequest) (*Operation, error)
+	// Patches a packet mirroring rule of the specified priority.
+	PatchPacketMirroringRule(context.Context, *PatchPacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error)
 	// Patches a rule of the specified priority.
 	PatchRule(context.Context, *PatchRuleNetworkFirewallPolicyRequest) (*Operation, error)
 	// Removes an association for the specified firewall policy.
 	RemoveAssociation(context.Context, *RemoveAssociationNetworkFirewallPolicyRequest) (*Operation, error)
+	// Deletes a packet mirroring rule of the specified priority.
+	RemovePacketMirroringRule(context.Context, *RemovePacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error)
 	// Deletes a rule of the specified priority.
 	RemoveRule(context.Context, *RemoveRuleNetworkFirewallPolicyRequest) (*Operation, error)
 	// Sets the access control policy on the specified resource. Replaces any existing policy.
@@ -14398,8 +14501,14 @@ type UnimplementedNetworkFirewallPoliciesServer struct {
 func (UnimplementedNetworkFirewallPoliciesServer) AddAssociation(context.Context, *AddAssociationNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAssociation not implemented")
 }
+func (UnimplementedNetworkFirewallPoliciesServer) AddPacketMirroringRule(context.Context, *AddPacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPacketMirroringRule not implemented")
+}
 func (UnimplementedNetworkFirewallPoliciesServer) AddRule(context.Context, *AddRuleNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRule not implemented")
+}
+func (UnimplementedNetworkFirewallPoliciesServer) AggregatedList(context.Context, *AggregatedListNetworkFirewallPoliciesRequest) (*NetworkFirewallPolicyAggregatedList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedList not implemented")
 }
 func (UnimplementedNetworkFirewallPoliciesServer) CloneRules(context.Context, *CloneRulesNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloneRules not implemented")
@@ -14416,6 +14525,9 @@ func (UnimplementedNetworkFirewallPoliciesServer) GetAssociation(context.Context
 func (UnimplementedNetworkFirewallPoliciesServer) GetIamPolicy(context.Context, *GetIamPolicyNetworkFirewallPolicyRequest) (*Policy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
 }
+func (UnimplementedNetworkFirewallPoliciesServer) GetPacketMirroringRule(context.Context, *GetPacketMirroringRuleNetworkFirewallPolicyRequest) (*FirewallPolicyRule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPacketMirroringRule not implemented")
+}
 func (UnimplementedNetworkFirewallPoliciesServer) GetRule(context.Context, *GetRuleNetworkFirewallPolicyRequest) (*FirewallPolicyRule, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRule not implemented")
 }
@@ -14428,11 +14540,17 @@ func (UnimplementedNetworkFirewallPoliciesServer) List(context.Context, *ListNet
 func (UnimplementedNetworkFirewallPoliciesServer) Patch(context.Context, *PatchNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
 }
+func (UnimplementedNetworkFirewallPoliciesServer) PatchPacketMirroringRule(context.Context, *PatchPacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchPacketMirroringRule not implemented")
+}
 func (UnimplementedNetworkFirewallPoliciesServer) PatchRule(context.Context, *PatchRuleNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchRule not implemented")
 }
 func (UnimplementedNetworkFirewallPoliciesServer) RemoveAssociation(context.Context, *RemoveAssociationNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveAssociation not implemented")
+}
+func (UnimplementedNetworkFirewallPoliciesServer) RemovePacketMirroringRule(context.Context, *RemovePacketMirroringRuleNetworkFirewallPolicyRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemovePacketMirroringRule not implemented")
 }
 func (UnimplementedNetworkFirewallPoliciesServer) RemoveRule(context.Context, *RemoveRuleNetworkFirewallPolicyRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveRule not implemented")
@@ -14475,6 +14593,24 @@ func _NetworkFirewallPolicies_AddAssociation_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkFirewallPolicies_AddPacketMirroringRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPacketMirroringRuleNetworkFirewallPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkFirewallPoliciesServer).AddPacketMirroringRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/AddPacketMirroringRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkFirewallPoliciesServer).AddPacketMirroringRule(ctx, req.(*AddPacketMirroringRuleNetworkFirewallPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NetworkFirewallPolicies_AddRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddRuleNetworkFirewallPolicyRequest)
 	if err := dec(in); err != nil {
@@ -14489,6 +14625,24 @@ func _NetworkFirewallPolicies_AddRule_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkFirewallPoliciesServer).AddRule(ctx, req.(*AddRuleNetworkFirewallPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkFirewallPolicies_AggregatedList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AggregatedListNetworkFirewallPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkFirewallPoliciesServer).AggregatedList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/AggregatedList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkFirewallPoliciesServer).AggregatedList(ctx, req.(*AggregatedListNetworkFirewallPoliciesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -14583,6 +14737,24 @@ func _NetworkFirewallPolicies_GetIamPolicy_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkFirewallPolicies_GetPacketMirroringRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPacketMirroringRuleNetworkFirewallPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkFirewallPoliciesServer).GetPacketMirroringRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/GetPacketMirroringRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkFirewallPoliciesServer).GetPacketMirroringRule(ctx, req.(*GetPacketMirroringRuleNetworkFirewallPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NetworkFirewallPolicies_GetRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRuleNetworkFirewallPolicyRequest)
 	if err := dec(in); err != nil {
@@ -14655,6 +14827,24 @@ func _NetworkFirewallPolicies_Patch_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkFirewallPolicies_PatchPacketMirroringRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchPacketMirroringRuleNetworkFirewallPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkFirewallPoliciesServer).PatchPacketMirroringRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/PatchPacketMirroringRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkFirewallPoliciesServer).PatchPacketMirroringRule(ctx, req.(*PatchPacketMirroringRuleNetworkFirewallPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NetworkFirewallPolicies_PatchRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchRuleNetworkFirewallPolicyRequest)
 	if err := dec(in); err != nil {
@@ -14687,6 +14877,24 @@ func _NetworkFirewallPolicies_RemoveAssociation_Handler(srv interface{}, ctx con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkFirewallPoliciesServer).RemoveAssociation(ctx, req.(*RemoveAssociationNetworkFirewallPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkFirewallPolicies_RemovePacketMirroringRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemovePacketMirroringRuleNetworkFirewallPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkFirewallPoliciesServer).RemovePacketMirroringRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.NetworkFirewallPolicies/RemovePacketMirroringRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkFirewallPoliciesServer).RemovePacketMirroringRule(ctx, req.(*RemovePacketMirroringRuleNetworkFirewallPolicyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -14757,8 +14965,16 @@ var NetworkFirewallPolicies_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NetworkFirewallPolicies_AddAssociation_Handler,
 		},
 		{
+			MethodName: "AddPacketMirroringRule",
+			Handler:    _NetworkFirewallPolicies_AddPacketMirroringRule_Handler,
+		},
+		{
 			MethodName: "AddRule",
 			Handler:    _NetworkFirewallPolicies_AddRule_Handler,
+		},
+		{
+			MethodName: "AggregatedList",
+			Handler:    _NetworkFirewallPolicies_AggregatedList_Handler,
 		},
 		{
 			MethodName: "CloneRules",
@@ -14781,6 +14997,10 @@ var NetworkFirewallPolicies_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NetworkFirewallPolicies_GetIamPolicy_Handler,
 		},
 		{
+			MethodName: "GetPacketMirroringRule",
+			Handler:    _NetworkFirewallPolicies_GetPacketMirroringRule_Handler,
+		},
+		{
 			MethodName: "GetRule",
 			Handler:    _NetworkFirewallPolicies_GetRule_Handler,
 		},
@@ -14797,12 +15017,20 @@ var NetworkFirewallPolicies_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NetworkFirewallPolicies_Patch_Handler,
 		},
 		{
+			MethodName: "PatchPacketMirroringRule",
+			Handler:    _NetworkFirewallPolicies_PatchPacketMirroringRule_Handler,
+		},
+		{
 			MethodName: "PatchRule",
 			Handler:    _NetworkFirewallPolicies_PatchRule_Handler,
 		},
 		{
 			MethodName: "RemoveAssociation",
 			Handler:    _NetworkFirewallPolicies_RemoveAssociation_Handler,
+		},
+		{
+			MethodName: "RemovePacketMirroringRule",
+			Handler:    _NetworkFirewallPolicies_RemovePacketMirroringRule_Handler,
 		},
 		{
 			MethodName: "RemoveRule",
@@ -18919,7 +19147,7 @@ type RegionCommitmentsClient interface {
 	Insert(ctx context.Context, in *InsertRegionCommitmentRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves a list of commitments contained within the specified region.
 	List(ctx context.Context, in *ListRegionCommitmentsRequest, opts ...grpc.CallOption) (*CommitmentList, error)
-	// Updates the specified commitment with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: auto_renew.
+	// Updates the specified commitment with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be updated: auto_renew and plan.
 	Update(ctx context.Context, in *UpdateRegionCommitmentRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
@@ -18988,7 +19216,7 @@ type RegionCommitmentsServer interface {
 	Insert(context.Context, *InsertRegionCommitmentRequest) (*Operation, error)
 	// Retrieves a list of commitments contained within the specified region.
 	List(context.Context, *ListRegionCommitmentsRequest) (*CommitmentList, error)
-	// Updates the specified commitment with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be modified: auto_renew.
+	// Updates the specified commitment with the data included in the request. Update is performed only on selected fields included as part of update-mask. Only the following fields can be updated: auto_renew and plan.
 	Update(context.Context, *UpdateRegionCommitmentRequest) (*Operation, error)
 	mustEmbedUnimplementedRegionCommitmentsServer()
 }
@@ -26712,24 +26940,36 @@ type RoutersClient interface {
 	AggregatedList(ctx context.Context, in *AggregatedListRoutersRequest, opts ...grpc.CallOption) (*RouterAggregatedList, error)
 	// Deletes the specified Router resource.
 	Delete(ctx context.Context, in *DeleteRouterRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Deletes Route Policy
+	DeleteRoutePolicy(ctx context.Context, in *DeleteRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Returns the specified Router resource.
 	Get(ctx context.Context, in *GetRouterRequest, opts ...grpc.CallOption) (*Router, error)
 	// Retrieves runtime NAT IP information.
 	GetNatIpInfo(ctx context.Context, in *GetNatIpInfoRouterRequest, opts ...grpc.CallOption) (*NatIpInfoResponse, error)
 	// Retrieves runtime Nat mapping information of VM endpoints.
 	GetNatMappingInfo(ctx context.Context, in *GetNatMappingInfoRoutersRequest, opts ...grpc.CallOption) (*VmEndpointNatMappingsList, error)
+	// Returns specified Route Policy
+	GetRoutePolicy(ctx context.Context, in *GetRoutePolicyRouterRequest, opts ...grpc.CallOption) (*RoutersGetRoutePolicyResponse, error)
 	// Retrieves runtime information of the specified router.
 	GetRouterStatus(ctx context.Context, in *GetRouterStatusRouterRequest, opts ...grpc.CallOption) (*RouterStatusResponse, error)
 	// Creates a Router resource in the specified project and region using the data included in the request.
 	Insert(ctx context.Context, in *InsertRouterRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Retrieves a list of Router resources available to the specified project.
 	List(ctx context.Context, in *ListRoutersRequest, opts ...grpc.CallOption) (*RouterList, error)
+	// Retrieves a list of router bgp routes available to the specified project.
+	ListBgpRoutes(ctx context.Context, in *ListBgpRoutesRoutersRequest, opts ...grpc.CallOption) (*RoutersListBgpRoutes, error)
+	// Retrieves a list of router route policy subresources available to the specified project.
+	ListRoutePolicies(ctx context.Context, in *ListRoutePoliciesRoutersRequest, opts ...grpc.CallOption) (*RoutersListRoutePolicies, error)
 	// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(ctx context.Context, in *PatchRouterRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Patches Route Policy
+	PatchRoutePolicy(ctx context.Context, in *PatchRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Preview fields auto-generated during router create and update operations. Calling this method does NOT create or update the router.
 	Preview(ctx context.Context, in *PreviewRouterRequest, opts ...grpc.CallOption) (*RoutersPreviewResponse, error)
 	// Updates the specified Router resource with the data included in the request. This method conforms to PUT semantics, which requests that the state of the target resource be created or replaced with the state defined by the representation enclosed in the request message payload.
 	Update(ctx context.Context, in *UpdateRouterRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Updates or creates new Route Policy
+	UpdateRoutePolicy(ctx context.Context, in *UpdateRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type routersClient struct {
@@ -26752,6 +26992,15 @@ func (c *routersClient) AggregatedList(ctx context.Context, in *AggregatedListRo
 func (c *routersClient) Delete(ctx context.Context, in *DeleteRouterRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routersClient) DeleteRoutePolicy(ctx context.Context, in *DeleteRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/DeleteRoutePolicy", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -26785,6 +27034,15 @@ func (c *routersClient) GetNatMappingInfo(ctx context.Context, in *GetNatMapping
 	return out, nil
 }
 
+func (c *routersClient) GetRoutePolicy(ctx context.Context, in *GetRoutePolicyRouterRequest, opts ...grpc.CallOption) (*RoutersGetRoutePolicyResponse, error) {
+	out := new(RoutersGetRoutePolicyResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/GetRoutePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *routersClient) GetRouterStatus(ctx context.Context, in *GetRouterStatusRouterRequest, opts ...grpc.CallOption) (*RouterStatusResponse, error) {
 	out := new(RouterStatusResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/GetRouterStatus", in, out, opts...)
@@ -26812,9 +27070,36 @@ func (c *routersClient) List(ctx context.Context, in *ListRoutersRequest, opts .
 	return out, nil
 }
 
+func (c *routersClient) ListBgpRoutes(ctx context.Context, in *ListBgpRoutesRoutersRequest, opts ...grpc.CallOption) (*RoutersListBgpRoutes, error) {
+	out := new(RoutersListBgpRoutes)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/ListBgpRoutes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routersClient) ListRoutePolicies(ctx context.Context, in *ListRoutePoliciesRoutersRequest, opts ...grpc.CallOption) (*RoutersListRoutePolicies, error) {
+	out := new(RoutersListRoutePolicies)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/ListRoutePolicies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *routersClient) Patch(ctx context.Context, in *PatchRouterRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *routersClient) PatchRoutePolicy(ctx context.Context, in *PatchRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/PatchRoutePolicy", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -26839,6 +27124,15 @@ func (c *routersClient) Update(ctx context.Context, in *UpdateRouterRequest, opt
 	return out, nil
 }
 
+func (c *routersClient) UpdateRoutePolicy(ctx context.Context, in *UpdateRoutePolicyRouterRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Routers/UpdateRoutePolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RoutersServer is the server API for Routers service.
 // All implementations must embed UnimplementedRoutersServer
 // for forward compatibility
@@ -26847,24 +27141,36 @@ type RoutersServer interface {
 	AggregatedList(context.Context, *AggregatedListRoutersRequest) (*RouterAggregatedList, error)
 	// Deletes the specified Router resource.
 	Delete(context.Context, *DeleteRouterRequest) (*Operation, error)
+	// Deletes Route Policy
+	DeleteRoutePolicy(context.Context, *DeleteRoutePolicyRouterRequest) (*Operation, error)
 	// Returns the specified Router resource.
 	Get(context.Context, *GetRouterRequest) (*Router, error)
 	// Retrieves runtime NAT IP information.
 	GetNatIpInfo(context.Context, *GetNatIpInfoRouterRequest) (*NatIpInfoResponse, error)
 	// Retrieves runtime Nat mapping information of VM endpoints.
 	GetNatMappingInfo(context.Context, *GetNatMappingInfoRoutersRequest) (*VmEndpointNatMappingsList, error)
+	// Returns specified Route Policy
+	GetRoutePolicy(context.Context, *GetRoutePolicyRouterRequest) (*RoutersGetRoutePolicyResponse, error)
 	// Retrieves runtime information of the specified router.
 	GetRouterStatus(context.Context, *GetRouterStatusRouterRequest) (*RouterStatusResponse, error)
 	// Creates a Router resource in the specified project and region using the data included in the request.
 	Insert(context.Context, *InsertRouterRequest) (*Operation, error)
 	// Retrieves a list of Router resources available to the specified project.
 	List(context.Context, *ListRoutersRequest) (*RouterList, error)
+	// Retrieves a list of router bgp routes available to the specified project.
+	ListBgpRoutes(context.Context, *ListBgpRoutesRoutersRequest) (*RoutersListBgpRoutes, error)
+	// Retrieves a list of router route policy subresources available to the specified project.
+	ListRoutePolicies(context.Context, *ListRoutePoliciesRoutersRequest) (*RoutersListRoutePolicies, error)
 	// Patches the specified Router resource with the data included in the request. This method supports PATCH semantics and uses JSON merge patch format and processing rules.
 	Patch(context.Context, *PatchRouterRequest) (*Operation, error)
+	// Patches Route Policy
+	PatchRoutePolicy(context.Context, *PatchRoutePolicyRouterRequest) (*Operation, error)
 	// Preview fields auto-generated during router create and update operations. Calling this method does NOT create or update the router.
 	Preview(context.Context, *PreviewRouterRequest) (*RoutersPreviewResponse, error)
 	// Updates the specified Router resource with the data included in the request. This method conforms to PUT semantics, which requests that the state of the target resource be created or replaced with the state defined by the representation enclosed in the request message payload.
 	Update(context.Context, *UpdateRouterRequest) (*Operation, error)
+	// Updates or creates new Route Policy
+	UpdateRoutePolicy(context.Context, *UpdateRoutePolicyRouterRequest) (*Operation, error)
 	mustEmbedUnimplementedRoutersServer()
 }
 
@@ -26878,6 +27184,9 @@ func (UnimplementedRoutersServer) AggregatedList(context.Context, *AggregatedLis
 func (UnimplementedRoutersServer) Delete(context.Context, *DeleteRouterRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
+func (UnimplementedRoutersServer) DeleteRoutePolicy(context.Context, *DeleteRoutePolicyRouterRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoutePolicy not implemented")
+}
 func (UnimplementedRoutersServer) Get(context.Context, *GetRouterRequest) (*Router, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
@@ -26886,6 +27195,9 @@ func (UnimplementedRoutersServer) GetNatIpInfo(context.Context, *GetNatIpInfoRou
 }
 func (UnimplementedRoutersServer) GetNatMappingInfo(context.Context, *GetNatMappingInfoRoutersRequest) (*VmEndpointNatMappingsList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNatMappingInfo not implemented")
+}
+func (UnimplementedRoutersServer) GetRoutePolicy(context.Context, *GetRoutePolicyRouterRequest) (*RoutersGetRoutePolicyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoutePolicy not implemented")
 }
 func (UnimplementedRoutersServer) GetRouterStatus(context.Context, *GetRouterStatusRouterRequest) (*RouterStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRouterStatus not implemented")
@@ -26896,14 +27208,26 @@ func (UnimplementedRoutersServer) Insert(context.Context, *InsertRouterRequest) 
 func (UnimplementedRoutersServer) List(context.Context, *ListRoutersRequest) (*RouterList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
+func (UnimplementedRoutersServer) ListBgpRoutes(context.Context, *ListBgpRoutesRoutersRequest) (*RoutersListBgpRoutes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBgpRoutes not implemented")
+}
+func (UnimplementedRoutersServer) ListRoutePolicies(context.Context, *ListRoutePoliciesRoutersRequest) (*RoutersListRoutePolicies, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRoutePolicies not implemented")
+}
 func (UnimplementedRoutersServer) Patch(context.Context, *PatchRouterRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedRoutersServer) PatchRoutePolicy(context.Context, *PatchRoutePolicyRouterRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchRoutePolicy not implemented")
 }
 func (UnimplementedRoutersServer) Preview(context.Context, *PreviewRouterRequest) (*RoutersPreviewResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Preview not implemented")
 }
 func (UnimplementedRoutersServer) Update(context.Context, *UpdateRouterRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedRoutersServer) UpdateRoutePolicy(context.Context, *UpdateRoutePolicyRouterRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRoutePolicy not implemented")
 }
 func (UnimplementedRoutersServer) mustEmbedUnimplementedRoutersServer() {}
 
@@ -26950,6 +27274,24 @@ func _Routers_Delete_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutersServer).Delete(ctx, req.(*DeleteRouterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Routers_DeleteRoutePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoutePolicyRouterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).DeleteRoutePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/DeleteRoutePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).DeleteRoutePolicy(ctx, req.(*DeleteRoutePolicyRouterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -27008,6 +27350,24 @@ func _Routers_GetNatMappingInfo_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Routers_GetRoutePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoutePolicyRouterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).GetRoutePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/GetRoutePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).GetRoutePolicy(ctx, req.(*GetRoutePolicyRouterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Routers_GetRouterStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRouterStatusRouterRequest)
 	if err := dec(in); err != nil {
@@ -27062,6 +27422,42 @@ func _Routers_List_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Routers_ListBgpRoutes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBgpRoutesRoutersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).ListBgpRoutes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/ListBgpRoutes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).ListBgpRoutes(ctx, req.(*ListBgpRoutesRoutersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Routers_ListRoutePolicies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRoutePoliciesRoutersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).ListRoutePolicies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/ListRoutePolicies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).ListRoutePolicies(ctx, req.(*ListRoutePoliciesRoutersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Routers_Patch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchRouterRequest)
 	if err := dec(in); err != nil {
@@ -27076,6 +27472,24 @@ func _Routers_Patch_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RoutersServer).Patch(ctx, req.(*PatchRouterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Routers_PatchRoutePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchRoutePolicyRouterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).PatchRoutePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/PatchRoutePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).PatchRoutePolicy(ctx, req.(*PatchRoutePolicyRouterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -27116,6 +27530,24 @@ func _Routers_Update_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Routers_UpdateRoutePolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRoutePolicyRouterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RoutersServer).UpdateRoutePolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Routers/UpdateRoutePolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RoutersServer).UpdateRoutePolicy(ctx, req.(*UpdateRoutePolicyRouterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Routers_ServiceDesc is the grpc.ServiceDesc for Routers service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -27132,6 +27564,10 @@ var Routers_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Routers_Delete_Handler,
 		},
 		{
+			MethodName: "DeleteRoutePolicy",
+			Handler:    _Routers_DeleteRoutePolicy_Handler,
+		},
+		{
 			MethodName: "Get",
 			Handler:    _Routers_Get_Handler,
 		},
@@ -27142,6 +27578,10 @@ var Routers_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNatMappingInfo",
 			Handler:    _Routers_GetNatMappingInfo_Handler,
+		},
+		{
+			MethodName: "GetRoutePolicy",
+			Handler:    _Routers_GetRoutePolicy_Handler,
 		},
 		{
 			MethodName: "GetRouterStatus",
@@ -27156,8 +27596,20 @@ var Routers_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Routers_List_Handler,
 		},
 		{
+			MethodName: "ListBgpRoutes",
+			Handler:    _Routers_ListBgpRoutes_Handler,
+		},
+		{
+			MethodName: "ListRoutePolicies",
+			Handler:    _Routers_ListRoutePolicies_Handler,
+		},
+		{
 			MethodName: "Patch",
 			Handler:    _Routers_Patch_Handler,
+		},
+		{
+			MethodName: "PatchRoutePolicy",
+			Handler:    _Routers_PatchRoutePolicy_Handler,
 		},
 		{
 			MethodName: "Preview",
@@ -27166,6 +27618,10 @@ var Routers_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _Routers_Update_Handler,
+		},
+		{
+			MethodName: "UpdateRoutePolicy",
+			Handler:    _Routers_UpdateRoutePolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

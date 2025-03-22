@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -3706,7 +3706,7 @@ type SoftwareConfig struct {
 	// If unspecified, the field defaults to `PLUGINS_ENABLED`.
 	//
 	// This field is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	WebServerPluginsMode SoftwareConfig_WebServerPluginsMode `protobuf:"varint,10,opt,name=web_server_plugins_mode,json=webServerPluginsMode,proto3,enum=mockgcp.cloud.orchestration.airflow.service.v1.SoftwareConfig_WebServerPluginsMode" json:"web_server_plugins_mode,omitempty"`
 }
 
@@ -4097,7 +4097,7 @@ type NodeConfig struct {
 	// projects/{project}/regions/{region}/networkAttachments/{networkAttachment}.
 	//
 	// This field is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ComposerNetworkAttachment string `protobuf:"bytes,12,opt,name=composer_network_attachment,json=composerNetworkAttachment,proto3" json:"composer_network_attachment,omitempty"`
 	// Optional. The IP range in CIDR notation to use internally by Cloud
 	// Composer. IP addresses are not reserved - and the same range can be used by
@@ -4106,7 +4106,7 @@ type NodeConfig struct {
 	// If not specified, the default value of '100.64.128.0/20' is used.
 	//
 	// This field is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ComposerInternalIpv4CidrBlock string `protobuf:"bytes,13,opt,name=composer_internal_ipv4_cidr_block,json=composerInternalIpv4CidrBlock,proto3" json:"composer_internal_ipv4_cidr_block,omitempty"`
 }
 
@@ -4307,7 +4307,7 @@ type NetworkingConfig struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Optional. Indicates the user requested specifc connection type between
+	// Optional. Indicates the user requested specific connection type between
 	// Tenant and Customer projects. You cannot set networking connection type in
 	// public IP environment.
 	ConnectionType NetworkingConfig_ConnectionType `protobuf:"varint,1,opt,name=connection_type,json=connectionType,proto3,enum=mockgcp.cloud.orchestration.airflow.service.v1.NetworkingConfig_ConnectionType" json:"connection_type,omitempty"`
@@ -4372,7 +4372,7 @@ type PrivateEnvironmentConfig struct {
 	// internet.
 	//
 	// This field is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	EnablePrivateBuildsOnly bool `protobuf:"varint,11,opt,name=enable_private_builds_only,json=enablePrivateBuildsOnly,proto3" json:"enable_private_builds_only,omitempty"`
 	// Optional. Configuration for the private GKE cluster for a Private IP
 	// Cloud Composer environment.
@@ -4550,7 +4550,7 @@ type WorkloadsConfig struct {
 	// Optional. Resources used by Airflow DAG processors.
 	//
 	// This field is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	DagProcessor *WorkloadsConfig_DagProcessorResource `protobuf:"bytes,5,opt,name=dag_processor,json=dagProcessor,proto3" json:"dag_processor,omitempty"`
 }
 
@@ -5959,7 +5959,7 @@ func (x *WorkloadsConfig_TriggererResource) GetMemoryGb() float32 {
 // Configuration for resources used by Airflow DAG processors.
 //
 // This field is supported for Cloud Composer environments in versions
-// composer-3.*.*-airflow-*.*.* and newer.
+// composer-3-airflow-*.*.*-build.* and newer.
 type WorkloadsConfig_DagProcessorResource struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -67,6 +67,8 @@ type CloudFilestoreManagerClient interface {
 	DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates the settings of a specific backup.
 	UpdateBackup(ctx context.Context, in *UpdateBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Promote the standby instance (replica).
+	PromoteReplica(ctx context.Context, in *PromoteReplicaRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type cloudFilestoreManagerClient struct {
@@ -230,6 +232,15 @@ func (c *cloudFilestoreManagerClient) UpdateBackup(ctx context.Context, in *Upda
 	return out, nil
 }
 
+func (c *cloudFilestoreManagerClient) PromoteReplica(ctx context.Context, in *PromoteReplicaRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.filestore.v1.CloudFilestoreManager/PromoteReplica", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CloudFilestoreManagerServer is the server API for CloudFilestoreManager service.
 // All implementations must embed UnimplementedCloudFilestoreManagerServer
 // for forward compatibility
@@ -278,6 +289,8 @@ type CloudFilestoreManagerServer interface {
 	DeleteBackup(context.Context, *DeleteBackupRequest) (*longrunningpb.Operation, error)
 	// Updates the settings of a specific backup.
 	UpdateBackup(context.Context, *UpdateBackupRequest) (*longrunningpb.Operation, error)
+	// Promote the standby instance (replica).
+	PromoteReplica(context.Context, *PromoteReplicaRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedCloudFilestoreManagerServer()
 }
 
@@ -335,6 +348,9 @@ func (UnimplementedCloudFilestoreManagerServer) DeleteBackup(context.Context, *D
 }
 func (UnimplementedCloudFilestoreManagerServer) UpdateBackup(context.Context, *UpdateBackupRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackup not implemented")
+}
+func (UnimplementedCloudFilestoreManagerServer) PromoteReplica(context.Context, *PromoteReplicaRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PromoteReplica not implemented")
 }
 func (UnimplementedCloudFilestoreManagerServer) mustEmbedUnimplementedCloudFilestoreManagerServer() {}
 
@@ -655,6 +671,24 @@ func _CloudFilestoreManager_UpdateBackup_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CloudFilestoreManager_PromoteReplica_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PromoteReplicaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudFilestoreManagerServer).PromoteReplica(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.filestore.v1.CloudFilestoreManager/PromoteReplica",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudFilestoreManagerServer).PromoteReplica(ctx, req.(*PromoteReplicaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CloudFilestoreManager_ServiceDesc is the grpc.ServiceDesc for CloudFilestoreManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -729,6 +763,10 @@ var CloudFilestoreManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateBackup",
 			Handler:    _CloudFilestoreManager_UpdateBackup_Handler,
+		},
+		{
+			MethodName: "PromoteReplica",
+			Handler:    _CloudFilestoreManager_PromoteReplica_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

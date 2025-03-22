@@ -31,6 +31,8 @@ type ModelServiceClient interface {
 	ListModels(ctx context.Context, in *ListModelsRequest, opts ...grpc.CallOption) (*ListModelsResponse, error)
 	// Lists versions of the specified model.
 	ListModelVersions(ctx context.Context, in *ListModelVersionsRequest, opts ...grpc.CallOption) (*ListModelVersionsResponse, error)
+	// Lists checkpoints of the specified model version.
+	ListModelVersionCheckpoints(ctx context.Context, in *ListModelVersionCheckpointsRequest, opts ...grpc.CallOption) (*ListModelVersionCheckpointsResponse, error)
 	// Updates a Model.
 	UpdateModel(ctx context.Context, in *UpdateModelRequest, opts ...grpc.CallOption) (*Model, error)
 	// Incrementally update the dataset used for an examples model.
@@ -120,6 +122,15 @@ func (c *modelServiceClient) ListModels(ctx context.Context, in *ListModelsReque
 func (c *modelServiceClient) ListModelVersions(ctx context.Context, in *ListModelVersionsRequest, opts ...grpc.CallOption) (*ListModelVersionsResponse, error) {
 	out := new(ListModelVersionsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelService/ListModelVersions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelServiceClient) ListModelVersionCheckpoints(ctx context.Context, in *ListModelVersionCheckpointsRequest, opts ...grpc.CallOption) (*ListModelVersionCheckpointsResponse, error) {
+	out := new(ListModelVersionCheckpointsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelService/ListModelVersionCheckpoints", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -264,6 +275,8 @@ type ModelServiceServer interface {
 	ListModels(context.Context, *ListModelsRequest) (*ListModelsResponse, error)
 	// Lists versions of the specified model.
 	ListModelVersions(context.Context, *ListModelVersionsRequest) (*ListModelVersionsResponse, error)
+	// Lists checkpoints of the specified model version.
+	ListModelVersionCheckpoints(context.Context, *ListModelVersionCheckpointsRequest) (*ListModelVersionCheckpointsResponse, error)
 	// Updates a Model.
 	UpdateModel(context.Context, *UpdateModelRequest) (*Model, error)
 	// Incrementally update the dataset used for an examples model.
@@ -331,6 +344,9 @@ func (UnimplementedModelServiceServer) ListModels(context.Context, *ListModelsRe
 }
 func (UnimplementedModelServiceServer) ListModelVersions(context.Context, *ListModelVersionsRequest) (*ListModelVersionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListModelVersions not implemented")
+}
+func (UnimplementedModelServiceServer) ListModelVersionCheckpoints(context.Context, *ListModelVersionCheckpointsRequest) (*ListModelVersionCheckpointsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListModelVersionCheckpoints not implemented")
 }
 func (UnimplementedModelServiceServer) UpdateModel(context.Context, *UpdateModelRequest) (*Model, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateModel not implemented")
@@ -455,6 +471,24 @@ func _ModelService_ListModelVersions_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelServiceServer).ListModelVersions(ctx, req.(*ListModelVersionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelService_ListModelVersionCheckpoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListModelVersionCheckpointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelServiceServer).ListModelVersionCheckpoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.ModelService/ListModelVersionCheckpoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelServiceServer).ListModelVersionCheckpoints(ctx, req.(*ListModelVersionCheckpointsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -733,6 +767,10 @@ var ModelService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListModelVersions",
 			Handler:    _ModelService_ListModelVersions_Handler,
+		},
+		{
+			MethodName: "ListModelVersionCheckpoints",
+			Handler:    _ModelService_ListModelVersionCheckpoints_Handler,
 		},
 		{
 			MethodName: "UpdateModel",
