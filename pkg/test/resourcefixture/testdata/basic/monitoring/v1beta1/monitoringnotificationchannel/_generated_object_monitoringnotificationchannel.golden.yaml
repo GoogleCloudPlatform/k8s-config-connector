@@ -13,7 +13,6 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    key-one: value-one
     key-three: value-three
     key-two: value-three
   name: monitoringnotificationchannel-${uniqueId}

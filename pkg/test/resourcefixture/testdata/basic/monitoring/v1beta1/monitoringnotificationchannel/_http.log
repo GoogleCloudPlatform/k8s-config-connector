@@ -118,7 +118,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",
     "managed-by-cnrm": "true"
@@ -156,7 +155,6 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",
     "managed-by-cnrm": "true"
@@ -200,7 +198,6 @@ X-Xss-Protection: 0
   "type": "webhook_basicauth",
   "userLabels": {
     "cnrm-test": "true",
-    "key-one": "value-one",
     "key-three": "value-three",
     "key-two": "value-three",
     "managed-by-cnrm": "true"

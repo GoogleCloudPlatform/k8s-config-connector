@@ -3,7 +3,7 @@ kind: MonitoringUptimeCheckConfig
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"httpCheck":{"authInfo":{"password":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-2-${uniqueId}"}}}},"headers":{"header-one":"value-one","header-two":"value-two"}}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"httpCheck":{"authInfo":{"password":{"valueFrom":{"secretKeyRef":{"key":"password","name":"secret-2-${uniqueId}"}}}},"headers":{"header-two":"value-two"}}}}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
@@ -30,7 +30,6 @@ spec:
     body: bmV3LXN0cmluZwo=
     contentType: URL_ENCODED
     headers:
-      header-one: value-one
       header-two: value-two
     maskHeaders: true
     path: /other
