@@ -32,8 +32,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	gcp "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
-	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
+	gcp "cloud.google.com/go/recaptchaenterprise/v2/apiv1beta1"
+	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1beta1/recaptchaenterprisepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -56,15 +56,8 @@ type modelFirewallPolicy struct {
 	config config.ControllerConfig
 }
 
-func (m *modelFirewallPolicy) client(ctx context.Context, projectID string) (*gcp.Client, error) {
+func (m *modelFirewallPolicy) client(ctx context.Context, projectID string) (*gcp.RecaptchaEnterpriseServiceV1Beta1Client, error) {
 	opts := []option.ClientOption{}
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !m.config.UserProjectOverride || m.config.BillingProject == "" {
-		m.config.UserProjectOverride = true
-		m.config.BillingProject = projectID
-	}
 
 	if optsForClient, err := m.config.RESTClientOptions(); err != nil {
 		return nil, err
@@ -72,7 +65,9 @@ func (m *modelFirewallPolicy) client(ctx context.Context, projectID string) (*gc
 		opts = append(opts, optsForClient...)
 	}
 
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	// Using v1beta1 because v1 doesn't have REST client.
+	// but v1beta1 doesn't have firewall policy resource...
+	gcpClient, err := gcp.NewRecaptchaEnterpriseServiceV1Beta1RESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building recaptchaenterprise client: %w", err)
 	}
@@ -91,7 +86,7 @@ func (m *modelFirewallPolicy) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +104,7 @@ func (m *modelFirewallPolicy) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type FirewallPolicyAdapter struct {
-	gcpClient *gcp.Client
+	gcpClient *gcp.RecaptchaEnterpriseServiceV1Beta1Client
 	id        *krm.FirewallPolicyIdentity
 	desired   *krm.ReCAPTCHAEnterpriseFirewallPolicy
 	actual    *pb.FirewallPolicy
