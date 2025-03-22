@@ -64,7 +64,7 @@ func NewConversionWorkspaceIdentity(ctx context.Context, reader client.Reader, o
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := common.ValueOf(obj.Spec.Location)
+	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
