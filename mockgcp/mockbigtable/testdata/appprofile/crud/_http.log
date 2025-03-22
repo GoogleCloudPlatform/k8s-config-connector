@@ -8,7 +8,7 @@ Content-Type: application/json
   "clusters": {
     "test-cluster-${uniqueId}": {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-c",
+      "location": "projects/${projectId}/locations/us-central1-a",
       "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
       "serveNodes": 1
     }
@@ -38,7 +38,7 @@ X-Xss-Protection: 0
       "clusters": {
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-east1-c",
+          "location": "projects/${projectId}/locations/us-central1-a",
           "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
@@ -52,12 +52,12 @@ X-Xss-Protection: 0
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -81,7 +81,7 @@ X-Xss-Protection: 0
       "clusters": {
         "test-cluster-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-east1-c",
+          "location": "projects/${projectId}/locations/us-central1-a",
           "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
           "serveNodes": 1
         }
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "test-instance",
@@ -192,7 +192,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=False&updateMask=multiClusterRoutingUseAny%2Cdescription
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json&ignoreWarnings=False&updateMask=singleClusterRouting.clusterId%2Cdescription
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -200,7 +200,9 @@ Content-Type: application/json
 
 {
   "description": "Updated Test App Profile",
-  "multiClusterRoutingUseAny": {}
+  "singleClusterRouting": {
+    "clusterId": "test-cluster-${uniqueId}"
+  }
 }
 
 200 OK
@@ -217,12 +219,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -242,14 +244,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
     "description": "Updated Test App Profile",
-    "multiClusterRoutingUseAny": {},
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
-    "standardIsolation": {
-      "priority": "PRIORITY_HIGH"
+    "singleClusterRouting": {
+      "clusterId": "test-cluster-${uniqueId}"
     }
   }
 }
@@ -273,8 +274,38 @@ X-Xss-Protection: 0
 
 {
   "description": "Updated Test App Profile",
-  "multiClusterRoutingUseAny": {},
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "singleClusterRouting": {
+    "clusterId": "test-cluster-${uniqueId}"
+  },
+  "standardIsolation": {
+    "priority": "PRIORITY_HIGH"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated Test App Profile",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+  "singleClusterRouting": {
+    "clusterId": "test-cluster-${uniqueId}"
+  },
   "standardIsolation": {
     "priority": "PRIORITY_HIGH"
   }
@@ -300,9 +331,22 @@ X-Xss-Protection: 0
 {
   "appProfiles": [
     {
+      "description": "Default application profile for this instance. This profile is used if you do not supply a different profile ID at connection time.",
+      "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/default",
+      "singleClusterRouting": {
+        "allowTransactionalWrites": true,
+        "clusterId": "test-cluster-${uniqueId}"
+      },
+      "standardIsolation": {
+        "priority": "PRIORITY_HIGH"
+      }
+    },
+    {
       "description": "Updated Test App Profile",
-      "multiClusterRoutingUseAny": {},
       "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
+      "singleClusterRouting": {
+        "clusterId": "test-cluster-${uniqueId}"
+      },
       "standardIsolation": {
         "priority": "PRIORITY_HIGH"
       }

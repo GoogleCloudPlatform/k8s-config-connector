@@ -121,6 +121,7 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		return nil, err
 	}
 
+	// Create cluster objects
 	// If this was production, we'd probably want a transaction etc
 	for clusterID, cluster := range req.GetClusters() {
 		clusterFQN := instanceFQN + "/clusters/" + clusterID
@@ -130,6 +131,33 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 			return nil, err
 		}
 		if err := s.storage.Create(ctx, clusterFQN, obj); err != nil {
+			return nil, err
+		}
+	}
+
+	// Create default appProfile
+	{
+		defaultClusterID := ""
+		for clusterID := range req.GetClusters() {
+			defaultClusterID = clusterID
+		}
+		appProfile := &pb.AppProfile{
+			Description: "Default application profile for this instance. This profile is used if you do not supply a different profile ID at connection time.",
+			Name:        instanceFQN + "/appProfiles/default",
+			RoutingPolicy: &pb.AppProfile_SingleClusterRouting_{
+				SingleClusterRouting: &pb.AppProfile_SingleClusterRouting{
+					AllowTransactionalWrites: true,
+					ClusterId:                defaultClusterID,
+				},
+			},
+			Isolation: &pb.AppProfile_StandardIsolation_{
+				StandardIsolation: &pb.AppProfile_StandardIsolation{
+					Priority: pb.AppProfile_PRIORITY_HIGH,
+				},
+			},
+		}
+		appProfileFQN := appProfile.Name
+		if err := s.storage.Create(ctx, appProfileFQN, appProfile); err != nil {
 			return nil, err
 		}
 	}
