@@ -19,13 +19,13 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 
 	codegenannotations "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
@@ -363,6 +363,14 @@ func deduplicateAndSortOutputMessages(messages []*OutputMessageDetails) []*Outpu
 	return messages
 }
 
+// AsSnakeCase returns the given string converted to lowercase snake_case. If the input is already snake_case, no
+// change is made. Any transitions in the input from lowercase to uppercase are interpreted as camelCase-style word
+// transitions, and are replaced with an underscore.
+func AsSnakeCase(s string) string {
+	res := regexp.MustCompile("(.)([A-Z][a-z]+)").ReplaceAllString(s, "${1}_${2}")
+	return strings.ToLower(regexp.MustCompile("([a-z0-9])([A-Z])").ReplaceAllString(res, "${1}_${2}"))
+}
+
 func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
 
@@ -376,7 +384,7 @@ func GoNameForProtoMessage(msg protoreflect.MessageDescriptor) string {
 	// Ensure acronyms in type names are also handled.
 	parts := strings.Split(fullName, ".")
 	for i, part := range parts {
-		partInSnakeCase := text.AsSnakeCase(part)
+		partInSnakeCase := AsSnakeCase(part)
 		tokens := strings.Split(partInSnakeCase, "_")
 		for j, token := range tokens {
 			if IsAcronym(token) {
