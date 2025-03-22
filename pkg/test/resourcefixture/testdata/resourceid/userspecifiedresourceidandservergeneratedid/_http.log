@@ -266,7 +266,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC-2 ${uniqueId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"
@@ -289,7 +289,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC-2 ${uniqueId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"
@@ -316,7 +316,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC-2 ${uniqueId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"
@@ -348,7 +348,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC-2 ${uniqueId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"
@@ -402,7 +402,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC-2 ${uniqueId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"

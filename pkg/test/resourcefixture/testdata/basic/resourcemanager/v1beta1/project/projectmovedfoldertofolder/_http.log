@@ -319,7 +319,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC ${uniqueId}",
   "parent": {
     "id": "${folderID}",
     "type": "folder"
@@ -350,7 +350,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC ${uniqueId}",
   "parent": {
     "id": "${folderID}",
     "type": "folder"
@@ -403,7 +403,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/project-${uniqueId}",
+  "name": "KCC ${uniqueId}",
   "parent": {
     "id": "${folderID}",
     "type": "folder"

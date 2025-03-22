@@ -86,7 +86,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb_v1.RegisterProjectsServer(grpcServer, s.projectsV1)
+	pb_v1.RegisterProjectsServerServer(grpcServer, s.projectsV1)
 	pb_v3.RegisterProjectsServer(grpcServer, s.projectsV3)
 	pb_v3.RegisterFoldersServer(grpcServer, &Folders{MockService: s})
 	pb_v3.RegisterTagKeysServer(grpcServer, s.tagKeys)
@@ -96,7 +96,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb_v1.RegisterProjectsHandler,
+		pb_v1.RegisterProjectsServerHandler,
 		pb_v3.RegisterProjectsHandler,
 		pb_v3.RegisterFoldersHandler,
 		pb_v3.RegisterTagKeysHandler,
