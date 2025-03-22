@@ -33,6 +33,7 @@ require (
 	cloud.google.com/go/documentai v1.35.2
 	cloud.google.com/go/edgecontainer v1.4.1
 	cloud.google.com/go/essentialcontacts v1.7.3
+	cloud.google.com/go/eventarc v1.15.1
 	cloud.google.com/go/firestore v1.18.0
 	cloud.google.com/go/gkebackup v1.6.3
 	cloud.google.com/go/gkemulticloud v1.5.1
