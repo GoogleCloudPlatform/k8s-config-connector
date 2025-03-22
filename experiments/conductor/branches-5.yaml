@@ -234,7 +234,6 @@ branches:
         - "datastream.googleapis.com"
       notes:
         - long running operation
-      skip: true # NOTYET
     - name: datastream-stream
       local: resource-datastream-stream
       remote: resource-datastream-stream
@@ -282,7 +281,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: Backup
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.Backup
       host-name: ""
       apis-enabled:
@@ -303,7 +302,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: BackupPlan
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.BackupPlan
       host-name: ""
       apis-enabled:
@@ -322,7 +321,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: Restore
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.Restore
       host-name: ""
       apis-enabled:
@@ -343,7 +342,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: RestorePlan
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.RestorePlan
       host-name: ""
       apis-enabled:
@@ -362,7 +361,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: VolumeBackup
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.VolumeBackup
       host-name: ""
       notes:
@@ -380,7 +379,7 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: VolumeRestore
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.VolumeRestore
       host-name: ""
       notes:
@@ -570,7 +569,6 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
-      skip: true # NOTYET
     - name: vmwareengine-externaladdress
       local: resource-vmwareengine-externaladdress
       remote: resource-vmwareengine-externaladdress
@@ -699,7 +697,6 @@ branches:
         - "vmwareengine.googleapis.com"
       notes:
         - long running operation
-      skip: true # NOTYET
     - name: vmwareengine-dnsbindpermission
       local: resource-vmwareengine-dnsbindpermission
       remote: resource-vmwareengine-dnsbindpermission
