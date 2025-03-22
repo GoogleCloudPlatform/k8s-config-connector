@@ -29,6 +29,7 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -36,6 +37,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -59,13 +61,6 @@ func (m *importJobModel) client(ctx context.Context, projectID string) (*kms.Key
 
 	config := m.config
 
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
 	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
@@ -85,17 +80,12 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewKMSImportJobIDFromObject(ctx, reader, obj)
+	id, err := krm.NewImportJobIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-	mapCtx := &direct.MapContext{}
-	desired := KMSImportJobSpec_ToProto(mapCtx, &obj.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +93,7 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Rea
 	return &importJobAdapter{
 		gcpClient: gcpClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 		reader:    reader,
 	}, nil
 }
@@ -114,8 +104,8 @@ func (m *importJobModel) AdapterForURL(ctx context.Context, url string) (directb
 
 type importJobAdapter struct {
 	gcpClient *kms.KeyManagementClient
-	id        *krm.KMSImportJobID
-	desired   *kmspb.ImportJob
+	id        *krm.ImportJobIdentity
+	desired   *krm.KMSImportJob
 	actual    *kmspb.ImportJob
 	reader    client.Reader
 }
@@ -143,16 +133,33 @@ func (a *importJobAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func (a *importJobAdapter) normalizeReferences(ctx context.Context) error {
+	if a.desired.Spec.KMSKeyRingRef != nil {
+		if _, err := refs.ResolveKMSKeyRingRef(ctx, a.reader, a.desired, a.desired.Spec.KMSKeyRingRef); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating kms importjob", "name", a.id)
+	mapCtx := &direct.MapContext{}
 
-	desired := direct.ProtoClone(a.desired)
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	desired := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	req := &kmspb.CreateImportJobRequest{
-		Parent:      a.id.KeyRing.String(),
-		ImportJobId: a.id.ImportJob,
+		Parent:      a.id.Parent().String(),
+		ImportJobId: a.id.ID(),
 		ImportJob:   desired,
 	}
 	created, err := a.gcpClient.CreateImportJob(ctx, req)
@@ -162,7 +169,6 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("successfully created kms importjob in gcp", "name", a.id)
 
 	status := &krm.KMSImportJobStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = KMSImportJobObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -174,7 +180,34 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update not supported for KMSImportJob")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating KMSImportJob", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	desiredPb := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	desiredPb.Name = a.id.String()
+
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		return nil
+	}
+
+	log.V(2).Info("KMSImportJob doesn't support update", "name", a.id)
+	return fmt.Errorf("updating KMSImportJob %s: update is not supported", a.id)
 }
 
 // Export implements the Adapter interface.
@@ -190,16 +223,14 @@ func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.KeyRingRef = &refs.ResourceRef{Kind: "KMSKeyRing", Name: a.id.KeyRing.KeyRing}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
+	obj.Spec.KMSKeyRingRef = &refs.KMSKeyRingRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.ImportJob)
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.KMSImportJobGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
@@ -210,7 +241,7 @@ func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 func (a *importJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.Info("No-op Delete for import job", "name", a.id.String())
-	// We do not support deleting an import job. The underlying GCP resource will expire after a few days.
+	// KMS API does not support deleting an import job. An import job expires after three days.
 	// Return success to remove the finalizer, so the resource can be deleted in k8s.
 	return true, nil
 }
