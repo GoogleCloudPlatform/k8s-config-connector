@@ -690,6 +690,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	return h
 }
 
+func (t *Harness) FolderID() string {
+	return testgcp.TestFolderID.Get()
+}
+
 func (h *Harness) RegisteredServices() mockgcpregistry.Normalizer {
 	return h.registeredServices
 }

@@ -15,7 +15,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   folderRef:
-    external: "123451001"
+    external: ${folderID}
   name: KCC-2 ${uniqueId}
   resourceID: project-${uniqueId}
 status:
