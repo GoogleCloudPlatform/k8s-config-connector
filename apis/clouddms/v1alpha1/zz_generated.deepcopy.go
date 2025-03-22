@@ -136,11 +136,6 @@ func (in *CloudDMSConversionWorkspaceSpec) DeepCopyInto(out *CloudDMSConversionW
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
-	if in.Location != nil {
-		in, out := &in.Location, &out.Location
-		*out = new(string)
-		**out = **in
-	}
 	if in.Source != nil {
 		in, out := &in.Source, &out.Source
 		*out = new(DatabaseEngineInfo)

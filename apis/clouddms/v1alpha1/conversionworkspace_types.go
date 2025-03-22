@@ -34,7 +34,7 @@ type CloudDMSConversionWorkspaceSpec struct {
 
 	// Immutable. The location where the alloydb cluster should reside.
 	// +required
-	Location *string `json:"location,omitempty"`
+	Location string `json:"location,omitempty"`
 
 	// Required. The source engine details.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspace.source
