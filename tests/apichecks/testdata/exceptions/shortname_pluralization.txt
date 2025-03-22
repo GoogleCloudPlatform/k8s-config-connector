@@ -1,1 +1,2 @@
+[shortname_plural] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: plural shortName "gcpassetsavedquerys" appears to have incorrect pluralization of "gcpassetsavedquery"
 [shortname_plural] crd=computeprojectmetadatas.compute.cnrm.cloud.google.com version=v1beta1: plural shortName "gcpcomputeprojectmetadatas" appears to have incorrect pluralization of "gcpcomputeprojectmetadata"
