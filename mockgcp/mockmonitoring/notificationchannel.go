@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: monitoring.googleapis.com
+// proto.service: google.monitoring.v3.NotificationChannelService
+
 package mockmonitoring
 
 import (
@@ -24,9 +28,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
@@ -51,6 +57,31 @@ func (s *NotificationChannelService) GetNotificationChannel(ctx context.Context,
 	return obj, nil
 }
 
+func (s *NotificationChannelService) ListNotificationChannels(ctx context.Context, req *pb.ListNotificationChannelsRequest) (*pb.ListNotificationChannelsResponse, error) {
+	name, err := s.parseNotificationChannelName(req.GetName() + "/notificationChannels/" + "placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	var notificationChannels []*pb.NotificationChannel
+
+	findKind := (&pb.NotificationChannel{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		notificationChannel := obj.(*pb.NotificationChannel)
+		notificationChannels = append(notificationChannels, notificationChannel)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListNotificationChannelsResponse{
+		NotificationChannels: notificationChannels,
+		TotalSize:            int32(len(notificationChannels)),
+	}, nil
+}
+
 func (s *NotificationChannelService) CreateNotificationChannel(ctx context.Context, req *pb.CreateNotificationChannelRequest) (*pb.NotificationChannel, error) {
 	now := time.Now()
 
@@ -72,6 +103,7 @@ func (s *NotificationChannelService) CreateNotificationChannel(ctx context.Conte
 		MutateTime: timestamppb.New(now),
 	})
 	obj.Name = fqn
+	obj.Enabled = wrapperspb.Bool(true)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
