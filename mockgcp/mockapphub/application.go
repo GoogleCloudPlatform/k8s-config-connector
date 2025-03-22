@@ -69,6 +69,19 @@ func (s *AppHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateA
 		return nil, err
 	}
 	obj.UpdateTime = timestamppb.New(time.Now())
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetApplication().GetDescription()
+		case "display_name":
+			obj.DisplayName = req.GetApplication().GetDisplayName()
+		case "attributes":
+			obj.Attributes = req.GetApplication().GetAttributes()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

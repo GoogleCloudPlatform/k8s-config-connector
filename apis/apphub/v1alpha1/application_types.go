@@ -46,7 +46,7 @@ type AppHubApplicationSpec struct {
 	Scope *Scope `json:"scope,omitempty"`
 
 	// Required. Defines the parent path of the resource.
-	Parent *Parent `json:"parent,omitempty"`
+	*Parent `json:",inline"`
 
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
