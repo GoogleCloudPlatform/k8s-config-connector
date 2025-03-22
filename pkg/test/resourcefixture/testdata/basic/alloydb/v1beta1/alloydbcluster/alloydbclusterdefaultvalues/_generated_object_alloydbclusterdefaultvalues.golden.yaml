@@ -3,28 +3,32 @@ kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"initialUser":{"password":{"value":"updated"},"user":"postgres"}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: alloydbcluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  initialUser:
-    password:
-      value: updated
-    user: postgres
-  location: southamerica-east1
-  networkRef:
-    name: default
+  automatedBackupPolicy:
+    enabled: true
+    labels:
+      source: kcc-test
+  continuousBackupConfig:
+    enabled: true
+    recoveryWindowDays: 14
+  location: us-west2
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  resourceID: alloydbcluster${uniqueId}
+  resourceID: alloydbcluster-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -47,8 +51,8 @@ status:
   databaseVersion: POSTGRES_15
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-  name: projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}
-  observedGeneration: 2
+  name: projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}
+  observedGeneration: 3
   observedState:
     clusterType: PRIMARY
   uid: "12345678"
