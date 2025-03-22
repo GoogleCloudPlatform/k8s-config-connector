@@ -1,0 +1,106 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: new-value
+  name: dataproccluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    gceClusterConfig:
+      internalIPOnly: false
+    masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+      machineType: n2-standard-2
+      numInstances: 1
+    workerConfig:
+      machineType: n2-standard-4
+      numInstances: 2
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  resourceID: dataproccluster-${uniqueId}
+status:
+  clusterUuid: ${clusterUuid}
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  config:
+    masterConfig:
+      instanceNames:
+      - dataproccluster-${uniqueId}-m
+    workerConfig:
+      instanceNames:
+      - dataproccluster-${uniqueId}-w-0
+      - dataproccluster-${uniqueId}-w-1
+  metrics:
+    hdfsMetrics:
+      dfs-blocks-corrupt: "0"
+      dfs-blocks-default-replication-factor: "2"
+      dfs-blocks-missing: "0"
+      dfs-blocks-missing-repl-one: "0"
+      dfs-blocks-pending-deletion: "0"
+      dfs-blocks-under-replication: "0"
+      dfs-capacity-present: "56789"
+      dfs-capacity-remaining: "56789"
+      dfs-capacity-total: "56789"
+      dfs-capacity-used: "56789"
+      dfs-nodes-decommissioned: "0"
+      dfs-nodes-decommissioning: "0"
+      dfs-nodes-running: "2"
+    yarnMetrics:
+      yarn-apps-completed: "0"
+      yarn-apps-failed: "0"
+      yarn-apps-killed: "0"
+      yarn-apps-pending: "0"
+      yarn-apps-running: "0"
+      yarn-apps-submitted: "0"
+      yarn-containers-allocated: "0"
+      yarn-containers-pending: "0"
+      yarn-containers-reserved: "0"
+      yarn-memory-mb-allocated: "0"
+      yarn-memory-mb-available: "27088"
+      yarn-memory-mb-pending: "0"
+      yarn-memory-mb-reserved: "0"
+      yarn-memory-mb-total: "27088"
+      yarn-nodes-active: "2"
+      yarn-nodes-decommissioned: "0"
+      yarn-nodes-decommissioning: "0"
+      yarn-nodes-lost: "0"
+      yarn-nodes-new: "0"
+      yarn-nodes-rebooted: "0"
+      yarn-nodes-shutdown: "0"
+      yarn-nodes-unhealthy: "0"
+      yarn-vcores-allocated: "0"
+      yarn-vcores-available: "8"
+      yarn-vcores-pending: "0"
+      yarn-vcores-reserved: "0"
+      yarn-vcores-total: "8"
+  observedGeneration: 3
+  status:
+    state: RUNNING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
+  statusHistory:
+  - state: CREATING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
+  - state: RUNNING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
+  - state: UPDATING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
+  - state: RUNNING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
+  - state: UPDATING
+    stateStartTime: "2024-04-01T12:34:56.123456Z"
