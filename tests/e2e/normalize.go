@@ -1015,6 +1015,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".lakes[].updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
