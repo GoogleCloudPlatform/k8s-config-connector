@@ -31,6 +31,15 @@ type ProjectParent struct {
 	ProjectID string
 }
 
+func (i *ProjectParent) FromExternal(external string) error {
+	tokens := strings.Split(external, "/")
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		i.ProjectID = tokens[1]
+		return nil
+	}
+	return fmt.Errorf("format of project reference %q was not known (use projects/{{projectID}})", external)
+}
+
 var _ ParentBuilder = &ProjectRef{}
 
 // Project specifies the resource's GCP hierarchy (Project/Folder/Organization).
