@@ -28,7 +28,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/documentai/v1"
 )
 
@@ -87,13 +86,13 @@ func (s *DocumentProcessorV1) DeleteProcessor(ctx context.Context, req *pb.Delet
 
 // ProcessorName format: `projects/{project}/locations/{location}/processors/{processor}`
 type ProcessorName struct {
-	Project       *projects.ProjectData
+	Project       string
 	Location      string
 	ProcessorName string
 }
 
 func (n *ProcessorName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/processors/%s", n.Project.ID, n.Location, n.ProcessorName)
+	return fmt.Sprintf("projects/%s/locations/%s/processors/%s", n.Project, n.Location, n.ProcessorName)
 }
 
 // parseProcessorName parses a string into a processorName.
@@ -102,12 +101,8 @@ func (s *DocumentProcessorV1) ParseProcessorName(name string) (*ProcessorName, e
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "processors" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
 		name := &ProcessorName{
-			Project:       project,
+			Project:       tokens[1],
 			Location:      tokens[3],
 			ProcessorName: tokens[5],
 		}
