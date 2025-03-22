@@ -368,6 +368,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudquota.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
   resources:
   - '*'
