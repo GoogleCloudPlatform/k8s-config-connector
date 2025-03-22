@@ -41,11 +41,11 @@ func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.Ass
 	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
 	return out
 }
-func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lake {
+func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Lake{}
+	out := &krm.DataplexLakeSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
@@ -60,7 +60,7 @@ func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Lak
 	// MISSING: MetastoreStatus
 	return out
 }
-func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake {
+func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpec) *pb.Lake {
 	if in == nil {
 		return nil
 	}
@@ -79,12 +79,11 @@ func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.Lake) *pb.Lake 
 	// MISSING: MetastoreStatus
 	return out
 }
-func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.LakeObservedState {
+func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.LakeObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DataplexLakeObservedState{}
 	// MISSING: DisplayName
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -98,12 +97,11 @@ func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake)
 	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
 	return out
 }
-func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LakeObservedState) *pb.Lake {
+func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeObservedState) *pb.Lake {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Lake{}
-	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
