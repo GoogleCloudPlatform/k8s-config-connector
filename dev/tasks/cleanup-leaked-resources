@@ -1,0 +1,2 @@
+gcloud alpha monitoring policies list --uri | xargs -P20 -I {} gcloud alpha monitoring policies delete {} --quiet
+
