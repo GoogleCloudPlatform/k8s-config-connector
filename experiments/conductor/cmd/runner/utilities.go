@@ -563,6 +563,7 @@ func (b *BranchProcessor) CommitMsg(branch Branch) string {
 	s = strings.ReplaceAll(s, "{{command}}", branch.Command)
 	s = strings.ReplaceAll(s, "{{group}}", branch.Group)
 	s = strings.ReplaceAll(s, "{{resource}}", branch.Resource)
+	s = strings.ReplaceAll(s, "{{kind}}", branch.Kind)
 	return s
 }
 
