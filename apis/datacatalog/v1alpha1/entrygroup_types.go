@@ -31,9 +31,8 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
 // +kcc:alias=datacatalog-entrygroup
+// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupSpec struct {
 	Parent `json:",inline"`
 	// The DataCatalogEntryGroup name. If not given, the metadata.name will be used.
