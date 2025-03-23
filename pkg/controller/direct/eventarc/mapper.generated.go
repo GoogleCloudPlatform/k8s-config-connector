@@ -53,7 +53,7 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	if in.PubsubTopic != nil {
-		out.Transport = &eventarcpb.Channel_Transport_{Transport: &eventarcpb.Channel_Transport_PubsubTopic{PubsubTopic: &pb.Channel_PubsubTopic{PubsubTopic: *in.PubsubTopic}}}
+		out.Transport = &pb.Channel_Transport{Transport: &pb.Channel_Transport_PubsubTopic{PubsubTopic: *in.PubsubTopic}}
 	}
 	out.State = direct.Enum_ToProto[pb.Channel_State](mapCtx, in.State)
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
