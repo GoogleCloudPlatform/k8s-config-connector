@@ -35,7 +35,7 @@ func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ch
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
+
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
 	// MISSING: CryptoKeyName
@@ -52,9 +52,7 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	if in.PubsubTopic != nil {
-		out.Transport = &pb.Channel_Transport{Transport: &pb.Channel_Transport_PubsubTopic{PubsubTopic: *in.PubsubTopic}}
-	}
+
 	out.State = direct.Enum_ToProto[pb.Channel_State](mapCtx, in.State)
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
 	// MISSING: CryptoKeyName
