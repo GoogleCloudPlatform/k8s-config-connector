@@ -1,0 +1,1875 @@
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks?%24alt=json%3Benum-encoding%3Dint&vmwareEngineNetworkId=vmwareenginenetwork-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "description": "test dependency vmwareengine network",
+  "type": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.VmwareEngineNetwork",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "test dependency vmwareengine network",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "state": "ACTIVE",
+    "type": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vpcNetworks": [
+      {
+        "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+        "type": "INTERNET"
+      },
+      {
+        "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+        "type": "INTRANET"
+      },
+      {
+        "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+        "type": "GOOGLE_CLOUD"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds?%24alt=json%3Benum-encoding%3Dint&privateCloudId=vmwareengineprivatecloud-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2-a
+
+{
+  "description": "Initial description",
+  "managementCluster": {
+    "clusterId": "cluster-1",
+    "nodeTypeConfigs": {
+      "standard-72": {
+        "nodeCount": 3
+      }
+    }
+  },
+  "networkConfig": {
+    "managementCidr": "192.168.30.0/24",
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}"
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.PrivateCloud",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "hcx": {
+      "fqdn": "hcx-414861.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.3",
+      "state": "ACTIVE",
+      "version": "4.10.3.24447633"
+    },
+    "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "networkConfig": {
+      "dnsServerIp": "192.168.30.234",
+      "managementCidr": "192.168.30.0/24",
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+    },
+    "nsx": {
+      "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.18",
+      "state": "ACTIVE",
+      "version": "3.2.3.1"
+    },
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vcenter": {
+      "fqdn": "vcsa-359395.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.2",
+      "state": "ACTIVE",
+      "version": "7.0.3.23085514"
+    }
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "hcx": {
+    "fqdn": "hcx-414861.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.3",
+    "state": 1,
+    "version": "4.10.3.24447633"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+  "networkConfig": {
+    "dnsServerIp": "192.168.30.234",
+    "managementCidr": "192.168.30.0/24",
+    "managementIpAddressLayoutVersion": 2,
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+  },
+  "nsx": {
+    "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.18",
+    "state": 1,
+    "version": "3.2.3.1"
+  },
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vcenter": {
+    "fqdn": "vcsa-359395.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.2",
+    "state": 1,
+    "version": "7.0.3.23085514"
+  }
+}
+
+---
+
+PATCH https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: private_cloud.name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+
+{
+  "description": "Updated description",
+  "managementCluster": {
+    "clusterId": "cluster-1",
+    "nodeTypeConfigs": {
+      "standard-72": {
+        "nodeCount": 3
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+  "networkConfig": {
+    "managementCidr": "192.168.30.0/24",
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}"
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.PrivateCloud",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "hcx": {
+      "fqdn": "hcx-414861.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.3",
+      "state": "ACTIVE",
+      "version": "4.10.3.24447633"
+    },
+    "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "networkConfig": {
+      "dnsServerIp": "192.168.30.234",
+      "managementCidr": "192.168.30.0/24",
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+    },
+    "nsx": {
+      "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.18",
+      "state": "ACTIVE",
+      "version": "3.2.3.1"
+    },
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vcenter": {
+      "fqdn": "vcsa-359395.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.2",
+      "state": "ACTIVE",
+      "version": "7.0.3.23085514"
+    }
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "hcx": {
+    "fqdn": "hcx-414861.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.3",
+    "state": 1,
+    "version": "4.10.3.24447633"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+  "networkConfig": {
+    "dnsServerIp": "192.168.30.234",
+    "managementCidr": "192.168.30.0/24",
+    "managementIpAddressLayoutVersion": 2,
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+  },
+  "nsx": {
+    "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.18",
+    "state": 1,
+    "version": "3.2.3.1"
+  },
+  "state": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vcenter": {
+    "fqdn": "vcsa-359395.c8819727.us-west2.gve.goog",
+    "internalIp": "192.168.30.2",
+    "state": 1,
+    "version": "7.0.3.23085514"
+  }
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2FprivateClouds%2Fvmwareengineprivatecloud-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}"
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/us-west2-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.vmwareengine.v1.PrivateCloud",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "expireTime": "2025-03-23T12:38:48.390Z",
+    "hcx": {
+      "fqdn": "hcx-414861.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.3",
+      "state": "ACTIVE",
+      "version": "4.10.3.24447633"
+    },
+    "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
+    "networkConfig": {
+      "dnsServerIp": "192.168.30.234",
+      "managementCidr": "192.168.30.0/24",
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
+    },
+    "nsx": {
+      "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.18",
+      "state": "ACTIVE",
+      "version": "3.2.3.1"
+    },
+    "state": "DELETED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vcenter": {
+      "fqdn": "vcsa-359395.c8819727.us-west2.gve.goog",
+      "internalIp": "192.168.30.2",
+      "state": "ACTIVE",
+      "version": "7.0.3.23085514"
+    }
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
+
+---
+
+GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "test dependency vmwareengine network",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+  "state": 2,
+  "type": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vpcNetworks": [
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 2
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 1
+    },
+    {
+      "network": "projects/e597227f915e3d4d3-tp/global/networks/${networkId}",
+      "type": 3
+    }
+  ]
+}
+
+---
+
+DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The resource `projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}` is being used by other resources. To delete this resource, you must first delete the following resources: `projects/${projectNumber}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}`",
+    "status": "FAILED_PRECONDITION"
+  }
+}
