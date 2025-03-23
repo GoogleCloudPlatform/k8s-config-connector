@@ -19,5 +19,14 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  location: us-west2-a
   description: "Updated description"
+  networkConfig:
+    vmwareEngineNetworkRef:
+      name: vmwareenginenetwork-minimal-${uniqueId}
+    managementCIDR: "192.168.30.0/24"
+  managementCluster:
+    clusterID: "cluster-1"
+    nodeTypeConfigs:
+      - nodeTypeID: "standard-72"
+        nodeCount: 3

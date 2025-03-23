@@ -13,20 +13,12 @@
 # limitations under the License.
 
 apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
-kind: VMwareEnginePrivateCloud
+kind: VMwareEngineNetwork
 metadata:
-  name: vmwareengineprivatecloud-minimal-${uniqueId}
+  name: vmwareenginenetwork-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-west2-a # Private clouds of type STANDARD and TIME_LIMITED are zonal resources, STRETCHED private clouds are regional. 
-  description: "Initial description"
-  networkConfig:
-    vmwareEngineNetworkRef:
-      name: vmwareenginenetwork-minimal-${uniqueId}
-    managementCIDR: "192.168.30.0/24"
-  managementCluster:
-    clusterID: "cluster-1"
-    nodeTypeConfigs:
-      - nodeTypeID: "standard-72"
-        nodeCount: 3
+  location: global
+  description: "test dependency vmwareengine network"
+  type: STANDARD
