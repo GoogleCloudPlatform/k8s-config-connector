@@ -18,6 +18,7 @@ require (
 	cloud.google.com/go/cloudbuild v1.22.0
 	cloud.google.com/go/cloudtasks v1.13.3
 	cloud.google.com/go/compute v1.34.0
+	cloud.google.com/go/datacatalog v1.24.3
 	cloud.google.com/go/dataflow v0.10.3
 	cloud.google.com/go/dataform v0.10.3
 	cloud.google.com/go/dataplex v1.22.0
