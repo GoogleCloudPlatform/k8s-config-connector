@@ -45,7 +45,10 @@ func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".activation_token")
 	f.StatusFields.Insert(".satisfies_pzs")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".crypto_key_name") // Missing in mapper, related to kms_key_name
+
+	f.UnimplementedFields.Insert(".name")            // special field
+	f.UnimplementedFields.Insert(".crypto_key_name") // Missing in mapper, related to kms_key_name
 
 	return f
 }
