@@ -139,11 +139,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, the notification channel will be deleted regardless
-of its use in alert policies (the policies will be updated
-to remove the channel). If false, channels that are still
-referenced by an existing alerting policy will fail to be
-deleted in a delete operation.{% endverbatim %}</p>
+            <p>{% verbatim %}If true, the notification channel will be deleted regardless of its use in alert policies (the policies will be updated to remove the channel). If false, channels that are still referenced by an existing alerting policy will fail to be deleted in a delete operation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +149,7 @@ deleted in a delete operation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration fields that define the channel and its behavior. The permissible and required labels are specified in the [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels] of the `NotificationChannelDescriptor` corresponding to the `type` field.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +185,7 @@ to a different credential configuration in the config will require an apply to u
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}An authorization token for a notification channel. Channel types that support this field include: slack.{% endverbatim %}</p>
+            <p>{% verbatim %}An authorization token for a notification channel. Channel types that support this field include: slack{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -249,7 +245,7 @@ to a different credential configuration in the config will require an apply to u
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}An password for a notification channel. Channel types that support this field include: webhook_basicauth.{% endverbatim %}</p>
+            <p>{% verbatim %}A password for a notification channel. Channel types that support this field include: webhook_basicauth{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -309,7 +305,7 @@ to a different credential configuration in the config will require an apply to u
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}An servicekey token for a notification channel. Channel types that support this field include: pagerduty.{% endverbatim %}</p>
+            <p>{% verbatim %}A servicekey token for a notification channel. Channel types that support this field include: pagerduty{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -365,11 +361,11 @@ to a different credential configuration in the config will require an apply to u
     <tr>
         <td>
             <p><code>type</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of the notification channel. This field matches the value of the NotificationChannelDescriptor.type field. See https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.notificationChannelDescriptors/list to get the list of valid values such as "email", "slack", etc...{% endverbatim %}</p>
+            <p>{% verbatim %}The type of the notification channel. This field matches the value of the [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type] field.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -404,7 +400,7 @@ verificationStatus: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -453,9 +449,7 @@ verificationStatus: string
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The full REST resource name for this channel. The syntax is:
-projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
-The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverbatim %}</p>
+            <p>{% verbatim %}The full REST resource name for this channel The syntax is: projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID] The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -469,7 +463,25 @@ The [CHANNEL_ID] is automatically assigned by the server on creation.{% endverba
         <td><code>verificationStatus</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Indicates whether this channel has been verified or not. On a ListNotificationChannels or GetNotificationChannel operation, this field is expected to be populated.If the value is UNVERIFIED, then it indicates that the channel is non-functioning (it both requires verification and lacks verification); otherwise, it is assumed that the channel works.If the channel is neither VERIFIED nor UNVERIFIED, it implies that the channel is of a type that does not require verification or that this specific channel has been exempted from verification because it was created prior to verification being required for channels of this type.This field cannot be modified using a standard UpdateNotificationChannel operation. To change the value of this field, you must call VerifyNotificationChannel.{% endverbatim %}</p>
+            <p>{% verbatim %}Indicates whether this channel has been verified or not. On a
+ [`ListNotificationChannels`][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
+ or
+ [`GetNotificationChannel`][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
+ operation, this field is expected to be populated.
+
+ If the value is `UNVERIFIED`, then it indicates that the channel is
+ non-functioning (it both requires verification and lacks verification);
+ otherwise, it is assumed that the channel works.
+
+ If the channel is neither `VERIFIED` nor `UNVERIFIED`, it implies that
+ the channel is of a type that does not require verification or that
+ this specific channel has been exempted from verification because it was
+ created prior to verification being required for channels of this type.
+
+ This field cannot be modified using a standard
+ [`UpdateNotificationChannel`][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
+ operation. To change the value of this field, you must call
+ [`VerifyNotificationChannel`][google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel].{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
