@@ -28,13 +28,7 @@ func init() {
 }
 
 func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Channel{
-		Transport: &pb.Channel_Transport{
-			Transport: &pb.Channel_Transport_PubsubTopic{
-				PubsubTopic: "default-topic",
-			},
-		},
-	},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Channel{},
 		EventarcChannelSpec_FromProto, EventarcChannelSpec_ToProto,
 		EventarcChannelObservedState_FromProto, EventarcChannelObservedState_ToProto,
 	)
@@ -45,14 +39,13 @@ func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".pubsub_topic")
+
 	f.UnimplementedFields.Insert(".transport")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".activation_token")
 	f.StatusFields.Insert(".satisfies_pzs")
 
 	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".transport.pubsub_topic")
 
 	return f
 }
