@@ -39,8 +39,8 @@ func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".pubsub_topic")
 
-	f.UnimplementedFields.Insert(".transport")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".activation_token")
 	f.StatusFields.Insert(".satisfies_pzs")
