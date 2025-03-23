@@ -26,7 +26,9 @@ import (
 	"reflect"
 
 	gcp "cloud.google.com/go/gkebackup/apiv1"
+	"cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -62,13 +64,21 @@ func (m *backupPlanModel) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewGKEBackupBackupPlanIdentity(ctx, reader, obj)
+	id, err := krm.NewBackupPlanIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
+	// normalize reference fields
 	if obj.Spec.ClusterRef != nil {
-		if err := obj.Spec.ClusterRef.Normalize(ctx, reader, obj); err != nil {
+		if _, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
+	}
+	if obj.Spec.BackupConfig != nil &&
+		obj.Spec.BackupConfig.EncryptionKey != nil &&
+		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
+		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
 			return nil, err
 		}
 	}
@@ -78,15 +88,14 @@ func (m *backupPlanModel) AdapterForObject(ctx context.Context, reader client.Re
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpClient.newClient(ctx)
+	client, err := gcpClient.newBackupForGKEClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &backupPlanAdapter{
-		gcpClient:         client,
-		id:                id,
-		desired:           obj,
-		resourceOverrides: resourceoverrides.New(ctx, config.ResourceOverrides, krm.GKEBackupBackupPlanGVK),
+		gcpClient: client,
+		id:        id,
+		desired:   obj,
 	}, nil
 }
 
@@ -96,8 +105,8 @@ func (m *backupPlanModel) AdapterForURL(ctx context.Context, url string) (direct
 }
 
 type backupPlanAdapter struct {
-	gcpClient         *gcp.Client
-	id                *krm.GKEBackupBackupPlanIdentity
+	gcpClient         *gcp.BackupForGKEClient
+	id                *krm.BackupPlanIdentity
 	desired           *krm.GKEBackupBackupPlan
 	actual            *pb.BackupPlan
 	resourceOverrides resourceoverrides.ResourceOverrides
@@ -169,25 +178,25 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	paths := []string{}
-	if a.resourceOverrides.UpdateAllowed(ctx, desired, a.actual) {
-		if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-			paths = append(paths, "description")
-		}
-		if desired.Spec.RetentionPolicy != nil && !reflect.DeepEqual(resource.RetentionPolicy, a.actual.RetentionPolicy) {
-			paths = append(paths, "retention_policy")
-		}
-		if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-			paths = append(paths, "labels")
-		}
-		if desired.Spec.BackupSchedule != nil && !reflect.DeepEqual(resource.BackupSchedule, a.actual.BackupSchedule) {
-			paths = append(paths, "backup_schedule")
-		}
-		if desired.Spec.Deactivated != nil && !reflect.DeepEqual(resource.Deactivated, a.actual.Deactivated) {
-			paths = append(paths, "deactivated")
-		}
-		if desired.Spec.BackupConfig != nil && !reflect.DeepEqual(resource.BackupConfig, a.actual.BackupConfig) {
-			paths = append(paths, "backup_config")
-		}
+	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.GetDescription(), a.actual.GetDescription()) {
+		paths = append(paths, "description")
+	}
+	if desired.Spec.RetentionPolicy != nil && !reflect.DeepEqual(resource.GetRetentionPolicy(), a.actual.GetRetentionPolicy()) {
+		paths = append(paths, "retention_policy")
+	}
+	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
+		paths = append(paths, "labels")
+	}
+	if desired.Spec.BackupSchedule != nil && !reflect.DeepEqual(resource.GetBackupSchedule(), a.actual.GetBackupSchedule()) {
+		paths = append(paths, "backup_schedule")
+	}
+	if desired.Spec.Deactivated != nil && !reflect.DeepEqual(resource.GetDeactivated(), a.actual.GetDeactivated()) {
+		paths = append(paths, "deactivated")
+	}
+
+	// cannot use reflect.DeepEqual here because BackupScope is a oneof field which results in unexpected diffs
+	if desired.Spec.BackupConfig != nil && !backupConfigsEqual(resource.GetBackupConfig(), a.actual.GetBackupConfig()) {
+		paths = append(paths, "backup_config")
 	}
 
 	if len(paths) == 0 {
@@ -264,4 +273,58 @@ func (a *backupPlanAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func backupConfigsEqual(a, b *gkebackuppb.BackupPlan_BackupConfig) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+
+	// Compare BackupScope (oneof field)
+	aScope, bScope := a.GetBackupScope(), b.GetBackupScope()
+	if (aScope == nil) != (bScope == nil) {
+		return false
+	}
+	if aScope != nil {
+		// Check which type is set in the oneof
+		switch aTyped := aScope.(type) {
+		case *gkebackuppb.BackupPlan_BackupConfig_AllNamespaces:
+			bTyped, ok := bScope.(*gkebackuppb.BackupPlan_BackupConfig_AllNamespaces)
+			if !ok || aTyped.AllNamespaces != bTyped.AllNamespaces {
+				return false
+			}
+		case *gkebackuppb.BackupPlan_BackupConfig_SelectedNamespaces:
+			bTyped, ok := bScope.(*gkebackuppb.BackupPlan_BackupConfig_SelectedNamespaces)
+			if !ok || !proto.Equal(aTyped.SelectedNamespaces, bTyped.SelectedNamespaces) {
+				return false
+			}
+		case *gkebackuppb.BackupPlan_BackupConfig_SelectedApplications:
+			bTyped, ok := bScope.(*gkebackuppb.BackupPlan_BackupConfig_SelectedApplications)
+			if !ok || !proto.Equal(aTyped.SelectedApplications, bTyped.SelectedApplications) {
+				return false
+			}
+		default:
+			// Unknown type
+			return false
+		}
+	}
+
+	// Compare other fields
+	if a.GetIncludeVolumeData() != b.GetIncludeVolumeData() {
+		return false
+	}
+	if a.GetIncludeSecrets() != b.GetIncludeSecrets() {
+		return false
+	}
+	if !proto.Equal(a.GetEncryptionKey(), b.GetEncryptionKey()) {
+		return false
+	}
+	if a.GetPermissiveMode() != b.GetPermissiveMode() {
+		return false
+	}
+
+	return true
 }
