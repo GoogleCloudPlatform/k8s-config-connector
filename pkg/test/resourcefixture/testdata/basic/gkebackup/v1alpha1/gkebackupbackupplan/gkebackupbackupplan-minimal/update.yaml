@@ -21,3 +21,9 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Updated description"
+  clusterRef:
+    name: containercluster-minimal-${uniqueId}
+  backupConfig:
+    allNamespaces: true
+    includeSecrets: true
+    includeVolumeData: true
