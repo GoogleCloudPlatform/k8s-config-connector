@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type VpnConnectionIdentity struct {
 	parent *VpnConnectionParent
-	id string
+	id     string
 }
 
 func (i *VpnConnectionIdentity) String() string {
-	return  i.parent.String() + "/vpnconnections/" + i.id
+	return i.parent.String() + "/vpnConnections/" + i.id
 }
 
 func (i *VpnConnectionIdentity) ID() string {
@@ -40,9 +40,10 @@ func (i *VpnConnectionIdentity) ID() string {
 }
 
 func (i *VpnConnectionIdentity) Parent() *VpnConnectionParent {
-	return  i.parent
+	return i.parent
 }
 
+// VpnConnectionParent defines the parent of the resource.
 type VpnConnectionParent struct {
 	ProjectID string
 	Location  string
@@ -51,7 +52,6 @@ type VpnConnectionParent struct {
 func (p *VpnConnectionParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a VpnConnectionIdentity from the Config Connector VpnConnection object.
 func NewVpnConnectionIdentity(ctx context.Context, reader client.Reader, obj *EdgeContainerVpnConnection) (*VpnConnectionIdentity, error) {
@@ -106,8 +106,8 @@ func NewVpnConnectionIdentity(ctx context.Context, reader client.Reader, obj *Ed
 
 func ParseVpnConnectionExternal(external string) (parent *VpnConnectionParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "vpnconnections" {
-		return nil, "", fmt.Errorf("format of EdgeContainerVpnConnection external=%q was not known (use projects/{{projectID}}/locations/{{location}}/vpnconnections/{{vpnconnectionID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "vpnConnections" {
+		return nil, "", fmt.Errorf("format of EdgeContainerVpnConnection external=%q was not known (use projects/{{projectID}}/locations/{{location}}/vpnConnections/{{vpnconnectionID}})", external)
 	}
 	parent = &VpnConnectionParent{
 		ProjectID: tokens[1],
