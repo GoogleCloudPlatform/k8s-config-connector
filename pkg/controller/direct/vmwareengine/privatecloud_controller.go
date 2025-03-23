@@ -61,9 +61,16 @@ func (m *privateCloudModel) AdapterForObject(ctx context.Context, reader client.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewVmwareEnginePrivateCloudIdentity(ctx, reader, obj)
+	id, err := krm.NewPrivateCloudIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// normalize reference fields
+	if obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.NetworkConfig.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
 	}
 
 	// Get VMwareEngine GCP client
@@ -89,7 +96,7 @@ func (m *privateCloudModel) AdapterForURL(ctx context.Context, url string) (dire
 
 type privateCloudAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.VmwareEnginePrivateCloudIdentity
+	id        *krm.PrivateCloudIdentity
 	desired   *krm.VMwareEnginePrivateCloud
 	actual    *pb.PrivateCloud
 }
@@ -163,10 +170,8 @@ func (a *privateCloudAdapter) Update(ctx context.Context, updateOp *directbase.U
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
-	if desired.Spec.Type != nil && !reflect.DeepEqual(resource.Type, a.actual.Type) {
-		paths = append(paths, "type")
-	}
-	// TODO: etag
+	// TODO: spec.managementCluster is not readable from GCP
+	// TODO: spec.networkConfig is has generated fields from GCP
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -237,7 +242,7 @@ func (a *privateCloudAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 	}
 	log.V(2).Info("successfully deleted vmwareengine private cloud", "name", a.id)
 
-	err = op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
