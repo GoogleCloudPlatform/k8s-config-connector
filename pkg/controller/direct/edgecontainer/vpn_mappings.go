@@ -22,6 +22,7 @@ package edgecontainer
 import (
 	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -30,18 +31,9 @@ func EdgeContainerVpnConnectionObservedState_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.EdgeContainerVpnConnectionObservedState{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	// MISSING: Details
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Details = VpnConnection_Details_FromProto(mapCtx, in.GetDetails())
 	return out
 }
 func EdgeContainerVpnConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeContainerVpnConnectionObservedState) *pb.VpnConnection {
@@ -49,18 +41,10 @@ func EdgeContainerVpnConnectionObservedState_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.VpnConnection{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	// MISSING: Details
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Details = VpnConnection_Details_ToProto(mapCtx, in.Details)
+
 	return out
 }
 func EdgeContainerVpnConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.VpnConnection) *krm.EdgeContainerVpnConnectionSpec {
@@ -68,47 +52,6 @@ func EdgeContainerVpnConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EdgeContainerVpnConnectionSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	// MISSING: Details
-	return out
-}
-func EdgeContainerVpnConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeContainerVpnConnectionSpec) *pb.VpnConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpnConnection{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	// MISSING: Details
-	return out
-}
-func VpnConnection_FromProto(mapCtx *direct.MapContext, in *pb.VpnConnection) *krm.VpnConnection {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VpnConnection{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.NATGatewayIP = direct.LazyPtr(in.GetNatGatewayIp())
 	out.BGPRoutingMode = direct.Enum_FromProto(mapCtx, in.GetBgpRoutingMode())
@@ -117,17 +60,13 @@ func VpnConnection_FromProto(mapCtx *direct.MapContext, in *pb.VpnConnection) *k
 	out.VpcProject = VpnConnection_VpcProject_FromProto(mapCtx, in.GetVpcProject())
 	out.EnableHighAvailability = direct.LazyPtr(in.GetEnableHighAvailability())
 	out.Router = direct.LazyPtr(in.GetRouter())
-	// MISSING: Details
 	return out
 }
-func VpnConnection_ToProto(mapCtx *direct.MapContext, in *krm.VpnConnection) *pb.VpnConnection {
+func EdgeContainerVpnConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EdgeContainerVpnConnectionSpec) *pb.VpnConnection {
 	if in == nil {
 		return nil
 	}
 	out := &pb.VpnConnection{}
-	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Labels = in.Labels
 	out.NatGatewayIp = direct.ValueOf(in.NATGatewayIP)
 	out.BgpRoutingMode = direct.Enum_ToProto[pb.VpnConnection_BgpRoutingMode](mapCtx, in.BGPRoutingMode)
@@ -136,45 +75,6 @@ func VpnConnection_ToProto(mapCtx *direct.MapContext, in *krm.VpnConnection) *pb
 	out.VpcProject = VpnConnection_VpcProject_ToProto(mapCtx, in.VpcProject)
 	out.EnableHighAvailability = direct.ValueOf(in.EnableHighAvailability)
 	out.Router = direct.ValueOf(in.Router)
-	// MISSING: Details
-	return out
-}
-func VpnConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VpnConnection) *krm.VpnConnectionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VpnConnectionObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	out.Details = VpnConnection_Details_FromProto(mapCtx, in.GetDetails())
-	return out
-}
-func VpnConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VpnConnectionObservedState) *pb.VpnConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VpnConnection{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: NATGatewayIP
-	// MISSING: BGPRoutingMode
-	// MISSING: Cluster
-	// MISSING: Vpc
-	// MISSING: VpcProject
-	// MISSING: EnableHighAvailability
-	// MISSING: Router
-	out.Details = VpnConnection_Details_ToProto(mapCtx, in.Details)
 	return out
 }
 func VpnConnection_Details_FromProto(mapCtx *direct.MapContext, in *pb.VpnConnection_Details) *krm.VpnConnection_Details {
@@ -236,8 +136,12 @@ func VpnConnection_VpcProject_FromProto(mapCtx *direct.MapContext, in *pb.VpnCon
 		return nil
 	}
 	out := &krm.VpnConnection_VpcProject{}
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ProjectRef = &v1beta1.ProjectRef{
+		External: in.GetProjectId(),
+	}
+	out.ServiceAccountRef = &v1beta1.IAMServiceAccountRef{
+		External: in.GetServiceAccount(),
+	}
 	return out
 }
 func VpnConnection_VpcProject_ToProto(mapCtx *direct.MapContext, in *krm.VpnConnection_VpcProject) *pb.VpnConnection_VpcProject {
@@ -245,7 +149,11 @@ func VpnConnection_VpcProject_ToProto(mapCtx *direct.MapContext, in *krm.VpnConn
 		return nil
 	}
 	out := &pb.VpnConnection_VpcProject{}
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ProjectRef != nil {
+		out.ProjectId = direct.ValueOf(&in.ProjectRef.External)
+	}
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = direct.ValueOf(&in.ServiceAccountRef.External)
+	}
 	return out
 }
