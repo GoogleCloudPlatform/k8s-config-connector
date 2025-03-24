@@ -482,6 +482,12 @@ func generateMockGo(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	// Check to see if the http log file already exists
 	mockfolder := fmt.Sprintf("mock%s", branch.Group)
 
+	// Create the directory if it doesn't exist
+	mockfolderPath := filepath.Join(opts.branchRepoDir, "mockgcp", mockfolder)
+	if err := os.MkdirAll(mockfolderPath, 0755); err != nil {
+		return affectedPaths, nil, fmt.Errorf("failed to create directory %s: %w", mockfolderPath, err)
+	}
+
 	// Run the controller builder to generate the service go file.
 	serviceFileRelativePath := filepath.Join("mockgcp", mockfolder, "service.go")
 	serviceFile := filepath.Join(opts.branchRepoDir, serviceFileRelativePath)
