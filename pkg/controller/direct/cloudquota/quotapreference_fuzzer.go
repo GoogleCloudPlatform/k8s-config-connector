@@ -14,7 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.api.cloudquotas.v1beta.QuotaPreference
-// api.group: cloudquota.cnrm.cloud.google.com
+// api.group: cloudquotas.cnrm.cloud.google.com
 
 package cloudquota
 
