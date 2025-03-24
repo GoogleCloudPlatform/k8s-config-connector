@@ -145,7 +145,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 	if a.membershipID == "" || a.featureID == "" {
 		return false, nil
 	}
-	feature, err := a.hubClient.featureClient.Get(a.featureID).Context(ctx).Do()
+	feature, err := a.hubClient.featureClient.Get(a.featureID).Context(ctx).ReturnPartialSuccess(true).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
