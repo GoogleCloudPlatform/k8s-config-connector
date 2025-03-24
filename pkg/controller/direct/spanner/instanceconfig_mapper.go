@@ -45,6 +45,21 @@ func ReplicaInfo_ToProto(mapCtx *direct.MapContext, in *krm.ReplicaInfo) *pb.Rep
 	out.DefaultLeaderLocation = direct.ValueOf(in.DefaultLeaderLocation)
 	return out
 }
+func SpannerInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InstanceConfig) *krm.SpannerInstanceConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpannerInstanceConfigObservedState{}
+	// MISSING: Name
+	out.ConfigType = direct.Enum_FromProto(mapCtx, in.GetConfigType())
+	out.OptionalReplicas = direct.Slice_FromProto(mapCtx, in.OptionalReplicas, ReplicaInfo_FromProto)
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FreeInstanceAvailability = direct.Enum_FromProto(mapCtx, in.GetFreeInstanceAvailability())
+	out.QuorumType = direct.Enum_FromProto(mapCtx, in.GetQuorumType())
+	out.StorageLimitPerProcessingUnit = direct.LazyPtr(in.GetStorageLimitPerProcessingUnit())
+	return out
+}
 func SpannerInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInstanceConfigObservedState) *pb.InstanceConfig {
 	if in == nil {
 		return nil

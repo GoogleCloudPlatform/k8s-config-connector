@@ -65,7 +65,6 @@ func NewInstanceConfigIdentity(ctx context.Context, reader client.Reader, obj *S
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -99,7 +98,6 @@ func NewInstanceConfigIdentity(ctx context.Context, reader client.Reader, obj *S
 		},
 		id: resourceID,
 	}, nil
-	// TODO: Update the NewInstanceConfigIdentity to take into account that Location is not part of the parent anymore.
 }
 
 func ParseInstanceConfigExternal(external string) (parent *InstanceConfigParent, resourceID string, err error) {
