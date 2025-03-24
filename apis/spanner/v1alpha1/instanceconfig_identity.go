@@ -32,7 +32,7 @@ type InstanceConfigIdentity struct {
 }
 
 func (i *InstanceConfigIdentity) String() string {
-	return i.parent.String() + "/instanceconfigs/" + i.id
+	return i.parent.String() + "/" + i.id
 }
 
 func (i *InstanceConfigIdentity) ID() string {
@@ -46,10 +46,11 @@ func (i *InstanceConfigIdentity) Parent() *InstanceConfigParent {
 type InstanceConfigParent struct {
 	ProjectID string
 	Location  string
+	// No changes were needed in the struct.
 }
 
 func (p *InstanceConfigParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/instanceConfigs"
 }
 
 // New builds a InstanceConfigIdentity from the Config Connector InstanceConfig object.
@@ -86,9 +87,7 @@ func NewInstanceConfigIdentity(ctx context.Context, reader client.Reader, obj *S
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
+
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -97,21 +96,20 @@ func NewInstanceConfigIdentity(ctx context.Context, reader client.Reader, obj *S
 	return &InstanceConfigIdentity{
 		parent: &InstanceConfigParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
 		id: resourceID,
 	}, nil
+	// TODO: Update the NewInstanceConfigIdentity to take into account that Location is not part of the parent anymore.
 }
 
 func ParseInstanceConfigExternal(external string) (parent *InstanceConfigParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "instanceconfigs" {
-		return nil, "", fmt.Errorf("format of SpannerInstanceConfig external=%q was not known (use projects/{{projectID}}/locations/{{location}}/instanceconfigs/{{instanceconfigID}})", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instanceConfigs" {
+		return nil, "", fmt.Errorf("format of SpannerInstanceConfig external=%q was not known (use projects/{{projectID}}/instanceConfigs/{{instanceconfigID}})", external)
 	}
 	parent = &InstanceConfigParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
