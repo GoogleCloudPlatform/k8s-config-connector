@@ -21,9 +21,17 @@ import (
 
 var ComputeInterconnectGVK = GroupVersion.WithKind("ComputeInterconnect")
 
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // ComputeInterconnectSpec defines the desired state of ComputeInterconnect
 // +kcc:proto=google.cloud.compute.v1.Interconnect
 type ComputeInterconnectSpec struct {
+	Parent Parent `json:",inline"`
 	// The ComputeInterconnect name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
