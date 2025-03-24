@@ -35,6 +35,7 @@ require (
 	cloud.google.com/go/kms v1.21.0
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
+	cloud.google.com/go/metastore v1.14.3
 	cloud.google.com/go/monitoring v1.24.0
 	cloud.google.com/go/netapp v1.7.1
 	cloud.google.com/go/networksecurity v0.10.3
@@ -104,6 +105,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.27.9
 	k8s.io/apimachinery v0.27.11
 	k8s.io/client-go v0.27.11
+	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
