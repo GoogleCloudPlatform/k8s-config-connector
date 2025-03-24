@@ -43,6 +43,7 @@ func (i *InterconnectIdentity) Parent() *InterconnectParent {
 	return i.parent
 }
 
+// No changes needed to the InterconnectParent struct.
 type InterconnectParent struct {
 	ProjectID string
 	Location  string
@@ -61,7 +62,7 @@ func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *Com
 		return nil, fmt.Errorf("error getting project reference: %w", err)
 	}
 	projectID := projectRef.ProjectID
-	location := "global"
+	location := obj.Spec.Parent.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
