@@ -56,6 +56,8 @@ cloud.google.com/go/certificatemanager v1.9.3 h1:2UP31fg7b+y3F0OmNbPHOKPEJ+6LOMf
 cloud.google.com/go/certificatemanager v1.9.3/go.mod h1:O5T4Lg/dHbDHLFFooV2Mh/VsT3Mj2CzPEWRo4qw5prc=
 cloud.google.com/go/cloudbuild v1.22.0 h1:zmDznviZpvkCla0adbp7jJsMYZ9bABCbcPK2cBUHwg8=
 cloud.google.com/go/cloudbuild v1.22.0/go.mod h1:p99MbQrzcENHb/MqU3R6rpqFRk/X+lNG3PdZEIhM95Y=
+cloud.google.com/go/cloudquotas v1.3.2 h1:mTrWHKc5YO/YWNTM0YN8lPG5ThdGlKNR3YYjM7Xm9yc=
+cloud.google.com/go/cloudquotas v1.3.2/go.mod h1:RLorUrq9F4/HKW+B7TDM8nJJOIDvID0WWm5a0uyF3bs=
 cloud.google.com/go/cloudtasks v1.13.3 h1:rXdznKjCa7WpzmvR2plrn2KJ+RZC1oYxPiRWNQjjf3k=
 cloud.google.com/go/cloudtasks v1.13.3/go.mod h1:f9XRvmuFTm3VhIKzkzLCPyINSU3rjjvFUsFVGR5wi24=
 cloud.google.com/go/compute v1.34.0 h1:+k/kmViu4TEi97NGaxAATYtpYBviOWJySPZ+ekA95kk=
