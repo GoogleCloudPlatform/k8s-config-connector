@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	edgecontainer "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,7 +44,7 @@ type EdgeContainerVpnConnectionSpec struct {
 	// The canonical Cluster name to connect to. It is in the form of
 	//  projects/{project}/locations/{location}/clusters/{cluster}.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.cluster
-	Cluster *string `json:"cluster,omitempty"`
+	EdgeContainerClusterRef *edgecontainer.ClusterRef `json:"edgecontainerClusterRef,omitempty"`
 
 	// The network ID of VPC to connect to.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.vpc
@@ -181,9 +182,9 @@ type VpnConnection_VpcProject struct {
 	// The project of the VPC to connect to. If not specified, it is the same as
 	//  the cluster project.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.VpcProject.project_id
-	ProjectRef *v1beta1.ProjectRef `json:"projectID,omitempty"`
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// Optional. Deprecated: do not use.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.VpcProject.service_account
-	ServiceAccountRef *v1beta1.IAMServiceAccountRef `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }

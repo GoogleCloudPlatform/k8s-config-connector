@@ -65,10 +65,35 @@ spec:
                 description: Dynamic routing mode of the VPC network, `regional` or
                   `global`.
                 type: string
-              cluster:
+              edgecontainerClusterRef:
                 description: The canonical Cluster name to connect to. It is in the
                   form of projects/{project}/locations/{location}/clusters/{cluster}.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed EdgeContainerCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                    type: string
+                  name:
+                    description: The name of a AlloyDBCluster resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a AlloyDBCluster resource.
+                    type: string
+                type: object
               enableHighAvailability:
                 description: Whether this VPN connection has HA enabled on cluster
                   side. If enabled, when creating VPN connection we will attempt to
@@ -134,7 +159,7 @@ spec:
                 description: Optional. Project detail of the VPC network. Required
                   if VPC is in a different project than the cluster project.
                 properties:
-                  projectID:
+                  projectRef:
                     description: The project of the VPC to connect to. If not specified,
                       it is the same as the cluster project.
                     oneOf:
@@ -170,7 +195,7 @@ spec:
                         description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: 'Optional. Deprecated: do not use.'
                     oneOf:
                     - not:

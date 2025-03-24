@@ -21,6 +21,7 @@ package edgecontainer
 
 import (
 	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
+	edgecontainer "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -55,7 +56,11 @@ func EdgeContainerVpnConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Labels = in.Labels
 	out.NATGatewayIP = direct.LazyPtr(in.GetNatGatewayIp())
 	out.BGPRoutingMode = direct.Enum_FromProto(mapCtx, in.GetBgpRoutingMode())
-	out.Cluster = direct.LazyPtr(in.GetCluster())
+	if in.GetCluster() != "" {
+		out.EdgeContainerClusterRef = &edgecontainer.ClusterRef{
+			External: in.GetCluster(),
+		}
+	}
 	out.Vpc = direct.LazyPtr(in.GetVpc())
 	out.VpcProject = VpnConnection_VpcProject_FromProto(mapCtx, in.GetVpcProject())
 	out.EnableHighAvailability = direct.LazyPtr(in.GetEnableHighAvailability())
@@ -70,7 +75,9 @@ func EdgeContainerVpnConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.E
 	out.Labels = in.Labels
 	out.NatGatewayIp = direct.ValueOf(in.NATGatewayIP)
 	out.BgpRoutingMode = direct.Enum_ToProto[pb.VpnConnection_BgpRoutingMode](mapCtx, in.BGPRoutingMode)
-	out.Cluster = direct.ValueOf(in.Cluster)
+	if in.EdgeContainerClusterRef != nil {
+		out.Cluster = in.EdgeContainerClusterRef.External
+	}
 	out.Vpc = direct.ValueOf(in.Vpc)
 	out.VpcProject = VpnConnection_VpcProject_ToProto(mapCtx, in.VpcProject)
 	out.EnableHighAvailability = direct.ValueOf(in.EnableHighAvailability)

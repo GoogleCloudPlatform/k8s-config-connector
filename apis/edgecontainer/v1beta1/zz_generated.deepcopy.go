@@ -19,8 +19,9 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -133,9 +134,9 @@ func (in *EdgeContainerVpnConnectionSpec) DeepCopyInto(out *EdgeContainerVpnConn
 		*out = new(string)
 		**out = **in
 	}
-	if in.Cluster != nil {
-		in, out := &in.Cluster, &out.Cluster
-		*out = new(string)
+	if in.EdgeContainerClusterRef != nil {
+		in, out := &in.EdgeContainerClusterRef, &out.EdgeContainerClusterRef
+		*out = new(v1alpha1.ClusterRef)
 		**out = **in
 	}
 	if in.Vpc != nil {
@@ -185,7 +186,7 @@ func (in *EdgeContainerVpnConnectionStatus) DeepCopyInto(out *EdgeContainerVpnCo
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]v1alpha1.Condition, len(*in))
+		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
