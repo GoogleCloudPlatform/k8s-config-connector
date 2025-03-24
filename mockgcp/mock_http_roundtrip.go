@@ -17,6 +17,7 @@ package mockgcp
 import (
 	"bytes"
 	"context"
+
 	"encoding/json"
 	"fmt"
 	"io"
@@ -69,6 +70,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatastream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
@@ -253,6 +255,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
 	services = append(services, mockdatacatalog.New(env, storage))
+	services = append(services, mockdatastream.New(env, storage))
 	services = append(services, mockessentialcontacts.New(env, storage))
 	services = append(services, mockeventarc.New(env, storage))
 	services = append(services, mockcloudtasks.New(env, storage))
