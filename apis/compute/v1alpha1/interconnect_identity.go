@@ -56,15 +56,12 @@ func (p *InterconnectParent) String() string {
 func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*InterconnectIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	projectRef, err := refsv1beta1.NewProjectRefFromResource(obj.ObjectMeta)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error getting project reference: %w", err)
 	}
 	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
+	location := "global"
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,9 +83,7 @@ func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *Com
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
+
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
