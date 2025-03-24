@@ -12,11 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package workflows
+// +generated:mapper
+// krm.version: v1alpha1
+// proto.service: google.cloud.workflows.executions.v1
+// krm.group: workflowexecutions.cnrm.cloud.google.com
+
+package workflowexecutions
 
 import (
 	pb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflowexecutions/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

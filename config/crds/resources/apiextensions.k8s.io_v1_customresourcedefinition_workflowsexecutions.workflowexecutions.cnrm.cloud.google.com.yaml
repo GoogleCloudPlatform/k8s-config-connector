@@ -7,9 +7,9 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: workflowsexecutions.workflows.cnrm.cloud.google.com
+  name: workflowsexecutions.workflowexecutions.cnrm.cloud.google.com
 spec:
-  group: workflows.cnrm.cloud.google.com
+  group: workflowexecutions.cnrm.cloud.google.com
   names:
     categories:
     - gcp

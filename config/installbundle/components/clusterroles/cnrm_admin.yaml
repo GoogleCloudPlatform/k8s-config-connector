@@ -1364,6 +1364,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - workflowexecutions.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - workflows.cnrm.cloud.google.com
   resources:
   - '*'
