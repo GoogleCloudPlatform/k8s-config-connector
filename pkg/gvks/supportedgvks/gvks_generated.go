@@ -2775,7 +2775,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "edgecontainer.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "EdgeContainerVpnConnection",
 	}: {
 		Labels: map[string]string{

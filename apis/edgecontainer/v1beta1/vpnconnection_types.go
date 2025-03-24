@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -67,6 +67,14 @@ type EdgeContainerVpnConnectionSpec struct {
 
 	// The EdgeContainerVpnConnection name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type Parent struct {
+	// Required. The location of the machine.
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the machine.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // EdgeContainerVpnConnectionStatus defines the config connector machine state of EdgeContainerVpnConnection
