@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:controller
-// proto.service: google.bigtable.admin.v2.BigtableInstanceAdmin
+// proto.service: google.bigtable.admin.v2.Bigtable
 // proto.message: google.bigtable.admin.v2.Cluster
 // crd.type: BigtableCluster
 // crd.version: v1alpha1
@@ -38,7 +38,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
 func init() {
@@ -129,14 +128,14 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		ClusterId: a.id.ID(),
 		Cluster:   resource,
 	}
-	err := a.gcpClient.CreateCluster(ctx, req)
+	op, err := a.gcpClient.CreateCluster(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating bigtable cluster %s: %w", a.id.String(), err)
 	}
-	//created, err := op.Wait(ctx)
-	//if err != nil {
-	//	return fmt.Errorf("bigtable cluster %s waiting creation: %w", a.id, err)
-	//}
+	created, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("bigtable cluster %s waiting creation: %w", a.id, err)
+	}
 	log.V(2).Info("successfully created bigtable cluster in gcp", "name", a.id)
 
 	status := &krm.BigtableClusterStatus{}
@@ -193,9 +192,13 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	log.V(2).Info("updating bigtable cluster: fields", "name", a.id, "fields", paths)
-	err := a.gcpClient.UpdateCluster(ctx)
+	op, err := a.gcpClient.UpdateCluster(ctx, resource)
 	if err != nil {
 		return fmt.Errorf("updating bigtable cluster %s: %w", a.id.String(), err)
+	}
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("bigtable cluster %s waiting for update: %w", a.id, err)
 	}
 
 	status := &krm.BigtableClusterStatus{}
@@ -230,7 +233,7 @@ func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, err
 	}
 
-	u.SetName(util.GetLastComponent(a.actual.Name))
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.BigtableClusterGVK)
 
 	u.Object = uObj
