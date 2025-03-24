@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,14 @@ metadata:
     cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:
-  location: southamerica-east1
-  networkRef:
-    name: default
+  automatedBackupPolicy:
+    labels:
+      source: kcc-test
+  continuousBackupConfig:
+    recoveryWindowDays: 14
+  location: us-west2
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  initialUser:
-    user: postgres
-    password:
-      value: postgres
-  resourceID: alloydbcluster${uniqueId}

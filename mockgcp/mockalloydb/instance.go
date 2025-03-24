@@ -237,6 +237,25 @@ func (s *AlloyDBAdminV1) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	fqn := name.String()
 
 	oldObj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+	if oldObj.InstanceType == pb.Instance_PRIMARY {
+		parentObj := &pb.Cluster{}
+		parent := clusterName{Project: name.Project, Location: name.Location, ClusterName: name.ClusterName}
+		if err := s.storage.Get(ctx, parent.String(), parentObj); err != nil {
+			return nil, err
+		}
+
+		// Explicitly set the primaryConfig to empty struct if it was non-nil.
+		if parentObj.PrimaryConfig != nil {
+			parentObj.PrimaryConfig = &pb.Cluster_PrimaryConfig{}
+		}
+		if err := s.storage.Update(ctx, parent.String(), parentObj); err != nil {
+			return nil, err
+		}
+	}
+
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
