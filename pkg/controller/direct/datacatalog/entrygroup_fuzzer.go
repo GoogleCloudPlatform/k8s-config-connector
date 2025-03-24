@@ -39,6 +39,7 @@ func dataCatalogEntryGroupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusFields.Insert(".data_catalog_timestamps")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".name")                                // special field
+	f.UnimplementedFields.Insert(".data_catalog_timestamps.expire_time") // this is moved to observed state
 	return f
 }
