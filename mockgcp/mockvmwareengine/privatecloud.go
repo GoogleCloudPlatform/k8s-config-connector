@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build mockgcp
-// +build mockgcp
-
+// +tool:mockgcp-support
 // proto.service: google.cloud.vmwareengine.v1.VmwareEngine
 // proto.message: google.cloud.vmwareengine.v1.PrivateCloud
+
 package mockvmwareengine
 
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -62,18 +62,16 @@ func (s *VMwareEngineV1) CreatePrivateCloud(ctx context.Context, req *pb.CreateP
 	}
 
 	fqn := name.String()
-
 	now := time.Now()
 
 	obj := proto.Clone(req.GetPrivateCloud()).(*pb.PrivateCloud)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	obj.State = pb.PrivateCloud_ACTIVE
+	obj.State = pb.PrivateCloud_CREATING
 	obj.Uid = "111111111111111111111"
+	obj.ManagementCluster = nil // this field is not readable from GCP
 
-	if obj.ManagementCluster != nil && obj.ManagementCluster.StretchedClusterConfig != nil {
-		obj.Type = pb.PrivateCloud_STRETCHED
-	}
+	setGeneratedFields(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -89,6 +87,7 @@ func (s *VMwareEngineV1) CreatePrivateCloud(ctx context.Context, req *pb.CreateP
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(now)
 		obj.UpdateTime = timestamppb.New(now)
+		obj.State = pb.PrivateCloud_ACTIVE
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
@@ -103,6 +102,7 @@ func (s *VMwareEngineV1) UpdatePrivateCloud(ctx context.Context, req *pb.UpdateP
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := &pb.PrivateCloud{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -157,8 +157,7 @@ func (s *VMwareEngineV1) DeletePrivateCloud(ctx context.Context, req *pb.DeleteP
 	now := time.Now()
 	obj.State = pb.PrivateCloud_DELETED
 	obj.DeleteTime = timestamppb.New(now)
-	// ExpireTime uses the same default of 3 hours in prod.
-	obj.ExpireTime = timestamppb.New(now.Add(time.Hour * 3))
+	obj.ExpireTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -170,49 +169,7 @@ func (s *VMwareEngineV1) DeletePrivateCloud(ctx context.Context, req *pb.DeleteP
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		ApiVersion: "v1",
-		Verb:       "delete",
-	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		// TODO: actually delete the resource after waiting until the expireTime.
-		metadata.EndTime = timestamppb.New(now)
-		return obj, nil
-	})
-}
-
-func (s *VMwareEngineV1) UndeletePrivateCloud(ctx context.Context, req *pb.UndeletePrivateCloudRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parsePrivateCloudName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
-	obj := &pb.PrivateCloud{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	// Can only undelete if the resource has not expired yet.
-	if time.Now().After(obj.GetExpireTime().AsTime()) {
-		return nil, status.Errorf(codes.FailedPrecondition, "private cloud %q has expired and cannot undeleted", fqn)
-	}
-
-	now := time.Now()
-	obj.State = pb.PrivateCloud_ACTIVE
-	obj.DeleteTime = nil
-	obj.ExpireTime = nil
-	obj.UpdateTime = timestamppb.New(now)
-
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		ApiVersion: "v1",
-		Verb:       "undelete",
+		Verb:       "update", // update to be scheduled for deletion
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(now)
@@ -251,4 +208,32 @@ func (s *MockService) parsePrivateCloudName(name string) (*privateCloudName, err
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func setGeneratedFields(obj *pb.PrivateCloud, name *privateCloudName) {
+	obj.Hcx = &pb.Hcx{
+		Fqdn:       "hcx-414861.c8819727.us-west2.gve.goog",
+		InternalIp: "192.168.30.3",
+		State:      pb.Hcx_ACTIVE,
+		Version:    "4.10.3.24447633",
+	}
+	obj.Nsx = &pb.Nsx{
+		Fqdn:       "nsx-414860.c8819727.us-west2.gve.goog",
+		InternalIp: "192.168.30.18",
+		State:      pb.Nsx_ACTIVE,
+		Version:    "3.2.3.1",
+	}
+	obj.Vcenter = &pb.Vcenter{
+		Fqdn:       "vcsa-359395.c8819727.us-west2.gve.goog",
+		InternalIp: "192.168.30.2",
+		State:      pb.Vcenter_ACTIVE,
+		Version:    "7.0.3.23085514",
+	}
+	if obj.NetworkConfig != nil {
+		obj.NetworkConfig.DnsServerIp = "192.168.30.234"
+		obj.NetworkConfig.ManagementIpAddressLayoutVersion = 2
+		obj.NetworkConfig.VmwareEngineNetworkCanonical = obj.NetworkConfig.VmwareEngineNetwork
+		// change from project ID to project number
+		obj.NetworkConfig.VmwareEngineNetworkCanonical = strings.Replace(obj.NetworkConfig.VmwareEngineNetworkCanonical, "projects/"+name.Project.ID+"/locations/", "projects/"+strconv.FormatInt(name.Project.Number, 10)+"/locations/", 1)
+	}
 }
