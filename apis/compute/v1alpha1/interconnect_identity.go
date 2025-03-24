@@ -32,7 +32,7 @@ type InterconnectIdentity struct {
 }
 
 func (i *InterconnectIdentity) String() string {
-	return i.parent.String() + "/interconnects/" + i.id
+	return i.parent.String() + "/global/interconnects/" + i.id
 }
 
 func (i *InterconnectIdentity) ID() string {
@@ -46,23 +46,25 @@ func (i *InterconnectIdentity) Parent() *InterconnectParent {
 // No changes needed to the InterconnectParent struct.
 type InterconnectParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *InterconnectParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID
 }
 
 // New builds a InterconnectIdentity from the Config Connector Interconnect object.
 func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *ComputeInterconnect) (*InterconnectIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.NewProjectRefFromResource(obj.ObjectMeta)
+	parent := obj.Spec.Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), parent.ProjectRef)
 	if err != nil {
-		return nil, fmt.Errorf("error getting project reference: %w", err)
+		return nil, err
 	}
 	projectID := projectRef.ProjectID
-	location := obj.Spec.Parent.Location
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -84,7 +86,6 @@ func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *Com
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -93,7 +94,6 @@ func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *Com
 	return &InterconnectIdentity{
 		parent: &InterconnectParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
 		id: resourceID,
 	}, nil
@@ -101,13 +101,12 @@ func NewInterconnectIdentity(ctx context.Context, reader client.Reader, obj *Com
 
 func ParseInterconnectExternal(external string) (parent *InterconnectParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "interconnects" {
-		return nil, "", fmt.Errorf("format of ComputeInterconnect external=%q was not known (use projects/{{projectID}}/locations/{{location}}/interconnects/{{interconnectID}})", external)
+	if len(tokens) != 5 || tokens[0] != "projects" || tokens[2] != "global" || tokens[3] != "interconnects" {
+		return nil, "", fmt.Errorf("format of ComputeInterconnect external=%q was not known (use projects/{{projectID}}/global/interconnects/{{interconnectID}})", external)
 	}
 	parent = &InterconnectParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[4]
 	return parent, resourceID, nil
 }
