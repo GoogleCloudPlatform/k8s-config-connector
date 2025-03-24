@@ -732,9 +732,9 @@ func (in *SpannerInstanceConfigSpec) DeepCopyInto(out *SpannerInstanceConfigSpec
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.BaseConfig != nil {
-		in, out := &in.BaseConfig, &out.BaseConfig
-		*out = new(string)
+	if in.BaseConfigRef != nil {
+		in, out := &in.BaseConfigRef, &out.BaseConfigRef
+		*out = new(InstanceConfigRef)
 		**out = **in
 	}
 	if in.Labels != nil {

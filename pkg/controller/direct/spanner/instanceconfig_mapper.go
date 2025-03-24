@@ -83,7 +83,9 @@ func SpannerInstanceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Insta
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Replicas = direct.Slice_FromProto(mapCtx, in.Replicas, ReplicaInfo_FromProto)
-	out.BaseConfig = direct.LazyPtr(in.GetBaseConfig())
+	if in.GetBaseConfig() != "" {
+		out.BaseConfigRef = &krm.InstanceConfigRef{External: in.BaseConfig}
+	}
 	out.Labels = in.Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.LeaderOptions = in.LeaderOptions
@@ -97,7 +99,9 @@ func SpannerInstanceConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.Spanne
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Replicas = direct.Slice_ToProto(mapCtx, in.Replicas, ReplicaInfo_ToProto)
-	out.BaseConfig = direct.ValueOf(in.BaseConfig)
+	if in.BaseConfigRef != nil {
+		out.BaseConfig = in.BaseConfigRef.External
+	}
 	out.Labels = in.Labels
 	out.Etag = direct.ValueOf(in.Etag)
 	out.LeaderOptions = in.LeaderOptions

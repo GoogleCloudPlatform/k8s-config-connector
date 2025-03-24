@@ -60,12 +60,37 @@ spec:
           spec:
             description: SpannerInstanceConfigSpec defines the desired state of SpannerInstanceConfig
             properties:
-              baseConfig:
+              baseConfigRef:
                 description: Base configuration name, e.g. projects/<project_name>/instanceConfigs/nam3,
                   based on which this configuration is created. Only set for user-managed
                   configurations. `base_config` must refer to a configuration of type
                   `GOOGLE_MANAGED` in the same project as this configuration.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed SpannerInstanceConfig
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instanceconfigs/{{instanceconfigID}}".
+                    type: string
+                  name:
+                    description: The name of a SpannerInstanceConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SpannerInstanceConfig resource.
+                    type: string
+                type: object
               displayName:
                 description: The name of this instance configuration as it appears
                   in UIs.
