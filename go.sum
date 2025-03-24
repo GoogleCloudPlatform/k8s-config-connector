@@ -86,6 +86,8 @@ cloud.google.com/go/documentai v1.35.2 h1:hswVobCWUTXtmn+4QqUIVkai7sDOe0QS2KB3Ip
 cloud.google.com/go/documentai v1.35.2/go.mod h1:oh/0YXosgEq3hVhyH4ZQ7VNXPaveRO4eLVM3tBSZOsI=
 cloud.google.com/go/edgecontainer v1.4.1 h1:SwQuHQiheVfL7b5ar/AXDberiaqr/yiue8X55AdWnZU=
 cloud.google.com/go/edgecontainer v1.4.1/go.mod h1:ubMQvXSxsvtEjJLyqcPFrdWrHfvjQxdoyt+SUrAi5ek=
+cloud.google.com/go/essentialcontacts v1.7.3 h1:Paw495vxVyKuAgcQ2NQk09iRZBhPYRytknydEnvzcv4=
+cloud.google.com/go/essentialcontacts v1.7.3/go.mod h1:uimfZgDbhWNCmBpwUUPHe4vcMY2azsq/axC9f7vZFKI=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
 cloud.google.com/go/firestore v1.18.0 h1:cuydCaLS7Vl2SatAeivXyhbhDEIR8BDmtn4egDhIn2s=
 cloud.google.com/go/firestore v1.18.0/go.mod h1:5ye0v48PhseZBdcl0qbl3uttu7FIEwEYVaWm0UIEOEU=
