@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+	"time"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -153,6 +154,15 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
 					fillWithRandom0(t, randStream, el.Message())
 				}
+			case "string->int64":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					rand.Seed(time.Now().UnixNano())
+					v := rand.Int63()
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
+				}
+
 			default:
 				t.Fatalf("unhandled map kind %q: %v", mapType, field)
 			}
