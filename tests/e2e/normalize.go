@@ -103,6 +103,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to Pubsub
+	visitor.replacePaths[".snapshots[].expireTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
