@@ -39,9 +39,17 @@ func KMSImportJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSImportJobSpe
 	out := &pb.ImportJob{}
 	// MISSING: Name
 
-	importMethodUpper := strings.ToUpper(*in.ImportMethod)
-	out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, &importMethodUpper)
-	protectionLevelUpper := strings.ToUpper(*in.ProtectionLevel)
-	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, &protectionLevelUpper)
+	if in.ImportMethod != nil {
+		importMethodUpper := strings.ToUpper(*in.ImportMethod)
+		out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, &importMethodUpper)
+	} else {
+		out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
+	}
+	if in.ProtectionLevel != nil {
+		protectionLevelUpper := strings.ToUpper(*in.ProtectionLevel)
+		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, &protectionLevelUpper)
+	} else {
+		out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+	}
 	return out
 }
