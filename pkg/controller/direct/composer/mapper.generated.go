@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: composer.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.orchestration.airflow.service.v1
+
 package composer
 
 import (
@@ -66,8 +71,8 @@ func ComposerEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.SatisfiesPZS = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPZI = direct.LazyPtr(in.GetSatisfiesPzi())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ComposerEnvironmentObservedState) *pb.Environment {
@@ -81,8 +86,8 @@ func ComposerEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.State = direct.Enum_ToProto[pb.Environment_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPZS)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPZI)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ComposerEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.ComposerEnvironmentSpec {
@@ -93,6 +98,8 @@ func ComposerEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environ
 	// MISSING: Name
 	out.Config = EnvironmentConfig_FromProto(mapCtx, in.GetConfig())
 	out.Labels = in.Labels
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.StorageConfig = StorageConfig_FromProto(mapCtx, in.GetStorageConfig())
 	return out
 }
@@ -104,6 +111,8 @@ func ComposerEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Composer
 	// MISSING: Name
 	out.Config = EnvironmentConfig_ToProto(mapCtx, in.Config)
 	out.Labels = in.Labels
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	out.StorageConfig = StorageConfig_ToProto(mapCtx, in.StorageConfig)
 	return out
 }

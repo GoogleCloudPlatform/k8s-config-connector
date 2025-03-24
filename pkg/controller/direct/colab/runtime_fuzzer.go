@@ -33,9 +33,9 @@ func colabRuntimeFuzzer() fuzztesting.KRMFuzzer {
 		ColabRuntimeObservedState_FromProto, ColabRuntimeObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")         // special field
-	f.UnimplementedFields.Insert(".satisfiesPzs") // field for future use
-	f.UnimplementedFields.Insert(".satisfiesPzi") // field for future use
+	f.UnimplementedFields.Insert(".name")          // special field
+	f.UnimplementedFields.Insert(".satisfies_pzs") // field for future use
+	f.UnimplementedFields.Insert(".satisfies_pzi") // field for future use
 
 	f.SpecFields.Insert(".notebook_runtime_template_ref")
 	f.SpecFields.Insert(".runtime_user")
