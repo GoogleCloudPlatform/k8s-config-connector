@@ -30,6 +30,35 @@ type BigtableAppProfileSpec struct {
 
 	// +required
 	Parent `json:",inline"`
+
+	// The unique name of the app profile. Values are of the form
+	//  `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.name
+	Name *string `json:"name,omitempty"`
+
+	// Long form description of the use case for this AppProfile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.description
+	Description *string `json:"description,omitempty"`
+
+	// Use a multi-cluster routing policy.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.multi_cluster_routing_use_any
+	MultiClusterRoutingUseAny *AppProfile_MultiClusterRoutingUseAny `json:"multiClusterRoutingUseAny,omitempty"`
+
+	// Use a single-cluster routing policy.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
+	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
+
+	// This field has been deprecated in favor of `standard_isolation.priority`.
+	//  If you set this field, `standard_isolation.priority` will be set instead.
+	//
+	//  The priority of requests sent using this app profile.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.priority
+	Priority *string `json:"priority,omitempty"`
+
+	// The standard options used for isolating this app profile's traffic from
+	//  other use cases.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
+	StandardIsolation *AppProfile_StandardIsolation `json:"standardIsolation,omitempty"`
 }
 
 type Parent struct {

@@ -59,7 +59,37 @@ spec:
           spec:
             description: BigtableAppProfileSpec defines the desired state of BigtableAppProfile
             properties:
+              description:
+                description: Long form description of the use case for this AppProfile.
+                type: string
               instance:
+                type: string
+              multiClusterRoutingUseAny:
+                description: Use a multi-cluster routing policy.
+                properties:
+                  clusterIds:
+                    description: The set of clusters to route to. The order is ignored;
+                      clusters will be tried in order of distance. If left empty,
+                      all clusters are eligible.
+                    items:
+                      type: string
+                    type: array
+                  rowAffinity:
+                    description: Row affinity sticky routing based on the row key
+                      of the request. Requests that span multiple rows are routed
+                      non-deterministically.
+                    type: object
+                type: object
+              name:
+                description: The unique name of the app profile. Values are of the
+                  form `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+                type: string
+              priority:
+                description: |-
+                  This field has been deprecated in favor of `standard_isolation.priority`.
+                   If you set this field, `standard_isolation.priority` will be set instead.
+
+                   The priority of requests sent using this app profile.
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
@@ -97,6 +127,27 @@ spec:
                 description: The BigtableAppProfile name. If not given, the metadata.name
                   will be used.
                 type: string
+              singleClusterRouting:
+                description: Use a single-cluster routing policy.
+                properties:
+                  allowTransactionalWrites:
+                    description: Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow`
+                      requests are allowed by this app profile. It is unsafe to send
+                      these requests to the same table/row/column in multiple clusters.
+                    type: boolean
+                  clusterID:
+                    description: The cluster to which read/write requests should be
+                      routed.
+                    type: string
+                type: object
+              standardIsolation:
+                description: The standard options used for isolating this app profile's
+                  traffic from other use cases.
+                properties:
+                  priority:
+                    description: The priority of requests sent using this app profile.
+                    type: string
+                type: object
             required:
             - ""
             - instance
