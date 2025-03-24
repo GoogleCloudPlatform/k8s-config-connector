@@ -26,24 +26,22 @@ import (
 )
 
 type gcpClient struct {
-	config *config.ControllerConfig
+	config config.ControllerConfig
 }
 
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
+func newReCAPTCHAEnterpriseClient(ctx context.Context, config *config.ControllerConfig) (*api.Client, error) {
 	gcpClient := &gcpClient{
-		config: config,
+		config: *config,
 	}
-	return gcpClient, nil
-}
-
-func (m *gcpClient) newRecaptchaEnterpriseClient(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+	opts, err := gcpClient.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewRESTClient(ctx, opts...)
+
+	grpcClient, err := api.NewClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building recaptchaenterprise client: %w", err)
+		return nil, fmt.Errorf("building ReCAPTCHAEnterprise client: %w", err)
 	}
-	return client, err
+
+	return grpcClient, err
 }

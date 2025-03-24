@@ -23,21 +23,21 @@ package recaptchaenterprise
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	gcp "cloud.google.com/go/recaptchaenterprise/v2/apiv1beta1"
-	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1beta1/recaptchaenterprisepb"
-	"google.golang.org/api/option"
+	gcp "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
+	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -47,32 +47,13 @@ func init() {
 }
 
 func NewFirewallPolicyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelFirewallPolicy{config: *config}, nil
+	return &modelFirewallPolicy{config: config}, nil
 }
 
 var _ directbase.Model = &modelFirewallPolicy{}
 
 type modelFirewallPolicy struct {
-	config config.ControllerConfig
-}
-
-func (m *modelFirewallPolicy) client(ctx context.Context, projectID string) (*gcp.RecaptchaEnterpriseServiceV1Beta1Client, error) {
-	opts := []option.ClientOption{}
-
-	if optsForClient, err := m.config.RESTClientOptions(); err != nil {
-		return nil, err
-	} else {
-		opts = append(opts, optsForClient...)
-	}
-
-	// Using v1beta1 because v1 doesn't have REST client.
-	// but v1beta1 doesn't have firewall policy resource...
-	gcpClient, err := gcp.NewRecaptchaEnterpriseServiceV1Beta1RESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building recaptchaenterprise client: %w", err)
-	}
-
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *modelFirewallPolicy) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -86,7 +67,7 @@ func (m *modelFirewallPolicy) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	gcpClient, err := newReCAPTCHAEnterpriseClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +85,7 @@ func (m *modelFirewallPolicy) AdapterForURL(ctx context.Context, url string) (di
 }
 
 type FirewallPolicyAdapter struct {
-	gcpClient *gcp.RecaptchaEnterpriseServiceV1Beta1Client
+	gcpClient *gcp.Client
 	id        *krm.FirewallPolicyIdentity
 	desired   *krm.ReCAPTCHAEnterpriseFirewallPolicy
 	actual    *pb.FirewallPolicy
@@ -151,14 +132,13 @@ func (a *FirewallPolicyAdapter) Create(ctx context.Context, createOp *directbase
 		Parent:         a.id.Parent().String(),
 		FirewallPolicy: resource,
 	}
-	created, err := a.gcpClient.CreateFirewallPolicy(ctx, req)
+	_, err := a.gcpClient.CreateFirewallPolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating FirewallPolicy %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created FirewallPolicy", "name", a.id)
 
 	status := &krm.ReCAPTCHAEnterpriseFirewallPolicyStatus{}
-	status.ObservedState = ReCAPTCHAEnterpriseFirewallPolicyObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -172,24 +152,14 @@ func (a *FirewallPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 	log.V(2).Info("updating FirewallPolicy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		paths = append(paths, "description")
-	}
-	if desired.Spec.Path != nil && !reflect.DeepEqual(resource.Path, a.actual.Path) {
-		paths = append(paths, "path")
-	}
-	if desired.Spec.Condition != nil && !reflect.DeepEqual(resource.Condition, a.actual.Condition) {
-		paths = append(paths, "condition")
-	}
-	if desired.Spec.Actions != nil && !slice.ContentEqualsWithOrder(resource.Actions, a.actual.Actions, mapCtx.CompareActions) {
-		paths = append(paths, "actions")
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
 
 	if len(paths) == 0 {
@@ -197,19 +167,18 @@ func (a *FirewallPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 		return nil
 	}
 
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+	desiredPb.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 	req := &pb.UpdateFirewallPolicyRequest{
-		FirewallPolicy: resource,
-		UpdateMask:     &fieldmaskpb.FieldMask{Paths: paths},
+		FirewallPolicy: desiredPb,
+		UpdateMask:     &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 	}
-	updated, err := a.gcpClient.UpdateFirewallPolicy(ctx, req)
+	_, err = a.gcpClient.UpdateFirewallPolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating FirewallPolicy %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated FirewallPolicy", "name", a.id)
 
 	status := &krm.ReCAPTCHAEnterpriseFirewallPolicyStatus{}
-	status.ObservedState = ReCAPTCHAEnterpriseFirewallPolicyObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -229,13 +198,16 @@ func (a *FirewallPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = direct.LazyPtr(a.id.Parent().ProjectID)
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{
+		External: a.id.Parent().String(),
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(krm.TrimPrefix(a.actual.Name))
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.ReCAPTCHAEnterpriseFirewallPolicyGVK)
 
 	u.Object = uObj
@@ -248,7 +220,7 @@ func (a *FirewallPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase
 	log.V(2).Info("deleting FirewallPolicy", "name", a.id)
 
 	req := &pb.DeleteFirewallPolicyRequest{Name: a.id.String()}
-	_, err := a.gcpClient.DeleteFirewallPolicy(ctx, req)
+	err := a.gcpClient.DeleteFirewallPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
