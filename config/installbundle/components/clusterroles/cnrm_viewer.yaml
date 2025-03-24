@@ -207,6 +207,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - clouddms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
