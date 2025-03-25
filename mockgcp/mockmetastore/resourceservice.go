@@ -34,7 +34,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/metastore/v1"
-	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -112,7 +111,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 
 	// Generate a UID if not present
 	if obj.Uid == "" {
-		obj.Uid = uuid.New().String()
+		obj.Uid = name.Name
 	}
 
 	// Add tier if not set

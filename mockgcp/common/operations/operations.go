@@ -59,8 +59,9 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
 	op.Done = true
 
-	opName := strings.Split(op.Name, "/")[len(strings.Split(op.Name, "/"))-1]
-	if err := s.storage.Create(ctx, opName, op); err != nil {
+	fqn := op.Name
+
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
 	return op, nil
@@ -88,15 +89,16 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 
 		op.Metadata = metadataAny
 	}
+	fqn := op.Name
 
-	if err := s.storage.Create(ctx, op.Name, op); err != nil {
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
 
 	go func() {
 		result, err := callback()
 		finished := &pb.Operation{}
-		if err2 := s.storage.Get(ctx, op.Name, finished); err2 != nil {
+		if err2 := s.storage.Get(ctx, fqn, finished); err2 != nil {
 			klog.Warningf("error getting LRO: %v", err2)
 			return
 		}
@@ -116,7 +118,7 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 			klog.Warningf("error marking LRO as done: %v", err2)
 		}
 
-		if err := s.storage.Update(ctx, op.Name, finished); err != nil {
+		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
 			return
 		}
@@ -175,9 +177,9 @@ func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.
 
 		op.Metadata = metadataAny
 	}
-	name := op.Name
+	fqn := op.Name
 
-	if err := s.storage.Create(ctx, name, op); err != nil {
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
 	}
 
