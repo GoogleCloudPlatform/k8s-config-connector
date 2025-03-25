@@ -32,7 +32,7 @@ type DiscoveredServiceIdentity struct {
 }
 
 func (i *DiscoveredServiceIdentity) String() string {
-	return i.parent.String() + "/discoveredservices/" + i.id
+	return i.parent.String() + "/discoveredServices/" + i.id
 }
 
 func (i *DiscoveredServiceIdentity) ID() string {
@@ -107,8 +107,8 @@ func NewDiscoveredServiceIdentity(ctx context.Context, reader client.Reader, obj
 
 func ParseDiscoveredServiceExternal(external string) (parent *DiscoveredServiceParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "discoveredservices" {
-		return nil, "", fmt.Errorf("format of AppHubDiscoveredService external=%q was not known (use projects/{{projectID}}/locations/{{location}}/discoveredservices/{{discoveredserviceID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "discoveredServices" {
+		return nil, "", fmt.Errorf("format of AppHubDiscoveredService external=%q was not known (use projects/{{projectID}}/locations/{{location}}/discoveredServices/{{discoveredserviceID}})", external)
 	}
 	parent = &DiscoveredServiceParent{
 		ProjectID: tokens[1],

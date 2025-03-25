@@ -1,0 +1,29 @@
+GET https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/discoveredServices/apphubdiscoveredservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdiscoveredServices%2Fapphubdiscoveredservice-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "discoveredService \"projects/${projectId}/locations/us-central1/discoveredServices/apphubdiscoveredservice-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "discoveredService \"projects/${projectId}/locations/us-central1/discoveredServices/apphubdiscoveredservice-minimal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
