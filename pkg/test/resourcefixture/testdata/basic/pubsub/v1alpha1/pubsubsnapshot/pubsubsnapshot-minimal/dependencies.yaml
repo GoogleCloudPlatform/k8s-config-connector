@@ -12,12 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha1
-kind: PubSubSnapshot
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
 metadata:
-  name: pubsubsnapshot-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    label-one: "value-one"
+  name: pubsubtopic-${uniqueId}
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSubscription
+metadata:
+  labels:
+    label-one: "value-one"
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: pubsubsubscription-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
-  description: "Updated description"
+  ackDeadlineSeconds: 15
+  messageRetentionDuration: 86400s
+  retainAckedMessages: false
+  topicRef:
+    name: pubsubtopic-${uniqueId}
