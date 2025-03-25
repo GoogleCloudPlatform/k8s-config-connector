@@ -23,6 +23,10 @@ cd ${REPO_ROOT}/
 SKIP_TEST_APIGROUPS=(
     "apigee.cnrm.cloud.google.com"
     "bigquery.cnrm.cloud.google.com"
+    "bigqueryanalyticshub.cnrm.cloud.google.com"
+    "bigqueryconnection.cnrm.cloud.google.com"
+    "bigquerydatatransfer.cnrm.cloud.google.com"
+    "bigqueryreservation.cnrm.cloud.google.com"
     "compute.cnrm.cloud.google.com"
     "gkehub.cnrm.cloud.google.com"
     "monitoring.cnrm.cloud.google.com"
