@@ -154,7 +154,9 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	req := &pb.CreateSnapshotRequest{
 		Name:         desired.Name,
 		Subscription: desired.Spec.PubSubSubscriptionRef.External,
-		Labels:       desired.Labels,
+	}
+	if desired.Labels != nil {
+		req.Labels = desired.Labels
 	}
 	_, err := a.gcpClient.CreateSnapshot(ctx, req)
 	if err != nil {
