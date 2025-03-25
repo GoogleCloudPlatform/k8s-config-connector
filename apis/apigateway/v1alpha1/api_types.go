@@ -43,7 +43,7 @@ type APIGatewayAPISpec struct {
 	//  not specified, a new Service will automatically be created in the same
 	//  project as this API.
 	// +kcc:proto:field=google.cloud.apigateway.v1.Api.managed_service
-	ManagedService *string `json:"managedService,omitempty"`
+	ManagedService *string `json:"managedService,omitempty"` //  TODO: Before promote to v1beta. Check if this field should be a ref to  https://cloud.google.com/service-infrastructure/docs/service-management/reference/rest/v1/services#ManagedService.
 
 	//  Optional. The project that this resource belongs to.
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
