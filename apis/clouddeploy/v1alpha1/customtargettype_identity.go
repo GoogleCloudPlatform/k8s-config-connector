@@ -32,7 +32,7 @@ type CustomTargetTypeIdentity struct {
 }
 
 func (i *CustomTargetTypeIdentity) String() string {
-	return i.parent.String() + "/customtargettypes/" + i.id
+	return i.parent.String() + "/customTargetTypes/" + i.id
 }
 
 func (i *CustomTargetTypeIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseCustomTargetTypeExternal(external string) (parent *CustomTargetTypeParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customtargettypes" {
-		return nil, "", fmt.Errorf("format of DeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customTargetTypes" {
+		return nil, "", fmt.Errorf("format of DeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customTargetTypes/{{customtargettypeID}})", external)
 	}
 	parent = &CustomTargetTypeParent{
 		ProjectID: tokens[1],
