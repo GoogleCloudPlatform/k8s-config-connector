@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "deliveryPipeline \"projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "deliveryPipeline \"projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -50,10 +43,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -84,6 +79,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "create"
   },
@@ -92,8 +88,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial description",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
-    "serialPipeline": {},
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -119,15 +115,15 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
-  "serialPipeline": {},
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cname
+PATCH https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cetag%2Cname
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: delivery_pipeline.name=projects%2F${projectId}%2Flocations%2Fus-west2%2FdeliveryPipelines%2Fclouddeploydeliverypipeline-minimal-${uniqueId}
@@ -148,10 +144,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -182,6 +180,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "update"
   },
@@ -190,8 +189,8 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.deploy.v1.DeliveryPipeline",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
-    "serialPipeline": {},
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -217,8 +216,8 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
-  "serialPipeline": {},
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -241,10 +240,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "delete"
   },
@@ -275,6 +276,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/deliveryPipelines/clouddeploydeliverypipeline-minimal-${uniqueId}",
     "verb": "delete"
   },
