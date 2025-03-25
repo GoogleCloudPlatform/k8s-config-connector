@@ -18,7 +18,7 @@ spec:
     plural: assetsavedqueries
     shortNames:
     - gcpassetsavedquery
-    - gcpassetsavedquerys
+    - gcpassetsavedqueries
     singular: assetsavedquery
   preserveUnknownFields: false
   scope: Namespaced
