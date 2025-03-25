@@ -26,10 +26,10 @@ import (
 )
 
 type gcpClient struct {
-	config *config.ControllerConfig
+	config config.ControllerConfig
 }
 
-func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
+func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}
