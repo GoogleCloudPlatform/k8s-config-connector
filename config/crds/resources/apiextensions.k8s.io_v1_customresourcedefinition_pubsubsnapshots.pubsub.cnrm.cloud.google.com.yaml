@@ -1,25 +1,26 @@
----
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.16.3
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: edgecontainermachines.edgecontainer.cnrm.cloud.google.com
+  name: pubsubsnapshots.pubsub.cnrm.cloud.google.com
 spec:
-  group: edgecontainer.cnrm.cloud.google.com
+  group: pubsub.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: EdgeContainerMachine
-    listKind: EdgeContainerMachineList
-    plural: edgecontainermachines
+    kind: PubSubSnapshot
+    listKind: PubSubSnapshotList
+    plural: pubsubsnapshots
     shortNames:
-    - gcpedgecontainermachine
-    - gcpedgecontainermachines
-    singular: edgecontainermachine
+    - gcppubsubsnapshot
+    - gcppubsubsnapshots
+    singular: pubsubsnapshot
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -41,39 +42,57 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: EdgeContainerMachine is the Schema for the EdgeContainerMachine
-          API
+        description: PubSubSnapshot is the Schema for the PubSubSnapshot API
         properties:
           apiVersion:
-            description: |-
-              APIVersion defines the versioned schema of this representation of an object.
-              Servers should convert recognized schemas to the latest internal value, and
-              may reject unrecognized values.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: |-
-              Kind is a string value representing the REST resource this object represents.
-              Servers may infer this from the endpoint the client submits requests to.
-              Cannot be updated.
-              In CamelCase.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: EdgeContainerMachineSpec defines the desired state of EdgeContainerMachine
+            description: PubSubSnapshotSpec defines the desired state of PubSubSnapshot
             properties:
+              expireTime:
+                description: Optional. The snapshot is guaranteed to exist up until
+                  this time. A newly-created snapshot expires no later than 7 days
+                  from the time of its creation. Its exact lifetime is determined
+                  at creation by the existing backlog in the source subscription.
+                  Specifically, the lifetime of the snapshot is `7 days - (age of
+                  oldest unacked message in the subscription)`. For example, consider
+                  a subscription whose oldest unacked message is 3 days old. If a
+                  snapshot is created from this subscription, the snapshot -- which
+                  will always capture this 3-day-old backlog as long as the snapshot
+                  exists -- will expire in 4 days. The service will refuse to create
+                  a snapshot that would expire in less than 1 hour after creation.
+                type: string
               labels:
                 additionalProperties:
                   type: string
-                description: Labels associated with this resource.
+                description: Optional. See [Creating and managing labels] (https://cloud.google.com/pubsub/docs/labels).
                 type: object
-              location:
-                description: Required. The location of the machine.
-                type: string
               projectRef:
-                description: Required. The host project of the machine.
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
                 properties:
                   external:
                     description: The `projectID` field of a project, when not managed
@@ -91,21 +110,23 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The EdgeContainerMachine name. If not given, the metadata.name
+                description: The PubSubSnapshot name. If not given, the metadata.name
                   will be used.
                 type: string
-              zone:
-                description: The Google Distributed Cloud Edge zone of this machine.
+              topic:
+                description: Optional. The name of the topic from which this snapshot
+                  is retaining messages.
                 type: string
+            required:
+            - projectRef
             type: object
           status:
-            description: EdgeContainerMachineStatus defines the config connector machine
-              state of EdgeContainerMachine
+            description: PubSubSnapshotStatus defines the config connector machine
+              state of PubSubSnapshot
             properties:
               conditions:
-                description: |-
-                  Conditions represent the latest available observations of the
-                  object's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -117,9 +138,8 @@ spec:
                         last transition.
                       type: string
                     reason:
-                      description: |-
-                        Unique, one-word, CamelCase reason for the condition's last
-                        transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
                       description: Status is the status of the condition. Can be True,
@@ -131,8 +151,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the EdgeContainerMachine resource
-                  in GCP.
+                description: A unique specifier for the PubSubSnapshot resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -145,33 +165,6 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
-                properties:
-                  createTime:
-                    description: Output only. The time when the node pool was created.
-                    type: string
-                  disabled:
-                    description: |-
-                      Output only. Whether the machine is disabled. If disabled, the machine is
-                       unable to enter service.
-                    type: boolean
-                  hostedNode:
-                    description: |-
-                      Canonical resource name of the node that this machine is responsible for
-                       hosting e.g.
-                       projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
-                       Or empty if the machine is not assigned to assume the role of a node.
-
-                       For control plane nodes hosted on edge machines, this will return
-                       the following format:
-                         "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
-                    type: string
-                  updateTime:
-                    description: Output only. The time when the node pool was last
-                      updated.
-                    type: string
-                  version:
-                    description: Output only. The software version of the machine.
-                    type: string
                 type: object
             type: object
         required:
