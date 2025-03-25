@@ -76,7 +76,28 @@ func (r *ClusterRef) NormalizedExternal(ctx context.Context, reader client.Reade
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		// It's possible the referenced AlloyDBCluster is a legacy one and doesn't
+		// have `status.externalRef`.
+		ready, err := isResourceReady(u)
+		if err != nil {
+			return "", fmt.Errorf("checking if referenced %s %s is ready: %w", AlloyDBClusterGVK, key, err)
+		}
+		if !ready {
+			return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		}
+		projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+		if err != nil {
+			return "", err
+		}
+		location, err := refsv1beta1.GetLocation(u)
+		if err != nil {
+			return "", err
+		}
+		clusterID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", projectID, location, clusterID), nil
 	}
 	r.External = actualExternalRef
 	return r.External, nil
