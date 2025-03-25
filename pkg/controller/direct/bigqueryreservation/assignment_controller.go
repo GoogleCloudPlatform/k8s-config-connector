@@ -29,6 +29,7 @@ import (
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -189,14 +190,88 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+// Parent is changed. Move the assignment to another reservation
+func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating or moving the Assignment", "name", a.id.String())
+	log.V(2).Info("moving assignment to another reservation", "name", a.id.String())
+
+	req := &pb.MoveAssignmentRequest{
+		Name:          a.actual.GetName(),
+		DestinationId: a.destinationId,
+		AssignmentId:  a.id.AssignmentID(),
+	}
+
+	updated, err := a.gcpClient.MoveAssignment(ctx, req)
+	if err != nil {
+		return fmt.Errorf("moving assignment %s: %w", a.id.String(), err)
+	}
+
+	log.V(2).Info("successfully moved assignment", "name", a.id.String())
+
+	status := &krm.BigQueryReservationAssignmentStatus{}
+	// Rebuild the externalRef
+	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	mapCtx := &direct.MapContext{}
+	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// Otherwise, handle fields update
+func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating assignment", "name", a.id.String())
+
+	mapCtx := &direct.MapContext{}
+	desiredPb := BigqueryReservationAssignmentSpec_ToProto(mapCtx, desiredSpec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := []string{}
+	// TODO
+	// The current proto file doesn't have mutable fields
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		status := &krm.BigQueryReservationAssignmentStatus{}
+		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: paths}
+
+	req := &pb.UpdateAssignmentRequest{
+		UpdateMask: updateMask,
+		Assignment: desiredPb,
+	}
+	updated, err := a.gcpClient.UpdateAssignment(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating assignment %s: %w", a.id.String(), err)
+	}
+
+	log.V(2).Info("successfully updated assignment", "name", a.id.String())
+
+	status := &krm.BigQueryReservationAssignmentStatus{}
+	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating or moving the assignment", "name", a.id.String())
 
 	desiredSpec := &a.desired.DeepCopy().Spec
 
@@ -206,58 +281,12 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return err
 	}
 
-	var updated *pb.Assignment
-	status := &krm.BigQueryReservationAssignmentStatus{}
 	// Case1: Move the assignment to another reservation
 	if currentReservation.String() != a.destinationId {
-		log.V(2).Info("moving assignment to another reservation", "current", a.id.String())
-		req := &pb.MoveAssignmentRequest{
-			Name:          a.actual.GetName(),
-			DestinationId: a.destinationId,
-			AssignmentId:  a.id.AssignmentID(),
-		}
-		// if user wants to retain the assignmentID
-		if desiredSpec.ResourceID != nil {
-			req.AssignmentId = direct.ValueOf(desiredSpec.ResourceID)
-		}
-		updated, err = a.gcpClient.MoveAssignment(ctx, req)
-		if err != nil {
-			return fmt.Errorf("moving Assignment %s: %w", a.id.String(), err)
-		}
-
-		// Rebuild the externalRef
-		status.ExternalRef = direct.LazyPtr(updated.GetName())
+		return a.moveAssignment(ctx, updateOp, desiredSpec)
 	}
 
-	/* 	if len(paths) == 0 {
-	   		log.V(2).Info("no field needs update", "name", a.id.String())
-	   		status := &krm.BigQueryReservationAssignmentStatus{}
-	   		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
-	   		if mapCtx.Err() != nil {
-	   			return mapCtx.Err()
-	   		}
-	   		return updateOp.UpdateStatus(ctx, status, nil)
-	   	}
-	   	updateMask := &fieldmaskpb.FieldMask{
-	   		Paths: paths}
-
-	   	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	   	req := &pb.UpdateAssignmentRequest{
-	   		UpdateMask: updateMask,
-	   		Assignment: desiredPb,
-	   	}
-	   	updated, err := a.gcpClient.UpdateAssignment(ctx, req)
-	   	if err != nil {
-	   		return fmt.Errorf("updating Assignment %s: %w", a.id.String(), err)
-	   	}
-	   	log.V(2).Info("successfully updated Assignment", "name", a.id.String()) */
-
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return a.updateAssignment(ctx, updateOp, desiredSpec)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -289,19 +318,19 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *AssignmentAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Assignment", "name", a.id.String())
+	log.V(2).Info("deleting assignment", "name", a.id.String())
 
 	req := &pb.DeleteAssignmentRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteAssignment(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Assignment, assuming it was already deleted", "name", a.id.String())
+			log.V(2).Info("skipping delete for non-existent assignment, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting Assignment %s: %w", a.id.String(), err)
+		return false, fmt.Errorf("deleting assignment %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted Assignment", "name", a.id.String())
+	log.V(2).Info("successfully deleted assignment", "name", a.id.String())
 
 	return true, nil
 }
