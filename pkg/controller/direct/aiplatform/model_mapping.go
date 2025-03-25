@@ -127,11 +127,6 @@ func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
 			BoolValue: direct.ValueOf(in.BoolValue),
 		}
 	}
-	if in.ListValue != nil && len(in.ListValue.Values) > 0 {
-		out.Kind = &structpb.Value_ListValue{
-			ListValue: ListValue_ToProto(mapCtx, in.ListValue),
-		}
-	}
 	if in.NullValue != nil {
 		value, err := strconv.Atoi(direct.ValueOf(in.NullValue))
 		if err != nil {
@@ -177,32 +172,8 @@ func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
 	case *structpb.Value_BoolValue:
 		value := in.GetBoolValue()
 		out.BoolValue = &value
-	case *structpb.Value_ListValue:
-		out.ListValue = ListValue_FromProto(mapCtx, in.GetListValue())
 	case *structpb.Value_StructValue:
 		out.StructValue = StructValue_FromProto(mapCtx, in.GetStructValue())
-	}
-	return out
-}
-
-func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListValue{}
-	for _, value := range in.Values {
-		out.Values = append(out.Values, direct.ValueOf(Value_FromProto(mapCtx, value)))
-	}
-	return out
-}
-
-func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.ListValue{}
-	for _, value := range in.Values {
-		out.Values = append(out.Values, Value_ToProto(mapCtx, &value))
 	}
 	return out
 }
@@ -223,6 +194,9 @@ func StructValue_ToProto(mapCtx *direct.MapContext, in map[string]string) *struc
 		return nil
 	}
 	out := &structpb.Struct{}
+	if len(in) > 0 {
+		out.Fields = make(map[string]*structpb.Value)
+	}
 	for key, val := range in {
 		value := &structpb.Value_StringValue{
 			StringValue: val,
@@ -239,6 +213,14 @@ func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.Explanation
 		return nil
 	}
 	out := &krm.ExplanationMetadata{}
+	out.Inputs = make(map[string]*krm.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_FromProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*krm.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_FromProto(mapCtx, v)
+	}
 	out.FeatureAttributionsSchemaURI = direct.LazyPtr(in.FeatureAttributionsSchemaUri)
 	out.LatentSpaceSource = direct.LazyPtr(in.LatentSpaceSource)
 	return out
@@ -249,8 +231,165 @@ func ExplanationMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationM
 		return nil
 	}
 	out := &pb.ExplanationMetadata{}
+	out.Inputs = make(map[string]*pb.ExplanationMetadata_InputMetadata)
+	for k, v := range in.Inputs {
+		out.Inputs[k] = ExplanationMetadata_InputMetadata_ToProto(mapCtx, v)
+	}
+	out.Outputs = make(map[string]*pb.ExplanationMetadata_OutputMetadata)
+	for k, v := range in.Outputs {
+		out.Outputs[k] = ExplanationMetadata_OutputMetadata_ToProto(mapCtx, v)
+	}
 	out.FeatureAttributionsSchemaUri = direct.ValueOf(in.FeatureAttributionsSchemaURI)
 	out.LatentSpaceSource = direct.ValueOf(in.LatentSpaceSource)
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_InputMetadata) *krm.ExplanationMetadata_InputMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_InputMetadata{}
+	out.GroupName = direct.LazyPtr(in.GetGroupName())
+	out.IndicesTensorName = direct.LazyPtr(in.GetIndicesTensorName())
+	out.InputTensorName = direct.LazyPtr(in.GetInputTensorName())
+	out.EncodedTensorName = direct.LazyPtr(in.GetEncodedTensorName())
+	out.DenseShapeTensorName = direct.LazyPtr(in.GetDenseShapeTensorName())
+	out.Encoding = direct.LazyPtr(in.GetEncoding().String())
+	out.Modality = direct.LazyPtr(in.GetModality())
+	out.IndexFeatureMapping = in.GetIndexFeatureMapping()
+	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto(mapCtx, in.GetFeatureValueDomain())
+	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_FromProto(mapCtx, in.GetVisualization())
+	out.InputBaselines = direct.Slice_FromProto(mapCtx, in.InputBaselines, Value_FromProto)
+	out.EncodedBaselines = direct.Slice_FromProto(mapCtx, in.EncodedBaselines, Value_FromProto)
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_InputMetadata) *pb.ExplanationMetadata_InputMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_InputMetadata{}
+	out.GroupName = direct.ValueOf(in.GroupName)
+	out.IndicesTensorName = direct.ValueOf(in.IndicesTensorName)
+	out.InputTensorName = direct.ValueOf(in.InputTensorName)
+	out.EncodedTensorName = direct.ValueOf(in.EncodedTensorName)
+	out.DenseShapeTensorName = direct.ValueOf(in.DenseShapeTensorName)
+	out.Encoding = pb.ExplanationMetadata_InputMetadata_Encoding(pb.ExplanationMetadata_InputMetadata_Encoding_value[direct.ValueOf(in.Encoding)])
+	out.Modality = direct.ValueOf(in.Modality)
+	out.IndexFeatureMapping = in.IndexFeatureMapping
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto(mapCtx, in.FeatureValueDomain)
+	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_ToProto(mapCtx, in.Visualization)
+	out.InputBaselines = direct.Slice_ToProto(mapCtx, in.InputBaselines, Value_ToProto)
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_InputMetadata_FeatureValueDomain) *krm.ExplanationMetadata_InputMetadata_FeatureValueDomain {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_InputMetadata_FeatureValueDomain{}
+	out.MaxValue = direct.LazyPtr(in.GetMaxValue())
+	out.MinValue = direct.LazyPtr(in.GetMinValue())
+	out.OriginalMean = direct.LazyPtr(in.GetOriginalMean())
+	out.OriginalStddev = direct.LazyPtr(in.GetOriginalStddev())
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_InputMetadata_FeatureValueDomain) *pb.ExplanationMetadata_InputMetadata_FeatureValueDomain {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_InputMetadata_FeatureValueDomain{}
+	out.MaxValue = direct.ValueOf(in.MaxValue)
+	out.MinValue = direct.ValueOf(in.MinValue)
+	out.OriginalMean = direct.ValueOf(in.OriginalMean)
+	out.OriginalStddev = direct.ValueOf(in.OriginalStddev)
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_Visualization_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_InputMetadata_Visualization) *krm.ExplanationMetadata_InputMetadata_Visualization {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_InputMetadata_Visualization{}
+	out.ClipPercentLowerbound = direct.LazyPtr(in.GetClipPercentLowerbound())
+	out.ClipPercentUpperbound = direct.LazyPtr(in.GetClipPercentUpperbound())
+	out.ColorMap = direct.LazyPtr(in.GetColorMap().String())
+	return out
+}
+
+func ExplanationMetadata_InputMetadata_Visualization_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_InputMetadata_Visualization) *pb.ExplanationMetadata_InputMetadata_Visualization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_InputMetadata_Visualization{}
+	out.ClipPercentLowerbound = direct.ValueOf(in.ClipPercentLowerbound)
+	out.ClipPercentUpperbound = direct.ValueOf(in.ClipPercentUpperbound)
+	out.ColorMap = pb.ExplanationMetadata_InputMetadata_Visualization_ColorMap(pb.ExplanationMetadata_InputMetadata_Visualization_ColorMap_value[direct.ValueOf(in.ColorMap)])
+	return out
+}
+
+func ExplanationMetadata_OutputMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata_OutputMetadata) *krm.ExplanationMetadata_OutputMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ExplanationMetadata_OutputMetadata{}
+	out.DisplayNameMappingKey = DisplayNameMappingKey_FromProto(mapCtx, in.GetDisplayNameMappingKey())
+	out.IndexDisplayNameMapping = IndexDisplayNameMapping_FromProto(mapCtx, in.GetIndexDisplayNameMapping())
+	out.OutputTensorName = direct.LazyPtr(in.GetOutputTensorName())
+	return out
+}
+
+func ExplanationMetadata_OutputMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ExplanationMetadata_OutputMetadata) *pb.ExplanationMetadata_OutputMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_OutputMetadata{}
+	out.OutputTensorName = direct.ValueOf(in.OutputTensorName)
+	if oneof := DisplayNameMappingKey_ToProto(mapCtx, in.DisplayNameMappingKey); oneof != nil {
+		out.DisplayNameMapping = oneof
+	}
+	if oneof := IndexDisplayNameMapping_ToProto(mapCtx, in.IndexDisplayNameMapping); oneof != nil {
+		out.DisplayNameMapping = oneof
+	}
+	return out
+}
+
+func DisplayNameMappingKey_FromProto(mapCtx *direct.MapContext, in string) *string {
+	if in == "" {
+		return nil
+	}
+	out := direct.LazyPtr(in)
+	return out
+}
+
+func DisplayNameMappingKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.ExplanationMetadata_OutputMetadata_DisplayNameMappingKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_OutputMetadata_DisplayNameMappingKey{
+		DisplayNameMappingKey: direct.ValueOf(in),
+	}
+	return out
+}
+
+func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+	if in == nil {
+		return nil
+	}
+	out := Value_FromProto(mapCtx, in)
+	return out
+}
+
+func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping{
+		IndexDisplayNameMapping: Value_ToProto(mapCtx, in),
+	}
 	return out
 }
 

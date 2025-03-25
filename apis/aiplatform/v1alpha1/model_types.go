@@ -165,7 +165,7 @@ type AIPlatformModelSpec struct {
 
 	// Required. The resource name of the Location into which to upload the Model.
 	// Format: projects/{project}/locations/{location}
-	Parent *Parent `json:"parent,omitempty"`
+	*Parent `json:",inline"`
 
 	// The AIPlatformModel name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -180,6 +180,52 @@ type Parent struct {
 	// The project that this resource belongs to.
 	// +required
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.ExplanationMetadata
+type ExplanationMetadata struct {
+	// Required. Map from feature names to feature input metadata. Keys are the
+	// name of the features. Values are the specification of the feature.
+	//
+	// An empty InputMetadata is valid. It describes a text feature which has the
+	// name specified as the key in
+	// [ExplanationMetadata.inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs].
+	// The baseline of the empty feature is chosen by Vertex AI.
+	//
+	// For Vertex AI-provided Tensorflow images, the key can be any friendly
+	// name of the feature. Once specified,
+	// [featureAttributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]
+	// are keyed by this key (if not grouped with another feature).
+	//
+	// For custom images, the key must match with the key in
+	// [instance][google.cloud.aiplatform.v1.ExplainRequest.instances].
+	Inputs map[string]*ExplanationMetadata_InputMetadata `json:"inputs,omitempty"`
+	// Required. Map from output names to output metadata.
+	//
+	// For Vertex AI-provided Tensorflow images, keys can be any user defined
+	// string that consists of any UTF-8 characters.
+	//
+	// For custom images, keys are the name of the output field in the prediction
+	// to be explained.
+	//
+	// Currently only one key is allowed.
+	Outputs map[string]*ExplanationMetadata_OutputMetadata `json:"outputs,omitempty"`
+
+	// Points to a YAML file stored on Google Cloud Storage describing the format
+	//  of the [feature
+	//  attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions].
+	//  The schema is defined as an OpenAPI 3.0.2 [Schema
+	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+	//  AutoML tabular Models always have this field populated by Vertex AI.
+	//  Note: The URI given on output may be different, including the URI scheme,
+	//  than the one given on input. The output URI will point to a location where
+	//  the user only has a read access.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.feature_attributions_schema_uri
+	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
+
+	// Name of the source to generate embeddings for example based explanations.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.latent_space_source
+	LatentSpaceSource *string `json:"latentSpaceSource,omitempty"`
 }
 
 // AIPlatformModelStatus defines the config connector machine state of AIPlatformModel
@@ -375,6 +421,31 @@ type AIPlatformModelObservedState struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.satisfies_pzi
 	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
 }
+
+// +kcc:proto=google.protobuf.ListValue
+// type ListValue struct {
+// 	// Repeated field of dynamically typed values.
+// 	// Changed the structure to avoid looping between ListValue and Value structs.
+// 	Values []*ListTypeValue `json:"values,omitempty"`
+// }
+
+// ListTypeValue records the type and value for each entry in the ListValue.
+// type ListTypeValue struct {
+// 	Type        int               `json:"type,omitempty"`
+// 	Value       string            `json:"value,omitempty"`
+// 	ListValue   []*ListTypeValue  `json:"listValue,omitempty"`
+// 	structValue map[string]string `json:"structValue,omitempty"`
+// }
+
+const (
+	// Null value.
+	NullValue_NULL_VALUE     int = 0
+	StringValue_STRING_VALUE int = 1
+	NumberValue_NUMBER_VALUE int = 2
+	BoolValue_BOOL_VALUE     int = 3
+	StructValue_STRUCT_VALUE int = 4
+	ListValue_LIST_VALUE     int = 5
+)
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

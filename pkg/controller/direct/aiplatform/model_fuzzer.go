@@ -38,6 +38,14 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzi")            // NOTYET
 	f.UnimplementedFields.Insert(".satisfies_pzs")            // NOTYET
 	f.UnimplementedFields.Insert(".supported_export_formats") // NOTYET
+	f.UnimplementedFields.Insert(".default_checkpoint_id")
+	f.UnimplementedFields.Insert(".container_spec.health_probe.success_threshold")
+	f.UnimplementedFields.Insert(".container_spec.health_probe.initial_delay_seconds")
+	f.UnimplementedFields.Insert(".container_spec.startup_probe.http_get")
+	f.UnimplementedFields.Insert(".container_spec.startup_probe.success_threshold")
+	f.UnimplementedFields.Insert(".container_spec.liveness_probe")
+	f.UnimplementedFields.Insert(".explanation_spec.explanation_parameters.output_indices")
+	f.UnimplementedFields.Insert(".metadata.list_value")
 
 	f.SpecFields.Insert(".version_aliases")
 	f.SpecFields.Insert(".display_name")

@@ -560,10 +560,295 @@ spec:
                           output URI will point to a location where the user only
                           has a read access.'
                         type: string
+                      inputs:
+                        additionalProperties:
+                          properties:
+                            denseShapeTensorName:
+                              description: 'Specifies the shape of the values of the
+                                input if the input is a sparse representation. Refer
+                                to Tensorflow documentation for more details: https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.'
+                              type: string
+                            encodedBaselines:
+                              description: |-
+                                A list of baselines for the encoded tensor.
+
+                                 The shape of each baseline should match the shape of the encoded tensor.
+                                 If a scalar is provided, Vertex AI broadcasts to the same shape as the
+                                 encoded tensor.
+                              items:
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    additionalProperties:
+                                      type: string
+                                    description: Represents a structured value.
+                                    type: object
+                                type: object
+                              type: array
+                            encodedTensorName:
+                              description: |-
+                                Encoded tensor is a transformation of the input tensor. Must be provided
+                                 if choosing
+                                 [Integrated Gradients
+                                 attribution][google.cloud.aiplatform.v1.ExplanationParameters.integrated_gradients_attribution]
+                                 or [XRAI
+                                 attribution][google.cloud.aiplatform.v1.ExplanationParameters.xrai_attribution]
+                                 and the input tensor is not differentiable.
+
+                                 An encoded tensor is generated if the input tensor is encoded by a lookup
+                                 table.
+                              type: string
+                            encoding:
+                              description: Defines how the feature is encoded into
+                                the input tensor. Defaults to IDENTITY.
+                              type: string
+                            featureValueDomain:
+                              description: The domain details of the input feature
+                                value. Like min/max, original mean or standard deviation
+                                if normalized.
+                              properties:
+                                maxValue:
+                                  description: The maximum permissible value for this
+                                    feature.
+                                  type: number
+                                minValue:
+                                  description: The minimum permissible value for this
+                                    feature.
+                                  type: number
+                                originalMean:
+                                  description: If this input feature has been normalized
+                                    to a mean value of 0, the original_mean specifies
+                                    the mean value of the domain prior to normalization.
+                                  type: number
+                                originalStddev:
+                                  description: If this input feature has been normalized
+                                    to a standard deviation of 1.0, the original_stddev
+                                    specifies the standard deviation of the domain
+                                    prior to normalization.
+                                  type: number
+                              type: object
+                            groupName:
+                              description: Name of the group that the input belongs
+                                to. Features with the same group name will be treated
+                                as one feature when computing attributions. Features
+                                grouped together can have different shapes in value.
+                                If provided, there will be one single attribution
+                                generated in [Attribution.feature_attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions],
+                                keyed by the group name.
+                              type: string
+                            indexFeatureMapping:
+                              description: A list of feature names for each index
+                                in the input tensor. Required when the input [InputMetadata.encoding][google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata.encoding]
+                                is BAG_OF_FEATURES, BAG_OF_FEATURES_SPARSE, INDICATOR.
+                              items:
+                                type: string
+                              type: array
+                            indicesTensorName:
+                              description: 'Specifies the index of the values of the
+                                input tensor. Required when the input tensor is a
+                                sparse representation. Refer to Tensorflow documentation
+                                for more details: https://www.tensorflow.org/api_docs/python/tf/sparse/SparseTensor.'
+                              type: string
+                            inputBaselines:
+                              description: |-
+                                Baseline inputs for this feature.
+
+                                 If no baseline is specified, Vertex AI chooses the baseline for this
+                                 feature. If multiple baselines are specified, Vertex AI returns the
+                                 average attributions across them in
+                                 [Attribution.feature_attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions].
+
+                                 For Vertex AI-provided Tensorflow images (both 1.x and 2.x), the shape
+                                 of each baseline must match the shape of the input tensor. If a scalar is
+                                 provided, we broadcast to the same shape as the input tensor.
+
+                                 For custom images, the element of the baselines must be in the same
+                                 format as the feature's input in the
+                                 [instance][google.cloud.aiplatform.v1.ExplainRequest.instances][]. The
+                                 schema of any single instance may be specified via Endpoint's
+                                 DeployedModels' [Model's][google.cloud.aiplatform.v1.DeployedModel.model]
+                                 [PredictSchemata's][google.cloud.aiplatform.v1.Model.predict_schemata]
+                                 [instance_schema_uri][google.cloud.aiplatform.v1.PredictSchemata.instance_schema_uri].
+                              items:
+                                properties:
+                                  boolValue:
+                                    description: Represents a boolean value.
+                                    type: boolean
+                                  nullValue:
+                                    description: Represents a null value.
+                                    type: string
+                                  numberValue:
+                                    description: Represents a double value.
+                                    type: number
+                                  stringValue:
+                                    description: Represents a string value.
+                                    type: string
+                                  structValue:
+                                    additionalProperties:
+                                      type: string
+                                    description: Represents a structured value.
+                                    type: object
+                                type: object
+                              type: array
+                            inputTensorName:
+                              description: Name of the input tensor for this feature.
+                                Required and is only applicable to Vertex AI-provided
+                                images for Tensorflow.
+                              type: string
+                            modality:
+                              description: 'Modality of the feature. Valid values
+                                are: numeric, image. Defaults to numeric.'
+                              type: string
+                            visualization:
+                              description: Visualization configurations for image
+                                explanation.
+                              properties:
+                                clipPercentLowerbound:
+                                  description: Excludes attributions below the specified
+                                    percentile, from the highlighted areas. Defaults
+                                    to 62.
+                                  type: number
+                                clipPercentUpperbound:
+                                  description: Excludes attributions above the specified
+                                    percentile from the highlighted areas. Using the
+                                    clip_percent_upperbound and clip_percent_lowerbound
+                                    together can be useful for filtering out noise
+                                    and making it easier to see areas of strong attribution.
+                                    Defaults to 99.9.
+                                  type: number
+                                colorMap:
+                                  description: |-
+                                    The color scheme used for the highlighted areas.
+
+                                     Defaults to PINK_GREEN for
+                                     [Integrated Gradients
+                                     attribution][google.cloud.aiplatform.v1.ExplanationParameters.integrated_gradients_attribution],
+                                     which shows positive attributions in green and negative in pink.
+
+                                     Defaults to VIRIDIS for
+                                     [XRAI
+                                     attribution][google.cloud.aiplatform.v1.ExplanationParameters.xrai_attribution],
+                                     which highlights the most influential regions in yellow and the least
+                                     influential in blue.
+                                  type: string
+                                overlayType:
+                                  description: How the original image is displayed
+                                    in the visualization. Adjusting the overlay can
+                                    help increase visual clarity if the original image
+                                    makes it difficult to view the visualization.
+                                    Defaults to NONE.
+                                  type: string
+                                polarity:
+                                  description: Whether to only highlight pixels with
+                                    positive contributions, negative or both. Defaults
+                                    to POSITIVE.
+                                  type: string
+                                type:
+                                  description: Type of the image visualization. Only
+                                    applicable to [Integrated Gradients attribution][google.cloud.aiplatform.v1.ExplanationParameters.integrated_gradients_attribution].
+                                    OUTLINES shows regions of attribution, while PIXELS
+                                    shows per-pixel attribution. Defaults to OUTLINES.
+                                  type: string
+                              type: object
+                          type: object
+                        description: |-
+                          Required. Map from feature names to feature input metadata. Keys are the
+                          name of the features. Values are the specification of the feature.
+
+                          An empty InputMetadata is valid. It describes a text feature which has the
+                          name specified as the key in
+                          [ExplanationMetadata.inputs][google.cloud.aiplatform.v1.ExplanationMetadata.inputs].
+                          The baseline of the empty feature is chosen by Vertex AI.
+
+                          For Vertex AI-provided Tensorflow images, the key can be any friendly
+                          name of the feature. Once specified,
+                          [featureAttributions][google.cloud.aiplatform.v1.Attribution.feature_attributions]
+                          are keyed by this key (if not grouped with another feature).
+
+                          For custom images, the key must match with the key in
+                          [instance][google.cloud.aiplatform.v1.ExplainRequest.instances].
+                        type: object
                       latentSpaceSource:
                         description: Name of the source to generate embeddings for
                           example based explanations.
                         type: string
+                      outputs:
+                        additionalProperties:
+                          properties:
+                            displayNameMappingKey:
+                              description: |-
+                                Specify a field name in the prediction to look for the display name.
+
+                                 Use this if the prediction contains the display names for the outputs.
+
+                                 The display names in the prediction must have the same shape of the
+                                 outputs, so that it can be located by
+                                 [Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index]
+                                 for a specific output.
+                              type: string
+                            indexDisplayNameMapping:
+                              description: |-
+                                Static mapping between the index and display name.
+
+                                 Use this if the outputs are a deterministic n-dimensional array, e.g. a
+                                 list of scores of all the classes in a pre-defined order for a
+                                 multi-classification Model. It's not feasible if the outputs are
+                                 non-deterministic, e.g. the Model produces top-k classes or sort the
+                                 outputs by their values.
+
+                                 The shape of the value must be an n-dimensional array of strings. The
+                                 number of dimensions must match that of the outputs to be explained.
+                                 The
+                                 [Attribution.output_display_name][google.cloud.aiplatform.v1.Attribution.output_display_name]
+                                 is populated by locating in the mapping with
+                                 [Attribution.output_index][google.cloud.aiplatform.v1.Attribution.output_index].
+                              properties:
+                                boolValue:
+                                  description: Represents a boolean value.
+                                  type: boolean
+                                nullValue:
+                                  description: Represents a null value.
+                                  type: string
+                                numberValue:
+                                  description: Represents a double value.
+                                  type: number
+                                stringValue:
+                                  description: Represents a string value.
+                                  type: string
+                                structValue:
+                                  additionalProperties:
+                                    type: string
+                                  description: Represents a structured value.
+                                  type: object
+                              type: object
+                            outputTensorName:
+                              description: Name of the output tensor. Required and
+                                is only applicable to Vertex AI provided images for
+                                Tensorflow.
+                              type: string
+                          type: object
+                        description: |-
+                          Required. Map from output names to output metadata.
+
+                          For Vertex AI-provided Tensorflow images, keys can be any user defined
+                          string that consists of any UTF-8 characters.
+
+                          For custom images, keys are the name of the output field in the prediction
+                          to be explained.
+
+                          Currently only one key is allowed.
+                        type: object
                     type: object
                   parameters:
                     description: Required. Parameters that configure explaining of
@@ -573,7 +858,7 @@ spec:
                         description: Example-based explanations that returns the nearest
                           neighbors from the provided dataset.
                         properties:
-                          exampleGcsSource:
+                          exampleGCSSource:
                             description: The Cloud Storage input instances.
                             properties:
                               dataFormat:
@@ -602,15 +887,6 @@ spec:
                               boolValue:
                                 description: Represents a boolean value.
                                 type: boolean
-                              listValue:
-                                description: Represents a repeated `Value`.
-                                properties:
-                                  values:
-                                    description: Repeated field of dynamically typed
-                                      values.
-                                    items: {}
-                                    type: array
-                                type: object
                               nullValue:
                                 description: Represents a null value.
                                 type: string
@@ -748,26 +1024,6 @@ spec:
                                Valid range of its value is [1, 100], inclusively.
                             format: int32
                             type: integer
-                        type: object
-                      outputIndices:
-                        description: |-
-                          If populated, only returns attributions that have
-                           [output_index][google.cloud.aiplatform.v1.Attribution.output_index]
-                           contained in output_indices. It must be an ndarray of integers, with the
-                           same shape of the output it's explaining.
-
-                           If not populated, returns attributions for
-                           [top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k] indices of
-                           outputs. If neither top_k nor output_indices is populated, returns the
-                           argmax index of the outputs.
-
-                           Only applicable to Models that predict multiple outputs (e,g, multi-class
-                           Models that predict multiple classes).
-                        properties:
-                          values:
-                            description: Repeated field of dynamically typed values.
-                            items: {}
-                            type: array
                         type: object
                       sampledShapleyAttribution:
                         description: 'An attribution method that approximates Shapley
@@ -911,6 +1167,9 @@ spec:
 
                    See https://goo.gl/xmQnxf for more information and examples of labels.
                 type: object
+              location:
+                description: Immutable. The location where the model should reside.
+                type: string
               metadata:
                 description: Immutable. An additional information about the Model;
                   the schema of the metadata can be found in [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
@@ -919,14 +1178,6 @@ spec:
                   boolValue:
                     description: Represents a boolean value.
                     type: boolean
-                  listValue:
-                    description: Represents a repeated `Value`.
-                    properties:
-                      values:
-                        description: Repeated field of dynamically typed values.
-                        items: {}
-                        type: array
-                    type: object
                   nullValue:
                     description: Represents a null value.
                     type: string
@@ -954,52 +1205,6 @@ spec:
                   The output URI will point to a location where the user only has
                   a read access.'
                 type: string
-              parent:
-                description: 'Required. The resource name of the Location into which
-                  to upload the Model. Format: projects/{project}/locations/{location}'
-                properties:
-                  location:
-                    description: Immutable. The location where the model should reside.
-                    type: string
-                  projectRef:
-                    description: The project that this resource belongs to.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                      - kind
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                        - required:
-                          - kind
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                required:
-                - location
-                - projectRef
-                type: object
               pipelineJob:
                 description: Optional. This field is populated if the model is produced
                   by a pipeline job.
@@ -1050,6 +1255,38 @@ spec:
                       has a read access.'
                     type: string
                 type: object
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The AIPlatformModel name. If not given, the metadata.name
                   will be used.
@@ -1068,6 +1305,9 @@ spec:
               versionDescription:
                 description: The description of this version.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: AIPlatformModelStatus defines the config connector machine
