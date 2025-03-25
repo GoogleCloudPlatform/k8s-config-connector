@@ -988,6 +988,36 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to BackupPlanDR
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						// normalize "dataSource"
+						if val, found, _ := unstructured.NestedString(obj, "dataSource"); found {
+							tokens := strings.Split(val, "/")
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+								tokens[len(tokens)-1] = "${dataSourceID}"
+								if err := unstructured.SetNestedField(obj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+						// normalize "response.dataSource"
+						responseObj, found, _ := unstructured.NestedMap(obj, "response")
+						if found {
+							if val, found, _ := unstructured.NestedString(responseObj, "dataSource"); found {
+								tokens := strings.Split(val, "/")
+								if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+									tokens[len(tokens)-1] = "${dataSourceID}"
+									if err := unstructured.SetNestedField(responseObj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+									if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+								}
+							}
+						}
+					})
+
 					// Remove error details which can contain confidential information
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						response := obj["error"]

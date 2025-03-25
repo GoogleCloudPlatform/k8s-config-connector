@@ -256,6 +256,19 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to BackupPlanDR
+	// normalize "status.observedState.dataSource"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.dataSource") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+				tokens[len(tokens)-1] = "${dataSourceID}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
