@@ -16,9 +16,7 @@ package alloydb
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
@@ -36,9 +34,9 @@ import (
 	"google.golang.org/genproto/googleapis/type/dayofweek"
 	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -130,8 +128,7 @@ func (a *ClusterAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// TODO: Test case: both set, none set, one set * 2
-// TODO: basic: networkConfig.networkRef; full: networkRef; scenario 1, mock only: both set, secnario 2, mock only: none set
+// TODO: Scenario test cases: both networkConfig.networkRef and networkRef set; none set.
 func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig == nil {
@@ -221,8 +218,7 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	return nil
 }
 
-// TODO: Test: Default none set, and default all set
-// TODO: basic: none of the defaultable values set, full: all defaultable values, though double check if ContinuousBackupConfig.Enabled is problematic, if so, use scenarios
+// TODO: Scenario test case: ContinuousBackupConfig.Enabled unset.
 func (a *ClusterAdapter) resolveKRMDefaultsForCreate() {
 	obj := a.desired
 	if obj.Spec.ClusterType == nil || direct.ValueOf(obj.Spec.ClusterType) == "" {
@@ -255,8 +251,7 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 	}
 }
 
-// // TODO: Test: Value, ValueFrom
-// // TODO: full: value -> valueFrom; alloydbclusterpasswordfromsecret: valueFrom update
+// TODO: Scenario test case: Update initialUser.password from `value` to `valueFrom` and vise versa.
 func (a *ClusterAdapter) resolveInitialUserField(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.InitialUser != nil && obj.Spec.InitialUser.Password != nil {
@@ -287,9 +282,7 @@ func (a *ClusterAdapter) resolveInitialUserField(ctx context.Context) error {
 	return nil
 }
 
-// TODO: Test: both RestoreBackupSource and RestoreContinuousBackupSource set, none set, one set * 2
-// TODO: Test: primary or secondary
-// TODO: seconary: test secondary; basic/full: primary; restore: from backupSource; restoreclusteralloydbcluster: from backup cluster.
+// TODO: Test once backup is supported or using scenario: set restoreBackupSource and restoreContinuousBackupSource (either and both).
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -338,10 +331,11 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			if mapCtx.Err() != nil {
 				return mapCtx.Err()
 			}
+
+			createOp.RecordUpdatingEvent()
 			req.Source = &alloydbpb.RestoreClusterRequest_BackupSource{
 				BackupSource: backupSource,
 			}
-			fmt.Printf("maqiuyu... create... restore cluster from backup source: %+v\n", PrettyPrintJSON(*req.Cluster))
 			op, err := a.gcpClient.RestoreCluster(ctx, req)
 			if err != nil {
 				log.V(2).Info("error creating Cluster based on a backup source", "name", a.id, "error", err)
@@ -359,10 +353,11 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 			if mapCtx.Err() != nil {
 				return mapCtx.Err()
 			}
+
+			createOp.RecordUpdatingEvent()
 			req.Source = &alloydbpb.RestoreClusterRequest_ContinuousBackupSource{
 				ContinuousBackupSource: continuousBackupSource,
 			}
-			fmt.Printf("maqiuyu... create... restore cluster from continuous backup source: %+v\n", PrettyPrintJSON(*req.Cluster))
 			op, err := a.gcpClient.RestoreCluster(ctx, req)
 			if err != nil {
 				log.V(2).Info("error creating Cluster based on a source cluster", "name", a.id, "error", err)
@@ -382,12 +377,13 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		if resource.SecondaryConfig == nil {
 			return fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id)
 		}
+
+		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateSecondaryClusterRequest{
 			Parent:    a.id.Parent().String(),
 			ClusterId: a.id.ID(),
 			Cluster:   resource,
 		}
-		fmt.Printf("maqiuyu... create... secondary cluster: %+v\n", PrettyPrintJSON(*req.Cluster))
 		op, err := a.gcpClient.CreateSecondaryCluster(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating secondary Cluster", "name", a.id, "error", err)
@@ -403,20 +399,19 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		if resource.SecondaryConfig != nil {
 			return fmt.Errorf("cannot create primary cluster %s with secondaryConfig", a.id)
 		}
+
+		createOp.RecordUpdatingEvent()
 		req := &alloydbpb.CreateClusterRequest{
 			Parent:    a.id.Parent().String(),
 			ClusterId: a.id.ID(),
 			Cluster:   resource,
 		}
-		fmt.Printf("maqiuyu... create... primary cluster: %+v\n", PrettyPrintJSON(*req.Cluster))
 		op, err := a.gcpClient.CreateCluster(ctx, req)
 		if err != nil {
 			log.V(2).Info("error creating primary Cluster", "name", a.id, "error", err)
 			return fmt.Errorf("creating primary Cluster %s: %w", a.id, err)
 		}
 
-		md, err := op.Metadata()
-		fmt.Printf("maqiuyu... op: %+v\nmetadata: %+v\nerror: %+v\n", op.Name(), md, err)
 		created, err = op.Wait(ctx)
 		if err != nil {
 			log.V(2).Info("error waiting for primary Cluster creation op", "name", a.id, "error", err)
@@ -530,13 +525,10 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	desiredPb.Labels["managed-by-cnrm"] = "true"
 
-	fmt.Printf("maqiuyu... desired pb right after conversion: %+v\n", PrettyPrintJSON(*desiredPb))
 	// 6. Set resource name. This step is not needed for other operations.
 	desiredPb.Name = a.id.String()
 	// 7. Handle default values for fields not yet supported in KRM types.
 	a.resolveGCPDefaults(desiredPb, a.actual)
-	fmt.Printf("maqiuyu... desired pb before comparison: %+v\n", PrettyPrintJSON(*desiredPb))
-	fmt.Printf("maqiuyu... actual pb before: %+v\n", PrettyPrintJSON(*a.actual))
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
@@ -572,7 +564,6 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// TODO: Decide if we want to clean up default fields set in desired state.
 
-	fmt.Printf("maqiuyu... updateMask: %+v\n", paths)
 	topLevelFieldPaths := sets.New[string]()
 	for path, _ := range paths {
 		tokens := strings.Split(path, ".")
@@ -582,12 +573,11 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		Paths: sets.List(topLevelFieldPaths),
 	}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+	updateOp.RecordUpdatingEvent()
 	req := &alloydbpb.UpdateClusterRequest{
 		UpdateMask: updateMask,
 		Cluster:    desiredPb,
 	}
-	fmt.Printf("maqiuyu... update... cluster: %+v\n", PrettyPrintJSON(*req.Cluster))
 	op, err := a.gcpClient.UpdateCluster(ctx, req)
 	if err != nil {
 		log.V(2).Info("error updating Cluster", "name", a.id, "error", err)
@@ -639,8 +629,7 @@ func (a *ClusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	return u, nil
 }
 
-// TODO: Tests: delete + delete after it's gone
-// TODO: any: delete; scenario X: delete after it's gone; secondary: force; others: non force; scenario 3, real & mock: non force failed for secondary
+// TODO: Scenario test case: Delete after the cluster is gone; not forcing delete a secondary cluster.
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -666,13 +655,4 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 		return false, fmt.Errorf("waiting delete Cluster %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func PrettyPrintJSON[T any](k T) string {
-	encoded, err := json.MarshalIndent(k, "", " ")
-	if err != nil {
-		fmt.Printf("error encoding to json: %v\n", err)
-	}
-
-	return string(encoded)
 }

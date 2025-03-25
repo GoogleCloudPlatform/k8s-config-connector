@@ -617,11 +617,11 @@ func testReconcileCreateNoChangeUpdateDelete(ctx context.Context, t *testing.T, 
 	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
 	testCreate(ctx, t, testContext, systemContext, resourceContext)
-	//testNoChangeAfterCreate(ctx, t, testContext, systemContext, resourceContext)
-	//testUpdate(ctx, t, testContext, systemContext, resourceContext)
-	//testNoChangeAfterUpdate(ctx, t, testContext, systemContext, resourceContext)
-	//testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
-	//testDelete(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterCreate(ctx, t, testContext, systemContext, resourceContext)
+	testUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
+	testDelete(ctx, t, testContext, systemContext, resourceContext)
 }
 
 func checkComputeNetworkUpdate(t *testing.T, updateUnstruct *unstructured.Unstructured, gcpUnstruct *unstructured.Unstructured) {
