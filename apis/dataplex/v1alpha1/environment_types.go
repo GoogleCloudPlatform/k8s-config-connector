@@ -23,9 +23,12 @@ import (
 var DataplexEnvironmentGVK = GroupVersion.WithKind("DataplexEnvironment")
 
 type DataplexEnvironmentParent struct {
+	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
+	// +required
 	Location string `json:"location"`
+	// +required
+	LakeRef LakeRef `json:"lakeRef"`
 }
 
 // DataplexEnvironmentSpec defines the desired state of DataplexEnvironment
