@@ -134,6 +134,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-backupdr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-e2e-fixtures-backupdr"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-backupdr
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-backupdr
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-bigquery:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -271,6 +291,26 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-vertexai
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-vmwareengine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-e2e-fixtures-vmwareengine"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures-vmwareengine
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-vmwareengine
           path: /tmp/artifacts/
 
 
