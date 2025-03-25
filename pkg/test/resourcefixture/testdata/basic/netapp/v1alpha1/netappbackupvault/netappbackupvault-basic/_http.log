@@ -4,12 +4,21 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fnetappbackupvault-basic-${uniqueId}
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "backupVault \"projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -25,20 +34,24 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "",
-    "createTime": null,
-    "endTime": null,
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "statusMessage": "",
-    "target": "",
-    "verb": ""
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
   "response": {
@@ -53,21 +66,64 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupVault",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "state": "READY"
+  }
+}
+
+---
+
 GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fnetappbackupvault-basic-${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
-  "labels": {},
   "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
-  "state": "READY"
+  "state": 2
 }
 
 ---
@@ -83,27 +139,61 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "",
-    "createTime": null,
-    "endTime": null,
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "statusMessage": "",
-    "target": "",
-    "verb": ""
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupVault",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
-    "labels": {},
     "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
     "state": "READY"
   }
@@ -117,15 +207,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fnetappbackupvault-basic-${uniqueId}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
-  "labels": {},
   "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
-  "state": "READY"
+  "state": 2
 }
 
 ---
@@ -136,28 +231,58 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupVaults%2Fnetappbackupvault-basic-${uniqueId}
 
 200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "",
-    "createTime": null,
-    "endTime": null,
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "statusMessage": "",
-    "target": "",
-    "verb": ""
+    "target": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupVault",
-    "createTime": null,
-    "description": "",
-    "labels": {},
-    "name": "",
-    "state": "STATE_UNSPECIFIED"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
