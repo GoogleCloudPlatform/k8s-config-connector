@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
-APIGROUPS=(
-    "bigquery.cnrm.cloud.google.com"
-    "bigqueryanalyticshub.cnrm.cloud.google.com"
-    "bigqueryconnection.cnrm.cloud.google.com"
-    "bigquerydatatransfer.cnrm.cloud.google.com"
-    "bigqueryreservation.cnrm.cloud.google.com"
-)
+export ONLY_TEST_APIGROUPS="vmwareengine.cnrm.cloud.google.com"
 
-export ONLY_TEST_APIGROUPS=$(IFS=,; echo "${APIGROUPS[*]}")
 ${REPO_ROOT}/dev/tasks/run-e2e
