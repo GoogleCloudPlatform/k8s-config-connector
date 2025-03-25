@@ -372,7 +372,8 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 			}
 		}
 
-	case "string", "boolean", "integer", "number":
+	// Add handling for google.protobuf.Value
+	case "string", "boolean", "integer", "number", "":
 		// No child properties
 	default:
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)

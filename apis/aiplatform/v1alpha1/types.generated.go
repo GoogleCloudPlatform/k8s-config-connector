@@ -67,7 +67,7 @@ type EnvVar struct {
 type Examples struct {
 	// The Cloud Storage input instances.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.example_gcs_source
-	ExampleGcsSource *Examples_ExampleGcsSource `json:"exampleGcsSource,omitempty"`
+	ExampleGCSSource *Examples_ExampleGcsSource `json:"exampleGCSSource,omitempty"`
 
 	// The full configuration for the generated index, the semantics are the
 	//  same as [metadata][google.cloud.aiplatform.v1.Index.metadata] and should
@@ -96,30 +96,6 @@ type Examples_ExampleGcsSource struct {
 	// The Cloud Storage location for the input instances.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Examples.ExampleGcsSource.gcs_source
 	GcsSource *GcsSource `json:"gcsSource,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.ExplanationMetadata
-type ExplanationMetadata struct {
-
-	// TODO: unsupported map type with key string and value message
-
-	// TODO: unsupported map type with key string and value message
-
-	// Points to a YAML file stored on Google Cloud Storage describing the format
-	//  of the [feature
-	//  attributions][google.cloud.aiplatform.v1.Attribution.feature_attributions].
-	//  The schema is defined as an OpenAPI 3.0.2 [Schema
-	//  Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
-	//  AutoML tabular Models always have this field populated by Vertex AI.
-	//  Note: The URI given on output may be different, including the URI scheme,
-	//  than the one given on input. The output URI will point to a location where
-	//  the user only has a read access.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.feature_attributions_schema_uri
-	FeatureAttributionsSchemaURI *string `json:"featureAttributionsSchemaURI,omitempty"`
-
-	// Name of the source to generate embeddings for example based explanations.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.ExplanationMetadata.latent_space_source
-	LatentSpaceSource *string `json:"latentSpaceSource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.ExplanationMetadata.InputMetadata
