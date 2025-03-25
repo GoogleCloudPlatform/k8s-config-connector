@@ -45,11 +45,10 @@ func (i *SnapshotIdentity) Parent() *SnapshotParent {
 
 type SnapshotParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *SnapshotParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID
 }
 
 // New builds a SnapshotIdentity from the Config Connector Snapshot object.
@@ -64,7 +63,6 @@ func NewSnapshotIdentity(ctx context.Context, reader client.Reader, obj *PubSubS
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,9 +84,6 @@ func NewSnapshotIdentity(ctx context.Context, reader client.Reader, obj *PubSubS
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -97,7 +92,6 @@ func NewSnapshotIdentity(ctx context.Context, reader client.Reader, obj *PubSubS
 	return &SnapshotIdentity{
 		parent: &SnapshotParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +99,12 @@ func NewSnapshotIdentity(ctx context.Context, reader client.Reader, obj *PubSubS
 
 func ParseSnapshotExternal(external string) (parent *SnapshotParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "snapshots" {
-		return nil, "", fmt.Errorf("format of PubSubSnapshot external=%q was not known (use projects/{{projectID}}/locations/{{location}}/snapshots/{{snapshotID}})", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "snapshots" {
+		return nil, "", fmt.Errorf("format of PubSubSnapshot external=%q was not known (use projects/{{projectID}}/snapshots/{{snapshotID}})", external)
 	}
 	parent = &SnapshotParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[3]
 	return parent, resourceID, nil
 }
