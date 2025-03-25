@@ -398,6 +398,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "cloudquota.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "APIQuotaAdjusterSettings",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "cloudquota.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "APIQuotaPreference",
 	}: {
 		Labels: map[string]string{
