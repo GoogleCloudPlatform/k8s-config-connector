@@ -30,12 +30,10 @@ type Parent struct {
 // PubSubSnapshotSpec defines the desired state of PubSubSnapshot
 // +kcc:proto=google.pubsub.v1.Snapshot
 type PubSubSnapshotSpec struct {
-	Parent ` + "`json:",inline"`" + `
+	Parent `json:",inline"`
+
 	// The PubSubSnapshot name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-	// Optional. The name of the snapshot.
-	// +kcc:proto:field=google.pubsub.v1.Snapshot.name
-	Name *string `json:"name,omitempty"`
 
 	// Optional. The name of the topic from which this snapshot is retaining
 	//  messages.
