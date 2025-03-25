@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,9 +26,6 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
-	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -50,38 +47,13 @@ func init() {
 }
 
 func NewInterconnectModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &interconnectModel{config: *config}, nil
+	return &interconnectModel{config: config}, nil
 }
 
 var _ directbase.Model = &interconnectModel{}
 
 type interconnectModel struct {
-	config config.ControllerConfig
-}
-
-func (m *interconnectModel) Client(ctx context.Context, projectID string) (*compute.InterconnectsClient, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := compute.NewInterconnectsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building compute interconnect client: %w", err)
-	}
-
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *interconnectModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -95,21 +67,19 @@ func (m *interconnectModel) AdapterForObject(ctx context.Context, reader client.
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := ComputeInterconnectSpec_ToProto(mapCtx, &obj.Spec)
-	if err := mapCtx.Err(); err != nil {
-		return nil, err
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-
-	gcpClient, err := m.Client(ctx, id.ProjectID)
+	interconnectClient, err := gcpClient.newInterconnectsClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &interconnectAdapter{
-		gcpClient: gcpClient,
+		gcpClient: interconnectClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
@@ -121,7 +91,7 @@ func (m *interconnectModel) AdapterForURL(ctx context.Context, url string) (dire
 type interconnectAdapter struct {
 	gcpClient *compute.InterconnectsClient
 	id        *v1alpha1.InterconnectIdentity
-	desired   *computepb.Interconnect
+	desired   *krm.ComputeInterconnect
 	actual    *computepb.Interconnect
 }
 
@@ -132,8 +102,8 @@ func (a *interconnectAdapter) Find(ctx context.Context) (bool, error) {
 	log.Info("getting compute interconnect", "name", a.id)
 
 	req := &computepb.GetInterconnectRequest{
-		Project:      a.id.ProjectID,
-		Interconnect: a.id.Interconnect,
+		Project:      a.id.Parent().ProjectID,
+		Interconnect: a.id.String(),
 	}
 	actual, err := a.gcpClient.Get(ctx, req)
 	if err != nil {
@@ -151,23 +121,31 @@ func (a *interconnectAdapter) Create(ctx context.Context, createOp *directbase.C
 	log := klog.FromContext(ctx)
 	log.Info("creating compute interconnect", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	desired.Name = a.id.String()
+
+	resource := ComputeInterconnectSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	req := &computepb.InsertInterconnectRequest{
-		Project:              a.id.ProjectID,
-		InterconnectResource: a.desired,
+		Project:              a.id.Parent().ProjectID,
+		InterconnectResource: resource,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating compute interconnect %s: %w", a.id.String(), err)
 	}
-	created, err := op.Wait(ctx)
+	err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("compute interconnect %s waiting creation: %w", a.id.String(), err)
 	}
 	log.Info("successfully created compute interconnect in gcp", "name", a.id)
 
 	status := &krm.ComputeInterconnectStatus{}
-	mapCtx := &direct.MapContext{}
-	status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, created)
+	//status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -177,8 +155,16 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.Info("updating compute interconnect", "name", a.id)
 
-	desiredpb := proto.Clone(a.desired).(*computepb.Interconnect)
-	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	desired.Name = a.id.String()
+
+	resource := ComputeInterconnectSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -188,10 +174,9 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 
 	req := &computepb.PatchInterconnectRequest{
-		Project:              a.id.ProjectID,
-		Interconnect:         a.id.Interconnect,
-		InterconnectResource: desiredpb,
-		UpdateMask:           &fieldmaskpb.FieldMask{Paths: paths},
+		Project:              a.id.Parent().ProjectID,
+		Interconnect:         a.id.String(),
+		InterconnectResource: resource,
 	}
 	op, err := a.gcpClient.Patch(ctx, req)
 	if err != nil {
@@ -199,14 +184,13 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 	log.V(2).Info("successfully updated compute interconnect", "name", a.id.String())
 
-	updated, err := op.Wait(ctx)
+	err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("compute interconnect %s waiting for update: %w", a.id.String(), err)
 	}
 
-	mapCtx := &direct.MapContext{}
 	status := &krm.ComputeInterconnectStatus{}
-	status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, updated)
+	//status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, updated)
 	if err := mapCtx.Err(); err != nil {
 		return err
 	}
@@ -219,8 +203,8 @@ func (a *interconnectAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 	log.Info("deleting compute interconnect", "name", a.id)
 
 	req := &computepb.DeleteInterconnectRequest{
-		Project:      a.id.ProjectID,
-		Interconnect: a.id.Interconnect,
+		Project:      a.id.Parent().ProjectID,
+		Interconnect: a.id.String(),
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
@@ -251,13 +235,13 @@ func (a *interconnectAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.ProjectID}
+	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.Interconnect)
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.ComputeInterconnectGVK)
 
 	u.Object = uObj
