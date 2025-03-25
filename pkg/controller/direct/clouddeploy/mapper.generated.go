@@ -16,6 +16,7 @@ package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
+	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -664,7 +665,12 @@ func SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &krm.SkaffoldModules_SkaffoldGcbRepoSource{}
-	out.Repository = direct.LazyPtr(in.GetRepository())
+	if in.GetRepository() != "" {
+		out.RepositoryRef = &cloudbuildv1alpha1.RepositoryRef{
+			External: in.GetRepository(),
+		}
+	}
+
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.Ref = direct.LazyPtr(in.GetRef())
 	return out
@@ -674,7 +680,9 @@ func SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.SkaffoldModules_SkaffoldGCBRepoSource{}
-	out.Repository = direct.ValueOf(in.Repository)
+	if in.RepositoryRef != nil {
+		out.Repository = in.RepositoryRef.External
+	}
 	out.Path = direct.ValueOf(in.Path)
 	out.Ref = direct.ValueOf(in.Ref)
 	return out

@@ -109,10 +109,38 @@ spec:
                               description: Optional. Branch or tag to use when cloning
                                 the repository.
                               type: string
-                            repository:
-                              description: Required. Name of the Cloud Build V2 Repository.
+                            repositoryRef:
+                              description: Required. Name of the Cloud Build V2 RepositoryRef.
                                 Format is projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
-                              type: string
+                              oneOf:
+                              - not:
+                                  required:
+                                  - external
+                                required:
+                                - name
+                              - not:
+                                  anyOf:
+                                  - required:
+                                    - name
+                                  - required:
+                                    - namespace
+                                required:
+                                - external
+                              properties:
+                                external:
+                                  description: A reference to an externally managed
+                                    CloudBuildRepository resource. Should be in the
+                                    format "projects/{{projectID}}/locations/{{location}}/connections/{{connectionID}}/repositories/{{RepositoryID}}".
+                                  type: string
+                                name:
+                                  description: The name of a CloudBuildRepository
+                                    resource.
+                                  type: string
+                                namespace:
+                                  description: The namespace of a CloudBuildRepository
+                                    resource.
+                                  type: string
+                              type: object
                           type: object
                         googleCloudStorage:
                           description: Cloud Storage bucket containing the Skaffold

@@ -516,24 +516,6 @@ type SkaffoldModules struct {
 	GoogleCloudBuildRepo *SkaffoldModules_SkaffoldGcbRepoSource `json:"googleCloudBuildRepo,omitempty"`
 }
 
-// +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
-type SkaffoldModules_SkaffoldGcbRepoSource struct {
-	// Required. Name of the Cloud Build V2 Repository.
-	//  Format is
-	//  projects/{project}/locations/{location}/connections/{connection}/repositories/{repository}.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.repository
-	Repository *string `json:"repository,omitempty"`
-
-	// Optional. Relative path from the repository root to the Skaffold Config
-	//  file.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.path
-	Path *string `json:"path,omitempty"`
-
-	// Optional. Branch or tag to use when cloning the repository.
-	// +kcc:proto:field=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource.ref
-	Ref *string `json:"ref,omitempty"`
-}
-
 // +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCSSource
 type SkaffoldModules_SkaffoldGCSSource struct {
 	// Required. Cloud Storage source paths to copy recursively. For example,
