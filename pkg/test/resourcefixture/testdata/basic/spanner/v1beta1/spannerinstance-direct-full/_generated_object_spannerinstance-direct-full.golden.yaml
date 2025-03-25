@@ -3,7 +3,6 @@ kind: SpannerInstance
 metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: direct
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer

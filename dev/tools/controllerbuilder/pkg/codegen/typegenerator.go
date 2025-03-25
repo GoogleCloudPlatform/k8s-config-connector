@@ -23,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 
+	codegenannotations "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
@@ -35,10 +36,11 @@ import (
 
 type TypeGenerator struct {
 	generatorBase
-	api             *protoapi.Proto
-	goPackage       string
-	visitedMessages []protoreflect.MessageDescriptor
-	outputMessages  []*OutputMessageDetails
+	api                     *protoapi.Proto
+	goPackage               string
+	visitedMessages         []protoreflect.MessageDescriptor
+	outputMessages          []*OutputMessageDetails
+	generatedFileAnnotation *codegenannotations.FileAnnotation
 }
 
 type OutputMessageDetails struct {
@@ -52,6 +54,12 @@ func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Prot
 		api:       api,
 	}
 	g.generatorBase.init(outputBaseDir)
+	return g
+}
+
+// WithGeneratedFileAnnotation sets the generated file annotation
+func (g *TypeGenerator) WithGeneratedFileAnnotation(generatedFileAnnotation *codegenannotations.FileAnnotation) *TypeGenerator {
+	g.generatedFileAnnotation = generatedFileAnnotation
 	return g
 }
 
@@ -170,6 +178,8 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+
+		out.fileAnnotation = g.generatedFileAnnotation
 
 		goTypeName := goNameForOutputProtoMessage(msg)
 		skipGenerated := true

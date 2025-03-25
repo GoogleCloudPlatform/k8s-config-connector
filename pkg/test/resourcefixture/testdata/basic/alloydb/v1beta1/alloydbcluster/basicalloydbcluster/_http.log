@@ -246,9 +246,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/${networkID}"
-  }
+  "network": "projects/${projectId}/global/networks/${networkID}"
 }
 
 200 OK
@@ -456,16 +454,13 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=initialUser
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
-    "labels": {
-      "source": "kcc-test"
-    },
     "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
@@ -493,7 +488,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "recoveryWindowDays": 14
   },
   "initialUser": {
-    "password": "postgres",
+    "password": "updated",
     "user": "postgres"
   },
   "labels": {
@@ -562,9 +557,6 @@ X-Xss-Protection: 0
     "automatedBackupPolicy": {
       "backupWindow": "3600s",
       "enabled": false,
-      "labels": {
-        "source": "kcc-test"
-      },
       "location": "southamerica-east1",
       "timeBasedRetention": {
         "retentionPeriod": "1209600s"
@@ -649,9 +641,6 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "labels": {
-      "source": "kcc-test"
-    },
     "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"

@@ -1,0 +1,152 @@
+POST https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "actions": [
+    {
+      "allow": {}
+    }
+  ],
+  "condition": "true",
+  "description": "test policy ${uniqueId}",
+  "path": "/testpath/*"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actions": [
+    {
+      "allow": {}
+    }
+  ],
+  "condition": "true",
+  "description": "test policy ${uniqueId}",
+  "name": "projects/${projectNumber}/firewallpolicies/100",
+  "path": "/testpath/*"
+}
+
+---
+
+GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "firewallPolicies": [
+    {
+      "actions": [
+        {
+          "allow": {}
+        }
+      ],
+      "condition": "true",
+      "description": "test policy ${uniqueId}",
+      "name": "projects/${projectId}/firewallpolicies/100",
+      "path": "/testpath/*"
+    }
+  ]
+}
+
+---
+
+GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "actions": [
+    {
+      "allow": {}
+    }
+  ],
+  "condition": "true",
+  "description": "test policy ${uniqueId}",
+  "name": "projects/${projectId}/firewallpolicies/100",
+  "path": "/testpath/*"
+}
+
+---
+
+GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "firewallPolicies": [
+    {
+      "actions": [
+        {
+          "allow": {}
+        }
+      ],
+      "condition": "true",
+      "description": "test policy ${uniqueId}",
+      "name": "projects/${projectId}/firewallpolicies/100",
+      "path": "/testpath/*"
+    }
+  ]
+}
+
+---
+
+DELETE https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

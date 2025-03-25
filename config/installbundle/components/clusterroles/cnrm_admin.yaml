@@ -308,6 +308,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - clouddms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -368,7 +380,31 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudquota.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -896,6 +932,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - metastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1280,18 +1328,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - tasks.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1329,6 +1365,18 @@ rules:
   - delete
 - apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

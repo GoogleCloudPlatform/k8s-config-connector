@@ -34,10 +34,10 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *BackupDRServerV1
+	v1 *BackupDRV1
 }
 
-type BackupDRServerV1 struct {
+type BackupDRV1 struct {
 	pb.UnimplementedBackupDRServer
 	*MockService
 }
@@ -49,7 +49,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &BackupDRServerV1{MockService: s}
+	s.v1 = &BackupDRV1{MockService: s}
 	return s
 }
 

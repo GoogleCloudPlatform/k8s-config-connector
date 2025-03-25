@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.resourcemanager.v3.TagKeys
+// proto.message: google.cloud.resourcemanager.v3.TagKey
+
 package mockresourcemanager
 
 import (

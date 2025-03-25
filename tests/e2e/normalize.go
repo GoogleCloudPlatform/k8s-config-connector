@@ -103,6 +103,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to Pubsub
+	visitor.replacePaths[".snapshots[].expireTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
@@ -234,6 +237,32 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			tokens := strings.Split(s, "/")
 			if len(tokens) >= 2 && tokens[len(tokens)-2] == "processorVersions" {
 				tokens[len(tokens)-1] = "${processorVersionID}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to VMwareEngineNetwork
+	// normalize "observedState.vpcNetworks[].network"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".observedState.vpcNetworks[].network") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
+				tokens[len(tokens)-1] = "${networkId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to BackupPlanDR
+	// normalize "status.observedState.dataSource"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.dataSource") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+				tokens[len(tokens)-1] = "${dataSourceID}"
 				s = strings.Join(tokens, "/")
 			}
 		}
@@ -376,11 +405,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
 				})
-			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, resourceID, "${firewallPolicyID}")
-
-				})
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -391,6 +415,22 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${membershipID}")
 				})
+			}
+		}
+
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
+				// https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/1059732409893
+				selfLink = strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/v1/locations/global/")
+				tokens := strings.Split(selfLink, "/")
+				n := len(tokens)
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${firewallPolicyID}")
+					})
+				}
 			}
 		}
 	}
@@ -939,13 +979,21 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// AI Platform
 	{
-		visitor.ReplacePath(".createTime", "2024-01-01T12:34:56.123456Z")
-		visitor.ReplacePath(".updateTime", "2024-01-02T12:34:56.123456Z")
+		visitor.ReplacePath(".updateTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".nextRunTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".expirationTime", "2024-09-01T12:34:56.123456Z")
-		visitor.ReplacePath(".schedules[].createTime", "2024-01-01T12:34:56.123456Z")
+		visitor.ReplacePath(".schedules[].createTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".schedules[].nextRunTime", "2024-04-01T12:34:56.123456Z")
-		visitor.ReplacePath(".schedules[].startTime", "2024-01-03T12:34:56.123456Z")
+		visitor.ReplacePath(".schedules[].startTime", "2024-04-01T12:34:56.123456Z")
+	}
+
+	// KMS
+	{
+		visitor.ReplacePath(".expireTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".generateTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].expireTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".importJobs[].generateTime", "2024-04-01T12:34:56.123456Z")
 	}
 
 	// Network Management
@@ -953,6 +1001,13 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
 		visitor.ReplacePath(".response.reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
 	}
+
+	// Dataplex
+	visitor.replacePaths[".response.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {

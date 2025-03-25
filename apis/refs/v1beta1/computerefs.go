@@ -413,11 +413,19 @@ func ResolveComputeFirewallPolicy(ctx context.Context, reader client.Reader, src
 		return nil, fmt.Errorf("error reading referenced ComputeFirewallPolicy %v: %w", key, err)
 	}
 
-	resourceID, err := GetResourceID(computeFirewallPolicy)
-	if err != nil {
-		return nil, err
+	externalRef, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "externalRef")
+	if externalRef != "" {
+		return &ComputeFirewallPolicyRef{
+			External: externalRef}, nil
 	}
 
+	selfLink, _, _ := unstructured.NestedString(computeFirewallPolicy.Object, "status", "selfLink")
+	if selfLink == "" {
+		return nil, k8s.NewReferenceNotFoundError(computeFirewallPolicy.GroupVersionKind(), key)
+	}
+
+	partialID := strings.TrimPrefix(selfLink, "https://www.googleapis.com/")
+	tokens := strings.Split(partialID, "/")
 	return &ComputeFirewallPolicyRef{
-		External: fmt.Sprintf("%s", resourceID)}, nil
+		External: tokens[len(tokens)-1]}, nil
 }

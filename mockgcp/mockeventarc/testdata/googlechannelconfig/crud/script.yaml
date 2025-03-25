@@ -1,0 +1,2 @@
+- exec: gcloud eventarc google-channels describe --location=us-central1
+- exec: gcloud eventarc google-channels update --location=us-central1 --clear-crypto-key

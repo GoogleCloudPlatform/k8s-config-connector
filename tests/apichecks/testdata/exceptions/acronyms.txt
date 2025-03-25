@@ -373,7 +373,6 @@
 [acronyms] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsFilesetSpec.sampleGcsFileSpecs[]" should be ".spec.gcsFilesetSpec.sampleGCSFileSpecs[]"
 [acronyms] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsFilesetSpec.sampleGcsFileSpecs[].filePath" should be ".spec.gcsFilesetSpec.sampleGCSFileSpecs[].filePath"
 [acronyms] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.gcsFilesetSpec.sampleGcsFileSpecs[].sizeBytes" should be ".spec.gcsFilesetSpec.sampleGCSFileSpecs[].sizeBytes"
-[acronyms] crd=datacatalogentrygroups.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.entryGroupId" should be ".spec.entryGroupID"
 [acronyms] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].fieldId" should be ".spec.fields[].fieldID"
 [acronyms] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.tagTemplateId" should be ".spec.tagTemplateID"
 [acronyms] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.containerSpecGcsPath" should be ".spec.containerSpecGCSPath"

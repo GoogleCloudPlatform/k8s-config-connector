@@ -168,6 +168,7 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	// Generate types
 	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
 	apiDirPath := filepath.Join(opts.branchRepoDir, apiDirPathRelative)
+	affectedPaths := []string{apiDirPathRelative}
 	if _, err := os.Stat(apiDirPath); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate types",
@@ -186,11 +187,11 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate types: %w", err)
 		}
-		return []string{apiDirPathRelative}, &results, nil
+		return affectedPaths, &results, nil
 	}
 
 	log.Printf("SKIPPING generating apis, %s already exists", apiDirPathRelative)
-	return nil, nil, nil
+	return affectedPaths, nil, nil
 }
 
 func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
@@ -211,6 +212,7 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	// Generate mapper
 	mapperDirPathRelative := filepath.Join("pkg", "controller", "direct", branch.Group, string(filepath.Separator))
 	mapperDirPath := filepath.Join(opts.branchRepoDir, mapperDirPathRelative)
+	affectedPaths := []string{mapperDirPathRelative}
 	if _, err := os.Stat(mapperDirPath); errors.Is(err, os.ErrNotExist) || opts.force {
 		cfg := CommandConfig{
 			Name: "Generate mapper",
@@ -229,11 +231,11 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 			return nil, nil, fmt.Errorf("failed to generate mapper: %w", err)
 		}
 
-		return []string{mapperDirPathRelative}, &results, nil
+		return affectedPaths, &results, nil
 	}
 
 	log.Printf("SKIPPING generating mappers, %s already exists", mapperDirPathRelative)
-	return nil, nil, nil
+	return affectedPaths, nil, nil
 }
 
 func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {

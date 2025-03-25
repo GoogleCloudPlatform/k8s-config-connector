@@ -690,3 +690,14 @@ type TaskGroupObservedState struct {
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.name
 	Name *string `json:"name,omitempty"`
 }
+
+// +kcc:proto=google.cloud.batch.v1.TaskStatus
+type TaskStatus struct {
+	// Task state.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Detailed info about why the state is reached.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
+	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
+}

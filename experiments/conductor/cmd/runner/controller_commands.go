@@ -21,6 +21,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // generateControllerClient creates a controller client for the branch
@@ -104,7 +105,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch,
 	}
 
 	// Create the controller
-	controllerFileName := strings.ToLower(branch.Kind) + "_controller.go"
+	controllerFileName := strings.ToLower(branch.Proto) + "_controller.go"
 	outputPath := filepath.Join("pkg", "controller", "direct", branch.Group, controllerFileName)
 
 	// Create the prompt for controllerbuilder
@@ -310,17 +311,34 @@ func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branc
 		return nil, nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
 	}
 
+	currentYear := time.Now().Year()
+	yamlCopyright := fmt.Sprintf(`# Copyright %d Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+`, currentYear)
+
 	// Create create.yaml
-	createYaml := fmt.Sprintf(`apiVersion: %s/%s
+	createYaml := fmt.Sprintf(`%s
+apiVersion: %s/%s
 kind: %s
 metadata:
   name: %s-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  locationID: us-west2
+  location: us-central1
   description: "Initial description"
-`, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind))
+`, yamlCopyright, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind))
 
 	createYamlPath := filepath.Join(fullTestDir, "create.yaml")
 	if err := os.WriteFile(createYamlPath, []byte(createYaml), 0644); err != nil {
@@ -328,16 +346,17 @@ spec:
 	}
 
 	// Create update.yaml
-	updateYaml := fmt.Sprintf(`apiVersion: %s/%s
+	updateYaml := fmt.Sprintf(`%s
+apiVersion: %s/%s
 kind: %s
 metadata:
   name: %s-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  locationID: us-west2
+  location: us-central1
   description: "Updated description"
-`, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind))
+`, yamlCopyright, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind))
 
 	updateYamlPath := filepath.Join(fullTestDir, "update.yaml")
 	if err := os.WriteFile(updateYamlPath, []byte(updateYaml), 0644); err != nil {

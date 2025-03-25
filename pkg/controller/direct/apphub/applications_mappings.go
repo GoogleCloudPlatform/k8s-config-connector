@@ -82,3 +82,93 @@ func AppHubApplicationSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppHubAppl
 	out.Scope = Scope_ToProto(mapCtx, in.Scope)
 	return out
 }
+func Attributes_FromProto(mapCtx *direct.MapContext, in *pb.Attributes) *krm.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Attributes{}
+	out.Criticality = Criticality_FromProto(mapCtx, in.GetCriticality())
+	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
+	out.DeveloperOwners = direct.Slice_FromProto(mapCtx, in.DeveloperOwners, ContactInfo_FromProto)
+	out.OperatorOwners = direct.Slice_FromProto(mapCtx, in.OperatorOwners, ContactInfo_FromProto)
+	out.BusinessOwners = direct.Slice_FromProto(mapCtx, in.BusinessOwners, ContactInfo_FromProto)
+	return out
+}
+func Attributes_ToProto(mapCtx *direct.MapContext, in *krm.Attributes) *pb.Attributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attributes{}
+	out.Criticality = Criticality_ToProto(mapCtx, in.Criticality)
+	out.Environment = Environment_ToProto(mapCtx, in.Environment)
+	out.DeveloperOwners = direct.Slice_ToProto(mapCtx, in.DeveloperOwners, ContactInfo_ToProto)
+	out.OperatorOwners = direct.Slice_ToProto(mapCtx, in.OperatorOwners, ContactInfo_ToProto)
+	out.BusinessOwners = direct.Slice_ToProto(mapCtx, in.BusinessOwners, ContactInfo_ToProto)
+	return out
+}
+func ContactInfo_FromProto(mapCtx *direct.MapContext, in *pb.ContactInfo) *krm.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContactInfo{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Email = direct.LazyPtr(in.GetEmail())
+	return out
+}
+func ContactInfo_ToProto(mapCtx *direct.MapContext, in *krm.ContactInfo) *pb.ContactInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContactInfo{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Email = direct.ValueOf(in.Email)
+	return out
+}
+func Criticality_FromProto(mapCtx *direct.MapContext, in *pb.Criticality) *krm.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Criticality{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Criticality_ToProto(mapCtx *direct.MapContext, in *krm.Criticality) *pb.Criticality {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Criticality{}
+	out.Type = direct.Enum_ToProto[pb.Criticality_Type](mapCtx, in.Type)
+	return out
+}
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Environment{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	out.Type = direct.Enum_ToProto[pb.Environment_Type](mapCtx, in.Type)
+	return out
+}
+func Scope_FromProto(mapCtx *direct.MapContext, in *pb.Scope) *krm.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Scope{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func Scope_ToProto(mapCtx *direct.MapContext, in *krm.Scope) *pb.Scope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Scope{}
+	out.Type = direct.Enum_ToProto[pb.Scope_Type](mapCtx, in.Type)
+	return out
+}

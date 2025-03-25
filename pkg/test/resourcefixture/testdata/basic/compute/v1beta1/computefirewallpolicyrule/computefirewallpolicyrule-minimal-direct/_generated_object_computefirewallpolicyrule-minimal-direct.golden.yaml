@@ -13,7 +13,7 @@ spec:
   action: allow
   direction: INGRESS
   firewallPolicyRef:
-    name: firewallpolicyrule-${uniqueId}
+    name: firewallpolicy-${uniqueId}
   match:
     layer4Configs:
     - ipProtocol: tcp
