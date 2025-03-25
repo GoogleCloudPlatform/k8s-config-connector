@@ -290,7 +290,6 @@ branches:
       notes:
         - long running operation
         - subresource of backupplan
-      skip: true # NOTYET
     - name: gkebackup-backupplan
       local: resource-gkebackup-backupplan
       remote: resource-gkebackup-backupplan
