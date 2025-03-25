@@ -15,16 +15,16 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var PubSubSnapshotGVK = GroupVersion.WithKind("PubSubSnapshot")
 
 type Parent struct {
 	// +required
-	ProjectRef refv1beta1.ProjectRef ` + "`json:"projectRef"`" + `
+	ProjectRef refv1beta1.ProjectRef `json:"projectRef"`
 }
 
 // PubSubSnapshotSpec defines the desired state of PubSubSnapshot

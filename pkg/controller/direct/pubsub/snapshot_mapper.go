@@ -25,22 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func PubSubSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.PubSubSnapshotObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PubSubSnapshotObservedState{}
-	// MISSING: Name
-	return out
-}
-func PubSubSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapshotObservedState) *pb.Snapshot {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Snapshot{}
-	// MISSING: Name
-	return out
-}
 func PubSubSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.PubSubSnapshotSpec {
 	if in == nil {
 		return nil
@@ -58,28 +42,6 @@ func PubSubSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapsho
 	}
 	out := &pb.Snapshot{}
 	// MISSING: Name
-	out.Topic = direct.ValueOf(in.Topic)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Labels = in.Labels
-	return out
-}
-func Snapshot_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.Snapshot {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Snapshot{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Topic = direct.LazyPtr(in.GetTopic())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Labels = in.Labels
-	return out
-}
-func Snapshot_ToProto(mapCtx *direct.MapContext, in *krm.Snapshot) *pb.Snapshot {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Snapshot{}
-	out.Name = direct.ValueOf(in.Name)
 	out.Topic = direct.ValueOf(in.Topic)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.Labels = in.Labels
