@@ -747,6 +747,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "bigqueryreservation.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "BigQueryReservationAssignment",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "bigqueryreservation.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "BigQueryReservationCapacityCommitment",
 	}: {
 		Labels: map[string]string{
