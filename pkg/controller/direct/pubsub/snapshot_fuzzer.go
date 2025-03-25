@@ -24,13 +24,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(pubSubSnapshotFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(pubSubSnapshotFuzzer())
 }
 
 func pubSubSnapshotFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Snapshot{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Snapshot{},
 		PubSubSnapshotSpec_FromProto, PubSubSnapshotSpec_ToProto,
-		PubSubSnapshotObservedState_FromProto, PubSubSnapshotObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".topic")
