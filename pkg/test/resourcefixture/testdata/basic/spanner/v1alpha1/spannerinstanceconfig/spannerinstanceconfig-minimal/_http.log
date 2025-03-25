@@ -76,7 +76,7 @@ X-Xss-Protection: 0
       "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
       "configType": 2,
       "displayName": "Initial name",
-      "etag": "D4v9uU70Jg523loFeW2ORrhTPNUC1thX19E2SEqMC7U=",
+      "etag": "abcdef0123A",
       "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
       "replicas": [
         {
@@ -104,7 +104,7 @@ X-Xss-Protection: 0
       "state": 2
     },
     "progress": {
-      "startTime": "2025-03-25T21:56:05.956799Z"
+      "startTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}"
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
       "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
       "configType": "USER_MANAGED",
       "displayName": "Initial name",
-      "etag": "D4v9uU70Jg523loFeW2ORrhTPNUC1thX19E2SEqMC7U=",
+      "etag": "abcdef0123A",
       "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
       "replicas": [
         {
@@ -162,9 +162,7 @@ X-Xss-Protection: 0
       "state": "READY"
     },
     "progress": {
-      "endTime": "2025-03-25T21:56:05.956799Z",
-      "progressPercent": 100,
-      "startTime": "2025-03-25T21:56:05.956799Z"
+      "startTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}",
@@ -305,7 +303,7 @@ X-Xss-Protection: 0
       "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
       "configType": 2,
       "displayName": "Updated name",
-      "etag": "S922YpOPRfAJ7SnwKr0G/mEW+dLz+VtrXHocjjuXVlc=",
+      "etag": "abcdef0123A",
       "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
       "replicas": [
         {
@@ -333,7 +331,7 @@ X-Xss-Protection: 0
       "state": 2
     },
     "progress": {
-      "startTime": "2025-03-25T21:56:06.484372Z"
+      "startTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}"
