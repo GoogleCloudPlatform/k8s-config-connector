@@ -17,6 +17,7 @@ package dataproc
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -310,14 +311,20 @@ func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig
 		return nil
 	}
 	out := &krm.ExecutionConfig{}
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ServiceAccountRef = &refs.IAMServiceAccountRef{
+		External: in.GetServiceAccount(),
+	}
 	out.NetworkURI = direct.LazyPtr(in.GetNetworkUri())
 	out.SubnetworkURI = direct.LazyPtr(in.GetSubnetworkUri())
 	out.NetworkTags = in.NetworkTags
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	out.KMSKeyRef = &refs.KMSCryptoKeyRef{
+		External: in.GetKmsKey(),
+	}
 	out.IdleTTL = direct.StringDuration_FromProto(mapCtx, in.GetIdleTtl())
 	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
-	out.StagingBucket = direct.LazyPtr(in.GetStagingBucket())
+	out.StagingBucketRef = &refs.StorageBucketRef{
+		External: in.GetStagingBucket(),
+	}
 	return out
 }
 func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig) *pb.ExecutionConfig {
@@ -325,7 +332,9 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 		return nil
 	}
 	out := &pb.ExecutionConfig{}
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = direct.ValueOf(&in.ServiceAccountRef.External)
+	}
 	if oneof := ExecutionConfig_NetworkUri_ToProto(mapCtx, in.NetworkURI); oneof != nil {
 		out.Network = oneof
 	}
@@ -333,10 +342,14 @@ func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig)
 		out.Network = oneof
 	}
 	out.NetworkTags = in.NetworkTags
-	out.KmsKey = direct.ValueOf(in.KMSKey)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = direct.ValueOf(&in.KMSKeyRef.External)
+	}
 	out.IdleTtl = direct.StringDuration_ToProto(mapCtx, in.IdleTTL)
 	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.TTL)
-	out.StagingBucket = direct.ValueOf(in.StagingBucket)
+	if in.StagingBucketRef != nil {
+		out.StagingBucket = direct.ValueOf(&in.StagingBucketRef.External)
+	}
 	return out
 }
 func PeripheralsConfig_FromProto(mapCtx *direct.MapContext, in *pb.PeripheralsConfig) *krm.PeripheralsConfig {
@@ -468,7 +481,9 @@ func SparkHistoryServerConfig_FromProto(mapCtx *direct.MapContext, in *pb.SparkH
 		return nil
 	}
 	out := &krm.SparkHistoryServerConfig{}
-	out.DataprocCluster = direct.LazyPtr(in.GetDataprocCluster())
+	out.DataprocClusterRef = &refs.DataprocClusterRef{
+		External: in.GetDataprocCluster(),
+	}
 	return out
 }
 func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.SparkHistoryServerConfig) *pb.SparkHistoryServerConfig {
@@ -476,7 +491,9 @@ func SparkHistoryServerConfig_ToProto(mapCtx *direct.MapContext, in *krm.SparkHi
 		return nil
 	}
 	out := &pb.SparkHistoryServerConfig{}
-	out.DataprocCluster = direct.ValueOf(in.DataprocCluster)
+	if in.DataprocClusterRef != nil {
+		out.DataprocCluster = direct.ValueOf(&in.DataprocClusterRef.External)
+	}
 	return out
 }
 func UsageMetrics_FromProto(mapCtx *direct.MapContext, in *pb.UsageMetrics) *krm.UsageMetrics {

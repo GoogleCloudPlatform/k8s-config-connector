@@ -24,10 +24,10 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(DataprocBatchFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dataprocBatchFuzzer())
 }
 
-func DataprocBatchFuzzer() fuzztesting.KRMFuzzer {
+func dataprocBatchFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Batch{},
 		DataprocBatchSpec_FromProto, DataprocBatchSpec_ToProto,
 		DataprocBatchObservedState_FromProto, DataprocBatchObservedState_ToProto,

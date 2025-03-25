@@ -26,8 +26,8 @@ func DataprocJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *
 	}
 	out := &krm.DataprocJobObservedState{}
 	out.Placement = JobPlacementObservedState_FromProto(mapCtx, in.GetPlacement())
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
-	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatus_FromProto)
+	out.Status = JobStatusObservedState_FromProto(mapCtx, in.GetStatus())
+	out.StatusHistory = direct.Slice_FromProto(mapCtx, in.StatusHistory, JobStatusObservedState_FromProto)
 	out.YarnApplications = direct.Slice_FromProto(mapCtx, in.YarnApplications, YarnApplication_FromProto)
 	out.DriverOutputResourceURI = direct.LazyPtr(in.GetDriverOutputResourceUri())
 	out.DriverControlFilesURI = direct.LazyPtr(in.GetDriverControlFilesUri())
@@ -41,8 +41,8 @@ func DataprocJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Datapro
 	}
 	out := &pb.Job{}
 	out.Placement = JobPlacementObservedState_ToProto(mapCtx, in.Placement)
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
-	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatus_ToProto)
+	out.Status = JobStatusObservedState_ToProto(mapCtx, in.Status)
+	out.StatusHistory = direct.Slice_ToProto(mapCtx, in.StatusHistory, JobStatusObservedState_ToProto)
 	out.YarnApplications = direct.Slice_ToProto(mapCtx, in.YarnApplications, YarnApplication_ToProto)
 	out.DriverOutputResourceUri = direct.ValueOf(in.DriverOutputResourceURI)
 	out.DriverControlFilesUri = direct.ValueOf(in.DriverControlFilesURI)
@@ -154,7 +154,7 @@ func HadoopJob_FromProto(mapCtx *direct.MapContext, in *pb.HadoopJob) *krm.Hadoo
 	out := &krm.HadoopJob{}
 	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
 	out.MainClass = direct.LazyPtr(in.GetMainClass())
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileURIs = in.JarFileUris
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
@@ -173,7 +173,7 @@ func HadoopJob_ToProto(mapCtx *direct.MapContext, in *krm.HadoopJob) *pb.HadoopJ
 	if oneof := HadoopJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileUris = in.JarFileURIs
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
@@ -251,7 +251,7 @@ func PySparkJob_FromProto(mapCtx *direct.MapContext, in *pb.PySparkJob) *krm.PyS
 	}
 	out := &krm.PySparkJob{}
 	out.MainPythonFileURI = direct.LazyPtr(in.GetMainPythonFileUri())
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.PythonFileURIs = in.PythonFileUris
 	out.JarFileURIs = in.JarFileUris
 	out.FileURIs = in.FileUris
@@ -266,7 +266,7 @@ func PySparkJob_ToProto(mapCtx *direct.MapContext, in *krm.PySparkJob) *pb.PySpa
 	}
 	out := &pb.PySparkJob{}
 	out.MainPythonFileUri = direct.ValueOf(in.MainPythonFileURI)
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.PythonFileUris = in.PythonFileURIs
 	out.JarFileUris = in.JarFileURIs
 	out.FileUris = in.FileURIs
@@ -282,7 +282,7 @@ func SparkJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkJob) *krm.SparkJo
 	out := &krm.SparkJob{}
 	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
 	out.MainClass = direct.LazyPtr(in.GetMainClass())
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileURIs = in.JarFileUris
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
@@ -301,7 +301,7 @@ func SparkJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkJob) *pb.SparkJob 
 	if oneof := SparkJob_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
 		out.Driver = oneof
 	}
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.JarFileUris = in.JarFileURIs
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
@@ -315,7 +315,7 @@ func SparkRJob_FromProto(mapCtx *direct.MapContext, in *pb.SparkRJob) *krm.Spark
 	}
 	out := &krm.SparkRJob{}
 	out.MainRFileURI = direct.LazyPtr(in.GetMainRFileUri())
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.FileURIs = in.FileUris
 	out.ArchiveURIs = in.ArchiveUris
 	out.Properties = in.Properties
@@ -328,7 +328,7 @@ func SparkRJob_ToProto(mapCtx *direct.MapContext, in *krm.SparkRJob) *pb.SparkRJ
 	}
 	out := &pb.SparkRJob{}
 	out.MainRFileUri = direct.ValueOf(in.MainRFileURI)
-	out.Args = in.Args
+	out.Args = append(out.Args, in.Args...)
 	out.FileUris = in.FileURIs
 	out.ArchiveUris = in.ArchiveURIs
 	out.Properties = in.Properties

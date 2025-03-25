@@ -77,9 +77,34 @@ spec:
                           when it has been idle for `idle_ttl` or when `ttl` has been
                           exceeded, whichever occurs first.'
                         type: string
-                      kmsKey:
+                      kmsKeyRef:
                         description: Optional. The Cloud KMS key to use for encryption.
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed KMSCryptoKey.
+                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            type: string
+                          name:
+                            description: The `name` of a `KMSCryptoKey` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` of a `KMSCryptoKey` resource.
+                            type: string
+                        type: object
                       networkTags:
                         description: Optional. Tags used for network traffic control.
                         items:
@@ -88,11 +113,36 @@ spec:
                       networkURI:
                         description: Optional. Network URI to connect workload to.
                         type: string
-                      serviceAccount:
+                      serviceAccountRef:
                         description: Optional. Service account that used to execute
                           workload.
-                        type: string
-                      stagingBucket:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The `email` field of an `IAMServiceAccount`
+                              resource.
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                        type: object
+                      stagingBucketRef:
                         description: Optional. A Cloud Storage bucket used to stage
                           workload dependencies, config files, and store workload
                           output and other ephemeral data, such as Spark history files.
@@ -102,7 +152,33 @@ spec:
                           project-level, per-location staging and temporary buckets.
                           **This field requires a Cloud Storage bucket name, not a
                           `gs://...` URI to a Cloud Storage bucket.**
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The StorageBucket selfLink, when not managed
+                              by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a `StorageBucket` resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `StorageBucket`
+                              resource.
+                            type: string
+                        type: object
                       subnetworkURI:
                         description: Optional. Subnetwork URI to connect workload
                           to.
@@ -142,7 +218,7 @@ spec:
                         description: Optional. The Spark History Server configuration
                           for the workload.
                         properties:
-                          dataprocCluster:
+                          dataprocClusterRef:
                             description: |-
                               Optional. Resource name of an existing Dataproc Cluster to act as a Spark
                                History Server for the workload.
@@ -150,7 +226,33 @@ spec:
                                Example:
 
                                * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: The self-link of an existing Dataproc
+                                  Cluster to act as a Spark History Server for the
+                                  connection , when not managed by Config Connector.
+                                type: string
+                              name:
+                                description: The `name` field of a Dataproc Cluster.
+                                type: string
+                              namespace:
+                                description: The `namespace` field of a Dataproc Cluster.
+                                type: string
+                            type: object
                         type: object
                     type: object
                 type: object

@@ -408,6 +408,27 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 
 					return true
 				})
+			case "string->enum":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+					visitor.VisitPrimitive(mapPath, val, setter)
+					return true
+				})
 			case "int32->message":
 				mapVal := msg.Mutable(field).Map()
 				setter := func(v protoreflect.Value) {

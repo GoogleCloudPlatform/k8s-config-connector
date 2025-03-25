@@ -302,7 +302,7 @@ type EnvironmentConfig struct {
 type ExecutionConfig struct {
 	// Optional. Service account that used to execute workload.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *v1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Optional. Network URI to connect workload to.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.network_uri
@@ -318,7 +318,7 @@ type ExecutionConfig struct {
 
 	// Optional. The Cloud KMS key to use for encryption.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
+	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// Optional. Applies to sessions only. The duration to keep the session alive
 	//  while it's idling. Exceeding this threshold causes the session to
@@ -359,7 +359,7 @@ type ExecutionConfig struct {
 	//  **This field requires a Cloud Storage bucket name, not a `gs://...` URI to
 	//  a Cloud Storage bucket.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.staging_bucket
-	StagingBucket *string `json:"stagingBucket,omitempty"`
+	StagingBucketRef *v1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.PeripheralsConfig
@@ -434,7 +434,7 @@ type SparkHistoryServerConfig struct {
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
-	DataprocCluster *string `json:"dataprocCluster,omitempty"`
+	DataprocClusterRef *v1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.UsageMetrics

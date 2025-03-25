@@ -461,11 +461,11 @@ type DataprocJobObservedState struct {
 	//  status information might be contained in the <code>type_job</code>
 	//  and <code>yarn_applications</code> fields.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatusObservedState `json:"status,omitempty"`
 
 	// Output only. The previous job status.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Job.status_history
-	StatusHistory []JobStatus `json:"statusHistory,omitempty"`
+	StatusHistory []JobStatusObservedState `json:"statusHistory,omitempty"`
 
 	// Output only. The collection of YARN applications spun up by this job.
 	//
