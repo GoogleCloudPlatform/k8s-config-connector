@@ -17,13 +17,20 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 var PubSubSnapshotGVK = GroupVersion.WithKind("PubSubSnapshot")
 
+type Parent struct {
+	// +required
+	ProjectRef refv1beta1.ProjectRef ` + "`json:"projectRef"`" + `
+}
+
 // PubSubSnapshotSpec defines the desired state of PubSubSnapshot
 // +kcc:proto=google.pubsub.v1.Snapshot
 type PubSubSnapshotSpec struct {
+	Parent ` + "`json:",inline"`" + `
 	// The PubSubSnapshot name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Optional. The name of the snapshot.
