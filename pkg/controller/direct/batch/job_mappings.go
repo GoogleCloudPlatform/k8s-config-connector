@@ -99,7 +99,7 @@ func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPoli
 	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
 	if in.GetServiceAccount() != nil {
 		out.ServiceAccountRef = &v1beta1.IAMServiceAccountRef{
-			External: in.GetServiceAccount().String(),
+			External: in.GetServiceAccount().GetEmail(),
 		}
 	}
 	out.Labels = in.Labels
