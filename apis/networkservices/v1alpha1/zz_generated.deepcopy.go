@@ -20,7 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	servicedirectory "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory"
+	servicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -117,9 +117,9 @@ func (in *NetworkServicesServiceBindingSpec) DeepCopyInto(out *NetworkServicesSe
 		*out = new(string)
 		**out = **in
 	}
-	if in.Service != nil {
-		in, out := &in.Service, &out.Service
-		*out = new(servicedirectory.ServiceDirectoryServiceRef)
+	if in.ServiceRef != nil {
+		in, out := &in.ServiceRef, &out.ServiceRef
+		*out = new(servicedirectoryv1alpha1.ServiceDirectoryServiceRef)
 		**out = **in
 	}
 	if in.Labels != nil {

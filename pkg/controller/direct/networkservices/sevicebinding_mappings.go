@@ -22,7 +22,7 @@ package networkservices
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -34,7 +34,7 @@ func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.Service != "" {
-		out.Service = &v1alpha1.ServiceDirectoryServiceRef{
+		out.ServiceRef = &v1alpha1.ServiceDirectoryServiceRef{
 			External: in.Service,
 		}
 	}
@@ -48,8 +48,8 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out := &pb.ServiceBinding{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	if in.Service != nil {
-		out.Service = in.Service.External
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
 	}
 	out.Labels = in.Labels
 	return out

@@ -25,10 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
 	gcp "cloud.google.com/go/networkservices/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
 	networkservicespb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	"google.golang.org/api/option"
 

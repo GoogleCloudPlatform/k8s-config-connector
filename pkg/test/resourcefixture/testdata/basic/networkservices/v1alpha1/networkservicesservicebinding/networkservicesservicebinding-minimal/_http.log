@@ -199,8 +199,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}",
-  "service": "projects/${projectId}/locations/us-central1/namespaces/namespace-${uniqueId}/services/service-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/serviceBindings/networkservicesservicebinding-minimal-${uniqueId}"
 }
 
 200 OK

@@ -110,7 +110,7 @@ spec:
                 description: The NetworkServicesServiceBinding name. If not given,
                   the metadata.name will be used.
                 type: string
-              service:
+              serviceRef:
                 description: Required. The full service directory service name of
                   the format /projects/*/locations/*/namespaces/*/services/*
                 oneOf:
