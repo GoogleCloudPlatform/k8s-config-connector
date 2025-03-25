@@ -68,7 +68,6 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
 	out.Labels = in.Labels
 	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
-	out.Name = direct.LazyPtr(in.GetName())
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
@@ -88,7 +87,6 @@ func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in 
 	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
 	out.Labels = in.Labels
 	out.Migration = Migration_ToProto(mapCtx, in.Migration)
-	out.Name = direct.ValueOf(in.Name)
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}

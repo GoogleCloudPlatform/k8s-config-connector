@@ -22,19 +22,22 @@ import (
 
 var NetworkConnectivityInternalRangeGVK = GroupVersion.WithKind("NetworkConnectivityInternalRange")
 
+type Parent struct {
+	// Required. The location of the application.
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the application.
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // NetworkConnectivityInternalRangeSpec defines the desired state of NetworkConnectivityInternalRange
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
 type NetworkConnectivityInternalRangeSpec struct {
 	// The NetworkConnectivityInternalRange name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
-	// +required
-	Location string `json:"location"`
+	// Required. Defines the parent path of the resource.
+	*Parent `json:",inline"`
 
 	// A description of this resource.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.description
@@ -51,10 +54,6 @@ type NetworkConnectivityInternalRangeSpec struct {
 	// Optional. Must be present if usage is set to FOR_MIGRATION. This field is for internal use.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.migration
 	Migration *Migration `json:"migration,omitempty"`
-
-	// Immutable. The name of an internal range. Format: projects/{project}/locations/{location}/internalRanges/{internal_range} See: https://google.aip.dev/122#fields-representing-resource-names
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.name
-	Name *string `json:"name,omitempty"`
 
 	// The network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.network

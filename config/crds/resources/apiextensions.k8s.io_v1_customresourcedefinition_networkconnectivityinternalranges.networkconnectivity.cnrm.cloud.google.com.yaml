@@ -76,11 +76,8 @@ spec:
                 description: User-defined labels.
                 type: object
               location:
-                description: Immutable.
+                description: Required. The location of the application.
                 type: string
-                x-kubernetes-validations:
-                - message: Location field is immutable
-                  rule: self == oldSelf
               migration:
                 description: Optional. Must be present if usage is set to FOR_MIGRATION.
                   This field is for internal use.
@@ -97,10 +94,6 @@ spec:
                       to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
                     type: string
                 type: object
-              name:
-                description: 'Immutable. The name of an internal range. Format: projects/{project}/locations/{location}/internalRanges/{internal_range}
-                  See: https://google.aip.dev/122#fields-representing-resource-names'
-                type: string
               networkRef:
                 description: 'The network in which to reserve the internal range.
                   The network cannot be deleted if there are any reserved internal
@@ -154,7 +147,7 @@ spec:
                 format: int32
                 type: integer
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required. The host project of the application.
                 oneOf:
                 - not:
                     required:
@@ -201,9 +194,6 @@ spec:
               usage:
                 description: The type of usage set for this InternalRange.
                 type: string
-            required:
-            - location
-            - projectRef
             type: object
           status:
             description: NetworkConnectivityInternalRangeStatus defines the config
