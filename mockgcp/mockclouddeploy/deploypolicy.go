@@ -35,7 +35,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *CloudDeployV1) GetDeployPolicy(ctx context.Context, req *pb.GetDeployPolicyRequest) (*pb.DeployPolicy, error) {
+func (s *cloudDeploy) GetDeployPolicy(ctx context.Context, req *pb.GetDeployPolicyRequest) (*pb.DeployPolicy, error) {
 	name, err := s.parseDeployPolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (s *CloudDeployV1) GetDeployPolicy(ctx context.Context, req *pb.GetDeployPo
 	return obj, nil
 }
 
-func (s *CloudDeployV1) CreateDeployPolicy(ctx context.Context, req *pb.CreateDeployPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *cloudDeploy) CreateDeployPolicy(ctx context.Context, req *pb.CreateDeployPolicyRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/deployPolicies/%s", req.GetParent(), req.GetDeployPolicyId())
 	name, err := s.parseDeployPolicyName(reqName)
 	if err != nil {
@@ -74,10 +74,10 @@ func (s *CloudDeployV1) CreateDeployPolicy(ctx context.Context, req *pb.CreateDe
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		ApiVersion:    "v1",
-		CreateTime:    timestamppb.New(now),
-		Target:        name.String(),
-		Verb:          "create",
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "create",
 		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
@@ -86,7 +86,7 @@ func (s *CloudDeployV1) CreateDeployPolicy(ctx context.Context, req *pb.CreateDe
 	})
 }
 
-func (s *CloudDeployV1) UpdateDeployPolicy(ctx context.Context, req *pb.UpdateDeployPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *cloudDeploy) UpdateDeployPolicy(ctx context.Context, req *pb.UpdateDeployPolicyRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDeployPolicyName(req.GetDeployPolicy().GetName())
 	if err != nil {
 		return nil, err
@@ -133,7 +133,7 @@ func (s *CloudDeployV1) UpdateDeployPolicy(ctx context.Context, req *pb.UpdateDe
 	})
 }
 
-func (s *CloudDeployV1) DeleteDeployPolicy(ctx context.Context, req *pb.DeleteDeployPolicyRequest) (*longrunningpb.Operation, error) {
+func (s *cloudDeploy) DeleteDeployPolicy(ctx context.Context, req *pb.DeleteDeployPolicyRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDeployPolicyName(req.Name)
 	if err != nil {
 		return nil, err
@@ -192,4 +192,3 @@ func (s *MockService) parseDeployPolicyName(name string) (*deployPolicyName, err
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-
