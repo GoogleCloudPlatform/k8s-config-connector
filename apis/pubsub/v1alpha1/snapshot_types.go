@@ -57,6 +57,15 @@ type PubSubSnapshotSpec struct {
 	//  (https://cloud.google.com/pubsub/docs/labels).
 	// +kcc:proto:field=google.pubsub.v1.Snapshot.labels
 	Labels map[string]string `json:"labels,omitempty"`
+
+	// The subscription whose backlog the snapshot retains.
+	// Specifically, the created snapshot is guaranteed to retain: (a) The existing backlog on the subscription.
+	// More precisely, this is defined as the messages in the subscription's backlog that are unacknowledged upon
+	// the successful completion of the snapshots.create request; as well as: (b) Any messages published to the
+	// subscription's topic following the successful completion of the snapshots.create request.
+	// Format is projects/{project}/subscriptions/{sub}.
+	// +required
+	PubSubSubscriptionRef *refv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef"`
 }
 
 // PubSubSnapshotStatus defines the config connector machine state of PubSubSnapshot

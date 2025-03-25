@@ -24,9 +24,9 @@ import (
 	"context"
 	"fmt"
 
-	pubsub "cloud.google.com/go/pubsub/apiv1"
+	api "cloud.google.com/go/pubsub/apiv1"
+	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 	"google.golang.org/api/option"
-	pb "google.golang.org/genproto/googleapis/pubsub/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -36,6 +36,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -56,12 +57,11 @@ type SnapshotModel struct {
 	config config.ControllerConfig
 }
 
-func (m *SnapshotModel) client(ctx context.Context, projectID string) (*pubsub.SubscriberClient, error) {
+func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriberClient, error) {
 	var opts []option.ClientOption
 
 	config := m.config
 
-	// Workaround for an unusual behaviour (bug?):
 	//  the service requires that a quota project be set
 	if !config.UserProjectOverride || config.BillingProject == "" {
 		config.UserProjectOverride = true
@@ -73,7 +73,7 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*pubsub.S
 		return nil, err
 	}
 
-	gcpClient, err := pubsub.NewSubscriberRESTClient(ctx, opts...)
+	gcpClient, err := api.NewSubscriberRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub snapshot client: %w", err)
 	}
@@ -87,18 +87,21 @@ func (m *SnapshotModel) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewPubSubSnapshotIDFromObject(ctx, reader, obj)
+	id, err := krm.NewSnapshotIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := PubSubSnapshotSpec_ToProto(mapCtx, &obj.Spec)
-	if err := mapCtx.Err(); err != nil {
-		return nil, err
+	// resolve subscription
+	if obj.Spec.PubSubSubscriptionRef != nil {
+		subscription, err := refsv1beta1.ResolvePubSubSubscription(ctx, reader, obj, obj.Spec.PubSubSubscriptionRef)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.PubSubSubscriptionRef.External = subscription.String()
 	}
 
-	gcpClient, err := m.client(ctx, id.ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +109,7 @@ func (m *SnapshotModel) AdapterForObject(ctx context.Context, reader client.Read
 	return &snapshotAdapter{
 		gcpClient: gcpClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
@@ -116,9 +119,9 @@ func (m *SnapshotModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type snapshotAdapter struct {
-	gcpClient *pubsub.SubscriberClient
+	gcpClient *api.SubscriberClient
 	id        *v1alpha1.SnapshotIdentity
-	desired   *pb.Snapshot
+	desired   *krm.PubSubSnapshot
 	actual    *pb.Snapshot
 }
 
@@ -145,23 +148,21 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.Info("creating pubsub snapshot", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := a.desired.DeepCopy()
 	desired.Name = a.id.String()
 
 	req := &pb.CreateSnapshotRequest{
-		Name:         a.id.String(),
-		Subscription: a.id.Subscription,
+		Name:         desired.Name,
+		Subscription: desired.Spec.PubSubSubscriptionRef.External,
 		Labels:       desired.Labels,
 	}
-	created, err := a.gcpClient.CreateSnapshot(ctx, req)
+	_, err := a.gcpClient.CreateSnapshot(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating pubsub snapshot %s: %w", a.id.String(), err)
 	}
 	log.Info("successfully created pubsub snapshot in gcp", "name", a.id)
 
 	status := &krm.PubSubSnapshotStatus{}
-	mapCtx := &direct.MapContext{}
-	status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -198,7 +199,7 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &v1alpha1.ProjectRef{External: a.id.ProjectID}
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

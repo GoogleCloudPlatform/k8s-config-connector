@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &SnapshotRef{}
 // holds the GCP identifier for the KRM object.
 type SnapshotRef struct {
 	// A reference to an externally managed PubSubSnapshot resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/snapshots/{{snapshotID}}".
+	// Should be in the format "projects/{{projectID}}/global/snapshots/{{snapshotID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a PubSubSnapshot resource.
