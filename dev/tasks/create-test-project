@@ -70,6 +70,7 @@ gcloud services enable \
   serviceusage.googleapis.com \
   sourcerepo.googleapis.com \
   sqladmin.googleapis.com \
+  vpcaccess.googleapis.com \
   workstations.googleapis.com
 
 # Some APIs are behind an allowlist, so we only enable them if we are specifically testing them.
