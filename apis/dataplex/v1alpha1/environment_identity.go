@@ -20,14 +20,13 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // EnvironmentIdentity defines the resource reference to DataplexEnvironment, which "External" field
 // holds the GCP identifier for the KRM object.
 type EnvironmentIdentity struct {
-	parent *EnvironmentParent
+	parent *LakeIdentity
 	id     string
 }
 
@@ -39,32 +38,19 @@ func (i *EnvironmentIdentity) ID() string {
 	return i.id
 }
 
-func (i *EnvironmentIdentity) Parent() *EnvironmentParent {
-	return i.parent
-}
-
-type EnvironmentParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *EnvironmentParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
 // New builds a EnvironmentIdentity from the Config Connector Environment object.
 func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *DataplexEnvironment) (*EnvironmentIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	lakeExternal, err := obj.Spec.LakeRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+
+	parent, lakeId, err := ParseLakeExternal(lakeExternal)
+	if err != nil {
+		return nil, err
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +69,11 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Data
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.parent != parent {
+			return nil, fmt.Errorf("parent changed, expect %s, got %s", actualParent.parent, parent)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.id != lakeId {
+			return nil, fmt.Errorf("spec.lakeRef changed, expect %s, got %s", actualParent.id, lakeId)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -95,21 +81,26 @@ func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *Data
 		}
 	}
 	return &EnvironmentIdentity{
-		parent: &EnvironmentParent{
-			ProjectID: projectID,
+		parent: &LakeIdentity{
+			parent: parent,
+			id:     lakeId,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseEnvironmentExternal(external string) (parent *EnvironmentParent, resourceID string, err error) {
+func ParseEnvironmentExternal(external string) (parent *LakeIdentity, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "environments" {
-		return nil, "", fmt.Errorf("format of DataplexEnvironment external=%q was not known (use projects/{{projectID}}/environments/{{environmentID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "lakes" || tokens[6] != "environments" {
+		return nil, "", fmt.Errorf("format of DataplexContent external=%q was not known (use projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/environments/{{environmentsID}})", external)
 	}
-	parent = &EnvironmentParent{
-		ProjectID: tokens[1],
+	parent = &LakeIdentity{
+		parent: &LakeParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+		},
+		id: tokens[5],
 	}
-	resourceID = tokens[3]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }

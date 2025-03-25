@@ -125,6 +125,35 @@ spec:
                   type: string
                 description: Optional. User defined labels for the environment.
                 type: object
+              lakeRef:
+                description: LakeRef defines the resource reference to DataplexLake,
+                  which "External" field holds the GCP identifier for the KRM object.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataplexLake
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}".
+                    type: string
+                  name:
+                    description: The name of a DataplexLake resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataplexLake resource.
+                    type: string
+                type: object
               location:
                 type: string
               projectRef:
@@ -180,6 +209,7 @@ spec:
                     type: string
                 type: object
             required:
+            - lakeRef
             - location
             - projectRef
             type: object
