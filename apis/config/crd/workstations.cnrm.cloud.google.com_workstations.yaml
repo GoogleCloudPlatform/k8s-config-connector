@@ -1,0 +1,398 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: workstations.workstations.cnrm.cloud.google.com
+spec:
+  group: workstations.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: Workstation
+    listKind: WorkstationList
+    plural: workstations
+    shortNames:
+    - gcpworkstation
+    - gcpworkstations
+    singular: workstation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Workstation is the Schema for the Workstation API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: WorkstationSpec defines the desired state of Workstation
+            properties:
+              annotations:
+                description: Optional. Client-specified annotations.
+                items:
+                  properties:
+                    key:
+                      description: Key for the annotation.
+                      type: string
+                    value:
+                      description: Value for the annotation.
+                      type: string
+                  type: object
+                type: array
+              displayName:
+                description: Optional. Human-readable name for this workstation.
+                type: string
+              labels:
+                description: |-
+                  Optional.
+                   [Labels](https://cloud.google.com/workstations/docs/label-resources) that
+                   are applied to the workstation and that are also propagated to the
+                   underlying Compute Engine resources.
+                items:
+                  properties:
+                    key:
+                      description: Key for the label.
+                      type: string
+                    value:
+                      description: Value for the label.
+                      type: string
+                  type: object
+                type: array
+              parentRef:
+                description: Parent is a reference to the parent WorkstationConfig
+                  for this Workstation.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed WorkstationConfig resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}}".
+                    type: string
+                  name:
+                    description: The name of a WorkstationConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a WorkstationConfig resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The Workstation name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - parentRef
+            type: object
+          status:
+            description: WorkstationStatus defines the config connector machine state
+              of Workstation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the Workstation resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when this workstation was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time when this workstation was soft-deleted.
+                    type: string
+                  etag:
+                    description: |-
+                      Output only. Checksum computed by the server. May be sent on update and
+                       delete requests to make sure that the client has an up-to-date value
+                       before proceeding.
+                    type: string
+                  host:
+                    description: |-
+                      Output only. Host to which clients can send HTTPS traffic that will be
+                       received by the workstation. Authorized traffic will be received to the
+                       workstation as HTTP on port 80. To send traffic to a different port,
+                       clients may prefix the host with the destination port in the format
+                       `{port}-{host}`.
+                    type: string
+                  startTime:
+                    description: |-
+                      Output only. Time when this workstation was most recently successfully
+                       started, regardless of the workstation's initial state.
+                    type: string
+                  state:
+                    description: Output only. Current state of the workstation.
+                    type: string
+                  uid:
+                    description: Output only. A system-assigned unique identifier
+                      for this workstation.
+                    type: string
+                  updateTime:
+                    description: Output only. Time when this workstation was most
+                      recently updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Workstation is the Schema for the Workstation API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: WorkstationSpec defines the desired state of Workstation
+            properties:
+              annotations:
+                description: Optional. Client-specified annotations.
+                items:
+                  properties:
+                    key:
+                      description: Key for the annotation.
+                      type: string
+                    value:
+                      description: Value for the annotation.
+                      type: string
+                  type: object
+                type: array
+              displayName:
+                description: Optional. Human-readable name for this workstation.
+                type: string
+              labels:
+                description: |-
+                  Optional.
+                   [Labels](https://cloud.google.com/workstations/docs/label-resources) that
+                   are applied to the workstation and that are also propagated to the
+                   underlying Compute Engine resources.
+                items:
+                  properties:
+                    key:
+                      description: Key for the label.
+                      type: string
+                    value:
+                      description: Value for the label.
+                      type: string
+                  type: object
+                type: array
+              parentRef:
+                description: Parent is a reference to the parent WorkstationConfig
+                  for this Workstation.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed WorkstationConfig resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/workstationClusters/{{workstationclusterID}}/workstationConfigs/{{workstationconfigID}}".
+                    type: string
+                  name:
+                    description: The name of a WorkstationConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a WorkstationConfig resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The Workstation name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - parentRef
+            type: object
+          status:
+            description: WorkstationStatus defines the config connector machine state
+              of Workstation
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the Workstation resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time when this workstation was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Time when this workstation was soft-deleted.
+                    type: string
+                  etag:
+                    description: |-
+                      Output only. Checksum computed by the server. May be sent on update and
+                       delete requests to make sure that the client has an up-to-date value
+                       before proceeding.
+                    type: string
+                  host:
+                    description: |-
+                      Output only. Host to which clients can send HTTPS traffic that will be
+                       received by the workstation. Authorized traffic will be received to the
+                       workstation as HTTP on port 80. To send traffic to a different port,
+                       clients may prefix the host with the destination port in the format
+                       `{port}-{host}`.
+                    type: string
+                  startTime:
+                    description: |-
+                      Output only. Time when this workstation was most recently successfully
+                       started, regardless of the workstation's initial state.
+                    type: string
+                  state:
+                    description: Output only. Current state of the workstation.
+                    type: string
+                  uid:
+                    description: Output only. A system-assigned unique identifier
+                      for this workstation.
+                    type: string
+                  updateTime:
+                    description: Output only. Time when this workstation was most
+                      recently updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

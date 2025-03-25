@@ -1,0 +1,239 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vmwareenginenetworkpolicies.vmwareengine.cnrm.cloud.google.com
+spec:
+  group: vmwareengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VMwareEngineNetworkPolicy
+    listKind: VMwareEngineNetworkPolicyList
+    plural: vmwareenginenetworkpolicies
+    shortNames:
+    - gcpvmwareenginenetworkpolicy
+    - gcpvmwareenginenetworkpolicies
+    singular: vmwareenginenetworkpolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VMwareEngineNetworkPolicy is the Schema for the VMwareEngineNetworkPolicy
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VMwareEngineNetworkPolicySpec defines the desired state of
+              VMwareEngineNetworkPolicy
+            properties:
+              description:
+                description: Optional. User-provided description for this network
+                  policy.
+                type: string
+              edgeServicesCIDR:
+                description: |-
+                  Required. IP address range in CIDR notation used to create internet access
+                   and external IP access. An RFC 1918 CIDR block, with a "/26" prefix, is
+                   required. The range cannot overlap with any prefixes either in the consumer
+                   VPC network or in use by the private clouds attached to that VPC network.
+                type: string
+              externalIP:
+                description: |-
+                  Network service that allows External IP addresses to be assigned to VMware
+                   workloads. This service can only be enabled when `internet_access` is also
+                   enabled.
+                properties:
+                  enabled:
+                    description: True if the service is enabled; false otherwise.
+                    type: boolean
+                type: object
+              internetAccess:
+                description: Network service that allows VMware workloads to access
+                  the internet.
+                properties:
+                  enabled:
+                    description: True if the service is enabled; false otherwise.
+                    type: boolean
+                type: object
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VMwareEngineNetworkPolicy name. If not given, the
+                  metadata.name will be used.
+                type: string
+              vmwareEngineNetworkRef:
+                description: Optional. The relative resource name of the VMware Engine
+                  network.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed VMwareEngineNetwork resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".
+                    type: string
+                  name:
+                    description: The name of a VMwareEngineNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a VMwareEngineNetwork resource.
+                    type: string
+                type: object
+            required:
+            - edgeServicesCIDR
+            - location
+            - projectRef
+            type: object
+          status:
+            description: VMwareEngineNetworkPolicyStatus defines the config connector
+              machine state of VMwareEngineNetworkPolicy
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VMwareEngineNetworkPolicy
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time of this resource.
+                    type: string
+                  externalIP:
+                    description: |-
+                      Network service that allows External IP addresses to be assigned to VMware
+                       workloads. This service can only be enabled when `internet_access` is also
+                       enabled.
+                    properties:
+                      state:
+                        description: |-
+                          Output only. State of the service. New values may be added to this enum
+                           when appropriate.
+                        type: string
+                    type: object
+                  internetAccess:
+                    description: Network service that allows VMware workloads to access
+                      the internet.
+                    properties:
+                      state:
+                        description: |-
+                          Output only. State of the service. New values may be added to this enum
+                           when appropriate.
+                        type: string
+                    type: object
+                  uid:
+                    description: Output only. System-generated unique identifier for
+                      the resource.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of this resource.
+                    type: string
+                  vmwareEngineNetworkCanonical:
+                    description: |-
+                      Output only. The canonical name of the VMware Engine network in the form:
+                       `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

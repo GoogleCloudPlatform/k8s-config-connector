@@ -1,0 +1,285 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vmwareenginenetworkpeerings.vmwareengine.cnrm.cloud.google.com
+spec:
+  group: vmwareengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VMwareEngineNetworkPeering
+    listKind: VMwareEngineNetworkPeeringList
+    plural: vmwareenginenetworkpeerings
+    shortNames:
+    - gcpvmwareenginenetworkpeering
+    - gcpvmwareenginenetworkpeerings
+    singular: vmwareenginenetworkpeering
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VMwareEngineNetworkPeering is the Schema for the VMwareEngineNetworkPeering
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VMwareEngineNetworkPeeringSpec defines the desired state
+              of VMwareEngineNetworkPeering
+            properties:
+              description:
+                description: Optional. User-provided description for this network
+                  peering.
+                type: string
+              exchangeSubnetRoutes:
+                description: |-
+                  Optional. True if full mesh connectivity is created and managed
+                   automatically between peered networks; false otherwise. Currently this
+                   field is always true because Google Compute Engine automatically creates
+                   and manages subnetwork routes between two VPC networks when peering state
+                   is 'ACTIVE'.
+                type: boolean
+              exportCustomRoutes:
+                description: |-
+                  Optional. True if custom routes are exported to the peered network;
+                   false otherwise. The default value is true.
+                type: boolean
+              exportCustomRoutesWithPublicIP:
+                description: |-
+                  Optional. True if all subnet routes with a public IP address range are
+                   exported; false otherwise. The default value is true. IPv4 special-use
+                   ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always
+                   exported to peers and are not controlled by this field.
+                type: boolean
+              importCustomRoutes:
+                description: |-
+                  Optional. True if custom routes are imported from the peered network;
+                   false otherwise. The default value is true.
+                type: boolean
+              importCustomRoutesWithPublicIP:
+                description: |-
+                  Optional. True if all subnet routes with public IP address range are
+                   imported; false otherwise. The default value is true. IPv4 special-use
+                   ranges (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are always
+                   imported to peers and are not controlled by this field.
+                type: boolean
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              peerMTU:
+                description: |-
+                  Optional. Maximum transmission unit (MTU) in bytes.
+                   The default value is `1500`. If a value of `0` is provided for this field,
+                   VMware Engine uses the default value instead.
+                format: int32
+                type: integer
+              peerNetwork:
+                description: |-
+                  Required. The name of the network to peer with a standard VMware Engine network.
+                  The provided network can be a consumer VPC network or another standard VMware Engine network.
+                properties:
+                  computeNetworkRef:
+                    description: Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef
+                      or ComputeNetworkRef must be specified.
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed Compute Network resource.
+                          Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
+                  vmwareEngineNetworkRef:
+                    description: Reference to a VmwareEngineNetwork. Exactly one of
+                      VMwareEngineNetworkRef or ComputeNetworkRef must be specified.
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed VMwareEngineNetwork resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".
+                        type: string
+                      name:
+                        description: The name of a VMwareEngineNetwork resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a VMwareEngineNetwork resource.
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: Exactly one of vmwareEngineNetworkRef or computeNetworkRef
+                    must be specified
+                  rule: self != null && has(self.vmwareEngineNetworkRef) != has(self.computeNetworkRef)
+              peerNetworkType:
+                description: Required. The type of the network to peer with the VMware
+                  Engine network.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VMwareEngineNetworkPeering name. If not given, the
+                  metadata.name will be used.
+                type: string
+              vmwareEngineNetworkRef:
+                description: Required. The relative resource name of the VMware Engine
+                  network.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed VMwareEngineNetwork resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/vmwareEngineNetworks/{{vmwareenginenetworkID}}".
+                    type: string
+                  name:
+                    description: The name of a VMwareEngineNetwork resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a VMwareEngineNetwork resource.
+                    type: string
+                type: object
+            required:
+            - location
+            - peerNetwork
+            - peerNetworkType
+            - projectRef
+            - vmwareEngineNetworkRef
+            type: object
+          status:
+            description: VMwareEngineNetworkPeeringStatus defines the config connector
+              machine state of VMwareEngineNetworkPeering
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VMwareEngineNetworkPeering
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time of this resource.
+                    type: string
+                  state:
+                    description: |-
+                      Output only. State of the network peering. This field
+                       has a value of 'ACTIVE' when there's a matching configuration in the peer
+                       network. New values may be added to this enum when appropriate.
+                    type: string
+                  stateDetails:
+                    description: |-
+                      Output only. Output Only. Details about the current state of the network
+                       peering.
+                    type: string
+                  uid:
+                    description: Output only. System-generated unique identifier for
+                      the resource.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of this resource.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
