@@ -16,12 +16,12 @@
 // proto.message: google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 // api.group: cloudquotas.cnrm.cloud.google.com
 
-package cloudquotas
+package cloudquota
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 
-	pb "google3/google/api/cloudquotas/v1beta/cloudquotas_go_proto"
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 )
 
 func init() {

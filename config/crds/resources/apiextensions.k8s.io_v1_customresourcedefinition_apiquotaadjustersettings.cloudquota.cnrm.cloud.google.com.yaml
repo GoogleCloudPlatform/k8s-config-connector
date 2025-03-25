@@ -17,8 +17,8 @@ spec:
     listKind: APIQuotaAdjusterSettingsList
     plural: apiquotaadjustersettings
     shortNames:
+    - gcpapiquotaadjustersetting
     - gcpapiquotaadjustersettings
-    - gcpapiquotaadjustersettingss
     singular: apiquotaadjustersettings
   preserveUnknownFields: false
   scope: Namespaced

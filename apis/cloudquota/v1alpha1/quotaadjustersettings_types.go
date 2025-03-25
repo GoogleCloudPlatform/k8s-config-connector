@@ -23,7 +23,7 @@ import (
 
 var APIQuotaAdjusterSettingsGVK = GroupVersion.WithKind("APIQuotaAdjusterSettings")
 
-type Parent struct {
+type AdjusterSettingsParent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 	// +required
@@ -33,7 +33,7 @@ type Parent struct {
 // APIQuotaAdjusterSettingsSpec defines the desired state of APIQuotaAdjusterSettings
 // +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsSpec struct {
-	Parent `json:",inline"`
+	AdjusterSettingsParent `json:",inline"`
 	// The APIQuotaAdjusterSettings name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Required. The configured value of the enablement at the given resource.
@@ -76,7 +76,7 @@ type APIQuotaAdjusterSettingsObservedState struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcpapiquotaadjustersettings;gcpapiquotaadjustersettingss
+// +kubebuilder:resource:categories=gcp,shortName=gcpapiquotaadjustersetting;gcpapiquotaadjustersettings
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
