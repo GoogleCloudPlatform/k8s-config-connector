@@ -18,6 +18,7 @@ import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 var PubSubSnapshotGVK = GroupVersion.WithKind("PubSubSnapshot")
@@ -111,4 +112,20 @@ type PubSubSnapshotList struct {
 
 func init() {
 	SchemeBuilder.Register(&PubSubSnapshot{}, &PubSubSnapshotList{})
+}
+
+// DeepCopyObject implements the runtime.Object interface.
+func (in *PubSubSnapshot) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
+}
+
+// DeepCopyObject implements the runtime.Object interface.
+func (in *PubSubSnapshotList) DeepCopyObject() runtime.Object {
+	if c := in.DeepCopy(); c != nil {
+		return c
+	}
+	return nil
 }
