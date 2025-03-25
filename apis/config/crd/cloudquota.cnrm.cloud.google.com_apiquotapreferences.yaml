@@ -1,0 +1,286 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: apiquotapreferences.cloudquota.cnrm.cloud.google.com
+spec:
+  group: cloudquota.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: APIQuotaPreference
+    listKind: APIQuotaPreferenceList
+    plural: apiquotapreferences
+    shortNames:
+    - gcpapiquotapreference
+    - gcpapiquotapreferences
+    singular: apiquotapreference
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: APIQuotaPreference is the Schema for the APIQuotaPreference API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              contactEmail:
+                description: |-
+                  Input only. An email address that can be used to contact the the user, in
+                   case Google Cloud needs more information to make a decision before
+                   additional quota can be granted.
+
+                   When requesting a quota increase, the email address is required.
+                   When requesting a quota decrease, the email address is optional.
+                   For example, the email address is optional when the
+                   `QuotaConfig.preferred_value` is smaller than the
+                   `QuotaDetails.reset_value`.
+                type: string
+              dimensions:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Immutable. The dimensions that this quota preference applies to. The key of
+                   the map entry is the name of a dimension, such as "region", "zone",
+                   "network_id", and the value of the map entry is the dimension value.
+
+                   If a dimension is missing from the map of dimensions, the quota preference
+                   applies to all the dimension values except for those that have other quota
+                   preferences configured for the specific value.
+
+                   NOTE: QuotaPreferences can only be applied across all values of "user" and
+                   "resource" dimension. Do not set values for "user" or "resource" in the
+                   dimension map.
+
+                   Example: {"provider", "Foo Inc"} where "provider" is a service specific
+                   dimension.
+                type: object
+              folderRef:
+                description: FolderRef represents the Folder that this resource belongs
+                  to.
+                properties:
+                  external:
+                    description: |-
+                      The 'name' field of a folder, when not managed by Config Connector.
+                      This field must be set when 'name' field is not set.
+                    type: string
+                  name:
+                    description: |-
+                      The 'name' field of a 'Folder' resource.
+                      This field must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: |-
+                      The 'namespace' field of a 'Folder' resource.
+                      If unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              justification:
+                description: The reason / justification for this quota preference.
+                type: string
+              location:
+                type: string
+              organizationRef:
+                description: OrganizationRef represents the Organization that this
+                  resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              quotaConfig:
+                description: Required. Preferred quota configuration.
+                properties:
+                  annotations:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Optional. The annotations map for clients to store small amounts of
+                       arbitrary data. Do not put PII or other sensitive information here. See
+                       https://google.aip.dev/128#annotations
+                    type: object
+                  preferredValue:
+                    description: |-
+                      Required. The preferred value. Must be greater than or equal to -1. If set
+                       to -1, it means the value is "unlimited".
+                    format: int64
+                    type: integer
+                type: object
+              quotaID:
+                description: |-
+                  Required. The id of the quota to which the quota preference is applied. A
+                   quota name is unique in the service. Example: `CpusPerProjectPerRegion`
+                type: string
+              resourceID:
+                description: The APIQuotaPreference name. If not given, the metadata.name
+                  will be used.
+                type: string
+              service:
+                description: Required. The name of the service to which the quota
+                  preference is applied.
+                type: string
+            required:
+            - location
+            - quotaConfig
+            - quotaID
+            - service
+            type: object
+          status:
+            description: APIQuotaPreferenceStatus defines the config connector machine
+              state of APIQuotaPreference
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the APIQuotaPreference resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Create time stamp
+                    type: string
+                  etag:
+                    description: |-
+                      Optional. The current etag of the quota preference. If an etag is provided
+                       on update and does not match the current server's etag of the quota
+                       preference, the request will be blocked and an ABORTED error will be
+                       returned. See https://google.aip.dev/134#etags for more details on etags.
+                    type: string
+                  quotaConfig:
+                    description: Required. Preferred quota configuration.
+                    properties:
+                      grantedValue:
+                        description: Output only. Granted quota value.
+                        format: int64
+                        type: integer
+                      requestOrigin:
+                        description: Output only. The origin of the quota preference
+                          request.
+                        type: string
+                      stateDetail:
+                        description: Output only. Optional details about the state
+                          of this quota preference.
+                        type: string
+                      traceID:
+                        description: |-
+                          Output only. The trace id that the Google Cloud uses to provision the
+                           requested quota. This trace id may be used by the client to contact Cloud
+                           support to track the state of a quota preference request. The trace id is
+                           only produced for increase requests and is unique for each request. The
+                           quota decrease requests do not have a trace id.
+                        type: string
+                    type: object
+                  reconciling:
+                    description: |-
+                      Output only. Is the quota preference pending Google Cloud approval and
+                       fulfillment.
+                    type: boolean
+                  updateTime:
+                    description: Output only. Update time stamp
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
