@@ -1,0 +1,21 @@
+
+- exec: |
+    gcloud deploy apply --file=- --region=us-central1 --project=${projectId} <<EOF
+    apiVersion: deploy.cloud.google.com/v1
+    kind: DeliveryPipeline
+    metadata:
+      name: test-pipeline-${uniqueId}
+    description: test delivery pipeline
+    serialPipeline:
+      stages:
+      - targetId: test-target-${uniqueId}
+        profiles: []
+    ---
+    apiVersion: deploy.cloud.google.com/v1
+    kind: Target
+    metadata:
+      name: test-target-${uniqueId}
+    description: test target
+    EOF
+- exec: gcloud deploy delivery-pipelines describe test-pipeline-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud deploy delivery-pipelines delete test-pipeline-${uniqueId} --region=us-central1 --project=${projectId} --quiet
