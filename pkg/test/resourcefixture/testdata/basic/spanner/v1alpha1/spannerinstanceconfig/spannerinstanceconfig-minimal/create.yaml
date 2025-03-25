@@ -15,9 +15,22 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
 kind: SpannerInstanceConfig
 metadata:
-  name: spannerinstanceconfig-minimal-${uniqueId}
+  name: custom-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  description: "Initial description"
+  replicas:
+    - defaultLeaderLocation: true
+      location: us-central1
+      type: READ_WRITE
+    - location: us-central1
+      type: READ_WRITE
+    - location: us-east1
+      type: READ_WRITE
+    - location: us-east1
+      type: READ_WRITE
+    - location: us-central2
+      type: WITNESS
+  displayName: "Initial name"
+  baseConfigRef:
+    external: projects/${projectId}/instanceConfigs/nam11

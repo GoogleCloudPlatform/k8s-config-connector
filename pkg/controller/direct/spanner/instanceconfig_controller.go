@@ -121,6 +121,7 @@ func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := SpannerInstanceConfigSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Name = a.id.String()
 
 	req := &instancepb.CreateInstanceConfigRequest{
 		Parent:           a.id.Parent().String(),
@@ -155,20 +156,16 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := SpannerInstanceConfigSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Name = a.id.String()
 
 	// Check the spec for changes
+	// Only display_name and labels can be updated.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
-	}
-	if !reflect.DeepEqual(resource.Etag, a.actual.Etag) {
-		updateMask.Paths = append(updateMask.Paths, "etag")
-	}
-	if !reflect.DeepEqual(resource.Replicas, a.actual.Replicas) {
-		updateMask.Paths = append(updateMask.Paths, "replicas")
 	}
 	if len(updateMask.Paths) == 0 {
 		log.Info("no field to update", "name", a.id)
