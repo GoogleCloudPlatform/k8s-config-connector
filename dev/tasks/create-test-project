@@ -68,6 +68,7 @@ gcloud services enable \
   secretmanager.googleapis.com \
   servicenetworking.googleapis.com \
   serviceusage.googleapis.com \
+  sourcerepo.googleapis.com \
   sqladmin.googleapis.com \
   workstations.googleapis.com
 
