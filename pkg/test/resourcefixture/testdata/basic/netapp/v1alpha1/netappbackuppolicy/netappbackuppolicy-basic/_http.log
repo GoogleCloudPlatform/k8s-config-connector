@@ -4,21 +4,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupPolicies%2Fnetappbackuppolicy-minimal-${uniqueId}
 
 404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "code": 5,
+  "details": [],
+  "message": "backupPolicy \"projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}\" not found"
 }
 
 ---
@@ -33,14 +24,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 }
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "done": false,
@@ -48,54 +33,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
     "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
-}
-
----
-
-GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupPolicy",
-    "assignedVolumeCount": 0,
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "dailyBackupLimit": 2,
-    "description": "",
-    "enabled": true,
-    "monthlyBackupLimit": 0,
-    "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-    "state": "READY",
-    "weeklyBackupLimit": 0
-  }
 }
 
 ---
@@ -106,30 +50,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupPolicies%2Fnetappbackuppolicy-minimal-${uniqueId}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "assignedVolumeCount": 0,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "dailyBackupLimit": 2,
-  "description": "",
-  "enabled": true,
-  "monthlyBackupLimit": 0,
+  "labels": {},
   "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-  "state": 2,
-  "weeklyBackupLimit": 0
+  "state": "READY"
 }
 
 ---
 
-PATCH https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dailyBackupLimit%2Cenabled
+PATCH https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=dailyBackupLimit
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: backup_policy.name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupPolicies%2Fnetappbackuppolicy-minimal-${uniqueId}
@@ -140,14 +74,8 @@ X-Goog-Request-Params: backup_policy.name=projects%2F${projectId}%2Flocations%2F
 }
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "done": false,
@@ -155,54 +83,13 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
     "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
-}
-
----
-
-GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupPolicy",
-    "assignedVolumeCount": 0,
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "dailyBackupLimit": 3,
-    "description": "",
-    "enabled": true,
-    "monthlyBackupLimit": 0,
-    "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-    "state": "READY",
-    "weeklyBackupLimit": 0
-  }
 }
 
 ---
@@ -213,25 +100,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupPolicies%2Fnetappbackuppolicy-minimal-${uniqueId}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "assignedVolumeCount": 0,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "dailyBackupLimit": 3,
-  "description": "",
-  "enabled": true,
-  "monthlyBackupLimit": 0,
+  "labels": {},
   "name": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-  "state": 2,
-  "weeklyBackupLimit": 0
+  "state": "READY"
 }
 
 ---
@@ -242,44 +119,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2FbackupPolicies%2Fnetappbackuppolicy-minimal-${uniqueId}
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
-}
-
----
-
-GET https://netapp.googleapis.com/v1/projects/${projectId}/locations/us-west2/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "done": true,
@@ -287,8 +128,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": null,
     "requestedCancellation": false,
+    "statusMessage": "",
     "target": "projects/${projectId}/locations/us-west2/backupPolicies/netappbackuppolicy-minimal-${uniqueId}",
     "verb": "delete"
   },
