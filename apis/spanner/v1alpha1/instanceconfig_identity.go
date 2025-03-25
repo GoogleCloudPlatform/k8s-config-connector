@@ -45,8 +45,6 @@ func (i *InstanceConfigIdentity) Parent() *InstanceConfigParent {
 
 type InstanceConfigParent struct {
 	ProjectID string
-	Location  string
-	// No changes were needed in the struct.
 }
 
 func (p *InstanceConfigParent) String() string {

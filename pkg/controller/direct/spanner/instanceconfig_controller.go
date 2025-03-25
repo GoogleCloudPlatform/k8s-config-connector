@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ package spanner
 import (
 	"context"
 	"fmt"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"reflect"
 
 	instance "cloud.google.com/go/spanner/admin/instance/apiv1"
 	instancepb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -46,38 +46,13 @@ func init() {
 }
 
 func NewInstanceConfigModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &instanceConfigModel{config: *config}, nil
+	return &instanceConfigModel{config: config}, nil
 }
 
 var _ directbase.Model = &instanceConfigModel{}
 
 type instanceConfigModel struct {
-	config config.ControllerConfig
-}
-
-func (m *instanceConfigModel) Client(ctx context.Context, projectID string) (*instance.InstanceAdminClient, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := instance.NewInstanceAdminRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building spanner instance config client: %w", err)
-	}
-
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *instanceConfigModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -91,21 +66,20 @@ func (m *instanceConfigModel) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	mapCtx := &direct.MapContext{}
-	desired := SpannerInstanceConfigSpec_ToProto(mapCtx, &obj.Spec)
-	if err := mapCtx.Err(); err != nil {
+	// Get spanner GCP client
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
 		return nil, err
 	}
-
-	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
+	instanceConfigClient, err := gcpClient.newInstanceAdminClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &instanceConfigAdapter{
-		gcpClient: gcpClient,
+		gcpClient: instanceConfigClient,
 		id:        id,
-		desired:   desired,
+		desired:   obj,
 	}, nil
 }
 
@@ -117,7 +91,7 @@ func (m *instanceConfigModel) AdapterForURL(ctx context.Context, url string) (di
 type instanceConfigAdapter struct {
 	gcpClient *instance.InstanceAdminClient
 	id        *krm.InstanceConfigIdentity
-	desired   *instancepb.InstanceConfig
+	desired   *krm.SpannerInstanceConfig
 	actual    *instancepb.InstanceConfig
 }
 
@@ -144,12 +118,18 @@ func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase
 	log := klog.FromContext(ctx)
 	log.Info("creating spanner instance config", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	resource := SpannerInstanceConfigSpec_ToProto(mapCtx, &desired.Spec)
+
 	req := &instancepb.CreateInstanceConfigRequest{
-		Parent:            a.id.Parent().String(),
-		InstanceConfigId:  a.id.ID(),
-		InstanceConfig:    a.desired,
-		ValidateOnly:      a.desired.GetValidateOnly(),
-		ValidateOnlyProto: direct.ValueOf(a.desired.ValidateOnly),
+		Parent:           a.id.Parent().String(),
+		InstanceConfigId: a.id.ID(),
+		InstanceConfig:   resource,
+		// An option to validate, but not actually execute, a request,
+		// and provide the same response.
+		// todo: shall we support this field in spec?
+		ValidateOnly: false,
 	}
 	op, err := a.gcpClient.CreateInstanceConfig(ctx, req)
 	if err != nil {
@@ -162,7 +142,6 @@ func (a *instanceConfigAdapter) Create(ctx context.Context, createOp *directbase
 	log.Info("successfully created spanner instance config in gcp", "name", a.id)
 
 	status := &krm.SpannerInstanceConfigStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = SpannerInstanceConfigObservedState_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
@@ -173,21 +152,22 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 	log := klog.FromContext(ctx)
 	log.Info("updating spanner instance config", "name", a.id)
 
-	// Convert the KCC spec to proto format
-	desiredpb := SpannerInstanceConfigSpec_ToProto(&direct.MapContext{}, &a.desired)
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	resource := SpannerInstanceConfigSpec_ToProto(mapCtx, &desired.Spec)
 
 	// Check the spec for changes
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
+	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if !reflect.DeepEqual(a.desired.Etag, a.actual.Etag) {
+	if !reflect.DeepEqual(resource.Etag, a.actual.Etag) {
 		updateMask.Paths = append(updateMask.Paths, "etag")
 	}
-	if !reflect.DeepEqual(a.desired.Replicas, a.actual.Replicas) {
+	if !reflect.DeepEqual(resource.Replicas, a.actual.Replicas) {
 		updateMask.Paths = append(updateMask.Paths, "replicas")
 	}
 	if len(updateMask.Paths) == 0 {
@@ -197,9 +177,12 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 
 	// Update
 	req := &instancepb.UpdateInstanceConfigRequest{
-		InstanceConfig: desiredpb,
+		InstanceConfig: resource,
 		UpdateMask:     updateMask,
-		ValidateOnly:   a.desired.GetValidateOnly(),
+		// An option to validate, but not actually execute, a request,
+		// and provide the same response.
+		// todo: shall we support this field in spec?
+		ValidateOnly: false,
 	}
 	_, err := a.gcpClient.UpdateInstanceConfig(ctx, req)
 	if err != nil {
@@ -209,7 +192,6 @@ func (a *instanceConfigAdapter) Update(ctx context.Context, updateOp *directbase
 
 	// Update status
 	status := &krm.SpannerInstanceConfigStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = SpannerInstanceConfigObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -222,9 +204,12 @@ func (a *instanceConfigAdapter) Delete(ctx context.Context, deleteOp *directbase
 	log.Info("deleting spanner instance config", "name", a.id)
 
 	req := &instancepb.DeleteInstanceConfigRequest{
-		Name:         a.id.String(),
-		Etag:         direct.PtrTo(a.desired.Etag),
-		ValidateOnly: a.desired.GetValidateOnly(),
+		Name: a.id.String(),
+		Etag: direct.ValueOf(a.desired.Spec.Etag),
+		// An option to validate, but not actually execute, a request,
+		// and provide the same response.
+		// todo: shall we support this field in spec?
+		ValidateOnly: false,
 	}
 	err := a.gcpClient.DeleteInstanceConfig(ctx, req)
 	if err != nil {
@@ -253,7 +238,7 @@ func (a *instanceConfigAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &krm.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
