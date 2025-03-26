@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -147,7 +148,11 @@ func OracleProfile_FromProto(mapCtx *direct.MapContext, in *pb.OracleProfile) *k
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSSLConfig = OracleSSLConfig_FromProto(mapCtx, in.GetOracleSslConfig())
 	out.OracleASMConfig = OracleAsmConfig_FromProto(mapCtx, in.GetOracleAsmConfig())
-	out.SecretManagerStoredPassword = direct.LazyPtr(in.GetSecretManagerStoredPassword())
+	if in.GetSecretManagerStoredPassword() != "" {
+		out.SecreteManagerSecretRef = &refsv1beta1.SecretManagerSecretRef{
+			External: in.GetSecretManagerStoredPassword(),
+		}
+	}
 	return out
 }
 func OracleProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleProfile) *pb.OracleProfile {
@@ -165,7 +170,9 @@ func OracleProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleProfile) *pb
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSslConfig = OracleSSLConfig_ToProto(mapCtx, in.OracleSSLConfig)
 	out.OracleAsmConfig = OracleAsmConfig_ToProto(mapCtx, in.OracleASMConfig)
-	out.SecretManagerStoredPassword = direct.ValueOf(in.SecretManagerStoredPassword)
+	if in.SecreteManagerSecretRef != nil {
+		out.SecretManagerStoredPassword = in.SecreteManagerSecretRef.External
+	}
 	return out
 }
 func PrivateConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnectivity) *krm.PrivateConnectivity {

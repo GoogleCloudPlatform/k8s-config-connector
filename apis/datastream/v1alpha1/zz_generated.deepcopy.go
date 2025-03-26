@@ -763,9 +763,9 @@ func (in *OracleProfile) DeepCopyInto(out *OracleProfile) {
 		*out = new(OracleAsmConfig)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.SecretManagerStoredPassword != nil {
-		in, out := &in.SecretManagerStoredPassword, &out.SecretManagerStoredPassword
-		*out = new(string)
+	if in.SecreteManagerSecretRef != nil {
+		in, out := &in.SecreteManagerSecretRef, &out.SecreteManagerSecretRef
+		*out = new(v1beta1.SecretManagerSecretRef)
 		**out = **in
 	}
 }

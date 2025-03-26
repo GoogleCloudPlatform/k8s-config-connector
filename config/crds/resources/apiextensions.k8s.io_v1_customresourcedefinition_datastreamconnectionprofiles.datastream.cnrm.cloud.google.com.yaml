@@ -247,11 +247,36 @@ spec:
                       1521.
                     format: int32
                     type: integer
-                  secretManagerStoredPassword:
+                  secretManagerSecretRef:
                     description: Optional. A reference to a Secret Manager resource
                       name storing the Oracle connection password. Mutually exclusive
-                      with the `password` field.
-                    type: string
+                      with the `secretRef` field.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*`.'
+                        type: string
+                      name:
+                        description: The `name` field of a `SecretManagerSecret` resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `SecretManagerSecret`
+                          resource.
+                        type: string
+                    type: object
                   secretRef:
                     description: The Kubernetes Secret object that stores the "username"
                       and "password" information for the Oracle connection. The Secret
