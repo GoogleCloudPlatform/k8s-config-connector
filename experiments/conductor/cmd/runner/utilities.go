@@ -753,27 +753,32 @@ func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
 	log.Printf("Running go mod tidy")
 	errStrings := []string{}
 
-	for _, path := range affectedPaths {
-		// Skip if not a Go file
-		if !strings.HasSuffix(path, ".go") {
-			continue
+	// Filter for paths containing Go files
+	goFilePaths := filterGoFilePaths(opts.branchRepoDir, affectedPaths)
+
+	// Only run goimports if we found Go files
+	if len(goFilePaths) > 0 {
+		for _, path := range goFilePaths {
+			cfg := CommandConfig{
+				Name:        "Go Imports",
+				Cmd:         "goimports",
+				Args:        []string{"-w", path},
+				WorkDir:     opts.branchRepoDir,
+				MaxAttempts: 1,
+			}
+			op, err := executeCommand(opts, cfg)
+			if err != nil {
+				errStrings = append(errStrings, fmt.Sprintf("Error running goimports for %s: %v", path, err))
+			}
+			if op.ExitCode != 0 {
+				errStrings = append(errStrings, fmt.Sprintf("goimports failed with exit code %d for %s", op.ExitCode, path))
+			}
 		}
-		cfg := CommandConfig{
-			Name:        "Go Imports",
-			Cmd:         "goimports",
-			Args:        []string{"-w", path},
-			WorkDir:     opts.branchRepoDir,
-			MaxAttempts: 1,
-		}
-		op, err := executeCommand(opts, cfg)
-		if err != nil {
-			errStrings = append(errStrings, fmt.Sprintf("Error running goimports for %s: %v", path, err))
-		}
-		if op.ExitCode != 0 {
-			errStrings = append(errStrings, fmt.Sprintf("goimports failed with exit code %d for %s", op.ExitCode, path))
-		}
+	} else {
+		log.Printf("No Go files found in affected paths, skipping goimports")
 	}
 
+	// Always run go mod tidy regardless of file types
 	cfg := CommandConfig{
 		Name:        "Go Mod Tidy",
 		Cmd:         "go",
@@ -795,4 +800,73 @@ func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
 	}
 
 	return nil
+}
+
+// hasGoFiles checks if the given path (file or directory) contains any Go files
+// If path is a file, it checks if it's a Go file
+// If path is a directory, it walks the directory to find any Go files
+func hasGoFiles(basePath, relativePath string) bool {
+	fullPath := filepath.Join(basePath, relativePath)
+	info, err := os.Stat(fullPath)
+	if err != nil {
+		log.Printf("Warning: Could not stat path %s: %v", relativePath, err)
+		return false
+	}
+
+	// If it's a file, check if it's a Go file
+	if !info.IsDir() {
+		return strings.HasSuffix(strings.ToLower(relativePath), ".go")
+	}
+
+	// If it's a directory, walk it to find Go files
+	foundGoFile := false
+	err = filepath.Walk(fullPath, func(walkPath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(strings.ToLower(walkPath), ".go") {
+			foundGoFile = true
+			return filepath.SkipAll // Stop walking once we find a Go file
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Printf("Warning: Error walking directory %s: %v", relativePath, err)
+		return false
+	}
+
+	return foundGoFile
+}
+
+// filterGoFilePaths returns a slice containing only paths that have Go files
+// Handles both absolute and relative paths
+func filterGoFilePaths(repoRootPath string, inputPaths []string) []string {
+	var goFilePaths []string
+	for _, path := range inputPaths {
+		// Check if this is an absolute path within our repository
+		var checkPath string
+		if filepath.IsAbs(path) && strings.HasPrefix(path, repoRootPath) {
+			// It's an absolute path within our repo, convert to relative for checking
+			relPath, err := filepath.Rel(repoRootPath, path)
+			if err != nil {
+				log.Printf("Warning: Could not convert absolute path %s to relative: %v", path, err)
+				continue
+			}
+			checkPath = relPath
+		} else if filepath.IsAbs(path) {
+			// It's an absolute path outside our repo, skip it
+			log.Printf("Warning: Path %s is outside repository, skipping", path)
+			continue
+		} else {
+			// It's already a relative path
+			checkPath = path
+		}
+
+		// Now check if this path contains Go files
+		if hasGoFiles(repoRootPath, checkPath) {
+			goFilePaths = append(goFilePaths, path) // Keep the original path format
+		}
+	}
+	return goFilePaths
 }
