@@ -13,37 +13,29 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.api.cloudquotas.v1beta.QuotaPreference
+// proto.message: google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 // api.group: cloudquotas.cnrm.cloud.google.com
 
 package cloudquota
 
 import (
-	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+
+	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(aPIQuotaPreferenceFuzzer())
+	fuzztesting.RegisterKRMFuzzer(aPIQuotaAdjusterSettingsFuzzer())
 }
 
-func aPIQuotaPreferenceFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.QuotaPreference{},
-		APIQuotaPreferenceSpec_FromProto, APIQuotaPreferenceSpec_ToProto,
-		APIQuotaPreferenceObservedState_FromProto, APIQuotaPreferenceObservedState_ToProto,
+func aPIQuotaAdjusterSettingsFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.QuotaAdjusterSettings{},
+		APIQuotaAdjusterSettingsSpec_FromProto, APIQuotaAdjusterSettingsSpec_ToProto,
+		APIQuotaAdjusterSettingsObservedState_FromProto, APIQuotaAdjusterSettingsObservedState_ToProto,
 	)
+	f.SpecFields.Insert(".enablement")
 
-	f.SpecFields.Insert(".dimensions")
-	f.SpecFields.Insert(".quota_config")
-	f.SpecFields.Insert(".service")
-	f.SpecFields.Insert(".quota_id")
-	f.SpecFields.Insert(".justification")
-	f.SpecFields.Insert(".contact_email")
-
-	f.StatusFields.Insert(".quota_config")
-	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".reconciling")
 	f.StatusFields.Insert(".etag")
 
 	f.UnimplementedFields.Insert(".name") // special field
