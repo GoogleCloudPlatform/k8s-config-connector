@@ -26,32 +26,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &NotebookRuntimeTemplateRef{}
+var _ refsv1beta1.ExternalNormalizer = &NotebookRuntimeRef{}
 
-// NotebookRuntimeTemplateRef defines the resource reference to ColabRuntimeTemplate, which "External" field
+// NotebookRuntimeRef defines the resource reference to ColabRuntime, which "External" field
 // holds the GCP identifier for the KRM object.
-type NotebookRuntimeTemplateRef struct {
-	// A reference to an externally managed ColabRuntimeTemplate resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}".
+type NotebookRuntimeRef struct {
+	// A reference to an externally managed ColabRuntime resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimes/{{notebookruntimeID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a ColabRuntimeTemplate resource.
+	// The name of a ColabRuntime resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a ColabRuntimeTemplate resource.
+	// The namespace of a ColabRuntime resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ColabRuntimeTemplate.
-// If the "External" is given in the other resource's spec.ColabRuntimeTemplateRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ColabRuntimeTemplate object from the cluster.
-func (r *NotebookRuntimeTemplateRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on ColabRuntime.
+// If the "External" is given in the other resource's spec.ColabRuntimeRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual ColabRuntime object from the cluster.
+func (r *NotebookRuntimeRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ColabRuntimeTemplateGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", ColabRuntimeGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseNotebookRuntimeTemplateExternal(r.External); err != nil {
+		if _, _, err := ParseNotebookRuntimeExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,12 +63,12 @@ func (r *NotebookRuntimeTemplateRef) NormalizedExternal(ctx context.Context, rea
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ColabRuntimeTemplateGVK)
+	u.SetGroupVersionKind(ColabRuntimeGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ColabRuntimeTemplateGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", ColabRuntimeGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
