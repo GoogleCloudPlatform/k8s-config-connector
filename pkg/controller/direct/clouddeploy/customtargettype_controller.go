@@ -18,12 +18,11 @@
 // crd.type: DeployCustomTargetType
 // crd.version: v1alpha1
 
-package deploy
+package clouddeploy
 
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	deploy "cloud.google.com/go/deploy/apiv1"
 	deploypb "cloud.google.com/go/deploy/apiv1/deploypb"
@@ -31,19 +30,21 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/deploy/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 func init() {
-	registry.RegisterModel(krm.DeployCustomTargetTypeGVK, NewCustomTargetTypeModel)
+	registry.RegisterModel(krm.CustomTargetTypeGVK, NewCustomTargetTypeModel)
 }
 
 func NewCustomTargetTypeModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -56,24 +57,14 @@ type customTargetTypeModel struct {
 	config config.ControllerConfig
 }
 
-func (m *customTargetTypeModel) client(ctx context.Context, projectID string) (*deploy.Client, error) {
+func (m *customTargetTypeModel) client(ctx context.Context, projectID string) (*deploy.CloudDeployClient, error) {
 	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := deploy.NewRESTClient(ctx, opts...)
+	gcpClient, err := deploy.NewCloudDeployRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building deploy custom target type client: %w", err)
 	}
@@ -110,7 +101,7 @@ func (m *customTargetTypeModel) AdapterForURL(ctx context.Context, url string) (
 }
 
 type customTargetTypeAdapter struct {
-	gcpClient *deploy.Client
+	gcpClient *deploy.CloudDeployClient
 	id        *krm.CustomTargetTypeIdentity
 	desired   *krm.DeployCustomTargetType
 	actual    *deploypb.CustomTargetType
@@ -118,6 +109,10 @@ type customTargetTypeAdapter struct {
 
 var _ directbase.Adapter = &customTargetTypeAdapter{}
 
+// Find retrieves the GCP resource.
+// Return true means the object is found. This triggers Adapter `Update` call.
+// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return a non-nil error requeues the requests.
 func (a *customTargetTypeAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting deploy custom target type", "name", a.id)
@@ -135,13 +130,14 @@ func (a *customTargetTypeAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *customTargetTypeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating deploy custom target type", "name", a.id)
+	log.V(2).Info("creating CustomTargetType", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DeployCustomTargetTypeSpec_ToProto(mapCtx, &desired.Spec)
+	resource := CustomTargetType_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -153,16 +149,16 @@ func (a *customTargetTypeAdapter) Create(ctx context.Context, createOp *directba
 	}
 	op, err := a.gcpClient.CreateCustomTargetType(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating deploy custom target type %s: %w", a.id.String(), err)
+		return fmt.Errorf("creating  ustom target type %s: %w", a.id.String(), err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("deploy custom target type %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("custom target type %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created deploy custom target type in gcp", "name", a.id)
+	log.V(2).Info("successfully created custom target type in gcp", "name", a.id)
 
-	status := &krm.DeployCustomTargetTypeStatus{}
-	status.ObservedState = DeployCustomTargetTypeObservedState_FromProto(mapCtx, created)
+	status := &krm.CustomTargetTypeStatus{}
+	status.ObservedState = CustomTargetTypeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -170,44 +166,40 @@ func (a *customTargetTypeAdapter) Create(ctx context.Context, createOp *directba
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *customTargetTypeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating deploy custom target type", "name", a.id)
+	log.V(2).Info("updating CustomTargetType", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DeployCustomTargetTypeSpec_ToProto(mapCtx, &desired.Spec)
+	resource := CustomTargetType_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.GetDescription(), a.actual.GetDescription()) {
-		paths = append(paths, "description")
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-	if desired.Spec.Annotations != nil && !reflect.DeepEqual(resource.GetAnnotations(), a.actual.GetAnnotations()) {
-		paths = append(paths, "annotations")
-	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
-		paths = append(paths, "labels")
-	}
-	if desired.Spec.CustomActions != nil && !reflect.DeepEqual(resource.GetCustomActions(), a.actual.GetCustomActions()) {
-		paths = append(paths, "custom_actions")
-	}
-
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
+	}
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
 	}
 
 	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 	req := &deploypb.UpdateCustomTargetTypeRequest{
 		CustomTargetType: resource,
-		UpdateMask:       &fieldmaskpb.FieldMask{Paths: paths},
+		UpdateMask:       updateMask,
 	}
 	op, err := a.gcpClient.UpdateCustomTargetType(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating deploy custom target type %s: %w", a.id.String(), err)
+		return fmt.Errorf("updating CustomtTargetType %s: %w", a.id.String(), err)
 	}
 	updated, err := op.Wait(ctx)
 	if err != nil {
@@ -215,14 +207,15 @@ func (a *customTargetTypeAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	log.V(2).Info("successfully updated deploy custom target type", "name", a.id)
 
-	status := &krm.DeployCustomTargetTypeStatus{}
-	status.ObservedState = DeployCustomTargetTypeObservedState_FromProto(mapCtx, updated)
+	status := &krm.CustomTargetTypeStatus{}
+	status.ObservedState = CustomTargetTypeObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
+// Export maps the GCP object to a Config Connector resource `spec`.
 func (a *customTargetTypeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
@@ -231,7 +224,7 @@ func (a *customTargetTypeAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.DeployCustomTargetType{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DeployCustomTargetTypeSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(CustomTargetType_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -242,8 +235,8 @@ func (a *customTargetTypeAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.DeployCustomTargetTypeGVK)
+	u.SetName(a.id.ID())
+	u.SetGroupVersionKind(krm.CustomTargetTypeGVK)
 
 	u.Object = uObj
 	return u, nil
@@ -272,7 +265,3 @@ func (a *customTargetTypeAdapter) Delete(ctx context.Context, deleteOp *directba
 	}
 	return true, nil
 }
-```
-</out>
-
-
