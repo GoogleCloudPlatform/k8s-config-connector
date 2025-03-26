@@ -15,6 +15,7 @@
 package common
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -33,6 +34,16 @@ func RemoveByPrefixes(a map[string]string, prefixes ...string) {
 			if strings.HasPrefix(k, prefixes[i]) {
 				delete(a, k)
 			}
+		}
+	}
+}
+
+// FilterByRegex remove keys that does not fit regex inplace .
+func FilterByRegex(labels map[string]string, r string) {
+	re := regexp.MustCompile(r)
+	for k := range labels {
+		if !re.MatchString(k) {
+			delete(labels, k)
 		}
 	}
 }

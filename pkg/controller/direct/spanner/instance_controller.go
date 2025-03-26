@@ -161,6 +161,8 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	resource.Name = a.id.String()
 	resource.Labels = desired.Labels
 	resource.Labels["managed-by-cnrm"] = "true"
+	// Label keys must be between 1-63 characters long, consist only of lowercase letters, digits, underscores, and dashes, and must start with a letter
+	common.FilterByRegex(desired.Labels, "^[a-z][a-z0-9_-]{0,62}$")
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -201,6 +203,8 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	resource.Name = a.id.String()
 	resource.Labels = desired.Labels
 	resource.Labels["managed-by-cnrm"] = "true"
+	// Label keys must be between 1-63 characters long, consist only of lowercase letters, digits, underscores, and dashes, and must start with a letter
+	common.FilterByRegex(desired.Labels, "^[a-z][a-z0-9_-]{0,62}$")
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
