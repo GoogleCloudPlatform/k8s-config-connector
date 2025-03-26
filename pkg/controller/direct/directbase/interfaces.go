@@ -36,9 +36,8 @@ type Model interface {
 type Adapter interface {
 	// Delete removes the GCP object.
 	// This can be called without calling Find.
-	// It returns (true, nil) if the object was deleted,
-	// and (false, nil) if the object was not found but should be presumed deleted.
-	// In an error, the state is not fully determined - a delete might be in progress.
+	// It returns (true, nil) if the object was deleted without error.
+	// In an error (false, err), the state is not fully determined - a delete might be in progress.
 	Delete(ctx context.Context, op *DeleteOperation) (deleted bool, err error)
 
 	// Find must be called as the first operation (unless we are deleting).
