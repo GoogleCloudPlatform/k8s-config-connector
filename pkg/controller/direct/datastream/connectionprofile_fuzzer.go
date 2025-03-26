@@ -52,5 +52,17 @@ func datastreamConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".postgresql_profile")
 
+	// sensitive fields do not roundtrip
+	f.UnimplementedFields.Insert(".forward_ssh_connectivity.username")
+	f.UnimplementedFields.Insert(".forward_ssh_connectivity.password")
+	f.UnimplementedFields.Insert(".mysql_profile.username")
+	f.UnimplementedFields.Insert(".mysql_profile.password")
+	f.UnimplementedFields.Insert(".oracle_profile.username")
+	f.UnimplementedFields.Insert(".oracle_profile.password")
+	f.UnimplementedFields.Insert(".oracle_profile.oracle_asm_config.username")
+	f.UnimplementedFields.Insert(".oracle_profile.oracle_asm_config.password")
+	f.UnimplementedFields.Insert(".sql_server_profile.username")
+	f.UnimplementedFields.Insert(".sql_server_profile.password")
+
 	return f
 }
