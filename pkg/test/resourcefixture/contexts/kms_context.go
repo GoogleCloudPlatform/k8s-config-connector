@@ -42,4 +42,11 @@ func init() {
 		SkipUpdate:         true,
 		SkipDelete:         true,
 	}
+	resourceContextMap["basickmsimportjob"] = ResourceContext{
+		ResourceKind: "KMSImportJob",
+		// The KMSImportJob resource does not support update and delete operation.
+		SkipDriftDetection: true,
+		SkipUpdate:         true,
+		SkipDelete:         true,
+	}
 }
