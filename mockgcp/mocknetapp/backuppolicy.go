@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -79,12 +80,6 @@ func (s *backupVaultsService) CreateBackupPolicy(ctx context.Context, req *pb.Cr
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		if err := s.storage.Get(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
 		return obj, nil
 	})
 }
@@ -104,13 +99,8 @@ func (s *backupVaultsService) UpdateBackupPolicy(ctx context.Context, req *pb.Up
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetBackupPolicy().Description
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.GetBackupPolicy(), req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
 
 	//obj.Etag = ComputeEtag(obj)
@@ -151,10 +141,7 @@ func (s *backupVaultsService) DeleteBackupPolicy(ctx context.Context, req *pb.De
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
-		return &emptypb.Empty{}, nil
-	})
+	return s.operations.DoneLRO(ctx, prefix, metadata, &emptypb.Empty{})
 }
 
 type backupPolicyName struct {
