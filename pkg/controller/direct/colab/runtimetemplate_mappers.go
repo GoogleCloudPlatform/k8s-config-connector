@@ -17,22 +17,27 @@ package colab
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NotebookRuntimeTemplateRef_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplateRef) *krm.NotebookRuntimeTemplateRef {
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	return &krm.NotebookRuntimeTemplateRef{
-		External: in.NotebookRuntimeTemplate,
+	out := &krm.EncryptionSpec{}
+	if in.KmsKeyName != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKeyName}
 	}
+	return out
 }
-func NotebookRuntimeTemplateRef_ToProto(mapCtx *direct.MapContext, in *krm.NotebookRuntimeTemplateRef) *pb.NotebookRuntimeTemplateRef {
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	return &pb.NotebookRuntimeTemplateRef{
-		NotebookRuntimeTemplate: in.External,
+	out := &pb.EncryptionSpec{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
 	}
+	return out
 }

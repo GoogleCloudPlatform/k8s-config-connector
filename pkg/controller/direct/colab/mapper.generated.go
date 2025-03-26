@@ -176,22 +176,6 @@ func ColabRuntimeTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRu
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionSpec{}
-	// MISSING: KMSKeyName
-	return out
-}
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionSpec{}
-	// MISSING: KMSKeyName
-	return out
-}
 func EncryptionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpecObservedState {
 	if in == nil {
 		return nil
