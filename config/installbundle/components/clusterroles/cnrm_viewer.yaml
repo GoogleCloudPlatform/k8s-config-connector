@@ -15,6 +15,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - aiplatform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
