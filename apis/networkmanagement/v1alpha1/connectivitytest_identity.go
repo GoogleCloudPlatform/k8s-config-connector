@@ -43,6 +43,7 @@ func (i *ConnectivityTestIdentity) Parent() *ConnectivityTestParent {
 	return i.parent
 }
 
+// No changes needed to the ConnectivityTestParent struct.
 type ConnectivityTestParent struct {
 	ProjectID string
 	Location  string
