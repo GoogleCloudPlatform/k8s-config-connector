@@ -120,6 +120,8 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
+require cloud.google.com/go/apigateway v1.7.2
+
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
 	cloud.google.com/go/orgpolicy v1.14.2 // indirect
