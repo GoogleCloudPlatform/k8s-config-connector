@@ -16,7 +16,9 @@ package datastream
 
 import (
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -111,8 +113,7 @@ func OracleAsmConfig_FromProto(mapCtx *direct.MapContext, in *pb.OracleAsmConfig
 	out := &krm.OracleAsmConfig{}
 	out.Hostname = direct.LazyPtr(in.GetHostname())
 	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
+	// out.SecretRef is sensitive data, so we don't output it.
 	out.ASMService = direct.LazyPtr(in.GetAsmService())
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSSLConfig = OracleSSLConfig_FromProto(mapCtx, in.GetOracleSslConfig())
@@ -125,8 +126,10 @@ func OracleAsmConfig_ToProto(mapCtx *direct.MapContext, in *krm.OracleAsmConfig)
 	out := &pb.OracleAsmConfig{}
 	out.Hostname = direct.ValueOf(in.Hostname)
 	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
 	out.AsmService = direct.ValueOf(in.ASMService)
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSslConfig = OracleSSLConfig_ToProto(mapCtx, in.OracleSSLConfig)
@@ -139,8 +142,7 @@ func OracleProfile_FromProto(mapCtx *direct.MapContext, in *pb.OracleProfile) *k
 	out := &krm.OracleProfile{}
 	out.Hostname = direct.LazyPtr(in.GetHostname())
 	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
+	// out.SecretRef is sensitive data, so we don't output it.
 	out.DatabaseService = direct.LazyPtr(in.GetDatabaseService())
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSSLConfig = OracleSSLConfig_FromProto(mapCtx, in.GetOracleSslConfig())
@@ -155,8 +157,10 @@ func OracleProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleProfile) *pb
 	out := &pb.OracleProfile{}
 	out.Hostname = direct.ValueOf(in.Hostname)
 	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
 	out.DatabaseService = direct.ValueOf(in.DatabaseService)
 	out.ConnectionAttributes = in.ConnectionAttributes
 	out.OracleSslConfig = OracleSSLConfig_ToProto(mapCtx, in.OracleSSLConfig)
@@ -174,12 +178,44 @@ func PrivateConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConn
 	}
 	return out
 }
-func ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_Password {
+func ForwardSSHTunnelConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ForwardSshTunnelConnectivity) *krm.ForwardSSHTunnelConnectivity {
 	if in == nil {
 		return nil
 	}
+	out := &krm.ForwardSSHTunnelConnectivity{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Port = direct.LazyPtr(in.GetPort())
+	// out.SecretRef is sensitive data, so we don't output it.
+	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
+	return out
+}
+func ForwardSSHTunnelConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ForwardSSHTunnelConnectivity) *pb.ForwardSshTunnelConnectivity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ForwardSshTunnelConnectivity{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Port = direct.ValueOf(in.Port)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+	}
+	if oneof := ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx, in.SecretRef); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	if oneof := ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx, in.PrivateKey); oneof != nil {
+		out.AuthenticationMethod = oneof
+	}
+	return out
+}
+func ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx *direct.MapContext, in *refsv1beta1secret.BasicAuthSecretRef) *pb.ForwardSshTunnelConnectivity_Password {
+	if in == nil {
+		return nil
+	}
+	if in.Password == "" {
+		return nil
+	}
 	out := &pb.ForwardSshTunnelConnectivity_Password{}
-	out.Password = direct.ValueOf(in)
+	out.Password = in.Password
 	return out
 }
 func ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.ForwardSshTunnelConnectivity_PrivateKey {
@@ -188,5 +224,80 @@ func ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.ForwardSshTunnelConnectivity_PrivateKey{}
 	out.PrivateKey = direct.ValueOf(in)
+	return out
+}
+func MysqlProfile_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krm.MysqlProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MysqlProfile{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Port = direct.LazyPtr(in.GetPort())
+	// out.SecretRef is sensitive data, so we don't output it.
+	out.SSLConfig = MysqlSSLConfig_FromProto(mapCtx, in.GetSslConfig())
+	return out
+}
+func MysqlProfile_ToProto(mapCtx *direct.MapContext, in *krm.MysqlProfile) *pb.MysqlProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MysqlProfile{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Port = direct.ValueOf(in.Port)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
+	out.SslConfig = MysqlSSLConfig_ToProto(mapCtx, in.SSLConfig)
+	return out
+}
+func PostgresqlProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlProfile) *krm.PostgresqlProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PostgresqlProfile{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Port = direct.LazyPtr(in.GetPort())
+	// out.SecretRef is sensitive data, so we don't output it.
+	out.Database = direct.LazyPtr(in.GetDatabase())
+	return out
+}
+func PostgresqlProfile_ToProto(mapCtx *direct.MapContext, in *krm.PostgresqlProfile) *pb.PostgresqlProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgresqlProfile{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Port = direct.ValueOf(in.Port)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
+	out.Database = direct.ValueOf(in.Database)
+	return out
+}
+func SQLServerProfile_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerProfile) *krm.SQLServerProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SQLServerProfile{}
+	out.Hostname = direct.LazyPtr(in.GetHostname())
+	out.Port = direct.LazyPtr(in.GetPort())
+	// out.SecretRef is sensitive data, so we don't output it.
+	out.Database = direct.LazyPtr(in.GetDatabase())
+	return out
+}
+func SQLServerProfile_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerProfile) *pb.SqlServerProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SqlServerProfile{}
+	out.Hostname = direct.ValueOf(in.Hostname)
+	out.Port = direct.ValueOf(in.Port)
+	if in.SecretRef != nil {
+		out.Username = in.SecretRef.Username
+		out.Password = in.SecretRef.Password
+	}
+	out.Database = direct.ValueOf(in.Database)
 	return out
 }

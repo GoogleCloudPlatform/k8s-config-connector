@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -508,19 +509,14 @@ func (in *ForwardSSHTunnelConnectivity) DeepCopyInto(out *ForwardSSHTunnelConnec
 		*out = new(string)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.PrivateKey != nil {
@@ -578,14 +574,9 @@ func (in *MysqlProfile) DeepCopyInto(out *MysqlProfile) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.SSLConfig != nil {
@@ -698,14 +689,9 @@ func (in *OracleAsmConfig) DeepCopyInto(out *OracleAsmConfig) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.ASMService != nil {
@@ -750,14 +736,9 @@ func (in *OracleProfile) DeepCopyInto(out *OracleProfile) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.DatabaseService != nil {
@@ -892,14 +873,9 @@ func (in *PostgresqlProfile) DeepCopyInto(out *PostgresqlProfile) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.Database != nil {
@@ -1002,14 +978,9 @@ func (in *SQLServerProfile) DeepCopyInto(out *SQLServerProfile) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.Username != nil {
-		in, out := &in.Username, &out.Username
-		*out = new(string)
-		**out = **in
-	}
-	if in.Password != nil {
-		in, out := &in.Password, &out.Password
-		*out = new(string)
+	if in.SecretRef != nil {
+		in, out := &in.SecretRef, &out.SecretRef
+		*out = new(secret.BasicAuthSecretRef)
 		**out = **in
 	}
 	if in.Database != nil {

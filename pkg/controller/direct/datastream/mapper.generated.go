@@ -65,34 +65,6 @@ func DatastreamPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: VpcPeeringConfig
 	return out
 }
-func ForwardSSHTunnelConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ForwardSshTunnelConnectivity) *krm.ForwardSSHTunnelConnectivity {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ForwardSSHTunnelConnectivity{}
-	out.Hostname = direct.LazyPtr(in.GetHostname())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.PrivateKey = direct.LazyPtr(in.GetPrivateKey())
-	return out
-}
-func ForwardSSHTunnelConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ForwardSSHTunnelConnectivity) *pb.ForwardSshTunnelConnectivity {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ForwardSshTunnelConnectivity{}
-	out.Hostname = direct.ValueOf(in.Hostname)
-	out.Username = direct.ValueOf(in.Username)
-	out.Port = direct.ValueOf(in.Port)
-	if oneof := ForwardSSHTunnelConnectivity_Password_ToProto(mapCtx, in.Password); oneof != nil {
-		out.AuthenticationMethod = oneof
-	}
-	if oneof := ForwardSSHTunnelConnectivity_PrivateKey_ToProto(mapCtx, in.PrivateKey); oneof != nil {
-		out.AuthenticationMethod = oneof
-	}
-	return out
-}
 func GCSProfile_FromProto(mapCtx *direct.MapContext, in *pb.GcsProfile) *krm.GCSProfile {
 	if in == nil {
 		return nil
@@ -109,30 +81,6 @@ func GCSProfile_ToProto(mapCtx *direct.MapContext, in *krm.GCSProfile) *pb.GcsPr
 	out := &pb.GcsProfile{}
 	out.Bucket = direct.ValueOf(in.Bucket)
 	out.RootPath = direct.ValueOf(in.RootPath)
-	return out
-}
-func MysqlProfile_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krm.MysqlProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MysqlProfile{}
-	out.Hostname = direct.LazyPtr(in.GetHostname())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.SSLConfig = MysqlSSLConfig_FromProto(mapCtx, in.GetSslConfig())
-	return out
-}
-func MysqlProfile_ToProto(mapCtx *direct.MapContext, in *krm.MysqlProfile) *pb.MysqlProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MysqlProfile{}
-	out.Hostname = direct.ValueOf(in.Hostname)
-	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	out.SslConfig = MysqlSSLConfig_ToProto(mapCtx, in.SSLConfig)
 	return out
 }
 func MysqlProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krm.MysqlProfileObservedState {
@@ -279,30 +227,6 @@ func OracleSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Ora
 	out.CaCertificateSet = direct.ValueOf(in.CACertificateSet)
 	return out
 }
-func PostgresqlProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlProfile) *krm.PostgresqlProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PostgresqlProfile{}
-	out.Hostname = direct.LazyPtr(in.GetHostname())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.Database = direct.LazyPtr(in.GetDatabase())
-	return out
-}
-func PostgresqlProfile_ToProto(mapCtx *direct.MapContext, in *krm.PostgresqlProfile) *pb.PostgresqlProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PostgresqlProfile{}
-	out.Hostname = direct.ValueOf(in.Hostname)
-	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	out.Database = direct.ValueOf(in.Database)
-	return out
-}
 func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnectivity) *pb.PrivateConnectivity {
 	if in == nil {
 		return nil
@@ -311,30 +235,6 @@ func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConne
 	if in.PrivateConnectionRef != nil {
 		out.PrivateConnection = in.PrivateConnectionRef.External
 	}
-	return out
-}
-func SQLServerProfile_FromProto(mapCtx *direct.MapContext, in *pb.SqlServerProfile) *krm.SQLServerProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SQLServerProfile{}
-	out.Hostname = direct.LazyPtr(in.GetHostname())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	out.Database = direct.LazyPtr(in.GetDatabase())
-	return out
-}
-func SQLServerProfile_ToProto(mapCtx *direct.MapContext, in *krm.SQLServerProfile) *pb.SqlServerProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SqlServerProfile{}
-	out.Hostname = direct.ValueOf(in.Hostname)
-	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	out.Database = direct.ValueOf(in.Database)
 	return out
 }
 func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krm.StaticServiceIPConnectivity {

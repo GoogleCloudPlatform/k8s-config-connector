@@ -15,7 +15,9 @@
 package v1alpha1
 
 import (
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -165,12 +167,19 @@ type OracleAsmConfig struct {
 	// Required. Username for the Oracle ASM connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleAsmConfig.username
 	// +required
-	Username *string `json:"username,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
 
 	// Required. Password for the Oracle ASM connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleAsmConfig.password
 	// +required
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the Oracle ASM connection.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// Required. ASM service name for the Oracle ASM connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleAsmConfig.asm_service
@@ -193,18 +202,25 @@ type ForwardSSHTunnelConnectivity struct {
 	// +required
 	Hostname *string `json:"hostname,omitempty"`
 
-	// Required. Username for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.datastream.v1.ForwardSshTunnelConnectivity.username
-	// +required
-	Username *string `json:"username,omitempty"`
-
 	// Port for the SSH tunnel, default value is 22.
 	// +kcc:proto:field=google.cloud.datastream.v1.ForwardSshTunnelConnectivity.port
 	Port *int32 `json:"port,omitempty"`
 
+	// Required. Username for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.datastream.v1.ForwardSshTunnelConnectivity.username
+	// +required
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
+
 	// Input only. SSH password.
 	// +kcc:proto:field=google.cloud.datastream.v1.ForwardSshTunnelConnectivity.password
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the SSH tunnel.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// Input only. SSH private key.
 	// +kcc:proto:field=google.cloud.datastream.v1.ForwardSshTunnelConnectivity.private_key
@@ -237,12 +253,19 @@ type MysqlProfile struct {
 	// Required. Username for the MySQL connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.MysqlProfile.username
 	// +required
-	Username *string `json:"username,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
 
 	// Optional. Input only. Password for the MySQL connection. Mutually exclusive
 	//  with the `secret_manager_stored_password` field.
 	// +kcc:proto:field=google.cloud.datastream.v1.MysqlProfile.password
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the MySQL connection.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// SSL configuration for the MySQL connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.MysqlProfile.ssl_config
@@ -263,12 +286,19 @@ type OracleProfile struct {
 	// Required. Username for the Oracle connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleProfile.username
 	// +required
-	Username *string `json:"username,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
 
 	// Optional. Password for the Oracle connection. Mutually exclusive with the
 	//  `secret_manager_stored_password` field.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleProfile.password
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the Oracle connection.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// Required. Database for the Oracle connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleProfile.database_service
@@ -307,12 +337,19 @@ type PostgresqlProfile struct {
 	// Required. Username for the PostgreSQL connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlProfile.username
 	// +required
-	Username *string `json:"username,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
 
 	// Optional. Password for the PostgreSQL connection. Mutually exclusive with
 	//  the `secret_manager_stored_password` field.
 	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlProfile.password
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the PostgreSQL connection.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// Required. Database for the PostgreSQL connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlProfile.database
@@ -336,12 +373,19 @@ type SQLServerProfile struct {
 	// Required. Username for the SQLServer connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.SqlServerProfile.username
 	// +required
-	Username *string `json:"username,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Username *string `json:"username,omitempty"`
 
 	// Optional. Password for the SQLServer connection. Mutually exclusive with
 	//  the `secret_manager_stored_password` field.
 	// +kcc:proto:field=google.cloud.datastream.v1.SqlServerProfile.password
-	Password *string `json:"password,omitempty"`
+	// NOTYET: this field is replaced by the secretRef field
+	// Password *string `json:"password,omitempty"`
+
+	// The Kubernetes Secret object that stores the "username" and "password" information for the SQLServer connection.
+	// The Secret type has to be `kubernetes.io/basic-auth`.
+	// +required
+	SecretRef *refsv1beta1secret.BasicAuthSecretRef `json:"secretRef,omitempty"`
 
 	// Required. Database for the SQLServer connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.SqlServerProfile.database

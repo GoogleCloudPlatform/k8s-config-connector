@@ -73,9 +73,6 @@ spec:
                   hostname:
                     description: Required. Hostname for the SSH tunnel.
                     type: string
-                  password:
-                    description: Input only. SSH password.
-                    type: string
                   port:
                     description: Port for the SSH tunnel, default value is 22.
                     format: int32
@@ -83,12 +80,24 @@ spec:
                   privateKey:
                     description: Input only. SSH private key.
                     type: string
-                  username:
-                    description: Required. Username for the SSH tunnel.
-                    type: string
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the SSH tunnel. The Secret type
+                      has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                 required:
                 - hostname
-                - username
+                - secretRef
                 type: object
               gcsProfile:
                 description: Cloud Storage ConnectionProfile configuration.
@@ -119,15 +128,25 @@ spec:
                   hostname:
                     description: Required. Hostname for the MySQL connection.
                     type: string
-                  password:
-                    description: Optional. Input only. Password for the MySQL connection.
-                      Mutually exclusive with the `secret_manager_stored_password`
-                      field.
-                    type: string
                   port:
                     description: Port for the MySQL connection, default value is 3306.
                     format: int32
                     type: integer
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the MySQL connection. The Secret
+                      type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                   sslConfig:
                     description: SSL configuration for the MySQL connection.
                     properties:
@@ -148,12 +167,9 @@ spec:
                           are mandatory.
                         type: string
                     type: object
-                  username:
-                    description: Required. Username for the MySQL connection.
-                    type: string
                 required:
                 - hostname
-                - username
+                - secretRef
                 type: object
               oracleProfile:
                 description: Oracle ConnectionProfile configuration.
@@ -192,22 +208,31 @@ spec:
                               CA that signed the source database server's certificate.
                             type: string
                         type: object
-                      password:
-                        description: Required. Password for the Oracle ASM connection.
-                        type: string
                       port:
                         description: Required. Port for the Oracle ASM connection.
                         format: int32
                         type: integer
-                      username:
-                        description: Required. Username for the Oracle ASM connection.
-                        type: string
+                      secretRef:
+                        description: The Kubernetes Secret object that stores the
+                          "username" and "password" information for the Oracle ASM
+                          connection. The Secret type has to be `kubernetes.io/basic-auth`.
+                        properties:
+                          name:
+                            description: The `metadata.name` field of a Kubernetes
+                              `Secret`
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a Kubernetes
+                              `Secret`.
+                            type: string
+                        required:
+                        - name
+                        type: object
                     required:
                     - asmService
                     - hostname
-                    - password
                     - port
-                    - username
+                    - secretRef
                     type: object
                   oracleSSLConfig:
                     description: Optional. SSL configuration for the Oracle connection.
@@ -217,10 +242,6 @@ spec:
                           that signed the source database server's certificate.
                         type: string
                     type: object
-                  password:
-                    description: Optional. Password for the Oracle connection. Mutually
-                      exclusive with the `secret_manager_stored_password` field.
-                    type: string
                   port:
                     description: Port for the Oracle connection, default value is
                       1521.
@@ -231,13 +252,25 @@ spec:
                       name storing the Oracle connection password. Mutually exclusive
                       with the `password` field.
                     type: string
-                  username:
-                    description: Required. Username for the Oracle connection.
-                    type: string
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the Oracle connection. The Secret
+                      type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                 required:
                 - databaseService
                 - hostname
-                - username
+                - secretRef
                 type: object
               privateConnectivity:
                 description: Private connectivity.
@@ -319,23 +352,30 @@ spec:
                   hostname:
                     description: Required. Hostname for the SQLServer connection.
                     type: string
-                  password:
-                    description: Optional. Password for the SQLServer connection.
-                      Mutually exclusive with the `secret_manager_stored_password`
-                      field.
-                    type: string
                   port:
                     description: Port for the SQLServer connection, default value
                       is 1433.
                     format: int32
                     type: integer
-                  username:
-                    description: Required. Username for the SQLServer connection.
-                    type: string
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the SQLServer connection. The
+                      Secret type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                 required:
                 - database
                 - hostname
-                - username
+                - secretRef
                 type: object
               staticServiceIPConnectivity:
                 description: Static Service IP connectivity.
