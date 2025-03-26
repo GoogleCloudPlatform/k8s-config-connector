@@ -183,25 +183,27 @@ func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.
 		paths = append(paths, "vmware_engine_network")
 	}
 
+	var updated *pb.NetworkPolicy
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		// even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateNetworkPolicyRequest{
+			NetworkPolicy: resource,
+			UpdateMask:    &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateNetworkPolicy(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating vmwareengine network policy %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("vmwareengine network policy %s waiting for update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated vmwareengine network policy", "name", a.id)
 	}
-
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateNetworkPolicyRequest{
-		NetworkPolicy: resource,
-		UpdateMask:    &fieldmaskpb.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateNetworkPolicy(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating vmwareengine network policy %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("vmwareengine network policy %s waiting for update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated vmwareengine network policy", "name", a.id)
 
 	status := &krm.VMwareEngineNetworkPolicyStatus{}
 	status.ObservedState = VMwareEngineNetworkPolicyObservedState_FromProto(mapCtx, updated)
