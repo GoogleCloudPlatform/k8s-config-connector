@@ -177,7 +177,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/kms/v1/resources.proto \
 		./third_party/googleapis/mockgcp/cloud/recaptchaenterprise/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
