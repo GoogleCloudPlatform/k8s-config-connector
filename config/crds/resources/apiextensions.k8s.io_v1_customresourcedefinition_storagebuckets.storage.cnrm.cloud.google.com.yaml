@@ -159,6 +159,63 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
+              ipFilter:
+                description: The bucket IP filtering configuration. Specifies the
+                  network sources that can access the bucket, as well as its underlying
+                  objects.
+                properties:
+                  mode:
+                    description: The state of the IP filter configuration. Valid values
+                      are Enabled and Disabled. When set to Enabled, IP filtering
+                      rules are applied to a bucket and all incoming requests to the
+                      bucket are evaluated against these rules. When set to Disabled,
+                      IP filtering rules are not applied to a bucket.
+                    type: string
+                  publicNetworkSource:
+                    description: The public network IP address ranges that can access
+                      the bucket and its data.
+                    properties:
+                      allowedIpCidrRanges:
+                        description: The list of public IPv4 and IPv6 CIDR ranges
+                          that can access the bucket and its data. In the CIDR IP
+                          address block, the specified IP address must be properly
+                          truncated, meaning all the host bits must be zero or else
+                          the input is considered malformed. For example, 192.0.2.0/24
+                          is accepted but 192.0.2.1/24 is not. Similarly, for IPv6,
+                          2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - allowedIpCidrRanges
+                    type: object
+                  vpcNetworkSources:
+                    description: The public network IP address ranges that can access
+                      the bucket and its data.
+                    items:
+                      properties:
+                        allowedIpCidrRanges:
+                          description: The list of public IPv4 and IPv6 CIDR ranges
+                            that can access the bucket and its data. In the CIDR IP
+                            address block, the specified IP address must be properly
+                            truncated, meaning all the host bits must be zero or else
+                            the input is considered malformed. For example, 192.0.2.0/24
+                            is accepted but 192.0.2.1/24 is not. Similarly, for IPv6,
+                            2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.
+                          items:
+                            type: string
+                          type: array
+                        network:
+                          description: 'Name of the network. Format: projects/PROJECT_ID/global/networks/NETWORK_NAME.'
+                          type: string
+                      required:
+                      - allowedIpCidrRanges
+                      - network
+                      type: object
+                    type: array
+                required:
+                - mode
+                type: object
               lifecycleRule:
                 description: The bucket's Lifecycle Rules configuration.
                 items:
@@ -368,6 +425,20 @@ spec:
               observedState:
                 description: The observed state of the underlying GCP resource.
                 properties:
+                  ipFilter:
+                    description: The bucket IP filtering configuration. Specifies
+                      the network sources that can access the bucket, as well as its
+                      underlying objects.
+                    properties:
+                      mode:
+                        description: The state of the IP filter configuration. Valid
+                          values are Enabled and Disabled. When set to Enabled, IP
+                          filtering rules are applied to a bucket and all incoming
+                          requests to the bucket are evaluated against these rules.
+                          When set to Disabled, IP filtering rules are not applied
+                          to a bucket.
+                        type: string
+                    type: object
                   softDeletePolicy:
                     description: The bucket's soft delete policy, which defines the
                       period of time that soft-deleted objects will be retained, and

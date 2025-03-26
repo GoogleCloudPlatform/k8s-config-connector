@@ -460,6 +460,68 @@ func ResourceStorageBucket() *schema.Resource {
 					},
 				},
 			},
+			"ip_filter": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `The bucket IP filtering configuration. Specifies the network sources that can access the bucket, as well as its underlying objects.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"mode": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Required:    true,
+							Description: `The state of the IP filter configuration. Valid values are Enabled and Disabled. When set to Enabled, IP filtering rules are applied to a bucket and all incoming requests to the bucket are evaluated against these rules. When set to Disabled, IP filtering rules are not applied to a bucket.`,
+						},
+						"public_network_source": {
+							Type:        schema.TypeList,
+							MaxItems:    1,
+							Optional:    true,
+							Computed:    true,
+							Description: `The public network IP address ranges that can access the bucket and its data.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"allowed_ip_cidr_ranges": {
+										Type:        schema.TypeSet,
+										Computed:    true,
+										Required:    true,
+										Description: `The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+								},
+							},
+						},
+						"vpc_network_sources": {
+							Type:        schema.TypeList,
+							MaxItems:    64,
+							Optional:    true,
+							Description: `The public network IP address ranges that can access the bucket and its data.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"network": {
+										Type:        schema.TypeString,
+										Computed:    true,
+										Required:    true,
+										Description: `Name of the network. Format: projects/PROJECT_ID/global/networks/NETWORK_NAME`,
+									},
+									"allowed_ip_cidr_ranges": {
+										Type:        schema.TypeSet,
+										Computed:    true,
+										Required:    true,
+										Description: `The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 		UseJSONNumber: true,
 	}
