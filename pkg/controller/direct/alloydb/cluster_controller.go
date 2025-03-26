@@ -487,6 +487,8 @@ func (a *ClusterAdapter) resolveGCPDefaults(desired *alloydbpb.Cluster, actual *
 		desired.SubscriptionType = alloydbpb.SubscriptionType_STANDARD
 	}
 	desired.DatabaseVersion = actual.DatabaseVersion
+
+	desired.Source = actual.Source
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
