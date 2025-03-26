@@ -21,7 +21,7 @@ import (
 )
 
 func NotebookRuntimeTemplateRef_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplateRef) *krm.NotebookRuntimeTemplateRef {
-	if in == nil || in.NotebookRuntimeTemplate == "" {
+	if in == nil {
 		return nil
 	}
 	return &krm.NotebookRuntimeTemplateRef{

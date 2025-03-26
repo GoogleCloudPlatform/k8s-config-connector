@@ -36,6 +36,12 @@ func colabRuntimeFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")          // special field
 	f.UnimplementedFields.Insert(".satisfies_pzs") // field for future use
 	f.UnimplementedFields.Insert(".satisfies_pzi") // field for future use
+	f.UnimplementedFields.Insert(".data_persistent_disk_spec")
+	f.UnimplementedFields.Insert(".machine_spec")
+	f.UnimplementedFields.Insert(".shielded_vm_config")
+	f.UnimplementedFields.Insert(".software_config")
+	f.UnimplementedFields.Insert(".network_spec")
+	f.UnimplementedFields.Insert(".euc_config")
 
 	f.SpecFields.Insert(".notebook_runtime_template_ref")
 	f.SpecFields.Insert(".runtime_user")
