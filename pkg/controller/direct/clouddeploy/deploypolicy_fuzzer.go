@@ -29,23 +29,24 @@ func init() {
 
 func deployDeployPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DeployPolicy{},
-		DeployDeployPolicySpec_FromProto, DeployDeployPolicySpec_ToProto,
-		DeployDeployPolicyObservedState_FromProto, DeployDeployPolicyObservedState_ToProto,
+		DeployPolicySpec_FromProto, DeployPolicySpec_ToProto,
+		DeployPolicyObservedState_FromProto, DeployPolicyObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")
-
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".suspended")
 	f.SpecFields.Insert(".selectors")
 	f.SpecFields.Insert(".rules")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+
+	// NOT YET
+	f.UnimplementedFields.Insert(".etag")
+	f.UnimplementedFields.Insert(".annotations")
+	f.UnimplementedFields.Insert(".labels")
+	f.UnimplementedFields.Insert(".name")
 
 	return f
 }

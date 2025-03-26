@@ -53,7 +53,7 @@ func (p *DeployPolicyParent) String() string {
 }
 
 // New builds a DeployPolicyIdentity from the Config Connector DeployPolicy object.
-func NewDeployPolicyIdentity(ctx context.Context, reader client.Reader, obj *DeployDeployPolicy) (*DeployPolicyIdentity, error) {
+func NewDeployPolicyIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployDeployPolicy) (*DeployPolicyIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
