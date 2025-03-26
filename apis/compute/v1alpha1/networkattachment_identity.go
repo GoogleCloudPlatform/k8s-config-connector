@@ -26,13 +26,20 @@ import (
 
 // NetworkAttachmentIdentity defines the resource reference to ComputeNetworkAttachment, which "External" field
 // holds the GCP identifier for the KRM object.
+
+// No changes needed to NetworkAttachmentParent struct.
+type NetworkAttachmentParent struct {
+	ProjectID string
+	Location  string
+}
+
 type NetworkAttachmentIdentity struct {
 	parent *NetworkAttachmentParent
 	id     string
 }
 
 func (i *NetworkAttachmentIdentity) String() string {
-	return i.parent.String() + "/networkattachments/" + i.id
+	return i.parent.String() + "/networkAttachments/" + i.id
 }
 
 func (i *NetworkAttachmentIdentity) ID() string {
@@ -49,7 +56,7 @@ type NetworkAttachmentParent struct {
 }
 
 func (p *NetworkAttachmentParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/regions/" + p.Location
 }
 
 // New builds a NetworkAttachmentIdentity from the Config Connector NetworkAttachment object.
@@ -105,8 +112,8 @@ func NewNetworkAttachmentIdentity(ctx context.Context, reader client.Reader, obj
 
 func ParseNetworkAttachmentExternal(external string) (parent *NetworkAttachmentParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkattachments" {
-		return nil, "", fmt.Errorf("format of ComputeNetworkAttachment external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkattachments/{{networkattachmentID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "networkAttachments" {
+		return nil, "", fmt.Errorf("format of ComputeNetworkAttachment external=%q was not known (use projects/{{projectID}}/regions/{{location}}/networkAttachments/{{networkattachmentID}})", external)
 	}
 	parent = &NetworkAttachmentParent{
 		ProjectID: tokens[1],
