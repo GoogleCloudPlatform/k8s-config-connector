@@ -214,10 +214,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Updated Test App Profile",
+    "multiClusterRoutingUseAny": {},
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}"
+  }
 }
 
 ---
@@ -247,10 +254,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
     "description": "Updated Test App Profile",
     "multiClusterRoutingUseAny": {},
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
-    "standardIsolation": {
-      "priority": "PRIORITY_HIGH"
-    }
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}"
   }
 }
 
@@ -299,6 +303,17 @@ X-Xss-Protection: 0
 
 {
   "appProfiles": [
+    {
+      "description": "Default application profile for this instance. This profile is used if you do not supply a different profile ID at connection time.",
+      "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/default",
+      "singleClusterRouting": {
+        "allowTransactionalWrites": true,
+        "clusterId": "test-cluster-${uniqueId}"
+      },
+      "standardIsolation": {
+        "priority": "PRIORITY_HIGH"
+      }
+    },
     {
       "description": "Updated Test App Profile",
       "multiClusterRoutingUseAny": {},
