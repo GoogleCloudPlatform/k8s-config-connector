@@ -64,10 +64,10 @@ func NewConnectivityTestIdentity(ctx context.Context, reader client.Reader, obj 
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := "global"
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	resourceID := common.ValueOf(obj.Spec.Name)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
