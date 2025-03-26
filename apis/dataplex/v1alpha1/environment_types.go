@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,10 +22,6 @@ import (
 var DataplexEnvironmentGVK = GroupVersion.WithKind("DataplexEnvironment")
 
 type DataplexEnvironmentParent struct {
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-	// +required
-	Location string `json:"location"`
 	// +required
 	LakeRef LakeRef `json:"lakeRef"`
 }
