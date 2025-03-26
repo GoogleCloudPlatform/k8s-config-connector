@@ -2092,11 +2092,14 @@
 [missing_field] crd=edgecontainernodepools.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.localDiskEncryption.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgecontainernodepools.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.localDiskEncryption.kmsKeyState" is not set in unstructured objects
 [missing_field] crd=edgecontainernodepools.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.machineFilter" is not set in unstructured objects
+[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.bgpRoutingMode" is not set in unstructured objects
+[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.edgecontainerClusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.enableHighAvailability" is not set in unstructured objects
-[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.natGatewayIp" is not set in unstructured objects
+[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.natGatewayIP" is not set in unstructured objects
 [missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.router" is not set in unstructured objects
 [missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpc" is not set in unstructured objects
-[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpcProject.projectId" is not set in unstructured objects
+[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpcProject.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpcProject.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgenetworknetworks.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6Cidr[]" is not set in unstructured objects
 [missing_field] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
