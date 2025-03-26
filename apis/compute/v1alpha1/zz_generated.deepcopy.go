@@ -404,11 +404,6 @@ func (in *ComputeNetworkAttachmentObservedState) DeepCopyInto(out *ComputeNetwor
 		*out = new(string)
 		**out = **in
 	}
-	if in.SubnetworkCIDRRange != nil {
-		in, out := &in.SubnetworkCIDRRange, &out.SubnetworkCIDRRange
-		*out = new(string)
-		**out = **in
-	}
 	if in.Network != nil {
 		in, out := &in.Network, &out.Network
 		*out = new(string)
@@ -487,48 +482,36 @@ func (in *ComputeNetworkAttachmentSpec) DeepCopyInto(out *ComputeNetworkAttachme
 	}
 	if in.ProducerAcceptLists != nil {
 		in, out := &in.ProducerAcceptLists, &out.ProducerAcceptLists
-		*out = make([]v1beta1.ProjectRef, len(*in))
-		copy(*out, *in)
+		*out = make([]*v1beta1.ProjectRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(v1beta1.ProjectRef)
+				**out = **in
+			}
+		}
 	}
 	if in.ProducerRejectLists != nil {
 		in, out := &in.ProducerRejectLists, &out.ProducerRejectLists
-		*out = make([]v1beta1.ProjectRef, len(*in))
-		copy(*out, *in)
+		*out = make([]*v1beta1.ProjectRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(v1beta1.ProjectRef)
+				**out = **in
+			}
+		}
 	}
 	if in.Subnetworks != nil {
 		in, out := &in.Subnetworks, &out.Subnetworks
-		*out = make([]v1beta1.ComputeSubnetworkRef, len(*in))
-		copy(*out, *in)
-	}
-	if in.IPAddressRef != nil {
-		in, out := &in.IPAddressRef, &out.IPAddressRef
-		*out = new(v1beta1.ComputeAddressRef)
-		**out = **in
-	}
-	if in.IPV6AddressRef != nil {
-		in, out := &in.IPV6AddressRef, &out.IPV6AddressRef
-		*out = new(v1beta1.ComputeAddressRef)
-		**out = **in
-	}
-	if in.ProjectIDOrNum != nil {
-		in, out := &in.ProjectIDOrNum, &out.ProjectIDOrNum
-		*out = new(string)
-		**out = **in
-	}
-	if in.SecondaryIPCIDRRanges != nil {
-		in, out := &in.SecondaryIPCIDRRanges, &out.SecondaryIPCIDRRanges
-		*out = make([]string, len(*in))
-		copy(*out, *in)
-	}
-	if in.Status != nil {
-		in, out := &in.Status, &out.Status
-		*out = new(string)
-		**out = **in
-	}
-	if in.SubnetworkRef != nil {
-		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
-		**out = **in
+		*out = make([]*v1beta1.ComputeSubnetworkRef, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(v1beta1.ComputeSubnetworkRef)
+				**out = **in
+			}
+		}
 	}
 }
 

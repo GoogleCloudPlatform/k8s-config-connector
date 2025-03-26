@@ -74,65 +74,6 @@ spec:
                   stored in this object. This field is used in optimistic locking.
                   An up-to-date fingerprint must be provided in order to patch.
                 type: string
-              ipAddressRef:
-                description: The IPv4 address assigned to the producer instance network
-                  interface. This value will be a range in case of Serverless.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                      when not managed by Config Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `ComputeAddress` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `ComputeAddress` resource.
-                    type: string
-                type: object
-              ipv6AddressRef:
-                description: The IPv6 address assigned to the producer instance network
-                  interface. This is only assigned when the stack types of both the
-                  instance network interface and the consumer subnet are IPv4_IPv6.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
-                      when not managed by Config Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `ComputeAddress` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `ComputeAddress` resource.
-                    type: string
-                type: object
               location:
                 type: string
               producerAcceptLists:
@@ -213,10 +154,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              projectIDOrNum:
-                description: The project id or number of the interface to which the
-                  IP was assigned.
-                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -253,44 +190,6 @@ spec:
                 description: The ComputeNetworkAttachment name. If not given, the
                   metadata.name will be used.
                 type: string
-              secondaryIPCIDRRanges:
-                description: Alias IP ranges from the same subnetwork.
-                items:
-                  type: string
-                type: array
-              status:
-                description: The status of a connected endpoint to this network attachment.
-                  Check the Status enum for the list of possible values.
-                type: string
-              subnetworkRef:
-                description: The subnetwork used to assign the IP to the producer
-                  instance network interface.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                      when not managed by Config Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `ComputeSubnetwork` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `ComputeSubnetwork` resource.
-                    type: string
-                type: object
               subnetworks:
                 description: An array of URLs where each entry is the URL of a subnet
                   provided by the service consumer to use for endpoints in the producers
@@ -446,10 +345,6 @@ spec:
                   selfLinkWithID:
                     description: '[Output Only] Server-defined URL for this resource''s
                       resource id.'
-                    type: string
-                  subnetworkCIDRRange:
-                    description: '[Output Only] The CIDR range of the subnet from
-                      which the IPv4 internal IP was allocated from.'
                     type: string
                 type: object
             type: object
