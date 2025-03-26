@@ -279,6 +279,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	workflowsv1alpha1.AddToScheme,
 	workstationsv1alpha1.AddToScheme,
 	workstationsv1beta1.AddToScheme,
+	clouddeployv1alpha1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition
