@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,21 +21,22 @@ package mockcompute
 import (
 	"context"
 	"fmt"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
-type interconnects struct {
+type interconnectsV1 struct {
 	*MockService
 	pb.UnimplementedInterconnectsServer
 }
 
-func (s *interconnects) Get(ctx context.Context, req *pb.GetInterconnectRequest) (*pb.Interconnect, error) {
+func (s *interconnectsV1) Get(ctx context.Context, req *pb.GetInterconnectRequest) (*pb.Interconnect, error) {
 	name, err := s.parseInterconnectName(req.Project, req.Interconnect)
 	if err != nil {
 		return nil, err
@@ -46,7 +47,7 @@ func (s *interconnects) Get(ctx context.Context, req *pb.GetInterconnectRequest)
 	obj := &pb.Interconnect{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "%v not found", req.Interconnect)
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", name.String())
 		}
 		return nil, err
 	}
@@ -54,7 +55,7 @@ func (s *interconnects) Get(ctx context.Context, req *pb.GetInterconnectRequest)
 	return obj, nil
 }
 
-func (s *interconnects) Insert(ctx context.Context, req *pb.InsertInterconnectRequest) (*pb.Operation, error) {
+func (s *interconnectsV1) Insert(ctx context.Context, req *pb.InsertInterconnectRequest) (*pb.Operation, error) {
 	name, err := s.parseInterconnectName(req.Project, req.GetInterconnectResource().GetName())
 	if err != nil {
 		return nil, err
@@ -62,7 +63,7 @@ func (s *interconnects) Insert(ctx context.Context, req *pb.InsertInterconnectRe
 
 	fqn := name.String()
 	obj := proto.Clone(req.GetInterconnectResource()).(*pb.Interconnect)
-	obj.SelfLink = PtrTo(fmt.Sprintf("%s%s", s.getInstanceURL(ctx), fqn))
+	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", name.String()))
 	obj.Kind = PtrTo("compute#interconnect")
 	obj.Id = proto.Uint64(s.generateID())
 
@@ -73,19 +74,26 @@ func (s *interconnects) Insert(ctx context.Context, req *pb.InsertInterconnectRe
 	op := &pb.Operation{
 		OperationType: PtrTo("insert"),
 		TargetLink:    obj.SelfLink,
-		Status:        PtrTo("RUNNING"),
+		Status:        PtrTo(pb.Operation_RUNNING),
 		User:          PtrTo("user@example.com"),
 		Progress:      PtrTo(int32(0)),
 		TargetId:      obj.Id,
 	}
 
-	return s.startGlobalOperation(ctx, req.Project, op, func() (proto.Message, error) {
-		obj, err := s.Get(ctx, &pb.GetInterconnectRequest{Project: name.Project.ProjectID, Interconnect: name.Name})
+	return s.startGlobalLRO(ctx, req.Project, op, func() (proto.Message, error) {
+		obj, err := s.Get(ctx, &pb.GetInterconnectRequest{Project: name.Project, Interconnect: name.Name})
 		if err != nil {
 			return nil, fmt.Errorf("getting object: %w", err)
 		}
 
-		obj.State = PtrTo("ACTIVE")
+		obj.State = PtrTo("UNPROVISIONED")
+		obj.InterconnectType = PtrTo("IT_PRIVATE")
+		obj.AdminEnabled = PtrTo(true)
+		obj.CreationTimestamp = PtrTo(timestamppb.New(time.Now()).String())
+		obj.GoogleReferenceId = PtrTo("1234567890")
+		obj.LabelFingerprint = PtrTo("abcdef0123A=")
+		obj.MacsecEnabled = PtrTo(false)
+		obj.OperationalStatus = PtrTo("OS_UNPROVISIONED")
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, status.Errorf(codes.Internal, "error updating object: %v", err)
@@ -94,7 +102,7 @@ func (s *interconnects) Insert(ctx context.Context, req *pb.InsertInterconnectRe
 	})
 }
 
-func (s *interconnects) Delete(ctx context.Context, req *pb.DeleteInterconnectRequest) (*pb.Operation, error) {
+func (s *interconnectsV1) Delete(ctx context.Context, req *pb.DeleteInterconnectRequest) (*pb.Operation, error) {
 	name, err := s.parseInterconnectName(req.Project, req.Interconnect)
 	if err != nil {
 		return nil, err
@@ -112,19 +120,19 @@ func (s *interconnects) Delete(ctx context.Context, req *pb.DeleteInterconnectRe
 	op := &pb.Operation{
 		OperationType: PtrTo("delete"),
 		TargetLink:    obj.SelfLink,
-		Status:        PtrTo("RUNNING"),
+		Status:        PtrTo(pb.Operation_RUNNING),
 		User:          PtrTo("user@example.com"),
 		TargetId:      obj.Id,
 		Progress:      PtrTo(int32(0)),
 	}
 
-	return s.startGlobalOperation(ctx, req.Project, op, func() (proto.Message, error) {
+	return s.startGlobalLRO(ctx, req.Project, op, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
 }
 
-func (s *interconnects) Patch(ctx context.Context, req *pb.PatchInterconnectRequest) (*pb.Operation, error) {
-	reqName := fmt.Sprintf("projects/%s/global/interconnects/%s", req.GetProject(), req.GetInterconnect())
+// todo: more fidelity for Patch
+func (s *interconnectsV1) Patch(ctx context.Context, req *pb.PatchInterconnectRequest) (*pb.Operation, error) {
 	name, err := s.parseInterconnectName(req.GetProject(), req.GetInterconnect())
 	if err != nil {
 		return nil, err
@@ -136,7 +144,6 @@ func (s *interconnects) Patch(ctx context.Context, req *pb.PatchInterconnectRequ
 		return nil, err
 	}
 
-	// TODO: Apply field mask.
 	proto.Merge(obj, req.GetInterconnectResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -146,12 +153,12 @@ func (s *interconnects) Patch(ctx context.Context, req *pb.PatchInterconnectRequ
 	op := &pb.Operation{
 		OperationType: PtrTo("patch"),
 		TargetLink:    obj.SelfLink,
-		Status:        PtrTo("RUNNING"),
+		Status:        PtrTo(pb.Operation_RUNNING),
 		User:          PtrTo("user@example.com"),
 		TargetId:      obj.Id,
 		Progress:      PtrTo(int32(0)),
 	}
-	return s.startGlobalOperation(ctx, req.Project, op, func() (proto.Message, error) {
+	return s.startGlobalLRO(ctx, req.Project, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }

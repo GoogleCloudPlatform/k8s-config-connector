@@ -124,7 +124,7 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "customerName": "customer",
   "description": "Initial description",
-  "googleReferenceId": "864080642",
+  "googleReferenceId": "1234567890",
   "id": "000000000000000000000",
   "interconnectType": "IT_PRIVATE",
   "kind": "compute#interconnect",

@@ -29,8 +29,8 @@ status:
   observedGeneration: 1
   observedState:
     creationTimestamp: "1970-01-01T00:00:00Z"
-    googleReferenceID: "864080642"
-    id: 3753052029624138000
+    googleReferenceID: "1234567890"
+    id: "000000000000000000000"
     kind: compute#interconnect
     operationalStatus: OS_UNPROVISIONED
     selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
