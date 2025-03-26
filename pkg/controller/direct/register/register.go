@@ -16,6 +16,7 @@ package register
 
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/firewallpolicyrule"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
