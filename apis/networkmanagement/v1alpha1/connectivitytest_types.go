@@ -22,11 +22,18 @@ import (
 
 var NetworkManagementConnectivityTestGVK = GroupVersion.WithKind("NetworkManagementConnectivityTest")
 
+type Parent struct {
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // NetworkManagementConnectivityTestSpec defines the desired state of NetworkManagementConnectivityTest
 // +kcc:proto=google.cloud.networkmanagement.v1.ConnectivityTest
 type NetworkManagementConnectivityTestSpec struct {
 	// The project that this resource belongs to. If not provided, the provider project is used.
-	ProjectRef refsv1beta1.Reference `json:"projectRef"`
+	Parent Parent `json:"parent"`
 	// The NetworkManagementConnectivityTest name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
