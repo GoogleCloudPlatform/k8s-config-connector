@@ -68,7 +68,7 @@ func NewConnectivityTestIdentity(ctx context.Context, reader client.Reader, obj 
 	location := "global"
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.Name)
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
