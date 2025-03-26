@@ -26,13 +26,6 @@ import (
 
 // NetworkAttachmentIdentity defines the resource reference to ComputeNetworkAttachment, which "External" field
 // holds the GCP identifier for the KRM object.
-
-// No changes needed to NetworkAttachmentParent struct.
-type NetworkAttachmentParent struct {
-	ProjectID string
-	Location  string
-}
-
 type NetworkAttachmentIdentity struct {
 	parent *NetworkAttachmentParent
 	id     string

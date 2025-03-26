@@ -53,40 +53,15 @@ type ComputeNetworkAttachmentSpec struct {
 
 	// Projects that are allowed to connect to this network attachment. The project can be specified using its id or number.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.producer_accept_lists
-	ProducerAcceptLists []refv1beta1.ProjectRef `json:"producerAcceptLists,omitempty"`
+	ProducerAcceptLists []*refv1beta1.ProjectRef `json:"producerAcceptLists,omitempty"`
 
 	// Projects that are not allowed to connect to this network attachment. The project can be specified using its id or number.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.producer_reject_lists
-	ProducerRejectLists []refv1beta1.ProjectRef `json:"producerRejectLists,omitempty"`
+	ProducerRejectLists []*refv1beta1.ProjectRef `json:"producerRejectLists,omitempty"`
 
 	// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.subnetworks
-	Subnetworks []refv1beta1.ComputeSubnetworkRef `json:"subnetworks,omitempty"`
-
-	// The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.ip_address
-	IPAddress *refv1beta1.ComputeAddressRef `json:"ipAddress,omitempty"`
-
-	// The IPv6 address assigned to the producer instance network interface. This is only assigned when the stack types of both the instance network interface and the consumer subnet are IPv4_IPv6.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.ipv6_address
-	IPV6Address *refv1beta1.ComputeAddressRef `json:"ipv6Address,omitempty"`
-
-	// The project id or number of the interface to which the IP was assigned.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.project_id_or_num
-	ProjectIDOrNum *string `json:"projectIDOrNum,omitempty"`
-
-	// Alias IP ranges from the same subnetwork.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.secondary_ip_cidr_ranges
-	SecondaryIPCIDRRanges []string `json:"secondaryIPCIDRRanges,omitempty"`
-
-	// The status of a connected endpoint to this network attachment.
-	//  Check the Status enum for the list of possible values.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.status
-	Status *string `json:"status,omitempty"`
-
-	// The subnetwork used to assign the IP to the producer instance network interface.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.subnetwork
-	Subnetwork *refv1beta1.ComputeSubnetworkRef `json:"subnetwork,omitempty"`
+	Subnetworks []*refv1beta1.ComputeSubnetworkRef `json:"subnetworks,omitempty"`
 }
 
 // ComputeNetworkAttachmentStatus defines the config connector machine state of ComputeNetworkAttachment
@@ -111,6 +86,7 @@ type ComputeNetworkAttachmentObservedState struct {
 	// [Output Only] An array of connections for all the producers connected to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.connection_endpoints
 	ConnectionEndpoints []NetworkAttachmentConnectedEndpoint `json:"connectionEndpoints,omitempty"`
+
 	// [Output Only] Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
@@ -134,10 +110,6 @@ type ComputeNetworkAttachmentObservedState struct {
 	// [Output Only] Server-defined URL for this resource's resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
-
-	// [Output Only] The CIDR range of the subnet from which the IPv4 internal IP was allocated from.
-	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachmentConnectedEndpoint.subnetwork_cidr_range
-	SubnetworkCIDRRange *string `json:"subnetworkCIDRRange,omitempty"`
 
 	// [Output Only] The URL of the network which the Network Attachment belongs to. Practically it is inferred by fetching the network of the first subnetwork associated. Because it is required that all the subnetworks must be from the same network, it is assured that the Network Attachment belongs to the same network as all the subnetworks.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.network
