@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,83 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:types
-// krm.group: spanner.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.spanner.admin.instance.v1
-// resource: SpannerInstanceConfig:InstanceConfig
-
 package v1alpha1
 
-// +kcc:proto=google.spanner.admin.database.v1.BackupScheduleSpec
-type BackupScheduleSpec struct {
-	// Cron style schedule specification.
-	// +kcc:proto:field=google.spanner.admin.database.v1.BackupScheduleSpec.cron_spec
-	CronSpec *CrontabSpec `json:"cronSpec,omitempty"`
+import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var SpannerInstanceConfigGVK = GroupVersion.WithKind("SpannerInstanceConfig")
+
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 }
 
-// +kcc:proto=google.spanner.admin.database.v1.CrontabSpec
-type CrontabSpec struct {
-	// Required. Textual representation of the crontab. User can customize the
-	//  backup frequency and the backup version time using the cron
-	//  expression. The version time must be in UTC timzeone.
-	//
-	//  The backup will contain an externally consistent copy of the
-	//  database at the version time. Allowed frequencies are 12 hour, 1 day,
-	//  1 week and 1 month. Examples of valid cron specifications:
-	//    * `0 2/12 * * * ` : every 12 hours at (2, 14) hours past midnight in UTC.
-	//    * `0 2,14 * * * ` : every 12 hours at (2,14) hours past midnight in UTC.
-	//    * `0 2 * * * `    : once a day at 2 past midnight in UTC.
-	//    * `0 2 * * 0 `    : once a week every Sunday at 2 past midnight in UTC.
-	//    * `0 2 8 * * `    : once a month on 8th day at 2 past midnight in UTC.
-	// +kcc:proto:field=google.spanner.admin.database.v1.CrontabSpec.text
-	Text *string `json:"text,omitempty"`
-}
-
-// +kcc:proto=google.spanner.admin.database.v1.FullBackupSpec
-type FullBackupSpec struct {
-}
-
-// +kcc:proto=google.spanner.admin.database.v1.IncrementalBackupSpec
-type IncrementalBackupSpec struct {
-}
-
-// +kcc:proto=google.spanner.admin.database.v1.BackupScheduleSpec
-type BackupScheduleSpecObservedState struct {
-	// Cron style schedule specification.
-	// +kcc:proto:field=google.spanner.admin.database.v1.BackupScheduleSpec.cron_spec
-	CronSpec *CrontabSpecObservedState `json:"cronSpec,omitempty"`
-}
-
-// +kcc:proto=google.spanner.admin.database.v1.CrontabSpec
-type CrontabSpecObservedState struct {
-	// Output only. The time zone of the times in `CrontabSpec.text`. Currently
-	//  only UTC is supported.
-	// +kcc:proto:field=google.spanner.admin.database.v1.CrontabSpec.time_zone
-	TimeZone *string `json:"timeZone,omitempty"`
-
-	// Output only. Schedule backups will contain an externally consistent copy
-	//  of the database at the version time specified in
-	//  `schedule_spec.cron_spec`. However, Spanner may not initiate the creation
-	//  of the scheduled backups at that version time. Spanner will initiate
-	//  the creation of scheduled backups within the time window bounded by the
-	//  version_time specified in `schedule_spec.cron_spec` and version_time +
-	//  `creation_window`.
-	// +kcc:proto:field=google.spanner.admin.database.v1.CrontabSpec.creation_window
-	CreationWindow *string `json:"creationWindow,omitempty"`
-}
-
+// SpannerInstanceConfigSpec defines the desired state of SpannerInstanceConfig
 // +kcc:proto=google.spanner.admin.instance.v1.InstanceConfig
-type InstanceConfig struct {
-	// A unique identifier for the instance configuration.  Values
-	//  are of the form
-	//  `projects/<project>/instanceConfigs/[a-z][-a-z0-9]*`.
-	//
-	//  User instance configuration must start with `custom-`.
-	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.name
-	Name *string `json:"name,omitempty"`
-
+type SpannerInstanceConfigSpec struct {
+	Parent `json:",inline"`
+	// The SpannerInstanceConfig name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 	// The name of this instance configuration as it appears in UIs.
+	// +required
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -99,6 +45,7 @@ type InstanceConfig struct {
 	//  `replicas` must include all replicas in `replicas` of the `base_config`
 	//  and include one or more replicas in the `optional_replicas` of the
 	//  `base_config`.
+	// +required
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.replicas
 	Replicas []ReplicaInfo `json:"replicas,omitempty"`
 
@@ -107,7 +54,7 @@ type InstanceConfig struct {
 	//  configurations. `base_config` must refer to a configuration of type
 	//  `GOOGLE_MANAGED` in the same project as this configuration.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.base_config
-	BaseConfig *string `json:"baseConfig,omitempty"`
+	BaseConfigRef *InstanceConfigRef `json:"baseConfigRef,omitempty"`
 
 	// Cloud Labels are a flexible and lightweight mechanism for organizing cloud
 	//  resources into groups that reflect a customer's organizational needs and
@@ -119,7 +66,7 @@ type InstanceConfig struct {
 	//   * Label keys must be between 1 and 63 characters long and must conform to
 	//     the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
 	//   * Label values must be between 0 and 63 characters long and must conform
-	//     to the regular expression `[a-z0-9_-]{0,63}`.
+	//     to the regular expression: `[a-z0-9_-]{0,63}`.
 	//   * No more than 64 labels can be associated with a given resource.
 	//
 	//  See https://goo.gl/xmQnxf for more information on and examples of labels.
@@ -153,26 +100,25 @@ type InstanceConfig struct {
 	LeaderOptions []string `json:"leaderOptions,omitempty"`
 }
 
-// +kcc:proto=google.spanner.admin.instance.v1.ReplicaInfo
-type ReplicaInfo struct {
-	// The location of the serving resources, e.g., "us-central1".
-	// +kcc:proto:field=google.spanner.admin.instance.v1.ReplicaInfo.location
-	Location *string `json:"location,omitempty"`
+// SpannerInstanceConfigStatus defines the config connector machine state of SpannerInstanceConfig
+type SpannerInstanceConfigStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
-	// The type of replica.
-	// +kcc:proto:field=google.spanner.admin.instance.v1.ReplicaInfo.type
-	Type *string `json:"type,omitempty"`
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// If true, this location is designated as the default leader location where
-	//  leader replicas are placed. See the [region types
-	//  documentation](https://cloud.google.com/spanner/docs/instances#region_types)
-	//  for more details.
-	// +kcc:proto:field=google.spanner.admin.instance.v1.ReplicaInfo.default_leader_location
-	DefaultLeaderLocation *bool `json:"defaultLeaderLocation,omitempty"`
+	// A unique specifier for the SpannerInstanceConfig resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *SpannerInstanceConfigObservedState `json:"observedState,omitempty"`
 }
 
+// SpannerInstanceConfigObservedState is the state of the SpannerInstanceConfig resource as most recently observed in GCP.
 // +kcc:proto=google.spanner.admin.instance.v1.InstanceConfig
-type InstanceConfigObservedState struct {
+type SpannerInstanceConfigObservedState struct {
 	// Output only. Whether this instance configuration is a Google-managed or
 	//  user-managed configuration.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.config_type
@@ -206,4 +152,37 @@ type InstanceConfigObservedState struct {
 	// Output only. The storage limit in bytes per processing unit.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.storage_limit_per_processing_unit
 	StorageLimitPerProcessingUnit *int64 `json:"storageLimitPerProcessingUnit,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpspannerinstanceconfig;gcpspannerinstanceconfigs
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// SpannerInstanceConfig is the Schema for the SpannerInstanceConfig API
+// +k8s:openapi-gen=true
+type SpannerInstanceConfig struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   SpannerInstanceConfigSpec   `json:"spec,omitempty"`
+	Status SpannerInstanceConfigStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// SpannerInstanceConfigList contains a list of SpannerInstanceConfig
+type SpannerInstanceConfigList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []SpannerInstanceConfig `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&SpannerInstanceConfig{}, &SpannerInstanceConfigList{})
 }
