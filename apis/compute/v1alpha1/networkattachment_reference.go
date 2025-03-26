@@ -17,6 +17,10 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -24,7 +28,6 @@ import (
 )
 
 var _ refsv1beta1.ExternalNormalizer = &ComputeNetworkAttachmentRef{}
-var ComputeNetworkAttachmentGVK = GroupVersion.WithKind("ComputeNetworkAttachment")
 
 // ComputeNetworkAttachmentRef defines the resource reference to ComputeNetworkAttachment, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -36,21 +39,50 @@ type ComputeNetworkAttachmentRef struct {
 
 	// ComputeNetworkAttachment not yet supported in Config Connector, users
 	// should only use 'external' field to reference existing resources.
-	/* NOTYET
+
 	// The name of a ComputeNetworkAttachment resource.
 	Name string `json:"name,omitempty"`
 
 	// The namespace of a ComputeNetworkAttachment resource.
 	Namespace string `json:"namespace,omitempty"`
-	*/
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on ComputeNetworkAttachment.
 // If the "External" is given in the other resource's spec.ComputeNetworkAttachmentRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeNetworkAttachment object from the cluster.
 func (r *ComputeNetworkAttachmentRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External == "" {
-		return "", fmt.Errorf("external should be specified on %s reference", ComputeNetworkAttachmentGVK.Kind)
+	if r.External != "" && r.Name != "" {
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeNetworkAttachmentGVK.Kind)
 	}
+	// From given External
+	if r.External != "" {
+		if _, _, err := ParseInterconnectExternal(r.External); err != nil {
+			return "", err
+		}
+		return r.External, nil
+	}
+
+	// From the Config Connector object
+	if r.Namespace == "" {
+		r.Namespace = otherNamespace
+	}
+	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(ComputeNetworkAttachmentGVK)
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeNetworkAttachmentGVK, key, err)
+	}
+	// Get external from status.externalRef. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if actualExternalRef == "" {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	r.External = actualExternalRef
 	return r.External, nil
 }
