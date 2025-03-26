@@ -1,0 +1,37 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeInterconnect
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: computeinterconnect-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  customerName: customer
+  description: Initial description
+  interconnectType: DEDICATED
+  linkType: LINK_TYPE_ETHERNET_10G_LR
+  location: https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectLocations/iad-zone1-1
+  projectRef:
+    external: ${projectId}
+  requestedLinkCount: 1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    googleReferenceID: "864080642"
+    id: 3753052029624138000
+    kind: compute#interconnect
+    operationalStatus: OS_UNPROVISIONED
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
+    state: UNPROVISIONED

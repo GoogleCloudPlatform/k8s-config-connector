@@ -103,7 +103,7 @@ func (a *interconnectAdapter) Find(ctx context.Context) (bool, error) {
 
 	req := &computepb.GetInterconnectRequest{
 		Project:      a.id.Parent().ProjectID,
-		Interconnect: a.id.String(),
+		Interconnect: a.id.ID(),
 	}
 	actual, err := a.gcpClient.Get(ctx, req)
 	if err != nil {
@@ -123,12 +123,12 @@ func (a *interconnectAdapter) Create(ctx context.Context, createOp *directbase.C
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
 
 	resource := ComputeInterconnectSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = direct.LazyPtr(a.id.ID())
 
 	req := &computepb.InsertInterconnectRequest{
 		Project:              a.id.Parent().ProjectID,
@@ -144,8 +144,19 @@ func (a *interconnectAdapter) Create(ctx context.Context, createOp *directbase.C
 	}
 	log.Info("successfully created compute interconnect in gcp", "name", a.id)
 
+	// Get the created resource
+	created := &computepb.Interconnect{}
+	getReq := &computepb.GetInterconnectRequest{
+		Project:      a.id.Parent().ProjectID,
+		Interconnect: a.id.ID(),
+	}
+	created, err = a.gcpClient.Get(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting ComputeInterconnect %s: %w", a.id, err)
+	}
+
 	status := &krm.ComputeInterconnectStatus{}
-	//status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, created)
+	status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -157,12 +168,12 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
 
 	resource := ComputeInterconnectSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = direct.LazyPtr(a.id.ID())
 
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
@@ -175,7 +186,7 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 	req := &computepb.PatchInterconnectRequest{
 		Project:              a.id.Parent().ProjectID,
-		Interconnect:         a.id.String(),
+		Interconnect:         a.id.ID(),
 		InterconnectResource: resource,
 	}
 	op, err := a.gcpClient.Patch(ctx, req)
@@ -189,12 +200,19 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 		return fmt.Errorf("compute interconnect %s waiting for update: %w", a.id.String(), err)
 	}
 
-	status := &krm.ComputeInterconnectStatus{}
-	//status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, updated)
-	if err := mapCtx.Err(); err != nil {
-		return err
+	// Get the updated resource
+	updated := &computepb.Interconnect{}
+	getReq := &computepb.GetInterconnectRequest{
+		Project:      a.id.Parent().ProjectID,
+		Interconnect: a.id.ID(),
+	}
+	updated, err = a.gcpClient.Get(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting ComputeInterconnect %s: %w", a.id, err)
 	}
 
+	status := &krm.ComputeInterconnectStatus{}
+	status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -204,7 +222,7 @@ func (a *interconnectAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 
 	req := &computepb.DeleteInterconnectRequest{
 		Project:      a.id.Parent().ProjectID,
-		Interconnect: a.id.String(),
+		Interconnect: a.id.ID(),
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
