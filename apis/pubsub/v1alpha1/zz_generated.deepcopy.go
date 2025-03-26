@@ -127,9 +127,9 @@ func (in *PubSubSnapshotSpec) DeepCopyInto(out *PubSubSnapshotSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Topic != nil {
-		in, out := &in.Topic, &out.Topic
-		*out = new(string)
+	if in.TopicRef != nil {
+		in, out := &in.TopicRef, &out.TopicRef
+		*out = new(v1beta1.PubSubTopicRef)
 		**out = **in
 	}
 	if in.ExpireTime != nil {

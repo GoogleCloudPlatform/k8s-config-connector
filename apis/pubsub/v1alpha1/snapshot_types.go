@@ -38,7 +38,7 @@ type PubSubSnapshotSpec struct {
 	// Optional. The name of the topic from which this snapshot is retaining
 	//  messages.
 	// +kcc:proto:field=google.pubsub.v1.Snapshot.topic
-	Topic *string `json:"topic,omitempty"`
+	TopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
 
 	// Optional. The snapshot is guaranteed to exist up until this time.
 	//  A newly-created snapshot expires no later than 7 days from the time of its

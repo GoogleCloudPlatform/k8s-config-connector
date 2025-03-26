@@ -22,6 +22,7 @@ package pubsub
 import (
 	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -31,7 +32,9 @@ func PubSubSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *k
 	}
 	out := &krm.PubSubSnapshotSpec{}
 	// MISSING: Name
-	out.Topic = direct.LazyPtr(in.GetTopic())
+	if in.GetTopic() != "" {
+		out.TopicRef = &refs.PubSubTopicRef{External: in.GetTopic()}
+	}
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.Labels = in.Labels
 	return out
@@ -42,7 +45,9 @@ func PubSubSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapsho
 	}
 	out := &pb.Snapshot{}
 	// MISSING: Name
-	out.Topic = direct.ValueOf(in.Topic)
+	if in.TopicRef != nil {
+		out.Topic = in.TopicRef.External
+	}
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.Labels = in.Labels
 	return out
