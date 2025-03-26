@@ -840,11 +840,32 @@ func hasGoFiles(basePath, relativePath string) bool {
 }
 
 // filterGoFilePaths returns a slice containing only paths that have Go files
-func filterGoFilePaths(basePath string, paths []string) []string {
+// Handles both absolute and relative paths
+func filterGoFilePaths(repoRootPath string, inputPaths []string) []string {
 	var goFilePaths []string
-	for _, path := range paths {
-		if hasGoFiles(basePath, path) {
-			goFilePaths = append(goFilePaths, path)
+	for _, path := range inputPaths {
+		// Check if this is an absolute path within our repository
+		var checkPath string
+		if filepath.IsAbs(path) && strings.HasPrefix(path, repoRootPath) {
+			// It's an absolute path within our repo, convert to relative for checking
+			relPath, err := filepath.Rel(repoRootPath, path)
+			if err != nil {
+				log.Printf("Warning: Could not convert absolute path %s to relative: %v", path, err)
+				continue
+			}
+			checkPath = relPath
+		} else if filepath.IsAbs(path) {
+			// It's an absolute path outside our repo, skip it
+			log.Printf("Warning: Path %s is outside repository, skipping", path)
+			continue
+		} else {
+			// It's already a relative path
+			checkPath = path
+		}
+
+		// Now check if this path contains Go files
+		if hasGoFiles(repoRootPath, checkPath) {
+			goFilePaths = append(goFilePaths, path) // Keep the original path format
 		}
 	}
 	return goFilePaths
