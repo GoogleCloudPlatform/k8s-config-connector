@@ -3845,6 +3845,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "networkconnectivity.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "NetworkConnectivityInternalRange",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "networkconnectivity.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "NetworkConnectivityServiceConnectionPolicy",
 	}: {
 		Labels: map[string]string{

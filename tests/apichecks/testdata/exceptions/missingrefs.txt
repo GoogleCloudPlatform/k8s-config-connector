@@ -67,6 +67,8 @@
 [refs] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
 [refs] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyRing" should be a reference
 [refs] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
+[refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" should be a reference
+[refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.target" should be a reference
 [refs] crd=orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances" should be a reference
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference
