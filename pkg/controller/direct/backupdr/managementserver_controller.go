@@ -23,6 +23,7 @@ package backupdr
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -166,7 +167,41 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update ManagementServer is not supported")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating ManagementServer", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desired := a.desired.DeepCopy()
+	resource := BackupDRManagementServerSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := []string{}
+	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		paths = append(paths, "description")
+	}
+	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+		paths = append(paths, "labels")
+	}
+	if desired.Spec.Networks != nil && !reflect.DeepEqual(resource.Networks, a.actual.Networks) {
+		paths = append(paths, "networks")
+	}
+	if desired.Spec.Type != nil && !reflect.DeepEqual(resource.Type, a.actual.Type) {
+		paths = append(paths, "type")
+	}
+
+	if len(paths) != 0 {
+		return fmt.Errorf("update ManagementServer is not supported, fields: %v", paths)
+	}
+
+	status := &krm.BackupDRManagementServerStatus{}
+	status.ObservedState = BackupDRManagementServerObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
