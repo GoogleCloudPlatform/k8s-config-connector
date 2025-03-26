@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+        "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -44,9 +45,36 @@ import (
 
 var ComputeNetworkAttachmentGVK = GroupVersion.WithKind("ComputeNetworkAttachment")
 
+
+// Parent holds the fields describing the parent of the NetworkAttachment resource.
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // ComputeNetworkAttachmentSpec defines the desired state of ComputeNetworkAttachment
 // +kcc:proto=google.cloud.compute.v1.NetworkAttachment
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+)
+
+
+// Parent holds the fields describing the parent of the NetworkAttachment resource.
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
+// ComputeNetworkAttachmentSpec defines the desired state of ComputeNetworkAttachment
 type ComputeNetworkAttachmentSpec struct {
+	// Parent reference.
+	Parent Parent `json:",inline"`
+
 	// The ComputeNetworkAttachment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// [Output Only] An array of connections for all the producers connected to this network attachment.
@@ -108,6 +136,10 @@ type ComputeNetworkAttachmentSpec struct {
 	// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.subnetworks
 	Subnetworks []string `json:"subnetworks,omitempty"`
+
+	// Parent reference.
+	Parent Parent `json:",inline"`
+
 
 
 	// The IPv4 address assigned to the producer instance network interface. This value will be a range in case of Serverless.
