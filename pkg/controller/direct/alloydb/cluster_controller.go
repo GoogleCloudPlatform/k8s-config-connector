@@ -254,29 +254,13 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 // TODO: Scenario test case: Update initialUser.password from `value` to `valueFrom` and vise versa.
 func (a *ClusterAdapter) resolveInitialUserField(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.InitialUser != nil && obj.Spec.InitialUser.Password != nil {
-		value := obj.Spec.InitialUser.Password.Value
-		valueFrom := obj.Spec.InitialUser.Password.ValueFrom
-		if value != nil && valueFrom != nil {
-			return fmt.Errorf("only one of 'spec.initialUser.password.value' " +
-				"and 'spec.initialUser.password.valueFrom' should be configured: " +
-				"both are configured")
-		}
-		if value != nil {
-			return nil
-		}
-		if valueFrom != nil {
-			if valueFrom.SecretKeyRef == nil {
-				return fmt.Errorf("'spec.initialUser.password.valueFrom.secretRef' " +
-					"should be configured")
-			}
-			secretValue, _, err := direct.GetSecret(ctx, valueFrom.SecretKeyRef, obj.Namespace, a.reader)
-			if err != nil {
-				return err
-			}
-			obj.Spec.InitialUser.Password.Value = direct.PtrTo(secretValue)
-			return nil
-		}
+	if obj.Spec.InitialUser == nil || obj.Spec.InitialUser.Password == nil {
+		return nil
+	}
+
+	// Resolve sensitive field 'spec.initialUser.password' when it is set.
+	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
+		return err
 	}
 
 	return nil
@@ -637,8 +621,6 @@ func (a *ClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Cluster", "name", a.id)
 
-	// TODO Test: Force deletion and non force deletion
-	// TODO: Test: Non force deletion succeeded and failed
 	req := &alloydbpb.DeleteClusterRequest{
 		Name:  a.id.String(),
 		Force: direct.ValueOf(a.desired.Spec.DeletionPolicy) == "FORCE",
