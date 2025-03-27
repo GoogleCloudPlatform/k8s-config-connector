@@ -1,0 +1,68 @@
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes/test-ctt-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1165 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc005c22d00, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1160 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x558225c1a738?, 0xc005c863c0?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:556 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x558225d76a88, 0xc1ff8b7c80}, {0x558218bf52cf, 0x10}, {0xc26ea29ea0, 0x62}, {0x558225c1a738, 0xc005c863c0})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:89 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x558225d76a88, 0xc1ff8b7c80}, 0xc15d37f980, {0x558225c1a738, 0xc005c863c0})",
+          "cloud/control2/frontend/handler/readonly.go:291 +0x1668 google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x558225d808f0, 0xc002a05240}, {0x0, 0x0}}, {{0xc008238610, 0x1, 0x1}, 0xc009236420, 0xc008238600, {0x558225d92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:393 +0xf1b google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x558225d808f0, 0xc002a05240}, {0x0, 0x0}}, {{0xc008238610, 0x1, 0x1}, 0xc009236420, 0xc008238600, {0x558225d92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:276 +0x66 google3/cloud/control2/frontend/handler/handler.init.func17({_, _}, {{{0x558225d808f0, 0xc002a05240}, {0x0, 0x0}}, {{0xc008238610, 0x1, 0x1}, 0xc009236420, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:271 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x558225d808f0, 0xc002a05240}, {0x0, 0x0}}, {{0xc008238610, 0x1, 0x1}, 0xc009236420, 0xc008238600, {0x558225d92d60, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:111 +0x55c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc009429440, {0x558225d76a88, 0xc1ea57de00}, 0xc136d76100, 0xc112455158, 0xc112455500, {0xc15e98e070?, 0x55821bac73e7?})",
+          "cloud/control2/frontend/server/request_handler.go:84 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc009429440, {0x558225d76a88, 0xc1ea57de00}, 0xc112455158, 0xc112455500)",
+          "cloud/control2/frontend/server/request_handler.go:53 +0x25 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc0ebc2f308?, {0x558225d76a88, 0xc1ea57de00}, 0x558223a140c0?, 0xc0ba3ba001?)",
+          "cloud/control2/shared/genericrpc/service.go:172 +0x3e8 google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc00e26d920, {0x558225d76a88, 0xc1ea57de00}, 0xc112455158)",
+          "net/rpc/go/stream.go:1167 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x558225d76a88?, 0xc1ea57de00?}, 0xc112455158?, {0x0?, 0x0?}, {0x558225d8c120, 0xc17cda3db0})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x558225d76a88?, 0xc0e7b20ed0?}, 0xc08802d8d0)",
+          "net/goa/rpc/rpchandler.go:327 +0x9f5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc08e034860, {0x558225d77098, 0xc1c5fa7c80}, 0xc15d37ea00)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/customTargetTypes/test-ctt-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/customTargetTypes/test-ctt-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://clouddeploy.googleapis.com/v1/projects/${projectId}/locations/us-central1/customTargetTypes?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
