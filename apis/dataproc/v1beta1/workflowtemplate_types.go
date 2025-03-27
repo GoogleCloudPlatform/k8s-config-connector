@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,7 +30,7 @@ type DataprocWorkflowTemplateSpec struct {
 	// The DataprocWorkflowTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// +kcc:proto:field=google.cloud.dataproc.v1.WorkflowTemplate.id
-	ID *string `json:"ID,omitempty"`
+	ID *string `json:"id,omitempty"`
 
 	// Optional. Used to perform a consistent read-modify-write.
 	//
@@ -91,6 +92,48 @@ type DataprocWorkflowTemplateSpec struct {
 	EncryptionConfig *WorkflowTemplate_EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
+type Parent struct {
+	// Required.
+	Location string `json:"location,omitempty"`
+
+	// Required.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.WorkflowTemplate.EncryptionConfig
+type WorkflowTemplate_EncryptionConfig struct {
+	// Optional. The Cloud KMS key name to use for encrypting
+	//  workflow template job arguments.
+	//
+	//  When this this key is provided, the following workflow template
+	//  [job arguments]
+	//  (https://cloud.google.com/dataproc/docs/concepts/workflows/use-workflows#adding_jobs_to_a_template),
+	//  if present, are
+	//  [CMEK
+	//  encrypted](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_workflow_template_data):
+	//
+	//  * [FlinkJob
+	//  args](https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob)
+	//  * [HadoopJob
+	//  args](https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob)
+	//  * [SparkJob
+	//  args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob)
+	//  * [SparkRJob
+	//  args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob)
+	//  * [PySparkJob
+	//  args](https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob)
+	//  * [SparkSqlJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob)
+	//    scriptVariables and queryList.queries
+	//  * [HiveJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob)
+	//    scriptVariables and queryList.queries
+	//  * [PigJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob)
+	//    scriptVariables and queryList.queries
+	//  * [PrestoJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob)
+	//    scriptVariables and queryList.queries
+	// +kcc:proto:field=google.cloud.dataproc.v1.WorkflowTemplate.EncryptionConfig.kms_key
+	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
 type WorkflowTemplatePlacement struct {
 	// A cluster that is managed by the workflow.
 	// +kcc:proto:field=google.cloud.dataproc.v1.WorkflowTemplatePlacement.managed_cluster
@@ -145,6 +188,85 @@ type ClusterSelector struct {
 	//  to match.
 	// +kcc:proto:field=google.cloud.dataproc.v1.ClusterSelector.cluster_labels
 	ClusterLabels map[string]string `json:"clusterLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataproc.v1.OrderedJob
+type OrderedJob struct {
+	// Required. The step id. The id must be unique among all jobs
+	//  within the template.
+	//
+	//  The step id is used as prefix for job id, as job
+	//  `goog-dataproc-workflow-step-id` label, and in
+	//  [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids]
+	//  field from other steps.
+	//
+	//  The id must contain only letters (a-z, A-Z), numbers (0-9),
+	//  underscores (_), and hyphens (-). Cannot begin or end with underscore
+	//  or hyphen. Must consist of between 3 and 50 characters.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.step_id
+	StepID *string `json:"stepID,omitempty"`
+
+	// Optional. Job is a Hadoop job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.hadoop_job
+	HadoopJob *HadoopJob `json:"hadoopJob,omitempty"`
+
+	// Optional. Job is a Spark job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.spark_job
+	SparkJob *SparkJob `json:"sparkJob,omitempty"`
+
+	// Optional. Job is a PySpark job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.pyspark_job
+	PysparkJob *PySparkJob `json:"pysparkJob,omitempty"`
+
+	// Optional. Job is a Hive job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.hive_job
+	HiveJob *HiveJob `json:"hiveJob,omitempty"`
+
+	// Optional. Job is a Pig job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.pig_job
+	PigJob *PigJob `json:"pigJob,omitempty"`
+
+	// Optional. Job is a SparkR job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.spark_r_job
+	SparkRJob *SparkRJob `json:"sparkRJob,omitempty"`
+
+	// Optional. Job is a SparkSql job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.spark_sql_job
+	SparkSQLJob *SparkSQLJob `json:"sparkSQLJob,omitempty"`
+
+	// Optional. Job is a Presto job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.presto_job
+	PrestoJob *PrestoJob `json:"prestoJob,omitempty"`
+
+	// Optional. Job is a Trino job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.trino_job
+	TrinoJob *TrinoJob `json:"trinoJob,omitempty"`
+
+	// Optional. Job is a Flink job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.flink_job
+	FlinkJob *FlinkJob `json:"flinkJob,omitempty"`
+
+	// Optional. The labels to associate with this job.
+	//
+	//  Label keys must be between 1 and 63 characters long, and must conform to
+	//  the following regular expression:
+	//  [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+	//
+	//  Label values must be between 1 and 63 characters long, and must conform to
+	//  the following regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+	//
+	//  No more than 32 labels can be associated with a given job.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Job scheduling configuration.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.scheduling
+	Scheduling *JobScheduling `json:"scheduling,omitempty"`
+
+	// Optional. The optional list of prerequisite job step_ids.
+	//  If not specified, the job will start at the beginning of workflow.
+	// +kcc:proto:field=google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids
+	PrerequisiteStepIDs []string `json:"prerequisiteStepIDs,omitempty"`
 }
 
 // DataprocWorkflowTemplateStatus defines the config connector machine state of DataprocWorkflowTemplate

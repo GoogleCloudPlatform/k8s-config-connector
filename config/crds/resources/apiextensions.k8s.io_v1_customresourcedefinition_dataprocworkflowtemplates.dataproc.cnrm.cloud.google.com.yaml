@@ -39,7 +39,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: DataprocWorkflowTemplate is the Schema for the DataprocWorkflowTemplate
@@ -61,8 +61,6 @@ spec:
             description: DataprocWorkflowTemplateSpec defines the desired state of
               DataprocWorkflowTemplate
             properties:
-              ID:
-                type: string
               dagTimeout:
                 description: Optional. Timeout duration for the DAG of jobs, expressed
                   in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
@@ -77,7 +75,7 @@ spec:
                 description: Optional. Encryption settings for encrypting workflow
                   template job arguments.
                 properties:
-                  kmsKey:
+                  kmsKeyRef:
                     description: |-
                       Optional. The Cloud KMS key name to use for encrypting
                        workflow template job arguments.
@@ -107,8 +105,35 @@ spec:
                          scriptVariables and queryList.queries
                        * [PrestoJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob)
                          scriptVariables and queryList.queries
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
                 type: object
+              id:
+                type: string
               jobs:
                 description: Required. The Directed Acyclic Graph of Jobs to submit.
                 items:
@@ -136,7 +161,7 @@ spec:
                         mainClass:
                           description: The name of the driver's main class. The jar
                             file that contains the class must be in the default CLASSPATH
-                            or specified in [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].
+                            or specified in [jarFileURIs][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].
                           type: string
                         mainJarFileURI:
                           description: The HCFS URI of the jar file that contains
@@ -348,7 +373,7 @@ spec:
                             to values (equivalent to the Pig command: `name=[value]`).'
                           type: object
                       type: object
-                    prerequisiteStepIds:
+                    prerequisiteStepIDs:
                       description: Optional. The optional list of prerequisite job
                         step_ids. If not specified, the job will start at the beginning
                         of workflow.
@@ -776,13 +801,13 @@ spec:
                              * jobs['step-id'].labels['key']
 
                          * Jobs in the jobs list can be referenced by step-id:
-                             * jobs['step-id'].hadoopJob.mainJarFileUri
-                             * jobs['step-id'].hiveJob.queryFileUri
-                             * jobs['step-id'].pySparkJob.mainPythonFileUri
-                             * jobs['step-id'].hadoopJob.jarFileUris[0]
-                             * jobs['step-id'].hadoopJob.archiveUris[0]
-                             * jobs['step-id'].hadoopJob.fileUris[0]
-                             * jobs['step-id'].pySparkJob.pythonFileUris[0]
+                             * jobs['step-id'].hadoopJob.mainJarFileURI
+                             * jobs['step-id'].hiveJob.queryFileURI
+                             * jobs['step-id'].pySparkJob.mainPythonFileURI
+                             * jobs['step-id'].hadoopJob.jarFileURIs[0]
+                             * jobs['step-id'].hadoopJob.archiveURIs[0]
+                             * jobs['step-id'].hadoopJob.fileURIs[0]
+                             * jobs['step-id'].pySparkJob.pythonFileURIs[0]
 
                          * Items in repeated fields can be referenced by a zero-based index:
                              * jobs['step-id'].sparkJob.args[0]
@@ -791,7 +816,7 @@ spec:
                              * jobs['step-id'].hadoopJob.properties['key']
                              * jobs['step-id'].hadoopJob.args[0]
                              * jobs['step-id'].hiveJob.scriptVariables['key']
-                             * jobs['step-id'].hadoopJob.mainJarFileUri
+                             * jobs['step-id'].hadoopJob.mainJarFileURI
                              * placement.clusterSelector.zone
 
                          It may not be possible to parameterize maps and repeated fields in their
@@ -1254,7 +1279,7 @@ spec:
                                            metric source. For example, if one or more `spark:executive` metrics
                                            are listed as metric overrides, other `SPARK` metrics are not
                                            collected. The collection of the metrics for other enabled custom
-                                           metric sources is unaffected. For example, if both `SPARK` andd `YARN`
+                                           metric sources is unaffected. For example, if both `SPARK` and `YARN`
                                            metric sources are enabled, and overrides are provided for Spark
                                            metrics only, all YARN metrics are collected.
                                       items:
@@ -1531,17 +1556,17 @@ spec:
                           lifecycleConfig:
                             description: Optional. Lifecycle setting for the cluster.
                             properties:
-                              autoDeleteTime:
-                                description: Optional. The time when cluster will
-                                  be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
-                                type: string
-                              autoDeleteTtl:
+                              autoDeleteTTL:
                                 description: Optional. The lifetime duration of cluster.
                                   The cluster will be auto-deleted at the end of this
                                   period. Minimum value is 10 minutes; maximum value
                                   is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
                                 type: string
-                              idleDeleteTtl:
+                              autoDeleteTime:
+                                description: Optional. The time when cluster will
+                                  be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+                                type: string
+                              idleDeleteTTL:
                                 description: Optional. The duration to keep the cluster
                                   alive while idling (when no jobs are running). Passing
                                   this threshold will cause the cluster to be deleted.

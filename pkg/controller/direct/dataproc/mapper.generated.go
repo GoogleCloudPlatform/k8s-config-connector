@@ -16,7 +16,7 @@ package dataproc
 
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -450,7 +450,7 @@ func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_FromProto(ma
 	}
 	out := &krm.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState{}
 	out.MachineType = in.MachineType
-	out.VmCount = in.VmCount
+	out.VMCount = in.VmCount
 	return out
 }
 func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState) *pb.InstanceFlexibilityPolicy_InstanceSelectionResult {
@@ -459,7 +459,7 @@ func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_ToProto(mapC
 	}
 	out := &pb.InstanceFlexibilityPolicy_InstanceSelectionResult{}
 	out.MachineType = in.MachineType
-	out.VmCount = in.VmCount
+	out.VmCount = in.VMCount
 	return out
 }
 func InstanceFlexibilityPolicy_ProvisioningModelMix_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_ProvisioningModelMix) *krm.InstanceFlexibilityPolicy_ProvisioningModelMix {
@@ -635,9 +635,9 @@ func LifecycleConfig_FromProto(mapCtx *direct.MapContext, in *pb.LifecycleConfig
 		return nil
 	}
 	out := &krm.LifecycleConfig{}
-	out.IdleDeleteTtl = direct.StringDuration_FromProto(mapCtx, in.GetIdleDeleteTtl())
+	out.IdleDeleteTTL = direct.StringDuration_FromProto(mapCtx, in.GetIdleDeleteTtl())
 	out.AutoDeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAutoDeleteTime())
-	out.AutoDeleteTtl = direct.StringDuration_FromProto(mapCtx, in.GetAutoDeleteTtl())
+	out.AutoDeleteTTL = direct.StringDuration_FromProto(mapCtx, in.GetAutoDeleteTtl())
 	// MISSING: IdleStartTime
 	return out
 }
@@ -646,11 +646,11 @@ func LifecycleConfig_ToProto(mapCtx *direct.MapContext, in *krm.LifecycleConfig)
 		return nil
 	}
 	out := &pb.LifecycleConfig{}
-	out.IdleDeleteTtl = direct.StringDuration_ToProto(mapCtx, in.IdleDeleteTtl)
+	out.IdleDeleteTtl = direct.StringDuration_ToProto(mapCtx, in.IdleDeleteTTL)
 	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AutoDeleteTime); oneof != nil {
 		out.Ttl = &pb.LifecycleConfig_AutoDeleteTime{AutoDeleteTime: oneof}
 	}
-	if oneof := direct.StringDuration_ToProto(mapCtx, in.AutoDeleteTtl); oneof != nil {
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.AutoDeleteTTL); oneof != nil {
 		out.Ttl = &pb.LifecycleConfig_AutoDeleteTtl{AutoDeleteTtl: oneof}
 	}
 	// MISSING: IdleStartTime
@@ -828,68 +828,6 @@ func NodeInitializationAction_ToProto(mapCtx *direct.MapContext, in *krm.NodeIni
 	out := &pb.NodeInitializationAction{}
 	out.ExecutableFile = direct.ValueOf(in.ExecutableFile)
 	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
-	return out
-}
-func OrderedJob_FromProto(mapCtx *direct.MapContext, in *pb.OrderedJob) *krm.OrderedJob {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrderedJob{}
-	out.StepID = direct.LazyPtr(in.GetStepId())
-	out.HadoopJob = HadoopJob_FromProto(mapCtx, in.GetHadoopJob())
-	out.SparkJob = SparkJob_FromProto(mapCtx, in.GetSparkJob())
-	out.PysparkJob = PySparkJob_FromProto(mapCtx, in.GetPysparkJob())
-	out.HiveJob = HiveJob_FromProto(mapCtx, in.GetHiveJob())
-	out.PigJob = PigJob_FromProto(mapCtx, in.GetPigJob())
-	out.SparkRJob = SparkRJob_FromProto(mapCtx, in.GetSparkRJob())
-	out.SparkSQLJob = SparkSQLJob_FromProto(mapCtx, in.GetSparkSqlJob())
-	out.PrestoJob = PrestoJob_FromProto(mapCtx, in.GetPrestoJob())
-	out.TrinoJob = TrinoJob_FromProto(mapCtx, in.GetTrinoJob())
-	out.FlinkJob = FlinkJob_FromProto(mapCtx, in.GetFlinkJob())
-	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_FromProto(mapCtx, in.GetScheduling())
-	out.PrerequisiteStepIds = in.PrerequisiteStepIds
-	return out
-}
-func OrderedJob_ToProto(mapCtx *direct.MapContext, in *krm.OrderedJob) *pb.OrderedJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OrderedJob{}
-	out.StepId = direct.ValueOf(in.StepID)
-	if oneof := HadoopJob_ToProto(mapCtx, in.HadoopJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_HadoopJob{HadoopJob: oneof}
-	}
-	if oneof := SparkJob_ToProto(mapCtx, in.SparkJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_SparkJob{SparkJob: oneof}
-	}
-	if oneof := PySparkJob_ToProto(mapCtx, in.PysparkJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_PysparkJob{PysparkJob: oneof}
-	}
-	if oneof := HiveJob_ToProto(mapCtx, in.HiveJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_HiveJob{HiveJob: oneof}
-	}
-	if oneof := PigJob_ToProto(mapCtx, in.PigJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_PigJob{PigJob: oneof}
-	}
-	if oneof := SparkRJob_ToProto(mapCtx, in.SparkRJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_SparkRJob{SparkRJob: oneof}
-	}
-	if oneof := SparkSQLJob_ToProto(mapCtx, in.SparkSQLJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_SparkSqlJob{SparkSqlJob: oneof}
-	}
-	if oneof := PrestoJob_ToProto(mapCtx, in.PrestoJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_PrestoJob{PrestoJob: oneof}
-	}
-	if oneof := TrinoJob_ToProto(mapCtx, in.TrinoJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_TrinoJob{TrinoJob: oneof}
-	}
-	if oneof := FlinkJob_ToProto(mapCtx, in.FlinkJob); oneof != nil {
-		out.JobType = &pb.OrderedJob_FlinkJob{FlinkJob: oneof}
-	}
-	out.Labels = in.Labels
-	out.Scheduling = JobScheduling_ToProto(mapCtx, in.Scheduling)
-	out.PrerequisiteStepIds = in.PrerequisiteStepIds
 	return out
 }
 func ParameterValidation_FromProto(mapCtx *direct.MapContext, in *pb.ParameterValidation) *krm.ParameterValidation {
@@ -1102,21 +1040,5 @@ func WorkflowTemplatePlacementObservedState_ToProto(mapCtx *direct.MapContext, i
 		out.Placement = &pb.WorkflowTemplatePlacement_ManagedCluster{ManagedCluster: oneof}
 	}
 	// MISSING: ClusterSelector
-	return out
-}
-func WorkflowTemplate_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.WorkflowTemplate_EncryptionConfig) *krm.WorkflowTemplate_EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkflowTemplate_EncryptionConfig{}
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
-	return out
-}
-func WorkflowTemplate_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowTemplate_EncryptionConfig) *pb.WorkflowTemplate_EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WorkflowTemplate_EncryptionConfig{}
-	out.KmsKey = direct.ValueOf(in.KMSKey)
 	return out
 }

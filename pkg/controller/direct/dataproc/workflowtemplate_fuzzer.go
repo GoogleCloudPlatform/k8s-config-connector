@@ -47,6 +47,16 @@ func dataprocWorkflowTemplateFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".placement")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".jobs[].hadoop_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].spark_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].pyspark_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].hive_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].pig_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].spark_r_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].spark_sql_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].presto_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].trino_job.logging_config")
+	f.UnimplementedFields.Insert(".jobs[].flink_job.logging_config")
 
 	return f
 }
