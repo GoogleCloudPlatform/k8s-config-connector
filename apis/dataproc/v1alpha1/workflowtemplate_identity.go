@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type WorkflowTemplateIdentity struct {
 	parent *WorkflowTemplateParent
-	id string
+	id     string
 }
 
 func (i *WorkflowTemplateIdentity) String() string {
-	return  i.parent.String() + "/workflowtemplates/" + i.id
+	return i.parent.String() + "/workflowtemplates/" + i.id
 }
 
 func (i *WorkflowTemplateIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *WorkflowTemplateIdentity) ID() string {
 }
 
 func (i *WorkflowTemplateIdentity) Parent() *WorkflowTemplateParent {
-	return  i.parent
+	return i.parent
 }
 
 type WorkflowTemplateParent struct {
@@ -51,7 +51,6 @@ type WorkflowTemplateParent struct {
 func (p *WorkflowTemplateParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a WorkflowTemplateIdentity from the Config Connector WorkflowTemplate object.
 func NewWorkflowTemplateIdentity(ctx context.Context, reader client.Reader, obj *DataprocWorkflowTemplate) (*WorkflowTemplateIdentity, error) {
