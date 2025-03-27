@@ -34,7 +34,7 @@ status:
   observedGeneration: 2
   observedState:
     creationTimestamp: "1970-01-01T00:00:00Z"
-    id: 3503869189729885700
+    id: 1111111111111111
     kind: compute#networkAttachment
     network: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}
     region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
