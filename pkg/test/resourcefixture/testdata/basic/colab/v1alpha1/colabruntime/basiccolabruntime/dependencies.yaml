@@ -49,7 +49,7 @@ spec:
 #metadata:
 #  name: iampolicymember-${uniqueId}
 #spec:
-#  member: group:test@google.com
+#  member: test@configconnector.com
 #  role: roles/aiplatform.user # required by Colab service to run as a Runtime Template
 #  resourceRef:
 #    apiVersion: colab.cnrm.cloud.google.com/v1alpha1
