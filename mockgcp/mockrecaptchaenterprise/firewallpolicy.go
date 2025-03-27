@@ -29,8 +29,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/recaptchaenterprise/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 )
 
 type recaptchaEnterpriseService struct {
@@ -55,7 +57,7 @@ func (s *recaptchaEnterpriseService) GetFirewallPolicy(ctx context.Context, req 
 }
 
 func (s *recaptchaEnterpriseService) CreateFirewallPolicy(ctx context.Context, req *pb.CreateFirewallPolicyRequest) (*pb.FirewallPolicy, error) {
-	reqName := fmt.Sprintf("%s/firewallpolicies/%d", req.GetParent(), 100)
+	reqName := fmt.Sprintf("%s/firewallpolicies/%d", req.GetParent(), 200)
 	name, err := s.parseFirewallPolicyName(reqName)
 	if err != nil {
 		return nil, err

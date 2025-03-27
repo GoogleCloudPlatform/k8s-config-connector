@@ -102,11 +102,25 @@ func (a *FirewallPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting FirewallPolicy", "name", a.id)
 
+	// This resource has a server-generated ID. This means user should not know
+	// the ID before the resource is created, and 'metadata.name' won't be used
+	// as the default resource ID. So empty value for 'spec.resourceID' should
+	// also be valid:
+	// 1. When 'spec.resourceID' is not set or set to an empty value, the
+	//    intention is to create the resource.
+	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
+	//    resource.
+	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//         is not found, then it is a real error.
+	if a.id.ID() == "" {
+		log.V(2).Info("no resource ID in get indicates the create intention", "name", a.id)
+		return false, nil
+	}
 	req := &pb.GetFirewallPolicyRequest{Name: a.id.String()}
 	firewallpolicypb, err := a.gcpClient.GetFirewallPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			return false, nil
+			return false, fmt.Errorf("firewallPolicy %q can't be acquired: %w; unset 'spec.resourceID' if you want to create it", a.id, err)
 		}
 		return false, fmt.Errorf("getting FirewallPolicy %q: %w", a.id, err)
 	}
@@ -115,7 +129,7 @@ func (a *FirewallPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *FirewallPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating FirewallPolicy", "name", a.id)
@@ -126,13 +140,12 @@ func (a *FirewallPolicyAdapter) Create(ctx context.Context, createOp *directbase
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	// resource.Name = a.id.String() // NOTE: required for Update, but forbidden for Create
 
 	req := &pb.CreateFirewallPolicyRequest{
 		Parent:         a.id.Parent().String(),
 		FirewallPolicy: resource,
 	}
-	_, err := a.gcpClient.CreateFirewallPolicy(ctx, req)
+	created, err := a.gcpClient.CreateFirewallPolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating FirewallPolicy %s: %w", a.id, err)
 	}
@@ -142,7 +155,11 @@ func (a *FirewallPolicyAdapter) Create(ctx context.Context, createOp *directbase
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	_, actualResourceID, err := krm.ParseFirewallPolicyExternal(created.Name)
+	if err != nil {
+		return fmt.Errorf("parsing the resource name in the response of CreateFirewallPolicy: %w", err)
+	}
+	status.ExternalRef = direct.LazyPtr(fmt.Sprintf("%s/firewallpolicies/%s", a.id.Parent(), actualResourceID))
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -156,6 +173,7 @@ func (a *FirewallPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.id.String()
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
@@ -167,7 +185,6 @@ func (a *FirewallPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 		return nil
 	}
 
-	desiredPb.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 	req := &pb.UpdateFirewallPolicyRequest{
 		FirewallPolicy: desiredPb,
 		UpdateMask:     &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
