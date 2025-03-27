@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2022 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -64,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkEdgeSecurityServicesServer(grpcServer, &networkEdgeSecurityServicesV1{MockService: s})
 
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
+	pb.RegisterNetworkAttachmentsServer(grpcServer, &networkAttachmentsV1{MockService: s})
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
 	pb.RegisterTargetVpnGatewaysServer(grpcServer, &TargetVpnGatewaysV1{MockService: s})
@@ -115,7 +116,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 
-	pb.RegisterNetworkAttachmentsServer(grpcServer, &networkAttachments{MockService: s})
+	pb.RegisterNetworkAttachmentsServer(grpcServer, &networkAttachmentsV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -144,6 +145,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterNetworkAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
