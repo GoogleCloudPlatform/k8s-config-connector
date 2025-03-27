@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -101,19 +102,15 @@ func (s *cloudDeploy) UpdateCustomTargetType(ctx context.Context, req *pb.Update
 		return nil, err
 	}
 
+	// Apply the update mask to the object.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
-
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.GetCustomTargetType().GetDescription()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "field %q is not supported in update_mask", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.GetCustomTargetType(), req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
+
 	obj.UpdateTime = timestamppb.New(time.Now())
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -191,6 +188,3 @@ func (s *MockService) parseCustomTargetTypeName(name string) (*customTargetTypeN
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
-</out>
-
-
