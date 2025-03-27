@@ -22,12 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+)
 
 // WorkflowTemplateIdentity defines the resource reference to DataprocWorkflowTemplate, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -66,7 +61,7 @@ func NewWorkflowTemplateIdentity(ctx context.Context, reader client.Reader, obj 
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.Name
+	projectID := projectRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}

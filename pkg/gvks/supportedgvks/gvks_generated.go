@@ -2439,14 +2439,12 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "dataproc.cnrm.cloud.google.com",
-		Version: "v1beta1",
+		Version: "v1alpha1",
 		Kind:    "DataprocWorkflowTemplate",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/dcl2crd":         "true",
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
