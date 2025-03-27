@@ -211,25 +211,26 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 		paths = append(paths, "vmware_engine_network")
 	}
 
+	var updated *pb.NetworkPeering
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateNetworkPeeringRequest{
+			NetworkPeering: resource,
+			UpdateMask:     &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateNetworkPeering(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating vmwareengine networkpeering %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("vmwareengine networkpeering %s waiting for update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated vmwareengine networkpeering", "name", a.id)
 	}
-
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateNetworkPeeringRequest{
-		NetworkPeering: resource,
-		UpdateMask:     &fieldmaskpb.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateNetworkPeering(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating vmwareengine networkpeering %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("vmwareengine networkpeering %s waiting for update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated vmwareengine networkpeering", "name", a.id)
 
 	status := &krm.VMwareEngineNetworkPeeringStatus{}
 	status.ObservedState = VMwareEngineNetworkPeeringObservedState_FromProto(mapCtx, updated)
