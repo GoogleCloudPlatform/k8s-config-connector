@@ -21,11 +21,11 @@
 package colab
 
 import (
-	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
-	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"context"
 	"fmt"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
+	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
+	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -37,6 +37,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -55,7 +56,7 @@ type runtimeModel struct {
 	config config.ControllerConfig
 }
 
-func (m *runtimeModel) client(ctx context.Context, projectID, location string) (*gcp.NotebookClient, error) {
+func (m *runtimeModel) client(ctx context.Context, location string) (*gcp.NotebookClient, error) {
 	var opts []option.ClientOption
 	config := m.config
 	opts, err := config.RESTClientOptions()
@@ -84,7 +85,7 @@ func (m *runtimeModel) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID, id.Parent().Location)
+	gcpClient, err := m.client(ctx, id.Parent().Location)
 	if err != nil {
 		return nil, err
 	}
