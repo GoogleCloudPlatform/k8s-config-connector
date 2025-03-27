@@ -12,12 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build mock
-// +build mock
-
 // +tool:mockgcp-support
 // proto.service: google.cloud.gkebackup.v1.BackupForGKE
-// proto.message: google.cloud.gkebackup.v1.RestorePlan
+// proto.message: google.cloud.gkebackup.v1.BackupPlan
 
 package mockgkebackup
 
@@ -111,13 +108,11 @@ func (s *BackupForGKEV1) UpdateRestorePlan(ctx context.Context, req *pb.UpdateRe
 	}
 	now := time.Now()
 
-	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
 		case "description":
