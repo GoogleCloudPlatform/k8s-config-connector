@@ -2140,6 +2140,7 @@ X-Xss-Protection: 0
   "networkConfig": {
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
+  "primaryConfig": {},
   "reconciling": false,
   "state": "READY",
   "subscriptionType": "STANDARD",

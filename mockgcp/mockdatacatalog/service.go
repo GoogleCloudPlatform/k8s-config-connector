@@ -43,11 +43,6 @@ type MockService struct {
 	v1 *DataCatalogV1
 }
 
-type DataCatalogV1 struct {
-	*MockService
-	pb.UnimplementedDataCatalogServer
-}
-
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{

@@ -896,6 +896,9 @@ func removeSensitiveFields(unstruct *unstructured.Unstructured, changedSpecField
 		// remove these fields which are reacted by the GCP API when reading.
 		unstructured.RemoveNestedField(changedSpecFields, "params", "connector.authentication.oauth.clientId")
 		unstructured.RemoveNestedField(changedSpecFields, "params", "connector.authentication.oauth.clientSecret")
+	case "AlloyDBCluster":
+		delete(changedSpecFields, "initialUser")
+		delete(changedSpecFields, "displayName")
 	}
 }
 

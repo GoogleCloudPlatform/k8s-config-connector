@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &NotebookRuntimeTemplateRef{}
 // holds the GCP identifier for the KRM object.
 type NotebookRuntimeTemplateRef struct {
 	// A reference to an externally managed ColabRuntimeTemplate resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookruntimetemplates/{{notebookruntimetemplateID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/notebookRuntimeTemplates/{{notebookruntimetemplateID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ColabRuntimeTemplate resource.
@@ -51,7 +51,7 @@ func (r *NotebookRuntimeTemplateRef) NormalizedExternal(ctx context.Context, rea
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseNotebookRuntimeTemplateExternal(r.External); err != nil {
+		if _, err := ParseNotebookRuntimeTemplateExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

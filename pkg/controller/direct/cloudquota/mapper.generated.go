@@ -126,3 +126,86 @@ func QuotaConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaCo
 	out.RequestOrigin = direct.Enum_ToProto[pb.QuotaConfig_Origin](mapCtx, in.RequestOrigin)
 	return out
 }
+
+func APIQuotaAdjusterSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.APIQuotaAdjusterSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIQuotaAdjusterSettingsObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func APIQuotaAdjusterSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIQuotaAdjusterSettingsObservedState) *pb.QuotaAdjusterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaAdjusterSettings{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func APIQuotaAdjusterSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.APIQuotaAdjusterSettingsSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIQuotaAdjusterSettingsSpec{}
+	// MISSING: Name
+	out.Enablement = direct.Enum_FromProto(mapCtx, in.GetEnablement())
+	return out
+}
+func APIQuotaAdjusterSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIQuotaAdjusterSettingsSpec) *pb.QuotaAdjusterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaAdjusterSettings{}
+	// MISSING: Name
+	out.Enablement = direct.Enum_ToProto[pb.QuotaAdjusterSettings_Enablement](mapCtx, in.Enablement)
+	return out
+}
+func QuotaAdjusterSettings_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.QuotaAdjusterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QuotaAdjusterSettings{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Enablement = direct.Enum_FromProto(mapCtx, in.GetEnablement())
+	// MISSING: UpdateTime
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func QuotaAdjusterSettings_ToProto(mapCtx *direct.MapContext, in *krm.QuotaAdjusterSettings) *pb.QuotaAdjusterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaAdjusterSettings{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Enablement = direct.Enum_ToProto[pb.QuotaAdjusterSettings_Enablement](mapCtx, in.Enablement)
+	// MISSING: UpdateTime
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func QuotaAdjusterSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QuotaAdjusterSettings) *krm.QuotaAdjusterSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QuotaAdjusterSettingsObservedState{}
+	// MISSING: Name
+	// MISSING: Enablement
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func QuotaAdjusterSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.QuotaAdjusterSettingsObservedState) *pb.QuotaAdjusterSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QuotaAdjusterSettings{}
+	// MISSING: Name
+	// MISSING: Enablement
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}

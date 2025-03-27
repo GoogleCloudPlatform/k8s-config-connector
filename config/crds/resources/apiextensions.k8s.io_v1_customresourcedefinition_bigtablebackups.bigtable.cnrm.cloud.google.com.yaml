@@ -1,0 +1,364 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: bigtablebackups.bigtable.cnrm.cloud.google.com
+spec:
+  group: bigtable.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigtableBackup
+    listKind: BigtableBackupList
+    plural: bigtablebackups
+    shortNames:
+    - gcpbigtablebackup
+    - gcpbigtablebackups
+    singular: bigtablebackup
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BigtableBackup is the Schema for the BigtableBackup API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigtableBackupSpec defines the desired state of BigtableBackup
+            properties:
+              backupType:
+                description: Indicates the backup type of the backup.
+                type: string
+              clusterRef:
+                description: ClusterRef defines the resource reference to BigtableCluster,
+                  which "External" field holds the GCP identifier for the KRM object.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigtableCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                    type: string
+                  name:
+                    description: The name of a BigtableCluster resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigtableCluster resource.
+                    type: string
+                type: object
+              expireTime:
+                description: |-
+                  Required. The expiration time of the backup.
+                   When creating a backup or updating its `expire_time`, the value must be
+                   greater than the backup creation time by:
+                   - At least 6 hours
+                   - At most 90 days
+
+                   Once the `expire_time` has passed, Cloud Bigtable will delete the backup.
+                type: string
+              hotToStandardTime:
+                description: |-
+                  The time at which the hot backup will be converted to a standard backup.
+                   Once the `hot_to_standard_time` has passed, Cloud Bigtable will convert the
+                   hot backup to a standard backup. This value must be greater than the backup
+                   creation time by:
+                   - At least 24 hours
+
+                   This field only applies for hot backups. When creating or updating a
+                   standard backup, attempting to set this field will fail the request.
+                type: string
+              instanceRef:
+                description: InstanceRef defines the resource reference to BigtableInstance,
+                  which "External" field holds the GCP identifier for the KRM object.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigtableInstance
+                      resource.
+                    type: string
+                  name:
+                    description: The name of a BigtableInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigtableInstance resource.
+                    type: string
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The BigtableBackup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              sourceTableRef:
+                description: Required. Immutable. Name of the table from which this
+                  backup was created. This needs to be in the same instance as the
+                  backup. Values are of the form `projects/{project}/instances/{instance}/tables/{source_table}`.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BigtableTable
+                      resource.
+                    type: string
+                  name:
+                    description: The name of a BigtableInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BigtableInstance resource.
+                    type: string
+                type: object
+            required:
+            - clusterRef
+            - instanceRef
+            - projectRef
+            type: object
+          status:
+            description: BigtableBackupStatus defines the config connector machine
+              state of BigtableBackup
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigtableBackup resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  encryptionInfo:
+                    description: Output only. The encryption information for the backup.
+                    properties:
+                      encryptionStatus:
+                        description: Output only. The status of encrypt/decrypt calls
+                          on underlying data for this resource. Regardless of status,
+                          the existing data is always encrypted at rest.
+                        properties:
+                          code:
+                            description: The status code, which should be an enum
+                              value of [google.rpc.Code][google.rpc.Code].
+                            format: int32
+                            type: integer
+                          details:
+                            description: A list of messages that carry the error details.  There
+                              is a common set of message types for APIs to use.
+                            items:
+                              properties:
+                                typeURL:
+                                  description: |-
+                                    A URL/resource name that uniquely identifies the type of the serialized
+                                     protocol buffer message. This string must contain at least
+                                     one "/" character. The last segment of the URL's path must represent
+                                     the fully qualified name of the type (as in
+                                     `path/google.protobuf.Duration`). The name should be in a canonical form
+                                     (e.g., leading "." is not accepted).
+
+                                     In practice, teams usually precompile into the binary all types that they
+                                     expect it to use in the context of Any. However, for URLs which use the
+                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
+                                     server that maps type URLs to message definitions as follows:
+
+                                     * If no scheme is provided, `https` is assumed.
+                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                                       value in binary format, or produce an error.
+                                     * Applications are allowed to cache lookup results based on the
+                                       URL, or have them precompiled into a binary to avoid any
+                                       lookup. Therefore, binary compatibility needs to be preserved
+                                       on changes to types. (Use versioned type names to manage
+                                       breaking changes.)
+
+                                     Note: this functionality is not currently available in the official
+                                     protobuf release, and it is not used for type URLs beginning with
+                                     type.googleapis.com.
+
+                                     Schemes other than `http`, `https` (or the empty scheme) might be
+                                     used with implementation specific semantics.
+                                  type: string
+                                value:
+                                  description: Must be a valid serialized protocol
+                                    buffer of the above specified type.
+                                  format: byte
+                                  type: string
+                              type: object
+                            type: array
+                          message:
+                            description: A developer-facing error message, which should
+                              be in English. Any user-facing error message should
+                              be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                              field, or localized by the client.
+                            type: string
+                        type: object
+                      encryptionType:
+                        description: Output only. The type of encryption used to protect
+                          this resource.
+                        type: string
+                      kmsKeyVersion:
+                        description: Output only. The version of the Cloud KMS key
+                          specified in the parent cluster that is in use for the data
+                          underlying this table.
+                        type: string
+                    type: object
+                  endTime:
+                    description: Output only. `end_time` is the time that the backup
+                      was finished. The row data in the backup will be no newer than
+                      this timestamp.
+                    type: string
+                  sizeBytes:
+                    description: Output only. Size of the backup in bytes.
+                    format: int64
+                    type: integer
+                  sourceBackup:
+                    description: 'Output only. Name of the backup from which this
+                      backup was copied. If a backup is not created by copying a backup,
+                      this field will be empty. Values are of the form: projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>'
+                    type: string
+                  startTime:
+                    description: Output only. `start_time` is the time that the backup
+                      was started (i.e. approximately the time the [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
+                      request is received).  The row data in this backup will be no
+                      older than this timestamp.
+                    type: string
+                  state:
+                    description: Output only. The current state of the backup.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

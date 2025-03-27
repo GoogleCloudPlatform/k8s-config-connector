@@ -88,8 +88,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
   "networkSpec": {
-    "enableInternetAccess": true,
-    "network": "projects/${projectNumber}/global/networks/default"
+    "enableInternetAccess": true
   },
   "notebookRuntimeType": "USER_DEFINED",
   "shieldedVmConfig": {},

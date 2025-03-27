@@ -137,16 +137,6 @@ func (in *ComposerEnvironmentObservedState) DeepCopyInto(out *ComposerEnvironmen
 		*out = new(EnvironmentConfigObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.SatisfiesPzs != nil {
-		in, out := &in.SatisfiesPzs, &out.SatisfiesPzs
-		*out = new(bool)
-		**out = **in
-	}
-	if in.SatisfiesPzi != nil {
-		in, out := &in.SatisfiesPzi, &out.SatisfiesPzi
-		*out = new(bool)
-		**out = **in
-	}
 	if in.Uuid != nil {
 		in, out := &in.Uuid, &out.Uuid
 		*out = new(string)

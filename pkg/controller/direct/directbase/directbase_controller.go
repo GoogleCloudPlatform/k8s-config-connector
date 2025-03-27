@@ -239,7 +239,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
-	// To create, update or delete the GCP object, we need to get the GCP object first.
+	// To create, update or delete the GCP object, we need to get the GCP object first.
 	// Because the object contains the cloud service information like `selfLink` `ID` required to validate
 	// the resource uniqueness before updating/deleting.
 	existsAlready, err := adapter.Find(ctx)
@@ -293,7 +293,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	requeueRequested := false
 
 	if !existsAlready {
-		createOp := NewCreateOperation(r.Reconciler.Client, u)
+		createOp := NewCreateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u)
 		if err := adapter.Create(ctx, createOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))

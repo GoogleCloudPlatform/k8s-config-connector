@@ -720,6 +720,10 @@ The test output contains the diff in the expected and the actual http responses.
 Use that to determine what changes need to be made to the mock resource file.
 Make sure that all changes are applied.
 
+Start with the errors from the top of the output and work your way down.
+If you see a change that needs to be made, make the change and run the mock test again.
+Fixing from top to bottom is important and will help you make progress.
+
 Once the changes are applied, use the RunShellCommand command to run the mock test to make sure the changes are valid.
 Use the output of the command to determine if the code changes are valid.
 
@@ -732,8 +736,11 @@ Hints:
 * Use the EditFile command to edit the file.
 * Use the WriteFile command to write the file.	
 * Use the RunShellCommand command to run the mock test after making the changes.
+* The proto files are in the PROTO FILE CONTENTS section.
 
 The results of the mock test run are:
+
+Original HTTP Log File: ${ORIGINAL_HTTP_LOG_FILE}
 
 EXITCODE: ${TEST_OUTPUT_EXITCODE}
 
@@ -742,6 +749,11 @@ ${TEST_OUTPUT_STDERR}
 
 STDOUT:
 ${TEST_OUTPUT_STDOUT}
+
+PROTO FILE CONTENTS:
+Imported Proto go files. The list of files and its contents:
+
+${PROTO_FILE_CONTENTS}
 `
 
 func fixMockgcpFailures(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
@@ -759,8 +771,34 @@ func fixMockgcpFailures(ctx context.Context, opts *RunnerOptions, branch Branch,
 	if _, err := os.Stat(resourceFile); errors.Is(err, os.ErrNotExist) {
 		return affectedPaths, nil, fmt.Errorf("missing resource file %s", resourceFile)
 	}
-	affectedPaths = append(affectedPaths, resourceFileRelativePath)
+	affectedPaths = append(affectedPaths, resourceFile)
 
+	// Extract the proto go package path (e.g. cloud/eventarc/v1) from the full proto path
+	// ./mockgcp/generated/mockgcp + google/cloud/eventarc/v1/eventarc.proto =>  ./mockgcp/generated/mockgcp/cloud/eventarc/v1
+	protoPath := filepath.Join(strings.Split(filepath.Dir(branch.ProtoPath), "/")[1:]...)
+	protoDirRelative := filepath.Join("mockgcp", "generated", "mockgcp", protoPath)
+	protoDirAbsolute := filepath.Join(opts.branchRepoDir, protoDirRelative)
+
+	protoFiles, err := os.ReadDir(protoDirAbsolute)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read proto directory: %s %w", protoDirAbsolute, err)
+	}
+	var protoContents strings.Builder
+	for _, file := range protoFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".go") {
+			filePathRelative := filepath.Join(protoDirRelative, file.Name())
+			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
+			if err != nil {
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+			}
+			protoContents.WriteString("File: " + filePathRelative + "\nContent:\n")
+			protoContents.Write(content)
+			protoContents.WriteString("\n-----------------------------\n")
+		}
+	}
+
+	logFileRelativePath := filepath.Join("mockgcp", fmt.Sprintf("mock%s", branch.Group), "testdata", branch.Resource, "crud", "_http.log")
+	logFilePath := filepath.Join(opts.branchRepoDir, logFileRelativePath)
 	// Create prompt with file contents
 	prompt := strings.ReplaceAll(FIX_MOCKGCP_FAILURES, "${MOCK_RESOURCE_FILE}", resourceFileRelativePath)
 	prompt = strings.ReplaceAll(prompt, "${TEST_OUTPUT_EXITCODE}", fmt.Sprintf("%d", execResults.ExitCode))
@@ -768,7 +806,8 @@ func fixMockgcpFailures(ctx context.Context, opts *RunnerOptions, branch Branch,
 	prompt = strings.ReplaceAll(prompt, "${TEST_OUTPUT_STDOUT}", execResults.Stdout)
 	prompt = strings.ReplaceAll(prompt, "${GROUP}", branch.Group)
 	prompt = strings.ReplaceAll(prompt, "${RESOURCE}", resourceName)
-
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILE_CONTENTS}", protoContents.String())
+	prompt = strings.ReplaceAll(prompt, "${ORIGINAL_HTTP_LOG_FILE}", logFilePath)
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Fix mockgcp failures",

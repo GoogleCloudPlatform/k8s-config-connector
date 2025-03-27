@@ -806,10 +806,42 @@ spec:
                     description: Output only. The job status. Additional application-specific
                       status information might be contained in the <code>type_job</code>
                       and <code>yarn_applications</code> fields.
+                    properties:
+                      details:
+                        description: Optional. Output only. Job state details, such
+                          as an error description if the state is `ERROR`.
+                        type: string
+                      state:
+                        description: Output only. A state message specifying the overall
+                          job state.
+                        type: string
+                      stateStartTime:
+                        description: Output only. The time when this state was entered.
+                        type: string
+                      substate:
+                        description: Output only. Additional state information, which
+                          includes status reported by the agent.
+                        type: string
                     type: object
                   statusHistory:
                     description: Output only. The previous job status.
                     items:
+                      properties:
+                        details:
+                          description: Optional. Output only. Job state details, such
+                            as an error description if the state is `ERROR`.
+                          type: string
+                        state:
+                          description: Output only. A state message specifying the
+                            overall job state.
+                          type: string
+                        stateStartTime:
+                          description: Output only. The time when this state was entered.
+                          type: string
+                        substate:
+                          description: Output only. Additional state information,
+                            which includes status reported by the agent.
+                          type: string
                       type: object
                     type: array
                   yarnApplications:

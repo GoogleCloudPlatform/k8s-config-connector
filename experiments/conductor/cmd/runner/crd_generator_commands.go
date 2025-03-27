@@ -184,10 +184,7 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 			MaxAttempts: 1,
 		}
 		results, err := executeCommand(opts, cfg)
-		if err != nil {
-			return nil, nil, fmt.Errorf("failed to generate types: %w", err)
-		}
-		return affectedPaths, &results, nil
+		return affectedPaths, &results, err
 	}
 
 	log.Printf("SKIPPING generating apis, %s already exists", apiDirPathRelative)
@@ -741,6 +738,7 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 
 const ADJUST_IDENTITY_PARENT_NEW_FUNCTION string = `I want you to update the New${PROTO_RESOURCE}Identity method in the ${IDENTITY_FILE} file.
 
+if the ${PROTO_RESOURCE}Parent struct has a Name field, please remove it.
 Main Objectives:
 1. Modify the New${PROTO_RESOURCE}Identity method in ${IDENTITY_FILE}.
 2. Please do not modify the ${RESOURCE_TYPES_FILES} file.
@@ -830,4 +828,371 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 
 	results, err := executeCommand(opts, cfg)
 	return []string{identityPath}, &results, err
+}
+
+const REMOVE_NAME_FIELD string = `I want you to update the ${KIND}Spec struct in the ${RESOURCE_TYPES_FILE} file.
+
+If the ${KIND}Spec struct does not have a <TICK>Name<TICK> field, dont do anything.
+Do not remove the <TICK>ResourceID<TICK> field.
+
+If the ${KIND}Spec struct has a <TICK>Name<TICK> field, we need to remove the Name field along with the comments from the ${KIND}Spec struct if:
+2. The <TICK>name<TICK> field is not marked as <TICK>REQUIRED<TICK> in the <TICK>message ${PROTO_RESOURCE}<TICK> proto message.
+3. The <TICK>name<TICK> field is marked as <TICK>IDENTIFIER<TICK> in the <TICK>message ${PROTO_RESOURCE}<TICK> proto message.
+
+If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${RESOURCE_TYPES_FILE} file.
+Alternatively use EditFile tool to change the contents of the ${RESOURCE_TYPES_FILE}.
+Please do not modify the ${GENERATED_TYPES_FILE} file.
+Please ignore the compilation errors due to missing DeepCopy methods
+
+Make sure to use either CreateFile or EditFile tool.
+
+Contents of ${RESOURCE_TYPES_FILE}:
+${RESOURCE_TYPES_FILE_CONTENTS}
+
+Contents of ${PROTO_FILES}:
+${PROTO_FILES_CONTENTS}
+`
+
+func removeNameField(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	// Read all proto files in the directory
+	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
+
+	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
+	}
+	var protoContents strings.Builder
+	protoFileRelativePaths := []string{}
+	for _, file := range protoFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".proto") {
+			filePathRelative := filepath.Join(protoDirRelative, file.Name())
+			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
+			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
+			if err != nil {
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+			}
+			protoContents.WriteString("------- " + filePathRelative + " -------\n")
+			protoContents.Write(content)
+			protoContents.WriteString("\n-------- end ------------------\n")
+		}
+	}
+
+	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
+	}
+
+	// Create prompt with file contents
+	prompt := strings.ReplaceAll(REMOVE_NAME_FIELD, "${RESOURCE_TYPES_FILE}", string(resourceTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES}", strings.Join(protoFileRelativePaths, "\n"))
+
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILE_CONTENTS}", string(resourceTypesContent))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES_CONTENTS}", protoContents.String())
+
+	prompt = strings.ReplaceAll(prompt, "${KIND}", branch.Kind)
+	prompt = strings.ReplaceAll(prompt, "${PROTO_RESOURCE}", branch.Proto)
+
+	// Run codebot to adjust types
+	cfg := CommandConfig{
+		Name:         "Remove Name Field",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath}, &results, err
+}
+
+const MOVE_ETAG_FIELD string = `I want you to update the the ${RESOURCE_TYPES_FILE} file.
+
+If the ${KIND}Spec struct does not have a <TICK>Etag<TICK> field, dont do anything.
+Dont add an Etag field to the Status or the ObservedState struct if it does not exist in the ${KIND}Spec struct.
+
+If the ${KIND}Spec struct has a <TICK>Etag<TICK> field, we need to move the Etag field along with the comments from the ${KIND}Spec struct to:
+1. The ${PROTO_RESOURCE}ObservedState struct if it exists.
+2. The ${KIND}Status struct if the ${PROTO_RESOURCE}ObservedState struct does not exist.
+
+Make sure to move the comments along with the Etag field.
+
+If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${RESOURCE_TYPES_FILE} file.
+Alternatively use EditFile tool to change the contents of the ${RESOURCE_TYPES_FILE}.
+Please do not modify the ${GENERATED_TYPES_FILE} file.
+Please ignore the compilation errors due to missing DeepCopy methods
+
+Make sure to use either CreateFile or EditFile tool.
+
+Contents of ${RESOURCE_TYPES_FILE}:
+${RESOURCE_TYPES_FILE_CONTENTS}
+`
+
+func moveEtagField(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
+	}
+
+	// Create prompt with file contents
+	prompt := strings.ReplaceAll(MOVE_ETAG_FIELD, "${RESOURCE_TYPES_FILE}", string(resourceTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILE_CONTENTS}", string(resourceTypesContent))
+	prompt = strings.ReplaceAll(prompt, "${KIND}", branch.Kind)
+	prompt = strings.ReplaceAll(prompt, "${PROTO_RESOURCE}", branch.Proto)
+
+	// Run codebot to adjust types
+	cfg := CommandConfig{
+		Name:         "Move Etag Field",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath}, &results, err
+}
+
+const ADD_REQUIRED_FIELD_TAGS string = `I want you to update the ${RESOURCE_TYPES_FILE} and ${GENERATED_TYPES_FILE} files.
+
+Please look at all the fields in ${RESOURCE_TYPES_FILE} and ${GENERATED_TYPES_FILE} files.
+
+For all fields we need to add the <TICK>//+required<TICK> comment at the top of a field if:
+1. The field has a comment <TICK>//Required<TICK>
+2. The Proto field marked by <TICK>// +kcc:proto:field=<proto field path><TICK> is marked as <TICK>REQUIRED<TICK> in its proto message.
+
+Make sure to not duplicate existing fields.
+No need to duplicate the comments from the proto file or the comments from the field.
+
+Hints: 
+* If you generate the whole file, use CreateFile tool with overwrite set to true to write back the contents of the ${RESOURCE_TYPES_FILE} file.
+* Alternatively use EditFile tool to change the contents of the file.
+* Please ignore the compilation errors due to missing DeepCopy methods
+
+Make sure to use either CreateFile or EditFile tool.
+
+Contents of ${RESOURCE_TYPES_FILE}:
+${RESOURCE_TYPES_FILE_CONTENTS}
+
+Contents of ${GENERATED_TYPES_FILE}:
+${GENERATED_TYPES_FILE_CONTENTS}
+
+Contents of ${PROTO_FILES}:
+${PROTO_FILES_CONTENTS}
+
+`
+
+func addRequiredFieldTags(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
+	// Read all proto files in the directory
+	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
+
+	protoFiles, err := os.ReadDir(filepath.Join(opts.branchRepoDir, protoDirRelative))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read proto directory: %w", err)
+	}
+	var protoContents strings.Builder
+	protoFileRelativePaths := []string{}
+	for _, file := range protoFiles {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".proto") {
+			filePathRelative := filepath.Join(protoDirRelative, file.Name())
+			protoFileRelativePaths = append(protoFileRelativePaths, filePathRelative)
+			content, err := os.ReadFile(filepath.Join(opts.branchRepoDir, filePathRelative))
+			if err != nil {
+				return nil, nil, fmt.Errorf("failed to read proto file %s: %w", filePathRelative, err)
+			}
+			protoContents.WriteString("------- " + filePathRelative + " -------\n")
+			protoContents.Write(content)
+			protoContents.WriteString("\n-------- end ------------------\n")
+		}
+	}
+
+	generatedTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, generatedTypesPath))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read generated types file: %w", err)
+	}
+
+	resourceTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, resourceTypesPath))
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to read resource types file: %w", err)
+	}
+
+	// Create prompt with file contents
+	prompt := strings.ReplaceAll(ADD_REQUIRED_FIELD_TAGS, "${GENERATED_TYPES_FILE}", string(generatedTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILE}", string(resourceTypesPath))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES}", strings.Join(protoFileRelativePaths, "\n"))
+
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_TYPES_FILE_CONTENTS}", string(resourceTypesContent))
+	prompt = strings.ReplaceAll(prompt, "${PROTO_FILES_CONTENTS}", protoContents.String())
+	prompt = strings.ReplaceAll(prompt, "${GENERATED_TYPES_FILE_CONTENTS}", string(generatedTypesContent))
+
+	prompt = strings.ReplaceAll(prompt, "${KIND}", branch.Kind)
+	prompt = strings.ReplaceAll(prompt, "${PROTO_RESOURCE}", branch.Proto)
+
+	// Run codebot to adjust types
+	cfg := CommandConfig{
+		Name:         "Add Required Field Tags",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	results, err := executeCommand(opts, cfg)
+	return []string{resourceTypesPath, generatedTypesPath}, &results, err
+}
+
+// runAPIChecks runs the API checks for a branch and updates the exceptions file if needed
+func runAPIChecks(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Running API checks for branch %s", branch.Name)
+
+	// Define affected paths that might be modified
+	affectedPaths := []string{
+		filepath.Join("tests", "apichecks", "testdata", "exceptions"),
+	}
+
+	// Run the API checks command
+	cfg := CommandConfig{
+		Name: "API Checks",
+		Cmd:  "go",
+		Args: []string{
+			"test", "-v", filepath.Join("tests", "apichecks", "crds_test.go"),
+		},
+		WorkDir:     opts.branchRepoDir,
+		Env:         map[string]string{"WRITE_GOLDEN_OUTPUT": "1"},
+		MaxAttempts: 1,
+	}
+
+	results, err := executeCommand(opts, cfg)
+	return affectedPaths, &results, err
+}
+
+const FIX_API_CHECK_FAILURES string = `I need your help fixing API check failures for the ${KIND} resource.
+
+The API checker has identified some issues that need to be fixed.
+
+Here's the output from the API check test:
+
+${TEST_OUTPUT}
+
+Focus on the additions (lines starting with '+') in the output. These indicate issues that need to be fixed.
+Ignore the lines starting with '-' as they are not relevant.
+
+Please help me fix these issues by inspecting and modifying the affected files in the codebase.
+
+Files that may need to be modified:
+- apis/${GROUP}/v1alpha1/${RESOURCE_LOWER}_types.go - Contains the resource type definitions
+- apis/${GROUP}/v1alpha1/types.generated.go - Contains the generated resource type definitions
+- apis/${GROUP}/v1alpha1/${RESOURCE_LOWER}_identity.go - Contains the identity definition for the resource
+- pkg/controller/direct/${GROUP}/mapper.generated.go - Contains the mapper for the resource
+
+If the types file is modified, please re-generate the CRD running the script:
+./dev/tasks/generate-crds
+
+If the types.generated.go file is modified, please move the modified type to ${RESOURCE_LOWER}_types.go file.
+
+Here are the contents of these files:
+
+TYPES FILE:
+${TYPES_FILE_CONTENTS}
+
+IDENTITY FILE:
+${IDENTITY_FILE_CONTENTS}
+
+MAPPER FILE:
+${MAPPER_FILE_CONTENTS}
+
+GENERATED TYPES FILE:
+${GENERATED_TYPES_FILE_CONTENTS}
+
+Please make the necessary changes to fix all the API check issues. Focus on fixing the specific issues mentioned in the test output.
+`
+
+// fixAPICheckFailures attempts to fix API check issues based on the test output
+func fixAPICheckFailures(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Fixing API check failures for branch %s", branch.Name)
+
+	// Get additions from the test output
+	additions := extractAdditions(execResults.Stdout, execResults.Stderr)
+	if additions == "" {
+		// Something may be wrong here. Lets use the Output instead.
+		additions = execResults.Stdout + "\n" + execResults.Stderr
+	}
+
+	// Create paths to resource files
+	resourceLower := strings.ToLower(branch.Resource)
+	typesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", resourceLower))
+	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
+	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", resourceLower))
+	mapperPath := filepath.Join("pkg", "controller", "direct", branch.Group, "mapper.generated.go")
+
+	// Read file contents
+	typesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, typesPath))
+	if err != nil {
+		log.Printf("Error reading types file: %v", err)
+		typesContent = []byte("File not found")
+	}
+
+	identityContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, identityPath))
+	if err != nil {
+		log.Printf("Error reading identity file: %v", err)
+		identityContent = []byte("File not found")
+	}
+
+	mapperContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, mapperPath))
+	if err != nil {
+		log.Printf("Error reading mapper file: %v", err)
+		mapperContent = []byte("File not found")
+	}
+
+	generatedTypesContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, generatedTypesPath))
+	if err != nil {
+		log.Printf("Error reading generated types file: %v", err)
+		generatedTypesContent = []byte("File not found")
+	}
+
+	// Create prompt with file contents and test output
+	prompt := strings.ReplaceAll(FIX_API_CHECK_FAILURES, "${TEST_OUTPUT}", additions)
+	prompt = strings.ReplaceAll(prompt, "${GROUP}", branch.Group)
+	prompt = strings.ReplaceAll(prompt, "${KIND}", branch.Kind)
+	prompt = strings.ReplaceAll(prompt, "${RESOURCE_LOWER}", resourceLower)
+	prompt = strings.ReplaceAll(prompt, "${TYPES_FILE_CONTENTS}", string(typesContent))
+	prompt = strings.ReplaceAll(prompt, "${IDENTITY_FILE_CONTENTS}", string(identityContent))
+	prompt = strings.ReplaceAll(prompt, "${MAPPER_FILE_CONTENTS}", string(mapperContent))
+	prompt = strings.ReplaceAll(prompt, "${GENERATED_TYPES_FILE_CONTENTS}", string(generatedTypesContent))
+	// Run codebot to fix the issues
+	cfg := CommandConfig{
+		Name:         "Fix API Check Failures",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(prompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	results, err := executeCommand(opts, cfg)
+	return []string{typesPath, identityPath, mapperPath}, &results, err
+}
+
+// extractAdditions extracts the lines starting with '+' from the API check output
+func extractAdditions(stdout, stderr string) string {
+	output := stdout + "\n" + stderr
+	lines := strings.Split(output, "\n")
+	var additions strings.Builder
+
+	// Look for lines containing "missingrefs.txt" to locate the start of diff
+	for _, line := range lines {
+		// Look for lines starting with + after removing whitespace
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "+ ") {
+			additions.WriteString(trimmed + "\n")
+		}
+	}
+
+	return additions.String()
 }

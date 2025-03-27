@@ -529,6 +529,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("expireTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.expireTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -984,6 +985,36 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 						if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
 							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+					})
+
+					// Specific to BackupPlanDR
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						// normalize "dataSource"
+						if val, found, _ := unstructured.NestedString(obj, "dataSource"); found {
+							tokens := strings.Split(val, "/")
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+								tokens[len(tokens)-1] = "${dataSourceID}"
+								if err := unstructured.SetNestedField(obj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+						// normalize "response.dataSource"
+						responseObj, found, _ := unstructured.NestedMap(obj, "response")
+						if found {
+							if val, found, _ := unstructured.NestedString(responseObj, "dataSource"); found {
+								tokens := strings.Split(val, "/")
+								if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+									tokens[len(tokens)-1] = "${dataSourceID}"
+									if err := unstructured.SetNestedField(responseObj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+									if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+								}
+							}
 						}
 					})
 

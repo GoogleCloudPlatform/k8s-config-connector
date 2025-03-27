@@ -24,6 +24,7 @@ import (
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/nasa9084/go-openapi"
@@ -428,7 +429,7 @@ func directCreate(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		return nil, fmt.Errorf("GVK %s '%v' already exist", u.GroupVersionKind(), u.GetName())
 	}
 
-	op := directbase.NewCreateOperation(c, u)
+	op := directbase.NewCreateOperation(lifecyclehandler.LifecycleHandler{}, c, u)
 	err = a.Create(ctx, op)
 	if err != nil {
 		return nil, err

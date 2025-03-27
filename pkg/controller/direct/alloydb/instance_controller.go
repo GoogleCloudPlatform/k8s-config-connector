@@ -299,13 +299,13 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	log.V(2).Info("successfully updated instance", "name", a.id)
 
 	status := AlloyDBInstanceStatus_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	if *a.desired.Status.ExternalRef == "" {
 		// If it is the first reconciliation after switching to direct controller,
 		// then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
-	}
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

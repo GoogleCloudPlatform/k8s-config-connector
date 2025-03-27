@@ -1,0 +1,9 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  description: "Initial description"

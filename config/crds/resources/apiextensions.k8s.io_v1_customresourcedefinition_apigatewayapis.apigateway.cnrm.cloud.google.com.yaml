@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: apigatewayapis.apigateway.cnrm.cloud.google.com
 spec:
   group: apigateway.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: APIGatewayAPI
+    listKind: APIGatewayAPIList
     plural: apigatewayapis
     shortNames:
     - gcpapigatewayapi
@@ -43,31 +42,41 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: APIGatewayAPI is the Schema for the APIGatewayAPI API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: APIGatewayAPISpec defines the desired state of APIGatewayAPI
             properties:
               displayName:
-                description: A user-visible name for the API.
+                description: Optional. Display name.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
               managedService:
-                description: |-
-                  Immutable. Immutable. The name of a Google Managed Service ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
-                  If not specified, a new Service will automatically be created in the same project as this API.
+                description: Optional. Immutable. The name of a Google Managed Service
+                  ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+                  If not specified, a new Service will automatically be created in
+                  the same project as this API.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: ' Optional. The project that this resource belongs to.'
                 oneOf:
                 - not:
                     required:
@@ -84,28 +93,32 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The apiId of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The APIGatewayAPI name. If not given, the metadata.name
+                  will be used.
                 type: string
-            required:
-            - projectRef
             type: object
           status:
+            description: APIGatewayAPIStatus defines the config connector machine
+              state of APIGatewayAPI
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -129,11 +142,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Creation timestamp in RFC3339 text format.
-                type: string
-              name:
-                description: The resource name of the API. Format 'projects/{{project}}/locations/global/apis/{{apiId}}'.
+              externalRef:
+                description: A unique specifier for the APIGatewayAPI resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -141,7 +152,25 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Created time.
+                    type: string
+                  name:
+                    description: 'Resource name of the API. Format: projects/{project}/locations/global/apis/{api}'
+                    type: string
+                  state:
+                    description: ' State of the API.'
+                    type: string
+                  updateTime:
+                    description: Updated time.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -150,9 +179,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

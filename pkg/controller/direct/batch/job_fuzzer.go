@@ -48,5 +48,8 @@ func batchJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".task_groups")
 	f.StatusFields.Insert(".status")
 
+	f.UnimplementedFields.Insert(".allocation_policy.service_account.scopes")
+	f.UnimplementedFields.Insert(".status.task_groups")
+
 	return f
 }
