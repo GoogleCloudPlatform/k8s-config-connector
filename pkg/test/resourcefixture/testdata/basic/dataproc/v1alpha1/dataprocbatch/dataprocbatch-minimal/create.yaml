@@ -20,4 +20,5 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Initial description"
+  pysparkBatch:
+    mainPythonFileURI: gs://config-connector-samples/dataproc/spark.py

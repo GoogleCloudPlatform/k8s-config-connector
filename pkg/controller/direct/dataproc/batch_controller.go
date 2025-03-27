@@ -23,10 +23,9 @@ package dataproc
 import (
 	"context"
 	"fmt"
-	"strings"
 
-	dataproc "cloud.google.com/go/dataproc/apiv1"
-	dataprocpb "cloud.google.com/go/dataproc/apiv1/dataprocpb"
+	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
+	dataprocpb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -41,7 +40,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/golang/protobuf/proto"
 )
 
 func init() {
@@ -94,14 +92,6 @@ func (m *batchModel) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, err
 	}
 
-	if obj.Spec.RuntimeConfig != nil {
-		if obj.Spec.RuntimeConfig.Version != nil {
-			if err := obj.Spec.RuntimeConfig.Version.ResolveValue(ctx, reader, obj.Spec.RuntimeConfig, obj, "version"); err != nil {
-				return nil, fmt.Errorf("normalizing field \"version\": %w", err)
-			}
-		}
-	}
-
 	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
@@ -115,22 +105,7 @@ func (m *batchModel) AdapterForObject(ctx context.Context, reader client.Reader,
 }
 
 func (m *batchModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	log := klog.FromContext(ctx)
-	if strings.HasPrefix(url, "//dataproc.googleapis.com/") {
-		id, err := krm.ParseBatchExternal(url)
-		if err != nil {
-			log.V(2).Error(err, "url did not match DataprocBatch format", "url", url)
-		} else {
-			gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
-			if err != nil {
-				return nil, err
-			}
-			return &batchAdapter{
-				gcpClient: gcpClient,
-				id:        id,
-			}, nil
-		}
-	}
+	// TODO: Support URLs
 	return nil, nil
 }
 
@@ -170,6 +145,11 @@ func (a *batchAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Labels = make(map[string]string)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		resource.Labels[k] = v
+	}
+	resource.Labels["managed-by-cnrm"] = "true"
 
 	req := &dataprocpb.CreateBatchRequest{
 		Parent:  a.id.Parent().String(),
@@ -243,13 +223,8 @@ func (a *batchAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 		return nil, mapCtx.Err()
 	}
 
-	if a.actual.EnvironmentConfig != nil {
-		obj.Spec.RuntimeConfig.Version = &krm.RuntimeConfigVersion{}
-		obj.Spec.RuntimeConfig.Version.Value = proto.String(a.actual.EnvironmentConfig.ExecutionConfig.KmsKey)
-	}
-
 	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -262,8 +237,3 @@ func (a *batchAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
 	return u, nil
 }
-
-```
-</out>
-
-
