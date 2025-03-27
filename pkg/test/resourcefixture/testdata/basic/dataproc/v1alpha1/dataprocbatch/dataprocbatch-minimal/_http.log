@@ -1,0 +1,279 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Not found: Batch projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches?%24alt=json%3Benum-encoding%3Dint&batchId=dataprocbatch-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "pysparkBatch": {
+    "mainPythonFileUri": "gs://config-connector-samples/dataproc/spark.py"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.BatchOperationMetadata",
+    "batch": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+    "batchUuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Batch",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
+      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-location": "us-central1",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": 1,
+    "warnings": [
+      "No runtime version specified. Using the default runtime version. It is recommended to select a specific major.minor runtime version in production, as the default runtime version may change at any time."
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.BatchOperationMetadata",
+    "batch": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+    "batchUuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Batch",
+    "doneTime": "2025-03-27T00:20:07.554574Z",
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
+      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-location": "us-central1",
+      "managed-by-cnrm": "true"
+    },
+    "operationType": "BATCH",
+    "warnings": [
+      "No runtime version specified. Using the default runtime version. It is recommended to select a specific major.minor runtime version in production, as the default runtime version may change at any time."
+    ]
+  },
+  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataproc.v1.Batch",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "xiaoweim@google.com",
+    "environmentConfig": {
+      "executionConfig": {
+        "authenticationConfig": {},
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "ttl": "14400s"
+      },
+      "peripheralsConfig": {
+        "sparkHistoryServerConfig": {}
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
+      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-location": "us-central1",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+    "operation": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+    "pysparkBatch": {
+      "mainPythonFileUri": "gs://config-connector-samples/dataproc/spark.py"
+    },
+    "runtimeConfig": {
+      "properties": {
+        "spark:spark.app.name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+        "spark:spark.dataproc.scaling.version": "2",
+        "spark:spark.driver.cores": "4",
+        "spark:spark.driver.memory": "9600m",
+        "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+        "spark:spark.executor.cores": "4",
+        "spark:spark.executor.instances": "2",
+        "spark:spark.executor.memory": "9600m"
+      },
+      "version": "2.2.39"
+    },
+    "runtimeInfo": {
+      "approximateUsage": {
+        "acceleratorType": "UNSPECIFIED",
+        "milliDcuSeconds": "711000",
+        "shuffleStorageGbSeconds": "72000"
+      },
+      "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput"
+    },
+    "state": "SUCCEEDED",
+    "stateHistory": [
+      {
+        "state": "PENDING",
+        "stateStartTime": "2025-03-27T00:16:46.504527Z"
+      },
+      {
+        "state": "RUNNING",
+        "stateStartTime": "2025-03-27T00:18:02.819705Z"
+      }
+    ],
+    "stateTime": "2025-03-27T00:18:12.190889Z",
+    "uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4"
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "environmentConfig": {
+    "executionConfig": {
+      "authenticationConfig": {},
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "ttl": "14400s"
+    },
+    "peripheralsConfig": {
+      "sparkHistoryServerConfig": {}
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
+    "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
+    "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+    "goog-dataproc-location": "us-central1",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+  "operation": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "pysparkBatch": {
+    "mainPythonFileUri": "gs://config-connector-samples/dataproc/spark.py"
+  },
+  "runtimeConfig": {
+    "properties": {
+      "spark:spark.app.name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+      "spark:spark.dataproc.scaling.version": "2",
+      "spark:spark.driver.cores": "4",
+      "spark:spark.driver.memory": "9600m",
+      "spark:spark.dynamicAllocation.executorAllocationRatio": "0.3",
+      "spark:spark.executor.cores": "4",
+      "spark:spark.executor.instances": "2",
+      "spark:spark.executor.memory": "9600m"
+    },
+    "version": "2.2.39"
+  },
+  "runtimeInfo": {
+    "approximateUsage": {
+      "acceleratorType": "UNSPECIFIED",
+      "milliDcuSeconds": "711000",
+      "shuffleStorageGbSeconds": "72000"
+    },
+    "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput"
+  },
+  "state": 5,
+  "stateHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2025-03-27T00:16:46.504527Z"
+    },
+    {
+      "state": 2,
+      "stateStartTime": "2025-03-27T00:18:02.819705Z"
+    }
+  ],
+  "stateTime": "2025-03-27T00:18:12.190889Z",
+  "uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4"
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fbatches%2Fdataprocbatch-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

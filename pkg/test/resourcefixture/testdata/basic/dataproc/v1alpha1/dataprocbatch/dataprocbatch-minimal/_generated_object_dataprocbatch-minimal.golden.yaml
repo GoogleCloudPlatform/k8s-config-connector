@@ -1,0 +1,44 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
+kind: DataprocBatch
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dataprocbatch-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  pysparkBatch:
+    mainPythonFileURI: gs://config-connector-samples/dataproc/spark.py
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: xiaoweim@google.com
+    operation: projects/${projectId}/regions/us-central1/operations/47a3fd3e-6d41-4cac-91bc-284befefd5a3
+    runtimeInfo:
+      approximateUsage:
+        acceleratorType: UNSPECIFIED
+        milliDcuSeconds: 711000
+        shuffleStorageGBSeconds: 72000
+      outputURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput
+    state: SUCCEEDED
+    stateHistory:
+    - state: PENDING
+      stateStartTime: "2025-03-27T00:16:46.504527Z"
+    - state: RUNNING
+      stateStartTime: "2025-03-27T00:18:02.819705Z"
+    stateTime: "2025-03-27T00:18:12.190889Z"
+    uuid: 27e5b2b4-08f6-4054-a204-852ce0db08e4
