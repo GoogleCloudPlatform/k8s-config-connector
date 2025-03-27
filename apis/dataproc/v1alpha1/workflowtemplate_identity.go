@@ -25,6 +25,10 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+
 // WorkflowTemplateIdentity defines the resource reference to DataprocWorkflowTemplate, which "External" field
 // holds the GCP identifier for the KRM object.
 type WorkflowTemplateIdentity struct {
