@@ -1,0 +1,427 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: colabruntimetemplates.colab.cnrm.cloud.google.com
+spec:
+  group: colab.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ColabRuntimeTemplate
+    listKind: ColabRuntimeTemplateList
+    plural: colabruntimetemplates
+    shortNames:
+    - gcpcolabruntimetemplate
+    - gcpcolabruntimetemplates
+    singular: colabruntimetemplate
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ColabRuntimeTemplate is the Schema for the ColabRuntimeTemplate
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ColabRuntimeTemplateSpec defines the desired state of ColabRuntimeTemplate
+            properties:
+              dataPersistentDiskSpec:
+                description: |-
+                  Optional. The specification of [persistent
+                   disk][https://cloud.google.com/compute/docs/disks/persistent-disks]
+                   attached to the runtime as data disk storage.
+                properties:
+                  diskSizeGB:
+                    description: Size in GB of the disk (default is 100GB).
+                    format: int64
+                    type: integer
+                  diskType:
+                    description: |-
+                      Type of the disk (default is "pd-standard").
+                       Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+                       "pd-standard" (Persistent Disk Hard Disk Drive)
+                       "pd-balanced" (Balanced Persistent Disk)
+                       "pd-extreme" (Extreme Persistent Disk)
+                    type: string
+                type: object
+              description:
+                description: The description of the NotebookRuntimeTemplate.
+                type: string
+              displayName:
+                description: |-
+                  Required. The display name of the NotebookRuntimeTemplate.
+                   The name can be up to 128 characters long and can consist of any UTF-8
+                   characters.
+                type: string
+              encryptionSpec:
+                description: Customer-managed encryption key spec for the notebook
+                  runtime.
+                properties:
+                  kmsKeyRef:
+                    description: |-
+                      Required. The Cloud KMS resource identifier of the customer managed
+                       encryption key used to protect a resource. Has the form:
+                       `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
+                       The key needs to be in the same region as where the compute resource is
+                       created.
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                type: object
+              eucConfig:
+                description: EUC configuration of the NotebookRuntimeTemplate.
+                properties:
+                  eucDisabled:
+                    description: |-
+                      Input only. Whether EUC is disabled in this NotebookRuntimeTemplate.
+                       In proto3, the default value of a boolean is false. In this way, by default
+                       EUC will be enabled for NotebookRuntimeTemplate.
+                    type: boolean
+                type: object
+              idleShutdownConfig:
+                description: |-
+                  The idle shutdown configuration of NotebookRuntimeTemplate. This config
+                   will only be set when idle shutdown is enabled.
+                properties:
+                  idleShutdownDisabled:
+                    description: Whether Idle Shutdown is disabled in this NotebookRuntimeTemplate.
+                    type: boolean
+                  idleTimeout:
+                    description: |-
+                      Required. Duration is accurate to the second. In Notebook, Idle Timeout is
+                       accurate to minute so the range of idle_timeout (second) is: 10 * 60 ~ 1440
+                       * 60.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  The labels with user-defined metadata to organize the
+                   NotebookRuntimeTemplates.
+
+                   Label keys and values can be no longer than 64 characters
+                   (Unicode codepoints), can only contain lowercase letters, numeric
+                   characters, underscores and dashes. International characters are allowed.
+
+                   See https://goo.gl/xmQnxf for more information and examples of labels.
+                type: object
+              location:
+                description: |-
+                  Immutable. The name of the location where the RuntimeTemplate will be created.
+                  Required.
+                type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
+              machineSpec:
+                description: |-
+                  Optional. Immutable. The specification of a single machine for the
+                   template.
+                properties:
+                  acceleratorCount:
+                    description: The number of accelerators to attach to the machine.
+                    format: int32
+                    type: integer
+                  acceleratorType:
+                    description: |-
+                      Immutable. The type of accelerator(s) that may be attached to the machine
+                       as per
+                       [accelerator_count][google.cloud.aiplatform.v1beta1.MachineSpec.accelerator_count].
+                    type: string
+                  machineType:
+                    description: |-
+                      Immutable. The type of the machine.
+
+                       See the [list of machine types supported for
+                       prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+
+                       See the [list of machine types supported for custom
+                       training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+
+                       For [DeployedModel][google.cloud.aiplatform.v1beta1.DeployedModel] this
+                       field is optional, and the default value is `n1-standard-2`. For
+                       [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
+                       as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
+                       this field is required.
+                    type: string
+                  reservationAffinity:
+                    description: |-
+                      Optional. Immutable. Configuration controlling how this resource pool
+                       consumes reservation.
+                    properties:
+                      key:
+                        description: |-
+                          Optional. Corresponds to the label key of a reservation resource. To target
+                           a SPECIFIC_RESERVATION by name, use
+                           `compute.googleapis.com/reservation-name` as the key and specify the name
+                           of your reservation as its value.
+                        type: string
+                      reservationAffinityType:
+                        description: Required. Specifies the reservation affinity
+                          type.
+                        type: string
+                      values:
+                        description: |-
+                          Optional. Corresponds to the label values of a reservation resource. This
+                           must be the full resource name of the reservation.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  tpuTopology:
+                    description: |-
+                      Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+                       available from GKE. (Example: tpu_topology: "2x2x1").
+                    type: string
+                type: object
+              networkSpec:
+                description: Optional. Network spec.
+                properties:
+                  enableInternetAccess:
+                    description: Whether to enable public internet access. Default
+                      false.
+                    type: boolean
+                  networkRef:
+                    description: |-
+                      The full name of the Google Compute Engine
+                       [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks)
+                    properties:
+                      external:
+                        description: |-
+                          A reference to an externally managed Compute Network resource.
+                          Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
+                  subnetworkRef:
+                    description: |-
+                      The name of the subnet that this instance is in.
+                       Format:
+                       `projects/{project_id_or_number}/regions/{region}/subnetworks/{subnetwork_id}`
+                    properties:
+                      external:
+                        description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                          when not managed by Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeSubnetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeSubnetwork`
+                          resource.
+                        type: string
+                    type: object
+                required:
+                - subnetworkRef
+                type: object
+              networkTags:
+                description: |-
+                  Optional. The Compute Engine tags to add to runtime (see [Tagging
+                   instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).
+                items:
+                  type: string
+                type: array
+              notebookRuntimeType:
+                description: Optional. Immutable. The type of the notebook runtime
+                  template.
+                type: string
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ColabRuntimeTemplate name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceAccountRef:
+                description: |-
+                  The service account that the runtime workload runs as.
+                   You can use any service account within the same project, but you
+                   must have the service account user permission to use the instance.
+
+                   If not specified, the [Compute Engine default service
+                   account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+                   is used.
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              shieldedVMConfig:
+                description: Optional. Immutable. Runtime Shielded VM spec.
+                properties:
+                  enableSecureBoot:
+                    description: |-
+                      Defines whether the instance has [Secure
+                       Boot](https://cloud.google.com/compute/shielded-vm/docs/shielded-vm#secure-boot)
+                       enabled.
+
+                       Secure Boot helps ensure that the system only runs authentic software by
+                       verifying the digital signature of all boot components, and halting the
+                       boot process if signature verification fails.
+                    type: boolean
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ColabRuntimeTemplateStatus defines the config connector machine
+              state of ColabRuntimeTemplate
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ColabRuntimeTemplate resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this NotebookRuntimeTemplate
+                      was created.
+                    type: string
+                  etag:
+                    description: |-
+                      Used to perform consistent read-modify-write updates. If not set, a blind
+                       "overwrite" update happens.
+                    type: string
+                  eucConfig:
+                    description: EUC configuration of the NotebookRuntimeTemplate.
+                    properties:
+                      bypassActasCheck:
+                        description: |-
+                          Output only. Whether ActAs check is bypassed for service account attached
+                           to the VM. If false, we need ActAs check for the default Compute Engine
+                           Service account. When a Runtime is created, a VM is allocated using Default
+                           Compute Engine Service Account. Any user requesting to use this Runtime
+                           requires Service Account User (ActAs) permission over this SA. If true,
+                           Runtime owner is using EUC and does not require the above permission as VM
+                           no longer use default Compute Engine SA, but a P4SA.
+                        type: boolean
+                    type: object
+                  updateTime:
+                    description: |-
+                      Output only. Timestamp when this NotebookRuntimeTemplate was most recently
+                       updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

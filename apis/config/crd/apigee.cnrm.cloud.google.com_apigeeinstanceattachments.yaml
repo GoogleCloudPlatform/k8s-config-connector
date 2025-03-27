@@ -1,0 +1,308 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: apigeeinstanceattachments.apigee.cnrm.cloud.google.com
+spec:
+  group: apigee.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ApigeeInstanceAttachment
+    listKind: ApigeeInstanceAttachmentList
+    plural: apigeeinstanceattachments
+    shortNames:
+    - gcpapigeeinstanceattachment
+    - gcpapigeeinstanceattachments
+    singular: apigeeinstanceattachment
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ApigeeInstanceAttachment is the Schema for the ApigeeInstanceAttachment
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ApigeeInstanceAttachmentSpec defines the desired state of
+              ApigeeInstanceAttachment
+            properties:
+              environmentRef:
+                description: ID of the attached environment.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ApigeeEnvironment resource.
+                      Should be in the format "organizations/{{organizationID}}/environments/{{environmentID}}".
+                    type: string
+                  name:
+                    description: The name of a ApigeeEnvironment resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ApigeeEnvironment resource.
+                    type: string
+                type: object
+              instanceRef:
+                description: Reference to parent Apigee Instance.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ApigeeInstance resource.
+                      Should be in the format "organizations/{{organizationID}}/instances/{{instanceID}}".
+                    type: string
+                  name:
+                    description: The name of a ApigeeInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ApigeeInstance resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ApigeeInstanceAttachment name. If not given, the
+                  metadata.name will be used.
+                type: string
+            required:
+            - environmentRef
+            - instanceRef
+            type: object
+          status:
+            description: ApigeeInstanceAttachmentStatus defines the config connector
+              machine state of ApigeeInstanceAttachment
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ApigeeInstanceAttachment resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createdAt:
+                    description: Output only. Time the attachment was created in milliseconds
+                      since epoch.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ApigeeInstanceAttachment is the Schema for the ApigeeInstanceAttachment
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ApigeeInstanceAttachmentSpec defines the desired state of
+              ApigeeInstanceAttachment
+            properties:
+              environmentRef:
+                description: ID of the attached environment.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ApigeeEnvironment resource.
+                      Should be in the format "organizations/{{organizationID}}/environments/{{environmentID}}".
+                    type: string
+                  name:
+                    description: The name of a ApigeeEnvironment resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ApigeeEnvironment resource.
+                    type: string
+                type: object
+              instanceRef:
+                description: Reference to parent Apigee Instance.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed ApigeeInstance resource.
+                      Should be in the format "organizations/{{organizationID}}/instances/{{instanceID}}".
+                    type: string
+                  name:
+                    description: The name of a ApigeeInstance resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ApigeeInstance resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ApigeeInstanceAttachment name. If not given, the
+                  metadata.name will be used.
+                type: string
+            required:
+            - environmentRef
+            - instanceRef
+            type: object
+          status:
+            description: ApigeeInstanceAttachmentStatus defines the config connector
+              machine state of ApigeeInstanceAttachment
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ApigeeInstanceAttachment resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createdAt:
+                    description: Output only. Time the attachment was created in milliseconds
+                      since epoch.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

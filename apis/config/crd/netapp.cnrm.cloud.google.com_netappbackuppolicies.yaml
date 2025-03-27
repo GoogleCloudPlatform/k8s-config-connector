@@ -1,0 +1,189 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: netappbackuppolicies.netapp.cnrm.cloud.google.com
+spec:
+  group: netapp.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: NetAppBackupPolicy
+    listKind: NetAppBackupPolicyList
+    plural: netappbackuppolicies
+    shortNames:
+    - gcpnetappbackuppolicy
+    - gcpnetappbackuppolicies
+    singular: netappbackuppolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NetAppBackupPolicy is the Schema for the NetAppBackupPolicy API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NetAppBackupPolicySpec defines the desired state of NetAppBackupPolicy
+            properties:
+              dailyBackupLimit:
+                description: |-
+                  Number of daily backups to keep. Note that the minimum daily backup limit
+                   is 2.
+                format: int32
+                type: integer
+              description:
+                description: Description of the backup policy.
+                type: string
+              enabled:
+                description: |-
+                  If enabled, make backups automatically according to the schedules.
+                   This will be applied to all volumes that have this policy attached and
+                   enforced on volume level. If not specified, default is true.
+                type: boolean
+              location:
+                type: string
+              monthlyBackupLimit:
+                description: |-
+                  Number of monthly backups to keep. Note that the sum of daily, weekly and
+                   monthly backups should be greater than 1.
+                format: int32
+                type: integer
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The GCP resource identifier. If not given, the metadata.name
+                  will be used.
+                type: string
+              weeklyBackupLimit:
+                description: |-
+                  Number of weekly backups to keep. Note that the sum of daily, weekly and
+                   monthly backups should be greater than 1.
+                format: int32
+                type: integer
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: NetAppBackupPolicyStatus defines the config connector machine
+              state of NetAppBackupPolicy
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the NetAppBackupPolicy resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  assignedVolumeCount:
+                    description: Output only. The total number of volumes assigned
+                      by this backup policy.
+                    format: int32
+                    type: integer
+                  createTime:
+                    description: Output only. The time when the backup policy was
+                      created.
+                    type: string
+                  state:
+                    description: Output only. The backup policy state.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

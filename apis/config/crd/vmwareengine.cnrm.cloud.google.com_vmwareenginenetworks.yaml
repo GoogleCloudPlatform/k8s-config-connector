@@ -1,0 +1,202 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: vmwareenginenetworks.vmwareengine.cnrm.cloud.google.com
+spec:
+  group: vmwareengine.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: VMwareEngineNetwork
+    listKind: VMwareEngineNetworkList
+    plural: vmwareenginenetworks
+    shortNames:
+    - gcpvmwareenginenetwork
+    - gcpvmwareenginenetworks
+    singular: vmwareenginenetwork
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VMwareEngineNetwork is the Schema for the VMwareEngineNetwork
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VMwareEngineNetworkSpec defines the desired state of VMwareEngineNetwork
+            properties:
+              description:
+                description: User-provided description for this VMware Engine network.
+                type: string
+              etag:
+                description: |-
+                  Checksum that may be sent on update and delete requests to ensure that the
+                   user-provided value is up to date before the server processes a request.
+                   The server computes checksums based on the value of other fields in the
+                   request.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The VMwareEngineNetwork name. If not given, the metadata.name
+                  will be used.
+                type: string
+              type:
+                description: Required. VMware Engine network type.
+                type: string
+            required:
+            - location
+            - projectRef
+            - type
+            type: object
+          status:
+            description: VMwareEngineNetworkStatus defines the config connector machine
+              state of VMwareEngineNetwork
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the VMwareEngineNetwork resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time of this resource.
+                    type: string
+                  state:
+                    description: Output only. State of the VMware Engine network.
+                    type: string
+                  uid:
+                    description: Output only. System-generated unique identifier for
+                      the resource.
+                    type: string
+                  updateTime:
+                    description: Output only. Last update time of this resource.
+                    type: string
+                  vpcNetworks:
+                    description: |-
+                      Output only. VMware Engine service VPC networks that provide connectivity
+                       from a private cloud to customer projects, the internet, and other Google
+                       Cloud services.
+                    items:
+                      properties:
+                        network:
+                          description: |-
+                            Output only. The relative resource name of the service VPC network this
+                             VMware Engine network is attached to. For example:
+                             `projects/123123/global/networks/my-network`
+                          type: string
+                        type:
+                          description: |-
+                            Output only. Type of VPC network (INTRANET, INTERNET, or
+                             GOOGLE_CLOUD)
+                          type: string
+                      type: object
+                    type: array
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

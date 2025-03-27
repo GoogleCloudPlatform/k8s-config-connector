@@ -1,0 +1,297 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.3
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: spannerinstanceconfigs.spanner.cnrm.cloud.google.com
+spec:
+  group: spanner.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SpannerInstanceConfig
+    listKind: SpannerInstanceConfigList
+    plural: spannerinstanceconfigs
+    shortNames:
+    - gcpspannerinstanceconfig
+    - gcpspannerinstanceconfigs
+    singular: spannerinstanceconfig
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SpannerInstanceConfig is the Schema for the SpannerInstanceConfig
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SpannerInstanceConfigSpec defines the desired state of SpannerInstanceConfig
+            properties:
+              baseConfigRef:
+                description: |-
+                  Base configuration name, e.g. projects/<project_name>/instanceConfigs/nam3,
+                   based on which this configuration is created. Only set for user-managed
+                   configurations. `base_config` must refer to a configuration of type
+                   `GOOGLE_MANAGED` in the same project as this configuration.
+                properties:
+                  external:
+                    description: |-
+                      A reference to an externally managed SpannerInstanceConfig resource.
+                      Should be in the format "projects/{{projectID}}/locations/{{location}}/instanceconfigs/{{instanceconfigID}}".
+                    type: string
+                  name:
+                    description: The name of a SpannerInstanceConfig resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a SpannerInstanceConfig resource.
+                    type: string
+                type: object
+              displayName:
+                description: The name of this instance configuration as it appears
+                  in UIs.
+                type: string
+              etag:
+                description: |-
+                  etag is used for optimistic concurrency control as a way
+                   to help prevent simultaneous updates of a instance configuration from
+                   overwriting each other. It is strongly suggested that systems make use of
+                   the etag in the read-modify-write cycle to perform instance configuration
+                   updates in order to avoid race conditions: An etag is returned in the
+                   response which contains instance configurations, and systems are expected
+                   to put that etag in the request to update instance configuration to ensure
+                   that their change is applied to the same version of the instance
+                   configuration. If no etag is provided in the call to update the instance
+                   configuration, then the existing instance configuration is overwritten
+                   blindly.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Cloud Labels are a flexible and lightweight mechanism for organizing cloud
+                   resources into groups that reflect a customer's organizational needs and
+                   deployment strategies. Cloud Labels can be used to filter collections of
+                   resources. They can be used to control how resource metrics are aggregated.
+                   And they can be used as arguments to policy management rules (e.g. route,
+                   firewall, load balancing, etc.).
+
+                    * Label keys must be between 1 and 63 characters long and must conform to
+                      the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
+                    * Label values must be between 0 and 63 characters long and must conform
+                      to the regular expression: `[a-z0-9_-]{0,63}`.
+                    * No more than 64 labels can be associated with a given resource.
+
+                   See https://goo.gl/xmQnxf for more information on and examples of labels.
+
+                   If you plan to use labels in your own code, please note that additional
+                   characters may be allowed in the future. Therefore, you are advised to use
+                   an internal label representation, such as JSON, which doesn't rely upon
+                   specific characters being disallowed.  For example, representing labels
+                   as the string:  name + "_" + value  would prove problematic if we were to
+                   allow "_" in a future release.
+                type: object
+              leaderOptions:
+                description: |-
+                  Allowed values of the "default_leader" schema option for databases in
+                   instances that use this instance configuration.
+                items:
+                  type: string
+                type: array
+              projectRef:
+                description: The Project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              replicas:
+                description: |-
+                  The geographic placement of nodes in this instance configuration and their
+                   replication properties.
+
+                   To create user-managed configurations, input
+                   `replicas` must include all replicas in `replicas` of the `base_config`
+                   and include one or more replicas in the `optional_replicas` of the
+                   `base_config`.
+                items:
+                  properties:
+                    defaultLeaderLocation:
+                      description: |-
+                        If true, this location is designated as the default leader location where
+                         leader replicas are placed. See the [region types
+                         documentation](https://cloud.google.com/spanner/docs/instances#region_types)
+                         for more details.
+                      type: boolean
+                    location:
+                      description: The location of the serving resources, e.g., "us-central1".
+                      type: string
+                    type:
+                      description: The type of replica.
+                      type: string
+                  type: object
+                type: array
+              resourceID:
+                description: The SpannerInstanceConfig name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - displayName
+            - projectRef
+            - replicas
+            type: object
+          status:
+            description: SpannerInstanceConfigStatus defines the config connector
+              machine state of SpannerInstanceConfig
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SpannerInstanceConfig resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  configType:
+                    description: |-
+                      Output only. Whether this instance configuration is a Google-managed or
+                       user-managed configuration.
+                    type: string
+                  freeInstanceAvailability:
+                    description: |-
+                      Output only. Describes whether free instances are available to be created
+                       in this instance configuration.
+                    type: string
+                  optionalReplicas:
+                    description: |-
+                      Output only. The available optional replicas to choose from for
+                       user-managed configurations. Populated for Google-managed configurations.
+                    items:
+                      properties:
+                        defaultLeaderLocation:
+                          description: |-
+                            If true, this location is designated as the default leader location where
+                             leader replicas are placed. See the [region types
+                             documentation](https://cloud.google.com/spanner/docs/instances#region_types)
+                             for more details.
+                          type: boolean
+                        location:
+                          description: The location of the serving resources, e.g.,
+                            "us-central1".
+                          type: string
+                        type:
+                          description: The type of replica.
+                          type: string
+                      type: object
+                    type: array
+                  quorumType:
+                    description: Output only. The `QuorumType` of the instance configuration.
+                    type: string
+                  reconciling:
+                    description: |-
+                      Output only. If true, the instance configuration is being created or
+                       updated. If false, there are no ongoing operations for the instance
+                       configuration.
+                    type: boolean
+                  state:
+                    description: |-
+                      Output only. The current instance configuration state. Applicable only for
+                       `USER_MANAGED` configurations.
+                    type: string
+                  storageLimitPerProcessingUnit:
+                    description: Output only. The storage limit in bytes per processing
+                      unit.
+                    format: int64
+                    type: integer
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
