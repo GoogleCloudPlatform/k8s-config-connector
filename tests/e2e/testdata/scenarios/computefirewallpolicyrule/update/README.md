@@ -1,0 +1,1 @@
+Apply two FirewallPolicyRule resource, change the spec.action field, a PATCH operation is triggered and field is updated.
