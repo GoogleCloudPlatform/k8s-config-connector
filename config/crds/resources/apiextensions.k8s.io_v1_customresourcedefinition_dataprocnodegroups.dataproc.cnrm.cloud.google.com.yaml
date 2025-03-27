@@ -73,6 +73,7 @@ spec:
                    * The node group must have no more than 32 labels.
                 type: object
               location:
+                description: Required.
                 type: string
               nodeGroupConfig:
                 description: Optional. The node group instance group configuration.
@@ -306,7 +307,7 @@ spec:
                     type: object
                 type: object
               projectRef:
-                description: The Project that this resource belongs to.
+                description: Required.
                 oneOf:
                 - not:
                     required:
@@ -338,7 +339,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The GCP resource identifier. If not given, the metadata.name
+                description: The DataprocNodeGroup name. If not given, the metadata.name
                   will be used.
                 type: string
               roles:
@@ -346,8 +347,6 @@ spec:
                 items:
                   type: string
                 type: array
-            required:
-            - projectRef
             type: object
           status:
             description: DataprocNodeGroupStatus defines the config connector machine

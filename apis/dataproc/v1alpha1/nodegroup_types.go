@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,9 +43,10 @@ type DataprocNodeGroupSpec struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	Location string `json:"location,omitempty"`
+	*Parent `json:",inline"`
 
-	commonv1alpha1.CommonSpec `json:",inline"`
+	// The DataprocNodeGroup name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // DataprocNodeGroupStatus defines the config connector machine state of DataprocNodeGroup
