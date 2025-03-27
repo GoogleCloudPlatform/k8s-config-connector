@@ -22,7 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-)
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 
 // WorkflowTemplateIdentity defines the resource reference to DataprocWorkflowTemplate, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -32,7 +33,7 @@ type WorkflowTemplateIdentity struct {
 }
 
 func (i *WorkflowTemplateIdentity) String() string {
-	return i.parent.String() + "/workflowtemplates/" + i.id
+	return i.parent.String() + "/workflowTemplates/" + i.id
 }
 
 func (i *WorkflowTemplateIdentity) ID() string {
@@ -43,6 +44,7 @@ func (i *WorkflowTemplateIdentity) Parent() *WorkflowTemplateParent {
 	return i.parent
 }
 
+// No changes needed.
 type WorkflowTemplateParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +107,8 @@ func NewWorkflowTemplateIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseWorkflowTemplateExternal(external string) (parent *WorkflowTemplateParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workflowtemplates" {
-		return nil, "", fmt.Errorf("format of DataprocWorkflowTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflowtemplates/{{workflowtemplateID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workflowTemplates" {
+		return nil, "", fmt.Errorf("format of DataprocWorkflowTemplate external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflowTemplates/{{workflowtemplateID}})", external)
 	}
 	parent = &WorkflowTemplateParent{
 		ProjectID: tokens[1],
