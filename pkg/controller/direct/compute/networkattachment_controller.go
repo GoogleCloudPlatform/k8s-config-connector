@@ -34,7 +34,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -65,6 +65,46 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, reader cl
 	id, err := krm.NewNetworkAttachmentIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// resolve subnetwork
+	if obj.Spec.Subnetworks != nil {
+		var subnetworks []*refsv1beta1.ComputeSubnetworkRef
+		for _, i := range obj.Spec.Subnetworks {
+			subnetwork, err := refsv1beta1.ResolveComputeSubnetwork(ctx, reader, obj, i)
+			if err != nil {
+				return nil, err
+			}
+			i.External = subnetwork.External
+			subnetworks = append(subnetworks, i)
+		}
+		obj.Spec.Subnetworks = subnetworks
+	}
+
+	// resolve project
+	if obj.Spec.ProducerRejectLists != nil {
+		var projects []*refsv1beta1.ProjectRef
+		for _, i := range obj.Spec.ProducerRejectLists {
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), i)
+			if err != nil {
+				return nil, err
+			}
+			i.External = project.ProjectID
+			projects = append(projects, i)
+		}
+		obj.Spec.ProducerRejectLists = projects
+	}
+	if obj.Spec.ProducerAcceptLists != nil {
+		var projects []*refsv1beta1.ProjectRef
+		for _, i := range obj.Spec.ProducerAcceptLists {
+			project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), i)
+			if err != nil {
+				return nil, err
+			}
+			i.External = project.ProjectID
+			projects = append(projects, i)
+		}
+		obj.Spec.ProducerAcceptLists = projects
 	}
 
 	gcpClient, err := newGCPClient(m.config)
@@ -181,6 +221,8 @@ func (a *NetworkAttachmentAdapter) Update(ctx context.Context, updateOp *directb
 		return mapCtx.Err()
 	}
 	resource.Name = direct.LazyPtr(a.id.ID())
+	// An up-to-date fingerprint must be provided in order to patch
+	resource.Fingerprint = a.actual.Fingerprint
 
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
@@ -242,7 +284,7 @@ func (a *NetworkAttachmentAdapter) Export(ctx context.Context) (*unstructured.Un
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

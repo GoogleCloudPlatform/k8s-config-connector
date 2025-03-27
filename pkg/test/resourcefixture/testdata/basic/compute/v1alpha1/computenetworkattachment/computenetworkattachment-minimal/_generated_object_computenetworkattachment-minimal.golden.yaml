@@ -1,0 +1,41 @@
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeNetworkAttachment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: computenetworkattachment-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  connectionPreference: ACCEPT_MANUAL
+  description: Updated description
+  location: us-central1
+  producerAcceptLists:
+  - kind: Project
+    name: project-1-${uniqueId}
+  producerRejectLists:
+  - kind: Project
+    name: project-2-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  subnetworks:
+  - name: computesubnetwork-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/networkAttachments/computenetworkattachment-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    creationTimestamp: "1970-01-01T00:00:00Z"
+    id: 3503869189729885700
+    kind: compute#networkAttachment
+    network: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    region: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1
+    selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/computenetworkattachment-minimal-${uniqueId}
