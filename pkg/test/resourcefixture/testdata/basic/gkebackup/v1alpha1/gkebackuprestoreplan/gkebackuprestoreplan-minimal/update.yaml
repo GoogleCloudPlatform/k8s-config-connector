@@ -21,3 +21,14 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Updated description"
+  backupPlanRef:
+    name: gkebackupbackupplan-minimal-${uniqueId}
+  clusterRef:
+    name: containercluster-minimal-${uniqueId}
+  restoreConfig:
+    allNamespaces: true
+    namespacedResourceRestoreMode: FAIL_ON_CONFLICT
+    volumeDataRestorePolicy: RESTORE_VOLUME_DATA_FROM_BACKUP
+    clusterResourceRestoreScope:
+      allGroupKinds: true
+    clusterResourceConflictPolicy: USE_EXISTING_VERSION
