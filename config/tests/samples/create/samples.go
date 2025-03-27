@@ -117,9 +117,12 @@ type CreateDeleteTestOptions struct { //nolint:revive
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
 
+	// Note: we use server-side apply for both create and update.
+	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
+
 	// Create and reconcile all resources & dependencies
 	for _, u := range opt.Create {
-		if err := t.GetClient().Create(ctx, u); err != nil {
+		if err := t.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
 		if opt.CreateInOrder && !opt.SkipWaitForReady {

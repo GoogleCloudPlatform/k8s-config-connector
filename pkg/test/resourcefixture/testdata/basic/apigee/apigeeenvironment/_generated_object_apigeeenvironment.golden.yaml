@@ -18,7 +18,6 @@ spec:
   description: An updated sample environment
   displayName: updated-sample-environment
   properties:
-    key: A sample value
     new-key: A new sample value
   resourceID: apgenv-${uniqueId}
 status:
