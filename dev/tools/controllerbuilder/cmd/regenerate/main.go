@@ -105,7 +105,7 @@ func checkFile(ctx context.Context, p string) error {
 
 		switch annotation.Key {
 		case "+generated:mapper":
-			service := strings.Join(annotation.Attributes["service"], ",")
+			service := strings.Join(annotation.Attributes["proto.service"], ",")
 			apiVersion := strings.Join(annotation.Attributes["krm.group"], ",") + "/" + strings.Join(annotation.Attributes["krm.version"], ",")
 			args := []string{
 				"generate-mapper",
@@ -113,9 +113,20 @@ func checkFile(ctx context.Context, p string) error {
 				"--api-version", apiVersion,
 			}
 			fmt.Printf("command is: %v\n", strings.Join(args, " "))
+		case "+generated:types":
+			service := strings.Join(annotation.Attributes["proto.service"], ",")
+			apiVersion := strings.Join(annotation.Attributes["krm.group"], ",") + "/" + strings.Join(annotation.Attributes["krm.version"], ",")
+			args := []string{
+				"generate-types",
+				"--service", service,
+				"--api-version", apiVersion,
+			}
+			for _, resource := range annotation.Attributes["resource"] {
+				args = append(args, "--resource", resource)
+			}
+			fmt.Printf("command is: %v\n", strings.Join(args, " "))
 		}
 	}
 
 	return nil
-
 }
