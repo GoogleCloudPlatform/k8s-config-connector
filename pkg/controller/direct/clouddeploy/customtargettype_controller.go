@@ -149,7 +149,7 @@ func (a *customTargetTypeAdapter) Create(ctx context.Context, createOp *directba
 	}
 	op, err := a.gcpClient.CreateCustomTargetType(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating  ustom target type %s: %w", a.id.String(), err)
+		return fmt.Errorf("creating custom target type %s: %w", a.id.String(), err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
