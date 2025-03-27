@@ -16,6 +16,7 @@
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computefirewallpolicyrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetResources[].external" should be a reference
 [refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].networkAttachment" should be a reference
+[refs] crd=computenetworkattachments.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.subnetworks[].external" should be a reference
 [refs] crd=computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consumerRejectLists[].external" should be a reference
 [refs] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].external" should be a reference
