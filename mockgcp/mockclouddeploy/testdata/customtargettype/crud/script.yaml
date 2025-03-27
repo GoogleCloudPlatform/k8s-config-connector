@@ -1,0 +1,4 @@
+- exec: gcloud deploy apply --file=custom_target_type.yaml --region=us-central1 --project=${projectId}
+- exec: gcloud deploy custom-target-types describe test-ctt-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud deploy custom-target-types list --region=us-central1 --project=${projectId}
+- exec: gcloud deploy custom-target-types delete test-ctt-${uniqueId} --region=us-central1 --project=${projectId} --async
