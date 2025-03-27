@@ -22,7 +22,6 @@ package datacatalog
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -53,10 +52,7 @@ func BigQueryDateShardedSpec_FromProto(mapCtx *direct.MapContext, in *pb.BigQuer
 		return nil
 	}
 	out := &krm.BigQueryDateShardedSpec{}
-	// MISSING: Dataset
-	// MISSING: TablePrefix
-	// MISSING: ShardCount
-	// MISSING: LatestShardResource
+	// These fields are in ObservedState, not Spec.
 	return out
 }
 func BigQueryDateShardedSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDateShardedSpec) *pb.BigQueryDateShardedSpec {
@@ -64,10 +60,7 @@ func BigQueryDateShardedSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQuery
 		return nil
 	}
 	out := &pb.BigQueryDateShardedSpec{}
-	// MISSING: Dataset
-	// MISSING: TablePrefix
-	// MISSING: ShardCount
-	// MISSING: LatestShardResource
+	// These fields are in ObservedState, not Spec.
 	return out
 }
 func BigQueryDateShardedSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDateShardedSpec) *krm.BigQueryDateShardedSpecObservedState {
@@ -431,8 +424,8 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	}
 	out := &pb.Entry{}
 	out.Name = direct.ValueOf(in.Name)
-	if oneof := DataCatalogEntryObservedState_IntegratedSystem_ToProto(mapCtx, in.IntegratedSystem); oneof != nil {
-		out.System = oneof
+	if val := direct.Enum_ToProto[pb.IntegratedSystem](mapCtx, in.IntegratedSystem); val != pb.IntegratedSystem_INTEGRATED_SYSTEM_UNSPECIFIED {
+		out.System = &pb.Entry_IntegratedSystem{IntegratedSystem: val}
 	}
 	if oneof := GCSFilesetSpecObservedState_ToProto(mapCtx, in.GCSFilesetSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_GcsFilesetSpec{GcsFilesetSpec: oneof}
@@ -492,14 +485,14 @@ func DataCatalogEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalog
 	out := &pb.Entry{}
 	out.LinkedResource = direct.ValueOf(in.LinkedResource)
 	out.FullyQualifiedName = direct.ValueOf(in.FullyQualifiedName)
-	if oneof := DataCatalogEntrySpec_Type_ToProto(mapCtx, in.Type); oneof != nil {
-		out.EntryType = oneof
+	if val := direct.Enum_ToProto[pb.EntryType](mapCtx, in.Type); val != pb.EntryType_ENTRY_TYPE_UNSPECIFIED {
+		out.EntryType = &pb.Entry_Type{Type: val}
 	}
-	if oneof := DataCatalogEntrySpec_UserSpecifiedType_ToProto(mapCtx, in.UserSpecifiedType); oneof != nil {
-		out.EntryType = oneof
+	if val := direct.ValueOf(in.UserSpecifiedType); val != "" {
+		out.EntryType = &pb.Entry_UserSpecifiedType{UserSpecifiedType: val}
 	}
-	if oneof := DataCatalogEntrySpec_UserSpecifiedSystem_ToProto(mapCtx, in.UserSpecifiedSystem); oneof != nil {
-		out.System = oneof
+	if val := direct.ValueOf(in.UserSpecifiedSystem); val != "" {
+		out.System = &pb.Entry_UserSpecifiedSystem{UserSpecifiedSystem: val}
 	}
 	if oneof := SQLDatabaseSystemSpec_ToProto(mapCtx, in.SQLDatabaseSystemSpec); oneof != nil {
 		out.SystemSpec = &pb.Entry_SqlDatabaseSystemSpec{SqlDatabaseSystemSpec: oneof}
@@ -664,11 +657,11 @@ func DatabaseTableSpec_DatabaseViewSpec_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.DatabaseTableSpec_DatabaseViewSpec{}
 	out.ViewType = direct.Enum_ToProto[pb.DatabaseTableSpec_DatabaseViewSpec_ViewType](mapCtx, in.ViewType)
-	if oneof := DatabaseTableSpec_DatabaseViewSpec_BaseTable_ToProto(mapCtx, in.BaseTable); oneof != nil {
-		out.SourceDefinition = oneof
+	if val := direct.ValueOf(in.BaseTable); val != "" {
+		out.SourceDefinition = &pb.DatabaseTableSpec_DatabaseViewSpec_BaseTable{BaseTable: val}
 	}
-	if oneof := DatabaseTableSpec_DatabaseViewSpec_SqlQuery_ToProto(mapCtx, in.SQLQuery); oneof != nil {
-		out.SourceDefinition = oneof
+	if val := direct.ValueOf(in.SQLQuery); val != "" {
+		out.SourceDefinition = &pb.DatabaseTableSpec_DatabaseViewSpec_SqlQuery{SqlQuery: val}
 	}
 	return out
 }
@@ -898,7 +891,7 @@ func GCSFilesetSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Gcs
 	}
 	out := &krm.GCSFilesetSpecObservedState{}
 	// MISSING: FilePatterns
-	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGCSFileSpecs, GCSFileSpec_FromProto)
+	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGcsFileSpecs, GCSFileSpec_FromProto)
 	return out
 }
 func GCSFilesetSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GCSFilesetSpecObservedState) *pb.GcsFilesetSpec {
