@@ -1223,8 +1223,18 @@ var RoutinesServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RowAccessPoliciesServerClient interface {
+	// Deletes provided row access policies.
+	BatchDeleteRowAccessPolicy(ctx context.Context, in *BatchDeleteRowAccessPolicyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Deletes a row access policy.
+	DeleteRowAccessPolicy(ctx context.Context, in *DeleteRowAccessPolicyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Gets the specified row access policy by policy ID.
+	GetRowAccessPolicy(ctx context.Context, in *GetRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error)
+	// Creates a row access policy.
+	InsertRowAccessPolicy(ctx context.Context, in *InsertRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error)
 	// Lists all row access policies on the specified table.
 	ListRowAccessPolicies(ctx context.Context, in *ListRowAccessPoliciesRequest, opts ...grpc.CallOption) (*ListRowAccessPoliciesResponse, error)
+	// Updates a row access policy.
+	UpdateRowAccessPolicy(ctx context.Context, in *UpdateRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error)
 }
 
 type rowAccessPoliciesServerClient struct {
@@ -1233,6 +1243,42 @@ type rowAccessPoliciesServerClient struct {
 
 func NewRowAccessPoliciesServerClient(cc grpc.ClientConnInterface) RowAccessPoliciesServerClient {
 	return &rowAccessPoliciesServerClient{cc}
+}
+
+func (c *rowAccessPoliciesServerClient) BatchDeleteRowAccessPolicy(ctx context.Context, in *BatchDeleteRowAccessPolicyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/BatchDeleteRowAccessPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rowAccessPoliciesServerClient) DeleteRowAccessPolicy(ctx context.Context, in *DeleteRowAccessPolicyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/DeleteRowAccessPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rowAccessPoliciesServerClient) GetRowAccessPolicy(ctx context.Context, in *GetRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error) {
+	out := new(RowAccessPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/GetRowAccessPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rowAccessPoliciesServerClient) InsertRowAccessPolicy(ctx context.Context, in *InsertRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error) {
+	out := new(RowAccessPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/InsertRowAccessPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *rowAccessPoliciesServerClient) ListRowAccessPolicies(ctx context.Context, in *ListRowAccessPoliciesRequest, opts ...grpc.CallOption) (*ListRowAccessPoliciesResponse, error) {
@@ -1244,12 +1290,31 @@ func (c *rowAccessPoliciesServerClient) ListRowAccessPolicies(ctx context.Contex
 	return out, nil
 }
 
+func (c *rowAccessPoliciesServerClient) UpdateRowAccessPolicy(ctx context.Context, in *UpdateRowAccessPolicyRequest, opts ...grpc.CallOption) (*RowAccessPolicy, error) {
+	out := new(RowAccessPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/UpdateRowAccessPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RowAccessPoliciesServerServer is the server API for RowAccessPoliciesServer service.
 // All implementations must embed UnimplementedRowAccessPoliciesServerServer
 // for forward compatibility
 type RowAccessPoliciesServerServer interface {
+	// Deletes provided row access policies.
+	BatchDeleteRowAccessPolicy(context.Context, *BatchDeleteRowAccessPolicyRequest) (*empty.Empty, error)
+	// Deletes a row access policy.
+	DeleteRowAccessPolicy(context.Context, *DeleteRowAccessPolicyRequest) (*empty.Empty, error)
+	// Gets the specified row access policy by policy ID.
+	GetRowAccessPolicy(context.Context, *GetRowAccessPolicyRequest) (*RowAccessPolicy, error)
+	// Creates a row access policy.
+	InsertRowAccessPolicy(context.Context, *InsertRowAccessPolicyRequest) (*RowAccessPolicy, error)
 	// Lists all row access policies on the specified table.
 	ListRowAccessPolicies(context.Context, *ListRowAccessPoliciesRequest) (*ListRowAccessPoliciesResponse, error)
+	// Updates a row access policy.
+	UpdateRowAccessPolicy(context.Context, *UpdateRowAccessPolicyRequest) (*RowAccessPolicy, error)
 	mustEmbedUnimplementedRowAccessPoliciesServerServer()
 }
 
@@ -1257,8 +1322,23 @@ type RowAccessPoliciesServerServer interface {
 type UnimplementedRowAccessPoliciesServerServer struct {
 }
 
+func (UnimplementedRowAccessPoliciesServerServer) BatchDeleteRowAccessPolicy(context.Context, *BatchDeleteRowAccessPolicyRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteRowAccessPolicy not implemented")
+}
+func (UnimplementedRowAccessPoliciesServerServer) DeleteRowAccessPolicy(context.Context, *DeleteRowAccessPolicyRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRowAccessPolicy not implemented")
+}
+func (UnimplementedRowAccessPoliciesServerServer) GetRowAccessPolicy(context.Context, *GetRowAccessPolicyRequest) (*RowAccessPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRowAccessPolicy not implemented")
+}
+func (UnimplementedRowAccessPoliciesServerServer) InsertRowAccessPolicy(context.Context, *InsertRowAccessPolicyRequest) (*RowAccessPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertRowAccessPolicy not implemented")
+}
 func (UnimplementedRowAccessPoliciesServerServer) ListRowAccessPolicies(context.Context, *ListRowAccessPoliciesRequest) (*ListRowAccessPoliciesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRowAccessPolicies not implemented")
+}
+func (UnimplementedRowAccessPoliciesServerServer) UpdateRowAccessPolicy(context.Context, *UpdateRowAccessPolicyRequest) (*RowAccessPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRowAccessPolicy not implemented")
 }
 func (UnimplementedRowAccessPoliciesServerServer) mustEmbedUnimplementedRowAccessPoliciesServerServer() {
 }
@@ -1272,6 +1352,78 @@ type UnsafeRowAccessPoliciesServerServer interface {
 
 func RegisterRowAccessPoliciesServerServer(s grpc.ServiceRegistrar, srv RowAccessPoliciesServerServer) {
 	s.RegisterService(&RowAccessPoliciesServer_ServiceDesc, srv)
+}
+
+func _RowAccessPoliciesServer_BatchDeleteRowAccessPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchDeleteRowAccessPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RowAccessPoliciesServerServer).BatchDeleteRowAccessPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/BatchDeleteRowAccessPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RowAccessPoliciesServerServer).BatchDeleteRowAccessPolicy(ctx, req.(*BatchDeleteRowAccessPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RowAccessPoliciesServer_DeleteRowAccessPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRowAccessPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RowAccessPoliciesServerServer).DeleteRowAccessPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/DeleteRowAccessPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RowAccessPoliciesServerServer).DeleteRowAccessPolicy(ctx, req.(*DeleteRowAccessPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RowAccessPoliciesServer_GetRowAccessPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRowAccessPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RowAccessPoliciesServerServer).GetRowAccessPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/GetRowAccessPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RowAccessPoliciesServerServer).GetRowAccessPolicy(ctx, req.(*GetRowAccessPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RowAccessPoliciesServer_InsertRowAccessPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRowAccessPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RowAccessPoliciesServerServer).InsertRowAccessPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/InsertRowAccessPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RowAccessPoliciesServerServer).InsertRowAccessPolicy(ctx, req.(*InsertRowAccessPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _RowAccessPoliciesServer_ListRowAccessPolicies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1292,6 +1444,24 @@ func _RowAccessPoliciesServer_ListRowAccessPolicies_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RowAccessPoliciesServer_UpdateRowAccessPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRowAccessPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RowAccessPoliciesServerServer).UpdateRowAccessPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.bigquery.v2.RowAccessPoliciesServer/UpdateRowAccessPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RowAccessPoliciesServerServer).UpdateRowAccessPolicy(ctx, req.(*UpdateRowAccessPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RowAccessPoliciesServer_ServiceDesc is the grpc.ServiceDesc for RowAccessPoliciesServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1300,8 +1470,28 @@ var RowAccessPoliciesServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*RowAccessPoliciesServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "BatchDeleteRowAccessPolicy",
+			Handler:    _RowAccessPoliciesServer_BatchDeleteRowAccessPolicy_Handler,
+		},
+		{
+			MethodName: "DeleteRowAccessPolicy",
+			Handler:    _RowAccessPoliciesServer_DeleteRowAccessPolicy_Handler,
+		},
+		{
+			MethodName: "GetRowAccessPolicy",
+			Handler:    _RowAccessPoliciesServer_GetRowAccessPolicy_Handler,
+		},
+		{
+			MethodName: "InsertRowAccessPolicy",
+			Handler:    _RowAccessPoliciesServer_InsertRowAccessPolicy_Handler,
+		},
+		{
 			MethodName: "ListRowAccessPolicies",
 			Handler:    _RowAccessPoliciesServer_ListRowAccessPolicies_Handler,
+		},
+		{
+			MethodName: "UpdateRowAccessPolicy",
+			Handler:    _RowAccessPoliciesServer_UpdateRowAccessPolicy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

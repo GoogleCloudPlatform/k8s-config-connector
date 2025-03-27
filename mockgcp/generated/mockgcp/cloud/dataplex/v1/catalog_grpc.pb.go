@@ -63,18 +63,8 @@ type CatalogServiceClient interface {
 	// Lists Entries within an EntryGroup.
 	ListEntries(ctx context.Context, in *ListEntriesRequest, opts ...grpc.CallOption) (*ListEntriesResponse, error)
 	// Gets an Entry.
-	//
-	// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-	// changing. For more information, see [Changes to BigQuery metadata stored in
-	// Dataplex
-	// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
 	GetEntry(ctx context.Context, in *GetEntryRequest, opts ...grpc.CallOption) (*Entry, error)
-	// Looks up a single Entry by name using the permission on the source system.
-	//
-	// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-	// changing. For more information, see [Changes to BigQuery metadata stored in
-	// Dataplex
-	// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
+	// Looks up an entry by name using the permission on the source system.
 	LookupEntry(ctx context.Context, in *LookupEntryRequest, opts ...grpc.CallOption) (*Entry, error)
 	// Searches for Entries matching the given query and scope.
 	SearchEntries(ctx context.Context, in *SearchEntriesRequest, opts ...grpc.CallOption) (*SearchEntriesResponse, error)
@@ -379,18 +369,8 @@ type CatalogServiceServer interface {
 	// Lists Entries within an EntryGroup.
 	ListEntries(context.Context, *ListEntriesRequest) (*ListEntriesResponse, error)
 	// Gets an Entry.
-	//
-	// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-	// changing. For more information, see [Changes to BigQuery metadata stored in
-	// Dataplex
-	// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
 	GetEntry(context.Context, *GetEntryRequest) (*Entry, error)
-	// Looks up a single Entry by name using the permission on the source system.
-	//
-	// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-	// changing. For more information, see [Changes to BigQuery metadata stored in
-	// Dataplex
-	// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
+	// Looks up an entry by name using the permission on the source system.
 	LookupEntry(context.Context, *LookupEntryRequest) (*Entry, error)
 	// Searches for Entries matching the given query and scope.
 	SearchEntries(context.Context, *SearchEntriesRequest) (*SearchEntriesResponse, error)

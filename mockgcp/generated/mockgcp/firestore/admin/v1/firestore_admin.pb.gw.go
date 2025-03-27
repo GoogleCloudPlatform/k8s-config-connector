@@ -1129,6 +1129,10 @@ func local_request_FirestoreAdmin_GetBackup_0(ctx context.Context, marshaler run
 
 }
 
+var (
+	filter_FirestoreAdmin_ListBackups_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
 func request_FirestoreAdmin_ListBackups_0(ctx context.Context, marshaler runtime.Marshaler, client FirestoreAdminClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ListBackupsRequest
 	var metadata runtime.ServerMetadata
@@ -1148,6 +1152,13 @@ func request_FirestoreAdmin_ListBackups_0(ctx context.Context, marshaler runtime
 	protoReq.Parent, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FirestoreAdmin_ListBackups_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.ListBackups(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -1174,6 +1185,13 @@ func local_request_FirestoreAdmin_ListBackups_0(ctx context.Context, marshaler r
 	protoReq.Parent, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_FirestoreAdmin_ListBackups_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.ListBackups(ctx, &protoReq)

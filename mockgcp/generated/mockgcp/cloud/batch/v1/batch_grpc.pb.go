@@ -29,6 +29,8 @@ type BatchServiceClient interface {
 	GetJob(ctx context.Context, in *GetJobRequest, opts ...grpc.CallOption) (*Job, error)
 	// Delete a Job.
 	DeleteJob(ctx context.Context, in *DeleteJobRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Cancel a Job.
+	CancelJob(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// List all Jobs for a project within a region.
 	ListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*ListJobsResponse, error)
 	// Return a single Task.
@@ -72,6 +74,15 @@ func (c *batchServiceClient) DeleteJob(ctx context.Context, in *DeleteJobRequest
 	return out, nil
 }
 
+func (c *batchServiceClient) CancelJob(ctx context.Context, in *CancelJobRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.batch.v1.BatchService/CancelJob", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *batchServiceClient) ListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*ListJobsResponse, error) {
 	out := new(ListJobsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.batch.v1.BatchService/ListJobs", in, out, opts...)
@@ -109,6 +120,8 @@ type BatchServiceServer interface {
 	GetJob(context.Context, *GetJobRequest) (*Job, error)
 	// Delete a Job.
 	DeleteJob(context.Context, *DeleteJobRequest) (*longrunningpb.Operation, error)
+	// Cancel a Job.
+	CancelJob(context.Context, *CancelJobRequest) (*longrunningpb.Operation, error)
 	// List all Jobs for a project within a region.
 	ListJobs(context.Context, *ListJobsRequest) (*ListJobsResponse, error)
 	// Return a single Task.
@@ -130,6 +143,9 @@ func (UnimplementedBatchServiceServer) GetJob(context.Context, *GetJobRequest) (
 }
 func (UnimplementedBatchServiceServer) DeleteJob(context.Context, *DeleteJobRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteJob not implemented")
+}
+func (UnimplementedBatchServiceServer) CancelJob(context.Context, *CancelJobRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelJob not implemented")
 }
 func (UnimplementedBatchServiceServer) ListJobs(context.Context, *ListJobsRequest) (*ListJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListJobs not implemented")
@@ -207,6 +223,24 @@ func _BatchService_DeleteJob_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BatchService_CancelJob_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelJobRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BatchServiceServer).CancelJob(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.batch.v1.BatchService/CancelJob",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BatchServiceServer).CancelJob(ctx, req.(*CancelJobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BatchService_ListJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListJobsRequest)
 	if err := dec(in); err != nil {
@@ -279,6 +313,10 @@ var BatchService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteJob",
 			Handler:    _BatchService_DeleteJob_Handler,
+		},
+		{
+			MethodName: "CancelJob",
+			Handler:    _BatchService_CancelJob_Handler,
 		},
 		{
 			MethodName: "ListJobs",

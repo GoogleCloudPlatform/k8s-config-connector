@@ -251,6 +251,8 @@ var ProjectsLocationsGlobalServer_ServiceDesc = grpc.ServiceDesc{
 type ProjectsLocationsGlobalHubsServerClient interface {
 	// Accepts a proposal to attach a Network Connectivity Center spoke to a hub.
 	AcceptSpokeProjectsLocationsGlobalHub(ctx context.Context, in *AcceptSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Accepts a proposal to update a Network Connectivity Center spoke in a hub.
+	AcceptSpokeUpdateProjectsLocationsGlobalHub(ctx context.Context, in *AcceptSpokeUpdateProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Creates a new Network Connectivity Center hub in the specified project.
 	CreateProjectsLocationsGlobalHub(ctx context.Context, in *CreateProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a Network Connectivity Center hub.
@@ -267,6 +269,8 @@ type ProjectsLocationsGlobalHubsServerClient interface {
 	QueryStatusProjectsLocationsGlobalHub(ctx context.Context, in *QueryStatusProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Rejects a proposal to update a Network Connectivity Center spoke in a hub.
+	RejectSpokeUpdateProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeUpdateProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type projectsLocationsGlobalHubsServerClient struct {
@@ -280,6 +284,15 @@ func NewProjectsLocationsGlobalHubsServerClient(cc grpc.ClientConnInterface) Pro
 func (c *projectsLocationsGlobalHubsServerClient) AcceptSpokeProjectsLocationsGlobalHub(ctx context.Context, in *AcceptSpokeProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/AcceptSpokeProjectsLocationsGlobalHub", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsGlobalHubsServerClient) AcceptSpokeUpdateProjectsLocationsGlobalHub(ctx context.Context, in *AcceptSpokeUpdateProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/AcceptSpokeUpdateProjectsLocationsGlobalHub", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -358,12 +371,23 @@ func (c *projectsLocationsGlobalHubsServerClient) RejectSpokeProjectsLocationsGl
 	return out, nil
 }
 
+func (c *projectsLocationsGlobalHubsServerClient) RejectSpokeUpdateProjectsLocationsGlobalHub(ctx context.Context, in *RejectSpokeUpdateProjectsLocationsGlobalHubRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/RejectSpokeUpdateProjectsLocationsGlobalHub", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectsLocationsGlobalHubsServerServer is the server API for ProjectsLocationsGlobalHubsServer service.
 // All implementations must embed UnimplementedProjectsLocationsGlobalHubsServerServer
 // for forward compatibility
 type ProjectsLocationsGlobalHubsServerServer interface {
 	// Accepts a proposal to attach a Network Connectivity Center spoke to a hub.
 	AcceptSpokeProjectsLocationsGlobalHub(context.Context, *AcceptSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
+	// Accepts a proposal to update a Network Connectivity Center spoke in a hub.
+	AcceptSpokeUpdateProjectsLocationsGlobalHub(context.Context, *AcceptSpokeUpdateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
 	// Creates a new Network Connectivity Center hub in the specified project.
 	CreateProjectsLocationsGlobalHub(context.Context, *CreateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
 	// Deletes a Network Connectivity Center hub.
@@ -380,6 +404,8 @@ type ProjectsLocationsGlobalHubsServerServer interface {
 	QueryStatusProjectsLocationsGlobalHub(context.Context, *QueryStatusProjectsLocationsGlobalHubRequest) (*QueryHubStatusResponse, error)
 	// Rejects a Network Connectivity Center spoke from being attached to a hub. If the spoke was previously in the `ACTIVE` state, it transitions to the `INACTIVE` state and is no longer able to connect to other spokes that are attached to the hub.
 	RejectSpokeProjectsLocationsGlobalHub(context.Context, *RejectSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
+	// Rejects a proposal to update a Network Connectivity Center spoke in a hub.
+	RejectSpokeUpdateProjectsLocationsGlobalHub(context.Context, *RejectSpokeUpdateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedProjectsLocationsGlobalHubsServerServer()
 }
 
@@ -389,6 +415,9 @@ type UnimplementedProjectsLocationsGlobalHubsServerServer struct {
 
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) AcceptSpokeProjectsLocationsGlobalHub(context.Context, *AcceptSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AcceptSpokeProjectsLocationsGlobalHub not implemented")
+}
+func (UnimplementedProjectsLocationsGlobalHubsServerServer) AcceptSpokeUpdateProjectsLocationsGlobalHub(context.Context, *AcceptSpokeUpdateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptSpokeUpdateProjectsLocationsGlobalHub not implemented")
 }
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) CreateProjectsLocationsGlobalHub(context.Context, *CreateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsGlobalHub not implemented")
@@ -413,6 +442,9 @@ func (UnimplementedProjectsLocationsGlobalHubsServerServer) QueryStatusProjectsL
 }
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) RejectSpokeProjectsLocationsGlobalHub(context.Context, *RejectSpokeProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RejectSpokeProjectsLocationsGlobalHub not implemented")
+}
+func (UnimplementedProjectsLocationsGlobalHubsServerServer) RejectSpokeUpdateProjectsLocationsGlobalHub(context.Context, *RejectSpokeUpdateProjectsLocationsGlobalHubRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RejectSpokeUpdateProjectsLocationsGlobalHub not implemented")
 }
 func (UnimplementedProjectsLocationsGlobalHubsServerServer) mustEmbedUnimplementedProjectsLocationsGlobalHubsServerServer() {
 }
@@ -442,6 +474,24 @@ func _ProjectsLocationsGlobalHubsServer_AcceptSpokeProjectsLocationsGlobalHub_Ha
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProjectsLocationsGlobalHubsServerServer).AcceptSpokeProjectsLocationsGlobalHub(ctx, req.(*AcceptSpokeProjectsLocationsGlobalHubRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsGlobalHubsServer_AcceptSpokeUpdateProjectsLocationsGlobalHub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcceptSpokeUpdateProjectsLocationsGlobalHubRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).AcceptSpokeUpdateProjectsLocationsGlobalHub(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/AcceptSpokeUpdateProjectsLocationsGlobalHub",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).AcceptSpokeUpdateProjectsLocationsGlobalHub(ctx, req.(*AcceptSpokeUpdateProjectsLocationsGlobalHubRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -590,6 +640,24 @@ func _ProjectsLocationsGlobalHubsServer_RejectSpokeProjectsLocationsGlobalHub_Ha
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectsLocationsGlobalHubsServer_RejectSpokeUpdateProjectsLocationsGlobalHub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RejectSpokeUpdateProjectsLocationsGlobalHubRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).RejectSpokeUpdateProjectsLocationsGlobalHub(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsGlobalHubsServer/RejectSpokeUpdateProjectsLocationsGlobalHub",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsGlobalHubsServerServer).RejectSpokeUpdateProjectsLocationsGlobalHub(ctx, req.(*RejectSpokeUpdateProjectsLocationsGlobalHubRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectsLocationsGlobalHubsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsGlobalHubsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -600,6 +668,10 @@ var ProjectsLocationsGlobalHubsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AcceptSpokeProjectsLocationsGlobalHub",
 			Handler:    _ProjectsLocationsGlobalHubsServer_AcceptSpokeProjectsLocationsGlobalHub_Handler,
+		},
+		{
+			MethodName: "AcceptSpokeUpdateProjectsLocationsGlobalHub",
+			Handler:    _ProjectsLocationsGlobalHubsServer_AcceptSpokeUpdateProjectsLocationsGlobalHub_Handler,
 		},
 		{
 			MethodName: "CreateProjectsLocationsGlobalHub",
@@ -632,6 +704,10 @@ var ProjectsLocationsGlobalHubsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RejectSpokeProjectsLocationsGlobalHub",
 			Handler:    _ProjectsLocationsGlobalHubsServer_RejectSpokeProjectsLocationsGlobalHub_Handler,
+		},
+		{
+			MethodName: "RejectSpokeUpdateProjectsLocationsGlobalHub",
+			Handler:    _ProjectsLocationsGlobalHubsServer_RejectSpokeUpdateProjectsLocationsGlobalHub_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

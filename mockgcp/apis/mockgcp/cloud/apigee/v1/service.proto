@@ -232,10 +232,18 @@ service OrganizationsApiproductsServer {
     };
   };
 
-  // Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters.
+  // Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
   rpc ListOrganizationsApiproducts(ListOrganizationsApiproductsRequest) returns (GoogleCloudApigeeV1ListApiProductsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=organizations/*}/apiproducts"
+    };
+  };
+
+  // Moves an API product to a different space.
+  rpc MoveOrganizationsApiproduct(MoveOrganizationsApiproductRequest) returns (GoogleCloudApigeeV1ApiProduct) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/apiproducts/*}:move"
+      body: "organizations_apiproduct"
     };
   };
 
@@ -344,10 +352,18 @@ service OrganizationsApisServer {
     };
   };
 
-  // Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy.
+  // Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
   rpc ListOrganizationsApis(ListOrganizationsApisRequest) returns (GoogleCloudApigeeV1ListApiProxiesResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=organizations/*}/apis"
+    };
+  };
+
+  // Moves an API proxy to a different space.
+  rpc MoveOrganizationsApi(MoveOrganizationsApiRequest) returns (GoogleCloudApigeeV1ApiProxy) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/apis/*}:move"
+      body: "organizations_api"
     };
   };
 
@@ -356,6 +372,16 @@ service OrganizationsApisServer {
     option (google.api.http) = {
       patch: "/v1/{name=organizations/*/apis/*}"
       body: "organizations_api"
+    };
+  };
+}
+
+service OrganizationsApisDebugsessionsServer {
+
+  // Lists debug sessions that are currently active in the given API Proxy.
+  rpc ListOrganizationsApisDebugsessions(ListOrganizationsApisDebugsessionsRequest) returns (GoogleCloudApigeeV1ListApiDebugSessionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*/apis/*}/debugsessions"
     };
   };
 }
@@ -473,7 +499,7 @@ service OrganizationsAppgroupsServer {
     };
   };
 
-  // Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+  // Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
   rpc DeleteOrganizationsAppgroup(DeleteOrganizationsAppgroupRequest) returns (GoogleCloudApigeeV1AppGroup) {
     option (google.api.http) = {
       delete: "/v1/{name=organizations/*/appgroups/*}"
@@ -678,7 +704,7 @@ service OrganizationsDevelopersServer {
     };
   };
 
-  // Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+  // Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
   rpc DeleteOrganizationsDeveloper(DeleteOrganizationsDeveloperRequest) returns (GoogleCloudApigeeV1Developer) {
     option (google.api.http) = {
       delete: "/v1/{name=organizations/*/developers/*}"
@@ -974,6 +1000,38 @@ service OrganizationsDevelopersSubscriptionsServer {
   rpc ListOrganizationsDevelopersSubscriptions(ListOrganizationsDevelopersSubscriptionsRequest) returns (GoogleCloudApigeeV1ListDeveloperSubscriptionsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=organizations/*/developers/*}/subscriptions"
+    };
+  };
+}
+
+service OrganizationsDnsZonesServer {
+
+  // Creates a new DNS zone.
+  rpc CreateOrganizationsDnsZone(CreateOrganizationsDnsZoneRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*}/dnsZones"
+      body: "organizations_dns_zone"
+    };
+  };
+
+  // Deletes a previously created DNS zone.
+  rpc DeleteOrganizationsDnsZone(DeleteOrganizationsDnsZoneRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/dnsZones/*}"
+    };
+  };
+
+  // Fetches the representation of an existing DNS zone.
+  rpc GetOrganizationsDnsZone(GetOrganizationsDnsZoneRequest) returns (GoogleCloudApigeeV1DnsZone) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/dnsZones/*}"
+    };
+  };
+
+  // Enumerates DNS zones that have been created but not yet deleted.
+  rpc ListOrganizationsDnsZones(ListOrganizationsDnsZonesRequest) returns (GoogleCloudApigeeV1ListDnsZonesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*}/dnsZones"
     };
   };
 }
@@ -1283,7 +1341,7 @@ service OrganizationsEnvironmentsApisDeploymentsServer {
 
 service OrganizationsEnvironmentsApisRevisionsServer {
 
-  // Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}` 
+  // Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}` All successful API proxy deployments to Apigee are [zero-downtime deployments](https://cloud.google.com/apigee/docs/api-platform/deploy/ui-deploy-overview#zero-downtime-deployment). Apigee hybrid validates the dependencies between shared flows and API proxies at deployment time. For example, if the Flow Callout policy in an API proxy references a shared flow that either doesn't exist or isn't deployed, the API proxy deployment fails.
   rpc DeployOrganizationsEnvironmentsApisRevision(DeployOrganizationsEnvironmentsApisRevisionRequest) returns (GoogleCloudApigeeV1Deployment) {
     option (google.api.http) = {
       post: "/v1/{name=organizations/*/environments/*/apis/*/revisions/*}/deployments"
@@ -2330,6 +2388,46 @@ service OrganizationsSecurityAssessmentResultsServer {
   };
 }
 
+service OrganizationsSecurityMonitoringConditionsServer {
+
+  // Create a security monitoring condition.
+  rpc CreateOrganizationsSecurityMonitoringCondition(CreateOrganizationsSecurityMonitoringConditionRequest) returns (GoogleCloudApigeeV1SecurityMonitoringCondition) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*}/securityMonitoringConditions"
+      body: "organizations_security_monitoring_condition"
+    };
+  };
+
+  // Delete a security monitoring condition.
+  rpc DeleteOrganizationsSecurityMonitoringCondition(DeleteOrganizationsSecurityMonitoringConditionRequest) returns (GoogleProtobufEmpty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/securityMonitoringConditions/*}"
+    };
+  };
+
+  // Get a security monitoring condition.
+  rpc GetOrganizationsSecurityMonitoringCondition(GetOrganizationsSecurityMonitoringConditionRequest) returns (GoogleCloudApigeeV1SecurityMonitoringCondition) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/securityMonitoringConditions/*}"
+    };
+  };
+
+  // List security monitoring conditions.
+  rpc ListOrganizationsSecurityMonitoringConditions(ListOrganizationsSecurityMonitoringConditionsRequest) returns (GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*}/securityMonitoringConditions"
+    };
+  };
+
+  // Update a security monitoring condition.
+  rpc PatchOrganizationsSecurityMonitoringCondition(PatchOrganizationsSecurityMonitoringConditionRequest) returns (GoogleCloudApigeeV1SecurityMonitoringCondition) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/securityMonitoringConditions/*}"
+      body: "organizations_security_monitoring_condition"
+    };
+  };
+}
+
 service OrganizationsSecurityProfilesServer {
 
   // CreateSecurityProfile create a new custom security profile.
@@ -2467,10 +2565,18 @@ service OrganizationsSharedflowsServer {
     };
   };
 
-  // Lists all shared flows in the organization.
+  // Lists all shared flows in the organization. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
   rpc ListOrganizationsSharedflows(ListOrganizationsSharedflowsRequest) returns (GoogleCloudApigeeV1ListSharedFlowsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=organizations/*}/sharedflows"
+    };
+  };
+
+  // Moves an shared flow to a different space.
+  rpc MoveOrganizationsSharedflow(MoveOrganizationsSharedflowRequest) returns (GoogleCloudApigeeV1SharedFlow) {
+    option (google.api.http) = {
+      post: "/v1/{name=organizations/*/sharedflows/*}:move"
+      body: "organizations_sharedflow"
     };
   };
 }
@@ -2614,6 +2720,46 @@ service OrganizationsSitesApidocsServer {
     option (google.api.http) = {
       patch: "/v1/{name=organizations/*/sites/*/apidocs/*/documentation}"
       body: "organizations_sites_apidoc"
+    };
+  };
+}
+
+service OrganizationsSpacesServer {
+
+  // Create a space under an organization.
+  rpc CreateOrganizationsSpace(CreateOrganizationsSpaceRequest) returns (GoogleCloudApigeeV1Space) {
+    option (google.api.http) = {
+      post: "/v1/{parent=organizations/*}/spaces"
+      body: "organizations_space"
+    };
+  };
+
+  // Deletes an organization space.
+  rpc DeleteOrganizationsSpace(DeleteOrganizationsSpaceRequest) returns (GoogleProtobufEmpty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/spaces/*}"
+    };
+  };
+
+  // Get a space under an Organization.
+  rpc GetOrganizationsSpace(GetOrganizationsSpaceRequest) returns (GoogleCloudApigeeV1Space) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/spaces/*}"
+    };
+  };
+
+  // Lists spaces under an organization.
+  rpc ListOrganizationsSpaces(ListOrganizationsSpacesRequest) returns (GoogleCloudApigeeV1ListSpacesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=organizations/*}/spaces"
+    };
+  };
+
+  // Updates a space.
+  rpc PatchOrganizationsSpace(PatchOrganizationsSpaceRequest) returns (GoogleCloudApigeeV1Space) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/spaces/*}"
+      body: "organizations_space"
     };
   };
 }
@@ -2782,6 +2928,18 @@ message GoogleCloudApigeeV1ApiCategoryResponse {
   string status = 5 [json_name="status"];
 }
 
+// Session carries the debug session id and its creation time.
+message GoogleCloudApigeeV1ApiDebugSession {
+  // The revision ID of the deployed API proxy.
+  string api_proxy_revision_id = 1 [json_name="apiProxyRevisionId"];
+  // The first transaction creation timestamp in millisecond, recorded by UAP.
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // The environment ID of the deployed API proxy.
+  string environment_id = 3 [json_name="environmentId"];
+  // The debug session ID.
+  string id = 4 [json_name="id"];
+}
+
 // `ApiDoc` represents an API catalog item. Catalog items are used in two ways in a portal: - Users can browse and interact with a visual representation of the API documentation - The `api_product_name` field provides a link to a backing [API product] (/apigee/docs/reference/apis/apigee/rest/v1/organizations.apiproducts). Through this link, portal users can create and manage developer apps linked to one or more API products.
 message GoogleCloudApigeeV1ApiDoc {
   // Optional. Boolean flag that manages user access to the catalog item. When true, the catalog item has public visibility and can be viewed anonymously; otherwise, only registered users may view it. Note: when the parent portal is enrolled in the [audience management feature](https://cloud.google.com/apigee/docs/api-platform/publish/portal/portal-audience#enrolling_in_the_beta_release_of_the_audience_management_feature), and this flag is set to false, visibility is set to an indeterminate state and must be explicitly specified in the management UI (see [Manage the visibility of an API in your portal](https://cloud.google.com/apigee/docs/api-platform/publish/portal/publish-apis#visibility)). Additionally, when enrolled in the audience management feature, updates to this flag will be ignored as visibility permissions must be updated in the management UI.
@@ -2893,6 +3051,8 @@ message GoogleCloudApigeeV1ApiProduct {
   string quota_time_unit = 17 [json_name="quotaTimeUnit"];
   // Comma-separated list of OAuth scopes that are validated at runtime. Apigee validates that the scopes in any access token presented match the scopes defined in the OAuth policy associated with the API product.
   repeated string scopes = 18 [json_name="scopes"];
+  // Optional. The resource ID of the parent Space. If not set, the parent resource will be the Organization. To learn how Spaces can be used to manage resources, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
+  string space = 19 [json_name="space"];
 }
 
 message GoogleCloudApigeeV1ApiProductRef {
@@ -2918,6 +3078,8 @@ message GoogleCloudApigeeV1ApiProxy {
   bool read_only = 6 [json_name="readOnly"];
   // Output only. List of revisions defined for the API proxy.
   repeated string revision = 7 [json_name="revision"];
+  // Optional. The id of the space this proxy is associated with. Any IAM policies applied to the space will control access to this proxy. To learn how Spaces can be used to manage resources, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
+  string space = 8 [json_name="space"];
 }
 
 // API proxy revision.
@@ -3197,11 +3359,11 @@ message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequest {
   string scope = 6 [json_name="scope"];
 }
 
-// Message for include_all option.
+// Message for include_all_resources option.
 message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll {
 }
 
-// An array of resource messages.
+// Message for the array of resources. For Apigee, the proxies are resources.
 message GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray {
   // Required. The array of resources. For Apigee, the proxies are resources.
   repeated GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArrayResource resources = 1 [json_name="resources"];
@@ -3566,6 +3728,7 @@ message GoogleCloudApigeeV1DeleteResponse {
   string status = 5 [json_name="status"];
 }
 
+// Deployment represents a deployment of an API proxy or shared flow.
 message GoogleCloudApigeeV1Deployment {
   // API proxy.
   string api_proxy = 1 [json_name="apiProxy"];
@@ -3802,6 +3965,32 @@ message GoogleCloudApigeeV1DimensionMetric {
 message GoogleCloudApigeeV1DisableSecurityActionRequest {
 }
 
+// A DNS zone is a resource under an Apigee organization that is used to create a DNS peering with Apigee's network. DNS peering will let Apigee instances resolve the hostnames created in a peered network.
+message GoogleCloudApigeeV1DnsZone {
+  // Output only. The time that this resource was created on the server.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Required. Description of the resource. String of at most 1024 characters associated with this resource for the user's convenience.
+  string description = 2 [json_name="description"];
+  // Required. The domain name for hosts in this private zone, for instance "example.com.".
+  string domain = 3 [json_name="domain"];
+  // Identifier. Unique name for the resource. Defined by the server Format: "organizations/{organization}/dnsZones/{dns_zone}".
+  string name = 4 [json_name="name"];
+  // DNS PEERING zone configuration.
+  GoogleCloudApigeeV1DnsZonePeeringConfig peering_config = 5 [json_name="peeringConfig"];
+  // Output only. State of the DNS Peering. Values other than `ACTIVE` mean the resource is not ready to use.
+  string state = 6 [json_name="state"];
+  // Output only. The time that this resource was updated on the server.
+  .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
+}
+
+// Fields for DNS PEERING zone.
+message GoogleCloudApigeeV1DnsZonePeeringConfig {
+  // Required. The VPC network where the records for that private DNS zone's namespace are available. Apigee will be performing DNS peering with this VPC network.
+  string target_network_id = 1 [json_name="targetNetworkId"];
+  // Required. The ID of the project that contains the producer VPC network.
+  string target_project_id = 2 [json_name="targetProjectId"];
+}
+
 // Documentation file contents for a catalog item.
 message GoogleCloudApigeeV1DocumentationFile {
   // Required. The file contents. The max size is 4 MB.
@@ -3861,7 +4050,7 @@ message GoogleCloudApigeeV1Environment {
   string description = 5 [json_name="description"];
   // Optional. Display name for this environment.
   string display_name = 6 [json_name="displayName"];
-  // Optional. URI of the forward proxy to be applied to the runtime instances in this environment. Must be in the format of {scheme}://{hostname}:{port}. Note that the scheme must be one of "http" or "https", and the port must be supplied. To remove a forward proxy setting, update the field to an empty value. Note: At this time, PUT operations to add forwardProxyUri to an existing environment fail if the environment has nodeConfig set up. To successfully add the forwardProxyUri setting in this case, include the NodeConfig details with the request.
+  // Optional. URI of the forward proxy to be applied to the runtime instances in this environment. Must be in the format of {scheme}://{hostname}:{port}. Note that the only supported scheme is "http". The port must be supplied. To remove a forward proxy setting, update the field to an empty value. Note: At this time, PUT operations to add forwardProxyUri to an existing environment fail if the environment has nodeConfig set up. To successfully add the forwardProxyUri setting in this case, include the NodeConfig details with the request.
   string forward_proxy_uri = 7 [json_name="forwardProxyUri"];
   bool has_attached_flow_hooks = 8 [json_name="hasAttachedFlowHooks"];
   // Output only. Last modification time of this environment as milliseconds since epoch.
@@ -4306,6 +4495,14 @@ message GoogleCloudApigeeV1ListApiCategoriesResponse {
   string status = 5 [json_name="status"];
 }
 
+// Response for ListApiDebugSessions.
+message GoogleCloudApigeeV1ListApiDebugSessionsResponse {
+  // Page token that you can include in a ListApiDebugSessionsRequest to retrieve the next page. If omitted, no subsequent pages exist.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // Session info that includes debug session ID, environment ID, api proxy revision ID and the first transaction creation timestamp.
+  repeated GoogleCloudApigeeV1ApiDebugSession sessions = 2 [json_name="sessions"];
+}
+
 message GoogleCloudApigeeV1ListApiDocsResponse {
   // The catalog item resources.
   repeated GoogleCloudApigeeV1ApiDoc data = 1 [json_name="data"];
@@ -4412,6 +4609,14 @@ message GoogleCloudApigeeV1ListDeveloperSubscriptionsResponse {
   repeated GoogleCloudApigeeV1DeveloperSubscription developer_subscriptions = 1 [json_name="developerSubscriptions"];
   // Value that can be sent as `startKey` to retrieve the next page of content. If this field is omitted, there are no subsequent pages.
   string next_start_key = 2 [json_name="nextStartKey"];
+}
+
+// Response for list DNS zones.
+message GoogleCloudApigeeV1ListDnsZonesResponse {
+  // DNS zones in a given organization.
+  repeated GoogleCloudApigeeV1DnsZone dns_zones = 1 [json_name="dnsZones"];
+  // Page token that you can include in an `ListDnsZones` request to retrieve the next page. If omitted, no subsequent pages exist.
+  string next_page_token = 2 [json_name="nextPageToken"];
 }
 
 // Response for ListEndpointAttachments method.
@@ -4521,6 +4726,14 @@ message GoogleCloudApigeeV1ListSecurityIncidentsResponse {
   repeated GoogleCloudApigeeV1SecurityIncident security_incidents = 2 [json_name="securityIncidents"];
 }
 
+// Response for ListSecurityMonitoringConditions.
+message GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse {
+  // A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // List of security monitoring conditions in the organization.
+  repeated GoogleCloudApigeeV1SecurityMonitoringCondition security_monitoring_conditions = 2 [json_name="securityMonitoringConditions"];
+}
+
 // Response for ListSecurityProfileRevisions.
 message GoogleCloudApigeeV1ListSecurityProfileRevisionsResponse {
   // A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
@@ -4555,6 +4768,14 @@ message GoogleCloudApigeeV1ListSecurityReportsResponse {
 
 message GoogleCloudApigeeV1ListSharedFlowsResponse {
   repeated GoogleCloudApigeeV1SharedFlow shared_flows = 1 [json_name="sharedFlows"];
+}
+
+// A response to a ListSpaces request containing the list of organization spaces and a page token for the next page.
+message GoogleCloudApigeeV1ListSpacesResponse {
+  // A token that can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  string next_page_token = 1 [json_name="nextPageToken"];
+  // List of Apigee organization spaces.
+  repeated GoogleCloudApigeeV1Space spaces = 2 [json_name="spaces"];
 }
 
 // Response for ListTraceConfigOverrides.
@@ -4595,6 +4816,24 @@ message GoogleCloudApigeeV1MetricAggregation {
 message GoogleCloudApigeeV1MonetizationConfig {
   // Flag that specifies whether the Monetization add-on is enabled.
   bool enabled = 1 [json_name="enabled"];
+}
+
+// Moves API product to a different space.
+message GoogleCloudApigeeV1MoveApiProductRequest {
+  // Optional. Resource ID of the space to move the API product to. If unspecified, the API product will be moved to the organization level.
+  string space = 1 [json_name="space"];
+}
+
+// Moves an API Proxy to a different Space.
+message GoogleCloudApigeeV1MoveApiProxyRequest {
+  // Optional. Resource ID of the space to move the proxy to. If unspecified, the proxy will be moved to the organization level.
+  string space = 1 [json_name="space"];
+}
+
+// Moves a Shared Flow to a different space.
+message GoogleCloudApigeeV1MoveSharedFlowRequest {
+  // Optional. Resource ID of the space to move the shared flow to. If unspecified, the shared flow will be moved to the organization level.
+  string space = 1 [json_name="space"];
 }
 
 // Apigee NAT(network address translation) address. A NAT address is a static external IP address used for Internet egress traffic.
@@ -5476,7 +5715,6 @@ message GoogleCloudApigeeV1SecurityAssessmentResultScoringResult {
   map<string, int32> failed_assessment_per_weight = 3 [json_name="failedAssessmentPerWeight"];
   // The security score of the assessment.
   int32 score = 4 [json_name="score"];
-  // The severity of the assessment.
   string severity = 5 [json_name="severity"];
 }
 
@@ -5530,6 +5768,28 @@ message GoogleCloudApigeeV1SecurityIncident {
   string risk_level = 8 [json_name="riskLevel"];
   // Total traffic detected as part of the incident.
   int64 traffic_count = 9 [json_name="trafficCount"];
+}
+
+// Security monitoring condition for risk assessment version 2.
+message GoogleCloudApigeeV1SecurityMonitoringCondition {
+  // Output only. The time of the security monitoring condition creation.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Include only these resources.
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestResourceArray include = 2 [json_name="include"];
+  // Include all resources under the scope.
+  GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequestIncludeAll include_all_resources = 3 [json_name="includeAllResources"];
+  // Identifier. Name of the security monitoring condition resource. Format: organizations/{org}/securityMonitoringConditions/{security_monitoring_condition}
+  string name = 4 [json_name="name"];
+  // Required. ID of security profile of the security monitoring condition.
+  string profile = 5 [json_name="profile"];
+  // Required. Scope of the security monitoring condition. For Apigee, the environment is the scope of the resources.
+  string scope = 6 [json_name="scope"];
+  // Output only. Total number of deployed resources within scope.
+  int32 total_deployed_resources = 7 [json_name="totalDeployedResources"];
+  // Output only. Total number of monitored resources within this condition.
+  int32 total_monitored_resources = 8 [json_name="totalMonitoredResources"];
+  // Output only. The time of the security monitoring condition update.
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
 }
 
 // Represents a SecurityProfile resource.
@@ -5765,6 +6025,8 @@ message GoogleCloudApigeeV1SharedFlow {
   string name = 3 [json_name="name"];
   // A list of revisions of this shared flow.
   repeated string revision = 4 [json_name="revision"];
+  // Optional. The ID of the space associated with this shared flow. Any IAM policies applied to the space will control access to this shared flow. To learn how Spaces can be used to manage resources, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
+  string space = 5 [json_name="space"];
 }
 
 // The metadata describing a shared flow revision.
@@ -5797,6 +6059,18 @@ message GoogleCloudApigeeV1SharedFlowRevision {
   repeated string shared_flows = 13 [json_name="sharedFlows"];
   // The string "Application"
   string type = 14 [json_name="type"];
+}
+
+// Organization space resource.
+message GoogleCloudApigeeV1Space {
+  // Output only. Create timestamp of the space.
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Optional. Display name of the space.
+  string display_name = 2 [json_name="displayName"];
+  // Output only. Identifier. Id of the space. This field is used as the resource name, and must follow [AIP-122](https://google.aip.dev/122) guidelines.
+  string name = 3 [json_name="name"];
+  // Output only. Last modified timestamp of the space.
+  .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
 }
 
 // Encapsulates a `stats` response.
@@ -6248,7 +6522,13 @@ message ListOrganizationsApiproductsRequest {
   string count = 3;
   bool expand = 4;
   string parent = 5;
-  string start_key = 6;
+  string space = 6;
+  string start_key = 7;
+}
+
+message MoveOrganizationsApiproductRequest {
+  string name = 1;
+  GoogleCloudApigeeV1MoveApiProductRequest organizations_apiproduct = 2;
 }
 
 message UpdateOrganizationsApiproductRequest {
@@ -6304,8 +6584,9 @@ message CreateOrganizationsApiRequest {
   string action = 1;
   string name = 2;
   string parent = 3;
-  bool validate = 4;
-  GoogleApiHttpBody organizations_api = 5;
+  string space = 4;
+  bool validate = 5;
+  GoogleApiHttpBody organizations_api = 6;
 }
 
 message DeleteOrganizationsApiRequest {
@@ -6320,12 +6601,24 @@ message ListOrganizationsApisRequest {
   bool include_meta_data = 1;
   bool include_revisions = 2;
   string parent = 3;
+  string space = 4;
+}
+
+message MoveOrganizationsApiRequest {
+  string name = 1;
+  GoogleCloudApigeeV1MoveApiProxyRequest organizations_api = 2;
 }
 
 message PatchOrganizationsApiRequest {
   string name = 1;
   string update_mask = 2;
   GoogleCloudApigeeV1ApiProxy organizations_api = 3;
+}
+
+message ListOrganizationsApisDebugsessionsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
 }
 
 message ListOrganizationsApisDeploymentsRequest {
@@ -6704,6 +6997,26 @@ message ListOrganizationsDevelopersSubscriptionsRequest {
   int32 count = 1;
   string parent = 2;
   string start_key = 3;
+}
+
+message CreateOrganizationsDnsZoneRequest {
+  string dns_zone_id = 1;
+  string parent = 2;
+  GoogleCloudApigeeV1DnsZone organizations_dns_zone = 3;
+}
+
+message DeleteOrganizationsDnsZoneRequest {
+  string name = 1;
+}
+
+message GetOrganizationsDnsZoneRequest {
+  string name = 1;
+}
+
+message ListOrganizationsDnsZonesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
 }
 
 message CreateOrganizationsEndpointAttachmentRequest {
@@ -7581,6 +7894,33 @@ message BatchComputeOrganizationsSecurityAssessmentResultRequest {
   GoogleCloudApigeeV1BatchComputeSecurityAssessmentResultsRequest organizations_security_assessment_result = 2;
 }
 
+message CreateOrganizationsSecurityMonitoringConditionRequest {
+  string parent = 1;
+  string security_monitoring_condition_id = 2;
+  GoogleCloudApigeeV1SecurityMonitoringCondition organizations_security_monitoring_condition = 3;
+}
+
+message DeleteOrganizationsSecurityMonitoringConditionRequest {
+  string name = 1;
+}
+
+message GetOrganizationsSecurityMonitoringConditionRequest {
+  string name = 1;
+}
+
+message ListOrganizationsSecurityMonitoringConditionsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  string parent = 4;
+}
+
+message PatchOrganizationsSecurityMonitoringConditionRequest {
+  string name = 1;
+  string update_mask = 2;
+  GoogleCloudApigeeV1SecurityMonitoringCondition organizations_security_monitoring_condition = 3;
+}
+
 message CreateOrganizationsSecurityProfileRequest {
   string parent = 1;
   string security_profile_id = 2;
@@ -7657,7 +7997,8 @@ message CreateOrganizationsSharedflowRequest {
   string action = 1;
   string name = 2;
   string parent = 3;
-  GoogleApiHttpBody organizations_sharedflow = 4;
+  string space = 4;
+  GoogleApiHttpBody organizations_sharedflow = 5;
 }
 
 message DeleteOrganizationsSharedflowRequest {
@@ -7672,6 +8013,12 @@ message ListOrganizationsSharedflowsRequest {
   bool include_meta_data = 1;
   bool include_revisions = 2;
   string parent = 3;
+  string space = 4;
+}
+
+message MoveOrganizationsSharedflowRequest {
+  string name = 1;
+  GoogleCloudApigeeV1MoveSharedFlowRequest organizations_sharedflow = 2;
 }
 
 message ListOrganizationsSharedflowsDeploymentsRequest {
@@ -7750,6 +8097,32 @@ message UpdateOrganizationsSitesApidocRequest {
 message UpdateDocumentationOrganizationsSitesApidocRequest {
   string name = 1;
   GoogleCloudApigeeV1ApiDocDocumentation organizations_sites_apidoc = 2;
+}
+
+message CreateOrganizationsSpaceRequest {
+  string parent = 1;
+  string space_id = 2;
+  GoogleCloudApigeeV1Space organizations_space = 3;
+}
+
+message DeleteOrganizationsSpaceRequest {
+  string name = 1;
+}
+
+message GetOrganizationsSpaceRequest {
+  string name = 1;
+}
+
+message ListOrganizationsSpacesRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  string parent = 3;
+}
+
+message PatchOrganizationsSpaceRequest {
+  string name = 1;
+  string update_mask = 2;
+  GoogleCloudApigeeV1Space organizations_space = 3;
 }
 
 message ProvisionOrganizationProjectRequest {
