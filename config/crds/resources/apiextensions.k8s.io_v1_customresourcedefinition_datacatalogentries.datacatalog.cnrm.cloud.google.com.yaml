@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogentries.datacatalog.cnrm.cloud.google.com
 spec:
   group: datacatalog.cnrm.cloud.google.com
@@ -16,10 +14,11 @@ spec:
     categories:
     - gcp
     kind: DataCatalogEntry
+    listKind: DataCatalogEntryList
     plural: datacatalogentries
     shortNames:
     - gcpdatacatalogentry
-    - gcpdatacatalogentries
+    - gcpdatacatalogentrys
     singular: datacatalogentry
   preserveUnknownFields: false
   scope: Namespaced
@@ -43,178 +42,697 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DataCatalogEntry is the Schema for the DataCatalogEntry API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataCatalogEntrySpec defines the desired state of DataCatalogEntry
             properties:
+              businessContext:
+                description: Business Context of the entry. Not supported for BigQuery
+                  datasets
+                properties:
+                  contacts:
+                    description: Contact people for the entry.
+                    properties:
+                      people:
+                        description: The list of contact people for the entry.
+                        items:
+                          properties:
+                            designation:
+                              description: Designation of the person, for example,
+                                Data Steward.
+                              type: string
+                            email:
+                              description: Email of the person in the format of `john.doe@xyz`,
+                                `<john.doe@xyz>`, or `John Doe<john.doe@xyz>`.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  entryOverview:
+                    description: Entry overview fields for rich text descriptions
+                      of entries.
+                    properties:
+                      overview:
+                        description: |-
+                          Entry overview with support for rich text.
+
+                           The overview must only contain Unicode characters, and should be
+                           formatted using HTML.
+                           The maximum length is 10 MiB as this value holds HTML descriptions
+                           including encoded images. The maximum length of the text without images
+                           is 100 KiB.
+                        type: string
+                    type: object
+                type: object
+              cloudBigtableSystemSpec:
+                description: Specification that applies to Cloud Bigtable system.
+                  Only settable when `integrated_system` is equal to `CLOUD_BIGTABLE`
+                properties:
+                  instanceDisplayName:
+                    description: Display name of the Instance. This is user specified
+                      and different from the resource name.
+                    type: string
+                type: object
+              dataSourceConnectionSpec:
+                description: Specification that applies to a data source connection.
+                  Valid only for entries with the `DATA_SOURCE_CONNECTION` type.
+                properties:
+                  bigqueryConnectionSpec:
+                    description: Output only. Fields specific to BigQuery connections.
+                    properties:
+                      cloudSQL:
+                        description: Specification for the BigQuery connection to
+                          a Cloud SQL instance.
+                        properties:
+                          database:
+                            description: Database name.
+                            type: string
+                          instanceID:
+                            description: Cloud SQL instance ID in the format of `project:location:instance`.
+                            type: string
+                          type:
+                            description: Type of the Cloud SQL database.
+                            type: string
+                        type: object
+                      connectionType:
+                        description: The type of the BigQuery connection.
+                        type: string
+                      hasCredential:
+                        description: True if there are credentials attached to the
+                          BigQuery connection; false otherwise.
+                        type: boolean
+                    type: object
+                type: object
+              databaseTableSpec:
+                description: Specification that applies to a table resource. Valid
+                  only for entries with the `TABLE` or `EXPLORE` type.
+                properties:
+                  databaseViewSpec:
+                    description: Spec what aplies to tables that are actually views.
+                      Not set for "real" tables.
+                    properties:
+                      baseTable:
+                        description: Name of a singular table this view reflects one
+                          to one.
+                        type: string
+                      sqlQuery:
+                        description: SQL query used to generate this view.
+                        type: string
+                      viewType:
+                        description: Type of this view.
+                        type: string
+                    type: object
+                  type:
+                    description: Type of this table.
+                    type: string
+                type: object
+              datasetSpec:
+                description: Specification that applies to a dataset.
+                properties:
+                  vertexDatasetSpec:
+                    description: Vertex AI Dataset specific fields
+                    properties:
+                      dataItemCount:
+                        description: The number of DataItems in this Dataset. Only
+                          apply for non-structured Dataset.
+                        format: int64
+                        type: integer
+                      dataType:
+                        description: Type of the dataset.
+                        type: string
+                    type: object
+                type: object
               description:
-                description: Entry description, which can consist of several sentences
-                  or paragraphs that describe entry contents.
+                description: |-
+                  Entry description that can consist of several sentences or paragraphs
+                   that describe entry contents.
+
+                   The description must not contain Unicode non-characters as well as C0
+                   and C1 control codes except tabs (HT), new lines (LF), carriage returns
+                   (CR), and page breaks (FF).
+                   The maximum size is 2000 bytes when encoded in UTF-8.
+                   Default value is an empty string.
                 type: string
               displayName:
                 description: |-
-                  Display information such as title and description. A short name to identify the entry,
-                  for example, "Analytics Data - Jan 2011".
+                  Display name of an entry.
+
+                   The maximum size is 500 bytes when encoded in UTF-8.
+                   Default value is an empty string.
                 type: string
-              entryGroup:
-                description: Immutable. The name of the entry group this entry is
-                  in.
-                type: string
-              entryId:
-                description: Immutable. The id of the entry to create.
+              entryGroupRef:
+                description: Optional. Reference to the entry group that contains
+                  the entry.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataCatalogEntryGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/entrygroups/{{entrygroupID}}".
+                    type: string
+                  name:
+                    description: The name of a DataCatalogEntryGroup resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataCatalogEntryGroup resource.
+                    type: string
+                type: object
+              featureOnlineStoreSpec:
+                description: FeatureonlineStore spec for Vertex AI Feature Store.
+                type: object
+              filesetSpec:
+                description: Specification that applies to a fileset resource. Valid
+                  only for entries with the `FILESET` type.
+                properties:
+                  dataplexFileset:
+                    description: Fields specific to a Dataplex fileset and present
+                      only in the Dataplex fileset entries.
+                    properties:
+                      dataplexSpec:
+                        description: Common Dataplex fields.
+                        properties:
+                          asset:
+                            description: Fully qualified resource name of an asset
+                              in Dataplex, to which the underlying data source (Cloud
+                              Storage bucket or BigQuery dataset) of the entity is
+                              attached.
+                            type: string
+                          compressionFormat:
+                            description: Compression format of the data, e.g., zip,
+                              gzip etc.
+                            type: string
+                          dataFormat:
+                            description: Format of the data.
+                            properties:
+                              avro:
+                                description: Schema in Avro JSON format.
+                                properties:
+                                  text:
+                                    description: JSON source of the Avro schema.
+                                    type: string
+                                type: object
+                              csv:
+                                description: Marks a CSV-encoded data source.
+                                type: object
+                              orc:
+                                description: Marks an ORC-encoded data source.
+                                type: object
+                              parquet:
+                                description: Marks a Parquet-encoded data source.
+                                type: object
+                              protobuf:
+                                description: Schema in protocol buffer format.
+                                properties:
+                                  text:
+                                    description: Protocol buffer source of the schema.
+                                    type: string
+                                type: object
+                              thrift:
+                                description: Schema in Thrift format.
+                                properties:
+                                  text:
+                                    description: Thrift IDL source of the schema.
+                                    type: string
+                                type: object
+                            type: object
+                          projectID:
+                            description: Project ID of the underlying Cloud Storage
+                              or BigQuery data. Note that this may not be the same
+                              project as the correspondingly Dataplex lake / zone
+                              / asset.
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              fullyQualifiedName:
+                description: '[Fully Qualified Name (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
+                  of the resource. Set automatically for entries representing resources
+                  from synced systems. Settable only during creation, and read-only
+                  later. Can be used for search and lookup of the entries.'
                 type: string
               gcsFilesetSpec:
                 description: Specification that applies to a Cloud Storage fileset.
-                  This is only valid on entries of type FILESET.
+                  Valid only for entries with the `FILESET` type.
                 properties:
                   filePatterns:
                     description: |-
-                      Patterns to identify a set of files in Google Cloud Storage.
-                      See [Cloud Storage documentation](https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames)
-                      for more information. Note that bucket wildcards are currently not supported. Examples of valid filePatterns:
+                      Required. Patterns to identify a set of files in Google Cloud Storage.
 
-                      * gs://bucket_name/dir/*: matches all files within bucket_name/dir directory.
-                      * gs://bucket_name/dir/**: matches all files in bucket_name/dir spanning all subdirectories.
-                      * gs://bucket_name/file*: matches files prefixed by file in bucket_name
-                      * gs://bucket_name/??.txt: matches files with two characters followed by .txt in bucket_name
-                      * gs://bucket_name/[aeiou].txt: matches files that contain a single vowel character followed by .txt in bucket_name
-                      * gs://bucket_name/[a-m].txt: matches files that contain a, b, ... or m followed by .txt in bucket_name
-                      * gs://bucket_name/a/*/b: matches all files in bucket_name that match a/*/b pattern, such as a/c/b, a/d/b
-                      * gs://another_bucket/a.txt: matches gs://another_bucket/a.txt.
+                       For more information, see [Wildcard Names]
+                       (https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+
+                       Note: Currently, bucket wildcards are not supported.
+
+                       Examples of valid `file_patterns`:
+
+                        * `gs://bucket_name/dir/*`: matches all files in `bucket_name/dir`
+                                                    directory
+                        * `gs://bucket_name/dir/**`: matches all files in `bucket_name/dir`
+                                                     and all subdirectories
+                        * `gs://bucket_name/file*`: matches files prefixed by `file` in
+                                                    `bucket_name`
+                        * `gs://bucket_name/??.txt`: matches files with two characters followed by
+                                                     `.txt` in `bucket_name`
+                        * `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+                                                          vowel character followed by `.txt` in
+                                                          `bucket_name`
+                        * `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+                                                        or `m` followed by `.txt` in `bucket_name`
+                        * `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
+                                                    the `a/*/b` pattern, such as `a/c/b`, `a/d/b`
+                        * `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+
+                       You can combine wildcards to match complex sets of files, for example:
+
+                       `gs://bucket_name/[a-m]??.j*g`
                     items:
                       type: string
-                    type: array
-                  sampleGcsFileSpecs:
-                    description: Sample files contained in this fileset, not all files
-                      contained in this fileset are represented here.
-                    items:
-                      properties:
-                        filePath:
-                          description: The full file path.
-                          type: string
-                        sizeBytes:
-                          description: The size of the file, in bytes.
-                          type: integer
-                      type: object
                     type: array
                 required:
                 - filePatterns
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  Cloud labels attached to the entry.
+
+                   In Data Catalog, you can create and modify labels attached only to custom
+                   entries. Synced entries have unmodifiable labels that come from the source
+                   system.
+                type: object
               linkedResource:
                 description: |-
                   The resource this metadata entry refers to.
-                  For Google Cloud Platform resources, linkedResource is the full name of the resource.
-                  For example, the linkedResource for a table resource from BigQuery is:
-                  //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
-                  Output only when Entry is of type in the EntryType enum. For entries with userSpecifiedType,
-                  this field is optional and defaults to an empty string.
+
+                   For Google Cloud Platform resources, `linked_resource` is the
+                   [Full Resource Name]
+                   (https://cloud.google.com/apis/design/resource_names#full_resource_name).
+                   For example, the `linked_resource` for a table resource from BigQuery is:
+
+                   `//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
+
+                   Output only when the entry is one of the types in the `EntryType` enum.
+
+                   For entries with a `user_specified_type`, this field is optional and
+                   defaults to an empty string.
+
+                   The resource string must contain only letters (a-z, A-Z), numbers (0-9),
+                   underscores (_), periods (.), colons (:), slashes (/), dashes (-),
+                   and hashes (#).
+                   The maximum size is 200 bytes when encoded in UTF-8.
                 type: string
+              location:
+                description: Optional. The location for the entry. Cannot be specified
+                  if entryGroupRef is specified.
+                type: string
+              lookerSystemSpec:
+                description: Specification that applies to Looker sysstem. Only settable
+                  when `user_specified_system` is equal to `LOOKER`
+                properties:
+                  parentInstanceDisplayName:
+                    description: Name of the parent Looker Instance. Empty if it does
+                      not exist.
+                    type: string
+                  parentInstanceID:
+                    description: 'ID of the parent Looker Instance. Empty if it does
+                      not exist. Example value: `someinstance.looker.com`'
+                    type: string
+                  parentModelDisplayName:
+                    description: Name of the parent Model. Empty if it does not exist.
+                    type: string
+                  parentModelID:
+                    description: ID of the parent Model. Empty if it does not exist.
+                    type: string
+                  parentViewDisplayName:
+                    description: Name of the parent View. Empty if it does not exist.
+                    type: string
+                  parentViewID:
+                    description: ID of the parent View. Empty if it does not exist.
+                    type: string
+                type: object
+              modelSpec:
+                description: Model specification.
+                properties:
+                  vertexModelSpec:
+                    description: Specification for vertex model resources.
+                    properties:
+                      containerImageURI:
+                        description: URI of the Docker image to be used as the custom
+                          container for serving predictions.
+                        type: string
+                      versionAliases:
+                        description: User provided version aliases so that a model
+                          version can be referenced via alias
+                        items:
+                          type: string
+                        type: array
+                      versionDescription:
+                        description: The description of this version.
+                        type: string
+                      versionID:
+                        description: The version ID of the model.
+                        type: string
+                      vertexModelSourceInfo:
+                        description: Source of a Vertex model.
+                        properties:
+                          copy:
+                            description: If this Model is copy of another Model. If
+                              true then [source_type][google.cloud.datacatalog.v1.VertexModelSourceInfo.source_type]
+                              pertains to the original.
+                            type: boolean
+                          sourceType:
+                            description: Type of the model source.
+                            type: string
+                        type: object
+                    type: object
+                type: object
+              projectRef:
+                description: Optional. Reference to the project that contains the
+                  entry. Cannot be specified if entryGroupRef is specified.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The DataCatalogEntry name. If not given, the metadata.name
+                  will be used.
                 type: string
+              routineSpec:
+                description: Specification that applies to a user-defined function
+                  or procedure. Valid only for entries with the `ROUTINE` type.
+                properties:
+                  bigqueryRoutineSpec:
+                    description: Fields specific for BigQuery routines.
+                    properties:
+                      importedLibraries:
+                        description: Paths of the imported libraries.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  definitionBody:
+                    description: The body of the routine.
+                    type: string
+                  language:
+                    description: |-
+                      The language the routine is written in. The exact value depends on the
+                       source system. For BigQuery routines, possible values are:
+
+                       * `SQL`
+                       * `JAVASCRIPT`
+                    type: string
+                  returnType:
+                    description: Return type of the argument. The exact value depends
+                      on the source system and the language.
+                    type: string
+                  routineArguments:
+                    description: Arguments of the routine.
+                    items:
+                      properties:
+                        mode:
+                          description: Specifies whether the argument is input or
+                            output.
+                          type: string
+                        name:
+                          description: The name of the argument. A return argument
+                            of a function might not have a name.
+                          type: string
+                        type:
+                          description: Type of the argument. The exact value depends
+                            on the source system and the language.
+                          type: string
+                      type: object
+                    type: array
+                  routineType:
+                    description: The type of the routine.
+                    type: string
+                type: object
               schema:
+                description: Schema of the entry. An entry might not have any schema
+                  attached to it.
+                properties:
+                  columns:
+                    description: |-
+                      The unified GoogleSQL-like schema of columns.
+
+                       The overall maximum number of columns and nested columns is 10,000.
+                       The maximum nested depth is 15 levels.
+                    items:
+                      properties:
+                        column:
+                          description: |-
+                            Required. Name of the column.
+
+                            Required. Name of the column.
+
+                             Must be a UTF-8 string without dots (.).
+                             The maximum size is 64 bytes.
+                          type: string
+                        defaultValue:
+                          description: Optional. Default value for the column.
+                          type: string
+                        description:
+                          description: |-
+                            Optional. Description of the column. Default value is an empty string.
+
+                             The description must be a UTF-8 string with the maximum size of 2000
+                             bytes.
+                          type: string
+                        gcRule:
+                          description: Optional. Garbage collection policy for the
+                            column or column family. Applies to systems like Cloud
+                            Bigtable.
+                          type: string
+                        highestIndexingType:
+                          description: Optional. Most important inclusion of this
+                            column.
+                          type: string
+                        lookerColumnSpec:
+                          description: Looker specific column info of this column.
+                          properties:
+                            type:
+                              description: Looker specific column type of this column.
+                              type: string
+                          type: object
+                        mode:
+                          description: |-
+                            Optional. A column's mode indicates whether values in this column are
+                             required, nullable, or repeated.
+
+                             Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
+                             Default mode is `NULLABLE`.
+                          type: string
+                        ordinalPosition:
+                          description: Optional. Ordinal position
+                          format: int32
+                          type: integer
+                        rangeElementType:
+                          description: 'Optional. The subtype of the RANGE, if the
+                            type of this field is RANGE. If the type is RANGE, this
+                            field is required. Possible values for the field element
+                            type of a RANGE include: * DATE * DATETIME * TIMESTAMP'
+                          properties:
+                            type:
+                              description: Required. The type of a field element.
+                                See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
+                              type: string
+                          required:
+                          - type
+                          type: object
+                        subcolumns:
+                          description: Optional. Schema of sub-columns. A column can
+                            have zero or more sub-columns.
+                          items: {}
+                          type: array
+                        type:
+                          description: |-
+                            Required. Type of the column.
+
+                             Must be a UTF-8 string with the maximum size of 128 bytes.
+                          type: string
+                      required:
+                      - column
+                      - type
+                      type: object
+                    type: array
+                type: object
+              serviceSpec:
+                description: Specification that applies to a Service resource.
+                properties:
+                  cloudBigtableInstanceSpec:
+                    description: Specification that applies to Instance entries of
+                      `CLOUD_BIGTABLE` system.
+                    properties:
+                      cloudBigtableClusterSpecs:
+                        description: The list of clusters for the Instance.
+                        items:
+                          properties:
+                            displayName:
+                              description: Name of the cluster.
+                              type: string
+                            linkedResource:
+                              description: A link back to the parent resource, in
+                                this case Instance.
+                              type: string
+                            location:
+                              description: Location of the cluster, typically a Cloud
+                                zone.
+                              type: string
+                            type:
+                              description: Type of the resource. For a cluster this
+                                would be "CLUSTER".
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                type: object
+              sourceSystemTimestamps:
                 description: |-
-                  Schema of the entry (e.g. BigQuery, GoogleSQL, Avro schema), as a json string. An entry might not have any schema
-                  attached to it. See
-                  https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries#schema
-                  for what fields this schema can contain.
-                type: string
+                  Timestamps from the underlying resource, not from the Data Catalog
+                   entry.
+
+                   Output only when the entry has a system listed in the `IntegratedSystem`
+                   enum. For entries with `user_specified_system`, this field is optional
+                   and defaults to an empty timestamp.
+                properties:
+                  createTime:
+                    description: Creation timestamp of the resource within the given
+                      system.
+                    type: string
+                  updateTime:
+                    description: |-
+                      Timestamp of the last modification of the resource or its metadata within
+                       a given system.
+
+                       Note: Depending on the source system, not every modification updates this
+                       timestamp.
+                       For example, BigQuery timestamps every metadata modification but not data
+                       or permission changes.
+                    type: string
+                type: object
+              sqlDatabaseSystemSpec:
+                description: Specification that applies to a relational database system.
+                  Only settable when `user_specified_system` is equal to `SQL_DATABASE`
+                properties:
+                  databaseVersion:
+                    description: Version of the database engine.
+                    type: string
+                  instanceHost:
+                    description: Host of the SQL database enum InstanceHost { UNDEFINED
+                      = 0; SELF_HOSTED = 1; CLOUD_SQL = 2; AMAZON_RDS = 3; AZURE_SQL
+                      = 4; } Host of the enclousing database instance.
+                    type: string
+                  sqlEngine:
+                    description: SQL Database Engine. enum SqlEngine { UNDEFINED =
+                      0; MY_SQL = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of
+                      the enclosing database instance.
+                    type: string
+                type: object
               type:
                 description: |-
-                  Immutable. The type of the entry. Only used for Entries with types in the EntryType enum.
-                  Currently, only FILESET enum value is allowed. All other entries created through Data Catalog must use userSpecifiedType. Possible values: ["FILESET"].
+                  The type of the entry.
+
+                   For details, see [`EntryType`](#entrytype).
                 type: string
+              usageSignal:
+                description: Resource usage statistics.
+                properties:
+                  favoriteCount:
+                    description: Favorite count in the source system.
+                    format: int64
+                    type: integer
+                  updateTime:
+                    description: The end timestamp of the duration of usage statistics.
+                    type: string
+                type: object
               userSpecifiedSystem:
                 description: |-
-                  This field indicates the entry's source system that Data Catalog does not integrate with.
-                  userSpecifiedSystem strings must begin with a letter or underscore and can only contain letters, numbers,
-                  and underscores; are case insensitive; must be at least 1 character and at most 64 characters long.
+                  Indicates the entry's source system that Data Catalog doesn't
+                   automatically integrate with.
+
+                   The `user_specified_system` string has the following limitations:
+
+                   * Is case insensitive.
+                   * Must begin with a letter or underscore.
+                   * Can only contain letters, numbers, and underscores.
+                   * Must be at least 1 character and at most 64 characters long.
                 type: string
               userSpecifiedType:
                 description: |-
-                  Entry type if it does not fit any of the input-allowed values listed in EntryType enum above.
-                  When creating an entry, users should check the enum values first, if nothing matches the entry
-                  to be created, then provide a custom value, for example "my_special_type".
-                  userSpecifiedType strings must begin with a letter or underscore and can only contain letters,
-                  numbers, and underscores; are case insensitive; must be at least 1 character and at most 64 characters long.
+                  Custom entry type that doesn't match any of the values allowed for input
+                   and listed in the `EntryType` enum.
+
+                   When creating an entry, first check the type values in the enum.
+                   If there are no appropriate types for the new entry,
+                   provide a custom value, for example, `my_special_type`.
+
+                   The `user_specified_type` string has the following limitations:
+
+                   * Is case insensitive.
+                   * Must begin with a letter or underscore.
+                   * Can only contain letters, numbers, and underscores.
+                   * Must be at least 1 character and at most 64 characters long.
                 type: string
-            required:
-            - entryGroup
-            - entryId
             type: object
           status:
+            description: DataCatalogEntryStatus defines the config connector machine
+              state of DataCatalogEntry
             properties:
-              bigqueryDateShardedSpec:
-                description: |-
-                  Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
-                  Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding.
-                items:
-                  properties:
-                    dataset:
-                      description: |-
-                        The Data Catalog resource name of the dataset entry the current table belongs to, for example,
-                        projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
-                      type: string
-                    shardCount:
-                      description: Total number of shards.
-                      type: integer
-                    tablePrefix:
-                      description: |-
-                        The table name prefix of the shards. The name of any given shard is [tablePrefix]YYYYMMDD,
-                        for example, for shard MyTable20180101, the tablePrefix is MyTable.
-                      type: string
-                  type: object
-                type: array
-              bigqueryTableSpec:
-                description: Specification that applies to a BigQuery table. This
-                  is only valid on entries of type TABLE.
-                items:
-                  properties:
-                    tableSourceType:
-                      description: The table source type.
-                      type: string
-                    tableSpec:
-                      description: Spec of a BigQuery table. This field should only
-                        be populated if tableSourceType is BIGQUERY_TABLE.
-                      items:
-                        properties:
-                          groupedEntry:
-                            description: |-
-                              If the table is a dated shard, i.e., with name pattern [prefix]YYYYMMDD, groupedEntry is the
-                              Data Catalog resource name of the date sharded grouped entry, for example,
-                              projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
-                              Otherwise, groupedEntry is empty.
-                            type: string
-                        type: object
-                      type: array
-                    viewSpec:
-                      description: Table view specification. This field should only
-                        be populated if tableSourceType is BIGQUERY_VIEW.
-                      items:
-                        properties:
-                          viewQuery:
-                            description: The query that defines the table view.
-                            type: string
-                        type: object
-                      type: array
-                  type: object
-                type: array
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -238,15 +756,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              integratedSystem:
-                description: This field indicates the entry's source system that Data
-                  Catalog integrates with, such as BigQuery or Pub/Sub.
-                type: string
-              name:
-                description: |-
-                  The Data Catalog resource name of the entry in URL format.
-                  Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
-                  Note that this Entry and its child resources may not actually be stored in the location in this name.
+              externalRef:
+                description: A unique specifier for the DataCatalogEntry resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -254,7 +766,227 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  bigqueryDateShardedSpec:
+                    description: |-
+                      Output only. Specification for a group of BigQuery tables with
+                       the `[prefix]YYYYMMDD` name pattern.
+
+                       For more information, see [Introduction to partitioned tables]
+                       (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
+                    type: object
+                  bigqueryTableSpec:
+                    description: Output only. Specification that applies to a BigQuery
+                      table. Valid only for entries with the `TABLE` type.
+                    properties:
+                      tableSpec:
+                        description: Specification of a BigQuery table. Populated
+                          only if the `table_source_type` is `BIGQUERY_TABLE`.
+                        type: object
+                      viewSpec:
+                        description: Table view specification. Populated only if the
+                          `table_source_type` is `BIGQUERY_VIEW`.
+                        type: object
+                    type: object
+                  dataSource:
+                    description: Output only. Physical location of the entry.
+                    properties:
+                      resource:
+                        description: |-
+                          Full name of a resource as defined by the service. For example:
+
+                           `//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
+                        type: string
+                      service:
+                        description: Service that physically stores the data.
+                        type: string
+                      storageProperties:
+                        description: Detailed properties of the underlying storage.
+                        properties:
+                          filePattern:
+                            description: |-
+                              Patterns to identify a set of files for this fileset.
+
+                               Examples of a valid `file_pattern`:
+
+                                * `gs://bucket_name/dir/*`: matches all files in the `bucket_name/dir`
+                                                            directory
+                                * `gs://bucket_name/dir/**`: matches all files in the `bucket_name/dir`
+                                                             and all subdirectories recursively
+                                * `gs://bucket_name/file*`: matches files prefixed by `file` in
+                                                            `bucket_name`
+                                * `gs://bucket_name/??.txt`: matches files with two characters followed by
+                                                             `.txt` in `bucket_name`
+                                * `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+                                                                  vowel character followed by `.txt` in
+                                                                  `bucket_name`
+                                * `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+                                                                or `m` followed by `.txt` in `bucket_name`
+                                * `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
+                                                            the `a/*/b` pattern, such as `a/c/b`, `a/d/b`
+                                * `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+                            items:
+                              type: string
+                            type: array
+                          fileType:
+                            description: File type in MIME format, for example, `text/plain`.
+                            type: string
+                        type: object
+                    type: object
+                  databaseTableSpec:
+                    description: Specification that applies to a table resource. Valid
+                      only for entries with the `TABLE` or `EXPLORE` type.
+                    properties:
+                      dataplexTable:
+                        description: Output only. Fields specific to a Dataplex table
+                          and present only in the Dataplex table entries.
+                        properties:
+                          dataplexSpec:
+                            description: Common Dataplex fields.
+                            properties:
+                              asset:
+                                description: Fully qualified resource name of an asset
+                                  in Dataplex, to which the underlying data source
+                                  (Cloud Storage bucket or BigQuery dataset) of the
+                                  entity is attached.
+                                type: string
+                              compressionFormat:
+                                description: Compression format of the data, e.g.,
+                                  zip, gzip etc.
+                                type: string
+                              dataFormat:
+                                description: Format of the data.
+                                properties:
+                                  avro:
+                                    description: Schema in Avro JSON format.
+                                    properties:
+                                      text:
+                                        description: JSON source of the Avro schema.
+                                        type: string
+                                    type: object
+                                  csv:
+                                    description: Marks a CSV-encoded data source.
+                                    type: object
+                                  orc:
+                                    description: Marks an ORC-encoded data source.
+                                    type: object
+                                  parquet:
+                                    description: Marks a Parquet-encoded data source.
+                                    type: object
+                                  protobuf:
+                                    description: Schema in protocol buffer format.
+                                    properties:
+                                      text:
+                                        description: Protocol buffer source of the
+                                          schema.
+                                        type: string
+                                    type: object
+                                  thrift:
+                                    description: Schema in Thrift format.
+                                    properties:
+                                      text:
+                                        description: Thrift IDL source of the schema.
+                                        type: string
+                                    type: object
+                                type: object
+                              projectID:
+                                description: Project ID of the underlying Cloud Storage
+                                  or BigQuery data. Note that this may not be the
+                                  same project as the correspondingly Dataplex lake
+                                  / zone / asset.
+                                type: string
+                            type: object
+                          externalTables:
+                            description: |-
+                              List of external tables registered by Dataplex in other systems based on
+                               the same underlying data.
+
+                               External tables allow to query this data in those systems.
+                            items:
+                              properties:
+                                dataCatalogEntry:
+                                  description: Name of the Data Catalog entry representing
+                                    the external table.
+                                  type: string
+                                fullyQualifiedName:
+                                  description: Fully qualified name (FQN) of the external
+                                    table.
+                                  type: string
+                                googleCloudResource:
+                                  description: Google Cloud resource name of the external
+                                    table.
+                                  type: string
+                                system:
+                                  description: Service in which the external table
+                                    is registered.
+                                  type: string
+                              type: object
+                            type: array
+                          userManaged:
+                            description: Indicates if the table schema is managed
+                              by the user or not.
+                            type: boolean
+                        type: object
+                    type: object
+                  featureOnlineStoreSpec:
+                    description: FeatureonlineStore spec for Vertex AI Feature Store.
+                    properties:
+                      storageType:
+                        description: Output only. Type of underelaying storage for
+                          the FeatureOnlineStore.
+                        type: string
+                    type: object
+                  gcsFilesetSpec:
+                    description: Specification that applies to a Cloud Storage fileset.
+                      Valid only for entries with the `FILESET` type.
+                    properties:
+                      sampleGCSFileSpecs:
+                        description: Output only. Sample files contained in this fileset,
+                          not all files contained in this fileset are represented
+                          here.
+                        items:
+                          properties:
+                            filePath:
+                              description: 'Required. Full file path. Example: `gs://bucket_name/a/b.txt`.'
+                              type: string
+                          required:
+                          - filePath
+                          type: object
+                        type: array
+                    type: object
+                  integratedSystem:
+                    description: Output only. Indicates the entry's source system
+                      that Data Catalog integrates with, such as BigQuery, Pub/Sub,
+                      or Dataproc Metastore.
+                    type: string
+                  name:
+                    description: |-
+                      Output only. Identifier. The resource name of an entry in URL format.
+
+                       Note: The entry itself and its child resources might not be
+                       stored in the location specified in its name.
+                    type: string
+                  personalDetails:
+                    description: Output only. Additional information related to the
+                      entry. Private to the current user.
+                    properties:
+                      starTime:
+                        description: Set if the entry is starred; unset otherwise.
+                        type: string
+                      starred:
+                        description: True if the entry is starred by the user; false
+                          otherwise.
+                        type: boolean
+                    type: object
+                  usageSignal:
+                    description: Resource usage statistics.
+                    type: object
+                type: object
             type: object
         required:
         - spec
@@ -263,9 +995,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
