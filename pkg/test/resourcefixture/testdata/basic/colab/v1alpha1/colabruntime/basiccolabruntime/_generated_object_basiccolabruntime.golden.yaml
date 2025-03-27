@@ -16,7 +16,7 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
-  runtimeUser: maqiuyu@google.com
+  runtimeUser: test@configconnector.com
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
