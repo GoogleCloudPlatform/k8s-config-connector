@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -114,6 +114,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
+
+	pb.RegisterNetworkAttachmentsServer(grpcServer, &networkAttachments{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -258,6 +260,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterNetworkAttachmentsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
