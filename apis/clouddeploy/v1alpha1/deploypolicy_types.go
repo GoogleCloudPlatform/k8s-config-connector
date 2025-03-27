@@ -22,19 +22,23 @@ import (
 
 var DeployDeployPolicyGVK = GroupVersion.WithKind("CloudDeployDeployPolicy")
 
+type Parent struct {
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string `json:"location"`
+}
+
 // DeployPolicySpec defines the desired state of DeployDeployPolicy
 // +kcc:proto=google.cloud.deploy.v1.DeployPolicy
 type DeployPolicySpec struct {
+	Parent `json:",inline"`
+
 	// The DeployDeployPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// Immutable. The Project that this resource belongs to.
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Immutable. The name of the location where this resource will be created.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location is immutable."
-	// Required.
-	Location string `json:"location"`
 
 	// Description of the `DeployPolicy`. Max length is 255 characters.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeployPolicy.description

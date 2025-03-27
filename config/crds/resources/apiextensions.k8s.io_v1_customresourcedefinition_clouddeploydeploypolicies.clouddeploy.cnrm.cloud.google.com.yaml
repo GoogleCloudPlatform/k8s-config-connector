@@ -65,14 +65,13 @@ spec:
                   characters.
                 type: string
               location:
-                description: Immutable. The name of the location where this resource
-                  will be created. Required.
+                description: Immutable.
                 type: string
                 x-kubernetes-validations:
-                - message: Location is immutable.
+                - message: Location field is immutable
                   rule: self == oldSelf
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
