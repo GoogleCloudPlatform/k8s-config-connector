@@ -27,6 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/gkebackup/apiv1"
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -34,6 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -179,29 +181,30 @@ func (a *restorePlanAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.GetLabels(), a.actual.GetLabels()) {
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.RestoreConfig != nil && !reflect.DeepEqual(resource.GetRestoreConfig(), a.actual.GetRestoreConfig()) {
+	if desired.Spec.RestoreConfig != nil && !restoreConfigsEqual(resource.GetRestoreConfig(), a.actual.GetRestoreConfig()) {
 		paths = append(paths, "restore_config")
 	}
 
+	var updated *pb.RestorePlan
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateRestorePlanRequest{
+			RestorePlan: resource,
+			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateRestorePlan(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating gkebackup restoreplan %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("gkebackup restoreplan %s waiting for update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated gkebackup restoreplan", "name", a.id)
 	}
-
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateRestorePlanRequest{
-		RestorePlan: resource,
-		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateRestorePlan(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating gkebackup restoreplan %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("gkebackup restoreplan %s waiting for update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated gkebackup restoreplan", "name", a.id)
 
 	status := &krm.GKEBackupRestorePlanStatus{}
 	status.ObservedState = GKEBackupRestorePlanObservedState_FromProto(mapCtx, updated)
@@ -223,7 +226,7 @@ func (a *restorePlanAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &krm.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -257,4 +260,125 @@ func (a *restorePlanAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		return false, fmt.Errorf("waiting delete RestorePlan %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func restoreConfigsEqual(a, b *pb.RestoreConfig) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+
+	// Compare VolumeDataRestorePolicy
+	if a.GetVolumeDataRestorePolicy() != b.GetVolumeDataRestorePolicy() {
+		return false
+	}
+
+	// Compare ClusterResourceConflictPolicy
+	if a.GetClusterResourceConflictPolicy() != b.GetClusterResourceConflictPolicy() {
+		return false
+	}
+
+	// Compare NamespacedResourceRestoreMode
+	if a.GetNamespacedResourceRestoreMode() != b.GetNamespacedResourceRestoreMode() {
+		return false
+	}
+
+	// Compare ClusterResourceRestoreScope
+	aScope, bScope := a.GetClusterResourceRestoreScope(), b.GetClusterResourceRestoreScope()
+	if (aScope == nil) != (bScope == nil) {
+		return false
+	}
+	if aScope != nil {
+		if aScope.GetAllGroupKinds() != bScope.GetAllGroupKinds() {
+			return false
+		}
+		if aScope.GetNoGroupKinds() != bScope.GetNoGroupKinds() {
+			return false
+		}
+
+		// Compare SelectedGroupKinds
+		aSelected, bSelected := aScope.GetSelectedGroupKinds(), bScope.GetSelectedGroupKinds()
+		if len(aSelected) != len(bSelected) {
+			return false
+		}
+		for i := range aSelected {
+			if !proto.Equal(aSelected[i], bSelected[i]) {
+				return false
+			}
+		}
+
+		// Compare ExcludedGroupKinds
+		aExcluded, bExcluded := aScope.GetExcludedGroupKinds(), bScope.GetExcludedGroupKinds()
+		if len(aExcluded) != len(bExcluded) {
+			return false
+		}
+		for i := range aExcluded {
+			if !proto.Equal(aExcluded[i], bExcluded[i]) {
+				return false
+			}
+		}
+	}
+
+	// Compare NamespacedResourceRestoreScope (oneof field)
+	// We need to check which field is set in the oneof
+	switch {
+	case a.GetAllNamespaces():
+		if !b.GetAllNamespaces() {
+			return false
+		}
+	case a.GetSelectedNamespaces() != nil:
+		bSelected := b.GetSelectedNamespaces()
+		if bSelected == nil || !proto.Equal(a.GetSelectedNamespaces(), bSelected) {
+			return false
+		}
+	case a.GetSelectedApplications() != nil:
+		bSelected := b.GetSelectedApplications()
+		if bSelected == nil || !proto.Equal(a.GetSelectedApplications(), bSelected) {
+			return false
+		}
+	case a.GetNoNamespaces():
+		if !b.GetNoNamespaces() {
+			return false
+		}
+	case a.GetExcludedNamespaces() != nil:
+		bExcluded := b.GetExcludedNamespaces()
+		if bExcluded == nil || !proto.Equal(a.GetExcludedNamespaces(), bExcluded) {
+			return false
+		}
+	default:
+		// If we get here, the oneof field might not be set in a
+		// Check if it's set in b
+		if b.GetAllNamespaces() || b.GetSelectedNamespaces() != nil ||
+			b.GetSelectedApplications() != nil || b.GetNoNamespaces() ||
+			b.GetExcludedNamespaces() != nil {
+			return false
+		}
+	}
+
+	// Compare SubstitutionRules
+	if !proto.Equal(&pb.RestoreConfig{SubstitutionRules: a.GetSubstitutionRules()},
+		&pb.RestoreConfig{SubstitutionRules: b.GetSubstitutionRules()}) {
+		return false
+	}
+
+	// Compare TransformationRules
+	if !proto.Equal(&pb.RestoreConfig{TransformationRules: a.GetTransformationRules()},
+		&pb.RestoreConfig{TransformationRules: b.GetTransformationRules()}) {
+		return false
+	}
+
+	// Compare VolumeDataRestorePolicyBindings
+	if !proto.Equal(&pb.RestoreConfig{VolumeDataRestorePolicyBindings: a.GetVolumeDataRestorePolicyBindings()},
+		&pb.RestoreConfig{VolumeDataRestorePolicyBindings: b.GetVolumeDataRestorePolicyBindings()}) {
+		return false
+	}
+
+	// Compare RestoreOrder
+	if !proto.Equal(a.GetRestoreOrder(), b.GetRestoreOrder()) {
+		return false
+	}
+
+	return true
 }
