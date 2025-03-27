@@ -92,6 +92,7 @@ func AlloyDBClusterStatus_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// MISSING: SubscriptionType
 	// MISSING: TrialMetadata
 	// MISSING: Tags
+	out.ObservedState = AlloyDBClusterObservedState_FromProto(mapCtx, in)
 	return out
 }
 func AlloyDBClusterStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBClusterStatus) *pb.Cluster {
@@ -276,5 +277,16 @@ func Cluster_SecondaryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_
 	if in.PrimaryClusterNameRef != nil {
 		out.PrimaryClusterName = in.PrimaryClusterNameRef.External
 	}
+	return out
+}
+func ContinuousBackupSource_ToProto(mapCtx *direct.MapContext, in *krm.RestoreContinuousBackupSource) *pb.ContinuousBackupSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContinuousBackupSource{}
+	if in.ClusterRef != nil {
+		out.Cluster = in.ClusterRef.External
+	}
+	out.PointInTime = direct.StringTimestamp_ToProto(mapCtx, in.PointInTime)
 	return out
 }

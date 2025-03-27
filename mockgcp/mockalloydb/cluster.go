@@ -258,9 +258,9 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
-	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
-		switch path {
+		tokens := strings.Split(path, ".")
+		switch tokens[0] {
 		case "automatedBackupPolicy":
 			obj.AutomatedBackupPolicy = req.Cluster.GetAutomatedBackupPolicy()
 		case "continuousBackupConfig":
