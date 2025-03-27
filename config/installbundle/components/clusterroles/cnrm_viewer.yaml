@@ -71,6 +71,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - backupdr.cnrm.cloud.google.com
   resources:
   - '*'
@@ -207,6 +215,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - clouddms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -240,6 +256,14 @@ rules:
   - watch
 - apiGroups:
   - cloudiot.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudquota.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -607,6 +631,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - metastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -888,6 +920,14 @@ rules:
   - watch
 - apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

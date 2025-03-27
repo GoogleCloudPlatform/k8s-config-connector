@@ -64,7 +64,7 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *AlloyDBC
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	location := common.ValueOf(obj.Spec.Location)
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -75,30 +75,35 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *AlloyDBC
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// TODO: Support it during direct migration.
-	//// Use approved External
-	//externalRef := common.ValueOf(obj.Status.ExternalRef)
-	//if externalRef != "" {
-	//	// Validate desired with actual
-	//	actualParent, actualResourceID, err := ParseClusterExternal(externalRef)
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	if actualParent.ProjectID != projectID {
-	//		return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-	//	}
-	//	if actualParent.Location != *location {
-	//		return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
-	//	}
-	//	if actualResourceID != resourceID {
-	//		return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-	//			resourceID, actualResourceID)
-	//	}
-	//}
+	// '.status.externalRef' could be unset before the upgrade so only parse it
+	// when the value is non-nil.
+	var externalRef string
+	if obj.Status.ExternalRef != nil {
+		// Use approved ExternalRef
+		externalRef = common.ValueOf(obj.Status.ExternalRef)
+	}
+
+	if externalRef != "" {
+		// Validate desired with actual
+		actualParent, actualResourceID, err := ParseClusterExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
+		if actualResourceID != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
+		}
+	}
 	return &ClusterIdentity{
 		parent: &ClusterParent{
 			ProjectID: projectID,
-			Location:  *location,
+			Location:  location,
 		},
 		id: resourceID,
 	}, nil

@@ -46,5 +46,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6.1.0
         with:
-          version: v1.63.4 # should match the version in Makefile
+          version: v1.64.8 # should match the version in Makefile
           args: --timeout=10m

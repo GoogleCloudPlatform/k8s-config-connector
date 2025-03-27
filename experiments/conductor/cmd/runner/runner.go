@@ -66,6 +66,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdGenerateCRD             = 22
 	cmdGenerateMapper          = 23
 	cmdGenerateFuzzer          = 24
+	cmdRunAndFixFuzzTests      = 25
+	cmdRunAndFixAPIChecks      = 26
 	cmdControllerClient        = 40
 	cmdGenerateController      = 41
 	cmdCreateIdentity          = 43
@@ -116,27 +118,27 @@ func BuildRunnerCmd() *cobra.Command {
 		"v", false, "Enable verbose output logging")
 	cmd.Flags().StringVarP(&opts.branchSuffix, "branch-suffix",
 		"", "", "Suffix to append to remote branch names when pushing")
+	cmd.Flags().BoolVarP(&opts.skipMakeReadyPR, "skip-makereadypr",
+		"", false, "Skip the make ready-pr step when pushing branches")
 
 	return cmd
 }
 
 type RunnerOptions struct {
-	branchConfFile string
-	branchRepoDir  string
-	command        int64
-	loggingDir     string
-	timeout        time.Duration
-	readFileType   string
-	defaultRetries int    // Default number of retries for commands
-	forResources   string // Comma-separated list of branch names to filter on
-
-	// forResourcesRegex filters branches, only branches that match the regex are processed
-	forResourcesRegex string
-
-	force        bool   // Force flag to override file existence checks
-	numCommits   int    // Number of commits to diff (default: 1)
-	verbose      bool   // Verbose output flag
-	branchSuffix string // Suffix to append to remote branch names when pushing
+	branchConfFile    string
+	branchRepoDir     string
+	command           int64
+	loggingDir        string
+	timeout           time.Duration
+	readFileType      string
+	defaultRetries    int    // Default number of retries for commands
+	forResources      string // Comma-separated list of branch names to filter on
+	forResourcesRegex string // Regex to filter branches, only branches that match the regex are processed
+	force             bool   // Force flag to override file existence checks
+	numCommits        int    // Number of commits to diff (default: 1)
+	verbose           bool   // Verbose output flag
+	branchSuffix      string // Suffix to append to remote branch names when pushing
+	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -341,62 +343,67 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case cmdPushBranch: // 9
 		processors := []BranchProcessor{
-			{Fn: makeReadyPR, CommitMsg: "make ready-pr"},
-			{Fn: pushBranch, CommitMsg: "push branch"},
+			{Fn: runAPIChecks, CommitMsgTemplate: "{{kind}}: Normalize api checks"},
+			{Fn: makeReadyPR, CommitMsgTemplate: "make ready-pr", AttemptsOnChanges: 5},
+			{Fn: pushBranch, CommitMsgTemplate: "push branch"},
 		}
-		processBranches(ctx, opts, branches.Branches, "Pushing Branch", processors)
+		processBranches(ctx, opts, branches.Branches, "Prep and Push Branch", processors)
 	case cmdCreateScriptYaml: // 10
-		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsg: "Create gcloud script.yaml"}})
+		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsgTemplate: "mockgcp: create test script for {{command}}"}})
 	case cmdCaptureHttpLog: // 11
-		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsg: "Capture HTTP Log for mocks"}})
+		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsgTemplate: "mockgcp: golden output for TestScripts/mock{{group}}/testdata/{{resource}}/crud"}})
 	case cmdGenerateMockGo: // 12
-		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsg: "Add generated mock files"}})
+		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsgTemplate: "{{kind}}: Add generated mock files"}})
 	case cmdAddServiceRoundTrip: // 13
-		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsg: "Add service to mock_http_roundtrip.go"}})
+		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsgTemplate: "mockgcp: Add mock{{group}} service to mock_http_roundtrip.go"}})
 	case cmdAddProtoMakefile: // 14
-		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsg: "Add proto generation to makefile", AttemptsOnNoChange: 1}})
+		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: "{{group}}: Add proto generation to makefile", AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
-		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsg: "Build and add generated proto files"}})
+		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: "chore: Build and add generated proto files"}})
 	case cmdRunMockTests: // 16
-		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsg: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 10, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
-		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsg: "Add generated types"}})
+		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "{{kind}}: Add generated types"}})
 	case cmdAdjustTypes: // 21
 		processors := []BranchProcessor{
-			{Fn: setTypeSpecStatus, CommitMsg: "Add spec and status to generated type"},
-			{Fn: setTypeParent, CommitMsg: "Add parent to generated type"},
-			{Fn: adjustIdentityParent, CommitMsg: "Adjust identity parent"},
-			//{Fn: adjustIdentityParentNewFunction, CommitMsg: "Adjust identity parent NewIdentity method"},
-			{Fn: regenerateTypes, CommitMsg: "Regenerate types"},
-			// preferred manual: Add something for Capitalization of Abbreviations: any acronyms that are not all caps should be all caps
-			// manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
+			{Fn: setTypeSpecStatus, CommitMsgTemplate: "{{kind}}: Add spec and status to generated type"},
+			{Fn: setTypeParent, CommitMsgTemplate: "{{kind}}: Add parent to generated type"},
+			{Fn: adjustIdentityParent, CommitMsgTemplate: "{{kind}}: Adjust identity parent"},
+			{Fn: regenerateTypes, CommitMsgTemplate: "{{kind}}: Regenerate types"},
+			{Fn: removeNameField, CommitMsgTemplate: "{{kind}}: Remove Name Field"},
+			{Fn: moveEtagField, CommitMsgTemplate: "{{kind}}: Move Etag Field", AttemptsOnNoChange: 1},
+			// add a kubebuilder required field label to the fields that are marked required in proto
+			{Fn: addRequiredFieldTags, CommitMsgTemplate: "{{kind}}: Add Required Field Tags"},
+			// TODO? manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
 			// * https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4017/commits/cc726106aff55d41e6bc94272acc3612f2636397
-			// Manually add a kubebuilder required field label to the fields that are marked required in proto
 		}
 		processBranches(ctx, opts, branches.Branches, "Adjusting types", processors)
 	case cmdGenerateCRD: // 22
-		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsg: "Add generated CRD"}})
+		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsgTemplate: "{{kind}}: Add generated CRD"}})
 	case cmdGenerateMapper: // 23
-		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsg: "Add generated mapper"}})
-		// handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
+		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsgTemplate: "{{kind}}: Add generated mapper"}})
 	case cmdGenerateFuzzer: // 24
-		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsg: "Add generated fuzzer"}})
+		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsgTemplate: "{{kind}}: Add generated fuzzer"}})
+	case cmdRunAndFixFuzzTests: // 25
+		processBranches(ctx, opts, branches.Branches, "Fuzzer Tests", []BranchProcessor{{Fn: fixFuzzerFailures, CommitMsgTemplate: "{{kind}}: Verify and Fix fuzzer tests", VerifyFn: runFuzzerTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+	case cmdRunAndFixAPIChecks: // 26
+		processBranches(ctx, opts, branches.Branches, "API Checks", []BranchProcessor{{Fn: fixAPICheckFailures, CommitMsgTemplate: "{{kind}}: Verify and Fix API checks", VerifyFn: runAPIChecks, VerifyAttempts: 5}})
 	case cmdControllerClient: // 40
-		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsg: "Add controller client"}})
+		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsgTemplate: "{{kind}}: Add controller client"}})
 	case cmdGenerateController: // 41
-		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsg: "Add controller"}})
+		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsgTemplate: "{{kind}}: Add controller"}})
 	case cmdCreateIdentity: // 43
 		processBranches(ctx, opts, branches.Branches, "Identity and Reference", []BranchProcessor{
-			{Fn: generateControllerIdentity, CommitMsg: "Add controller identity"},
-			{Fn: generateControllerReference, CommitMsg: "Add controller reference"},
+			{Fn: generateControllerIdentity, CommitMsgTemplate: "{{kind}}: Add controller identity"},
+			{Fn: generateControllerReference, CommitMsgTemplate: "{{kind}}: Add controller reference"},
 		})
 	case cmdControllerCreateTest: // 44
 		processBranches(ctx, opts, branches.Branches, "Controller Test", []BranchProcessor{
-			{Fn: createControllerTest, CommitMsg: "Create minimal test"},
-			{Fn: updateTestHarness, CommitMsg: "Support for testing with mockgcp"},
+			{Fn: createControllerTest, CommitMsgTemplate: "{{kind}}: Create minimal test"},
+			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
 		})
 	case cmdCaptureGoldenTestOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsg: "Capture golden output"}})
+		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsgTemplate: "{{kind}}: Capture golden output"}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -428,6 +435,8 @@ func printHelp() {
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
 	log.Println("\t23 - [CRD] Generate Mapper for each branch")
 	log.Println("\t24 - [CRD] Generate Fuzzer for each branch")
+	log.Println("\t25 - [CRD] Run and Fix fuzzer tests for each branch")
+	log.Println("\t26 - [CRD] Run and Fix API checks for each branch")
 	log.Println("\t40 - [Controller] Generate controller client for each branch")
 	log.Println("\t41 - [Controller] Generate controller for each branch")
 	log.Println("\t43 - [Controller] [optional, simialr to 20, 21] Create identity and reference files for each branch")

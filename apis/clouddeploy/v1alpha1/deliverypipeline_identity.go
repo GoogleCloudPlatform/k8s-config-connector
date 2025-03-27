@@ -32,7 +32,7 @@ type DeliveryPipelineIdentity struct {
 }
 
 func (i *DeliveryPipelineIdentity) String() string {
-	return i.parent.String() + "/deliverypipelines/" + i.id
+	return i.parent.String() + "/deliveryPipelines/" + i.id
 }
 
 func (i *DeliveryPipelineIdentity) ID() string {
@@ -108,8 +108,8 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseDeliveryPipelineExternal(external string) (parent *DeliveryPipelineParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "deliverypipelines" {
-		return nil, "", fmt.Errorf("format of DeployDeliveryPipeline external=%q was not known (use projects/{{projectID}}/locations/{{location}}/deliverypipelines/{{deliverypipelineID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "deliveryPipelines" {
+		return nil, "", fmt.Errorf("format of DeployDeliveryPipeline external=%q was not known (use projects/{{projectID}}/locations/{{location}}/deliveryPipelines/{{deliverypipelineID}})", external)
 	}
 	parent = &DeliveryPipelineParent{
 		ProjectID: tokens[1],

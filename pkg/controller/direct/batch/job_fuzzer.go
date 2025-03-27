@@ -13,8 +13,8 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.bigquery.datatransfer.v1.TransferConfig
-// api.group: bigquerydatatransfer.cnrm.cloud.google.com
+// proto.message: google.cloud.batch.v1.Job
+// api.group: batch.cnrm.cloud.google.com
 
 package batch
 
@@ -47,6 +47,9 @@ func batchJobFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".task_groups")
 	f.StatusFields.Insert(".status")
+
+	f.UnimplementedFields.Insert(".allocation_policy.service_account.scopes")
+	f.UnimplementedFields.Insert(".status.task_groups")
 
 	return f
 }

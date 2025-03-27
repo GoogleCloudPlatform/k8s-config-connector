@@ -112,18 +112,19 @@ func (s *environmentsServer) UpdateOrganizationsEnvironment(ctx context.Context,
 
 	fqn := name.String()
 	obj := &pb.GoogleCloudApigeeV1Environment{}
-
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	proto.Merge(obj, req.GetOrganizationsEnvironment())
+	// All fields should be passed by callergst
+	updated := ProtoClone(req.GetOrganizationsEnvironment())
+	updated.Name = obj.Name
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return updated, nil
 }
 
 func (s *environmentsServer) DeleteOrganizationsEnvironment(ctx context.Context, req *pb.DeleteOrganizationsEnvironmentRequest) (*longrunningpb.Operation, error) {

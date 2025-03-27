@@ -12,6 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: vmwareengine.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.vmwareengine.v1
+// resource: VMwareEngineNetwork:VmwareEngineNetwork
+// resource: VMwareEngineNetworkPeering:NetworkPeering
+// resource: VMwareEngineNetworkPolicy:NetworkPolicy
+// resource: VMwareEngineExternalAccessRule:ExternalAccessRule
+// resource: VMwareEnginePrivateCloud:PrivateCloud
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService

@@ -1,0 +1,94 @@
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots/test-snapshot-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "subscription": "projects/${projectId}/subscriptions/test-subscription-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/snapshots/test-snapshot-${uniqueId}",
+  "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots/test-snapshot-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/snapshots/test-snapshot-${uniqueId}",
+  "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "snapshots": [
+    {
+      "expireTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/snapshots/test-snapshot-${uniqueId}",
+      "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+    }
+  ]
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/snapshots/test-snapshot-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

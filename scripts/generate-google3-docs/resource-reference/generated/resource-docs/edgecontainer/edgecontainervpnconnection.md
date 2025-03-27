@@ -63,22 +63,34 @@
 ### Spec
 #### Schema
 ```yaml
-clusterRef:
+bgpRoutingMode: string
+edgecontainerClusterRef:
   external: string
   name: string
   namespace: string
 enableHighAvailability: boolean
+labels:
+  string: string
 location: string
-natGatewayIp: string
+natGatewayIP: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
 router: string
 vpc: string
 vpcProject:
-  projectId: string
+  projectRef:
+    external: string
+    kind: string
+    name: string
+    namespace: string
+  serviceAccountRef:
+    external: string
+    name: string
+    namespace: string
 ```
 
 <table class="properties responsive">
@@ -90,42 +102,52 @@ vpcProject:
 <tbody>
     <tr>
         <td>
-            <p><code>clusterRef</code></p>
-            <p><i>Required</i></p>
+            <p><code>bgpRoutingMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Dynamic routing mode of the VPC network, `regional` or `global`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>edgecontainerClusterRef</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The canonical Cluster name to connect to. It is in the form of projects/{project}/locations/{location}/clusters/{cluster}.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>clusterRef.external</code></p>
+            <p><code>edgecontainerClusterRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `EdgeContainerCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed EdgeContainerCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>clusterRef.name</code></p>
+            <p><code>edgecontainerClusterRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>clusterRef.namespace</code></p>
+            <p><code>edgecontainerClusterRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -135,38 +157,47 @@ vpcProject:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Labels associated with this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Google Cloud Platform location.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>natGatewayIp</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the customer needs to configure NAT such that only one external IP maps to the GMEC Anthos cluster.
-This is empty if NAT is not used.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The location of the machine.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>natGatewayIP</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the customer needs to configure NAT such that only one external IP maps to the GMEC Anthos cluster. This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The host project of the machine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -176,7 +207,17 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -186,7 +227,7 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -196,7 +237,7 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -206,7 +247,7 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The EdgeContainerVpnConnection name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -216,7 +257,7 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The VPN connection Cloud Router name.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The VPN connection Cloud Router name.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -226,7 +267,7 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The network ID of VPC to connect to.{% endverbatim %}</p>
+            <p>{% verbatim %}The network ID of VPC to connect to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,17 +277,97 @@ This is empty if NAT is not used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Project detail of the VPC network. Required if VPC is in a different project than the cluster project.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Project detail of the VPC network. Required if VPC is in a different project than the cluster project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>vpcProject.projectId</code></p>
+            <p><code>vpcProject.projectRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The project of the VPC to connect to. If not specified, it is the same as the cluster project.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.projectRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The project of the VPC to connect to. If not specified, it is the same as the cluster project.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.projectRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.projectRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.serviceAccountRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Deprecated: do not use.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.serviceAccountRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.serviceAccountRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>vpcProject.serviceAccountRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -263,16 +384,18 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
-details:
-- cloudRouter:
-  - name: string
-  cloudVpns:
-  - gateway: string
-  error: string
-  state: string
+externalRef: string
 observedGeneration: integer
-updateTime: string
+observedState:
+  createTime: string
+  details:
+    cloudRouter:
+      name: string
+    cloudVpns:
+    - gateway: string
+    error: string
+    state: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -286,7 +409,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -332,80 +455,10 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the VPN connection was created.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}A nested object resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudRouter</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The Cloud Router info.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudRouter[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudRouter[].name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The associated Cloud Router name.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudVpns</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Each connection has multiple Cloud VPN gateways.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudVpns[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].cloudVpns[].gateway</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The created Cloud VPN gateway name.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].error</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The error message. This is only populated when state=ERROR.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>details[].state</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The current connection state.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the EdgeContainerVpnConnection resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -416,10 +469,80 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the VPN connection was last updated.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when the VPN connection was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The created connection details.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.cloudRouter</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The Cloud Router info.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.cloudRouter.name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The associated Cloud Router name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.cloudVpns</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Each connection has multiple Cloud VPN gateways.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.cloudVpns[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.cloudVpns[].gateway</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The created Cloud VPN gateway name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.error</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The error message. This is only populated when state=ERROR.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.details.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The state of this connection.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the VPN connection was last updated.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

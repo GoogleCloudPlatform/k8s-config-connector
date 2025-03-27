@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: vmwareengine.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.vmwareengine.v1
+
 package vmwareengine
 
 import (
@@ -56,6 +61,42 @@ func NetworkPolicy_NetworkServiceObservedState_ToProto(mapCtx *direct.MapContext
 	out.State = direct.Enum_ToProto[pb.NetworkPolicy_NetworkService_State](mapCtx, in.State)
 	return out
 }
+func NodeTypeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeTypeConfig) *krm.NodeTypeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NodeTypeConfig{}
+	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
+	out.CustomCoreCount = direct.LazyPtr(in.GetCustomCoreCount())
+	return out
+}
+func NodeTypeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeTypeConfig) *pb.NodeTypeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NodeTypeConfig{}
+	out.NodeCount = direct.ValueOf(in.NodeCount)
+	out.CustomCoreCount = direct.ValueOf(in.CustomCoreCount)
+	return out
+}
+func StretchedClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.StretchedClusterConfig) *krm.StretchedClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.StretchedClusterConfig{}
+	out.PreferredLocation = direct.LazyPtr(in.GetPreferredLocation())
+	out.SecondaryLocation = direct.LazyPtr(in.GetSecondaryLocation())
+	return out
+}
+func StretchedClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.StretchedClusterConfig) *pb.StretchedClusterConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StretchedClusterConfig{}
+	out.PreferredLocation = direct.ValueOf(in.PreferredLocation)
+	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
+	return out
+}
 func VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAccessRuleSpec) *pb.ExternalAccessRule {
 	if in == nil {
 		return nil
@@ -97,6 +138,36 @@ func VMwareEngineNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEn
 	out.Type = direct.Enum_ToProto[pb.VmwareEngineNetwork_Type](mapCtx, in.Type)
 	// MISSING: Uid
 	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func VMwareEnginePrivateCloudSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krm.VMwareEnginePrivateCloudSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VMwareEnginePrivateCloudSpec{}
+	// MISSING: Name
+	out.NetworkConfig = NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
+	out.ManagementCluster = PrivateCloud_ManagementCluster_FromProto(mapCtx, in.GetManagementCluster())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Hcx
+	// MISSING: Nsx
+	// MISSING: Uid
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func VMwareEnginePrivateCloudSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEnginePrivateCloudSpec) *pb.PrivateCloud {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateCloud{}
+	// MISSING: Name
+	out.NetworkConfig = NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
+	out.ManagementCluster = PrivateCloud_ManagementCluster_ToProto(mapCtx, in.ManagementCluster)
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Hcx
+	// MISSING: Nsx
+	// MISSING: Uid
+	out.Type = direct.Enum_ToProto[pb.PrivateCloud_Type](mapCtx, in.Type)
 	return out
 }
 func VmwareEngineNetwork_VpcNetwork_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krm.VmwareEngineNetwork_VpcNetwork {

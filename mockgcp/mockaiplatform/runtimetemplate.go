@@ -52,7 +52,7 @@ func (s *notebookService) GetNotebookRuntimeTemplate(ctx context.Context, req *p
 	obj := &pb.NotebookRuntimeTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "notebookRuntimeTemplate %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "NotebookRuntimeTemplate %s is not found.", fqn)
 		}
 		return nil, err
 	}
@@ -85,7 +85,11 @@ func (s *notebookService) CreateNotebookRuntimeTemplate(ctx context.Context, req
 		IdleTimeout: durationpb.New(idleTimeoutParsed),
 	}
 	obj.NotebookRuntimeType = pb.NotebookRuntimeType_USER_DEFINED
-	obj.NetworkSpec.Network = fmt.Sprintf("projects/%v/global/networks/default", name.Project.Number)
+	obj.EucConfig = &pb.NotebookEucConfig{}
+	obj.DataPersistentDiskSpec = &pb.PersistentDiskSpec{
+		DiskSizeGb: 100,
+		DiskType:   "pd-standard",
+	}
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

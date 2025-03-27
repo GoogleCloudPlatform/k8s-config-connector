@@ -1,0 +1,176 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: logginglinks.logging.cnrm.cloud.google.com
+spec:
+  group: logging.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: LoggingLink
+    listKind: LoggingLinkList
+    plural: logginglinks
+    shortNames:
+    - gcplogginglink
+    - gcplogginglinks
+    singular: logginglink
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: LoggingLink is the Schema for the LoggingLink API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: LoggingLinkSpec defines the desired state of LoggingLink
+            properties:
+              description:
+                description: Describes this link. The maximum length of the description
+                  is 8000 characters.
+                type: string
+              loggingLogBucketRef:
+                description: The LoggingLogBucket that this Link is associated with
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
+                      The LoggingLogBucket selfLink, when not managed by Config Connector.
+                    type: string
+                  name:
+                    description: The `name` field of a `LoggingLogBucket` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `LoggingLogBucket` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. The LoggingLink name. If not given, the metadata.name
+                  will be used.
+                type: string
+            type: object
+          status:
+            description: LoggingLinkStatus defines the config connector machine state
+              of LoggingLink
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the LoggingLink resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  bigQueryDataset:
+                    description: The information of a BigQuery Dataset. When a link
+                      is created, a BigQuery dataset is created along with it, in
+                      the same project as the LogBucket it's linked to. This dataset
+                      will also have BigQuery Views corresponding to the LogViews
+                      in the bucket.
+                    properties:
+                      datasetID:
+                        description: |-
+                          Output only. The full resource name of the BigQuery dataset. The DATASET_ID
+                           will match the ID of the link, so the link must match the naming
+                           restrictions of BigQuery datasets (alphanumeric characters and underscores
+                           only).
+
+                           The dataset will have a resource path of
+                             "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]"
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The creation timestamp of the link.
+                    type: string
+                  lifecycleState:
+                    description: Output only. The resource lifecycle state.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

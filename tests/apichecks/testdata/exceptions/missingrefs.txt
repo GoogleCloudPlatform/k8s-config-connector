@@ -22,7 +22,6 @@
 [refs] crd=containeranalysisnotes.containeranalysis.cnrm.cloud.google.com version=v1beta1: field ".spec.relatedNoteNames[].external" should be a reference
 [refs] crd=datacatalogtags.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.template" should be a reference
 [refs] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].name" should be a reference
-[refs] crd=datastreamconnectionprofiles.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.privateConnectivity.privateConnection" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.singleTargetDataset.datasetId" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.sourceHierarchyDatasets.datasetTemplate.kmsKeyName" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.destinationConnectionProfile" should be a reference
@@ -59,7 +58,6 @@
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentFollowupIntentName" should be a reference
 [refs] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryConfig.namespace.namespaceUrl" should be a reference
 [refs] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].networkUrl" should be a reference
-[refs] crd=essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
 [refs] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
@@ -68,6 +66,8 @@
 [refs] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
 [refs] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyRing" should be a reference
 [refs] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
+[refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" should be a reference
+[refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.target" should be a reference
 [refs] crd=orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances" should be a reference
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference

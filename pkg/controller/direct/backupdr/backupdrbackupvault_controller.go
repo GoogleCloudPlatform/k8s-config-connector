@@ -250,6 +250,10 @@ func (a *BackupVaultAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log.V(2).Info("deleting BackupVault", "name", a.id)
 
 	req := &pb.DeleteBackupVaultRequest{Name: a.id.String()}
+
+	if a.desired.Spec.IgnoreInactiveDatasources != nil && *a.desired.Spec.IgnoreInactiveDatasources {
+		req.Force = true
+	}
 	op, err := a.gcpClient.DeleteBackupVault(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {

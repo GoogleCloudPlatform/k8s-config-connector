@@ -201,6 +201,11 @@ func pushBranch(ctx context.Context, opts *RunnerOptions, branch Branch, execRes
 
 func makeReadyPR(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	// Run git push command with force flag
+	if opts.skipMakeReadyPR {
+		log.Printf("Skipping make ready-pr for branch %s (--skip-makereadypr flag is set)", branch.Name)
+		return nil, nil, nil
+	}
+
 	cfg := CommandConfig{
 		Name: "Make ready PR",
 		Cmd:  "make",

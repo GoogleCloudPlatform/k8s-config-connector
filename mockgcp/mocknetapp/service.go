@@ -14,6 +14,10 @@
 
 package mocknetapp
 
+// +tool:mockgcp-service
+// http.host: netapp.googleapis.com
+// proto.service: google.cloud.netapp.v1.NetApp
+
 import (
 	"context"
 	"net/http"
@@ -27,7 +31,7 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/netapp/v1"
 )
 
-// MockService represents a mocked bigqueryanalyticshub service.
+// MockService represents a mocked NetApp service.
 type MockService struct {
 	*common.MockEnvironment
 	storage storage.Storage
@@ -60,4 +64,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
+}
+
+type backupVaultsService struct {
+	*MockService
+	pb.UnimplementedNetAppServer
 }

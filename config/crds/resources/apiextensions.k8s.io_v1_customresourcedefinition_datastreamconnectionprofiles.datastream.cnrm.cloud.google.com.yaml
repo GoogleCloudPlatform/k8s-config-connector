@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datastreamconnectionprofiles.datastream.cnrm.cloud.google.com
 spec:
   group: datastream.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: DatastreamConnectionProfile
+    listKind: DatastreamConnectionProfileList
     plural: datastreamconnectionprofiles
     shortNames:
     - gcpdatastreamconnectionprofile
@@ -43,127 +42,68 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DatastreamConnectionProfile is the Schema for the DatastreamConnectionProfile
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DatastreamConnectionProfileSpec defines the desired state
+              of DatastreamConnectionProfile
             properties:
-              bigqueryProfile:
-                description: BigQuery warehouse profile.
+              bigQueryProfile:
+                description: BigQuery Connection Profile configuration.
                 type: object
-                x-kubernetes-preserve-unknown-fields: true
               displayName:
-                description: Display name.
+                description: Required. Display name.
                 type: string
-              forwardSshConnectivity:
+              forwardSSHConnectivity:
                 description: Forward SSH tunnel connectivity.
                 properties:
                   hostname:
-                    description: Hostname for the SSH tunnel.
+                    description: Required. Hostname for the SSH tunnel.
                     type: string
-                  password:
-                    description: Immutable. SSH password.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
-                    properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
-                        type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
-                    type: object
                   port:
-                    description: Port for the SSH tunnel.
+                    description: Port for the SSH tunnel, default value is 22.
+                    format: int32
                     type: integer
                   privateKey:
-                    description: Immutable. SSH private key.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
-                    properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
-                        type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
-                    type: object
-                  username:
-                    description: Username for the SSH tunnel.
+                    description: Input only. SSH private key.
                     type: string
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the SSH tunnel. The Secret type
+                      has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                 required:
                 - hostname
-                - username
+                - secretRef
                 type: object
               gcsProfile:
-                description: Cloud Storage bucket profile.
+                description: Cloud Storage ConnectionProfile configuration.
                 properties:
                   bucket:
-                    description: The Cloud Storage bucket name.
+                    description: Required. The Cloud Storage bucket name.
                     type: string
                   rootPath:
                     description: The root path inside the Cloud Storage bucket.
@@ -171,346 +111,229 @@ spec:
                 required:
                 - bucket
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels.
+                type: object
               location:
-                description: Immutable. The name of the location this connection profile
-                  is located in.
+                description: Immutable.
                 type: string
-              mysqlProfile:
-                description: MySQL database profile.
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              mySQLProfile:
+                description: MySQL ConnectionProfile configuration.
                 properties:
                   hostname:
-                    description: Hostname for the MySQL connection.
+                    description: Required. Hostname for the MySQL connection.
                     type: string
-                  password:
-                    description: Password for the MySQL connection.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
-                    properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
-                        type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
-                    type: object
                   port:
-                    description: Port for the MySQL connection.
+                    description: Port for the MySQL connection, default value is 3306.
+                    format: int32
                     type: integer
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the MySQL connection. The Secret
+                      type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                   sslConfig:
                     description: SSL configuration for the MySQL connection.
                     properties:
                       caCertificate:
-                        description: |-
-                          Immutable. PEM-encoded certificate of the CA that signed the source database
-                          server's certificate.
-                        oneOf:
-                        - not:
-                            required:
-                            - valueFrom
-                          required:
-                          - value
-                        - not:
-                            required:
-                            - value
-                          required:
-                          - valueFrom
-                        properties:
-                          value:
-                            description: Value of the field. Cannot be used if 'valueFrom'
-                              is specified.
-                            type: string
-                          valueFrom:
-                            description: Source for the field's value. Cannot be used
-                              if 'value' is specified.
-                            properties:
-                              secretKeyRef:
-                                description: Reference to a value with the given key
-                                  in the given Secret in the resource's namespace.
-                                properties:
-                                  key:
-                                    description: Key that identifies the value to
-                                      be extracted.
-                                    type: string
-                                  name:
-                                    description: Name of the Secret to extract a value
-                                      from.
-                                    type: string
-                                required:
-                                - name
-                                - key
-                                type: object
-                            type: object
-                        type: object
-                      caCertificateSet:
-                        description: Indicates whether the clientKey field is set.
-                        type: boolean
+                        description: Input only. PEM-encoded certificate of the CA
+                          that signed the source database server's certificate.
+                        type: string
                       clientCertificate:
-                        description: |-
-                          Immutable. PEM-encoded certificate that will be used by the replica to
-                          authenticate against the source database server. If this field
-                          is used then the 'clientKey' and the 'caCertificate' fields are
-                          mandatory.
-                        oneOf:
-                        - not:
-                            required:
-                            - valueFrom
-                          required:
-                          - value
-                        - not:
-                            required:
-                            - value
-                          required:
-                          - valueFrom
-                        properties:
-                          value:
-                            description: Value of the field. Cannot be used if 'valueFrom'
-                              is specified.
-                            type: string
-                          valueFrom:
-                            description: Source for the field's value. Cannot be used
-                              if 'value' is specified.
-                            properties:
-                              secretKeyRef:
-                                description: Reference to a value with the given key
-                                  in the given Secret in the resource's namespace.
-                                properties:
-                                  key:
-                                    description: Key that identifies the value to
-                                      be extracted.
-                                    type: string
-                                  name:
-                                    description: Name of the Secret to extract a value
-                                      from.
-                                    type: string
-                                required:
-                                - name
-                                - key
-                                type: object
-                            type: object
-                        type: object
-                      clientCertificateSet:
-                        description: Indicates whether the clientCertificate field
-                          is set.
-                        type: boolean
+                        description: Input only. PEM-encoded certificate that will
+                          be used by the replica to authenticate against the source
+                          database server. If this field is used then the 'client_key'
+                          and the 'ca_certificate' fields are mandatory.
+                        type: string
                       clientKey:
-                        description: |-
-                          Immutable. PEM-encoded private key associated with the Client Certificate.
-                          If this field is used then the 'client_certificate' and the
-                          'ca_certificate' fields are mandatory.
-                        oneOf:
-                        - not:
-                            required:
-                            - valueFrom
-                          required:
-                          - value
-                        - not:
-                            required:
-                            - value
-                          required:
-                          - valueFrom
-                        properties:
-                          value:
-                            description: Value of the field. Cannot be used if 'valueFrom'
-                              is specified.
-                            type: string
-                          valueFrom:
-                            description: Source for the field's value. Cannot be used
-                              if 'value' is specified.
-                            properties:
-                              secretKeyRef:
-                                description: Reference to a value with the given key
-                                  in the given Secret in the resource's namespace.
-                                properties:
-                                  key:
-                                    description: Key that identifies the value to
-                                      be extracted.
-                                    type: string
-                                  name:
-                                    description: Name of the Secret to extract a value
-                                      from.
-                                    type: string
-                                required:
-                                - name
-                                - key
-                                type: object
-                            type: object
-                        type: object
-                      clientKeySet:
-                        description: Indicates whether the clientKey field is set.
-                        type: boolean
+                        description: Input only. PEM-encoded private key associated
+                          with the Client Certificate. If this field is used then
+                          the 'client_certificate' and the 'ca_certificate' fields
+                          are mandatory.
+                        type: string
                     type: object
-                  username:
-                    description: Username for the MySQL connection.
-                    type: string
                 required:
                 - hostname
-                - password
-                - username
+                - secretRef
                 type: object
               oracleProfile:
-                description: Oracle database profile.
+                description: Oracle ConnectionProfile configuration.
                 properties:
                   connectionAttributes:
                     additionalProperties:
                       type: string
-                    description: Connection string attributes.
+                    description: Connection string attributes
                     type: object
                   databaseService:
-                    description: Database for the Oracle connection.
+                    description: Required. Database for the Oracle connection.
                     type: string
                   hostname:
-                    description: Hostname for the Oracle connection.
+                    description: Required. Hostname for the Oracle connection.
                     type: string
-                  password:
-                    description: Password for the Oracle connection.
+                  oracleASMConfig:
+                    description: Optional. Configuration for Oracle ASM connection.
+                    properties:
+                      asmService:
+                        description: Required. ASM service name for the Oracle ASM
+                          connection.
+                        type: string
+                      connectionAttributes:
+                        additionalProperties:
+                          type: string
+                        description: Optional. Connection string attributes
+                        type: object
+                      hostname:
+                        description: Required. Hostname for the Oracle ASM connection.
+                        type: string
+                      oracleSSLConfig:
+                        description: Optional. SSL configuration for the Oracle connection.
+                        properties:
+                          caCertificate:
+                            description: Input only. PEM-encoded certificate of the
+                              CA that signed the source database server's certificate.
+                            type: string
+                        type: object
+                      port:
+                        description: Required. Port for the Oracle ASM connection.
+                        format: int32
+                        type: integer
+                      secretRef:
+                        description: The Kubernetes Secret object that stores the
+                          "username" and "password" information for the Oracle ASM
+                          connection. The Secret type has to be `kubernetes.io/basic-auth`.
+                        properties:
+                          name:
+                            description: The `metadata.name` field of a Kubernetes
+                              `Secret`
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a Kubernetes
+                              `Secret`.
+                            type: string
+                        required:
+                        - name
+                        type: object
+                    required:
+                    - asmService
+                    - hostname
+                    - port
+                    - secretRef
+                    type: object
+                  oracleSSLConfig:
+                    description: Optional. SSL configuration for the Oracle connection.
+                    properties:
+                      caCertificate:
+                        description: Input only. PEM-encoded certificate of the CA
+                          that signed the source database server's certificate.
+                        type: string
+                    type: object
+                  port:
+                    description: Port for the Oracle connection, default value is
+                      1521.
+                    format: int32
+                    type: integer
+                  secretManagerSecretRef:
+                    description: Optional. A reference to a Secret Manager resource
+                      name storing the Oracle connection password. Mutually exclusive
+                      with the `secretRef` field.
                     oneOf:
                     - not:
                         required:
-                        - valueFrom
+                        - external
                       required:
-                      - value
+                      - name
                     - not:
-                        required:
-                        - value
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
                       required:
-                      - valueFrom
+                      - external
                     properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*`.'
                         type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
+                      name:
+                        description: The `name` field of a `SecretManagerSecret` resource.
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a `SecretManagerSecret`
+                          resource.
+                        type: string
                     type: object
-                  port:
-                    description: Port for the Oracle connection.
-                    type: integer
-                  username:
-                    description: Username for the Oracle connection.
-                    type: string
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the Oracle connection. The Secret
+                      type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
                 required:
                 - databaseService
                 - hostname
-                - password
-                - username
-                type: object
-              postgresqlProfile:
-                description: PostgreSQL database profile.
-                properties:
-                  database:
-                    description: Database for the PostgreSQL connection.
-                    type: string
-                  hostname:
-                    description: Hostname for the PostgreSQL connection.
-                    type: string
-                  password:
-                    description: Password for the PostgreSQL connection.
-                    oneOf:
-                    - not:
-                        required:
-                        - valueFrom
-                      required:
-                      - value
-                    - not:
-                        required:
-                        - value
-                      required:
-                      - valueFrom
-                    properties:
-                      value:
-                        description: Value of the field. Cannot be used if 'valueFrom'
-                          is specified.
-                        type: string
-                      valueFrom:
-                        description: Source for the field's value. Cannot be used
-                          if 'value' is specified.
-                        properties:
-                          secretKeyRef:
-                            description: Reference to a value with the given key in
-                              the given Secret in the resource's namespace.
-                            properties:
-                              key:
-                                description: Key that identifies the value to be extracted.
-                                type: string
-                              name:
-                                description: Name of the Secret to extract a value
-                                  from.
-                                type: string
-                            required:
-                            - name
-                            - key
-                            type: object
-                        type: object
-                    type: object
-                  port:
-                    description: Port for the PostgreSQL connection.
-                    type: integer
-                  username:
-                    description: Username for the PostgreSQL connection.
-                    type: string
-                required:
-                - database
-                - hostname
-                - password
-                - username
+                - secretRef
                 type: object
               privateConnectivity:
                 description: Private connectivity.
                 properties:
-                  privateConnection:
-                    description: 'A reference to a private connection resource. Format:
-                      ''projects/{project}/locations/{location}/privateConnections/{name}''.'
-                    type: string
+                  privateConnectionRef:
+                    description: Required. A reference to a private connection resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DatastreamPrivateConnection
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}".
+                        type: string
+                      name:
+                        description: The name of a DatastreamPrivateConnection resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DatastreamPrivateConnection
+                          resource.
+                        type: string
+                    type: object
                 required:
-                - privateConnection
+                - privateConnectionRef
                 type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -527,30 +350,73 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The connectionProfileId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The DatastreamConnectionProfile name. If not given, the
+                  metadata.name will be used.
                 type: string
+              sqlServerProfile:
+                description: SQLServer Connection Profile configuration.
+                properties:
+                  database:
+                    description: Required. Database for the SQLServer connection.
+                    type: string
+                  hostname:
+                    description: Required. Hostname for the SQLServer connection.
+                    type: string
+                  port:
+                    description: Port for the SQLServer connection, default value
+                      is 1433.
+                    format: int32
+                    type: integer
+                  secretRef:
+                    description: The Kubernetes Secret object that stores the "username"
+                      and "password" information for the SQLServer connection. The
+                      Secret type has to be `kubernetes.io/basic-auth`.
+                    properties:
+                      name:
+                        description: The `metadata.name` field of a Kubernetes `Secret`
+                        type: string
+                      namespace:
+                        description: The `metadata.namespace` field of a Kubernetes
+                          `Secret`.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                required:
+                - database
+                - hostname
+                - secretRef
+                type: object
+              staticServiceIPConnectivity:
+                description: Static Service IP connectivity.
+                type: object
             required:
             - displayName
             - location
             - projectRef
             type: object
           status:
+            description: DatastreamConnectionProfileStatus defines the config connector
+              machine state of DatastreamConnectionProfile
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -574,8 +440,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: The resource's name.
+              externalRef:
+                description: A unique specifier for the DatastreamConnectionProfile
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -583,7 +450,51 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The create time of the resource.
+                    type: string
+                  mySQLProfile:
+                    description: MySQL ConnectionProfile configuration.
+                    properties:
+                      sslConfig:
+                        description: SSL configuration for the MySQL connection.
+                        properties:
+                          caCertificateSet:
+                            description: Output only. Indicates whether the ca_certificate
+                              field is set.
+                            type: boolean
+                          clientCertificateSet:
+                            description: Output only. Indicates whether the client_certificate
+                              field is set.
+                            type: boolean
+                          clientKeySet:
+                            description: Output only. Indicates whether the client_key
+                              field is set.
+                            type: boolean
+                        type: object
+                    type: object
+                  oracleProfile:
+                    description: Oracle ConnectionProfile configuration.
+                    properties:
+                      oracleSSLConfig:
+                        description: Optional. SSL configuration for the Oracle connection.
+                        properties:
+                          caCertificateSet:
+                            description: Output only. Indicates whether the ca_certificate
+                              field has been set for this Connection-Profile.
+                            type: boolean
+                        type: object
+                    type: object
+                  updateTime:
+                    description: Output only. The update time of the resource.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -592,9 +503,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

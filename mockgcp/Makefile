@@ -168,13 +168,17 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/kms/v1/resources.proto
+		./third_party/googleapis/mockgcp/cloud/kms/v1/resources.proto \
+		./third_party/googleapis/mockgcp/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
