@@ -22,7 +22,4 @@ spec:
     # Use pre-created processor for version training.
     # A processor requires manual setup after creation to allow for the training of a new version.
     external: projects/${projectNumber}/locations/us/processors/7f8f177e3b9cc6d9
-  projectRef:
-    external: ${projectId}
-  location: us
 

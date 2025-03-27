@@ -49,14 +49,6 @@ type DocumentAIProcessorVersionSpec struct {
 }
 
 type Parent struct {
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// The location of the resource, for example: "us" or "europe".
-	// +required
-	Location *string `json:"location,omitempty"`
-
 	// +required
 	ProcessorRef *ProcessorRef `json:"processorRef"`
 }

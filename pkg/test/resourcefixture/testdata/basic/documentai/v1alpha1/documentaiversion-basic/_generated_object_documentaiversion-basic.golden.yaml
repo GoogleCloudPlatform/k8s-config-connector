@@ -11,11 +11,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   displayName: Test Document AI Version Name
-  location: us
   processorRef:
     external: projects/${projectNumber}/locations/us/processors/${processorID}
-  projectRef:
-    external: ${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
