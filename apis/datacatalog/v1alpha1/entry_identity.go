@@ -59,16 +59,6 @@ func (p *EntryParent) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s", p.ProjectID, p.Location, p.EntryGroupID)
 }
 
-// ParseEntryGroupExternal parses the external format of an EntryGroup resource name.
-// Format: projects/{project}/locations/{location}/entryGroups/{entry_group_id}
-func ParseEntryGroupExternal(external string) (projectID, location, entryGroupID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" {
-		return "", "", "", fmt.Errorf("invalid EntryGroup external format %q (use projects/{{project}}/locations/{{location}}/entryGroups/{{entry_group_id}})", external)
-	}
-	return tokens[1], tokens[3], tokens[5], nil
-}
-
 // NewEntryIdentity builds a EntryIdentity from the Config Connector DataCatalogEntry object.
 func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogEntry) (*EntryIdentity, error) {
 	// --- Determine Parent ---
@@ -79,7 +69,7 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 	}
 
 	// Parse parent info from the EntryGroup reference
-	projectID, location, entryGroupID, err := ParseEntryGroupExternal(obj.Spec.EntryGroupRef.External)
+	entryGroupParent, entryGroupID, err := ParseEntryGroupExternal(obj.Spec.EntryGroupRef.External)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse spec.entryGroupRef.external %q: %w", obj.Spec.EntryGroupRef.External, err)
 	}
@@ -92,13 +82,13 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 			// Don't fail validation if resolution fails, maybe ref is invalid or project doesn't exist yet.
 			// Log warning? For now proceed, EntryGroupRef is the primary source.
 			_ = err // Placeholder
-		} else if resolvedProjectRef.ProjectID != "" && resolvedProjectRef.ProjectID != projectID {
-			return nil, fmt.Errorf("project ID mismatch between spec.entryGroupRef (%s) and spec.projectRef (%s)", projectID, resolvedProjectRef.ProjectID)
+		} else if resolvedProjectRef.ProjectID != "" && resolvedProjectRef.ProjectID != entryGroupParent.ProjectID {
+			return nil, fmt.Errorf("project ID mismatch between spec.entryGroupRef (%s) and spec.projectRef (%s)", entryGroupParent.ProjectID, resolvedProjectRef.ProjectID)
 		}
 	}
 	if obj.Spec.Location != nil {
-		if *obj.Spec.Location != location {
-			return nil, fmt.Errorf("location mismatch between spec.entryGroupRef (%s) and spec.location (%s)", location, *obj.Spec.Location)
+		if *obj.Spec.Location != entryGroupParent.Location {
+			return nil, fmt.Errorf("location mismatch between spec.entryGroupRef (%s) and spec.location (%s)", entryGroupParent.Location, *obj.Spec.Location)
 		}
 	}
 
@@ -113,8 +103,8 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 	}
 
 	desiredParent := &EntryParent{
-		ProjectID:    projectID,
-		Location:     location,
+		ProjectID:    entryGroupParent.ProjectID,
+		Location:     entryGroupParent.Location,
 		EntryGroupID: entryGroupID,
 	}
 
