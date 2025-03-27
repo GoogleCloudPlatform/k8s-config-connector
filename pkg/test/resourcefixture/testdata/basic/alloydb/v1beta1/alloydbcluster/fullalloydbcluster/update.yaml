@@ -18,6 +18,7 @@ metadata:
   labels:
     label-one: "value-two"
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:

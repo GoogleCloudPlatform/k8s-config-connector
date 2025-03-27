@@ -17,6 +17,7 @@ kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
+    alpha.cnrm.cloud.google.com/reconciler: direct
   name: alloydbcluster-${uniqueId}
 spec:
   automatedBackupPolicy:
