@@ -32,13 +32,13 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/golang/protobuf/proto"
 )
 
 func init() {
@@ -86,7 +86,7 @@ func (m *vpnConnectionModel) AdapterForObject(ctx context.Context, reader client
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewVPNConnectionIdentity(ctx, reader, obj)
+	id, err := krm.NewVpnConnectionIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (m *vpnConnectionModel) AdapterForURL(ctx context.Context, url string) (dir
 
 type vpnConnectionAdapter struct {
 	gcpClient *edgecontainer.Client
-	id        *krm.VPNConnectionIdentity
+	id        *krm.VpnConnectionIdentity
 	desired   *krm.EdgeContainerVpnConnection
 	actual    *edgecontainerpb.VpnConnection
 	reader    client.Reader
@@ -140,18 +140,23 @@ func (a *vpnConnectionAdapter) Create(ctx context.Context, createOp *directbase.
 	log := klog.FromContext(ctx)
 	log.Info("creating vpn connection", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := EdgeContainerVpnConnectionSpec_ToProto(&desired.Spec)
+	resource := EdgeContainerVpnConnectionSpec_ToProto(mapCtx, &desired.Spec)
 	if err := normalizeReferences(ctx, a.reader, a.desired); err != nil {
 		return err
 	}
 
+	resource.Labels = make(map[string]string)
+	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+		resource.Labels[k] = v
+	}
+	resource.Labels["managed-by-cnrm"] = "true"
+
 	req := &edgecontainerpb.CreateVpnConnectionRequest{
-		Parent:            a.id.Parent().String(),
-		VpnConnectionId:   a.id.ID(),
-		VpnConnection:     resource,
-		RequestId:         desired.Spec.RequestID,
-		SkipInitialConfig: desired.Spec.SkipInitialConfig,
+		Parent:          a.id.Parent().String(),
+		VpnConnectionId: a.id.ID(),
+		VpnConnection:   resource,
 	}
 	op, err := a.gcpClient.CreateVpnConnection(ctx, req)
 	if err != nil {
@@ -164,7 +169,6 @@ func (a *vpnConnectionAdapter) Create(ctx context.Context, createOp *directbase.
 	log.Info("successfully created vpn connection in gcp", "name", a.id)
 
 	status := &krm.EdgeContainerVpnConnectionStatus{}
-	mapCtx := &direct.MapContext{}
 	status.ObservedState = EdgeContainerVpnConnectionObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -179,7 +183,9 @@ func (a *vpnConnectionAdapter) Update(ctx context.Context, updateOp *directbase.
 	log := klog.FromContext(ctx)
 	log.Info("updating vpn connection", "name", a.id)
 
-	desiredpb := proto.Clone(a.desired).(*edgecontainerpb.VpnConnection)
+	mapCtx := &direct.MapContext{}
+	desired := a.desired.DeepCopy()
+	desiredpb := EdgeContainerVpnConnectionSpec_ToProto(mapCtx, &desired.Spec)
 	paths, err := common.CompareProtoMessage(desiredpb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
@@ -228,7 +234,7 @@ func (a *vpnConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -242,15 +248,10 @@ func (a *vpnConnectionAdapter) Export(ctx context.Context) (*unstructured.Unstru
 }
 
 func normalizeReferences(ctx context.Context, reader client.Reader, desired *krm.EdgeContainerVpnConnection) error {
-	if desired.Spec.ClusterRef != nil {
-		if _, err := desired.Spec.ClusterRef.NormalizedExternal(ctx, reader, desired.GetNamespace()); err != nil {
+	if desired.Spec.EdgeContainerClusterRef != nil {
+		if _, err := desired.Spec.EdgeContainerClusterRef.NormalizedExternal(ctx, reader, desired.GetNamespace()); err != nil {
 			return err
 		}
 	}
 	return nil
 }
-
-```
-</out>
-
-
