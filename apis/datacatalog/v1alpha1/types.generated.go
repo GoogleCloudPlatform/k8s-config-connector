@@ -125,14 +125,18 @@ type CloudSQLBigQueryConnectionSpec struct {
 type ColumnSchema struct {
 	// Required. Name of the column.
 	//
+	// Required. Name of the column.
+	//
 	//  Must be a UTF-8 string without dots (.).
 	//  The maximum size is 64 bytes.
+	// +required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.column
 	Column *string `json:"column,omitempty"`
 
 	// Required. Type of the column.
 	//
 	//  Must be a UTF-8 string with the maximum size of 128 bytes.
+	// +required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.type
 	Type *string `json:"type,omitempty"`
 
@@ -191,6 +195,7 @@ type ColumnSchema struct {
 type ColumnSchema_FieldElementType struct {
 	// Required. The type of a field element. See
 	//  [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
+	// +required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.FieldElementType.type
 	Type *string `json:"type,omitempty"`
 }
@@ -381,6 +386,7 @@ type FilesetSpec struct {
 // +kcc:proto=google.cloud.datacatalog.v1.GcsFileSpec
 type GCSFileSpec struct {
 	// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
+	// +required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFileSpec.file_path
 	FilePath *string `json:"filePath,omitempty"`
 }
@@ -416,6 +422,7 @@ type GCSFilesetSpec struct {
 	//  You can combine wildcards to match complex sets of files, for example:
 	//
 	//  `gs://bucket_name/[a-m]??.j*g`
+	// +required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.GcsFilesetSpec.file_patterns
 	FilePatterns []string `json:"filePatterns,omitempty"`
 }
