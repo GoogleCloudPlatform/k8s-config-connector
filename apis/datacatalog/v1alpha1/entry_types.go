@@ -15,15 +15,42 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+// EntryGroupRef defines the reference to a DataCatalogEntryGroup.
+type EntryGroupRef struct {
+	/* The EntryGroup that is the parent of this Entry.
+
+	Format: `projects/{{project}}/locations/{{location}}/entryGroups/{{entry_group_id}}` */
+	// +required
+	External string `json:"external"`
+}
+
+// Parent defines the potential parent resources for a DataCatalogEntry.
+type Parent struct {
+	// Optional. Reference to the entry group that contains the entry.
+	// +optional
+	EntryGroupRef *EntryGroupRef `json:"entryGroupRef,omitempty"`
+
+	// Optional. The location for the entry. Cannot be specified if entryGroupRef is specified.
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	// Optional. Reference to the project that contains the entry. Cannot be specified if entryGroupRef is specified.
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
 
 var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 
 // DataCatalogEntrySpec defines the desired state of DataCatalogEntry
 // +kcc:proto=google.cloud.datacatalog.v1.Entry
 type DataCatalogEntrySpec struct {
+	Parent `json:",inline"`
+
 	// The DataCatalogEntry name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
