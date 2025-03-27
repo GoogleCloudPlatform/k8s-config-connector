@@ -75,10 +75,7 @@ func (s *backupVaultsService) CreateBackupVault(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{}
-	return s.operations.StartLRO(ctx, req.GetParent(), metadata, func() (proto.Message, error) {
-		return obj, nil
-	})
+	return s.operations.DoneLRO(ctx, req.GetParent(), &pb.OperationMetadata{}, obj)
 }
 
 func (s *backupVaultsService) UpdateBackupVault(ctx context.Context, req *pb.UpdateBackupVaultRequest) (*longrunningpb.Operation, error) {
@@ -102,11 +99,10 @@ func (s *backupVaultsService) UpdateBackupVault(ctx context.Context, req *pb.Upd
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	metadata := &pb.OperationMetadata{}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		return obj, nil
-	})
+
+	return s.operations.DoneLRO(ctx, name.String(), &pb.OperationMetadata{}, obj)
 }
+
 func (s *backupVaultsService) DeleteBackupVault(ctx context.Context, req *pb.DeleteBackupVaultRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseBackupVaultName(req.GetName())
 	if err != nil {

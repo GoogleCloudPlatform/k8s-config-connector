@@ -29,7 +29,7 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "done": false,
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
     "apiVersion": "",
@@ -40,7 +40,15 @@ Grpc-Metadata-Content-Type: application/grpc
     "target": "",
     "verb": ""
   },
-  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupVault",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "labels": {},
+    "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "state": "READY"
+  }
 }
 
 ---
@@ -79,7 +87,7 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "done": false,
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.netapp.v1.OperationMetadata",
     "apiVersion": "",
@@ -90,7 +98,15 @@ Grpc-Metadata-Content-Type: application/grpc
     "target": "",
     "verb": ""
   },
-  "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.netapp.v1.BackupVault",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "labels": {},
+    "name": "projects/${projectId}/locations/us-west2/backupVaults/netappbackupvault-basic-${uniqueId}",
+    "state": "READY"
+  }
 }
 
 ---
