@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,23 +31,24 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
-type networkAttachments struct {
+type networkAttachmentsV1 struct {
 	*MockService
 	pb.UnimplementedNetworkAttachmentsServer
 }
 
-func (s *networkAttachments) Get(ctx context.Context, req *pb.GetNetworkAttachmentRequest) (*pb.NetworkAttachment, error) {
+func (s *networkAttachmentsV1) Get(ctx context.Context, req *pb.GetNetworkAttachmentRequest) (*pb.NetworkAttachment, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.GetNetworkAttachment())
 	name, err := s.parseNetworkAttachmentName(reqName)
 	if err != nil {
 		return nil, err
 	}
+
 	fqn := name.String()
 
 	obj := &pb.NetworkAttachment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "NetworkAttachment %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", name.String())
 		}
 		return nil, err
 	}
@@ -55,7 +56,7 @@ func (s *networkAttachments) Get(ctx context.Context, req *pb.GetNetworkAttachme
 	return obj, nil
 }
 
-func (s *networkAttachments) Insert(ctx context.Context, req *pb.InsertNetworkAttachmentRequest) (*pb.Operation, error) {
+func (s *networkAttachmentsV1) Insert(ctx context.Context, req *pb.InsertNetworkAttachmentRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.GetNetworkAttachmentResource().GetName())
 	name, err := s.parseNetworkAttachmentName(reqName)
 	if err != nil {
@@ -70,29 +71,65 @@ func (s *networkAttachments) Insert(ctx context.Context, req *pb.InsertNetworkAt
 	obj.Kind = PtrTo("compute#networkAttachment")
 	obj.CreationTimestamp = PtrTo(s.nowString())
 
-	if obj.Description == nil {
-		obj.Description = PtrTo("")
-	}
-
-	obj.ConnectionPreference = PtrTo("ACCEPT_AUTOMATIC")
+	// hard-code generated fingerprint
+	obj.Fingerprint = PtrTo("abcdef0123A=")
+	// hard-code output-only network
+	tokens := strings.Split(fqn, "-")
+	uniqueID := tokens[len(tokens)-1]
+	obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/computenetwork-%s", name.Project, uniqueID))
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project, name.Region))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	op := &pb.Operation{
-		OperationType: PtrTo("insert"),
+		OperationType: PtrTo("compute.networkAttachments.insert"),
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
 	}
-	return s.computeOperations.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+	return s.computeOperations.startRegionalLRO(ctx, name.Project, name.Region, op, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
 
-func (s *networkAttachments) Delete(ctx context.Context, req *pb.DeleteNetworkAttachmentRequest) (*pb.Operation, error) {
+func (s *networkAttachmentsV1) Patch(ctx context.Context, req *pb.PatchNetworkAttachmentRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.GetNetworkAttachment())
+	name, err := s.parseNetworkAttachmentName(reqName)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.NetworkAttachment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if err := mergeProtos(obj.ProtoReflect(), req.GetNetworkAttachmentResource().ProtoReflect()); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		OperationType: PtrTo("compute.networkAttachments.patch"),
+		TargetLink:    obj.SelfLink,
+		Status:        PtrTo(pb.Operation_RUNNING),
+		User:          PtrTo("user@example.com"),
+		TargetId:      obj.Id,
+		Progress:      PtrTo(int32(0)),
+	}
+	return s.computeOperations.startRegionalLRO(ctx, name.Project, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *networkAttachmentsV1) Delete(ctx context.Context, req *pb.DeleteNetworkAttachmentRequest) (*pb.Operation, error) {
+	reqName := fmt.Sprintf("projects/%s/regions/%s/networkAttachments/%s", req.GetProject(), req.GetRegion(), req.NetworkAttachment)
 	name, err := s.parseNetworkAttachmentName(reqName)
 	if err != nil {
 		return nil, err
@@ -105,12 +142,12 @@ func (s *networkAttachments) Delete(ctx context.Context, req *pb.DeleteNetworkAt
 	}
 
 	op := &pb.Operation{
-		OperationType: PtrTo("delete"),
+		OperationType: PtrTo("compute.networkAttachments.delete"),
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
 		User:          PtrTo("user@example.com"),
 	}
-	return s.computeOperations.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+	return s.computeOperations.startRegionalLRO(ctx, name.Project, name.Region, op, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
 }

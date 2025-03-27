@@ -117,10 +117,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -246,11 +242,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.0.0.0/16",
   "kind": "compute#subnetwork",
@@ -285,13 +280,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The caller does not have permission",
-        "reason": "forbidden"
-      }
-    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -349,26 +337,22 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "project-1-${uniqueId}",
+    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lifecycleState": "ACTIVE",
-    "name": "project-1-${uniqueId}",
-    "parent": {
-      "id": "${organizationID}",
-      "type": "organization"
-    },
+    "name": "projects/${projectNumber}",
+    "parent": "organizations/${organizationID}",
     "projectId": "project-1-${uniqueId}",
-    "projectNumber": "${projectNumber}"
+    "state": "ACTIVE"
   }
 }
 
@@ -496,13 +480,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The caller does not have permission",
-        "reason": "forbidden"
-      }
-    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -560,26 +537,22 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "project-2-${uniqueId}",
+    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lifecycleState": "ACTIVE",
-    "name": "project-2-${uniqueId}",
-    "parent": {
-      "id": "${organizationID}",
-      "type": "organization"
-    },
+    "name": "projects/${projectNumber}",
+    "parent": "organizations/${organizationID}",
     "projectId": "project-2-${uniqueId}",
-    "projectNumber": "${projectNumber}"
+    "state": "ACTIVE"
   }
 }
 
@@ -837,7 +810,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
   "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+    "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   ]
 }
 
@@ -959,7 +932,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkAttachments/${networkAttachmentID}",
   "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+    "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   ]
 }
 
@@ -1187,11 +1160,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.0.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.0.0.0/16",
   "kind": "compute#subnetwork",
@@ -1295,10 +1267,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
