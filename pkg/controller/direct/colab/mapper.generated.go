@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -32,6 +33,7 @@ func ColabRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Noteb
 	}
 	out := &krm.ColabRuntimeObservedState{}
 	// MISSING: Name
+	// MISSING: NotebookRuntimeTemplateRef
 	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -44,8 +46,8 @@ func ColabRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Noteb
 	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
 	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
 	out.EncryptionSpec = EncryptionSpecObservedState_FromProto(mapCtx, in.GetEncryptionSpec())
-	// MISSING: SatisfiesPZS
-	// MISSING: SatisfiesPZI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeObservedState) *pb.NotebookRuntime {
@@ -54,6 +56,7 @@ func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabR
 	}
 	out := &pb.NotebookRuntime{}
 	// MISSING: Name
+	// MISSING: NotebookRuntimeTemplateRef
 	out.ProxyUri = direct.ValueOf(in.ProxyURI)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -66,8 +69,8 @@ func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabR
 	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
 	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
 	out.EncryptionSpec = EncryptionSpecObservedState_ToProto(mapCtx, in.EncryptionSpec)
-	// MISSING: SatisfiesPZS
-	// MISSING: SatisfiesPZI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.ColabRuntimeSpec {
@@ -77,13 +80,13 @@ func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntim
 	out := &krm.ColabRuntimeSpec{}
 	// MISSING: Name
 	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
-	out.ColabRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
+	// MISSING: NotebookRuntimeTemplateRef
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
 	out.NetworkTags = in.NetworkTags
-	// MISSING: SatisfiesPZS
-	// MISSING: SatisfiesPZI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpec) *pb.NotebookRuntime {
@@ -93,13 +96,13 @@ func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpe
 	out := &pb.NotebookRuntime{}
 	// MISSING: Name
 	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
-	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.ColabRuntimeTemplateRef)
+	// MISSING: NotebookRuntimeTemplateRef
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
 	out.NetworkTags = in.NetworkTags
-	// MISSING: SatisfiesPZS
-	// MISSING: SatisfiesPZI
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }
 func ColabRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.ColabRuntimeTemplateObservedState {
@@ -206,6 +209,44 @@ func EncryptionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Encr
 	}
 	out := &pb.EncryptionSpec{}
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	return out
+}
+func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krm.Featurestore_OnlineServingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Featurestore_OnlineServingConfig{}
+	out.FixedNodeCount = direct.LazyPtr(in.GetFixedNodeCount())
+	out.Scaling = Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx, in.GetScaling())
+	return out
+}
+func Featurestore_OnlineServingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig) *pb.Featurestore_OnlineServingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore_OnlineServingConfig{}
+	out.FixedNodeCount = direct.ValueOf(in.FixedNodeCount)
+	out.Scaling = Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx, in.Scaling)
+	return out
+}
+func Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig_Scaling) *krm.Featurestore_OnlineServingConfig_Scaling {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Featurestore_OnlineServingConfig_Scaling{}
+	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
+	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
+	out.CPUUtilizationTarget = direct.LazyPtr(in.GetCpuUtilizationTarget())
+	return out
+}
+func Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig_Scaling) *pb.Featurestore_OnlineServingConfig_Scaling {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore_OnlineServingConfig_Scaling{}
+	out.MinNodeCount = direct.ValueOf(in.MinNodeCount)
+	out.MaxNodeCount = direct.ValueOf(in.MaxNodeCount)
+	out.CpuUtilizationTarget = direct.ValueOf(in.CPUUtilizationTarget)
 	return out
 }
 func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.MachineSpec {
@@ -366,5 +407,61 @@ func ShieldedVMConfig_ToProto(mapCtx *direct.MapContext, in *krm.ShieldedVMConfi
 	}
 	out := &pb.ShieldedVmConfig{}
 	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
+	return out
+}
+func VertexAIFeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeaturestoreObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreObservedState) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.Featurestore_State](mapCtx, in.State)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAIFeaturestoreSpec{}
+	// MISSING: Name
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
+	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreSpec) *pb.Featurestore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Featurestore{}
+	// MISSING: Name
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
+	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
 	return out
 }

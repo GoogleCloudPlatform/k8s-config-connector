@@ -1,0 +1,17 @@
+apis/spanner/v1alpha1/types.generated.go
+pkg/controller/direct/apigateway/mapper.generated.go
+pkg/controller/direct/clouddms/mapper.generated.go
+pkg/controller/direct/colab/mapper.generated.go
+pkg/controller/direct/compute/interconnect_mapper.go
+pkg/controller/direct/datacatalog/mapper.generated.go
+pkg/controller/direct/datastream/mapper.generated.go
+pkg/controller/direct/edgecontainer/machine_mappings.go
+pkg/controller/direct/edgecontainer/vpn_mappings.go
+pkg/controller/direct/kms/mapper.generated.go
+pkg/controller/direct/managedkafka/mapper.generated.go
+pkg/controller/direct/recaptchaenterprise/mapper.generated.go
+pkg/controller/direct/spanner/instanceconfig_mapper.go
+pkg/controller/direct/storage/mapper.generated.go
+pkg/controller/direct/vmwareengine/mapper.generated.go
+pkg/controller/direct/vmwareengine/privatecloud_mappers.go
+pkg/controller/direct/workflowexecutions/mapper.generated.go
