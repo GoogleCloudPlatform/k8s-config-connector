@@ -60,7 +60,7 @@ func NewWorkflowTemplateIdentity(ctx context.Context, reader client.Reader, obj 
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
+	projectID := projectRef.Name
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
