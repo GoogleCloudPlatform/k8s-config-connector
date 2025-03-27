@@ -32,7 +32,7 @@ type FirewallPolicyIdentity struct {
 }
 
 func (i *FirewallPolicyIdentity) String() string {
-	return i.parent.String() + "/firewallpolicys/" + i.id
+	return i.parent.String() + "/firewallpolicies/" + i.id
 }
 
 func (i *FirewallPolicyIdentity) ID() string {
@@ -64,13 +64,17 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 	}
 
 	// Get desired ID
+	// This resource has a server-generated ID. This means user should not know
+	// the ID before the resource is created, and 'metadata.name' won't be used
+	// as the default resource ID. So empty value for 'spec.resourceID' should
+	// also be valid:
+	// 1. When 'spec.resourceID' is not set or set to an empty value, the
+	//    intention is to create the resource.
+	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
+	//    resource.
+	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//         is not found, then it is a real error.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -83,10 +87,11 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualResourceID != resourceID {
+		if resourceID != "" && actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		resourceID = actualResourceID
 	}
 	return &FirewallPolicyIdentity{
 		parent: &FirewallPolicyParent{
@@ -98,8 +103,8 @@ func NewFirewallPolicyIdentity(ctx context.Context, reader client.Reader, obj *R
 
 func ParseFirewallPolicyExternal(external string) (parent *FirewallPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "firewallpolicys" {
-		return nil, "", fmt.Errorf("format of ReCAPTCHAEnterpriseFirewallPolicy external=%q was not known (use projects/{{projectID}}/firewallpolicys/{{firewallpolicyID}})", external)
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "firewallpolicies" {
+		return nil, "", fmt.Errorf("format of ReCAPTCHAEnterpriseFirewallPolicy external=%q was not known (use projects/{{projectID}}/firewallpolicies/{{firewallpolicyID}})", external)
 	}
 	parent = &FirewallPolicyParent{
 		ProjectID: tokens[1],

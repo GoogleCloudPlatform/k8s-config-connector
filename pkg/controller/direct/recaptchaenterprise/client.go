@@ -22,6 +22,8 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
+	"google.golang.org/api/option"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
@@ -37,6 +39,7 @@ func newReCAPTCHAEnterpriseClient(ctx context.Context, config *config.Controller
 	if err != nil {
 		return nil, err
 	}
+	opts = append(opts, option.WithEndpoint("public-preview-recaptchaenterprise.googleapis.com:443"))
 
 	grpcClient, err := api.NewClient(ctx, opts...)
 	if err != nil {
