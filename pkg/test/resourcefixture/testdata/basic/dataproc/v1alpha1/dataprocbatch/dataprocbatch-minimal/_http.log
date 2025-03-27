@@ -17,7 +17,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Batch projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "batch \"projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "batch \"projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -54,14 +61,14 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.BatchOperationMetadata",
     "batch": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
-    "batchUuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Batch",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
-      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
-      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-batch-uuid": "",
+      "goog-dataproc-drz-resource-uuid": "batch-",
       "goog-dataproc-location": "us-central1",
       "managed-by-cnrm": "true"
     },
@@ -96,15 +103,14 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.BatchOperationMetadata",
     "batch": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
-    "batchUuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Batch",
-    "doneTime": "2025-03-27T00:20:07.554574Z",
+    "doneTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
-      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
-      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-batch-uuid": "",
+      "goog-dataproc-drz-resource-uuid": "batch-",
       "goog-dataproc-location": "us-central1",
       "managed-by-cnrm": "true"
     },
@@ -117,11 +123,9 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Batch",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "xiaoweim@google.com",
     "environmentConfig": {
       "executionConfig": {
         "authenticationConfig": {},
-        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "ttl": "14400s"
       },
       "peripheralsConfig": {
@@ -131,13 +135,12 @@ X-Xss-Protection: 0
     "labels": {
       "cnrm-test": "true",
       "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
-      "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
-      "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+      "goog-dataproc-batch-uuid": "",
+      "goog-dataproc-drz-resource-uuid": "batch-",
       "goog-dataproc-location": "us-central1",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
-    "operation": "projects/${projectId}/regions/us-central1/operations/${operationID}",
     "pysparkBatch": {
       "mainPythonFileUri": "gs://config-connector-samples/dataproc/spark.py"
     },
@@ -160,21 +163,20 @@ X-Xss-Protection: 0
         "milliDcuSeconds": "711000",
         "shuffleStorageGbSeconds": "72000"
       },
-      "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput"
+      "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
     },
     "state": "SUCCEEDED",
     "stateHistory": [
       {
         "state": "PENDING",
-        "stateStartTime": "2025-03-27T00:16:46.504527Z"
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
       },
       {
         "state": "RUNNING",
-        "stateStartTime": "2025-03-27T00:18:02.819705Z"
+        "stateStartTime": "2024-04-01T12:34:56.123456Z"
       }
     ],
-    "stateTime": "2025-03-27T00:18:12.190889Z",
-    "uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4"
+    "stateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -198,11 +200,9 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "creator": "${creatorID}",
   "environmentConfig": {
     "executionConfig": {
       "authenticationConfig": {},
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "ttl": "14400s"
     },
     "peripheralsConfig": {
@@ -212,13 +212,12 @@ X-Xss-Protection: 0
   "labels": {
     "cnrm-test": "true",
     "goog-dataproc-batch-id": "dataprocbatch-minimal-${uniqueId}",
-    "goog-dataproc-batch-uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4",
-    "goog-dataproc-drz-resource-uuid": "batch-27e5b2b4-08f6-4054-a204-852ce0db08e4",
+    "goog-dataproc-batch-uuid": "",
+    "goog-dataproc-drz-resource-uuid": "batch-",
     "goog-dataproc-location": "us-central1",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}",
-  "operation": "projects/${projectId}/regions/us-central1/operations/${operationID}",
   "pysparkBatch": {
     "mainPythonFileUri": "gs://config-connector-samples/dataproc/spark.py"
   },
@@ -241,21 +240,16 @@ X-Xss-Protection: 0
       "milliDcuSeconds": "711000",
       "shuffleStorageGbSeconds": "72000"
     },
-    "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput"
+    "outputUri": "gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-/jobs/srvls-batch-27e5b2b4/driveroutput"
   },
   "state": 5,
   "stateHistory": [
     {
       "state": 1,
-      "stateStartTime": "2025-03-27T00:16:46.504527Z"
-    },
-    {
-      "state": 2,
-      "stateStartTime": "2025-03-27T00:18:02.819705Z"
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ],
-  "stateTime": "2025-03-27T00:18:12.190889Z",
-  "uuid": "27e5b2b4-08f6-4054-a204-852ce0db08e4"
+  "stateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

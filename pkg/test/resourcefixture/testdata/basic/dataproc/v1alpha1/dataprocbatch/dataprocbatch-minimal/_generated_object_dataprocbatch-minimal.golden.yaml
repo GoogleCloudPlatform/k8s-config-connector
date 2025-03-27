@@ -26,19 +26,16 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    creator: xiaoweim@google.com
-    operation: projects/${projectId}/regions/us-central1/operations/47a3fd3e-6d41-4cac-91bc-284befefd5a3
     runtimeInfo:
       approximateUsage:
         acceleratorType: UNSPECIFIED
         milliDcuSeconds: 711000
         shuffleStorageGBSeconds: 72000
-      outputURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-719e-478c-94eb-24b8c522ca40/jobs/srvls-batch-27e5b2b4-08f6-4054-a204-852ce0db08e4/driveroutput
+      outputURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/fffc30c2-/jobs/srvls-batch-27e5b2b4/driveroutput
     state: SUCCEEDED
     stateHistory:
     - state: PENDING
-      stateStartTime: "2025-03-27T00:16:46.504527Z"
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
     - state: RUNNING
-      stateStartTime: "2025-03-27T00:18:02.819705Z"
-    stateTime: "2025-03-27T00:18:12.190889Z"
-    uuid: 27e5b2b4-08f6-4054-a204-852ce0db08e4
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
+    stateTime: "2024-04-01T12:34:56.123456Z"
