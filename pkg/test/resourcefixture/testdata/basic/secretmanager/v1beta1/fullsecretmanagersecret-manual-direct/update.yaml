@@ -20,6 +20,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   labels:
     label-one: value-one
+    cloudcontrol.kcc.com/assetId: rapid-labs.spanner.i-kcc-spike
     label-two: value-two
   name: secretmanagersecret-${uniqueId}
 spec:
