@@ -21,3 +21,12 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Initial description"
+  connectionPreference: "ACCEPT_MANUAL"
+  subnetworks:
+    - name: computesubnetwork-${uniqueId}
+  producerAcceptLists:
+    - name: project-1-${uniqueId}
+      kind: Project
+  producerRejectLists:
+    - name: project-2-${uniqueId}
+      kind: Project
