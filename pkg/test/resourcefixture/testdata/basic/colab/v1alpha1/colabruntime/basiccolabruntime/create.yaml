@@ -7,6 +7,6 @@ spec:
     external: ${projectId}
   location: us-central1
   displayName: "colabruntime ${uniqueId}"
-  runtimeUser: maqiuyu@google.com
+  runtimeUser: test@configconnector.com
   colabRuntimeTemplateRef:
     name: colabruntimetemplate-${uniqueId}
