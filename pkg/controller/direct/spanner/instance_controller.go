@@ -162,7 +162,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
 	}
-	resource.Labels ["managed-by-cnrm"] = "true"
+	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

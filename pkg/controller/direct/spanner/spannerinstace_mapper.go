@@ -100,7 +100,7 @@ func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInsta
 		out.Edition = direct.Enum_ToProto[pb.Instance_Edition](mapCtx, in.Edition)
 	}
 	if in.DefaultBackupScheduleType != nil {
-		out.DefaultBackupScheduleType =	direct.Enum_ToProto[pb.Instance_DefaultBackupScheduleType](mapCtx, in.DefaultBackupScheduleType)
+		out.DefaultBackupScheduleType = direct.Enum_ToProto[pb.Instance_DefaultBackupScheduleType](mapCtx, in.DefaultBackupScheduleType)
 	}
 	out.AutoscalingConfig = AutoscalingConfig_ToProto(mapCtx, in.AutoscalingConfig)
 	return out
