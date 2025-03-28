@@ -186,12 +186,36 @@ func StringTimestamp_ToProto(mapCtx *MapContext, s *string) *timestamppb.Timesta
 	if s == nil {
 		return nil
 	}
-	t, err := time.Parse(time.RFC3339Nano, *s)
-	if err != nil {
-		mapCtx.Errorf("invalid timestamp %q", *s)
+
+	layouts := []string{
+		time.Layout,
+		time.ANSIC,
+		time.UnixDate,
+		time.RubyDate,
+		time.RFC822,
+		time.RFC822Z,
+		time.RFC850,
+		time.RFC1123,
+		time.RFC1123Z,
+		time.RFC3339,
+		time.RFC3339Nano,
+		time.Kitchen,
+		time.Stamp,
+		time.StampMilli,
+		time.StampMicro,
+		time.StampNano,
+		time.DateTime,
+		time.DateOnly,
+		time.TimeOnly,
 	}
-	ts := timestamppb.New(t)
-	return ts
+	for _, layout := range layouts {
+		t, err := time.Parse(layout, *s)
+		if err == nil {
+			return timestamppb.New(t)
+		}
+	}
+	mapCtx.Errorf("invalid timestamp value %s", *s)
+	return nil
 }
 
 func StringDuration_FromProto(mapCtx *MapContext, d *durationpb.Duration) *string {
