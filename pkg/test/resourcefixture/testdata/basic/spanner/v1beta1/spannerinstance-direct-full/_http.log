@@ -80,6 +80,7 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": 1,
       "displayName": "Instance Sample",
       "edition": 2,
+      "instanceType": 1,
       "labels": {
         "label-one": "value-one",
         "managed-by-cnrm": "true"
@@ -95,6 +96,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -136,9 +138,11 @@ X-Xss-Protection: 0
         }
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "NONE",
       "displayName": "Instance Sample",
       "edition": "ENTERPRISE",
+      "instanceType": "PROVISIONED",
       "labels": {
         "label-one": "value-one",
         "managed-by-cnrm": "true"
@@ -146,6 +150,15 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 2,
       "processingUnits": 2000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 2,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -169,6 +182,7 @@ X-Xss-Protection: 0
     "defaultBackupScheduleType": "NONE",
     "displayName": "Instance Sample",
     "edition": "ENTERPRISE",
+    "instanceType": "PROVISIONED",
     "labels": {
       "label-one": "value-one",
       "managed-by-cnrm": "true"
@@ -176,6 +190,15 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2,
     "processingUnits": 2000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 2,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -213,6 +236,7 @@ X-Xss-Protection: 0
   "defaultBackupScheduleType": 1,
   "displayName": "Instance Sample",
   "edition": 2,
+  "instanceType": 1,
   "labels": {
     "label-one": "value-one",
     "managed-by-cnrm": "true"
@@ -220,6 +244,15 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 2,
   "processingUnits": 2000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 2,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
+  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -284,6 +317,7 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": 2,
       "displayName": "Updated Instance Sample",
       "edition": 3,
+      "instanceType": 1,
       "labels": {
         "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
@@ -299,6 +333,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -345,6 +380,7 @@ X-Xss-Protection: 0
       "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Updated Instance Sample",
       "edition": "ENTERPRISE_PLUS",
+      "instanceType": "PROVISIONED",
       "labels": {
         "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
@@ -352,6 +388,15 @@ X-Xss-Protection: 0
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 3,
       "processingUnits": 3000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 3,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -375,6 +420,7 @@ X-Xss-Protection: 0
     "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Updated Instance Sample",
     "edition": "ENTERPRISE_PLUS",
+    "instanceType": "PROVISIONED",
     "labels": {
       "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
@@ -382,6 +428,15 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 3,
     "processingUnits": 3000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 3,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -419,6 +474,7 @@ X-Xss-Protection: 0
   "defaultBackupScheduleType": 2,
   "displayName": "Updated Instance Sample",
   "edition": 3,
+  "instanceType": 1,
   "labels": {
     "label-one": "updated-value-one",
     "managed-by-cnrm": "true"
@@ -426,6 +482,15 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 3,
   "processingUnits": 3000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 3,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
+  "resourceLocation": "us-west1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
