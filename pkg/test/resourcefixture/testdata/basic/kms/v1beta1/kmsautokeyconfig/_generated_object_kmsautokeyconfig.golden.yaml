@@ -11,7 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   folderRef:
-    external: folders/123451001
+    external: folders/${folderID}
   keyProject:
     external: projects/diff-{uniqueId}
 status:
@@ -21,7 +21,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: folders/123451001/autokeyConfig
+  externalRef: folders/${folderID}/autokeyConfig
   observedGeneration: 2
   observedState:
     state: ACTIVE

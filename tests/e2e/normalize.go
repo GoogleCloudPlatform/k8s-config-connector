@@ -35,9 +35,13 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
+
+	if folderID != "" {
+		replacements.PathIDs[folderID] = "${folderID}"
+	}
 
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
@@ -47,6 +51,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
 		// Deliberately volatile, ignore
 		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
+	}
+	for k, v := range annotations {
+		annotations[k] = replacements.ApplyReplacements(v)
 	}
 	u.SetAnnotations(annotations)
 
@@ -811,7 +818,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})
