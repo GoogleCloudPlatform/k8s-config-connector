@@ -124,6 +124,15 @@ encryption:
     external: string
     name: string
     namespace: string
+ipFilter:
+  mode: string
+  publicNetworkSource:
+    allowedIpCidrRanges:
+    - string
+  vpcNetworkSources:
+  - allowedIpCidrRanges:
+    - string
+    network: string
 lifecycleRule:
 - action:
     storageClass: string
@@ -380,6 +389,106 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket IP filtering configuration. Specifies the network sources that can access the bucket, as well as its underlying objects.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.mode</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The state of the IP filter configuration. Valid values are Enabled and Disabled. When set to Enabled, IP filtering rules are applied to a bucket and all incoming requests to the bucket are evaluated against these rules. When set to Disabled, IP filtering rules are not applied to a bucket.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The public network IP address ranges that can access the bucket and its data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.publicNetworkSource.allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}The public network IP address ranges that can access the bucket and its data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].allowedIpCidrRanges[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>ipFilter.vpcNetworkSources[].network</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the network. Format: projects/PROJECT_ID/global/networks/NETWORK_NAME.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -791,6 +900,8 @@ conditions:
   type: string
 observedGeneration: integer
 observedState:
+  ipFilter:
+    mode: string
   softDeletePolicy:
     effectiveTime: string
     retentionDurationSeconds: integer
@@ -866,6 +977,20 @@ url: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.ipFilter</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket IP filtering configuration. Specifies the network sources that can access the bucket, as well as its underlying objects.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.ipFilter.mode</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The state of the IP filter configuration. Valid values are Enabled and Disabled. When set to Enabled, IP filtering rules are applied to a bucket and all incoming requests to the bucket are evaluated against these rules. When set to Disabled, IP filtering rules are not applied to a bucket.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -950,6 +1075,15 @@ spec:
   uniformBucketLevelAccess: true
   softDeletePolicy:
     retentionDurationSeconds: 604800
+  ipFilter:
+    mode: "Enabled"
+    publicNetworkSource:
+      allowedIpCidrRanges:
+        - 0.0.0.0/0
+    vpcNetworkSources:
+      - network: projects/PROJECT_ID/global/networks/NETWORK_NAME
+        allowedIpCidrRanges:
+          - 0.0.0.0/0
 ```
 
 
