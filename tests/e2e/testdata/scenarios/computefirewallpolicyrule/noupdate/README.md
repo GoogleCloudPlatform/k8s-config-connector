@@ -1,0 +1,1 @@
+Apply two identical FirewallPolicyRule resource, no PATCH operation is triggered.
