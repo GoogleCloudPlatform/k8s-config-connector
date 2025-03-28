@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: datacatalog.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.datacatalog.v1
+// resource: DataCatalogTaxonomy:Taxonomy
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
@@ -29,13 +35,21 @@ type SystemTimestamps struct {
 	//  or permission changes.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-}
 
-// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
-type SystemTimestampsObservedState struct {
 	// Output only. Expiration timestamp of the resource within the given system.
 	//
 	//  Currently only applicable to BigQuery resources.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.Taxonomy.Service
+type Taxonomy_Service struct {
+	// The Google Cloud service name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// The service agent for the service.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.identity
+	Identity *string `json:"identity,omitempty"`
 }
