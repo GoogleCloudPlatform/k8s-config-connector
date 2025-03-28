@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -44,27 +43,21 @@ func (i *BackupIdentity) Parent() *BackupParent {
 }
 
 type BackupParent struct {
-	ProjectID string
-	Location  string
+	BackupPlan string
 }
 
 func (p *BackupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.BackupPlan
 }
 
 // New builds a BackupIdentity from the Config Connector Backup object.
 func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *GKEBackupBackup) (*BackupIdentity, error) {
-
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	backupPlanRef := obj.Spec.BackupPlanRef
+	backupPlan, err := backupPlanRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +76,8 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *GKEBackup
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.BackupPlan != backupPlan {
+			return nil, fmt.Errorf("spec.backupPlanRef changed, expect %s, got %s", actualParent.BackupPlan, backupPlan)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +86,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *GKEBackup
 	}
 	return &BackupIdentity{
 		parent: &BackupParent{
-			ProjectID: projectID,
-			Location:  location,
+			BackupPlan: backupPlan,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +94,13 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *GKEBackup
 
 func ParseBackupExternal(external string) (parent *BackupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backups" {
-		return nil, "", fmt.Errorf("format of GKEBackupBackup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backups/{{backupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupPlans" || tokens[6] != "backups" {
+		return nil, "", fmt.Errorf("format of GKEBackupBackup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupPlanID}}/backups/{{backupID}})", external)
 	}
+	backupPlan := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &BackupParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		BackupPlan: backupPlan,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
