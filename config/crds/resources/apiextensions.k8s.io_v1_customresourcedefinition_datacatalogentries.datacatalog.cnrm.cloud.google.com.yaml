@@ -594,8 +594,7 @@ spec:
                         subcolumns:
                           description: Optional. Schema of sub-columns. A column can
                             have zero or more sub-columns.
-                          items: {}
-                          type: array
+                          x-kubernetes-preserve-unknown-fields: true
                         type:
                           description: |-
                             Required. Type of the column.

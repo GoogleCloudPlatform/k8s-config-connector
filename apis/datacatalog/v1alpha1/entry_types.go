@@ -37,6 +37,84 @@ type DataCatalogEntryParent struct {
 
 var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 
+// Copying over since we are editing the generated types
+
+// +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema
+type ColumnSchema struct {
+	// Required. Name of the column.
+	//
+	// Required. Name of the column.
+	//
+	//  Must be a UTF-8 string without dots (.).
+	//  The maximum size is 64 bytes.
+	// +required
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.column
+	Column *string `json:"column,omitempty"`
+
+	// Required. Type of the column.
+	//
+	//  Must be a UTF-8 string with the maximum size of 128 bytes.
+	// +required
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Description of the column. Default value is an empty string.
+	//
+	//  The description must be a UTF-8 string with the maximum size of 2000
+	//  bytes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A column's mode indicates whether values in this column are
+	//  required, nullable, or repeated.
+	//
+	//  Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
+	//  Default mode is `NULLABLE`.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Default value for the column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.default_value
+	DefaultValue *string `json:"defaultValue,omitempty"`
+
+	// Optional. Ordinal position
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.ordinal_position
+	OrdinalPosition *int32 `json:"ordinalPosition,omitempty"`
+
+	// Optional. Most important inclusion of this column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.highest_indexing_type
+	HighestIndexingType *string `json:"highestIndexingType,omitempty"`
+
+	// TODO: Known issue: recursive types are tripping CRD generation
+	//  https://github.com/kubernetes-sigs/controller-tools/issues/489
+	//  https://github.com/kubernetes-sigs/controller-tools/issues/585#issuecomment-968354281
+
+	// Optional. Schema of sub-columns. A column can have zero or more
+	//  sub-columns.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.subcolumns
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	Subcolumns []ColumnSchema `json:"subcolumns,omitempty"`
+
+	// Looker specific column info of this column.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.looker_column_spec
+	LookerColumnSpec *ColumnSchema_LookerColumnSpec `json:"lookerColumnSpec,omitempty"`
+
+	// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
+	//  the type is RANGE, this field is required. Possible values for the field
+	//  element type of a RANGE include:
+	//  * DATE
+	//  * DATETIME
+	//  * TIMESTAMP
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.range_element_type
+	RangeElementType *ColumnSchema_FieldElementType `json:"rangeElementType,omitempty"`
+
+	// Optional. Garbage collection policy for the column or column family.
+	//  Applies to systems like Cloud Bigtable.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.gc_rule
+	GcRule *string `json:"gcRule,omitempty"`
+}
+
 // DataCatalogEntrySpec defines the desired state of DataCatalogEntry
 // +kcc:proto=google.cloud.datacatalog.v1.Entry
 type DataCatalogEntrySpec struct {
