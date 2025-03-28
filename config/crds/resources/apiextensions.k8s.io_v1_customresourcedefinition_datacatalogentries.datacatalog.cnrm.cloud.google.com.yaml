@@ -779,6 +779,30 @@ spec:
 
                        For more information, see [Introduction to partitioned tables]
                        (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
+                    properties:
+                      dataset:
+                        description: |-
+                          Output only. The Data Catalog resource name of the dataset entry the
+                           current table belongs to. For example:
+
+                           `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
+                        type: string
+                      latestShardResource:
+                        description: Output only. BigQuery resource name of the latest
+                          shard.
+                        type: string
+                      shardCount:
+                        description: Output only. Total number of shards.
+                        format: int64
+                        type: integer
+                      tablePrefix:
+                        description: |-
+                          Output only. The table name prefix of the shards.
+
+                           The name of any given shard is `[table_prefix]YYYYMMDD`.
+                           For example, for the `MyTable20180101` shard, the
+                           `table_prefix` is `MyTable`.
+                        type: string
                     type: object
                   bigqueryTableSpec:
                     description: Output only. Specification that applies to a BigQuery

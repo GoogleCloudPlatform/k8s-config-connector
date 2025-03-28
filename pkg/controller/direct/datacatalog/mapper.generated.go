@@ -410,7 +410,7 @@ func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.IntegratedSystem = direct.Enum_FromProto(mapCtx, in.GetIntegratedSystem())
 	out.GCSFilesetSpec = GCSFilesetSpecObservedState_FromProto(mapCtx, in.GetGcsFilesetSpec())
 	out.BigqueryTableSpec = BigQueryTableSpec_FromProto(mapCtx, in.GetBigqueryTableSpec())
-	out.BigqueryDateShardedSpec = BigQueryDateShardedSpec_FromProto(mapCtx, in.GetBigqueryDateShardedSpec())
+	out.BigqueryDateShardedSpec = BigQueryDateShardedSpecObservedState_FromProto(mapCtx, in.GetBigqueryDateShardedSpec())
 	out.DatabaseTableSpec = DatabaseTableSpecObservedState_FromProto(mapCtx, in.GetDatabaseTableSpec())
 	out.FeatureOnlineStoreSpec = FeatureOnlineStoreSpecObservedState_FromProto(mapCtx, in.GetFeatureOnlineStoreSpec())
 	out.UsageSignal = UsageSignalObservedState_FromProto(mapCtx, in.GetUsageSignal())
@@ -433,7 +433,7 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	if oneof := BigQueryTableSpec_ToProto(mapCtx, in.BigqueryTableSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_BigqueryTableSpec{BigqueryTableSpec: oneof}
 	}
-	if oneof := BigQueryDateShardedSpec_ToProto(mapCtx, in.BigqueryDateShardedSpec); oneof != nil {
+	if oneof := BigQueryDateShardedSpecObservedState_ToProto(mapCtx, in.BigqueryDateShardedSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_BigqueryDateShardedSpec{BigqueryDateShardedSpec: oneof}
 	}
 	if oneof := DatabaseTableSpecObservedState_ToProto(mapCtx, in.DatabaseTableSpec); oneof != nil {

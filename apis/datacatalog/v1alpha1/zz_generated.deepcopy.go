@@ -744,8 +744,8 @@ func (in *DataCatalogEntryObservedState) DeepCopyInto(out *DataCatalogEntryObser
 	}
 	if in.BigqueryDateShardedSpec != nil {
 		in, out := &in.BigqueryDateShardedSpec, &out.BigqueryDateShardedSpec
-		*out = new(BigQueryDateShardedSpec)
-		**out = **in
+		*out = new(BigQueryDateShardedSpecObservedState)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.DatabaseTableSpec != nil {
 		in, out := &in.DatabaseTableSpec, &out.DatabaseTableSpec

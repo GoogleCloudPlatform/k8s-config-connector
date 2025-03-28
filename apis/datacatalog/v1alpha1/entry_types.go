@@ -259,7 +259,7 @@ type DataCatalogEntryObservedState struct {
 	//  For more information, see [Introduction to partitioned tables]
 	//  (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.bigquery_date_sharded_spec
-	BigqueryDateShardedSpec *BigQueryDateShardedSpec `json:"bigqueryDateShardedSpec,omitempty"`
+	BigqueryDateShardedSpec *BigQueryDateShardedSpecObservedState `json:"bigqueryDateShardedSpec,omitempty"`
 
 	// Specification that applies to a table resource. Valid only
 	//  for entries with the `TABLE` or `EXPLORE` type.
