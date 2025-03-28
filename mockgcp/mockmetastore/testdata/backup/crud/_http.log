@@ -1,0 +1,249 @@
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups?alt=json&backupId=test-backup-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Backup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+    "serviceRevision": {
+      "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "databaseType": "MYSQL",
+      "encryptionConfig": {},
+      "endpointUri": "thrift://mock-endpoint:9083",
+      "hiveMetastoreConfig": {
+        "configOverrides": {
+          "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse"
+        },
+        "endpointProtocol": "THRIFT",
+        "version": "3.1.2"
+      },
+      "metadataManagementActivity": {},
+      "network": "projects/${projectId}/global/networks/default",
+      "networkConfig": {},
+      "port": 9083,
+      "releaseChannel": "STABLE",
+      "telemetryConfig": {
+        "logFormat": "JSON"
+      },
+      "tier": "DEVELOPER",
+      "uid": "test-service-${uniqueId}",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+  "serviceRevision": {
+    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://mock-endpoint:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataManagementActivity": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "DEVELOPER",
+    "uid": "test-service-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "state": "ACTIVE"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+  "serviceRevision": {
+    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://mock-endpoint:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataManagementActivity": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "DEVELOPER",
+    "uid": "test-service-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "state": "ACTIVE"
+}
+
+---
+
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

@@ -202,6 +202,10 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.artifactGcsUri", "gs://gcs-bucket-${uniqueId}")
 	addReplacement("endpointUri", "thrift://mock-endpoint:9083")
 	addReplacement("response.endpointUri", "thrift://mock-endpoint:9083")
+	addReplacement("serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//
