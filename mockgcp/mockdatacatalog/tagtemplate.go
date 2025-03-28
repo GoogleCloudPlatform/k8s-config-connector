@@ -62,6 +62,12 @@ func (s *DataCatalogV1) CreateTagTemplate(ctx context.Context, req *pb.CreateTag
 
 	obj := proto.Clone(req.TagTemplate).(*pb.TagTemplate)
 	obj.Name = fqn
+
+	// Populate the name field for each field
+	for fieldID, field := range obj.Fields {
+		field.Name = fmt.Sprintf("%s/fields/%s", fqn, fieldID)
+	}
+
 	s.populateDefaultsForTagTemplate(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -76,6 +82,9 @@ func (s *DataCatalogV1) populateDefaultsForTagTemplate(obj *pb.TagTemplate) {
 }
 
 func (s *DataCatalogV1) UpdateTagTemplate(ctx context.Context, req *pb.UpdateTagTemplateRequest) (*pb.TagTemplate, error) {
+	if req.TagTemplate == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "TagTemplate is required")
+	}
 	reqName := req.GetTagTemplate().GetName()
 	name, err := s.parseTagTemplateName(reqName)
 	if err != nil {
@@ -87,10 +96,20 @@ func (s *DataCatalogV1) UpdateTagTemplate(ctx context.Context, req *pb.UpdateTag
 		return nil, err
 	}
 
-	s.populateDefaultsForTagTemplate(obj)
-
-	// TODO: Can we use a fieldmask here?
-	obj.DisplayName = req.GetTagTemplate().GetDisplayName()
+	if req.UpdateMask == nil || len(req.UpdateMask.Paths) == 0 {
+		// If no update mask is provided, update the whole object, as long as the object exists.
+		proto.Merge(obj, req.TagTemplate)
+	} else {
+		for _, path := range req.UpdateMask.Paths {
+			switch path {
+			case "displayName":
+				obj.DisplayName = req.TagTemplate.DisplayName
+			default:
+				// No other fields can be updated via the updateMask.
+				return nil, status.Errorf(codes.InvalidArgument, "invalid field mask path: %v", path)
+			}
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -146,7 +165,6 @@ func (s *MockService) parseTagTemplateName(name string) (*tagTemplateName, error
 
 	if len(tokens) >= 8 && tokens[6] == "fields" {
 		//fieldNameTokenIdx = 7
-		return nil, status.Errorf(codes.Unimplemented, "mock for projects.locations.tagTemplates.fields not implemented yet")
 	}
 
 	if projectTokenIdx == -1 {
