@@ -20,4 +20,7 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Initial description"
+  displayName: "Initial description"
+  gcsProfile:
+    bucket: "my-bucket"
+    rootPath: "/path"
