@@ -432,6 +432,127 @@ type TargetsTypeCondition struct {
 	ErrorDetails *string `json:"errorDetails,omitempty"`
 }
 
+// +kcc:proto=google.cloud.deploy.v1.AnthosCluster
+type AnthosCluster struct {
+	// Optional. Membership of the GKE Hub-registered cluster to which to apply
+	//  the Skaffold configuration. Format is
+	//  `projects/{project}/locations/{location}/memberships/{membership_name}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.AnthosCluster.membership
+	Membership *string `json:"membership,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.AssociatedEntities
+type AssociatedEntities struct {
+	// Optional. Information specifying GKE clusters as associated entities.
+	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.gke_clusters
+	GkeClusters []GkeCluster `json:"gkeClusters,omitempty"`
+
+	// Optional. Information specifying Anthos clusters as associated entities.
+	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.anthos_clusters
+	AnthosClusters []AnthosCluster `json:"anthosClusters,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.CloudRunLocation
+type CloudRunLocation struct {
+	// Required. The location for the Cloud Run Service. Format must be
+	//  `projects/{project}/locations/{location}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CloudRunLocation.location
+	Location *string `json:"location,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.DefaultPool
+type DefaultPool struct {
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Cloud Storage location where execution outputs should be stored.
+	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.DefaultPool.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.ExecutionConfig
+type ExecutionConfig struct {
+	// Required. Usages when this configuration should be applied.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.usages
+	Usages []string `json:"usages,omitempty"`
+
+	// Optional. Use default Cloud Build pool.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.default_pool
+	DefaultPool *DefaultPool `json:"defaultPool,omitempty"`
+
+	// Optional. Use private Cloud Build pool.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.private_pool
+	PrivatePool *PrivatePool `json:"privatePool,omitempty"`
+
+	// Optional. The resource name of the `WorkerPool`, with the format
+	//  `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+	//  If this optional field is unspecified, the default Cloud Build pool will be
+	//  used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Cloud Storage location in which to store execution outputs. This
+	//  can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
+
+	// Optional. Execution timeout for a Cloud Build Execution. This must be
+	//  between 10m and 24h in seconds format. If unspecified, a default timeout of
+	//  1h is used.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.execution_timeout
+	ExecutionTimeout *string `json:"executionTimeout,omitempty"`
+
+	// Optional. If true, additional logging will be enabled when running builds
+	//  in this execution environment.
+	// +kcc:proto:field=google.cloud.deploy.v1.ExecutionConfig.verbose
+	Verbose *bool `json:"verbose,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.GkeCluster
+type GkeCluster struct {
+	// Optional. Information specifying a GKE Cluster. Format is
+	//  `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.cluster
+	Cluster *string `json:"cluster,omitempty"`
+
+	// Optional. If true, `cluster` is accessed using the private IP address of
+	//  the control plane endpoint. Otherwise, the default IP address of the
+	//  control plane endpoint is used. The default IP address is the private IP
+	//  address for clusters with private control-plane endpoints and the public IP
+	//  address otherwise.
+	//
+	//  Only specify this option when `cluster` is a [private GKE
+	//  cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
+	//  Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
+	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.internal_ip
+	InternalIP *bool `json:"internalIP,omitempty"`
+
+	// Optional. If set, used to configure a
+	//  [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
+	//  to the Kubernetes server.
+	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.proxy_url
+	ProxyURL *string `json:"proxyURL,omitempty"`
+
+	// Optional. If set, the cluster will be accessed using the DNS endpoint. Note
+	//  that `dns_endpoint` and `internal_ip` cannot both be set to true.
+	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.dns_endpoint
+	DNSEndpoint *bool `json:"dnsEndpoint,omitempty"`
+}
+
 // +kcc:proto=google.cloud.deploy.v1.CustomTargetSkaffoldActions
 type CustomTargetSkaffoldActions struct {
 	// Optional. The Skaffold custom action responsible for render operations. If
