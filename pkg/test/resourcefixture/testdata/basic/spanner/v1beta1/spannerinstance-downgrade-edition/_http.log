@@ -33,8 +33,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
     "displayName": "Instance Sample",
     "edition": 2,
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -58,12 +56,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": 2,
       "displayName": "Instance Sample",
       "edition": 2,
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -108,12 +103,9 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Instance Sample",
       "edition": "ENTERPRISE",
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -129,12 +121,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Instance Sample",
     "edition": "ENTERPRISE",
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -164,12 +153,9 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": 2,
   "displayName": "Instance Sample",
   "edition": 2,
   "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -193,8 +179,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
     "displayName": "New Instance Sample",
     "edition": 1,
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
@@ -216,12 +200,9 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": 2,
       "displayName": "New Instance Sample",
       "edition": 2,
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -266,12 +247,9 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "New Instance Sample",
       "edition": "ENTERPRISE",
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -285,12 +263,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "New Instance Sample",
     "edition": "ENTERPRISE",
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -313,8 +288,6 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
     "displayName": "New Instance Sample",
     "edition": 1,
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
@@ -336,12 +309,9 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": 2,
       "displayName": "New Instance Sample",
       "edition": 1,
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -386,12 +356,9 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "New Instance Sample",
       "edition": "STANDARD",
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -405,12 +372,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "New Instance Sample",
     "edition": "STANDARD",
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -438,12 +402,9 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": 2,
   "displayName": "New Instance Sample",
   "edition": 1,
   "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
