@@ -37,7 +37,7 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *DataprocMetastoreV1) GetFederation(ctx context.Context, req *pb.GetFederationRequest) (*pb.Federation, error) {
+func (s *DataprocMetastoreFederationV1) GetFederation(ctx context.Context, req *pb.GetFederationRequest) (*pb.Federation, error) {
 	name, err := s.parseFederationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (s *DataprocMetastoreV1) GetFederation(ctx context.Context, req *pb.GetFede
 	return obj, nil
 }
 
-func (s *DataprocMetastoreV1) CreateFederation(ctx context.Context, req *pb.CreateFederationRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, req *pb.CreateFederationRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/federations/" + req.FederationId
 	name, err := s.parseFederationName(reqName)
 	if err != nil {
@@ -80,9 +80,8 @@ func (s *DataprocMetastoreV1) CreateFederation(ctx context.Context, req *pb.Crea
 	if obj.BackendMetastores == nil {
 		obj.BackendMetastores = map[int32]*pb.BackendMetastore{
 			1: {
-				Name:                 "projects/" + name.Project.ID + "/locations/" + name.Location + "/services/" + name.Name,
-				MetastoreType:        pb.BackendMetastore_DATAPROC_METASTORE,
-				NetworkConfiguration: &pb.NetworkConfiguration{},
+				Name:          "projects/" + name.Project.ID + "/locations/" + name.Location + "/services/" + name.Name,
+				MetastoreType: pb.BackendMetastore_DATAPROC_METASTORE,
 			},
 		}
 	}
@@ -129,7 +128,7 @@ func (s *DataprocMetastoreV1) CreateFederation(ctx context.Context, req *pb.Crea
 	})
 }
 
-func (s *DataprocMetastoreV1) UpdateFederation(ctx context.Context, req *pb.UpdateFederationRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreFederationV1) UpdateFederation(ctx context.Context, req *pb.UpdateFederationRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseFederationName(req.GetFederation().GetName())
 	if err != nil {
 		return nil, err
@@ -173,7 +172,7 @@ func (s *DataprocMetastoreV1) UpdateFederation(ctx context.Context, req *pb.Upda
 	})
 }
 
-func (s *DataprocMetastoreV1) DeleteFederation(ctx context.Context, req *pb.DeleteFederationRequest) (*longrunningpb.Operation, error) {
+func (s *DataprocMetastoreFederationV1) DeleteFederation(ctx context.Context, req *pb.DeleteFederationRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseFederationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -199,7 +198,7 @@ func (s *DataprocMetastoreV1) DeleteFederation(ctx context.Context, req *pb.Dele
 	})
 }
 
-func (s *DataprocMetastoreV1) updateFederation(ctx context.Context, fqn string, update func(obj *pb.Federation)) (*pb.Federation, error) {
+func (s *DataprocMetastoreFederationV1) updateFederation(ctx context.Context, fqn string, update func(obj *pb.Federation)) (*pb.Federation, error) {
 	obj := &pb.Federation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -224,7 +223,7 @@ func (n *federationName) String() string {
 	return fmt.Sprintf("projects/%s/locations/%s/federations/%s", n.Project.ID, n.Location, n.Name)
 }
 
-func (s *DataprocMetastoreV1) parseFederationName(name string) (*federationName, error) {
+func (s *DataprocMetastoreFederationV1) parseFederationName(name string) (*federationName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "federations" {
