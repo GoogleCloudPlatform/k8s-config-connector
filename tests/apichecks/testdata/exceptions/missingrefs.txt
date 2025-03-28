@@ -4,9 +4,14 @@
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.resources[]" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
+[refs] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.backendConfig.googleServiceAccount" should be a reference
 [refs] crd=apigatewaygateways.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig" should be a reference
 [refs] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be a reference
+[refs] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
+[refs] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
+[refs] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.serviceAccount" should be a reference
 [refs] crd=beyondcorpappconnections.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.gateway.appGateway" should be a reference
+[refs] crd=beyondcorpappconnectors.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.principalInfo.serviceAccount" should be a reference
 [refs] crd=bigquerydatapolicydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.policyTag" should be a reference
 [refs] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" should be a reference
 [refs] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.allUpdatesRule.monitoringNotificationChannels[].external" should be a reference
@@ -15,10 +20,15 @@
 [refs] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.workerPool" should be a reference
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computefirewallpolicyrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetResources[].external" should be a reference
+[refs] crd=computeinstances.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccount" should be a reference
 [refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].networkAttachment" should be a reference
+[refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccount" should be a reference
+[refs] crd=computemachineimages.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.machineImageEncryptionKey.kmsKeyServiceAccount" should be a reference
 [refs] crd=computeorganizationsecuritypolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=computeserviceattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consumerRejectLists[].external" should be a reference
 [refs] crd=computetargethttpsproxies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.certificateManagerCertificates[].external" should be a reference
+[refs] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
+[refs] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
 [refs] crd=containeranalysisnotes.containeranalysis.cnrm.cloud.google.com version=v1beta1: field ".spec.relatedNoteNames[].external" should be a reference
 [refs] crd=datacatalogtags.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.template" should be a reference
 [refs] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].name" should be a reference
@@ -56,6 +66,7 @@
 [refs] crd=dialogflowcxwebhooks.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.securitySettings" should be a reference
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputContextNames" should be a reference
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentFollowupIntentName" should be a reference
+[refs] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.superAdminServiceAccount" should be a reference
 [refs] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryConfig.namespace.namespaceUrl" should be a reference
 [refs] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].networkUrl" should be a reference
 [refs] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference
@@ -71,6 +82,7 @@
 [refs] crd=orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances" should be a reference
 [refs] crd=tagstagkeys.tags.cnrm.cloud.google.com version=v1beta1: field ".spec.parent" should be a reference
+[refs] crd=tpuvirtualmachines.tpu.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypefeatures.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.entitytype" should be a reference
 [refs] crd=vertexaifeaturestoreentitytypes.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.featurestore" should be a reference
 [refs] crd=vertexaiindexendpoints.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.network" should be a reference
