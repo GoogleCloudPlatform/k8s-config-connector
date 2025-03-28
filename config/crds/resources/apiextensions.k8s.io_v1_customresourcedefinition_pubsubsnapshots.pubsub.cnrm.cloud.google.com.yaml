@@ -1,0 +1,201 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: pubsubsnapshots.pubsub.cnrm.cloud.google.com
+spec:
+  group: pubsub.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: PubSubSnapshot
+    listKind: PubSubSnapshotList
+    plural: pubsubsnapshots
+    shortNames:
+    - gcppubsubsnapshot
+    - gcppubsubsnapshots
+    singular: pubsubsnapshot
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PubSubSnapshot is the Schema for the PubSubSnapshot API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PubSubSnapshotSpec defines the desired state of PubSubSnapshot
+            properties:
+              expireTime:
+                description: Optional. The snapshot is guaranteed to exist up until
+                  this time. A newly-created snapshot expires no later than 7 days
+                  from the time of its creation. Its exact lifetime is determined
+                  at creation by the existing backlog in the source subscription.
+                  Specifically, the lifetime of the snapshot is `7 days - (age of
+                  oldest unacked message in the subscription)`. For example, consider
+                  a subscription whose oldest unacked message is 3 days old. If a
+                  snapshot is created from this subscription, the snapshot -- which
+                  will always capture this 3-day-old backlog as long as the snapshot
+                  exists -- will expire in 4 days. The service will refuse to create
+                  a snapshot that would expire in less than 1 hour after creation.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. See [Creating and managing labels] (https://cloud.google.com/pubsub/docs/labels).
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The PubSubSnapshot name. If not given, the metadata.name
+                  will be used.
+                type: string
+              topicRef:
+                description: Optional. The name of the topic from which this snapshot
+                  is retaining messages.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                    type: string
+                  name:
+                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `PubSubTopic`
+                      resource.
+                    type: string
+                type: object
+            required:
+            - projectRef
+            type: object
+          status:
+            description: PubSubSnapshotStatus defines the config connector machine
+              state of PubSubSnapshot
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the PubSubSnapshot resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

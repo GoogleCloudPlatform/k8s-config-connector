@@ -50,6 +50,7 @@ require (
 	cloud.google.com/go/orchestration v1.11.4
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
 	cloud.google.com/go/profiler v0.4.1
+	cloud.google.com/go/pubsub v1.47.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.19.4
 	cloud.google.com/go/redis v1.18.0
 	cloud.google.com/go/resourcemanager v1.10.3
