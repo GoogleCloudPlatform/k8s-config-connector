@@ -15,6 +15,8 @@
 package options
 
 import (
+	"errors"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -33,7 +35,10 @@ func (o *GenerateOptions) InitDefaults() error {
 	if err != nil {
 		return err
 	}
-	o.ProtoSourcePath = root + "/.build/googleapis.pb"
+	o.ProtoSourcePath, err = ProtoSourcePath(root)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -52,4 +57,17 @@ func RepoRoot() (string, error) {
 	}
 	repoRoot := strings.TrimSpace(string(output))
 	return repoRoot, nil
+}
+
+func ProtoSourcePath(root string) (string, error) {
+	p := root + "/.build/googleapis.pb"
+	// if the file existed, we do not regenerate.
+	if _, err := os.Stat(p); errors.Is(err, os.ErrNotExist) {
+		cmd := exec.Command(root + "/dev/tools/controllerbuilder/generate-proto.sh")
+		_, err := cmd.Output()
+		if err != nil {
+			return "", err
+		}
+	}
+	return p, nil
 }
