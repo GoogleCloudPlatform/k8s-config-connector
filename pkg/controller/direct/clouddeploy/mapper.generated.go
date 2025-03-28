@@ -578,7 +578,7 @@ func CustomTarget_FromProto(mapCtx *direct.MapContext, in *pb.CustomTarget) *krm
 		return nil
 	}
 	out := &krm.CustomTarget{}
-	out.CustomTargetType = direct.LazyPtr(in.GetCustomTargetType())
+	out.CustomTargetTypeRef.External = in.GetCustomTargetType()
 	return out
 }
 func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krm.CustomTarget) *pb.CustomTarget {
@@ -586,7 +586,10 @@ func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krm.CustomTarget) *pb.C
 		return nil
 	}
 	out := &pb.CustomTarget{}
-	out.CustomTargetType = direct.ValueOf(in.CustomTargetType)
+	if in.CustomTargetTypeRef != nil {
+		out.CustomTargetType = in.CustomTargetTypeRef.External
+	}
+
 	return out
 }
 func DefaultPool_FromProto(mapCtx *direct.MapContext, in *pb.DefaultPool) *krm.DefaultPool {
@@ -705,7 +708,7 @@ func DeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.D
 		return nil
 	}
 	out := &krm.DeployTargetSpec{}
-	out.Name = direct.LazyPtr(in.GetName())
+	// out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: TargetID
 	// MISSING: Uid
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -730,7 +733,7 @@ func DeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployTargetSpe
 		return nil
 	}
 	out := &pb.Target{}
-	out.Name = direct.ValueOf(in.Name)
+	// out.Name = direct.ValueOf(in.Name)
 	// MISSING: TargetID
 	// MISSING: Uid
 	out.Description = direct.ValueOf(in.Description)

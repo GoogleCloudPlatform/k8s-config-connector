@@ -60,10 +60,35 @@ spec:
           customTarget:
             description: Optional. Information specifying a Custom Target.
             properties:
-              customTargetType:
-                description: Required. The name of the CustomTargetType. Format must
-                  be `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
-                type: string
+              customTargetTypeRef:
+                description: Required. The name of the CustomTargetTypeRef. Format
+                  must be `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DeployCustomTargetType
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/customtargettypes/{{customtargettypeID}}".
+                    type: string
+                  name:
+                    description: The name of a DeployCustomTargetType resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DeployCustomTargetType resource.
+                    type: string
+                type: object
             type: object
           deployParameters:
             additionalProperties:
@@ -198,16 +223,12 @@ spec:
           multiTarget:
             description: Optional. Information specifying a multiTarget.
             properties:
-              targetIds:
+              targetIDs:
                 description: Required. The target_ids of this multiTarget.
                 items:
                   type: string
                 type: array
             type: object
-          name:
-            description: Optional. Name of the `Target`. Format is `projects/{project}/locations/{location}/targets/{target}`.
-              The `target` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
-            type: string
           projectRef:
             description: The Project that this resource belongs to.
             oneOf:

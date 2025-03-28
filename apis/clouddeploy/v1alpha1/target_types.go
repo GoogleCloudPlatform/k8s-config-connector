@@ -69,12 +69,6 @@ type DeployTargetSpec struct {
 	// Immutable. The name of the location this data CloudDeployTarget.
 	Location string `json:"location"`
 
-	// Optional. Name of the `Target`. Format is
-	//  `projects/{project}/locations/{location}/targets/{target}`.
-	//  The `target` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
-	// +kcc:proto:field=google.cloud.deploy.v1.Target.name
-	Name *string `json:"name,omitempty"`
-
 	// Optional. Description of the `Target`. Max length is 255 characters.
 	// +kcc:proto:field=google.cloud.deploy.v1.Target.description
 	Description *string `json:"description,omitempty"`
@@ -184,4 +178,40 @@ type DeployTargetObservedState struct {
 	// Output only. Most recent time at which the `Target` was updated.
 	// +kcc:proto:field=google.cloud.deploy.v1.Target.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.MultiTarget
+type MultiTarget struct {
+	// Required. The target_ids of this multiTarget.
+	// +kcc:proto:field=google.cloud.deploy.v1.MultiTarget.target_ids
+	TargetIds []string `json:"targetIDs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.CustomTarget
+type CustomTarget struct {
+	// Required. The name of the CustomTargetTypeRef. Format must be
+	//  `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.CustomTarget.custom_target_type
+	CustomTargetTypeRef *CustomTargetTypeRef `json:"customTargetTypeRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.deploy.v1.PrivatePool
+type PrivatePool struct {
+	// Required. Resource name of the Cloud Build worker pool to use. The format
+	//  is `projects/{project}/locations/{location}/workerPools/{pool}`.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.worker_pool
+	WorkerPool *string `json:"workerPool,omitempty"`
+
+	// Optional. Google service account to use for execution. If unspecified,
+	//  the project execution service account
+	//  (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// Optional. Cloud Storage location where execution outputs should be stored.
+	//  This can either be a bucket ("gs://my-bucket") or a path within a bucket
+	//  ("gs://my-bucket/my-dir").
+	//  If unspecified, a default bucket located in the same region will be used.
+	// +kcc:proto:field=google.cloud.deploy.v1.PrivatePool.artifact_storage
+	ArtifactStorage *string `json:"artifactStorage,omitempty"`
 }
