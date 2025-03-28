@@ -15,14 +15,14 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  labels:
-    label-one: "value-one"
   name: spannerinstance-sample-${uniqueId}
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Updated Instance Sample
+  labels:
+    label-one: "updated-value-one"
   autoscalingConfig:
     autoscalingLimits:
       maxNodes: 5
@@ -31,3 +31,4 @@ spec:
       highPriorityCpuUtilizationPercent: 90
       storageUtilizationPercent: 90
   edition: ENTERPRISE_PLUS
+  defaultBackupScheduleType: AUTOMATIC

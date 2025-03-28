@@ -55,7 +55,7 @@ type InstanceReconcileGate struct {
 var _ kccpredicate.ReconcileGate = &InstanceReconcileGate{}
 
 func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	return true
+	return r.optIn.ShouldReconcile(o)
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -159,8 +159,10 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 		resource.NodeCount = 1
 	}
 	resource.Name = a.id.String()
-	resource.Labels = desired.Labels
-	resource.Labels["managed-by-cnrm"] = "true"
+	if resource.Labels == nil {
+		resource.Labels = make(map[string]string)
+	}
+	resource.Labels ["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -199,7 +201,9 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	desired := a.desired.DeepCopy()
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
 	resource.Name = a.id.String()
-	resource.Labels = desired.Labels
+	if resource.Labels == nil {
+		resource.Labels = make(map[string]string)
+	}
 	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -221,6 +225,10 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
+
+	if !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
+		updateMask.Paths = append(updateMask.Paths, "default_backup_schedule_type")
 	}
 
 	autoscaling_path, err := common.CompareProtoMessage(resource.AutoscalingConfig, a.actual.AutoscalingConfig, common.BasicDiff)

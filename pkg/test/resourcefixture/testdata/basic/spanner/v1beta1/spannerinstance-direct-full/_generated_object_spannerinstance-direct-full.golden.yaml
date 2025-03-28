@@ -10,7 +10,6 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -22,8 +21,11 @@ spec:
       highPriorityCpuUtilizationPercent: 90
       storageUtilizationPercent: 90
   config: regional-us-west1
+  defaultBackupScheduleType: AUTOMATIC
   displayName: Updated Instance Sample
   edition: ENTERPRISE_PLUS
+  labels:
+    label-one: updated-value-one
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
