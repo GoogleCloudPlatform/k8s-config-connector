@@ -69,7 +69,7 @@ func ComputeNetworkAttachmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ne
 	// MISSING: Name
 	out.ProducerAcceptLists = ProjectList_FromProto(mapCtx, in.ProducerAcceptLists)
 	out.ProducerRejectLists = ProjectList_FromProto(mapCtx, in.ProducerRejectLists)
-	out.Subnetworks = SubnetworkList_FromProto(mapCtx, in.Subnetworks)
+	out.SubnetworkRefs = SubnetworkList_FromProto(mapCtx, in.Subnetworks)
 	return out
 }
 func ComputeNetworkAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkAttachmentSpec) *pb.NetworkAttachment {
@@ -83,7 +83,7 @@ func ComputeNetworkAttachmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Com
 	// MISSING: Name
 	out.ProducerAcceptLists = ProjectList_ToProto(mapCtx, in.ProducerAcceptLists)
 	out.ProducerRejectLists = ProjectList_ToProto(mapCtx, in.ProducerRejectLists)
-	out.Subnetworks = SubnetworkList_ToProto(mapCtx, in.Subnetworks)
+	out.Subnetworks = SubnetworkList_ToProto(mapCtx, in.SubnetworkRefs)
 	return out
 }
 func NetworkAttachmentConnectedEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachmentConnectedEndpoint) *krm.NetworkAttachmentConnectedEndpoint {

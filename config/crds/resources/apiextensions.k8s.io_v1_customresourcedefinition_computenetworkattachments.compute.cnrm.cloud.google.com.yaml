@@ -190,7 +190,7 @@ spec:
                 description: The ComputeNetworkAttachment name. If not given, the
                   metadata.name will be used.
                 type: string
-              subnetworks:
+              subnetworkRefs:
                 description: An array of URLs where each entry is the URL of a subnet
                   provided by the service consumer to use for endpoints in the producers
                   that connect to this network attachment.

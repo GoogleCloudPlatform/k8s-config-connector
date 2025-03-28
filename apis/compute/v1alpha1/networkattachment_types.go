@@ -61,7 +61,7 @@ type ComputeNetworkAttachmentSpec struct {
 
 	// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.subnetworks
-	Subnetworks []*refv1beta1.ComputeSubnetworkRef `json:"subnetworks,omitempty"`
+	SubnetworkRefs []*refv1beta1.ComputeSubnetworkRef `json:"subnetworkRefs,omitempty"`
 }
 
 // ComputeNetworkAttachmentStatus defines the config connector machine state of ComputeNetworkAttachment
