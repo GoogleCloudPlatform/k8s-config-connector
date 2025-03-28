@@ -68,19 +68,46 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 	obj := proto.Clone(req.GetBackup()).(*pb.Backup)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
-	// TODO: EndTime calculation.
-	obj.EndTime = timestamppb.New(now.Add(time.Minute * 2))
+	obj.EndTime = obj.CreateTime // Set EndTime to CreateTime based on diff
 	obj.State = pb.Backup_ACTIVE
+	// Revert to placeholder ServiceRevision
+	obj.ServiceRevision = &pb.Service{Name: req.Parent}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := name.Parent().String() + "/operations/" + name.BackupName
+	// The LRO prefix should be the parent resource path for the operations collection.
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 
-	return s.operations.StartLRO(ctx, lroPrefix, nil, func() (proto.Message, error) {
-		return obj, nil
+	metadata := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+		// RequestedCancellation: false, // Field not expected in initial LRO metadata
+		ApiVersion: "v1",
+	}
+
+	op, err := s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
+		// We need to fetch the object again to get the updated LRO state
+		updatedObj := &pb.Backup{}
+		if err := s.storage.Get(ctx, fqn, updatedObj); err != nil {
+			// This should not happen in the normal flow
+			return nil, fmt.Errorf("failed to get backup during LRO completion: %w", err)
+		}
+		// Match the expected log: Ensure EndTime equals CreateTime in the final response.
+		updatedObj.EndTime = updatedObj.CreateTime
+		// Match the expected log: Ensure ServiceRevision only contains the name.
+		updatedObj.ServiceRevision = &pb.Service{Name: req.Parent}
+		return updatedObj, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	// Initial response should not have `Done` set (it defaults to false)
+	// op.Done = false // Reverted based on diff
+
+	return op, nil
 }
 
 func (s *DataprocMetastoreV1) DeleteBackup(ctx context.Context, req *pb.DeleteBackupRequest) (*longrunningpb.Operation, error) {
@@ -96,20 +123,20 @@ func (s *DataprocMetastoreV1) DeleteBackup(ctx context.Context, req *pb.DeleteBa
 		return nil, err
 	}
 
-	prefix := name.Parent().String() + "/operations/" + name.BackupName
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+	// The LRO prefix should be the parent resource path for the operations collection.
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	now := time.Now()
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "delete",
+		RequestedCancellation: false,
+		ApiVersion:            "v1",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		// Ensure the correct type URL is used for Empty responses
 		return &emptypb.Empty{}, nil
 	})
-}
-
-type serviceName struct {
-	Project   *projects.ProjectData
-	Location  string
-	ServiceID string
-}
-
-func (n *serviceName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/services/%s", n.Project.ID, n.Location, n.ServiceID)
 }
 
 type backupName struct {
@@ -125,9 +152,9 @@ func (n *backupName) String() string {
 
 func (n *backupName) Parent() *serviceName {
 	return &serviceName{
-		Project:   n.Project,
-		Location:  n.Location,
-		ServiceID: n.Service,
+		Project:  n.Project,
+		Location: n.Location,
+		Name:     n.Service,
 	}
 }
 
