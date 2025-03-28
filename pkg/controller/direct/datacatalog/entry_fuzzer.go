@@ -69,6 +69,8 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".integrated_system")
+	f.UnimplementedFields.Insert(".source_system_timestamps.expire_time") // Status field
+	f.UnimplementedFields.Insert(".schema.columns")                       // Status field
 
 	return f
 }

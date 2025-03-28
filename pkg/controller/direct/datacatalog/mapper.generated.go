@@ -409,12 +409,12 @@ func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.Name = direct.LazyPtr(in.GetName())
 	out.IntegratedSystem = direct.Enum_FromProto(mapCtx, in.GetIntegratedSystem())
 	out.GCSFilesetSpec = GCSFilesetSpecObservedState_FromProto(mapCtx, in.GetGcsFilesetSpec())
-	out.BigqueryTableSpec = BigQueryTableSpec_FromProto(mapCtx, in.GetBigqueryTableSpec())
-	out.BigqueryDateShardedSpec = BigQueryDateShardedSpec_FromProto(mapCtx, in.GetBigqueryDateShardedSpec())
+	out.BigqueryTableSpec = BigQueryTableSpecObservedState_FromProto(mapCtx, in.GetBigqueryTableSpec())
+	out.BigqueryDateShardedSpec = BigQueryDateShardedSpecObservedState_FromProto(mapCtx, in.GetBigqueryDateShardedSpec())
 	out.DatabaseTableSpec = DatabaseTableSpecObservedState_FromProto(mapCtx, in.GetDatabaseTableSpec())
 	out.FeatureOnlineStoreSpec = FeatureOnlineStoreSpecObservedState_FromProto(mapCtx, in.GetFeatureOnlineStoreSpec())
 	out.UsageSignal = UsageSignalObservedState_FromProto(mapCtx, in.GetUsageSignal())
-	out.DataSource = DataSource_FromProto(mapCtx, in.GetDataSource())
+	out.DataSource = DataSourceObservedState_FromProto(mapCtx, in.GetDataSource())
 	out.PersonalDetails = PersonalDetails_FromProto(mapCtx, in.GetPersonalDetails())
 	return out
 }
@@ -430,10 +430,10 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	if oneof := GCSFilesetSpecObservedState_ToProto(mapCtx, in.GCSFilesetSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_GcsFilesetSpec{GcsFilesetSpec: oneof}
 	}
-	if oneof := BigQueryTableSpec_ToProto(mapCtx, in.BigqueryTableSpec); oneof != nil {
+	if oneof := BigQueryTableSpecObservedState_ToProto(mapCtx, in.BigqueryTableSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_BigqueryTableSpec{BigqueryTableSpec: oneof}
 	}
-	if oneof := BigQueryDateShardedSpec_ToProto(mapCtx, in.BigqueryDateShardedSpec); oneof != nil {
+	if oneof := BigQueryDateShardedSpecObservedState_ToProto(mapCtx, in.BigqueryDateShardedSpec); oneof != nil {
 		out.TypeSpec = &pb.Entry_BigqueryDateShardedSpec{BigqueryDateShardedSpec: oneof}
 	}
 	if oneof := DatabaseTableSpecObservedState_ToProto(mapCtx, in.DatabaseTableSpec); oneof != nil {
@@ -443,7 +443,7 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 		out.Spec = &pb.Entry_FeatureOnlineStoreSpec{FeatureOnlineStoreSpec: oneof}
 	}
 	out.UsageSignal = UsageSignalObservedState_ToProto(mapCtx, in.UsageSignal)
-	out.DataSource = DataSource_ToProto(mapCtx, in.DataSource)
+	out.DataSource = DataSourceObservedState_ToProto(mapCtx, in.DataSource)
 	out.PersonalDetails = PersonalDetails_ToProto(mapCtx, in.PersonalDetails)
 	return out
 }
@@ -544,10 +544,6 @@ func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krm.Dat
 		return nil
 	}
 	out := &krm.DataSource{}
-	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
-	out.Resource = direct.LazyPtr(in.GetResource())
-	// MISSING: SourceEntry
-	out.StorageProperties = StorageProperties_FromProto(mapCtx, in.GetStorageProperties())
 	return out
 }
 func DataSource_ToProto(mapCtx *direct.MapContext, in *krm.DataSource) *pb.DataSource {
@@ -555,12 +551,6 @@ func DataSource_ToProto(mapCtx *direct.MapContext, in *krm.DataSource) *pb.DataS
 		return nil
 	}
 	out := &pb.DataSource{}
-	out.Service = direct.Enum_ToProto[pb.DataSource_Service](mapCtx, in.Service)
-	out.Resource = direct.ValueOf(in.Resource)
-	// MISSING: SourceEntry
-	if oneof := StorageProperties_ToProto(mapCtx, in.StorageProperties); oneof != nil {
-		out.Properties = &pb.DataSource_StorageProperties{StorageProperties: oneof}
-	}
 	return out
 }
 func DataSourceConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataSourceConnectionSpec) *krm.DataSourceConnectionSpec {
@@ -584,10 +574,10 @@ func DataSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSou
 		return nil
 	}
 	out := &krm.DataSourceObservedState{}
-	// MISSING: Service
-	// MISSING: Resource
+	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
+	out.Resource = direct.LazyPtr(in.GetResource())
+	out.StorageProperties = StorageProperties_FromProto(mapCtx, in.GetStorageProperties())
 	out.SourceEntry = direct.LazyPtr(in.GetSourceEntry())
-	// MISSING: StorageProperties
 	return out
 }
 func DataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataSourceObservedState) *pb.DataSource {
@@ -595,10 +585,12 @@ func DataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataSour
 		return nil
 	}
 	out := &pb.DataSource{}
-	// MISSING: Service
-	// MISSING: Resource
+	out.Service = direct.Enum_ToProto[pb.DataSource_Service](mapCtx, in.Service)
+	out.Resource = direct.ValueOf(in.Resource)
+	if oneof := StorageProperties_ToProto(mapCtx, in.StorageProperties); oneof != nil {
+		out.Properties = &pb.DataSource_StorageProperties{StorageProperties: oneof}
+	}
 	out.SourceEntry = direct.ValueOf(in.SourceEntry)
-	// MISSING: StorageProperties
 	return out
 }
 func DatabaseTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseTableSpec) *krm.DatabaseTableSpec {
@@ -1220,7 +1212,6 @@ func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestam
 	out := &krm.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krm.SystemTimestamps) *pb.SystemTimestamps {
@@ -1230,7 +1221,6 @@ func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krm.SystemTimestamp
 	out := &pb.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.SystemTimestampsObservedState {
@@ -1238,8 +1228,6 @@ func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krm.SystemTimestampsObservedState{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
@@ -1248,8 +1236,6 @@ func SystemTimestampsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sy
 		return nil
 	}
 	out := &pb.SystemTimestamps{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
@@ -1258,7 +1244,6 @@ func TableSpec_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krm.Table
 		return nil
 	}
 	out := &krm.TableSpec{}
-	// MISSING: GroupedEntry
 	return out
 }
 func TableSpec_ToProto(mapCtx *direct.MapContext, in *krm.TableSpec) *pb.TableSpec {
@@ -1266,7 +1251,6 @@ func TableSpec_ToProto(mapCtx *direct.MapContext, in *krm.TableSpec) *pb.TableSp
 		return nil
 	}
 	out := &pb.TableSpec{}
-	// MISSING: GroupedEntry
 	return out
 }
 func TableSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krm.TableSpecObservedState {

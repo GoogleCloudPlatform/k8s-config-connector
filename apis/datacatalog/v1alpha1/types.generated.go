@@ -121,76 +121,6 @@ type CloudSQLBigQueryConnectionSpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema
-type ColumnSchema struct {
-	// Required. Name of the column.
-	//
-	// Required. Name of the column.
-	//
-	//  Must be a UTF-8 string without dots (.).
-	//  The maximum size is 64 bytes.
-	// +required
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.column
-	Column *string `json:"column,omitempty"`
-
-	// Required. Type of the column.
-	//
-	//  Must be a UTF-8 string with the maximum size of 128 bytes.
-	// +required
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.type
-	Type *string `json:"type,omitempty"`
-
-	// Optional. Description of the column. Default value is an empty string.
-	//
-	//  The description must be a UTF-8 string with the maximum size of 2000
-	//  bytes.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. A column's mode indicates whether values in this column are
-	//  required, nullable, or repeated.
-	//
-	//  Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
-	//  Default mode is `NULLABLE`.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.mode
-	Mode *string `json:"mode,omitempty"`
-
-	// Optional. Default value for the column.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.default_value
-	DefaultValue *string `json:"defaultValue,omitempty"`
-
-	// Optional. Ordinal position
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.ordinal_position
-	OrdinalPosition *int32 `json:"ordinalPosition,omitempty"`
-
-	// Optional. Most important inclusion of this column.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.highest_indexing_type
-	HighestIndexingType *string `json:"highestIndexingType,omitempty"`
-
-	// Optional. Schema of sub-columns. A column can have zero or more
-	//  sub-columns.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.subcolumns
-	Subcolumns []ColumnSchema `json:"subcolumns,omitempty"`
-
-	// Looker specific column info of this column.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.looker_column_spec
-	LookerColumnSpec *ColumnSchema_LookerColumnSpec `json:"lookerColumnSpec,omitempty"`
-
-	// Optional. The subtype of the RANGE, if the type of this field is RANGE. If
-	//  the type is RANGE, this field is required. Possible values for the field
-	//  element type of a RANGE include:
-	//  * DATE
-	//  * DATETIME
-	//  * TIMESTAMP
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.range_element_type
-	RangeElementType *ColumnSchema_FieldElementType `json:"rangeElementType,omitempty"`
-
-	// Optional. Garbage collection policy for the column or column family.
-	//  Applies to systems like Cloud Bigtable.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.gc_rule
-	GcRule *string `json:"gcRule,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema.FieldElementType
 type ColumnSchema_FieldElementType struct {
 	// Required. The type of a field element. See
@@ -231,23 +161,6 @@ type Contacts_Person struct {
 	//  `<john.doe@xyz>`, or `John Doe<john.doe@xyz>`.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Contacts.Person.email
 	Email *string `json:"email,omitempty"`
-}
-
-// +kcc:proto=google.cloud.datacatalog.v1.DataSource
-type DataSource struct {
-	// Service that physically stores the data.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.service
-	Service *string `json:"service,omitempty"`
-
-	// Full name of a resource as defined by the service. For example:
-	//
-	//  `//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
-	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.resource
-	Resource *string `json:"resource,omitempty"`
-
-	// Detailed properties of the underlying storage.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.storage_properties
-	StorageProperties *StorageProperties `json:"storageProperties,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.DataSourceConnectionSpec
@@ -811,10 +724,7 @@ type BigQueryTableSpecObservedState struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.DataSource
-type DataSourceObservedState struct {
-	// Output only. Data Catalog entry name, if applicable.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.source_entry
-	SourceEntry *string `json:"sourceEntry,omitempty"`
+type DataSource struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.DatabaseTableSpec

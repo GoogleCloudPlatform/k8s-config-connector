@@ -353,9 +353,6 @@ spec:
                    For Google Cloud Platform resources, `linked_resource` is the
                    [Full Resource Name]
                    (https://cloud.google.com/apis/design/resource_names#full_resource_name).
-                   For example, the `linked_resource` for a table resource from BigQuery is:
-
-                   `//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
 
                    Output only when the entry is one of the types in the `EntryType` enum.
 
@@ -594,8 +591,7 @@ spec:
                         subcolumns:
                           description: Optional. Schema of sub-columns. A column can
                             have zero or more sub-columns.
-                          items: {}
-                          type: array
+                          x-kubernetes-preserve-unknown-fields: true
                         type:
                           description: |-
                             Required. Type of the column.
@@ -779,18 +775,61 @@ spec:
 
                        For more information, see [Introduction to partitioned tables]
                        (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
+                    properties:
+                      dataset:
+                        description: |-
+                          Output only. The Data Catalog resource name of the dataset entry the
+                           current table belongs to. For example:
+
+                           `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
+                        type: string
+                      latestShardResource:
+                        description: Output only. BigQuery resource name of the latest
+                          shard.
+                        type: string
+                      shardCount:
+                        description: Output only. Total number of shards.
+                        format: int64
+                        type: integer
+                      tablePrefix:
+                        description: |-
+                          Output only. The table name prefix of the shards.
+
+                           The name of any given shard is `[table_prefix]YYYYMMDD`.
+                           For example, for the `MyTable20180101` shard, the
+                           `table_prefix` is `MyTable`.
+                        type: string
                     type: object
                   bigqueryTableSpec:
                     description: Output only. Specification that applies to a BigQuery
                       table. Valid only for entries with the `TABLE` type.
                     properties:
+                      tableSourceType:
+                        description: Output only. The table source type.
+                        type: string
                       tableSpec:
                         description: Specification of a BigQuery table. Populated
                           only if the `table_source_type` is `BIGQUERY_TABLE`.
+                        properties:
+                          groupedEntry:
+                            description: |-
+                              Output only. If the table is date-sharded, that is, it matches the
+                               `[prefix]YYYYMMDD` name pattern, this field is the Data Catalog resource
+                               name of the date-sharded grouped entry. For example:
+
+                               `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
+
+                               Otherwise, `grouped_entry` is empty.
+                            type: string
                         type: object
                       viewSpec:
                         description: Table view specification. Populated only if the
                           `table_source_type` is `BIGQUERY_VIEW`.
+                        properties:
+                          viewQuery:
+                            description: Output only. The query that defines the table
+                              view.
+                            type: string
                         type: object
                     type: object
                   dataSource:
@@ -804,6 +843,9 @@ spec:
                         type: string
                       service:
                         description: Service that physically stores the data.
+                        type: string
+                      sourceEntry:
+                        description: Output only. Data Catalog entry name, if applicable.
                         type: string
                       storageProperties:
                         description: Detailed properties of the underlying storage.
