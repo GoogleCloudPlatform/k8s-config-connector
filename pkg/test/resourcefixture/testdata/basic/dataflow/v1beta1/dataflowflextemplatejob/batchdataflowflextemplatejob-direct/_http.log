@@ -145,6 +145,7 @@ X-Goog-Request-Params: project_id=${projectId}&location=us-central1
     "environment": {},
     "jobName": "dataflowflextemplatejob-${uniqueId}",
     "parameters": {
+      "autoscalingAlgorithm": "NONE",
       "inputFileFormat": "csv",
       "inputFileSpec": "gs://config-connector-samples/dataflowflextemplate/numbertest.csv",
       "outputBucket": "gs://storagebucket-${uniqueId}",

@@ -56,6 +56,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1742730890006019846",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -94,13 +95,14 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
+Expires: {now+-6m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1742730890006019846",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -141,7 +143,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "launchParameter": {
     "containerSpecGcsPath": "gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion",
-    "environment": {},
+    "environment": {
+      "autoscalingAlgorithm": "AUTOSCALING_ALGORITHM_NONE"
+    },
     "jobName": "dataflowflextemplatejob-${uniqueId}",
     "parameters": {
       "inputFileFormat": "csv",
@@ -212,9 +216,11 @@ X-Xss-Protection: 0
       "enable_cloud_permissions_checking",
       "enable_cmek_org_policy_check",
       "enable_compute_default_service_account_org_policy",
+      "enable_containerd_runtime",
       "enable_data_sampling_telemetry",
       "enable_dataprep_new_billing",
-      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_health_checker_startup_timeout",
+      "enable_managed_transforms",
       "enable_memory_sampler",
       "enable_oom_sampler",
       "enable_recommendations",
@@ -224,7 +230,6 @@ X-Xss-Protection: 0
       "enable_worker_cloud_monitoring_exporter",
       "enable_worker_disk_cloud_monitoring",
       "enable_worker_memory_cloud_monitoring",
-      "enable_zonal_outage_aware_routing",
       "limit_preemptible_worker_pct",
       "limit_resizing_by_cpu_util",
       "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
@@ -236,11 +241,11 @@ X-Xss-Protection: 0
       "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
       "sideinput_io_metrics",
       "use_dataflow_service_account_in_igm",
-      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,asia-southeast3,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west15,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east5,us-east7,us-south1,us-west8",
       "use_job_admission_controller",
       "use_multi_hop_delegation",
-      "use_templates_regional_bucket",
-      "use_worker_zone_chooser_by_default"
+      "use_retriable_jac_in_dm",
+      "use_templates_regional_bucket"
     ],
     "sdkPipelineOptions": {
       "display_data": [],
@@ -412,9 +417,11 @@ X-Xss-Protection: 0
       "enable_cloud_permissions_checking",
       "enable_cmek_org_policy_check",
       "enable_compute_default_service_account_org_policy",
+      "enable_containerd_runtime",
       "enable_data_sampling_telemetry",
       "enable_dataprep_new_billing",
-      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_health_checker_startup_timeout",
+      "enable_managed_transforms",
       "enable_memory_sampler",
       "enable_oom_sampler",
       "enable_recommendations",
@@ -424,7 +431,6 @@ X-Xss-Protection: 0
       "enable_worker_cloud_monitoring_exporter",
       "enable_worker_disk_cloud_monitoring",
       "enable_worker_memory_cloud_monitoring",
-      "enable_zonal_outage_aware_routing",
       "limit_preemptible_worker_pct",
       "limit_resizing_by_cpu_util",
       "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
@@ -436,11 +442,11 @@ X-Xss-Protection: 0
       "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
       "sideinput_io_metrics",
       "use_dataflow_service_account_in_igm",
-      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,asia-southeast3,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west15,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east5,us-east7,us-south1,us-west8",
       "use_job_admission_controller",
       "use_multi_hop_delegation",
-      "use_templates_regional_bucket",
-      "use_worker_zone_chooser_by_default"
+      "use_retriable_jac_in_dm",
+      "use_templates_regional_bucket"
     ],
     "sdkPipelineOptions": {
       "display_data": [],
@@ -589,9 +595,11 @@ X-Xss-Protection: 0
       "enable_cloud_permissions_checking",
       "enable_cmek_org_policy_check",
       "enable_compute_default_service_account_org_policy",
+      "enable_containerd_runtime",
       "enable_data_sampling_telemetry",
       "enable_dataprep_new_billing",
-      "enable_fnapi_multimap_side_input_bulk_read",
+      "enable_health_checker_startup_timeout",
+      "enable_managed_transforms",
       "enable_memory_sampler",
       "enable_oom_sampler",
       "enable_recommendations",
@@ -601,7 +609,6 @@ X-Xss-Protection: 0
       "enable_worker_cloud_monitoring_exporter",
       "enable_worker_disk_cloud_monitoring",
       "enable_worker_memory_cloud_monitoring",
-      "enable_zonal_outage_aware_routing",
       "limit_preemptible_worker_pct",
       "limit_resizing_by_cpu_util",
       "min_sdk_version_to_reject_worker_in_different_region_than_service=2.44.0",
@@ -613,11 +620,11 @@ X-Xss-Protection: 0
       "shuffle_service_address_type=DIRECTPATH_WITH_CFE_FALLBACK",
       "sideinput_io_metrics",
       "use_dataflow_service_account_in_igm",
-      "use_e2_for_default_machine_type_worker_regions=africa-south1,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east10,us-east5,us-east7,us-south1,us-west8",
+      "use_e2_for_default_machine_type_worker_regions=africa-south1,asia-southeast3,europe-north2,europe-southwest1,europe-west10,europe-west12,europe-west15,europe-west8,europe-west9,me-central1,me-central2,me-west1,northamerica-south1,southamerica-west1,us-east5,us-east7,us-south1,us-west8",
       "use_job_admission_controller",
       "use_multi_hop_delegation",
-      "use_templates_regional_bucket",
-      "use_worker_zone_chooser_by_default"
+      "use_retriable_jac_in_dm",
+      "use_templates_regional_bucket"
     ],
     "sdkPipelineOptions": {
       "display_data": [],
@@ -742,6 +749,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1742730890006019846",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -786,11 +794,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---
