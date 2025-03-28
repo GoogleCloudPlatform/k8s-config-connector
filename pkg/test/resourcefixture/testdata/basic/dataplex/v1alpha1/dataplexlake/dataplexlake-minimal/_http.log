@@ -107,7 +107,7 @@ GRPC /google.cloud.dataplex.v1.DataplexService/UpdateLake
     "description": "Updated description",
     "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
   },
-  "updateMask": "description,metastore"
+  "updateMask": "description"
 }
 
 OK

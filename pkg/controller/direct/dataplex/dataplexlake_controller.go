@@ -27,7 +27,6 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -92,12 +91,11 @@ func (m *lakeModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 }
 
 type lakeAdapter struct {
-	gcpClient     *gcp.Client
-	id            *krm.LakeIdentity
-	desired       *krm.DataplexLake
-	actual        *pb.Lake
-	reader        client.Reader
-	projectClient *cloudresourcemanager.ProjectsClient
+	gcpClient *gcp.Client
+	id        *krm.LakeIdentity
+	desired   *krm.DataplexLake
+	actual    *pb.Lake
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &lakeAdapter{}
@@ -181,27 +179,38 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	if !reflect.DeepEqual(lake.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if !reflect.DeepEqual(lake.Metastore, a.actual.Metastore) {
+
+	// a.actual.Metastore != nil
+	// default value: metastore: {} (i.e. metastore.service: "")
+	if lake.Metastore != nil {
+		if !reflect.DeepEqual(lake.Metastore, a.actual.Metastore) {
+			updateMask.Paths = append(updateMask.Paths, "metastore")
+		}
+	} else if a.actual.Metastore.Service != "" {
 		updateMask.Paths = append(updateMask.Paths, "metastore")
 	}
 
+	var updated *pb.Lake
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+
+		// even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		req := &pb.UpdateLakeRequest{
+			UpdateMask: updateMask,
+			Lake:       lake,
+		}
+		op, err := a.gcpClient.UpdateLake(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating dataplex lake %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("waiting for update of dataplex lake %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated dataplex lake", "name", a.id)
 	}
-	req := &pb.UpdateLakeRequest{
-		UpdateMask: updateMask,
-		Lake:       lake,
-	}
-	op, err := a.gcpClient.UpdateLake(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating dataplex lake %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("waiting for update of dataplex lake %s: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully updated dataplex lake", "name", a.id)
 
 	status := &krm.DataplexLakeStatus{}
 	status.ObservedState = DataplexLakeObservedState_FromProto(mapCtx, updated)
