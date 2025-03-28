@@ -33,14 +33,14 @@ import (
 
 type ProjectsV1 struct {
 	*MockService
-	pb.UnimplementedProjectsServer
+	pb.UnimplementedProjectsServerServer
 }
 
 // Retrieves the project identified by the specified `name` (for example,
 // `projects/415104041262`).
 func (s *ProjectsV1) GetProject(ctx context.Context, req *pb.GetProjectRequest) (*pb.Project, error) {
 	reqV3 := &v3.GetProjectRequest{
-		Name: req.Name,
+		Name: "projects/" + req.GetProjectId(),
 	}
 
 	responseV3, err := s.projectsV3.GetProject(ctx, reqV3)
@@ -66,9 +66,9 @@ func (s *ProjectsV1) GetProject(ctx context.Context, req *pb.GetProjectRequest) 
 func (s *ProjectsV1) CreateProject(ctx context.Context, req *pb.CreateProjectRequest) (*longrunningpb.Operation, error) {
 	reqV3 := &v3.CreateProjectRequest{
 		Project: &v3.Project{
-			ProjectId:   req.Project.ProjectId,
-			DisplayName: req.Project.Name,
-			Labels:      req.Project.Labels,
+			ProjectId:   req.GetProject().GetProjectId(),
+			DisplayName: req.GetProject().GetName(),
+			Labels:      req.GetProject().GetLabels(),
 		},
 	}
 
@@ -94,9 +94,9 @@ func (s *ProjectsV1) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 }
 
 // Request that a new project be created.
-func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectRequest) (*longrunningpb.Operation, error) {
+func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectRequest) (*pb.Empty, error) {
 	reqV3 := &v3.DeleteProjectRequest{
-		Name: req.GetName(),
+		Name: "projects/" + req.GetProjectId(),
 	}
 
 	op, err := s.projectsV3.DeleteProject(ctx, reqV3)
@@ -109,8 +109,7 @@ func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectReq
 		return nil, err
 	}
 
-	// This method returns an empty response
-	return &longrunningpb.Operation{}, nil
+	return &pb.Empty{}, nil
 }
 
 // Updates a project.
@@ -122,7 +121,6 @@ func (s *ProjectsV1) UpdateProject(ctx context.Context, req *pb.UpdateProjectReq
 			DisplayName: req.GetProject().GetName(),
 			Labels:      req.GetProject().GetLabels(),
 		},
-		UpdateMask: req.GetUpdateMask(),
 	}
 
 	lro, err := s.projectsV3.UpdateProject(ctx, reqV3)
@@ -134,7 +132,7 @@ func (s *ProjectsV1) UpdateProject(ctx context.Context, req *pb.UpdateProjectReq
 	}
 
 	// TODO: Get object from lro
-	project, err := s.GetProject(ctx, &pb.GetProjectRequest{Name: req.GetProject().GetName()})
+	project, err := s.GetProject(ctx, &pb.GetProjectRequest{ProjectId: PtrTo(req.GetProject().GetProjectId())})
 	if err != nil {
 		return nil, fmt.Errorf("error fetching project after update: %w", err)
 	}
@@ -179,33 +177,33 @@ func projectToV1(in *v3.Project, out *pb.Project) error {
 	if err != nil {
 		return fmt.Errorf("cannot parse project number from %q", in.Name)
 	}
-	out.ProjectNumber = projectNumber
-	out.ProjectId = in.ProjectId
-	out.Name = in.DisplayName
+	out.ProjectNumber = &projectNumber
+	out.ProjectId = &in.ProjectId
+	if in.DisplayName != "" {
+		out.Name = &in.DisplayName
+	}
 	out.CreateTime = in.CreateTime
 	out.Labels = in.Labels
 
 	switch in.State {
 	case v3.Project_ACTIVE:
-		out.LifecycleState = pb.Project_ACTIVE
+		out.LifecycleState = PtrTo("ACTIVE")
 	case v3.Project_DELETE_REQUESTED:
-		out.LifecycleState = pb.Project_DELETE_REQUESTED
+		out.LifecycleState = PtrTo("DELETE_REQUESTED")
 	default:
-		out.LifecycleState = pb.Project_LIFECYCLE_STATE_UNSPECIFIED
+		out.LifecycleState = nil
 	}
-
-	// TODO: Map parent
 
 	parent := in.GetParent()
 	if strings.HasPrefix(parent, "organizations/") {
 		out.Parent = &pb.ResourceId{
-			Type: "organization",
-			Id:   strings.TrimPrefix(parent, "organizations/"),
+			Type: PtrTo("organization"),
+			Id:   PtrTo(strings.TrimPrefix(parent, "organizations/")),
 		}
 	} else if strings.HasPrefix(parent, "folders/") {
 		out.Parent = &pb.ResourceId{
-			Type: "folder",
-			Id:   strings.TrimPrefix(parent, "folders/"),
+			Type: PtrTo("folder"),
+			Id:   PtrTo(strings.TrimPrefix(parent, "folders/")),
 		}
 	}
 	return nil

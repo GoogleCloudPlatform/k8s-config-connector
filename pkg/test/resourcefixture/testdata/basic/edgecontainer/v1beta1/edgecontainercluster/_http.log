@@ -436,7 +436,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -450,7 +450,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "parent": {
     "id": "${organizationID}",
     "type": "organization"
@@ -472,7 +472,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -490,7 +490,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -512,7 +512,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }
@@ -539,7 +539,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "projects/${projectId}",
+  "name": "${projectId}",
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
 }

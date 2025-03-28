@@ -208,6 +208,10 @@ generate-grpc-for-google-protos:
 generate-protos-from-openapi:
 	mkdir -p temp/
 
+	wget -O temp/cloudresourcemanager-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudresourcemanager/v1/cloudresourcemanager-api.json
+	mkdir -p apis/mockgcp/cloud/resourcemanager/v1
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloudresourcemanager.v1 ../../temp/cloudresourcemanager-v1.json > ../../apis/mockgcp/cloud/resourcemanager/v1/api.proto
+
 	wget -O temp/bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
 	mkdir -p apis/mockgcp/cloud/bigquery/v2/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.bigquery.v2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
