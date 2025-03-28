@@ -32,7 +32,7 @@ type NetworkEdgeSecurityServiceIdentity struct {
 }
 
 func (i *NetworkEdgeSecurityServiceIdentity) String() string {
-	return i.parent.String() + "/networkedgesecurityservices/" + i.id
+	return i.parent.String() + "/networkEdgeSecurityServices/" + i.id
 }
 
 func (i *NetworkEdgeSecurityServiceIdentity) ID() string {
@@ -49,7 +49,7 @@ type NetworkEdgeSecurityServiceParent struct {
 }
 
 func (p *NetworkEdgeSecurityServiceParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/regions/" + p.Location
 }
 
 // New builds a NetworkEdgeSecurityServiceIdentity from the Config Connector NetworkEdgeSecurityService object.
@@ -105,7 +105,7 @@ func NewNetworkEdgeSecurityServiceIdentity(ctx context.Context, reader client.Re
 
 func ParseNetworkEdgeSecurityServiceExternal(external string) (parent *NetworkEdgeSecurityServiceParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "networkedgesecurityservices" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "networkEdgeSecurityServices" {
 		return nil, "", fmt.Errorf("format of ComputeNetworkEdgeSecurityService external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkedgesecurityservices/{{networkedgesecurityserviceID}})", external)
 	}
 	parent = &NetworkEdgeSecurityServiceParent{

@@ -354,5 +354,4 @@ type NetworkEdgeSecurityService struct {
 	// [Output Only] Server-defined URL for this resource with the resource id.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
->>>>>>> 28c2cabce (conductor: "Add generated types")
 }
