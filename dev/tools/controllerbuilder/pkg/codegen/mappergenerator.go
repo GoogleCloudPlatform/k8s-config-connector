@@ -196,7 +196,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 
 			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("pb", pbPackage)
-			out.addImport("krm", krmPackage)
+			out.addImport(getKRMImportName(krmPackage), krmPackage)
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
@@ -219,12 +219,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		goFields[f.Name] = f
 	}
 
+	krmImportName := getKRMImportName(pair.KRMType.GoPackage)
+
 	if v.findFuncDeclaration(goTypeName+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *%s.%s {\n", goTypeName, pbTypeName, krmImportName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
-		fmt.Fprintf(out, "\tout := &krm.%s{}\n", goTypeName)
+		fmt.Fprintf(out, "\tout := &%s.%s{}\n", krmImportName, goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
 			protoFieldName := protoNameForField(protoField)
@@ -396,7 +398,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	}
 
 	if v.findFuncDeclaration(goTypeName+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *krm.%s) *pb.%s {\n", goTypeName, goTypeName, pbTypeName)
+		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *pb.%s {\n", goTypeName, krmImportName, goTypeName, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -829,4 +831,12 @@ func fieldExistInStruct(goType *gocode.GoStruct, fieldName string) bool {
 		}
 	}
 	return false
+}
+
+// getKRMImportName generates an import alias for KRM package based on its version
+// e.g. "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1" -> "krmv1alpha1"
+func getKRMImportName(krmPackage string) string {
+	parts := strings.Split(krmPackage, "/")
+	version := parts[len(parts)-1]
+	return "krm" + version
 }

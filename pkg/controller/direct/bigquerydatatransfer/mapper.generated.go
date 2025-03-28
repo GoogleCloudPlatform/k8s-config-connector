@@ -21,19 +21,19 @@ package bigquerydatatransfer
 
 import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krm.EmailPreferences {
+func EmailPreferences_FromProto(mapCtx *direct.MapContext, in *pb.EmailPreferences) *krmv1beta1.EmailPreferences {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EmailPreferences{}
+	out := &krmv1beta1.EmailPreferences{}
 	out.EnableFailureEmail = direct.LazyPtr(in.GetEnableFailureEmail())
 	return out
 }
-func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreferences) *pb.EmailPreferences {
+func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EmailPreferences) *pb.EmailPreferences {
 	if in == nil {
 		return nil
 	}
@@ -41,31 +41,31 @@ func EmailPreferences_ToProto(mapCtx *direct.MapContext, in *krm.EmailPreference
 	out.EnableFailureEmail = direct.ValueOf(in.EnableFailureEmail)
 	return out
 }
-func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krm.ManualSchedule {
+func ManualSchedule_FromProto(mapCtx *direct.MapContext, in *pb.ManualSchedule) *krmv1beta1.ManualSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManualSchedule{}
+	out := &krmv1beta1.ManualSchedule{}
 	return out
 }
-func ManualSchedule_ToProto(mapCtx *direct.MapContext, in *krm.ManualSchedule) *pb.ManualSchedule {
+func ManualSchedule_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ManualSchedule) *pb.ManualSchedule {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ManualSchedule{}
 	return out
 }
-func ScheduleOptions_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krm.ScheduleOptions {
+func ScheduleOptions_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptions) *krmv1beta1.ScheduleOptions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ScheduleOptions{}
+	out := &krmv1beta1.ScheduleOptions{}
 	out.DisableAutoScheduling = direct.LazyPtr(in.GetDisableAutoScheduling())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions) *pb.ScheduleOptions {
+func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ScheduleOptions) *pb.ScheduleOptions {
 	if in == nil {
 		return nil
 	}
@@ -75,17 +75,17 @@ func ScheduleOptions_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptions)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func ScheduleOptionsV2_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krm.ScheduleOptionsV2 {
+func ScheduleOptionsV2_FromProto(mapCtx *direct.MapContext, in *pb.ScheduleOptionsV2) *krmv1beta1.ScheduleOptionsV2 {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ScheduleOptionsV2{}
+	out := &krmv1beta1.ScheduleOptionsV2{}
 	out.TimeBasedSchedule = TimeBasedSchedule_FromProto(mapCtx, in.GetTimeBasedSchedule())
 	out.ManualSchedule = ManualSchedule_FromProto(mapCtx, in.GetManualSchedule())
 	out.EventDrivenSchedule = EventDrivenSchedule_FromProto(mapCtx, in.GetEventDrivenSchedule())
 	return out
 }
-func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
+func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ScheduleOptionsV2) *pb.ScheduleOptionsV2 {
 	if in == nil {
 		return nil
 	}
@@ -101,17 +101,17 @@ func ScheduleOptionsV2_ToProto(mapCtx *direct.MapContext, in *krm.ScheduleOption
 	}
 	return out
 }
-func TimeBasedSchedule_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krm.TimeBasedSchedule {
+func TimeBasedSchedule_FromProto(mapCtx *direct.MapContext, in *pb.TimeBasedSchedule) *krmv1beta1.TimeBasedSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TimeBasedSchedule{}
+	out := &krmv1beta1.TimeBasedSchedule{}
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
-func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSchedule) *pb.TimeBasedSchedule {
+func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TimeBasedSchedule) *pb.TimeBasedSchedule {
 	if in == nil {
 		return nil
 	}
@@ -121,15 +121,15 @@ func TimeBasedSchedule_ToProto(mapCtx *direct.MapContext, in *krm.TimeBasedSched
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
-func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krm.UserInfo {
+func UserInfo_FromProto(mapCtx *direct.MapContext, in *pb.UserInfo) *krmv1beta1.UserInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.UserInfo{}
+	out := &krmv1beta1.UserInfo{}
 	out.Email = in.Email
 	return out
 }
-func UserInfo_ToProto(mapCtx *direct.MapContext, in *krm.UserInfo) *pb.UserInfo {
+func UserInfo_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.UserInfo) *pb.UserInfo {
 	if in == nil {
 		return nil
 	}
