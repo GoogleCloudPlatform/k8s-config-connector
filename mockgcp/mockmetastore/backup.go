@@ -71,7 +71,15 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 	obj.EndTime = obj.CreateTime // Set EndTime to CreateTime based on diff
 	obj.State = pb.Backup_ACTIVE
 	// Revert to placeholder ServiceRevision
-	obj.ServiceRevision = &pb.Service{Name: req.Parent}
+	service := &pb.Service{}
+	if err := s.storage.Get(ctx, req.Parent, service); err != nil {
+		return nil, fmt.Errorf("failed to get service: %w", err)
+	}
+	serviceCopy := proto.Clone(service).(*pb.Service)
+	serviceCopy.State = pb.Service_STATE_UNSPECIFIED
+	serviceCopy.StateMessage = ""
+	serviceCopy.Name = ""
+	obj.ServiceRevision = serviceCopy
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -81,15 +89,16 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
-		// RequestedCancellation: false, // Field not expected in initial LRO metadata
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "create",
+		RequestedCancellation: false, // Field not expected in initial LRO metadata
+		ApiVersion:            "v1",
 	}
 
 	op, err := s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		// We need to fetch the object again to get the updated LRO state
+		metadata.EndTime = timestamppb.New(now)
 		updatedObj := &pb.Backup{}
 		if err := s.storage.Get(ctx, fqn, updatedObj); err != nil {
 			// This should not happen in the normal flow
@@ -97,8 +106,6 @@ func (s *DataprocMetastoreV1) CreateBackup(ctx context.Context, req *pb.CreateBa
 		}
 		// Match the expected log: Ensure EndTime equals CreateTime in the final response.
 		updatedObj.EndTime = updatedObj.CreateTime
-		// Match the expected log: Ensure ServiceRevision only contains the name.
-		updatedObj.ServiceRevision = &pb.Service{Name: req.Parent}
 		return updatedObj, nil
 	})
 	if err != nil {
@@ -135,6 +142,7 @@ func (s *DataprocMetastoreV1) DeleteBackup(ctx context.Context, req *pb.DeleteBa
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		// Ensure the correct type URL is used for Empty responses
+		metadata.EndTime = timestamppb.New(now)
 		return &emptypb.Empty{}, nil
 	})
 }
