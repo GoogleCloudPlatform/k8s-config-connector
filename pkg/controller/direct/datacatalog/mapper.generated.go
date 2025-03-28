@@ -1220,7 +1220,6 @@ func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestam
 	out := &krm.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krm.SystemTimestamps) *pb.SystemTimestamps {
@@ -1230,7 +1229,6 @@ func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krm.SystemTimestamp
 	out := &pb.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.SystemTimestampsObservedState {
@@ -1238,8 +1236,6 @@ func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krm.SystemTimestampsObservedState{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
@@ -1248,8 +1244,6 @@ func SystemTimestampsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sy
 		return nil
 	}
 	out := &pb.SystemTimestamps{}
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
@@ -1258,7 +1252,6 @@ func TableSpec_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krm.Table
 		return nil
 	}
 	out := &krm.TableSpec{}
-	// MISSING: GroupedEntry
 	return out
 }
 func TableSpec_ToProto(mapCtx *direct.MapContext, in *krm.TableSpec) *pb.TableSpec {
@@ -1266,7 +1259,6 @@ func TableSpec_ToProto(mapCtx *direct.MapContext, in *krm.TableSpec) *pb.TableSp
 		return nil
 	}
 	out := &pb.TableSpec{}
-	// MISSING: GroupedEntry
 	return out
 }
 func TableSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krm.TableSpecObservedState {
