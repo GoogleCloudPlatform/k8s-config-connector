@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ClusterIdentity struct {
 	parent *ClusterParent
-	id string
+	id     string
 }
 
 func (i *ClusterIdentity) String() string {
-	return  i.parent.String() + "/clusters/" + i.id
+	return i.parent.String() + "/clusters/" + i.id
 }
 
 func (i *ClusterIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ClusterIdentity) ID() string {
 }
 
 func (i *ClusterIdentity) Parent() *ClusterParent {
-	return  i.parent
+	return i.parent
 }
 
 type ClusterParent struct {
@@ -51,7 +51,6 @@ type ClusterParent struct {
 func (p *ClusterParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *EdgeContainerCluster) (*ClusterIdentity, error) {

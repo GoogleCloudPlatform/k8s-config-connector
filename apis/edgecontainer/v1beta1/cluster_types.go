@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,23 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
 
-// +kcc:proto=google.cloud.edgecontainer.v1.Authorization
-type Authorization struct {
-	// Required. User that will be granted the cluster-admin role on the cluster,
-	//  providing full access to the cluster. Currently, this is a singular field,
-	//  but will be expanded to allow multiple admins in the future.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Authorization.admin_users
-	AdminUsers *ClusterUser `json:"adminUsers,omitempty"`
-}
+var EdgeContainerClusterGVK = GroupVersion.WithKind("EdgeContainerCluster")
 
+// EdgeContainerClusterSpec defines the desired state of EdgeContainerCluster
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster
-type Cluster struct {
-	// Required. The resource name of the cluster.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.name
-	Name *string `json:"name,omitempty"`
+type EdgeContainerClusterSpec struct {
 
 	// Labels associated with this resource.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.labels
@@ -92,10 +87,129 @@ type Cluster struct {
 	//  balancing.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.external_load_balancer_ipv6_address_pools
 	ExternalLoadBalancerIPV6AddressPools []string `json:"externalLoadBalancerIPV6AddressPools,omitempty"`
+
+	*Parent `json:",inline"`
+	// The EdgeContainerCluster name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+// EdgeContainerClusterStatus defines the config connector machine state of EdgeContainerCluster
+type EdgeContainerClusterStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the EdgeContainerCluster resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *EdgeContainerClusterObservedState `json:"observedState,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.Authorization
+type Authorization struct {
+	// Required. User that will be granted the cluster-admin role on the cluster,
+	//  providing full access to the cluster. Currently, this is a singular field,
+	//  but will be expanded to allow multiple admins in the future.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Authorization.admin_users
+	AdminUsers *ClusterUser `json:"adminUsers,omitempty"`
 }
 
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.ConnectionState
 type Cluster_ConnectionState struct {
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.ClusterNetworking
+type ClusterNetworking struct {
+	// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from
+	//  these blocks. Only a single block is supported. This field cannot be
+	//  changed after creation.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterNetworking.cluster_ipv4_cidr_blocks
+	ClusterIPV4CIDRBlocks []string `json:"clusterIPV4CIDRBlocks,omitempty"`
+
+	// Required. All services in the cluster are assigned an RFC1918 IPv4 address
+	//  from these blocks. Only a single block is supported. This field cannot be
+	//  changed after creation.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterNetworking.services_ipv4_cidr_blocks
+	ServicesIPV4CIDRBlocks []string `json:"servicesIPV4CIDRBlocks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow
+type MaintenanceExclusionWindow struct {
+	// Optional. The time window.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow.window
+	Window *TimeWindow `json:"window,omitempty"`
+
+	// Optional. A unique (per cluster) id for the window.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow.id
+	ID *string `json:"id,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.TimeWindow
+type TimeWindow struct {
+	// The time that the window first starts.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.TimeWindow.start_time
+	StartTime *string `json:"startTime,omitempty"`
+
+	// The time that the window ends. The end time must take place after the
+	//  start time.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.TimeWindow.end_time
+	EndTime *string `json:"endTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.MaintenancePolicy
+type MaintenancePolicy struct {
+	// Specifies the maintenance window in which maintenance may be performed.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenancePolicy.window
+	Window *MaintenanceWindow `json:"window,omitempty"`
+
+	// Optional. Exclusions to automatic maintenance. Non-emergency maintenance
+	//  should not occur in these windows. Each exclusion has a unique name and may
+	//  be active or expired. The max number of maintenance exclusions allowed at a
+	//  given time is 3.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenancePolicy.maintenance_exclusions
+	MaintenanceExclusions []MaintenanceExclusionWindow `json:"maintenanceExclusions,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.MaintenanceWindow
+type MaintenanceWindow struct {
+	// Configuration of a recurring maintenance window.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceWindow.recurring_window
+	RecurringWindow *RecurringTimeWindow `json:"recurringWindow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.RecurringTimeWindow
+type RecurringTimeWindow struct {
+	// The window of the first recurrence.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.RecurringTimeWindow.window
+	Window *TimeWindow `json:"window,omitempty"`
+
+	// An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
+	//  this window recurs. They go on for the span of time between the start and
+	//  end time.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.RecurringTimeWindow.recurrence
+	Recurrence *string `json:"recurrence,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.ClusterUser
+type ClusterUser struct {
+	// Required. An active Google username.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterUser.username
+	Username *string `json:"username,omitempty"`
+}
+
+// +kcc:proto=google.cloud.edgecontainer.v1.Fleet
+type Fleet struct {
+	// Required. The name of the Fleet host project where this cluster will be
+	//  registered.
+	//
+	//  Project names are formatted as
+	//  `projects/<project-number>`.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Fleet.project
+	Project *string `json:"project,omitempty"`
 }
 
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.ControlPlane
@@ -201,208 +315,6 @@ type Cluster_SystemAddonsConfig_VmServiceConfig struct {
 	VmmEnabled *bool `json:"vmmEnabled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.edgecontainer.v1.ClusterNetworking
-type ClusterNetworking struct {
-	// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from
-	//  these blocks. Only a single block is supported. This field cannot be
-	//  changed after creation.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterNetworking.cluster_ipv4_cidr_blocks
-	ClusterIPV4CIDRBlocks []string `json:"clusterIPV4CIDRBlocks,omitempty"`
-
-	// Required. All services in the cluster are assigned an RFC1918 IPv4 address
-	//  from these blocks. Only a single block is supported. This field cannot be
-	//  changed after creation.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterNetworking.services_ipv4_cidr_blocks
-	ServicesIPV4CIDRBlocks []string `json:"servicesIPV4CIDRBlocks,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.ClusterUser
-type ClusterUser struct {
-	// Required. An active Google username.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.ClusterUser.username
-	Username *string `json:"username,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.Fleet
-type Fleet struct {
-	// Required. The name of the Fleet host project where this cluster will be
-	//  registered.
-	//
-	//  Project names are formatted as
-	//  `projects/<project-number>`.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Fleet.project
-	Project *string `json:"project,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow
-type MaintenanceExclusionWindow struct {
-	// Optional. The time window.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow.window
-	Window *TimeWindow `json:"window,omitempty"`
-
-	// Optional. A unique (per cluster) id for the window.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceExclusionWindow.id
-	ID *string `json:"id,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.MaintenancePolicy
-type MaintenancePolicy struct {
-	// Specifies the maintenance window in which maintenance may be performed.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenancePolicy.window
-	Window *MaintenanceWindow `json:"window,omitempty"`
-
-	// Optional. Exclusions to automatic maintenance. Non-emergency maintenance
-	//  should not occur in these windows. Each exclusion has a unique name and may
-	//  be active or expired. The max number of maintenance exclusions allowed at a
-	//  given time is 3.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenancePolicy.maintenance_exclusions
-	MaintenanceExclusions []MaintenanceExclusionWindow `json:"maintenanceExclusions,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.MaintenanceWindow
-type MaintenanceWindow struct {
-	// Configuration of a recurring maintenance window.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.MaintenanceWindow.recurring_window
-	RecurringWindow *RecurringTimeWindow `json:"recurringWindow,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.RecurringTimeWindow
-type RecurringTimeWindow struct {
-	// The window of the first recurrence.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.RecurringTimeWindow.window
-	Window *TimeWindow `json:"window,omitempty"`
-
-	// An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
-	//  this window recurs. They go on for the span of time between the start and
-	//  end time.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.RecurringTimeWindow.recurrence
-	Recurrence *string `json:"recurrence,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.TimeWindow
-type TimeWindow struct {
-	// The time that the window first starts.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.TimeWindow.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// The time that the window ends. The end time must take place after the
-	//  start time.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.TimeWindow.end_time
-	EndTime *string `json:"endTime,omitempty"`
-}
-
-// +kcc:proto=google.protobuf.Any
-type Any struct {
-	// A URL/resource name that uniquely identifies the type of the serialized
-	//  protocol buffer message. This string must contain at least
-	//  one "/" character. The last segment of the URL's path must represent
-	//  the fully qualified name of the type (as in
-	//  `path/google.protobuf.Duration`). The name should be in a canonical form
-	//  (e.g., leading "." is not accepted).
-	//
-	//  In practice, teams usually precompile into the binary all types that they
-	//  expect it to use in the context of Any. However, for URLs which use the
-	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
-	//  server that maps type URLs to message definitions as follows:
-	//
-	//  * If no scheme is provided, `https` is assumed.
-	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
-	//    value in binary format, or produce an error.
-	//  * Applications are allowed to cache lookup results based on the
-	//    URL, or have them precompiled into a binary to avoid any
-	//    lookup. Therefore, binary compatibility needs to be preserved
-	//    on changes to types. (Use versioned type names to manage
-	//    breaking changes.)
-	//
-	//  Note: this functionality is not currently available in the official
-	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
-	//
-	//  Schemes other than `http`, `https` (or the empty scheme) might be
-	//  used with implementation specific semantics.
-	// +kcc:proto:field=google.protobuf.Any.type_url
-	TypeURL *string `json:"typeURL,omitempty"`
-
-	// Must be a valid serialized protocol buffer of the above specified type.
-	// +kcc:proto:field=google.protobuf.Any.value
-	Value []byte `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.rpc.Status
-type Status struct {
-	// The status code, which should be an enum value of
-	//  [google.rpc.Code][google.rpc.Code].
-	// +kcc:proto:field=google.rpc.Status.code
-	Code *int32 `json:"code,omitempty"`
-
-	// A developer-facing error message, which should be in English. Any
-	//  user-facing error message should be localized and sent in the
-	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-	//  by the client.
-	// +kcc:proto:field=google.rpc.Status.message
-	Message *string `json:"message,omitempty"`
-
-	// A list of messages that carry the error details.  There is a common set of
-	//  message types for APIs to use.
-	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
-}
-
-// +kcc:proto=google.cloud.edgecontainer.v1.Cluster
-type ClusterObservedState struct {
-	// Output only. The time when the cluster was created.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The time when the cluster was last updated.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Required. Fleet configuration.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.fleet
-	Fleet *FleetObservedState `json:"fleet,omitempty"`
-
-	// Output only. The IP address of the Kubernetes API server.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.endpoint
-	Endpoint *string `json:"endpoint,omitempty"`
-
-	// Output only. The port number of the Kubernetes API server.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Output only. The PEM-encoded public certificate of the cluster's CA.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.cluster_ca_certificate
-	ClusterCACertificate *string `json:"clusterCACertificate,omitempty"`
-
-	// Output only. The control plane release version
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.control_plane_version
-	ControlPlaneVersion *string `json:"controlPlaneVersion,omitempty"`
-
-	// Output only. The lowest release version among all worker nodes. This field
-	//  can be empty if the cluster does not have any worker nodes.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.node_version
-	NodeVersion *string `json:"nodeVersion,omitempty"`
-
-	// Optional. Remote control plane disk encryption options. This field is only
-	//  used when enabling CMEK support.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.control_plane_encryption
-	ControlPlaneEncryption *Cluster_ControlPlaneEncryptionObservedState `json:"controlPlaneEncryption,omitempty"`
-
-	// Output only. The current status of the cluster.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.status
-	Status *string `json:"status,omitempty"`
-
-	// Output only. All the maintenance events scheduled for the cluster,
-	//  including the ones ongoing, planned for the future and done in the past (up
-	//  to 90 days).
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.maintenance_events
-	MaintenanceEvents []Cluster_MaintenanceEvent `json:"maintenanceEvents,omitempty"`
-
-	// Output only. The current connection state of the cluster.
-	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.connection_state
-	ConnectionState *Cluster_ConnectionState `json:"connectionState,omitempty"`
-}
-
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.ConnectionState
 type Cluster_ConnectionStateObservedState struct {
 	// Output only. The current connection state.
@@ -497,4 +409,151 @@ type FleetObservedState struct {
 	//  `projects/<project-number>/locations/global/membership/<cluster-id>`.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Fleet.membership
 	Membership *string `json:"membership,omitempty"`
+}
+
+// +kcc:proto=google.rpc.Status
+type Status struct {
+	// The status code, which should be an enum value of
+	//  [google.rpc.Code][google.rpc.Code].
+	// +kcc:proto:field=google.rpc.Status.code
+	Code *int32 `json:"code,omitempty"`
+
+	// A developer-facing error message, which should be in English. Any
+	//  user-facing error message should be localized and sent in the
+	//  [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+	//  by the client.
+	// +kcc:proto:field=google.rpc.Status.message
+	Message *string `json:"message,omitempty"`
+
+	// A list of messages that carry the error details.  There is a common set of
+	//  message types for APIs to use.
+	// +kcc:proto:field=google.rpc.Status.details
+	Details []Any `json:"details,omitempty"`
+}
+
+// +kcc:proto=google.protobuf.Any
+type Any struct {
+	// A URL/resource name that uniquely identifies the type of the serialized
+	//  protocol buffer message. This string must contain at least
+	//  one "/" character. The last segment of the URL's path must represent
+	//  the fully qualified name of the type (as in
+	//  `path/google.protobuf.Duration`). The name should be in a canonical form
+	//  (e.g., leading "." is not accepted).
+	//
+	//  In practice, teams usually precompile into the binary all types that they
+	//  expect it to use in the context of Any. However, for URLs which use the
+	//  scheme `http`, `https`, or no scheme, one can optionally set up a type
+	//  server that maps type URLs to message definitions as follows:
+	//
+	//  * If no scheme is provided, `https` is assumed.
+	//  * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+	//    value in binary format, or produce an error.
+	//  * Applications are allowed to cache lookup results based on the
+	//    URL, or have them precompiled into a binary to avoid any
+	//    lookup. Therefore, binary compatibility needs to be preserved
+	//    on changes to types. (Use versioned type names to manage
+	//    breaking changes.)
+	//
+	//  Note: this functionality is not currently available in the official
+	//  protobuf release, and it is not used for type URLs beginning with
+	//  type.googleapis.com.
+	//
+	//  Schemes other than `http`, `https` (or the empty scheme) might be
+	//  used with implementation specific semantics.
+	// +kcc:proto:field=google.protobuf.Any.type_url
+	TypeURL *string `json:"typeURL,omitempty"`
+
+	// Must be a valid serialized protocol buffer of the above specified type.
+	// +kcc:proto:field=google.protobuf.Any.value
+	Value []byte `json:"value,omitempty"`
+}
+
+// EdgeContainerClusterObservedState is the state of the EdgeContainerCluster resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.edgecontainer.v1.Cluster
+type EdgeContainerClusterObservedState struct {
+	// Output only. The time when the cluster was created.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the cluster was last updated.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Required. Fleet configuration.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.fleet
+	Fleet *FleetObservedState `json:"fleet,omitempty"`
+
+	// Output only. The IP address of the Kubernetes API server.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.endpoint
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Output only. The port number of the Kubernetes API server.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.port
+	Port *int32 `json:"port,omitempty"`
+
+	// Output only. The PEM-encoded public certificate of the cluster's CA.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.cluster_ca_certificate
+	ClusterCACertificate *string `json:"clusterCACertificate,omitempty"`
+
+	// Output only. The control plane release version
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.control_plane_version
+	ControlPlaneVersion *string `json:"controlPlaneVersion,omitempty"`
+
+	// Output only. The lowest release version among all worker nodes. This field
+	//  can be empty if the cluster does not have any worker nodes.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.node_version
+	NodeVersion *string `json:"nodeVersion,omitempty"`
+
+	// Optional. Remote control plane disk encryption options. This field is only
+	//  used when enabling CMEK support.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.control_plane_encryption
+	ControlPlaneEncryption *Cluster_ControlPlaneEncryptionObservedState `json:"controlPlaneEncryption,omitempty"`
+
+	// Output only. The current status of the cluster.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.status
+	Status *string `json:"status,omitempty"`
+
+	// Output only. All the maintenance events scheduled for the cluster,
+	//  including the ones ongoing, planned for the future and done in the past (up
+	//  to 90 days).
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.maintenance_events
+	MaintenanceEvents []Cluster_MaintenanceEvent `json:"maintenanceEvents,omitempty"`
+
+	// Output only. The current connection state of the cluster.
+	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.connection_state
+	ConnectionState *Cluster_ConnectionState `json:"connectionState,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// TODO(user): make sure the pluralizaiton below is correct
+// +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainercluster;gcpedgecontainerclusters
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// EdgeContainerCluster is the Schema for the EdgeContainerCluster API
+// +k8s:openapi-gen=true
+type EdgeContainerCluster struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   EdgeContainerClusterSpec   `json:"spec,omitempty"`
+	Status EdgeContainerClusterStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// EdgeContainerClusterList contains a list of EdgeContainerCluster
+type EdgeContainerClusterList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []EdgeContainerCluster `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&EdgeContainerCluster{}, &EdgeContainerClusterList{})
 }
