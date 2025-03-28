@@ -1,0 +1,24 @@
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1alpha1
+kind: ReCAPTCHAEnterpriseFirewallPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: recaptchaenterprisefirewallpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/firewallpolicies/200
+  observedGeneration: 2
