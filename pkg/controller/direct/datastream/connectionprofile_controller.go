@@ -66,13 +66,6 @@ func (m *modelConnectionProfile) AdapterForObject(ctx context.Context, reader cl
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.Connectivity.PrivateConnectivity != nil {
-		if err := obj.Spec.Connectivity.PrivateConnectivity.PrivateConnectionRef.Normalize(ctx, reader, obj); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get datastream GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -181,49 +174,29 @@ func (a *ConnectionProfileAdapter) Update(ctx context.Context, updateOp *directb
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetOracleProfile(), a.actual.GetOracleProfile()) {
-		paths = append(paths, "oracle_profile")
-	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetGcsProfile(), a.actual.GetGcsProfile()) {
-		paths = append(paths, "gcs_profile")
-	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetMysqlProfile(), a.actual.GetMysqlProfile()) {
-		paths = append(paths, "mysql_profile")
-	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetBigqueryProfile(), a.actual.GetBigqueryProfile()) {
-		paths = append(paths, "bigquery_profile")
-	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetPostgresqlProfile(), a.actual.GetPostgresqlProfile()) {
-		paths = append(paths, "postgresql_profile")
-	}
-	if desired.Spec.Profile != nil && !reflect.DeepEqual(resource.GetSqlServerProfile(), a.actual.GetSqlServerProfile()) {
-		paths = append(paths, "sql_server_profile")
-	}
-	if desired.Spec.Connectivity.StaticServiceIPConnectivity != nil && !reflect.DeepEqual(resource.GetStaticServiceIpConnectivity(), a.actual.GetStaticServiceIpConnectivity()) {
-		paths = append(paths, "static_service_ip_connectivity")
-	}
-	if desired.Spec.Connectivity.ForwardSSHTunnelConnectivity != nil && !reflect.DeepEqual(resource.GetForwardSshConnectivity(), a.actual.GetForwardSshConnectivity()) {
-		paths = append(paths, "forward_ssh_connectivity")
-	}
-	if desired.Spec.Connectivity.PrivateConnectivity != nil && !reflect.DeepEqual(resource.GetPrivateConnectivity(), a.actual.GetPrivateConnectivity()) {
-		paths = append(paths, "private_connectivity")
+	// TODO: handle other fields
+
+	var updated *pb.ConnectionProfile
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateConnectionProfileRequest{
+			ConnectionProfile: resource,
+			UpdateMask:        &field_mask.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateConnectionProfile(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating ConnectionProfile %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("ConnectionProfile %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated ConnectionProfile", "name", a.id)
 	}
 
-	req := &pb.UpdateConnectionProfileRequest{
-		ConnectionProfile: resource,
-		UpdateMask:        &field_mask.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateConnectionProfile(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating ConnectionProfile %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("ConnectionProfile %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated ConnectionProfile", "name", a.id)
-
-	// update status
 	status := &krm.DatastreamConnectionProfileStatus{}
 	status.ObservedState = DatastreamConnectionProfileObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
