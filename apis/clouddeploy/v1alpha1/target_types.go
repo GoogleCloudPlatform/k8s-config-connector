@@ -195,6 +195,7 @@ type CustomTarget struct {
 	CustomTargetTypeRef *CustomTargetTypeRef `json:"customTargetTypeRef,omitempty"`
 }
 
+// TODO: needs WorkerPool to be a ref. Need: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3485
 // +kcc:proto=google.cloud.deploy.v1.PrivatePool
 type PrivatePool struct {
 	// Required. Resource name of the Cloud Build worker pool to use. The format
