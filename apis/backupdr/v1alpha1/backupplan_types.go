@@ -61,10 +61,10 @@ type BackupDRBackupPlanSpec struct {
 	Etag *string `json:"etag,omitempty"`
 
 	// Required. Resource name of backup vault which will be used as storage
-	//  location for backups. Format:
-	//  projects/{project}/locations/{location}/backupVaults/{backupvault}
+	//  location for backups.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
-	BackupVault *string `json:"backupVault,omitempty"` // TODO: add BackupDRBackupVault and make this field a reference field.
+	// +required
+	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan

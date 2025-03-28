@@ -568,11 +568,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/${addressID}' was not found"
   }
 }
 
@@ -588,7 +588,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
+  "name": "${addressID}",
   "purpose": "GCE_ENDPOINT",
   "region": "projects/${projectId}/global/regions/us-west1"
 }
@@ -615,7 +615,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -647,7 +647,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -679,11 +679,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -750,11 +750,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -780,11 +780,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-west1/addresses/${addressID}' was not found"
   }
 }
 
@@ -800,7 +800,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-2-${uniqueId}",
+  "name": "${addressID}",
   "region": "projects/${projectId}/global/regions/us-west1"
 }
 
@@ -826,7 +826,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -858,7 +858,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -890,10 +890,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-2-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -960,10 +960,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-2-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -2127,10 +2127,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-2-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -2162,7 +2162,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -2194,7 +2194,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -2226,11 +2226,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
+  "name": "${addressID}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "status": "RESERVED"
 }
 
@@ -2262,7 +2262,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -2294,7 +2294,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/addresses/${addressID}",
   "user": "user@example.com"
 }
 

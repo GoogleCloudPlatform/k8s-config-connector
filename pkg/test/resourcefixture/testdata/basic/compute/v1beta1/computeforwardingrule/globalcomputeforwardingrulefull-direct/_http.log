@@ -708,11 +708,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
   }
 }
 
@@ -745,7 +745,7 @@ X-Goog-Request-Params: project=${projectId}
       "filterMatchCriteria": "MATCH_ANY"
     }
   ],
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "portRange": "90",
@@ -773,7 +773,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -806,7 +806,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -849,11 +849,11 @@ X-Xss-Protection: 0
       "filterMatchCriteria": "MATCH_ANY"
     }
   ],
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "portRange": "90-90",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
 }
 
@@ -895,7 +895,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -943,11 +943,11 @@ X-Xss-Protection: 0
       "filterMatchCriteria": "MATCH_ANY"
     }
   ],
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "portRange": "90-90",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
 }
 
@@ -989,7 +989,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1025,7 +1025,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1058,7 +1058,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1106,11 +1106,11 @@ X-Xss-Protection: 0
       "filterMatchCriteria": "MATCH_ANY"
     }
   ],
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "portRange": "90-90",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
 }
 
@@ -1142,7 +1142,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1175,7 +1175,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 

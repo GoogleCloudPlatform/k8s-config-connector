@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found"
   }
 }
 
@@ -38,7 +38,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}"
+  "name": "${addressID}"
 }
 
 200 OK
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -93,7 +93,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -124,8 +124,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -190,8 +190,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -432,11 +432,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}\" not found",
+        "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}\" not found"
+    "message": "sslCertificate \"projects/${projectId}/global/sslCertificates/${sslCertificateID}\" not found"
   }
 }
 
@@ -448,7 +448,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "certificate": "-----BEGIN CERTIFICATE-----\nMIIDJTCCAg0CFHdD3ZGYMCmF3O4PvMwsP5i8d/V0MA0GCSqGSIb3DQEBCwUAME8x\nCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJXQTEhMB8GA1UECgwYSW50ZXJuZXQgV2lk\nZ2l0cyBQdHkgTHRkMRAwDgYDVQQDDAdFeGFtcGxlMB4XDTE5MDkyOTIyMjgyOVoX\nDTIwMDkyODIyMjgyOVowTzELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAldBMSEwHwYD\nVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQxEDAOBgNVBAMMB0V4YW1wbGUw\nggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDWLvOZIail12i6NXIqOspV\ncorkuS1Nl0ayrl0VuKHCvheun/s7lLLgEfifzRueYlSUtdGg4atWIwEKsbIE+AF9\nuUTzkq/t6zHxFAAWgVZ6/hW696jqcZX3yU+LCuHPLSN0ruqD6ZygnYDVciDmYwxe\n601xNfOOYRlm6dGRx6uTxGDZtfu8zsaNI0UxTugTp2x5cKB66SbgdlIJvc2Hb54a\n7qOsb9CIf+rrK2xUdJUj4ueUEIMxjnY2u/Dc71SgfBVn+yFfN9MHNdcTWPXEUClE\nFxd/MB3dGn7hVavXyvy3NT4tWhBgYBphfEUudDFej5MmVq56JOEQ2UtaQ+Imscud\nAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMYTQyjVlo6TCYoyK6akjPX7vRiwCCAh\njqsEu3bZqwUreOhZgRAyEXrq68dtXwTbwdisQmnhpBeBQuX4WWeas9TiycZ13TA1\nZ+h518D9OVXjrNs7oE3QNFeTom807IW16YydlrZMLKO8mQg6/BXfSHbLwuQHSIYS\nJD+uOfnkr08ORBbLGgBKKpy7ngflIkdSrQPmCYmYlvoy+goMAEVi0K3Y1wVzAF4k\nO4v8f7GXkNarsFT1QM82JboVV5uwX+uDmi858WKDHYGv2Ypv6yy93vdV0Xt/IBj3\n95/RDisBzcL7Ynpl34AAr5MLm7yCSsPrAmgevX4BOtcVc4rSXj5rcoE=\n-----END CERTIFICATE-----\n",
-  "name": "computesslcertificate-${uniqueId}",
+  "name": "${sslCertificateID}",
   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n"
 }
 
@@ -473,7 +473,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -504,7 +504,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -529,9 +529,9 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#sslCertificate",
-  "name": "computesslcertificate-${uniqueId}",
+  "name": "${sslCertificateID}",
   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
 }
 
 ---
@@ -556,11 +556,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}\" not found",
+        "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/${targetSslProxyID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}\" not found"
+    "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/${targetSslProxyID}\" not found"
   }
 }
 
@@ -572,11 +572,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "test description",
-  "name": "computetargetsslproxy-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -601,7 +601,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -632,7 +632,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -657,12 +657,12 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetSslProxy",
-  "name": "computetargetsslproxy-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -688,11 +688,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}\" not found",
+        "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/${targetSslProxyID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}\" not found"
+    "message": "targetSslProxy \"projects/${projectId}/global/targetSslProxies/${targetSslProxyID}\" not found"
   }
 }
 
@@ -704,11 +704,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "other test description",
-  "name": "computetargetsslproxy2-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -733,7 +733,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -764,7 +764,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -789,12 +789,12 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetSslProxy",
-  "name": "computetargetsslproxy2-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -821,11 +821,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
   }
 }
 
@@ -845,9 +845,9 @@ X-Goog-Request-Params: project=${projectId}
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "portRange": "443",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}"
 }
 
 200 OK
@@ -871,7 +871,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -904,7 +904,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -935,11 +935,11 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "443-443",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}"
 }
 
 ---
@@ -980,7 +980,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1016,11 +1016,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "443-443",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}"
 }
 
 ---
@@ -1061,7 +1061,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1073,7 +1073,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 {
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}"
 }
 
 200 OK
@@ -1097,7 +1097,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1130,7 +1130,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1166,11 +1166,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computeglobalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "networkTier": "PREMIUM",
   "portRange": "443-443",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}"
 }
 
 ---
@@ -1201,7 +1201,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1234,7 +1234,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -1259,12 +1259,12 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetSslProxy",
-  "name": "computetargetsslproxy2-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -1295,7 +1295,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -1326,7 +1326,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -1351,12 +1351,12 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetSslProxy",
-  "name": "computetargetsslproxy-${uniqueId}",
+  "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "sslCertificates": [
-    "projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+    "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
 }
 
@@ -1387,7 +1387,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -1418,7 +1418,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetSslProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/computetargetsslproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
   "user": "user@example.com"
 }
 
@@ -1443,9 +1443,9 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#sslCertificate",
-  "name": "computesslcertificate-${uniqueId}",
+  "name": "${sslCertificateID}",
   "privateKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA1i7zmSGopddoujVyKjrKVXKK5LktTZdGsq5dFbihwr4Xrp/7\nO5Sy4BH4n80bnmJUlLXRoOGrViMBCrGyBPgBfblE85Kv7esx8RQAFoFWev4Vuveo\n6nGV98lPiwrhzy0jdK7qg+mcoJ2A1XIg5mMMXutNcTXzjmEZZunRkcerk8Rg2bX7\nvM7GjSNFMU7oE6dseXCgeukm4HZSCb3Nh2+eGu6jrG/QiH/q6ytsVHSVI+LnlBCD\nMY52Nrvw3O9UoHwVZ/shXzfTBzXXE1j1xFApRBcXfzAd3Rp+4VWr18r8tzU+LVoQ\nYGAaYXxFLnQxXo+TJlaueiThENlLWkPiJrHLnQIDAQABAoIBAQDMo/WZlQBG3Cay\n64fV83AI7jTozkkLvoMNC+3iaBMeN3P3I+HuDmhOEL2lKVq/HKJFp+bPuW50EWPY\nbOlzN+Zs0kygEMJJJxQDjCF9XzxarVPj3OcmgTpRkqWOaupPgYhD3zAws080YuiK\nh84Jcg+KzXWjunGn0vxrSPI0QDueJR2i03tEDBAtMZ0pvAsJ0gmXRdzGOc2uRzDm\nfbS3y/JIufClO28OzjJ5AJkbc9XgRDeCDOFY2D375bCg2boPYmP7Iw0HVU3RQhcr\nt+US27VQBRJF4cQ2CCyr0ZbdaPn41v+/A/qxF6ZPguyy+KoyQjCqK8iFArRQ48hJ\ncR2pFx4hAoGBAP2uXIJAdAemrOunv2CWlUHI2iHj/kJ1AXRMpiT+eF0US9E6tipE\nmL63HkUhiAs2nJnPi3RDxP+kAO2Z3anqjm1KCeGj+IYYZMavnkC8EVybv9lDwORy\ne2O1bfRc/tGa341KmvXLbp8oVMIYIvKz2cZmHGJ4V4DTq8dTvmqoE4/VAoGBANgk\nKWY5MJToZJJ5bV0mc2stmGt/IAZZPlKjVmKOjDyzqHRLAhsmbMyUhhgZtyj0dzSW\nILEeaEJknYRrOB48D6IqkB8VnFJyHUG8l+Za41adqRQNid0S5n50/+eYbjZpYCrA\nSGmC2dhPZvRD6tOyEEJF5PZMvqxDcNRilc627HipAoGBAKzqrSQbyvtsIXKAZXLx\nMcwlnIp9XlLubo9Xr+iHjIPl0chMvN8S4wscxwVYVeNO1nABiI03pJCcugU7XFz2\nBR952EJ2AnFlL0w/aR+3Eh6OC7eM927Amlrc0JZAzXESoE8vC3F/uWfDlgK3cRr+\nfPM/pxl37i1iGzVDYAhTiQIBAoGAPW25nmXumsOZoc+E945wCywAP7z3mxZOEip9\n6LDexnnBDJws0w6OqW4k1kCov6kLIBTy4aPkucniwrm+T0l+n/Y807jOntfz3LT+\n7ucx6XIRlbNrVTuD6rjR6j52RFyaikvvyJz50PJwLkgHO3dGC6/VrPKO1mKsdJA4\nR3HRr1ECgYEAobNQbQSLrSWZ1cozJbmNgRqqvxDNSEDi8LpXukOAw4pz1km7o3ob\nhCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+\nVtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=\n-----END RSA PRIVATE KEY-----\n",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}"
 }
 
 ---
@@ -1475,7 +1475,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -1506,7 +1506,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${sslCertificateID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}",
   "user": "user@example.com"
 }
 
@@ -1662,8 +1662,8 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "name": "${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1693,7 +1693,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -1724,6 +1724,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }

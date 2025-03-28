@@ -15,31 +15,62 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  labels:
+    label-one: "value-two"
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:
-  location: us-central1
-  networkConfig:
-    networkRef:
-      name: computenetwork-${uniqueId}
-  projectRef:
-    external: ${projectId}
-
   automatedBackupPolicy:
     backupWindow: 3600s
     enabled: true
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-2-${uniqueId}
+    labels:
+      source: kcc-test-updated
     location: us-central1
     timeBasedRetention:
       retentionPeriod: 43200s
     weeklySchedule:
       daysOfWeek: [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY]
-      startTimes: 
+      startTimes:
         - hours: 10
           minutes: 0
           seconds: 0
           nanos: 0
-
+  clusterType: PRIMARY
   continuousBackupConfig:
-    enabled: false
-          
+    enabled: true
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-2-${uniqueId}
+    recoveryWindowDays: 7
+  deletionPolicy: FORCE
+  displayName: A test alloyDB cluster with updated display name
+  encryptionConfig:
+    kmsKeyNameRef:
+      name: kmscryptokey-1-${uniqueId}
+  initialUser:
+    user: postgres2
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: secret-2-${uniqueId}
+          key: newValue
+  location: us-central1
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: MONDAY
+        startTime:
+          hours: 1
+          minutes: 2
+          seconds: 3
+          nanos: 4
+  networkConfig:
+    allocatedIpRange: test-range-1
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}

@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.backupdr.v1.BackupDR
+// proto.message: google.cloud.backupdr.v1.ManagementServer
+
 package mockbackupdr
 
 import (
@@ -34,7 +38,7 @@ import (
 )
 
 // GetManagementServer implements the BackupDRServer interface.
-func (s *BackupDRServerV1) GetManagementServer(ctx context.Context, req *pb.GetManagementServerRequest) (*pb.ManagementServer, error) {
+func (s *BackupDRV1) GetManagementServer(ctx context.Context, req *pb.GetManagementServerRequest) (*pb.ManagementServer, error) {
 	name, err := s.parseManagementServerName(req.Name)
 	if err != nil {
 		return nil, err
@@ -54,7 +58,7 @@ func (s *BackupDRServerV1) GetManagementServer(ctx context.Context, req *pb.GetM
 }
 
 // CreateManagementServer implements the BackupDRServer interface.
-func (s *BackupDRServerV1) CreateManagementServer(ctx context.Context, req *pb.CreateManagementServerRequest) (*longrunningpb.Operation, error) {
+func (s *BackupDRV1) CreateManagementServer(ctx context.Context, req *pb.CreateManagementServerRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/managementServers/" + req.ManagementServerId
 	name, err := s.parseManagementServerName(reqName)
 	if err != nil {
@@ -99,7 +103,7 @@ func (s *BackupDRServerV1) CreateManagementServer(ctx context.Context, req *pb.C
 }
 
 // DeleteManagementServer implements the BackupDRServer interface.
-func (s *BackupDRServerV1) DeleteManagementServer(ctx context.Context, req *pb.DeleteManagementServerRequest) (*longrunningpb.Operation, error) {
+func (s *BackupDRV1) DeleteManagementServer(ctx context.Context, req *pb.DeleteManagementServerRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseManagementServerName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -143,7 +147,7 @@ func (n *ManagementServerName) String() string {
 
 // parseManagementServerName parses a string into a ManagementServerName.
 // The expected form is: projects/<project>/locations/<location>/managementServers/<id>
-func (s *BackupDRServerV1) parseManagementServerName(name string) (*ManagementServerName, error) {
+func (s *BackupDRV1) parseManagementServerName(name string) (*ManagementServerName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "managementServers" {

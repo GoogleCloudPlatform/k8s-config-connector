@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.resourcemanager.v3.TagValues
+// proto.message: google.cloud.resourcemanager.v3.TagValue
+
 package mockresourcemanager
 
 import (
@@ -30,13 +34,9 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
-
-type TagValues struct {
-	*MockService
-	pb.UnimplementedTagValuesServer
-}
 
 func (s *TagValues) GetTagValue(ctx context.Context, req *pb.GetTagValueRequest) (*pb.TagValue, error) {
 	name, err := s.parseTagValueName(req.Name)
@@ -58,6 +58,30 @@ func (s *TagValues) GetTagValue(ctx context.Context, req *pb.GetTagValueRequest)
 	// We should verify that this is part of on of our projects, but ... it's a mock
 
 	return obj, nil
+}
+
+func (s *TagValues) GetNamespacedTagValue(ctx context.Context, req *pb.GetNamespacedTagValueRequest) (*pb.TagValue, error) {
+	namespacedName := req.GetName()
+	var tagValues []*pb.TagValue
+
+	tagValueKind := (&pb.TagValue{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, tagValueKind, storage.ListOptions{}, func(obj proto.Message) error {
+		tagValue := obj.(*pb.TagValue)
+		if tagValue.GetNamespacedName() == namespacedName {
+			tagValues = append(tagValues, tagValue)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if len(tagValues) == 0 {
+		return nil, status.Errorf(codes.PermissionDenied, "Permission denied on resource '%s' (or it may not exist).", req.GetName())
+	}
+	if len(tagValues) > 1 {
+		return nil, status.Error(codes.Internal, "found multiple matching values")
+	}
+	return tagValues[0], nil
 }
 
 func (s *TagValues) CreateTagValue(ctx context.Context, req *pb.CreateTagValueRequest) (*longrunningpb.Operation, error) {
@@ -164,10 +188,13 @@ func (s *TagValues) UpdateTagValue(ctx context.Context, req *pb.UpdateTagValueRe
 		return nil, status.Errorf(codes.Internal, "error updating tagValue: %v", err)
 	}
 
-	metadata := &pb.UpdateTagValueMetadata{}
-	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
-		return obj, nil
-	})
+	// Operation is not actually async
+	lro, err := s.operations.DoneLRO(ctx, "", nil, obj)
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return name
+	return lro, nil
 }
 
 func (s *TagValues) DeleteTagValue(ctx context.Context, req *pb.DeleteTagValueRequest) (*longrunningpb.Operation, error) {

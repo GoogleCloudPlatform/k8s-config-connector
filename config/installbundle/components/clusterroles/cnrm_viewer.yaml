@@ -71,7 +71,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - backupdr.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -191,6 +207,22 @@ rules:
   - list
   - watch
 - apiGroups:
+  - clouddeploy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - clouddms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudfunctions.cnrm.cloud.google.com
   resources:
   - '*'
@@ -231,7 +263,31 @@ rules:
   - list
   - watch
 - apiGroups:
+  - cloudquota.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudtasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - colab.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -312,6 +368,14 @@ rules:
   - watch
 - apiGroups:
   - datafusion.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dataplex.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -567,6 +631,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - metastore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - mlengine.cnrm.cloud.google.com
   resources:
   - '*'
@@ -576,6 +648,14 @@ rules:
   - watch
 - apiGroups:
   - monitoring.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - netapp.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -815,14 +895,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - tasks.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - tpu.cnrm.cloud.google.com
   resources:
   - '*'
@@ -839,7 +911,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - vmwareengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

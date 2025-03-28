@@ -31,11 +31,6 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
 )
 
-type AssetService struct {
-	*MockService
-	pb.UnimplementedAssetServiceServer
-}
-
 func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb.Feed, error) {
 	obj := &pb.Feed{}
 	if err := s.storage.Get(ctx, req.Name, obj); err != nil {

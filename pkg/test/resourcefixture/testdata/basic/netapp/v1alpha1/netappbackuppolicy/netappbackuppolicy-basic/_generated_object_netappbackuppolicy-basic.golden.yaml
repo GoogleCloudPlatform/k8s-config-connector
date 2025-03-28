@@ -1,0 +1,24 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppBackupPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: netappbackuppolicy-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  dailyBackupLimit: 3
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

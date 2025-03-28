@@ -31,14 +31,38 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allocationPolicy": {
+    "labels": {
+      "batch-job-id": "${jobID}"
+    },
+    "location": {
+      "allowedLocations": [
+        "regions/us-central1",
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c"
+      ]
+    },
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
+    "runDuration": "0s",
     "state": "QUEUED"
   },
   "taskGroups": [
     {
+      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
+      "parallelism": "1",
+      "taskCount": "1",
       "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "2000",
+          "memoryMib": "2000"
+        },
         "runnables": [
           {
             "script": {
@@ -71,14 +95,38 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allocationPolicy": {
+    "labels": {
+      "batch-job-id": "${jobID}"
+    },
+    "location": {
+      "allowedLocations": [
+        "regions/us-central1",
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c"
+      ]
+    },
+    "serviceAccount": {
+      "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
-    "state": "SUCCEEDED"
+    "runDuration": "0s",
+    "state": "QUEUED"
   },
   "taskGroups": [
     {
+      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
+      "parallelism": "1",
+      "taskCount": "1",
       "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "2000",
+          "memoryMib": "2000"
+        },
         "runnables": [
           {
             "script": {
@@ -132,7 +180,12 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata"
+    "@type": "type.googleapis.com/google.cloud.batch.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
+    "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/operations/${operationID}"
 }

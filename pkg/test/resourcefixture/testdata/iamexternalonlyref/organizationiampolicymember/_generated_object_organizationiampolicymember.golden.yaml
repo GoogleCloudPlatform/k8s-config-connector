@@ -29,7 +29,7 @@ spec:
   member: serviceAccount:extonly-${uniqueId}@${projectId}.iam.gserviceaccount.com
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    external: "123450001"
+    external: ${organizationID}
     kind: Organization
   role: roles/pubsub.admin
 status:

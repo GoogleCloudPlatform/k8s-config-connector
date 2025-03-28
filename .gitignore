@@ -163,3 +163,6 @@ log
 # experiments/conductor
 experiments/conductor/logs
 experiments/conductor/branches.yaml
+
+# failing fuzz output
+pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers

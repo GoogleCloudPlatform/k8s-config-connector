@@ -18,7 +18,6 @@ spec:
     plural: iapsettings
     shortNames:
     - gcpiapsettings
-    - gcpiapsettingss
     singular: iapsettings
   preserveUnknownFields: false
   scope: Namespaced

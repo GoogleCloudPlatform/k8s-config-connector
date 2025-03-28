@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
   }
 }
 
@@ -34,7 +34,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "autoCreateSubnetworks": false,
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "GLOBAL"
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -93,7 +93,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -118,12 +118,12 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "GLOBAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
@@ -149,11 +149,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}' was not found"
   }
 }
 
@@ -168,8 +168,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${subnetworkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1"
 }
 
@@ -195,7 +195,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -227,7 +227,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -258,13 +258,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -315,14 +315,14 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "labels": {
     "l-key1": "l-value1"
   },
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateClusterConfig": {
     "allowedProjects": [
       "${projectId}"
     ],
     "enablePrivateEndpoint": true
   },
-  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 200 OK
@@ -387,7 +387,7 @@ X-Xss-Protection: 0
       "l-key1": "l-value1"
     },
     "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "privateClusterConfig": {
       "allowedProjects": [
         "${projectId}"
@@ -396,7 +396,7 @@ X-Xss-Protection: 0
       "enablePrivateEndpoint": true,
       "serviceAttachmentUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/k8s1-sa-abcdef-cloudshell-gateway-abcdef"
     },
-    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -431,7 +431,7 @@ X-Xss-Protection: 0
     "l-key1": "l-value1"
   },
   "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateClusterConfig": {
     "allowedProjects": [
       "${projectId}"
@@ -440,7 +440,7 @@ X-Xss-Protection: 0
     "enablePrivateEndpoint": true,
     "serviceAttachmentUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/k8s1-sa-abcdef-cloudshell-gateway-abcdef"
   },
-  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -463,14 +463,14 @@ X-Goog-Request-Params: workstation_cluster.name=projects%2F${projectId}%2Flocati
     "l-key2": "l-value2"
   },
   "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateClusterConfig": {
     "allowedProjects": [
       "${projectId}"
     ],
     "enablePrivateEndpoint": true
   },
-  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
 }
 
 200 OK
@@ -499,14 +499,14 @@ X-Xss-Protection: 0
       "l-key2": "l-value2"
     },
     "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "privateClusterConfig": {
       "allowedProjects": [
         "${projectId}"
       ],
       "enablePrivateEndpoint": true
     },
-    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -547,7 +547,7 @@ X-Xss-Protection: 0
       "l-key2": "l-value2"
     },
     "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "privateClusterConfig": {
       "allowedProjects": [
         "${projectId}"
@@ -556,7 +556,7 @@ X-Xss-Protection: 0
       "enablePrivateEndpoint": true,
       "serviceAttachmentUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/serviceAttachments/k8s1-sa-abcdef-cloudshell-gateway-abcdef"
     },
-    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -592,14 +592,14 @@ X-Xss-Protection: 0
     "l-key2": "l-value2"
   },
   "name": "projects/${projectId}/locations/us-central1/workstationClusters/workstationcluster-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "privateClusterConfig": {
     "allowedProjects": [
       "${projectId}"
     ],
     "enablePrivateEndpoint": true
   },
-  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -692,13 +692,13 @@ X-Xss-Protection: 0
   "logConfig": {
     "enable": false
   },
-  "name": "computesubnetwork-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -730,7 +730,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -762,7 +762,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -787,12 +787,12 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "routingConfig": {
     "routingMode": "GLOBAL"
   },
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
@@ -823,7 +823,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -854,6 +854,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }

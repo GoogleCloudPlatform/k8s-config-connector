@@ -1,17 +1,384 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 ---
 version: 2
-interactions: []
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/1.73.0 gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Finstances%2Fspannerinstance-3eej62fms64k6
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?%24alt=json%3Benum-encoding%3Dint
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=189
+        status: 404 Not Found
+        code: 404
+        duration: 453.402816ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 347
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"parent":"projects/example-project", "instanceId":"spannerinstance-3eej62fms64k6", "instance":{"name":"projects/example-project/instances/spannerinstance-3eej62fms64k6", "config":"projects/example-project/instanceConfigs/regional-us-west1", "displayName":"Spanner Database Dependency", "nodeCount":1, "labels":{"cnrm-test":"true", "managed-by-cnrm":"true"}}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/1.73.0 gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - parent=projects%2Fcnrm-anhdle
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances?%24alt=json%3Benum-encoding%3Dint
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/8b19de694151aaa5",
+              "metadata": {
+                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
+                "instance": {
+                  "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+                  "config": "projects/example-project/instanceConfigs/regional-us-west1",
+                  "displayName": "Spanner Database Dependency",
+                  "nodeCount": 1,
+                  "state": 2,
+                  "labels": {
+                    "cnrm-test": "true",
+                    "managed-by-cnrm": "true"
+                  },
+                  "processingUnits": 1000,
+                  "instanceType": 1,
+                  "replicaComputeCapacity": [
+                    {
+                      "replicaSelection": {
+                        "location": "us-west1"
+                      },
+                      "nodeCount": 1
+                    }
+                  ],
+                  "edition": 1,
+                  "resourceLocation": "us-west1",
+                  "defaultBackupScheduleType": 2
+                },
+                "startTime": "2025-03-18T21:43:14.580827Z"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=1530
+        status: 200 OK
+        code: 200
+        duration: 1.532236462s
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/UNKNOWN gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Finstances%2Fspannerinstance-3eej62fms64k6%2Foperations%2F8b19de694151aaa5
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/8b19de694151aaa5
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/8b19de694151aaa5",
+              "metadata": {
+                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
+                "instance": {
+                  "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+                  "config": "projects/example-project/instanceConfigs/regional-us-west1",
+                  "displayName": "Spanner Database Dependency",
+                  "nodeCount": 1,
+                  "state": "READY",
+                  "labels": {
+                    "managed-by-cnrm": "true",
+                    "cnrm-test": "true"
+                  },
+                  "processingUnits": 1000,
+                  "instanceType": "PROVISIONED",
+                  "createTime": "2025-03-18T21:43:14.726435Z",
+                  "updateTime": "2025-03-18T21:43:14.726435Z",
+                  "replicaComputeCapacity": [
+                    {
+                      "replicaSelection": {
+                        "location": "us-west1"
+                      },
+                      "nodeCount": 1
+                    }
+                  ],
+                  "edition": "STANDARD",
+                  "resourceLocation": "us-west1",
+                  "defaultBackupScheduleType": "AUTOMATIC"
+                },
+                "startTime": "2025-03-18T21:43:14.580827Z",
+                "endTime": "2025-03-18T21:43:14.729328Z",
+                "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
+                "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+                "config": "projects/example-project/instanceConfigs/regional-us-west1",
+                "displayName": "Spanner Database Dependency",
+                "nodeCount": 1,
+                "state": "READY",
+                "labels": {
+                  "managed-by-cnrm": "true",
+                  "cnrm-test": "true"
+                },
+                "processingUnits": 1000,
+                "instanceType": "PROVISIONED",
+                "createTime": "2025-03-18T21:43:14.726435Z",
+                "updateTime": "2025-03-18T21:43:14.726435Z",
+                "replicaComputeCapacity": [
+                  {
+                    "replicaSelection": {
+                      "location": "us-west1"
+                    },
+                    "nodeCount": 1
+                  }
+                ],
+                "edition": "STANDARD",
+                "resourceLocation": "us-west1",
+                "defaultBackupScheduleType": "AUTOMATIC"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=120
+        status: 200 OK
+        code: 200
+        duration: 122.003035ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/1.73.0 gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Finstances%2Fspannerinstance-3eej62fms64k6
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?%24alt=json%3Benum-encoding%3Dint
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+              "config": "projects/example-project/instanceConfigs/regional-us-west1",
+              "displayName": "Spanner Database Dependency",
+              "nodeCount": 1,
+              "state": 2,
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "processingUnits": 1000,
+              "instanceType": 1,
+              "createTime": "2025-03-18T21:43:14.726435Z",
+              "updateTime": "2025-03-18T21:43:14.726435Z",
+              "replicaComputeCapacity": [
+                {
+                  "replicaSelection": {
+                    "location": "us-west1"
+                  },
+                  "nodeCount": 1
+                }
+              ],
+              "edition": 1,
+              "resourceLocation": "us-west1",
+              "defaultBackupScheduleType": 2
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=189
+        status: 200 OK
+        code: 200
+        duration: 191.862622ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/1.73.0 gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Finstances%2Fspannerinstance-3eej62fms64k6
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?%24alt=json%3Benum-encoding%3Dint
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+              "config": "projects/example-project/instanceConfigs/regional-us-west1",
+              "displayName": "Spanner Database Dependency",
+              "nodeCount": 1,
+              "state": 2,
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "processingUnits": 1000,
+              "instanceType": 1,
+              "createTime": "2025-03-18T21:43:14.726435Z",
+              "updateTime": "2025-03-18T21:43:14.726435Z",
+              "replicaComputeCapacity": [
+                {
+                  "replicaSelection": {
+                    "location": "us-west1"
+                  },
+                  "nodeCount": 1
+                }
+              ],
+              "edition": 1,
+              "resourceLocation": "us-west1",
+              "defaultBackupScheduleType": 2
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=42
+        status: 200 OK
+        code: 200
+        duration: 43.844602ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: spanner.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.25.0-20250216-RC00 gapic/1.73.0 gax/2.14.1 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Finstances%2Fspannerinstance-3eej62fms64k6
+        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?%24alt=json%3Benum-encoding%3Dint
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=1461
+        status: 200 OK
+        code: 200
+        duration: 1.46328874s

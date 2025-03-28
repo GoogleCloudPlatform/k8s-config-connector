@@ -53,7 +53,8 @@ type SpannerInstanceSpec struct {
 	AutoscalingConfig *AutoscalingConfig `json:"autoscalingConfig,omitempty"`
 
 	// Optional. The `Edition` of the current instance.
-	// Currently accepted values are EDITION_UNSPECIFIED, STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+	// Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS.
+	// If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.
 	// +optional
 	Edition *string `json:"edition,omitempty"`
 
@@ -91,10 +92,9 @@ type SpannerInstanceObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpspannerinstance;gcpspannerinstances
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -15,9 +15,11 @@
 package runner
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strings"
+	"time"
 )
 
 func createGithubBranch(opts *RunnerOptions, branch Branch) {
@@ -135,6 +137,17 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 	log.Printf("CHECK LOCAL BRANCH %s\r\n", msg)
 	exists := strings.Contains(msg, branch.Local)
 
+	// Ask for final confirmation
+	fmt.Printf("Are you sure you want to delete the branch %s? [y/N]: ", branch.Local)
+	var response string
+	if _, err := fmt.Scanln(&response); err != nil {
+		log.Printf("Error reading input: %v", err)
+		return
+	}
+	if response != "y" && response != "Y" {
+		log.Printf("Skipping delete for branch %s", branch.Local)
+		return
+	}
 	// Delete the actual branch
 	// git checkout -b "${RELEASE}"
 	if exists {
@@ -153,4 +166,59 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 		}
 		log.Printf("LOCAL BRANCH DELETE %s\r\n", msg)
 	}
+}
+
+func pushBranch(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	// Determine the remote branch name
+	remoteBranch := branch.Local
+	if opts.branchSuffix != "" {
+		remoteBranch = branch.Local + opts.branchSuffix
+		log.Printf("Using remote branch name with suffix: %s", remoteBranch)
+	} else if branch.Remote != "" && branch.Remote != branch.Local {
+		remoteBranch = branch.Remote
+		log.Printf("Using configured remote branch name: %s", remoteBranch)
+	}
+
+	// Run git push command with force flag
+	cfg := CommandConfig{
+		Name: "Git push",
+		Cmd:  "git",
+		Args: []string{
+			"push",
+			"origin",
+			fmt.Sprintf("%s:%s", branch.Local, remoteBranch),
+			"--force",
+		},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
+	}
+	output, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git push error for branch %s: %v", branch.Name, err)
+	}
+	return nil, &output, err
+}
+
+func makeReadyPR(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	// Run git push command with force flag
+	if opts.skipMakeReadyPR {
+		log.Printf("Skipping make ready-pr for branch %s (--skip-makereadypr flag is set)", branch.Name)
+		return nil, nil, nil
+	}
+
+	cfg := CommandConfig{
+		Name: "Make ready PR",
+		Cmd:  "make",
+		Args: []string{
+			"ready-pr",
+		},
+		WorkDir:     opts.branchRepoDir,
+		MaxAttempts: 1,
+		Timeout:     15 * time.Minute,
+	}
+	output, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Make ready PR error for branch %s: %v", branch.Name, err)
+	}
+	return nil, &output, err
 }

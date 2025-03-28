@@ -33,7 +33,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: proxyonlysubnetwork-${uniqueId}
+  name: proxyonlysubnet-${uniqueId}
 spec:
   region: us-central1
   ipCidrRange: "10.129.0.0/23"

@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:controller
+// proto.service: google.cloud.backupdr.v1.BackupDR
+// proto.message: google.cloud.backupdr.v1.ManagementServer
+// crd.type: BackupDRManagementServer
+// crd.version: v1alpha1
+
 package backupdr
 
 import (
@@ -27,7 +33,6 @@ import (
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
-	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -47,19 +52,6 @@ var _ directbase.Model = &modelManagementServer{}
 
 type modelManagementServer struct {
 	config config.ControllerConfig
-}
-
-func (m *modelManagementServer) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building ManagementServer client: %w", err)
-	}
-	return gcpClient, err
 }
 
 func (m *modelManagementServer) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -84,13 +76,17 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, reader cli
 	}
 
 	// Get backupdr GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	backupDRClient, err := gcpClient.newBackupDRClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &ManagementServerAdapter{
 		id:        id,
-		gcpClient: gcpClient,
+		gcpClient: backupDRClient,
 		desired:   obj,
 		reader:    reader,
 	}, nil
@@ -120,11 +116,9 @@ func (a *ManagementServerAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting ManagementServer", "name", a.id)
 
 	req := &pb.GetManagementServerRequest{Name: a.id.String()}
-	fmt.Printf("[debug] get ManagementServer request: %v\n", req)
 	managementserverpb, err := a.gcpClient.GetManagementServer(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			fmt.Printf("[debug] ManagementServer %q not found\n", a.id)
 			return false, nil
 		}
 		return false, fmt.Errorf("getting ManagementServer %q: %w", a.id, err)
@@ -151,7 +145,6 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 		ManagementServerId: a.id.ID(),
 		ManagementServer:   resource,
 	}
-	fmt.Printf("[debug] create ManagementServer request: %v\n", req)
 	op, err := a.gcpClient.CreateManagementServer(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating ManagementServer %s: %w", a.id, err)
@@ -161,8 +154,6 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 		return fmt.Errorf("ManagementServer %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created ManagementServer", "name", a.id)
-
-	fmt.Printf("[debug] created ManagementServer: %v\n", created)
 
 	status := &krm.BackupDRManagementServerStatus{}
 	status.ObservedState = BackupDRManagementServerObservedState_FromProto(mapCtx, created)
@@ -211,7 +202,6 @@ func (a *ManagementServerAdapter) Delete(ctx context.Context, deleteOp *directba
 	log.V(2).Info("deleting ManagementServer", "name", a.id)
 
 	req := &pb.DeleteManagementServerRequest{Name: a.id.String()}
-	fmt.Printf("[debug] delete ManagementServer request: %v\n", req)
 	op, err := a.gcpClient.DeleteManagementServer(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {

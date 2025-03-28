@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
   }
 }
 
@@ -34,7 +34,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "autoCreateSubnetworks": false,
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
 }
 
@@ -59,7 +59,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -90,7 +90,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -115,9 +115,9 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
@@ -161,7 +161,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   }
 }
 
@@ -273,9 +273,9 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
     "state": "READY",
@@ -357,9 +357,9 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
   "state": "READY",
@@ -390,11 +390,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/addresses/computeaddress-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/addresses/${addressID}' was not found"
   }
 }
 
@@ -410,8 +410,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING"
 }
@@ -437,7 +437,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -468,7 +468,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -499,11 +499,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -568,11 +568,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -643,9 +643,9 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "reservedPeeringRanges": [
-    "computeaddress-${uniqueId}"
+    "${addressID}"
   ]
 }
 
@@ -683,10 +683,10 @@ X-Xss-Protection: 0
   "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "peering": "servicenetworking-googleapis-com",
     "reservedPeeringRanges": [
-      "computeaddress-${uniqueId}"
+      "${addressID}"
     ],
     "service": "services/servicenetworking.googleapis.com"
   }
@@ -732,10 +732,10 @@ X-Xss-Protection: 0
 {
   "connections": [
     {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "network": "projects/${projectNumber}/global/networks/${networkID}",
       "peering": "servicenetworking-googleapis-com",
       "reservedPeeringRanges": [
-        "computeaddress-${uniqueId}"
+        "${addressID}"
       ],
       "service": "services/servicenetworking.googleapis.com"
     }
@@ -892,9 +892,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -916,18 +917,19 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?alt=json&cluster_id=alloydbcluster-2-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-2-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west8
 
 {
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   },
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
@@ -959,9 +961,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1042,9 +1045,9 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
     "secondaryConfig": {
@@ -1059,9 +1062,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1083,13 +1087,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1098,7 +1102,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1106,22 +1110,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -1129,29 +1133,31 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
+    "enabled": false,
     "labels": {
       "source": "kcc-test"
     },
@@ -1161,13 +1167,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1176,22 +1182,27 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
   },
+  "databaseVersion": 3,
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   },
+  "reconciling": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
-  }
+  },
+  "subscriptionType": 1
 }
 
 200 OK
@@ -1219,9 +1230,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1305,9 +1317,9 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
     "secondaryConfig": {
@@ -1322,9 +1334,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1349,13 +1362,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1364,7 +1377,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1372,22 +1385,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -1395,25 +1408,26 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&force=true
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1440,9 +1454,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1642,10 +1657,10 @@ X-Xss-Protection: 0
 {
   "connections": [
     {
-      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "network": "projects/${projectNumber}/global/networks/${networkID}",
       "peering": "servicenetworking-googleapis-com",
       "reservedPeeringRanges": [
-        "computeaddress-${uniqueId}"
+        "${addressID}"
       ],
       "service": "services/servicenetworking.googleapis.com"
     }
@@ -1759,11 +1774,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "computeaddress-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "name": "${addressID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}"
 }
 
 ---
@@ -1793,7 +1808,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -1824,7 +1839,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
   "user": "user@example.com"
 }
 
@@ -1900,10 +1915,11 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
+  "primaryConfig": {},
   "reconciling": false,
   "state": "READY",
   "subscriptionType": "STANDARD",
@@ -1994,9 +2010,9 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "computenetwork-${uniqueId}",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
@@ -2027,7 +2043,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
@@ -2058,6 +2074,6 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }

@@ -17,15 +17,16 @@ kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: alloydbcluster-${uniqueId}
 spec:
   location: southamerica-east1
-  networkConfig:
-    networkRef:
-      name: default
+  networkRef:
+    name: default
   projectRef:
     external: ${projectId}
-  automatedBackupPolicy:
-    labels:
-      source: kcc-test
+  initialUser:
+    user: postgres
+    password:
+      value: "updated"
   resourceID: alloydbcluster${uniqueId}

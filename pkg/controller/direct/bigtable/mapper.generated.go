@@ -128,102 +128,6 @@ func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krm.App
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
 	return out
 }
-func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krm.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
-}
-func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView) *pb.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := AuthorizedView_SubsetView_ToProto(mapCtx, in.SubsetView); oneof != nil {
-		out.AuthorizedView = &pb.AuthorizedView_SubsetView_{SubsetView: oneof}
-	}
-	out.Etag = direct.ValueOf(in.Etag)
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
-}
-func AuthorizedView_FamilySubsets_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_FamilySubsets) *krm.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
-	return out
-}
-func AuthorizedView_FamilySubsets_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView_FamilySubsets) *pb.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
-	return out
-}
-func AuthorizedView_SubsetView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krm.AuthorizedView_SubsetView {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AuthorizedView_SubsetView{}
-	out.RowPrefixes = in.RowPrefixes
-	// MISSING: FamilySubsets
-	return out
-}
-func AuthorizedView_SubsetView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView_SubsetView) *pb.AuthorizedView_SubsetView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView_SubsetView{}
-	out.RowPrefixes = in.RowPrefixes
-	// MISSING: FamilySubsets
-	return out
-}
-func AutoscalingLimits_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingLimits) *krm.AutoscalingLimits {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutoscalingLimits{}
-	out.MinServeNodes = direct.LazyPtr(in.GetMinServeNodes())
-	out.MaxServeNodes = direct.LazyPtr(in.GetMaxServeNodes())
-	return out
-}
-func AutoscalingLimits_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingLimits) *pb.AutoscalingLimits {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutoscalingLimits{}
-	out.MinServeNodes = direct.ValueOf(in.MinServeNodes)
-	out.MaxServeNodes = direct.ValueOf(in.MaxServeNodes)
-	return out
-}
-func AutoscalingTargets_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingTargets) *krm.AutoscalingTargets {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AutoscalingTargets{}
-	out.CpuUtilizationPercent = direct.LazyPtr(in.GetCpuUtilizationPercent())
-	out.StorageUtilizationGibPerNode = direct.LazyPtr(in.GetStorageUtilizationGibPerNode())
-	return out
-}
-func AutoscalingTargets_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingTargets) *pb.AutoscalingTargets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutoscalingTargets{}
-	out.CpuUtilizationPercent = direct.ValueOf(in.CpuUtilizationPercent)
-	out.StorageUtilizationGibPerNode = direct.ValueOf(in.StorageUtilizationGibPerNode)
-	return out
-}
 func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.Backup {
 	if in == nil {
 		return nil
@@ -296,86 +200,6 @@ func ChangeStreamConfig_ToProto(mapCtx *direct.MapContext, in *krm.ChangeStreamC
 	out.RetentionPeriod = ChangeStreamConfig_RetentionPeriod_ToProto(mapCtx, in.RetentionPeriod)
 	return out
 }
-func Cluster_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.Cluster {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Cluster{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.ServeNodes = direct.LazyPtr(in.GetServeNodes())
-	out.ClusterConfig = Cluster_ClusterConfig_FromProto(mapCtx, in.GetClusterConfig())
-	out.DefaultStorageType = direct.Enum_FromProto(mapCtx, in.GetDefaultStorageType())
-	out.EncryptionConfig = Cluster_EncryptionConfig_FromProto(mapCtx, in.GetEncryptionConfig())
-	return out
-}
-func Cluster_ToProto(mapCtx *direct.MapContext, in *krm.Cluster) *pb.Cluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Location = direct.ValueOf(in.Location)
-	out.State = direct.Enum_ToProto[pb.Cluster_State](mapCtx, in.State)
-	out.ServeNodes = direct.ValueOf(in.ServeNodes)
-	if oneof := Cluster_ClusterConfig_ToProto(mapCtx, in.ClusterConfig); oneof != nil {
-		out.Config = &pb.Cluster_ClusterConfig_{ClusterConfig: oneof}
-	}
-	out.DefaultStorageType = direct.Enum_ToProto[pb.StorageType](mapCtx, in.DefaultStorageType)
-	out.EncryptionConfig = Cluster_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
-	return out
-}
-func Cluster_ClusterAutoscalingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ClusterAutoscalingConfig) *krm.Cluster_ClusterAutoscalingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Cluster_ClusterAutoscalingConfig{}
-	out.AutoscalingLimits = AutoscalingLimits_FromProto(mapCtx, in.GetAutoscalingLimits())
-	out.AutoscalingTargets = AutoscalingTargets_FromProto(mapCtx, in.GetAutoscalingTargets())
-	return out
-}
-func Cluster_ClusterAutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ClusterAutoscalingConfig) *pb.Cluster_ClusterAutoscalingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster_ClusterAutoscalingConfig{}
-	out.AutoscalingLimits = AutoscalingLimits_ToProto(mapCtx, in.AutoscalingLimits)
-	out.AutoscalingTargets = AutoscalingTargets_ToProto(mapCtx, in.AutoscalingTargets)
-	return out
-}
-func Cluster_ClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ClusterConfig) *krm.Cluster_ClusterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Cluster_ClusterConfig{}
-	out.ClusterAutoscalingConfig = Cluster_ClusterAutoscalingConfig_FromProto(mapCtx, in.GetClusterAutoscalingConfig())
-	return out
-}
-func Cluster_ClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_ClusterConfig) *pb.Cluster_ClusterConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster_ClusterConfig{}
-	out.ClusterAutoscalingConfig = Cluster_ClusterAutoscalingConfig_ToProto(mapCtx, in.ClusterAutoscalingConfig)
-	return out
-}
-func Cluster_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_EncryptionConfig) *krm.Cluster_EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Cluster_EncryptionConfig{}
-	out.KmsKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	return out
-}
-func Cluster_EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Cluster_EncryptionConfig) *pb.Cluster_EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Cluster_EncryptionConfig{}
-	out.KmsKeyName = direct.ValueOf(in.KmsKeyName)
-	return out
-}
 func ColumnFamily_FromProto(mapCtx *direct.MapContext, in *pb.ColumnFamily) *krm.ColumnFamily {
 	if in == nil {
 		return nil
@@ -406,26 +230,6 @@ func DataBoostReadLocalWrites_ToProto(mapCtx *direct.MapContext, in *krm.DataBoo
 		return nil
 	}
 	out := &pb.DataBoostReadLocalWrites{}
-	return out
-}
-func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionInfo{}
-	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
-	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
-	return out
-}
-func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionInfo{}
-	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
-	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
 	return out
 }
 func GcRule_FromProto(mapCtx *direct.MapContext, in *pb.GcRule) *krm.GcRule {
@@ -906,5 +710,26 @@ func Type_String_Encoding_Utf8Raw_ToProto(mapCtx *direct.MapContext, in *krm.Typ
 		return nil
 	}
 	out := &pb.Type_String_Encoding_Utf8Raw{}
+	return out
+}
+
+func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	// MISSING: EncryptionStatus
+	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	return out
+}
+func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
+	// MISSING: EncryptionStatus
+	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
 	return out
 }

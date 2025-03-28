@@ -343,11 +343,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}' was not found"
   }
 }
 
@@ -359,7 +359,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "test target tcp proxy",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
@@ -385,7 +385,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -416,7 +416,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -441,9 +441,9 @@ X-Xss-Protection: 0
   "description": "test target tcp proxy",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "NONE",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
@@ -478,7 +478,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -509,7 +509,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -544,7 +544,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -575,7 +575,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -600,9 +600,9 @@ X-Xss-Protection: 0
   "description": "test target tcp proxy",
   "id": "000000000000000000000",
   "kind": "compute#targetTcpProxy",
-  "name": "computetargettcpproxy-${uniqueId}",
+  "name": "${targetTcpProxyID}",
   "proxyHeader": "PROXY_V1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "service": "projects/${projectId}/global/backendServices/computebackendservice-2-${uniqueId}"
 }
 
@@ -633,7 +633,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 
@@ -664,7 +664,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetTcpProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/computetargettcpproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}",
   "user": "user@example.com"
 }
 

@@ -46,7 +46,7 @@ type AppHubApplicationSpec struct {
 	Scope *Scope `json:"scope,omitempty"`
 
 	// Required. Defines the parent path of the resource.
-	Parent *Parent `json:"parent,omitempty"`
+	*Parent `json:",inline"`
 
 	// The AppHubApplication name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -99,7 +99,6 @@ type AppHubApplicationObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpapphubapplication;gcpapphubapplications
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

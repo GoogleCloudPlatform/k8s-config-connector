@@ -52,11 +52,9 @@ func (s *FirewallPoliciesV1) Get(ctx context.Context, req *pb.GetFirewallPolicyR
 }
 
 func (s *FirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertFirewallPolicyRequest) (*pb.Operation, error) {
-	policyId := req.GetFirewallPolicyResource().GetName()
 	id := s.generateID()
-	if policyId == "" {
-		policyId = strconv.FormatUint(id, 10)
-	}
+	policyId := strconv.FormatUint(id, 10)
+
 	reqName := "locations/global/firewallPolicies/" + policyId
 	policyName, err := s.parseFirewallPolicyName(reqName)
 	if err != nil {

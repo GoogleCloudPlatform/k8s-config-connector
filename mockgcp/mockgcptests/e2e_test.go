@@ -136,6 +136,8 @@ func TestScripts(t *testing.T) {
 					// Just remove it from the golden output.
 					httpEvent.Request.RemoveHeader("user-agent")
 
+					httpEvent.Request.RemoveHeader("X-Goog-User-Project")
+
 					// The X-Goog-User-Project header is (always) set by gcloud if a quota project is set,
 					// so this header reflects configuration not the actual protocol.
 					httpEvent.Request.RemoveHeader("X-Goog-User-Project")

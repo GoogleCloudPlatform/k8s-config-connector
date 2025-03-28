@@ -1,0 +1,9 @@
+- exec: gcloud resource-manager tags keys create test-${uniqueId} --parent=projects/${projectId}
+- exec: gcloud resource-manager tags values create value1 --parent=${projectId}/test-${uniqueId}
+
+- exec: gcloud resource-manager tags bindings create --parent=//cloudresourcemanager.googleapis.com/projects/${projectId} --tag-value=${projectId}/test-${uniqueId}/value1
+- exec: gcloud resource-manager tags bindings list --parent=//cloudresourcemanager.googleapis.com/projects/${projectId}
+- exec: gcloud resource-manager tags bindings delete --parent=//cloudresourcemanager.googleapis.com/projects/${projectId} --tag-value=${projectId}/test-${uniqueId}/value1  --quiet
+
+- exec: gcloud resource-manager tags values delete ${projectId}/test-${uniqueId}/value1 --quiet
+- exec: gcloud resource-manager tags keys delete ${projectId}/test-${uniqueId} --quiet

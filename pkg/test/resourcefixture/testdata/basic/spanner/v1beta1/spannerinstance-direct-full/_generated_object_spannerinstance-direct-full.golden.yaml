@@ -3,7 +3,6 @@ kind: SpannerInstance
 metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: direct
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -23,7 +22,7 @@ spec:
       highPriorityCpuUtilizationPercent: 90
       storageUtilizationPercent: 90
   config: regional-us-west1
-  displayName: Updated spanner Instance Sample
+  displayName: Updated Instance Sample
   edition: ENTERPRISE_PLUS
 status:
   conditions:

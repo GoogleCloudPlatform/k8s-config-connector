@@ -85,13 +85,15 @@ type ComposerEnvironmentObservedState struct {
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.config
 	Config *EnvironmentConfigObservedState `json:"config,omitempty"`
 
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzs
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
+	/*
+		// Output only. Reserved for future use.
+		// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzs
+		SatisfiesPZS *bool `json:"satisfiesPZS,omitempty"`
 
-	// Output only. Reserved for future use.
-	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzi
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+		// Output only. Reserved for future use.
+		// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.satisfies_pzi
+		SatisfiesPZI *bool `json:"satisfiesPZI,omitempty"`
+	*/
 
 	// Output only. The UUID (Universally Unique IDentifier) associated with this
 	//  environment. This value is generated when the environment is created.
@@ -113,7 +115,6 @@ type ComposerEnvironmentObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomposerenvironment;gcpcomposerenvironments
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

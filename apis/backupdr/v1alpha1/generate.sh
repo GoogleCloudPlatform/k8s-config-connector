@@ -25,7 +25,9 @@ go run . generate-types \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
     --resource BackupDRManagementServer:ManagementServer \
-    --resource BackupDRBackupPlan:BackupPlan
+    --resource BackupDRBackupVault:BackupVault \
+    --resource BackupDRBackupPlan:BackupPlan \
+    --resource BackupDRBackupPlanAssociation:BackupPlanAssociation
 
 go run . generate-mapper \
     --service google.cloud.backupdr.v1 \
@@ -35,5 +37,5 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-${REPO_ROOT}/dev/tasks/fix-gofmt
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/backupdr/
 

@@ -80,6 +80,10 @@ func (r *Replacements) ApplyReplacements(s string) string {
 		normalizers = append(normalizers, ReplaceString(replacement.find, replacement.replace))
 	}
 
+	if testgcp.TestOrgID.Get() != "" {
+		normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get(), "${organizationID}"))
+	}
+
 	// Replace our testgcp env vars
 	if testgcp.IsolatedTestOrgName.Get() != "" {
 		normalizers = append(normalizers, ReplaceString(testgcp.IsolatedTestOrgName.Get(), "${ISOLATED_TEST_ORG_NAME}"))

@@ -239,7 +239,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are EDITION_UNSPECIFIED, STANDARD, ENTERPRISE, ENTERPRISE_PLUS{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,8 +419,6 @@ metadata:
   labels:
     label-one: "value-one"
   name: spannerinstance-sample
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Spanner Instance Sample

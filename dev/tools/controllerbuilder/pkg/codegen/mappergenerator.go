@@ -21,6 +21,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 
@@ -37,12 +38,15 @@ type MapperGenerator struct {
 
 	typePairs           []typePair
 	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
+
+	generatedFileAnnotation *annotations.FileAnnotation
 }
 
-func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *MapperGenerator {
+func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation) *MapperGenerator {
 	g := &MapperGenerator{
-		goPathForMessage:    goPathForMessage,
-		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
+		goPathForMessage:        goPathForMessage,
+		precomputedMappings:     make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
+		generatedFileAnnotation: generatedFileAnnotation,
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -177,6 +181,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 		}
 		out := v.getOutputFile(k)
 		out.packageName = lastGoComponent(goPackage)
+
+		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
 			pbPackage := pair.ProtoGoPackage

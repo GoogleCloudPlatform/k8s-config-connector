@@ -58,7 +58,8 @@ func (x *EnhanceWithMappers) EnhanceDataPoint(ctx context.Context, p *DataPoint)
 	files, err := os.ReadDir(mapperDir)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("api.group %q might be incorrect", apiGroup)
+			klog.Warningf("skip enhancing with mappers for resource type %q because mapper directory does not exist. api.group %q might be incorrect", resourceType, apiGroup)
+			return nil
 		} else {
 			return fmt.Errorf("reading mapper directory: %w", err)
 		}

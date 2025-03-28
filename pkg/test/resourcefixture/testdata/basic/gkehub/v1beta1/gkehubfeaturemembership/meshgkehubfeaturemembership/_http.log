@@ -1297,7 +1297,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false&returnPartialSuccess=true
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1406,7 +1406,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false&returnPartialSuccess=true
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1524,7 +1524,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&prettyPrint=false&returnPartialSuccess=true
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK

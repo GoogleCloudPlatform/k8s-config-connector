@@ -1,0 +1,129 @@
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "enablement": "DISABLED",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?alt=json&validateOnly=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "enablement": "ENABLED",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "enablement": "ENABLED",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "enablement": "ENABLED",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?alt=json&validateOnly=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "enablement": "DISABLED",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "enablement": "DISABLED",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudquotas.googleapis.com/v1beta/projects/${projectId}/locations/global/quotaAdjusterSettings?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "enablement": "DISABLED",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/global/quotaAdjusterSettings",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
