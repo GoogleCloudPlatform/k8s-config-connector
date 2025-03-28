@@ -99,8 +99,6 @@ spec:
                     description: The namespace of a DataplexLake resource.
                     type: string
                 type: object
-              location:
-                type: string
               notebook:
                 description: Notebook related configurations.
                 properties:
@@ -113,38 +111,6 @@ spec:
                   as directory structure. Unique within a lake. Limited to alphanumerics,
                   hyphens, underscores, dots and slashes.
                 type: string
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The DataplexContent name. If not given, the metadata.name
                   will be used.
@@ -156,9 +122,6 @@ spec:
                     description: Required. Query Engine to be used for the Sql Query.
                     type: string
                 type: object
-            required:
-            - location
-            - projectRef
             type: object
           status:
             description: DataplexContentStatus defines the config connector machine
