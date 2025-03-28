@@ -1027,6 +1027,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CertificateManagerTrustConfig",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "cloudasset.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "CloudAssetFolderFeed",
