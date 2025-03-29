@@ -30,7 +30,7 @@ type Parent struct {
 // ComputeInterconnectSpec defines the desired state of ComputeInterconnect
 // +kcc:proto=google.cloud.compute.v1.Interconnect
 type ComputeInterconnectSpec struct {
-	Parent Parent `json:",inline"`
+	Parent `json:",inline"`
 	// The ComputeInterconnect name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// Administrative status of the interconnect. When this is set to true, the Interconnect is functional and can carry traffic. When set to false, no packets can be carried over the interconnect and no BGP routes are exchanged over it. By default, the status is set to true.
