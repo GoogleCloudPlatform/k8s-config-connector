@@ -15,15 +15,29 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var AssetFeedGVK = GroupVersion.WithKind("AssetFeed")
 
+// Parent defines the parent field for AssetFeed
+type Parent struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+}
+
 // AssetFeedSpec defines the desired state of AssetFeed
 // +kcc:proto=google.cloud.asset.v1.Feed
 type AssetFeedSpec struct {
+	// +required
+	Parent `json:",inline"`
+
 	// The AssetFeed name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
