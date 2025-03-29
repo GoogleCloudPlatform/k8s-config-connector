@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,6 +25,8 @@ var GkeMultiCloudAttachedClusterGVK = GroupVersion.WithKind("GkeMultiCloudAttach
 // GkeMultiCloudAttachedClusterSpec defines the desired state of GkeMultiCloudAttachedCluster
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type GkeMultiCloudAttachedClusterSpec struct {
+	*Parent `json:",inline"`
+
 	// The GkeMultiCloudAttachedCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -123,6 +126,14 @@ type GkeMultiCloudAttachedClusterSpec struct {
 	//  for more details on Google Cloud Platform tags.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.tags
 	Tags map[string]string `json:"tags,omitempty"`
+}
+
+type Parent struct {
+	// Required.
+	Location string `json:"location,omitempty"`
+
+	// Required.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // GkeMultiCloudAttachedClusterStatus defines the config connector machine state of GkeMultiCloudAttachedCluster
