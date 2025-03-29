@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type AttachedClusterIdentity struct {
 	parent *AttachedClusterParent
-	id string
+	id     string
 }
 
 func (i *AttachedClusterIdentity) String() string {
-	return  i.parent.String() + "/attachedclusters/" + i.id
+	return i.parent.String() + "/attachedclusters/" + i.id
 }
 
 func (i *AttachedClusterIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *AttachedClusterIdentity) ID() string {
 }
 
 func (i *AttachedClusterIdentity) Parent() *AttachedClusterParent {
-	return  i.parent
+	return i.parent
 }
 
 type AttachedClusterParent struct {
@@ -51,7 +51,6 @@ type AttachedClusterParent struct {
 func (p *AttachedClusterParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a AttachedClusterIdentity from the Config Connector AttachedCluster object.
 func NewAttachedClusterIdentity(ctx context.Context, reader client.Reader, obj *GkeMultiCloudAttachedCluster) (*AttachedClusterIdentity, error) {
