@@ -14,7 +14,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type AttachedCluster struct {
 	// The name of this resource.
