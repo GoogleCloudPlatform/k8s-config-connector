@@ -29,8 +29,8 @@ func init() {
 
 func gkeMultiCloudAttachedClusterFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AttachedCluster{},
-		GkeMultiCloudAttachedClusterSpec_FromProto, GKEBackupBackupPlanSpec_ToProto,
-		GKEBackupBackupPlanObservedState_FromProto, GKEBackupBackupPlanObservedState_ToProto,
+		GkeMultiCloudAttachedClusterSpec_FromProto, GkeMultiCloudAttachedClusterSpec_ToProto,
+		GkeMultiCloudAttachedClusterObservedState_FromProto, GkeMultiCloudAttachedClusterObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".oidc_config")
@@ -63,7 +63,3 @@ func gkeMultiCloudAttachedClusterFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
-</out>
-
-
