@@ -130,7 +130,7 @@ type GKEBackupBackupObservedState struct {
 	//  [encryption_key][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.encryption_key]
 	//  value.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Backup.encryption_key
-	EncryptionKey *EncryptionKey `json:"encryptionKey,omitempty"`
+	EncryptionKey *Backup_EncryptionKeyObservedState `json:"encryptionKey,omitempty"`
 
 	// Output only. If True, all namespaces were included in the Backup.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Backup.all_namespaces
@@ -284,4 +284,12 @@ type Backup_ClusterMetadataObservedState struct {
 	// Output only. Anthos version
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Backup.ClusterMetadata.anthos_version
 	AnthosVersion *string `json:"anthosVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.EncryptionKey
+type Backup_EncryptionKeyObservedState struct {
+	// Optional. Google Cloud KMS encryption key. Format:
+	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`
+	// +kcc:proto:field=google.cloud.gkebackup.v1.EncryptionKey.gcp_kms_encryption_key
+	GCPKMSEncryptionKey *string `json:"gcpKMSEncryptionKey,omitempty"`
 }

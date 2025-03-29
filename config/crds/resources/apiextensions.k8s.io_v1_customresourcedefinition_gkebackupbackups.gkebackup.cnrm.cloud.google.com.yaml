@@ -248,34 +248,10 @@ spec:
                       from the parent BackupPlan's [encryption_key][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.encryption_key]
                       value.
                     properties:
-                      kmsKeyRef:
-                        description: Optional. Google Cloud KMS encryption key.
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
-                        properties:
-                          external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
-                            type: string
-                          name:
-                            description: The `name` of a `KMSCryptoKey` resource.
-                            type: string
-                          namespace:
-                            description: The `namespace` of a `KMSCryptoKey` resource.
-                            type: string
-                        type: object
+                      gcpKMSEncryptionKey:
+                        description: 'Optional. Google Cloud KMS encryption key. Format:
+                          `projects/*/locations/*/keyRings/*/cryptoKeys/*`'
+                        type: string
                     type: object
                   etag:
                     description: 'Output only. `etag` is used for optimistic concurrency

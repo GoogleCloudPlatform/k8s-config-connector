@@ -33,7 +33,7 @@ func GKEBackupBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ba
 	out.Manual = direct.LazyPtr(in.GetManual())
 	out.DeleteLockExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteLockExpireTime())
 	out.RetainExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRetainExpireTime())
-	out.EncryptionKey = EncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
+	out.EncryptionKey = Backup_EncryptionKeyObservedState_FromProto(mapCtx, in.GetEncryptionKey())
 	// out.AllNamespaces = direct.LazyPtr(in.GetAllNamespaces())
 	if _, ok := in.BackupScope.(*pb.Backup_AllNamespaces); ok {
 		// special handling for oneof bool field to ensure it is round-trippable
@@ -68,7 +68,7 @@ func GKEBackupBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKE
 	out.Manual = direct.ValueOf(in.Manual)
 	out.DeleteLockExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteLockExpireTime)
 	out.RetainExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.RetainExpireTime)
-	out.EncryptionKey = EncryptionKey_ToProto(mapCtx, in.EncryptionKey)
+	out.EncryptionKey = Backup_EncryptionKeyObservedState_ToProto(mapCtx, in.EncryptionKey)
 	if in.AllNamespaces != nil {
 		out.BackupScope = &pb.Backup_AllNamespaces{AllNamespaces: direct.ValueOf(in.AllNamespaces)}
 	}
@@ -135,5 +135,21 @@ func Backup_ClusterMetadataObservedState_AnthosVersion_ToProto(mapCtx *direct.Ma
 	}
 	out := &pb.Backup_ClusterMetadata_AnthosVersion{}
 	out.AnthosVersion = direct.ValueOf(in)
+	return out
+}
+func Backup_EncryptionKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *krm.Backup_EncryptionKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Backup_EncryptionKeyObservedState{}
+	out.GCPKMSEncryptionKey = direct.LazyPtr(in.GetGcpKmsEncryptionKey())
+	return out
+}
+func Backup_EncryptionKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Backup_EncryptionKeyObservedState) *pb.EncryptionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionKey{}
+	out.GcpKmsEncryptionKey = direct.ValueOf(in.GCPKMSEncryptionKey)
 	return out
 }
