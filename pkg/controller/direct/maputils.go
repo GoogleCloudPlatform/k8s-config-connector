@@ -495,3 +495,18 @@ func UnixMillisToTime(m int64) time.Time {
 	}
 	return time.Unix(0, m*1e6)
 }
+
+func ByteSliceToStringPtr(mapCtx *MapContext, in []byte) *string {
+	if in == nil {
+		return nil
+	}
+	out := string(in[:])
+	return &out
+}
+
+func StringPtrToByteSlice(mapCtx *MapContext, in *string) []byte {
+	if in == nil {
+		return nil
+	}
+	return []byte(*in)
+}

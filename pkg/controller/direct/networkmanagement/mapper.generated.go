@@ -267,60 +267,6 @@ func EndpointInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Endpoi
 	out.SourceAgentUri = direct.ValueOf(in.SourceAgentURI)
 	return out
 }
-func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.EndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EndpointObservedState{}
-	// MISSING: IPAddress
-	// MISSING: Port
-	// MISSING: Instance
-	// MISSING: ForwardingRule
-	out.ForwardingRuleTarget = direct.Enum_FromProto(mapCtx, in.GetForwardingRuleTarget())
-	out.LoadBalancerID = in.LoadBalancerId
-	out.LoadBalancerType = direct.Enum_FromProto(mapCtx, in.GetLoadBalancerType())
-	// MISSING: GKEMasterCluster
-	// MISSING: Fqdn
-	// MISSING: CloudSQLInstance
-	// MISSING: RedisInstance
-	// MISSING: RedisCluster
-	// MISSING: CloudFunction
-	// MISSING: AppEngineVersion
-	// MISSING: CloudRunRevision
-	// MISSING: Network
-	// MISSING: NetworkType
-	// MISSING: ProjectID
-	return out
-}
-func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointObservedState) *pb.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint{}
-	// MISSING: IPAddress
-	// MISSING: Port
-	// MISSING: Instance
-	// MISSING: ForwardingRule
-	if oneof := EndpointObservedState_ForwardingRuleTarget_ToProto(mapCtx, in.ForwardingRuleTarget); oneof != nil {
-		out.ForwardingRuleTarget = oneof
-	}
-	out.LoadBalancerId = in.LoadBalancerID
-	if oneof := EndpointObservedState_LoadBalancerType_ToProto(mapCtx, in.LoadBalancerType); oneof != nil {
-		out.LoadBalancerType = oneof
-	}
-	// MISSING: GKEMasterCluster
-	// MISSING: Fqdn
-	// MISSING: CloudSQLInstance
-	// MISSING: RedisInstance
-	// MISSING: RedisCluster
-	// MISSING: CloudFunction
-	// MISSING: AppEngineVersion
-	// MISSING: CloudRunRevision
-	// MISSING: Network
-	// MISSING: NetworkType
-	// MISSING: ProjectID
-	return out
-}
 func Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_AppEngineVersionEndpoint) *krm.Endpoint_AppEngineVersionEndpoint {
 	if in == nil {
 		return nil
