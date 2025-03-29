@@ -16,12 +16,11 @@ package gkemulticloud
 
 import (
 	pb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/containerattached/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkemulticloud/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AttachedCluster_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedCluster {
+func GkeMultiCloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedCluster {
 	if in == nil {
 		return nil
 	}
@@ -31,19 +30,10 @@ func AttachedCluster_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster
 	out.OIDCConfig = AttachedOIDCConfig_FromProto(mapCtx, in.GetOidcConfig())
 	out.PlatformVersion = direct.LazyPtr(in.GetPlatformVersion())
 	out.Distribution = direct.LazyPtr(in.GetDistribution())
-	// MISSING: ClusterRegion
 	out.Fleet = Fleet_FromProto(mapCtx, in.GetFleet())
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Etag = direct.LazyPtr(in.GetEtag())
-	// MISSING: KubernetesVersion
 	out.Annotations = in.Annotations
-	// MISSING: WorkloadIdentityConfig
 	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
-	// MISSING: Errors
 	out.Authorization = AttachedClustersAuthorization_FromProto(mapCtx, in.GetAuthorization())
 	out.MonitoringConfig = MonitoringConfig_FromProto(mapCtx, in.GetMonitoringConfig())
 	out.ProxyConfig = AttachedProxyConfig_FromProto(mapCtx, in.GetProxyConfig())
@@ -52,7 +42,7 @@ func AttachedCluster_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster
 	out.Tags = in.Tags
 	return out
 }
-func AttachedCluster_ToProto(mapCtx *direct.MapContext, in *krm.AttachedCluster) *pb.AttachedCluster {
+func GkeMultiCloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AttachedCluster) *pb.AttachedCluster {
 	if in == nil {
 		return nil
 	}
@@ -62,19 +52,10 @@ func AttachedCluster_ToProto(mapCtx *direct.MapContext, in *krm.AttachedCluster)
 	out.OidcConfig = AttachedOIDCConfig_ToProto(mapCtx, in.OIDCConfig)
 	out.PlatformVersion = direct.ValueOf(in.PlatformVersion)
 	out.Distribution = direct.ValueOf(in.Distribution)
-	// MISSING: ClusterRegion
 	out.Fleet = Fleet_ToProto(mapCtx, in.Fleet)
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Etag = direct.ValueOf(in.Etag)
-	// MISSING: KubernetesVersion
 	out.Annotations = in.Annotations
-	// MISSING: WorkloadIdentityConfig
 	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	// MISSING: Errors
 	out.Authorization = AttachedClustersAuthorization_ToProto(mapCtx, in.Authorization)
 	out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
 	out.ProxyConfig = AttachedProxyConfig_ToProto(mapCtx, in.ProxyConfig)
@@ -83,6 +64,41 @@ func AttachedCluster_ToProto(mapCtx *direct.MapContext, in *krm.AttachedCluster)
 	out.Tags = in.Tags
 	return out
 }
+func GkeMultiCloudAttachedClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedClusterObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AttachedClusterObservedState{}
+	out.ClusterRegion = direct.LazyPtr(in.GetClusterRegion())
+	out.Fleet = FleetObservedState_FromProto(mapCtx, in.GetFleet())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.KubernetesVersion = direct.LazyPtr(in.GetKubernetesVersion())
+	out.WorkloadIdentityConfig = WorkloadIdentityConfig_FromProto(mapCtx, in.GetWorkloadIdentityConfig())
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AttachedClusterError_FromProto)
+	return out
+}
+func GkeMultiCloudAttachedClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterObservedState) *pb.AttachedCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AttachedCluster{}
+	out.ClusterRegion = direct.ValueOf(in.ClusterRegion)
+	out.Fleet = FleetObservedState_ToProto(mapCtx, in.Fleet)
+	out.State = direct.Enum_ToProto[pb.AttachedCluster_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.KubernetesVersion = direct.ValueOf(in.KubernetesVersion)
+	out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AttachedClusterError_ToProto)
+	return out
+}
+
 func AttachedClusterError_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterError) *krm.AttachedClusterError {
 	if in == nil {
 		return nil
@@ -113,68 +129,6 @@ func AttachedClusterGroup_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClu
 	}
 	out := &pb.AttachedClusterGroup{}
 	out.Group = direct.ValueOf(in.Group)
-	return out
-}
-func AttachedClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedClusterObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttachedClusterObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	out.ClusterRegion = direct.LazyPtr(in.GetClusterRegion())
-	out.Fleet = FleetObservedState_FromProto(mapCtx, in.GetFleet())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Etag
-	out.KubernetesVersion = direct.LazyPtr(in.GetKubernetesVersion())
-	// MISSING: Annotations
-	out.WorkloadIdentityConfig = WorkloadIdentityConfig_FromProto(mapCtx, in.GetWorkloadIdentityConfig())
-	// MISSING: LoggingConfig
-	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AttachedClusterError_FromProto)
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
-func AttachedClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttachedClusterObservedState) *pb.AttachedCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedCluster{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	out.ClusterRegion = direct.ValueOf(in.ClusterRegion)
-	out.Fleet = FleetObservedState_ToProto(mapCtx, in.Fleet)
-	out.State = direct.Enum_ToProto[pb.AttachedCluster_State](mapCtx, in.State)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Etag
-	out.KubernetesVersion = direct.ValueOf(in.KubernetesVersion)
-	// MISSING: Annotations
-	out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
-	// MISSING: LoggingConfig
-	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AttachedClusterError_ToProto)
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
 	return out
 }
 func AttachedClusterUser_FromProto(mapCtx *direct.MapContext, in *pb.AttachedClusterUser) *krm.AttachedClusterUser {
@@ -229,24 +183,6 @@ func AttachedOIDCConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedOIDCC
 	out.Jwks = in.Jwks
 	return out
 }
-func AttachedOidcConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedOidcConfig) *krm.AttachedOidcConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AttachedOidcConfig{}
-	out.IssuerURL = direct.LazyPtr(in.GetIssuerUrl())
-	out.Jwks = in.GetJwks()
-	return out
-}
-func AttachedOidcConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedOidcConfig) *pb.AttachedOidcConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedOidcConfig{}
-	out.IssuerURL = AttachedOidcConfig_IssuerUrl_ToProto(mapCtx, in.IssuerURL)
-	out.Jwks = in.Jwks
-	return out
-}
 func AttachedProxyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedProxyConfig) *krm.AttachedProxyConfig {
 	if in == nil {
 		return nil
@@ -295,70 +231,6 @@ func CloudMonitoringConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudMonit
 	out.Enabled = in.Enabled
 	return out
 }
-func ContainerAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.ContainerAttachedClusterSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ContainerAttachedClusterSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: OIDCConfig
-	// (near miss): "OIDCConfig" vs "OidcConfig"
-	out.PlatformVersion = direct.LazyPtr(in.GetPlatformVersion())
-	out.Distribution = direct.LazyPtr(in.GetDistribution())
-	// MISSING: ClusterRegion
-	out.Fleet = Fleet_FromProto(mapCtx, in.GetFleet())
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	out.Annotations = in.Annotations
-	// MISSING: WorkloadIdentityConfig
-	out.LoggingConfig = LoggingConfig_FromProto(mapCtx, in.GetLoggingConfig())
-	// MISSING: Errors
-	out.Authorization = AttachedClustersAuthorization_FromProto(mapCtx, in.GetAuthorization())
-	out.MonitoringConfig = MonitoringConfig_FromProto(mapCtx, in.GetMonitoringConfig())
-	// MISSING: ProxyConfig
-	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
-func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerAttachedClusterSpec) *pb.AttachedCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedCluster{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: OIDCConfig
-	// (near miss): "OIDCConfig" vs "OidcConfig"
-	out.PlatformVersion = ContainerAttachedClusterSpec_PlatformVersion_ToProto(mapCtx, in.PlatformVersion)
-	out.Distribution = ContainerAttachedClusterSpec_Distribution_ToProto(mapCtx, in.Distribution)
-	// MISSING: ClusterRegion
-	out.Fleet = Fleet_ToProto(mapCtx, in.Fleet)
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	out.Annotations = in.Annotations
-	// MISSING: WorkloadIdentityConfig
-	out.LoggingConfig = LoggingConfig_ToProto(mapCtx, in.LoggingConfig)
-	// MISSING: Errors
-	out.Authorization = AttachedClustersAuthorization_ToProto(mapCtx, in.Authorization)
-	out.MonitoringConfig = MonitoringConfig_ToProto(mapCtx, in.MonitoringConfig)
-	// MISSING: ProxyConfig
-	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
 func Fleet_FromProto(mapCtx *direct.MapContext, in *pb.Fleet) *krm.Fleet {
 	if in == nil {
 		return nil
@@ -393,130 +265,6 @@ func FleetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FleetObserved
 	out := &pb.Fleet{}
 	// MISSING: Project
 	out.Membership = direct.ValueOf(in.Membership)
-	return out
-}
-func GkeMultiCloudAttachedClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.GkeMultiCloudAttachedClusterObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkeMultiCloudAttachedClusterObservedState{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	// MISSING: ClusterRegion
-	// MISSING: Fleet
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	// MISSING: Annotations
-	// MISSING: WorkloadIdentityConfig
-	// MISSING: LoggingConfig
-	// MISSING: Errors
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
-func GkeMultiCloudAttachedClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GkeMultiCloudAttachedClusterObservedState) *pb.AttachedCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedCluster{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	// MISSING: ClusterRegion
-	// MISSING: Fleet
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	// MISSING: Annotations
-	// MISSING: WorkloadIdentityConfig
-	// MISSING: LoggingConfig
-	// MISSING: Errors
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
-func GkeMultiCloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.GkeMultiCloudAttachedClusterSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GkeMultiCloudAttachedClusterSpec{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	// MISSING: ClusterRegion
-	// MISSING: Fleet
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	// MISSING: Annotations
-	// MISSING: WorkloadIdentityConfig
-	// MISSING: LoggingConfig
-	// MISSING: Errors
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
-	return out
-}
-func GkeMultiCloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.GkeMultiCloudAttachedClusterSpec) *pb.AttachedCluster {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AttachedCluster{}
-	// MISSING: Name
-	// MISSING: Description
-	// MISSING: OIDCConfig
-	// MISSING: PlatformVersion
-	// MISSING: Distribution
-	// MISSING: ClusterRegion
-	// MISSING: Fleet
-	// MISSING: State
-	// MISSING: Uid
-	// MISSING: Reconciling
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Etag
-	// MISSING: KubernetesVersion
-	// MISSING: Annotations
-	// MISSING: WorkloadIdentityConfig
-	// MISSING: LoggingConfig
-	// MISSING: Errors
-	// MISSING: Authorization
-	// MISSING: MonitoringConfig
-	// MISSING: ProxyConfig
-	// MISSING: BinaryAuthorization
-	// MISSING: SecurityPostureConfig
-	// MISSING: Tags
 	return out
 }
 func KubernetesSecret_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecret {
