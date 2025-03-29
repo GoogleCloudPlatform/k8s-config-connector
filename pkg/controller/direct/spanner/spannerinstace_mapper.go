@@ -77,9 +77,11 @@ func SpannerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance, c
 	out := &krm.SpannerInstanceSpec{}
 	out.Config = strings.TrimPrefix(in.GetConfig(), configPrefix)
 	out.DisplayName = in.GetDisplayName()
+	out.Labels = in.Labels
 	out.ProcessingUnits = direct.LazyPtr(in.GetProcessingUnits())
 	out.NumNodes = direct.LazyPtr(in.GetNodeCount())
 	out.Edition = direct.LazyPtr(in.Edition.String())
+	out.DefaultBackupScheduleType = direct.LazyPtr(in.GetDefaultBackupScheduleType().String())
 	out.AutoscalingConfig = AutoscalingConfig_FromProto(mapCtx, in.GetAutoscalingConfig())
 	return out
 }
@@ -93,8 +95,12 @@ func SpannerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpannerInsta
 	out.DisplayName = in.DisplayName
 	out.NodeCount = direct.ValueOf(in.NumNodes)
 	out.ProcessingUnits = direct.ValueOf(in.ProcessingUnits)
+	out.Labels = in.Labels
 	if in.Edition != nil {
 		out.Edition = direct.Enum_ToProto[pb.Instance_Edition](mapCtx, in.Edition)
+	}
+	if in.DefaultBackupScheduleType != nil {
+		out.DefaultBackupScheduleType = direct.Enum_ToProto[pb.Instance_DefaultBackupScheduleType](mapCtx, in.DefaultBackupScheduleType)
 	}
 	out.AutoscalingConfig = AutoscalingConfig_ToProto(mapCtx, in.AutoscalingConfig)
 	return out

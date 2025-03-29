@@ -40,10 +40,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "defaultBackupScheduleType": 1,
     "displayName": "Instance Sample",
     "edition": 2,
     "labels": {
-      "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -77,11 +77,10 @@ X-Xss-Protection: 0
         }
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": 2,
+      "defaultBackupScheduleType": 1,
       "displayName": "Instance Sample",
       "edition": 2,
       "labels": {
-        "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -137,11 +136,10 @@ X-Xss-Protection: 0
         }
       },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": "AUTOMATIC",
+      "defaultBackupScheduleType": "NONE",
       "displayName": "Instance Sample",
       "edition": "ENTERPRISE",
       "labels": {
-        "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -168,11 +166,10 @@ X-Xss-Protection: 0
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
+    "defaultBackupScheduleType": "NONE",
     "displayName": "Instance Sample",
     "edition": "ENTERPRISE",
     "labels": {
-      "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -213,11 +210,10 @@ X-Xss-Protection: 0
   },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": 2,
+  "defaultBackupScheduleType": 1,
   "displayName": "Instance Sample",
   "edition": 2,
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -236,7 +232,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "displayName,autoscalingConfig,edition",
+  "fieldMask": "displayName,labels,defaultBackupScheduleType,autoscalingConfig,edition",
   "instance": {
     "autoscalingConfig": {
       "autoscalingLimits": {
@@ -249,11 +245,11 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
       }
     },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "defaultBackupScheduleType": 2,
     "displayName": "Updated Instance Sample",
     "edition": 3,
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
+      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
@@ -289,8 +285,7 @@ X-Xss-Protection: 0
       "displayName": "Updated Instance Sample",
       "edition": 3,
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
+        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -351,8 +346,7 @@ X-Xss-Protection: 0
       "displayName": "Updated Instance Sample",
       "edition": "ENTERPRISE_PLUS",
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
+        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -382,8 +376,7 @@ X-Xss-Protection: 0
     "displayName": "Updated Instance Sample",
     "edition": "ENTERPRISE_PLUS",
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
+      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -427,8 +420,7 @@ X-Xss-Protection: 0
   "displayName": "Updated Instance Sample",
   "edition": 3,
   "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
+    "label-one": "updated-value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
