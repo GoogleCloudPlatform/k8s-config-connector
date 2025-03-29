@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	service "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,7 +35,7 @@ type NetworkServicesServiceBindingSpec struct {
 	// Required. The full service directory service name of the format
 	//  /projects/*/locations/*/namespaces/*/services/*
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.service
-	Service *string `json:"service,omitempty"`
+	ServiceRef *service.ServiceDirectoryServiceRef `json:"serviceRef,omitempty"`
 
 	// Optional. Set of label tags associated with the ServiceBinding resource.
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.labels

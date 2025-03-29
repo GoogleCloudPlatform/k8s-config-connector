@@ -3,12 +3,28 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -29,12 +45,17 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -45,11 +66,16 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "description": "Original description",
   "interceptionPort": 80,
   "labels": {
@@ -57,9 +83,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "foo": "bar",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
-  "selfLink": "",
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
 
 ---
@@ -81,12 +105,17 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -97,11 +126,16 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
   "description": "Updated description",
   "interceptionPort": 81,
   "labels": {
@@ -110,9 +144,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "foo1": "bar1",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}",
-  "selfLink": "",
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}"
 }
 
 ---
@@ -122,12 +154,17 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -138,10 +175,26 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
