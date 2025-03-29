@@ -32,7 +32,7 @@ type InstanceConfigIdentity struct {
 }
 
 func (i *InstanceConfigIdentity) String() string {
-	return i.parent.String() + "/" + i.id
+	return i.parent.String() + "/instanceConfigs/" + i.id
 }
 
 func (i *InstanceConfigIdentity) ID() string {
@@ -45,12 +45,10 @@ func (i *InstanceConfigIdentity) Parent() *InstanceConfigParent {
 
 type InstanceConfigParent struct {
 	ProjectID string
-	Location  string
-	// No changes were needed in the struct.
 }
 
 func (p *InstanceConfigParent) String() string {
-	return "projects/" + p.ProjectID + "/instanceConfigs"
+	return "projects/" + p.ProjectID
 }
 
 // New builds a InstanceConfigIdentity from the Config Connector InstanceConfig object.

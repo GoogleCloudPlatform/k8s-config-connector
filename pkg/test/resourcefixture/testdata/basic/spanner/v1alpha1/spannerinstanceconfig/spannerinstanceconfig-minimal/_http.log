@@ -1,0 +1,404 @@
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Instance config not found: projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "instanceConfig": {
+    "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+    "displayName": "Initial name",
+    "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+    "replicas": [
+      {
+        "defaultLeaderLocation": true,
+        "location": "us-central1",
+        "type": 1
+      },
+      {
+        "location": "us-central1",
+        "type": 1
+      },
+      {
+        "location": "us-east1",
+        "type": 1
+      },
+      {
+        "location": "us-east1",
+        "type": 1
+      },
+      {
+        "location": "us-central2",
+        "type": 3
+      }
+    ]
+  },
+  "instanceConfigId": "custom-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata",
+    "instanceConfig": {
+      "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+      "configType": 2,
+      "displayName": "Initial name",
+      "etag": "abcdef0123A",
+      "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+      "replicas": [
+        {
+          "defaultLeaderLocation": true,
+          "location": "us-central1",
+          "type": 1
+        },
+        {
+          "location": "us-central1",
+          "type": 1
+        },
+        {
+          "location": "us-east1",
+          "type": 1
+        },
+        {
+          "location": "us-east1",
+          "type": 1
+        },
+        {
+          "location": "us-central2",
+          "type": 3
+        }
+      ],
+      "state": 2
+    },
+    "progress": {
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceConfigMetadata",
+    "instanceConfig": {
+      "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+      "configType": "USER_MANAGED",
+      "displayName": "Initial name",
+      "etag": "abcdef0123A",
+      "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+      "replicas": [
+        {
+          "defaultLeaderLocation": true,
+          "location": "us-central1",
+          "type": "READ_WRITE"
+        },
+        {
+          "location": "us-central1",
+          "type": "READ_WRITE"
+        },
+        {
+          "location": "us-east1",
+          "type": "READ_WRITE"
+        },
+        {
+          "location": "us-east1",
+          "type": "READ_WRITE"
+        },
+        {
+          "location": "us-central2",
+          "type": "WITNESS"
+        }
+      ],
+      "state": "READY"
+    },
+    "progress": {
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.InstanceConfig",
+    "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+    "configType": "USER_MANAGED",
+    "displayName": "Initial name",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+    "replicas": [
+      {
+        "defaultLeaderLocation": true,
+        "location": "us-central1",
+        "type": "READ_WRITE"
+      },
+      {
+        "location": "us-central1",
+        "type": "READ_WRITE"
+      },
+      {
+        "location": "us-east1",
+        "type": "READ_WRITE"
+      },
+      {
+        "location": "us-east1",
+        "type": "READ_WRITE"
+      },
+      {
+        "location": "us-central2",
+        "type": "WITNESS"
+      }
+    ],
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+  "configType": 2,
+  "displayName": "Initial name",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+  "replicas": [
+    {
+      "defaultLeaderLocation": true,
+      "location": "us-central1",
+      "type": 1
+    },
+    {
+      "location": "us-central1",
+      "type": 1
+    },
+    {
+      "location": "us-east1",
+      "type": 1
+    },
+    {
+      "location": "us-east1",
+      "type": 1
+    },
+    {
+      "location": "us-central2",
+      "type": 3
+    }
+  ],
+  "state": 2
+}
+
+---
+
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance_config.name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}
+
+{
+  "instanceConfig": {
+    "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+    "displayName": "Updated name",
+    "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+    "replicas": [
+      {
+        "defaultLeaderLocation": true,
+        "location": "us-central1",
+        "type": 1
+      },
+      {
+        "location": "us-central1",
+        "type": 1
+      },
+      {
+        "location": "us-east1",
+        "type": 1
+      },
+      {
+        "location": "us-east1",
+        "type": 1
+      },
+      {
+        "location": "us-central2",
+        "type": 3
+      }
+    ]
+  },
+  "updateMask": "displayName"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceConfigMetadata",
+    "instanceConfig": {
+      "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+      "configType": 2,
+      "displayName": "Updated name",
+      "etag": "abcdef0123A",
+      "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+      "replicas": [
+        {
+          "defaultLeaderLocation": true,
+          "location": "us-central1",
+          "type": 1
+        },
+        {
+          "location": "us-central1",
+          "type": 1
+        },
+        {
+          "location": "us-east1",
+          "type": 1
+        },
+        {
+          "location": "us-east1",
+          "type": 1
+        },
+        {
+          "location": "us-central2",
+          "type": 3
+        }
+      ],
+      "state": 2
+    },
+    "progress": {
+      "startTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseConfig": "projects/${projectId}/instanceConfigs/nam11",
+  "configType": 2,
+  "displayName": "Updated name",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instanceConfigs/custom-${uniqueId}",
+  "replicas": [
+    {
+      "defaultLeaderLocation": true,
+      "location": "us-central1",
+      "type": 1
+    },
+    {
+      "location": "us-central1",
+      "type": 1
+    },
+    {
+      "location": "us-east1",
+      "type": 1
+    },
+    {
+      "location": "us-east1",
+      "type": 1
+    },
+    {
+      "location": "us-central2",
+      "type": 3
+    }
+  ],
+  "state": 2
+}
+
+---
+
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instanceConfigs/custom-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FinstanceConfigs%2Fcustom-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
