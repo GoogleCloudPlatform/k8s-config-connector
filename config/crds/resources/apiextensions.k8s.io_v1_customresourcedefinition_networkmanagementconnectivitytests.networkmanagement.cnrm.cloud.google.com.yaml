@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com
 spec:
   group: networkmanagement.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: NetworkManagementConnectivityTest
+    listKind: NetworkManagementConnectivityTestList
     plural: networkmanagementconnectivitytests
     shortNames:
     - gcpnetworkmanagementconnectivitytest
@@ -43,78 +42,298 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: NetworkManagementConnectivityTest is the Schema for the NetworkManagementConnectivityTest
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: NetworkManagementConnectivityTestSpec defines the desired
+              state of NetworkManagementConnectivityTest
             properties:
+              bypassFirewallChecks:
+                description: Whether the test should skip firewall checking. If not
+                  provided, we assume false.
+                type: boolean
               description:
-                description: |-
-                  The user-supplied description of the Connectivity Test.
+                description: The user-supplied description of the Connectivity Test.
                   Maximum of 512 characters.
                 type: string
               destination:
                 description: |-
                   Required. Destination specification of the Connectivity Test.
 
-                  You can use a combination of destination IP address, Compute
-                  Engine VM instance, or VPC network to uniquely identify the
-                  destination location.
+                   You can use a combination of destination IP address, Compute Engine
+                   VM instance, or VPC network to uniquely identify the destination
+                   location.
 
-                  Even if the destination IP address is not unique, the source IP
-                  location is unique. Usually, the analysis can infer the destination
-                  endpoint from route information.
+                   Even if the destination IP address is not unique, the source IP
+                   location is unique. Usually, the analysis can infer the destination
+                   endpoint from route information.
 
-                  If the destination you specify is a VM instance and the instance has
-                  multiple network interfaces, then you must also specify either a
-                  destination IP address or VPC network to identify the destination
-                  interface.
+                   If the destination you specify is a VM instance and the instance has
+                   multiple network interfaces, then you must also specify either
+                   a destination IP address  or VPC network to identify the destination
+                   interface.
 
-                  A reachability analysis proceeds even if the destination location
-                  is ambiguous. However, the result can include endpoints that you
-                  don't intend to test.
+                   A reachability analysis proceeds even if the destination location is
+                   ambiguous. However, the result can include endpoints that you don't
+                   intend to test.
                 properties:
-                  instance:
+                  appEngineVersion:
+                    description: An [App Engine](https://cloud.google.com/appengine)
+                      [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions).
+                    properties:
+                      uri:
+                        description: An [App Engine](https://cloud.google.com/appengine)
+                          [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions)
+                          name.
+                        type: string
+                    type: object
+                  cloudFunction:
+                    description: A [Cloud Function](https://cloud.google.com/functions).
+                    properties:
+                      uri:
+                        description: A [Cloud Function](https://cloud.google.com/functions)
+                          name.
+                        type: string
+                    type: object
+                  cloudRunRevision:
+                    description: A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+                    properties:
+                      runRevisionRef:
+                        description: 'A [Cloud Run](https://cloud.google.com/run)
+                          [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+                          URI. The format is: projects/{project}/locations/{location}/revisions/{revision}'
+                        properties:
+                          external:
+                            description: A reference to an externally managed RunRevision
+                              resource. Should be in the format "projects/{{project}}/locations/{{location}}/revisions/{{revision}}".
+                            type: string
+                        required:
+                        - external
+                        type: object
+                    type: object
+                  computeForwardingRuleRef:
+                    description: 'A forwarding rule and its corresponding IP address
+                      represent the frontend configuration of a Google Cloud load
+                      balancer. Forwarding rules are also used for protocol forwarding,
+                      Private Service Connect and other network services to provide
+                      forwarding information in the control plane. Format: projects/{project}/global/forwardingRules/{id}
+                      or projects/{project}/regions/{region}/forwardingRules/{id}'
+                    type: string
+                  computeInstanceRef:
                     description: A Compute Engine instance URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  computeNetworkRef:
+                    description: A Compute Engine network URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
+                  containerClusterRef:
+                    description: A cluster URI for [Google Kubernetes Engine cluster
+                      control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                          `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                        type: string
+                      name:
+                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          */'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the project resource. More info:
+                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          */'
+                        type: string
+                    type: object
+                  fqdn:
+                    description: DNS endpoint of [Google Kubernetes Engine cluster
+                      control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+                      Requires gke_master_cluster to be set, can't be used simultaneoulsly
+                      with ip_address or network. Applicable only to destination endpoint.
                     type: string
                   ipAddress:
-                    description: |-
-                      The IP address of the endpoint, which can be an external or
-                      internal IP. An IPv6 address is only allowed when the test's
-                      destination is a global load balancer VIP.
+                    description: The IP address of the endpoint, which can be an external
+                      or internal IP.
                     type: string
-                  network:
-                    description: A Compute Engine network URI.
+                  networkType:
+                    description: Type of the network where the endpoint is located.
+                      Applicable only to source endpoint, as destination network type
+                      can be inferred from the source.
                     type: string
                   port:
-                    description: |-
-                      The IP protocol port of the endpoint. Only applicable when
-                      protocol is TCP or UDP.
+                    description: The IP protocol port of the endpoint. Only applicable
+                      when protocol is TCP or UDP.
+                    format: int32
                     type: integer
-                  projectId:
-                    description: |-
-                      Project ID where the endpoint is located. The Project ID can be
-                      derived from the URI if you provide a VM instance or network URI.
-                      The following are two cases where you must provide the project ID:
-                      1. Only the IP address is specified, and the IP address is within
-                      a GCP project. 2. When you are using Shared VPC and the IP address
-                      that you provide is from the service project. In this case, the
-                      network that the IP address resides in is defined in the host
-                      project.
+                  projectRef:
+                    description: 'Project ID where the endpoint is located. The Project
+                      ID can be derived from the URI if you provide a VM instance
+                      or network URI. The following are two cases where you must provide
+                      the project ID: 1. Only the IP address is specified, and the
+                      IP address is within a Google Cloud project. 2. When you are
+                      using Shared VPC and the IP address that you provide is from
+                      the service project. In this case, the network that the IP address
+                      resides in is defined in the host project.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  redisCluster:
+                    description: A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster)
+                      URI.
                     type: string
+                  redisInstance:
+                    description: A [Redis Instance](https://cloud.google.com/memorystore/docs/redis)
+                      URI.
+                    type: string
+                  sqlInstance:
+                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
+                      URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                 type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Resource labels to represent user-provided metadata.
+                type: object
+              location:
+                description: Immutable. The name of the location where the RuntimeTemplate
+                  will be created.
+                type: string
+                x-kubernetes-validations:
+                - message: Location is immutable.
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: Immutable. The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -131,13 +350,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               protocol:
@@ -145,89 +369,321 @@ spec:
                   assumed.
                 type: string
               relatedProjects:
-                description: |-
-                  Other projects that may be relevant for reachability analysis.
-                  This is applicable to scenarios where a test can cross project
-                  boundaries.
+                description: Other projects that may be relevant for reachability
+                  analysis. This is applicable to scenarios where a test can cross
+                  project boundaries.
                 items:
-                  type: string
+                  description: The Project that this resource belongs to.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                    - kind
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                      - required:
+                        - kind
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The `projectID` field of a project, when not managed
+                        by Config Connector.
+                      type: string
+                    kind:
+                      description: The kind of the Project resource; optional but
+                        must be `Project` if provided.
+                      type: string
+                    name:
+                      description: The `name` field of a `Project` resource.
+                      type: string
+                    namespace:
+                      description: The `namespace` field of a `Project` resource.
+                      type: string
+                  type: object
                 type: array
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The NetworkManagementConnectivityTest name. If not given,
+                  the metadata.name will be used.
                 type: string
+              roundTrip:
+                description: Whether run analysis for the return path from destination
+                  to source. Default value is false.
+                type: boolean
               source:
                 description: |-
                   Required. Source specification of the Connectivity Test.
 
-                  You can use a combination of source IP address, virtual machine
-                  (VM) instance, or Compute Engine network to uniquely identify the
-                  source location.
+                   You can use a combination of source IP address, virtual machine
+                   (VM) instance, or Compute Engine network to uniquely identify
+                   the source location.
 
-                  Examples: If the source IP address is an internal IP address within
-                  a Google Cloud Virtual Private Cloud (VPC) network, then you must
-                  also specify the VPC network. Otherwise, specify the VM instance,
-                  which already contains its internal IP address and VPC network
-                  information.
+                   Examples:
+                   If the source IP address is an internal IP address within a Google Cloud
+                   Virtual Private Cloud (VPC) network, then you must also specify the VPC
+                   network. Otherwise, specify the VM instance, which already contains its
+                   internal IP address and VPC network information.
 
-                  If the source of the test is within an on-premises network, then
-                  you must provide the destination VPC network.
+                   If the source of the test is within an on-premises network, then you must
+                   provide the destination VPC network.
 
-                  If the source endpoint is a Compute Engine VM instance with multiple
-                  network interfaces, the instance itself is not sufficient to
-                  identify the endpoint. So, you must also specify the source IP
-                  address or VPC network.
+                   If the source endpoint is a Compute Engine VM instance with multiple
+                   network interfaces, the instance itself is not sufficient to identify the
+                   endpoint. So, you must also specify the source IP address or VPC network.
 
-                  A reachability analysis proceeds even if the source location is
-                  ambiguous. However, the test result may include endpoints that
-                  you don't intend to test.
+                   A reachability analysis proceeds even if the source location is
+                   ambiguous. However, the test result may include endpoints that you don't
+                   intend to test.
                 properties:
-                  instance:
+                  appEngineVersion:
+                    description: An [App Engine](https://cloud.google.com/appengine)
+                      [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions).
+                    properties:
+                      uri:
+                        description: An [App Engine](https://cloud.google.com/appengine)
+                          [service version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions)
+                          name.
+                        type: string
+                    type: object
+                  cloudFunction:
+                    description: A [Cloud Function](https://cloud.google.com/functions).
+                    properties:
+                      uri:
+                        description: A [Cloud Function](https://cloud.google.com/functions)
+                          name.
+                        type: string
+                    type: object
+                  cloudRunRevision:
+                    description: A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+                    properties:
+                      runRevisionRef:
+                        description: 'A [Cloud Run](https://cloud.google.com/run)
+                          [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+                          URI. The format is: projects/{project}/locations/{location}/revisions/{revision}'
+                        properties:
+                          external:
+                            description: A reference to an externally managed RunRevision
+                              resource. Should be in the format "projects/{{project}}/locations/{{location}}/revisions/{{revision}}".
+                            type: string
+                        required:
+                        - external
+                        type: object
+                    type: object
+                  computeForwardingRuleRef:
+                    description: 'A forwarding rule and its corresponding IP address
+                      represent the frontend configuration of a Google Cloud load
+                      balancer. Forwarding rules are also used for protocol forwarding,
+                      Private Service Connect and other network services to provide
+                      forwarding information in the control plane. Format: projects/{project}/global/forwardingRules/{id}
+                      or projects/{project}/regions/{region}/forwardingRules/{id}'
+                    type: string
+                  computeInstanceRef:
                     description: A Compute Engine instance URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  computeNetworkRef:
+                    description: A Compute Engine network URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
+                  containerClusterRef:
+                    description: A cluster URI for [Google Kubernetes Engine cluster
+                      control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                          `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                        type: string
+                      name:
+                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          */'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the project resource. More info:
+                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          */'
+                        type: string
+                    type: object
+                  fqdn:
+                    description: DNS endpoint of [Google Kubernetes Engine cluster
+                      control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+                      Requires gke_master_cluster to be set, can't be used simultaneoulsly
+                      with ip_address or network. Applicable only to destination endpoint.
                     type: string
                   ipAddress:
-                    description: |-
-                      The IP address of the endpoint, which can be an external or
-                      internal IP. An IPv6 address is only allowed when the test's
-                      destination is a global load balancer VIP.
-                    type: string
-                  network:
-                    description: A Compute Engine network URI.
+                    description: The IP address of the endpoint, which can be an external
+                      or internal IP.
                     type: string
                   networkType:
-                    description: 'Type of the network where the endpoint is located.
-                      Possible values: ["GCP_NETWORK", "NON_GCP_NETWORK"].'
+                    description: Type of the network where the endpoint is located.
+                      Applicable only to source endpoint, as destination network type
+                      can be inferred from the source.
                     type: string
                   port:
-                    description: |-
-                      The IP protocol port of the endpoint. Only applicable when
-                      protocol is TCP or UDP.
+                    description: The IP protocol port of the endpoint. Only applicable
+                      when protocol is TCP or UDP.
+                    format: int32
                     type: integer
-                  projectId:
-                    description: |-
-                      Project ID where the endpoint is located. The Project ID can be
-                      derived from the URI if you provide a VM instance or network URI.
-                      The following are two cases where you must provide the project ID:
-
-                      1. Only the IP address is specified, and the IP address is
-                         within a GCP project.
-                      2. When you are using Shared VPC and the IP address
-                         that you provide is from the service project. In this case,
-                         the network that the IP address resides in is defined in the
-                         host project.
+                  projectRef:
+                    description: 'Project ID where the endpoint is located. The Project
+                      ID can be derived from the URI if you provide a VM instance
+                      or network URI. The following are two cases where you must provide
+                      the project ID: 1. Only the IP address is specified, and the
+                      IP address is within a Google Cloud project. 2. When you are
+                      using Shared VPC and the IP address that you provide is from
+                      the service project. In this case, the network that the IP address
+                      resides in is defined in the host project.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  redisCluster:
+                    description: A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster)
+                      URI.
                     type: string
+                  redisInstance:
+                    description: A [Redis Instance](https://cloud.google.com/memorystore/docs/redis)
+                      URI.
+                    type: string
+                  sqlInstance:
+                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
+                      URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                 type: object
             required:
             - destination
+            - location
             - projectRef
             - source
             type: object
           status:
+            description: NetworkManagementConnectivityTestStatus defines the config
+              connector machine state of NetworkManagementConnectivityTest
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -251,13 +707,2280 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the NetworkManagementConnectivityTest
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time the test was created.
+                    type: string
+                  displayName:
+                    description: Output only. The display name of a Connectivity Test.
+                    type: string
+                  probingDetails:
+                    description: Output only. The probing details of this test from
+                      the latest run, present for applicable tests only. The details
+                      are updated when creating a new test, updating an existing test,
+                      or triggering a one-time rerun of an existing test.
+                    properties:
+                      abortCause:
+                        description: The reason probing was aborted.
+                        type: string
+                      destinationEgressLocation:
+                        description: The EdgeLocation from which a packet destined
+                          for/originating from the internet will egress/ingress the
+                          Google network. This will only be populated for a connectivity
+                          test which has an internet destination/source address. The
+                          absence of this field *must not* be used as an indication
+                          that the destination/source is part of the Google network.
+                        properties:
+                          metropolitanArea:
+                            description: Name of the metropolitan area.
+                            type: string
+                        type: object
+                      endpointInfo:
+                        description: The source and destination endpoints derived
+                          from the test input and used for active probing.
+                        properties:
+                          destinationIP:
+                            description: Destination IP address.
+                            type: string
+                          destinationNetworkURI:
+                            description: URI of the network where this packet is sent
+                              to.
+                            type: string
+                          destinationPort:
+                            description: Destination port. Only valid when protocol
+                              is TCP or UDP.
+                            format: int32
+                            type: integer
+                          protocol:
+                            description: 'IP protocol in string format, for example:
+                              "TCP", "UDP", "ICMP".'
+                            type: string
+                          sourceAgentURI:
+                            description: URI of the source telemetry agent this packet
+                              originates from.
+                            type: string
+                          sourceIP:
+                            description: Source IP address.
+                            type: string
+                          sourceNetworkURI:
+                            description: URI of the network where this packet originates
+                              from.
+                            type: string
+                          sourcePort:
+                            description: Source port. Only valid when protocol is
+                              TCP or UDP.
+                            format: int32
+                            type: integer
+                        type: object
+                      error:
+                        description: Details about an internal failure or the cancellation
+                          of active probing.
+                        properties:
+                          code:
+                            description: The status code, which should be an enum
+                              value of [google.rpc.Code][google.rpc.Code].
+                            format: int32
+                            type: integer
+                          details:
+                            description: A list of messages that carry the error details.  There
+                              is a common set of message types for APIs to use.
+                            items:
+                              properties:
+                                typeURL:
+                                  description: |-
+                                    A URL/resource name that uniquely identifies the type of the serialized
+                                     protocol buffer message. This string must contain at least
+                                     one "/" character. The last segment of the URL's path must represent
+                                     the fully qualified name of the type (as in
+                                     `path/google.protobuf.Duration`). The name should be in a canonical form
+                                     (e.g., leading "." is not accepted).
+
+                                     In practice, teams usually precompile into the binary all types that they
+                                     expect it to use in the context of Any. However, for URLs which use the
+                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
+                                     server that maps type URLs to message definitions as follows:
+
+                                     * If no scheme is provided, `https` is assumed.
+                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                                       value in binary format, or produce an error.
+                                     * Applications are allowed to cache lookup results based on the
+                                       URL, or have them precompiled into a binary to avoid any
+                                       lookup. Therefore, binary compatibility needs to be preserved
+                                       on changes to types. (Use versioned type names to manage
+                                       breaking changes.)
+
+                                     Note: this functionality is not currently available in the official
+                                     protobuf release, and it is not used for type URLs beginning with
+                                     type.googleapis.com.
+
+                                     Schemes other than `http`, `https` (or the empty scheme) might be
+                                     used with implementation specific semantics.
+                                  type: string
+                                value:
+                                  description: Must be a valid serialized protocol
+                                    buffer of the above specified type.
+                                  type: string
+                              type: object
+                            type: array
+                          message:
+                            description: A developer-facing error message, which should
+                              be in English. Any user-facing error message should
+                              be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                              field, or localized by the client.
+                            type: string
+                        type: object
+                      probingLatency:
+                        description: 'Latency as measured by active probing in one
+                          direction: from the source to the destination endpoint.'
+                        properties:
+                          latencyPercentiles:
+                            description: Representative latency percentiles.
+                            items:
+                              properties:
+                                latencyMicros:
+                                  description: percent-th percentile of latency observed,
+                                    in microseconds. Fraction of percent/100 of samples
+                                    have latency lower or equal to the value of this
+                                    field.
+                                  format: int64
+                                  type: integer
+                                percent:
+                                  description: Percentage of samples this data point
+                                    applies to.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            type: array
+                        type: object
+                      result:
+                        description: The overall result of active probing.
+                        type: string
+                      sentProbeCount:
+                        description: Number of probes sent.
+                        format: int32
+                        type: integer
+                      successfulProbeCount:
+                        description: Number of probes that reached the destination.
+                        format: int32
+                        type: integer
+                      verifyTime:
+                        description: The time that reachability was assessed through
+                          active probing.
+                        type: string
+                    type: object
+                  reachabilityDetails:
+                    description: Output only. The reachability details of this test
+                      from the latest run. The details are updated when creating a
+                      new test, updating an existing test, or triggering a one-time
+                      rerun of an existing test.
+                    properties:
+                      error:
+                        description: The details of a failure or a cancellation of
+                          reachability analysis.
+                        properties:
+                          code:
+                            description: The status code, which should be an enum
+                              value of [google.rpc.Code][google.rpc.Code].
+                            format: int32
+                            type: integer
+                          details:
+                            description: A list of messages that carry the error details.  There
+                              is a common set of message types for APIs to use.
+                            items:
+                              properties:
+                                typeURL:
+                                  description: |-
+                                    A URL/resource name that uniquely identifies the type of the serialized
+                                     protocol buffer message. This string must contain at least
+                                     one "/" character. The last segment of the URL's path must represent
+                                     the fully qualified name of the type (as in
+                                     `path/google.protobuf.Duration`). The name should be in a canonical form
+                                     (e.g., leading "." is not accepted).
+
+                                     In practice, teams usually precompile into the binary all types that they
+                                     expect it to use in the context of Any. However, for URLs which use the
+                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
+                                     server that maps type URLs to message definitions as follows:
+
+                                     * If no scheme is provided, `https` is assumed.
+                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                                       value in binary format, or produce an error.
+                                     * Applications are allowed to cache lookup results based on the
+                                       URL, or have them precompiled into a binary to avoid any
+                                       lookup. Therefore, binary compatibility needs to be preserved
+                                       on changes to types. (Use versioned type names to manage
+                                       breaking changes.)
+
+                                     Note: this functionality is not currently available in the official
+                                     protobuf release, and it is not used for type URLs beginning with
+                                     type.googleapis.com.
+
+                                     Schemes other than `http`, `https` (or the empty scheme) might be
+                                     used with implementation specific semantics.
+                                  type: string
+                                value:
+                                  description: Must be a valid serialized protocol
+                                    buffer of the above specified type.
+                                  type: string
+                              type: object
+                            type: array
+                          message:
+                            description: A developer-facing error message, which should
+                              be in English. Any user-facing error message should
+                              be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                              field, or localized by the client.
+                            type: string
+                        type: object
+                      result:
+                        description: The overall result of the test's configuration
+                          analysis.
+                        type: string
+                      traces:
+                        description: Result may contain a list of traces if a test
+                          has multiple possible paths in the network, such as when
+                          destination endpoint is a load balancer with multiple backends.
+                        items:
+                          properties:
+                            endpointInfo:
+                              description: Derived from the source and destination
+                                endpoints definition specified by user request, and
+                                validated by the data plane model. If there are multiple
+                                traces starting from different source locations, then
+                                the endpoint_info may be different between traces.
+                              properties:
+                                destinationIP:
+                                  description: Destination IP address.
+                                  type: string
+                                destinationNetworkURI:
+                                  description: URI of the network where this packet
+                                    is sent to.
+                                  type: string
+                                destinationPort:
+                                  description: Destination port. Only valid when protocol
+                                    is TCP or UDP.
+                                  format: int32
+                                  type: integer
+                                protocol:
+                                  description: 'IP protocol in string format, for
+                                    example: "TCP", "UDP", "ICMP".'
+                                  type: string
+                                sourceAgentURI:
+                                  description: URI of the source telemetry agent this
+                                    packet originates from.
+                                  type: string
+                                sourceIP:
+                                  description: Source IP address.
+                                  type: string
+                                sourceNetworkURI:
+                                  description: URI of the network where this packet
+                                    originates from.
+                                  type: string
+                                sourcePort:
+                                  description: Source port. Only valid when protocol
+                                    is TCP or UDP.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            forwardTraceID:
+                              description: ID of trace. For forward traces, this ID
+                                is unique for each trace. For return traces, it matches
+                                ID of associated forward trace. A single forward trace
+                                can be associated with none, one or more than one
+                                return trace.
+                              format: int32
+                              type: integer
+                            steps:
+                              description: |-
+                                A trace of a test contains multiple steps from the initial state to the
+                                 final state (delivered, dropped, forwarded, or aborted).
+
+                                 The steps are ordered by the processing sequence within the simulated
+                                 network state machine. It is critical to preserve the order of the steps
+                                 and avoid reordering or sorting them.
+                              items:
+                                properties:
+                                  abort:
+                                    description: Display information of the final
+                                      state "abort" and reason.
+                                    properties:
+                                      cause:
+                                        description: Causes that the analysis is aborted.
+                                        type: string
+                                      ipAddress:
+                                        description: IP address that caused the abort.
+                                        type: string
+                                      projectsMissingPermission:
+                                        description: List of project IDs the user
+                                          specified in the request but lacks access
+                                          to. In this case, analysis is aborted with
+                                          the PERMISSION_DENIED cause.
+                                        items:
+                                          type: string
+                                        type: array
+                                      resourceURI:
+                                        description: URI of the resource that caused
+                                          the abort.
+                                        type: string
+                                    type: object
+                                  appEngineVersion:
+                                    description: Display information of an App Engine
+                                      service version.
+                                    properties:
+                                      displayName:
+                                        description: Name of an App Engine version.
+                                        type: string
+                                      environment:
+                                        description: App Engine execution environment
+                                          for a version.
+                                        type: string
+                                      runtime:
+                                        description: Runtime of the App Engine version.
+                                        type: string
+                                      uri:
+                                        description: URI of an App Engine version.
+                                        type: string
+                                    type: object
+                                  causesDrop:
+                                    description: This is a step that leads to the
+                                      final state Drop.
+                                    type: boolean
+                                  cloudFunction:
+                                    description: Display information of a Cloud Function.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Function.
+                                        type: string
+                                      location:
+                                        description: Location in which the Cloud Function
+                                          is deployed.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Function.
+                                        type: string
+                                      versionID:
+                                        description: Latest successfully deployed
+                                          version id of the Cloud Function.
+                                        format: int64
+                                        type: integer
+                                    type: object
+                                  cloudRunRevision:
+                                    description: Display information of a Cloud Run
+                                      revision.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Run revision.
+                                        type: string
+                                      location:
+                                        description: Location in which this revision
+                                          is deployed.
+                                        type: string
+                                      serviceURI:
+                                        description: URI of Cloud Run service this
+                                          revision belongs to.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Run revision.
+                                        type: string
+                                    type: object
+                                  cloudSQLInstance:
+                                    description: Display information of a Cloud SQL
+                                      instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud SQL instance.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of a Cloud
+                                          SQL instance.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of a Cloud
+                                          SQL instance.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Cloud SQL instance network
+                                          or empty string if the instance does not
+                                          have one.
+                                        type: string
+                                      region:
+                                        description: Region in which the Cloud SQL
+                                          instance is running.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud SQL instance.
+                                        type: string
+                                    type: object
+                                  deliver:
+                                    description: Display information of the final
+                                      state "deliver" and reason.
+                                    properties:
+                                      ipAddress:
+                                        description: IP address of the target (if
+                                          applicable).
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target the packet
+                                          is delivered to (if applicable).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that the
+                                          packet is delivered to.
+                                        type: string
+                                      storageBucket:
+                                        description: Name of the Cloud Storage Bucket
+                                          the packet is delivered to (if applicable).
+                                        type: string
+                                      target:
+                                        description: Target type where the packet
+                                          is delivered to.
+                                        type: string
+                                    type: object
+                                  description:
+                                    description: A description of the step. Usually
+                                      this is a summary of the state.
+                                    type: string
+                                  drop:
+                                    description: Display information of the final
+                                      state "drop" and reason.
+                                    properties:
+                                      cause:
+                                        description: Cause that the packet is dropped.
+                                        type: string
+                                      destinationIP:
+                                        description: Destination IP address of the
+                                          dropped packet (if relevant).
+                                        type: string
+                                      region:
+                                        description: Region of the dropped packet
+                                          (if relevant).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that caused
+                                          the drop.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address of the dropped
+                                          packet (if relevant).
+                                        type: string
+                                    type: object
+                                  endpoint:
+                                    description: Display information of the source
+                                      and destination under analysis. The endpoint
+                                      information in an intermediate state may differ
+                                      with the initial input, as it might be modified
+                                      by state like NAT, or Connection Proxy.
+                                    properties:
+                                      destinationIP:
+                                        description: Destination IP address.
+                                        type: string
+                                      destinationNetworkURI:
+                                        description: URI of the network where this
+                                          packet is sent to.
+                                        type: string
+                                      destinationPort:
+                                        description: Destination port. Only valid
+                                          when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      sourceAgentURI:
+                                        description: URI of the source telemetry agent
+                                          this packet originates from.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address.
+                                        type: string
+                                      sourceNetworkURI:
+                                        description: URI of the network where this
+                                          packet originates from.
+                                        type: string
+                                      sourcePort:
+                                        description: Source port. Only valid when
+                                          protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  firewall:
+                                    description: Display information of a Compute
+                                      Engine firewall rule.
+                                    properties:
+                                      action:
+                                        description: 'Possible values: ALLOW, DENY,
+                                          APPLY_SECURITY_PROFILE_GROUP'
+                                        type: string
+                                      direction:
+                                        description: 'Possible values: INGRESS, EGRESS'
+                                        type: string
+                                      displayName:
+                                        description: The display name of the firewall
+                                          rule. This field might be empty for firewall
+                                          policy rules.
+                                        type: string
+                                      firewallRuleType:
+                                        description: The firewall rule's type.
+                                        type: string
+                                      networkURI:
+                                        description: The URI of the VPC network that
+                                          the firewall rule is associated with. This
+                                          field is not applicable to hierarchical
+                                          firewall policy rules.
+                                        type: string
+                                      policy:
+                                        description: The name of the firewall policy
+                                          that this rule is associated with. This
+                                          field is not applicable to VPC firewall
+                                          rules and implied VPC firewall rules.
+                                        type: string
+                                      policyURI:
+                                        description: The URI of the firewall policy
+                                          that this rule is associated with. This
+                                          field is not applicable to VPC firewall
+                                          rules and implied VPC firewall rules.
+                                        type: string
+                                      priority:
+                                        description: The priority of the firewall
+                                          rule.
+                                        format: int32
+                                        type: integer
+                                      targetServiceAccounts:
+                                        description: The target service accounts specified
+                                          by the firewall rule.
+                                        items:
+                                          type: string
+                                        type: array
+                                      targetTags:
+                                        description: The target tags defined by the
+                                          VPC firewall rule. This field is not applicable
+                                          to firewall policy rules.
+                                        items:
+                                          type: string
+                                        type: array
+                                      uri:
+                                        description: The URI of the firewall rule.
+                                          This field is not applicable to implied
+                                          VPC firewall rules.
+                                        type: string
+                                    type: object
+                                  forward:
+                                    description: Display information of the final
+                                      state "forward" and reason.
+                                    properties:
+                                      ipAddress:
+                                        description: IP address of the target (if
+                                          applicable).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that the
+                                          packet is forwarded to.
+                                        type: string
+                                      target:
+                                        description: Target type where this packet
+                                          is forwarded to.
+                                        type: string
+                                    type: object
+                                  forwardingRule:
+                                    description: Display information of a Compute
+                                      Engine forwarding rule.
+                                    properties:
+                                      displayName:
+                                        description: Name of the forwarding rule.
+                                        type: string
+                                      loadBalancerName:
+                                        description: Name of the load balancer the
+                                          forwarding rule belongs to. Empty for forwarding
+                                          rules not related to load balancers (like
+                                          PSC forwarding rules).
+                                        type: string
+                                      matchedPortRange:
+                                        description: Port range defined in the forwarding
+                                          rule that matches the packet.
+                                        type: string
+                                      matchedProtocol:
+                                        description: Protocol defined in the forwarding
+                                          rule that matches the packet.
+                                        type: string
+                                      networkURI:
+                                        description: Network URI.
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target this forwarding
+                                          rule targets (if applicable).
+                                        type: string
+                                      pscServiceAttachmentURI:
+                                        description: URI of the PSC service attachment
+                                          this forwarding rule targets (if applicable).
+                                        type: string
+                                      region:
+                                        description: Region of the forwarding rule.
+                                          Set only for regional forwarding rules.
+                                        type: string
+                                      target:
+                                        description: Target type of the forwarding
+                                          rule.
+                                        type: string
+                                      uri:
+                                        description: URI of the forwarding rule.
+                                        type: string
+                                      vip:
+                                        description: VIP of the forwarding rule.
+                                        type: string
+                                    type: object
+                                  gkeMaster:
+                                    description: Display information of a Google Kubernetes
+                                      Engine cluster master.
+                                    properties:
+                                      clusterNetworkURI:
+                                        description: URI of a GKE cluster network.
+                                        type: string
+                                      clusterURI:
+                                        description: URI of a GKE cluster.
+                                        type: string
+                                      dnsEndpoint:
+                                        description: DNS endpoint of a GKE cluster
+                                          control plane.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of a GKE
+                                          cluster control plane.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of a GKE
+                                          cluster control plane.
+                                        type: string
+                                    type: object
+                                  googleService:
+                                    description: Display information of a Google service
+                                    properties:
+                                      googleServiceType:
+                                        description: Recognized type of a Google Service.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address.
+                                        type: string
+                                    type: object
+                                  instance:
+                                    description: Display information of a Compute
+                                      Engine instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Compute Engine instance.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of the network
+                                          interface.
+                                        type: string
+                                      interface:
+                                        description: Name of the network interface
+                                          of a Compute Engine instance.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of the network
+                                          interface.
+                                        type: string
+                                      networkTags:
+                                        description: Network tags configured on the
+                                          instance.
+                                        items:
+                                          type: string
+                                        type: array
+                                      networkURI:
+                                        description: URI of a Compute Engine network.
+                                        type: string
+                                      pscNetworkAttachmentURI:
+                                        description: URI of the PSC network attachment
+                                          the NIC is attached to (if relevant).
+                                        type: string
+                                      serviceAccount:
+                                        description: Service account authorized for
+                                          the instance.
+                                        type: string
+                                      uri:
+                                        description: URI of a Compute Engine instance.
+                                        type: string
+                                    type: object
+                                  loadBalancer:
+                                    description: Display information of the load balancers.
+                                      Deprecated in favor of the `load_balancer_backend_info`
+                                      field, not used in new tests.
+                                    properties:
+                                      backendType:
+                                        description: Type of load balancer's backend
+                                          configuration.
+                                        type: string
+                                      backendURI:
+                                        description: Backend configuration URI.
+                                        type: string
+                                      backends:
+                                        description: Information for the loadbalancer
+                                          backends.
+                                        items:
+                                          properties:
+                                            displayName:
+                                              description: Name of a Compute Engine
+                                                instance or network endpoint.
+                                              type: string
+                                            healthCheckAllowingFirewallRules:
+                                              description: A list of firewall rule
+                                                URIs allowing probes from health check
+                                                IP ranges.
+                                              items:
+                                                type: string
+                                              type: array
+                                            healthCheckBlockingFirewallRules:
+                                              description: A list of firewall rule
+                                                URIs blocking probes from health check
+                                                IP ranges.
+                                              items:
+                                                type: string
+                                              type: array
+                                            healthCheckFirewallState:
+                                              description: State of the health check
+                                                firewall configuration.
+                                              type: string
+                                            uri:
+                                              description: URI of a Compute Engine
+                                                instance or network endpoint.
+                                              type: string
+                                          type: object
+                                        type: array
+                                      healthCheckURI:
+                                        description: URI of the health check for the
+                                          load balancer. Deprecated and no longer
+                                          populated as different load balancer backends
+                                          might have different health checks.
+                                        type: string
+                                      loadBalancerType:
+                                        description: Type of the load balancer.
+                                        type: string
+                                    type: object
+                                  loadBalancerBackendInfo:
+                                    description: Display information of a specific
+                                      load balancer backend.
+                                    properties:
+                                      backendBucketURI:
+                                        description: URI of the backend bucket this
+                                          backend targets (if applicable).
+                                        type: string
+                                      backendServiceURI:
+                                        description: URI of the backend service this
+                                          backend belongs to (if applicable).
+                                        type: string
+                                      healthCheckFirewallsConfigState:
+                                        description: 'Output only. Health check firewalls
+                                          configuration state for the backend. This
+                                          is a result of the static firewall analysis
+                                          (verifying that health check traffic from
+                                          required IP ranges to the backend is allowed
+                                          or not). The backend might still be unhealthy
+                                          even if these firewalls are configured.
+                                          Please refer to the documentation for more
+                                          information: https://cloud.google.com/load-balancing/docs/firewall-rules'
+                                        type: string
+                                      healthCheckURI:
+                                        description: URI of the health check attached
+                                          to this backend (if applicable).
+                                        type: string
+                                      instanceGroupURI:
+                                        description: URI of the instance group this
+                                          backend belongs to (if applicable).
+                                        type: string
+                                      instanceURI:
+                                        description: URI of the backend instance (if
+                                          applicable). Populated for instance group
+                                          backends, and zonal NEG backends.
+                                        type: string
+                                      name:
+                                        description: Display name of the backend.
+                                          For example, it might be an instance name
+                                          for the instance group backends, or an IP
+                                          address and port for zonal network endpoint
+                                          group backends.
+                                        type: string
+                                      networkEndpointGroupURI:
+                                        description: URI of the network endpoint group
+                                          this backend belongs to (if applicable).
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target this PSC
+                                          NEG backend targets (if applicable).
+                                        type: string
+                                      pscServiceAttachmentURI:
+                                        description: URI of the PSC service attachment
+                                          this PSC NEG backend targets (if applicable).
+                                        type: string
+                                    type: object
+                                  nat:
+                                    description: Display information of a NAT.
+                                    properties:
+                                      natGatewayName:
+                                        description: The name of Cloud NAT Gateway.
+                                          Only valid when type is CLOUD_NAT.
+                                        type: string
+                                      networkURI:
+                                        description: URI of the network where NAT
+                                          translation takes place.
+                                        type: string
+                                      newDestinationIP:
+                                        description: Destination IP address after
+                                          NAT translation.
+                                        type: string
+                                      newDestinationPort:
+                                        description: Destination port after NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      newSourceIP:
+                                        description: Source IP address after NAT translation.
+                                        type: string
+                                      newSourcePort:
+                                        description: Source port after NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldDestinationIP:
+                                        description: Destination IP address before
+                                          NAT translation.
+                                        type: string
+                                      oldDestinationPort:
+                                        description: Destination port before NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldSourceIP:
+                                        description: Source IP address before NAT
+                                          translation.
+                                        type: string
+                                      oldSourcePort:
+                                        description: Source port before NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      routerURI:
+                                        description: Uri of the Cloud Router. Only
+                                          valid when type is CLOUD_NAT.
+                                        type: string
+                                      type:
+                                        description: Type of NAT.
+                                        type: string
+                                    type: object
+                                  network:
+                                    description: Display information of a Google Cloud
+                                      network.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Compute Engine network.
+                                        type: string
+                                      matchedIPRange:
+                                        description: The IP range of the subnet matching
+                                          the source IP address of the test.
+                                        type: string
+                                      matchedSubnetURI:
+                                        description: URI of the subnet matching the
+                                          source IP address of the test.
+                                        type: string
+                                      region:
+                                        description: The region of the subnet matching
+                                          the source IP address of the test.
+                                        type: string
+                                      uri:
+                                        description: URI of a Compute Engine network.
+                                        type: string
+                                    type: object
+                                  projectID:
+                                    description: Project ID that contains the configuration
+                                      this step is validating.
+                                    type: string
+                                  proxyConnection:
+                                    description: Display information of a ProxyConnection.
+                                    properties:
+                                      networkURI:
+                                        description: URI of the network where connection
+                                          is proxied.
+                                        type: string
+                                      newDestinationIP:
+                                        description: Destination IP address of a new
+                                          connection.
+                                        type: string
+                                      newDestinationPort:
+                                        description: Destination port of a new connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      newSourceIP:
+                                        description: Source IP address of a new connection.
+                                        type: string
+                                      newSourcePort:
+                                        description: Source port of a new connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldDestinationIP:
+                                        description: Destination IP address of an
+                                          original connection
+                                        type: string
+                                      oldDestinationPort:
+                                        description: Destination port of an original
+                                          connection. Only valid when protocol is
+                                          TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldSourceIP:
+                                        description: Source IP address of an original
+                                          connection.
+                                        type: string
+                                      oldSourcePort:
+                                        description: Source port of an original connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      subnetURI:
+                                        description: Uri of proxy subnet.
+                                        type: string
+                                    type: object
+                                  redisCluster:
+                                    description: Display information of a Redis Cluster.
+                                    properties:
+                                      discoveryEndpointIPAddress:
+                                        description: Discovery endpoint IP address
+                                          of a Redis Cluster.
+                                        type: string
+                                      displayName:
+                                        description: Name of a Redis Cluster.
+                                        type: string
+                                      location:
+                                        description: Name of the region in which the
+                                          Redis Cluster is defined. For example, "us-central1".
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Redis Cluster network
+                                          in format "projects/{project_id}/global/networks/{network_id}".
+                                        type: string
+                                      secondaryEndpointIPAddress:
+                                        description: Secondary endpoint IP address
+                                          of a Redis Cluster.
+                                        type: string
+                                      uri:
+                                        description: URI of a Redis Cluster in format
+                                          "projects/{project_id}/locations/{location}/clusters/{cluster_id}"
+                                        type: string
+                                    type: object
+                                  redisInstance:
+                                    description: Display information of a Redis Instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Redis Instance.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Cloud Redis Instance
+                                          network.
+                                        type: string
+                                      primaryEndpointIP:
+                                        description: Primary endpoint IP address of
+                                          a Cloud Redis Instance.
+                                        type: string
+                                      readEndpointIP:
+                                        description: Read endpoint IP address of a
+                                          Cloud Redis Instance (if applicable).
+                                        type: string
+                                      region:
+                                        description: Region in which the Cloud Redis
+                                          Instance is defined.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Redis Instance.
+                                        type: string
+                                    type: object
+                                  route:
+                                    description: Display information of a Compute
+                                      Engine route.
+                                    properties:
+                                      advertisedRouteNextHopURI:
+                                        description: For advertised routes, the URI
+                                          of their next hop, i.e. the URI of the hybrid
+                                          endpoint (VPN tunnel, Interconnect attachment,
+                                          NCC router appliance) the advertised prefix
+                                          is advertised through, or URI of the source
+                                          peered network.
+                                        type: string
+                                      advertisedRouteSourceRouterURI:
+                                        description: For advertised dynamic routes,
+                                          the URI of the Cloud Router that advertised
+                                          the corresponding IP prefix.
+                                        type: string
+                                      destIPRange:
+                                        description: Destination IP range of the route.
+                                        type: string
+                                      destPortRanges:
+                                        description: Destination port ranges of the
+                                          route. Policy based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      displayName:
+                                        description: Name of a route.
+                                        type: string
+                                      instanceTags:
+                                        description: Instance tags of the route.
+                                        items:
+                                          type: string
+                                        type: array
+                                      nccHubURI:
+                                        description: URI of a NCC Hub. NCC_HUB routes
+                                          only.
+                                        type: string
+                                      nccSpokeURI:
+                                        description: URI of a NCC Spoke. NCC_HUB routes
+                                          only.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network.
+                                          NETWORK routes only.
+                                        type: string
+                                      nextHop:
+                                        description: Next hop of the route.
+                                        type: string
+                                      nextHopType:
+                                        description: Type of next hop.
+                                        type: string
+                                      priority:
+                                        description: Priority of the route.
+                                        format: int32
+                                        type: integer
+                                      protocols:
+                                        description: Protocols of the route. Policy
+                                          based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      region:
+                                        description: Region of the route (if applicable).
+                                        type: string
+                                      routeScope:
+                                        description: Indicates where route is applicable.
+                                        type: string
+                                      routeType:
+                                        description: Type of route.
+                                        type: string
+                                      srcIPRange:
+                                        description: Source IP address range of the
+                                          route. Policy based routes only.
+                                        type: string
+                                      srcPortRanges:
+                                        description: Source port ranges of the route.
+                                          Policy based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      uri:
+                                        description: URI of a route (if applicable).
+                                        type: string
+                                    type: object
+                                  serverlessNeg:
+                                    description: Display information of a Serverless
+                                      network endpoint group backend. Used only for
+                                      return traces.
+                                    properties:
+                                      negURI:
+                                        description: URI of the serverless network
+                                          endpoint group.
+                                        type: string
+                                    type: object
+                                  state:
+                                    description: Each step is in one of the pre-defined
+                                      states.
+                                    type: string
+                                  storageBucket:
+                                    description: Display information of a Storage
+                                      Bucket. Used only for return traces.
+                                    properties:
+                                      bucket:
+                                        description: Cloud Storage Bucket name.
+                                        type: string
+                                    type: object
+                                  vpcConnector:
+                                    description: Display information of a VPC connector.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPC connector.
+                                        type: string
+                                      location:
+                                        description: Location in which the VPC connector
+                                          is deployed.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPC connector.
+                                        type: string
+                                    type: object
+                                  vpnGateway:
+                                    description: Display information of a Compute
+                                      Engine VPN gateway.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPN gateway.
+                                        type: string
+                                      ipAddress:
+                                        description: IP address of the VPN gateway.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network
+                                          where the VPN gateway is configured.
+                                        type: string
+                                      region:
+                                        description: Name of a Google Cloud region
+                                          where this VPN gateway is configured.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPN gateway.
+                                        type: string
+                                      vpnTunnelURI:
+                                        description: A VPN tunnel that is associated
+                                          with this VPN gateway. There may be multiple
+                                          VPN tunnels configured on a VPN gateway,
+                                          and only the one relevant to the test is
+                                          displayed.
+                                        type: string
+                                    type: object
+                                  vpnTunnel:
+                                    description: Display information of a Compute
+                                      Engine VPN tunnel.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPN tunnel.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network
+                                          where the VPN tunnel is configured.
+                                        type: string
+                                      region:
+                                        description: Name of a Google Cloud region
+                                          where this VPN tunnel is configured.
+                                        type: string
+                                      remoteGateway:
+                                        description: URI of a VPN gateway at remote
+                                          end of the tunnel.
+                                        type: string
+                                      remoteGatewayIP:
+                                        description: Remote VPN gateway's IP address.
+                                        type: string
+                                      routingType:
+                                        description: Type of the routing policy.
+                                        type: string
+                                      sourceGateway:
+                                        description: URI of the VPN gateway at local
+                                          end of the tunnel.
+                                        type: string
+                                      sourceGatewayIP:
+                                        description: Local VPN gateway's IP address.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPN tunnel.
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
+                        type: array
+                      verifyTime:
+                        description: The time of the configuration analysis.
+                        type: string
+                    type: object
+                  returnReachabilityDetails:
+                    description: Output only. The reachability details of this test
+                      from the latest run for the return path. The details are updated
+                      when creating a new test, updating an existing test, or triggering
+                      a one-time rerun of an existing test.
+                    properties:
+                      error:
+                        description: The details of a failure or a cancellation of
+                          reachability analysis.
+                        properties:
+                          code:
+                            description: The status code, which should be an enum
+                              value of [google.rpc.Code][google.rpc.Code].
+                            format: int32
+                            type: integer
+                          details:
+                            description: A list of messages that carry the error details.  There
+                              is a common set of message types for APIs to use.
+                            items:
+                              properties:
+                                typeURL:
+                                  description: |-
+                                    A URL/resource name that uniquely identifies the type of the serialized
+                                     protocol buffer message. This string must contain at least
+                                     one "/" character. The last segment of the URL's path must represent
+                                     the fully qualified name of the type (as in
+                                     `path/google.protobuf.Duration`). The name should be in a canonical form
+                                     (e.g., leading "." is not accepted).
+
+                                     In practice, teams usually precompile into the binary all types that they
+                                     expect it to use in the context of Any. However, for URLs which use the
+                                     scheme `http`, `https`, or no scheme, one can optionally set up a type
+                                     server that maps type URLs to message definitions as follows:
+
+                                     * If no scheme is provided, `https` is assumed.
+                                     * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+                                       value in binary format, or produce an error.
+                                     * Applications are allowed to cache lookup results based on the
+                                       URL, or have them precompiled into a binary to avoid any
+                                       lookup. Therefore, binary compatibility needs to be preserved
+                                       on changes to types. (Use versioned type names to manage
+                                       breaking changes.)
+
+                                     Note: this functionality is not currently available in the official
+                                     protobuf release, and it is not used for type URLs beginning with
+                                     type.googleapis.com.
+
+                                     Schemes other than `http`, `https` (or the empty scheme) might be
+                                     used with implementation specific semantics.
+                                  type: string
+                                value:
+                                  description: Must be a valid serialized protocol
+                                    buffer of the above specified type.
+                                  type: string
+                              type: object
+                            type: array
+                          message:
+                            description: A developer-facing error message, which should
+                              be in English. Any user-facing error message should
+                              be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                              field, or localized by the client.
+                            type: string
+                        type: object
+                      result:
+                        description: The overall result of the test's configuration
+                          analysis.
+                        type: string
+                      traces:
+                        description: Result may contain a list of traces if a test
+                          has multiple possible paths in the network, such as when
+                          destination endpoint is a load balancer with multiple backends.
+                        items:
+                          properties:
+                            endpointInfo:
+                              description: Derived from the source and destination
+                                endpoints definition specified by user request, and
+                                validated by the data plane model. If there are multiple
+                                traces starting from different source locations, then
+                                the endpoint_info may be different between traces.
+                              properties:
+                                destinationIP:
+                                  description: Destination IP address.
+                                  type: string
+                                destinationNetworkURI:
+                                  description: URI of the network where this packet
+                                    is sent to.
+                                  type: string
+                                destinationPort:
+                                  description: Destination port. Only valid when protocol
+                                    is TCP or UDP.
+                                  format: int32
+                                  type: integer
+                                protocol:
+                                  description: 'IP protocol in string format, for
+                                    example: "TCP", "UDP", "ICMP".'
+                                  type: string
+                                sourceAgentURI:
+                                  description: URI of the source telemetry agent this
+                                    packet originates from.
+                                  type: string
+                                sourceIP:
+                                  description: Source IP address.
+                                  type: string
+                                sourceNetworkURI:
+                                  description: URI of the network where this packet
+                                    originates from.
+                                  type: string
+                                sourcePort:
+                                  description: Source port. Only valid when protocol
+                                    is TCP or UDP.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            forwardTraceID:
+                              description: ID of trace. For forward traces, this ID
+                                is unique for each trace. For return traces, it matches
+                                ID of associated forward trace. A single forward trace
+                                can be associated with none, one or more than one
+                                return trace.
+                              format: int32
+                              type: integer
+                            steps:
+                              description: |-
+                                A trace of a test contains multiple steps from the initial state to the
+                                 final state (delivered, dropped, forwarded, or aborted).
+
+                                 The steps are ordered by the processing sequence within the simulated
+                                 network state machine. It is critical to preserve the order of the steps
+                                 and avoid reordering or sorting them.
+                              items:
+                                properties:
+                                  abort:
+                                    description: Display information of the final
+                                      state "abort" and reason.
+                                    properties:
+                                      cause:
+                                        description: Causes that the analysis is aborted.
+                                        type: string
+                                      ipAddress:
+                                        description: IP address that caused the abort.
+                                        type: string
+                                      projectsMissingPermission:
+                                        description: List of project IDs the user
+                                          specified in the request but lacks access
+                                          to. In this case, analysis is aborted with
+                                          the PERMISSION_DENIED cause.
+                                        items:
+                                          type: string
+                                        type: array
+                                      resourceURI:
+                                        description: URI of the resource that caused
+                                          the abort.
+                                        type: string
+                                    type: object
+                                  appEngineVersion:
+                                    description: Display information of an App Engine
+                                      service version.
+                                    properties:
+                                      displayName:
+                                        description: Name of an App Engine version.
+                                        type: string
+                                      environment:
+                                        description: App Engine execution environment
+                                          for a version.
+                                        type: string
+                                      runtime:
+                                        description: Runtime of the App Engine version.
+                                        type: string
+                                      uri:
+                                        description: URI of an App Engine version.
+                                        type: string
+                                    type: object
+                                  causesDrop:
+                                    description: This is a step that leads to the
+                                      final state Drop.
+                                    type: boolean
+                                  cloudFunction:
+                                    description: Display information of a Cloud Function.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Function.
+                                        type: string
+                                      location:
+                                        description: Location in which the Cloud Function
+                                          is deployed.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Function.
+                                        type: string
+                                      versionID:
+                                        description: Latest successfully deployed
+                                          version id of the Cloud Function.
+                                        format: int64
+                                        type: integer
+                                    type: object
+                                  cloudRunRevision:
+                                    description: Display information of a Cloud Run
+                                      revision.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Run revision.
+                                        type: string
+                                      location:
+                                        description: Location in which this revision
+                                          is deployed.
+                                        type: string
+                                      serviceURI:
+                                        description: URI of Cloud Run service this
+                                          revision belongs to.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Run revision.
+                                        type: string
+                                    type: object
+                                  cloudSQLInstance:
+                                    description: Display information of a Cloud SQL
+                                      instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud SQL instance.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of a Cloud
+                                          SQL instance.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of a Cloud
+                                          SQL instance.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Cloud SQL instance network
+                                          or empty string if the instance does not
+                                          have one.
+                                        type: string
+                                      region:
+                                        description: Region in which the Cloud SQL
+                                          instance is running.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud SQL instance.
+                                        type: string
+                                    type: object
+                                  deliver:
+                                    description: Display information of the final
+                                      state "deliver" and reason.
+                                    properties:
+                                      ipAddress:
+                                        description: IP address of the target (if
+                                          applicable).
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target the packet
+                                          is delivered to (if applicable).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that the
+                                          packet is delivered to.
+                                        type: string
+                                      storageBucket:
+                                        description: Name of the Cloud Storage Bucket
+                                          the packet is delivered to (if applicable).
+                                        type: string
+                                      target:
+                                        description: Target type where the packet
+                                          is delivered to.
+                                        type: string
+                                    type: object
+                                  description:
+                                    description: A description of the step. Usually
+                                      this is a summary of the state.
+                                    type: string
+                                  drop:
+                                    description: Display information of the final
+                                      state "drop" and reason.
+                                    properties:
+                                      cause:
+                                        description: Cause that the packet is dropped.
+                                        type: string
+                                      destinationIP:
+                                        description: Destination IP address of the
+                                          dropped packet (if relevant).
+                                        type: string
+                                      region:
+                                        description: Region of the dropped packet
+                                          (if relevant).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that caused
+                                          the drop.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address of the dropped
+                                          packet (if relevant).
+                                        type: string
+                                    type: object
+                                  endpoint:
+                                    description: Display information of the source
+                                      and destination under analysis. The endpoint
+                                      information in an intermediate state may differ
+                                      with the initial input, as it might be modified
+                                      by state like NAT, or Connection Proxy.
+                                    properties:
+                                      destinationIP:
+                                        description: Destination IP address.
+                                        type: string
+                                      destinationNetworkURI:
+                                        description: URI of the network where this
+                                          packet is sent to.
+                                        type: string
+                                      destinationPort:
+                                        description: Destination port. Only valid
+                                          when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      sourceAgentURI:
+                                        description: URI of the source telemetry agent
+                                          this packet originates from.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address.
+                                        type: string
+                                      sourceNetworkURI:
+                                        description: URI of the network where this
+                                          packet originates from.
+                                        type: string
+                                      sourcePort:
+                                        description: Source port. Only valid when
+                                          protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  firewall:
+                                    description: Display information of a Compute
+                                      Engine firewall rule.
+                                    properties:
+                                      action:
+                                        description: 'Possible values: ALLOW, DENY,
+                                          APPLY_SECURITY_PROFILE_GROUP'
+                                        type: string
+                                      direction:
+                                        description: 'Possible values: INGRESS, EGRESS'
+                                        type: string
+                                      displayName:
+                                        description: The display name of the firewall
+                                          rule. This field might be empty for firewall
+                                          policy rules.
+                                        type: string
+                                      firewallRuleType:
+                                        description: The firewall rule's type.
+                                        type: string
+                                      networkURI:
+                                        description: The URI of the VPC network that
+                                          the firewall rule is associated with. This
+                                          field is not applicable to hierarchical
+                                          firewall policy rules.
+                                        type: string
+                                      policy:
+                                        description: The name of the firewall policy
+                                          that this rule is associated with. This
+                                          field is not applicable to VPC firewall
+                                          rules and implied VPC firewall rules.
+                                        type: string
+                                      policyURI:
+                                        description: The URI of the firewall policy
+                                          that this rule is associated with. This
+                                          field is not applicable to VPC firewall
+                                          rules and implied VPC firewall rules.
+                                        type: string
+                                      priority:
+                                        description: The priority of the firewall
+                                          rule.
+                                        format: int32
+                                        type: integer
+                                      targetServiceAccounts:
+                                        description: The target service accounts specified
+                                          by the firewall rule.
+                                        items:
+                                          type: string
+                                        type: array
+                                      targetTags:
+                                        description: The target tags defined by the
+                                          VPC firewall rule. This field is not applicable
+                                          to firewall policy rules.
+                                        items:
+                                          type: string
+                                        type: array
+                                      uri:
+                                        description: The URI of the firewall rule.
+                                          This field is not applicable to implied
+                                          VPC firewall rules.
+                                        type: string
+                                    type: object
+                                  forward:
+                                    description: Display information of the final
+                                      state "forward" and reason.
+                                    properties:
+                                      ipAddress:
+                                        description: IP address of the target (if
+                                          applicable).
+                                        type: string
+                                      resourceURI:
+                                        description: URI of the resource that the
+                                          packet is forwarded to.
+                                        type: string
+                                      target:
+                                        description: Target type where this packet
+                                          is forwarded to.
+                                        type: string
+                                    type: object
+                                  forwardingRule:
+                                    description: Display information of a Compute
+                                      Engine forwarding rule.
+                                    properties:
+                                      displayName:
+                                        description: Name of the forwarding rule.
+                                        type: string
+                                      loadBalancerName:
+                                        description: Name of the load balancer the
+                                          forwarding rule belongs to. Empty for forwarding
+                                          rules not related to load balancers (like
+                                          PSC forwarding rules).
+                                        type: string
+                                      matchedPortRange:
+                                        description: Port range defined in the forwarding
+                                          rule that matches the packet.
+                                        type: string
+                                      matchedProtocol:
+                                        description: Protocol defined in the forwarding
+                                          rule that matches the packet.
+                                        type: string
+                                      networkURI:
+                                        description: Network URI.
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target this forwarding
+                                          rule targets (if applicable).
+                                        type: string
+                                      pscServiceAttachmentURI:
+                                        description: URI of the PSC service attachment
+                                          this forwarding rule targets (if applicable).
+                                        type: string
+                                      region:
+                                        description: Region of the forwarding rule.
+                                          Set only for regional forwarding rules.
+                                        type: string
+                                      target:
+                                        description: Target type of the forwarding
+                                          rule.
+                                        type: string
+                                      uri:
+                                        description: URI of the forwarding rule.
+                                        type: string
+                                      vip:
+                                        description: VIP of the forwarding rule.
+                                        type: string
+                                    type: object
+                                  gkeMaster:
+                                    description: Display information of a Google Kubernetes
+                                      Engine cluster master.
+                                    properties:
+                                      clusterNetworkURI:
+                                        description: URI of a GKE cluster network.
+                                        type: string
+                                      clusterURI:
+                                        description: URI of a GKE cluster.
+                                        type: string
+                                      dnsEndpoint:
+                                        description: DNS endpoint of a GKE cluster
+                                          control plane.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of a GKE
+                                          cluster control plane.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of a GKE
+                                          cluster control plane.
+                                        type: string
+                                    type: object
+                                  googleService:
+                                    description: Display information of a Google service
+                                    properties:
+                                      googleServiceType:
+                                        description: Recognized type of a Google Service.
+                                        type: string
+                                      sourceIP:
+                                        description: Source IP address.
+                                        type: string
+                                    type: object
+                                  instance:
+                                    description: Display information of a Compute
+                                      Engine instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Compute Engine instance.
+                                        type: string
+                                      externalIP:
+                                        description: External IP address of the network
+                                          interface.
+                                        type: string
+                                      interface:
+                                        description: Name of the network interface
+                                          of a Compute Engine instance.
+                                        type: string
+                                      internalIP:
+                                        description: Internal IP address of the network
+                                          interface.
+                                        type: string
+                                      networkTags:
+                                        description: Network tags configured on the
+                                          instance.
+                                        items:
+                                          type: string
+                                        type: array
+                                      networkURI:
+                                        description: URI of a Compute Engine network.
+                                        type: string
+                                      pscNetworkAttachmentURI:
+                                        description: URI of the PSC network attachment
+                                          the NIC is attached to (if relevant).
+                                        type: string
+                                      serviceAccount:
+                                        description: Service account authorized for
+                                          the instance.
+                                        type: string
+                                      uri:
+                                        description: URI of a Compute Engine instance.
+                                        type: string
+                                    type: object
+                                  loadBalancer:
+                                    description: Display information of the load balancers.
+                                      Deprecated in favor of the `load_balancer_backend_info`
+                                      field, not used in new tests.
+                                    properties:
+                                      backendType:
+                                        description: Type of load balancer's backend
+                                          configuration.
+                                        type: string
+                                      backendURI:
+                                        description: Backend configuration URI.
+                                        type: string
+                                      backends:
+                                        description: Information for the loadbalancer
+                                          backends.
+                                        items:
+                                          properties:
+                                            displayName:
+                                              description: Name of a Compute Engine
+                                                instance or network endpoint.
+                                              type: string
+                                            healthCheckAllowingFirewallRules:
+                                              description: A list of firewall rule
+                                                URIs allowing probes from health check
+                                                IP ranges.
+                                              items:
+                                                type: string
+                                              type: array
+                                            healthCheckBlockingFirewallRules:
+                                              description: A list of firewall rule
+                                                URIs blocking probes from health check
+                                                IP ranges.
+                                              items:
+                                                type: string
+                                              type: array
+                                            healthCheckFirewallState:
+                                              description: State of the health check
+                                                firewall configuration.
+                                              type: string
+                                            uri:
+                                              description: URI of a Compute Engine
+                                                instance or network endpoint.
+                                              type: string
+                                          type: object
+                                        type: array
+                                      healthCheckURI:
+                                        description: URI of the health check for the
+                                          load balancer. Deprecated and no longer
+                                          populated as different load balancer backends
+                                          might have different health checks.
+                                        type: string
+                                      loadBalancerType:
+                                        description: Type of the load balancer.
+                                        type: string
+                                    type: object
+                                  loadBalancerBackendInfo:
+                                    description: Display information of a specific
+                                      load balancer backend.
+                                    properties:
+                                      backendBucketURI:
+                                        description: URI of the backend bucket this
+                                          backend targets (if applicable).
+                                        type: string
+                                      backendServiceURI:
+                                        description: URI of the backend service this
+                                          backend belongs to (if applicable).
+                                        type: string
+                                      healthCheckFirewallsConfigState:
+                                        description: 'Output only. Health check firewalls
+                                          configuration state for the backend. This
+                                          is a result of the static firewall analysis
+                                          (verifying that health check traffic from
+                                          required IP ranges to the backend is allowed
+                                          or not). The backend might still be unhealthy
+                                          even if these firewalls are configured.
+                                          Please refer to the documentation for more
+                                          information: https://cloud.google.com/load-balancing/docs/firewall-rules'
+                                        type: string
+                                      healthCheckURI:
+                                        description: URI of the health check attached
+                                          to this backend (if applicable).
+                                        type: string
+                                      instanceGroupURI:
+                                        description: URI of the instance group this
+                                          backend belongs to (if applicable).
+                                        type: string
+                                      instanceURI:
+                                        description: URI of the backend instance (if
+                                          applicable). Populated for instance group
+                                          backends, and zonal NEG backends.
+                                        type: string
+                                      name:
+                                        description: Display name of the backend.
+                                          For example, it might be an instance name
+                                          for the instance group backends, or an IP
+                                          address and port for zonal network endpoint
+                                          group backends.
+                                        type: string
+                                      networkEndpointGroupURI:
+                                        description: URI of the network endpoint group
+                                          this backend belongs to (if applicable).
+                                        type: string
+                                      pscGoogleAPITarget:
+                                        description: PSC Google API target this PSC
+                                          NEG backend targets (if applicable).
+                                        type: string
+                                      pscServiceAttachmentURI:
+                                        description: URI of the PSC service attachment
+                                          this PSC NEG backend targets (if applicable).
+                                        type: string
+                                    type: object
+                                  nat:
+                                    description: Display information of a NAT.
+                                    properties:
+                                      natGatewayName:
+                                        description: The name of Cloud NAT Gateway.
+                                          Only valid when type is CLOUD_NAT.
+                                        type: string
+                                      networkURI:
+                                        description: URI of the network where NAT
+                                          translation takes place.
+                                        type: string
+                                      newDestinationIP:
+                                        description: Destination IP address after
+                                          NAT translation.
+                                        type: string
+                                      newDestinationPort:
+                                        description: Destination port after NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      newSourceIP:
+                                        description: Source IP address after NAT translation.
+                                        type: string
+                                      newSourcePort:
+                                        description: Source port after NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldDestinationIP:
+                                        description: Destination IP address before
+                                          NAT translation.
+                                        type: string
+                                      oldDestinationPort:
+                                        description: Destination port before NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldSourceIP:
+                                        description: Source IP address before NAT
+                                          translation.
+                                        type: string
+                                      oldSourcePort:
+                                        description: Source port before NAT translation.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      routerURI:
+                                        description: Uri of the Cloud Router. Only
+                                          valid when type is CLOUD_NAT.
+                                        type: string
+                                      type:
+                                        description: Type of NAT.
+                                        type: string
+                                    type: object
+                                  network:
+                                    description: Display information of a Google Cloud
+                                      network.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Compute Engine network.
+                                        type: string
+                                      matchedIPRange:
+                                        description: The IP range of the subnet matching
+                                          the source IP address of the test.
+                                        type: string
+                                      matchedSubnetURI:
+                                        description: URI of the subnet matching the
+                                          source IP address of the test.
+                                        type: string
+                                      region:
+                                        description: The region of the subnet matching
+                                          the source IP address of the test.
+                                        type: string
+                                      uri:
+                                        description: URI of a Compute Engine network.
+                                        type: string
+                                    type: object
+                                  projectID:
+                                    description: Project ID that contains the configuration
+                                      this step is validating.
+                                    type: string
+                                  proxyConnection:
+                                    description: Display information of a ProxyConnection.
+                                    properties:
+                                      networkURI:
+                                        description: URI of the network where connection
+                                          is proxied.
+                                        type: string
+                                      newDestinationIP:
+                                        description: Destination IP address of a new
+                                          connection.
+                                        type: string
+                                      newDestinationPort:
+                                        description: Destination port of a new connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      newSourceIP:
+                                        description: Source IP address of a new connection.
+                                        type: string
+                                      newSourcePort:
+                                        description: Source port of a new connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldDestinationIP:
+                                        description: Destination IP address of an
+                                          original connection
+                                        type: string
+                                      oldDestinationPort:
+                                        description: Destination port of an original
+                                          connection. Only valid when protocol is
+                                          TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      oldSourceIP:
+                                        description: Source IP address of an original
+                                          connection.
+                                        type: string
+                                      oldSourcePort:
+                                        description: Source port of an original connection.
+                                          Only valid when protocol is TCP or UDP.
+                                        format: int32
+                                        type: integer
+                                      protocol:
+                                        description: 'IP protocol in string format,
+                                          for example: "TCP", "UDP", "ICMP".'
+                                        type: string
+                                      subnetURI:
+                                        description: Uri of proxy subnet.
+                                        type: string
+                                    type: object
+                                  redisCluster:
+                                    description: Display information of a Redis Cluster.
+                                    properties:
+                                      discoveryEndpointIPAddress:
+                                        description: Discovery endpoint IP address
+                                          of a Redis Cluster.
+                                        type: string
+                                      displayName:
+                                        description: Name of a Redis Cluster.
+                                        type: string
+                                      location:
+                                        description: Name of the region in which the
+                                          Redis Cluster is defined. For example, "us-central1".
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Redis Cluster network
+                                          in format "projects/{project_id}/global/networks/{network_id}".
+                                        type: string
+                                      secondaryEndpointIPAddress:
+                                        description: Secondary endpoint IP address
+                                          of a Redis Cluster.
+                                        type: string
+                                      uri:
+                                        description: URI of a Redis Cluster in format
+                                          "projects/{project_id}/locations/{location}/clusters/{cluster_id}"
+                                        type: string
+                                    type: object
+                                  redisInstance:
+                                    description: Display information of a Redis Instance.
+                                    properties:
+                                      displayName:
+                                        description: Name of a Cloud Redis Instance.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Cloud Redis Instance
+                                          network.
+                                        type: string
+                                      primaryEndpointIP:
+                                        description: Primary endpoint IP address of
+                                          a Cloud Redis Instance.
+                                        type: string
+                                      readEndpointIP:
+                                        description: Read endpoint IP address of a
+                                          Cloud Redis Instance (if applicable).
+                                        type: string
+                                      region:
+                                        description: Region in which the Cloud Redis
+                                          Instance is defined.
+                                        type: string
+                                      uri:
+                                        description: URI of a Cloud Redis Instance.
+                                        type: string
+                                    type: object
+                                  route:
+                                    description: Display information of a Compute
+                                      Engine route.
+                                    properties:
+                                      advertisedRouteNextHopURI:
+                                        description: For advertised routes, the URI
+                                          of their next hop, i.e. the URI of the hybrid
+                                          endpoint (VPN tunnel, Interconnect attachment,
+                                          NCC router appliance) the advertised prefix
+                                          is advertised through, or URI of the source
+                                          peered network.
+                                        type: string
+                                      advertisedRouteSourceRouterURI:
+                                        description: For advertised dynamic routes,
+                                          the URI of the Cloud Router that advertised
+                                          the corresponding IP prefix.
+                                        type: string
+                                      destIPRange:
+                                        description: Destination IP range of the route.
+                                        type: string
+                                      destPortRanges:
+                                        description: Destination port ranges of the
+                                          route. Policy based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      displayName:
+                                        description: Name of a route.
+                                        type: string
+                                      instanceTags:
+                                        description: Instance tags of the route.
+                                        items:
+                                          type: string
+                                        type: array
+                                      nccHubURI:
+                                        description: URI of a NCC Hub. NCC_HUB routes
+                                          only.
+                                        type: string
+                                      nccSpokeURI:
+                                        description: URI of a NCC Spoke. NCC_HUB routes
+                                          only.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network.
+                                          NETWORK routes only.
+                                        type: string
+                                      nextHop:
+                                        description: Next hop of the route.
+                                        type: string
+                                      nextHopType:
+                                        description: Type of next hop.
+                                        type: string
+                                      priority:
+                                        description: Priority of the route.
+                                        format: int32
+                                        type: integer
+                                      protocols:
+                                        description: Protocols of the route. Policy
+                                          based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      region:
+                                        description: Region of the route (if applicable).
+                                        type: string
+                                      routeScope:
+                                        description: Indicates where route is applicable.
+                                        type: string
+                                      routeType:
+                                        description: Type of route.
+                                        type: string
+                                      srcIPRange:
+                                        description: Source IP address range of the
+                                          route. Policy based routes only.
+                                        type: string
+                                      srcPortRanges:
+                                        description: Source port ranges of the route.
+                                          Policy based routes only.
+                                        items:
+                                          type: string
+                                        type: array
+                                      uri:
+                                        description: URI of a route (if applicable).
+                                        type: string
+                                    type: object
+                                  serverlessNeg:
+                                    description: Display information of a Serverless
+                                      network endpoint group backend. Used only for
+                                      return traces.
+                                    properties:
+                                      negURI:
+                                        description: URI of the serverless network
+                                          endpoint group.
+                                        type: string
+                                    type: object
+                                  state:
+                                    description: Each step is in one of the pre-defined
+                                      states.
+                                    type: string
+                                  storageBucket:
+                                    description: Display information of a Storage
+                                      Bucket. Used only for return traces.
+                                    properties:
+                                      bucket:
+                                        description: Cloud Storage Bucket name.
+                                        type: string
+                                    type: object
+                                  vpcConnector:
+                                    description: Display information of a VPC connector.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPC connector.
+                                        type: string
+                                      location:
+                                        description: Location in which the VPC connector
+                                          is deployed.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPC connector.
+                                        type: string
+                                    type: object
+                                  vpnGateway:
+                                    description: Display information of a Compute
+                                      Engine VPN gateway.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPN gateway.
+                                        type: string
+                                      ipAddress:
+                                        description: IP address of the VPN gateway.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network
+                                          where the VPN gateway is configured.
+                                        type: string
+                                      region:
+                                        description: Name of a Google Cloud region
+                                          where this VPN gateway is configured.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPN gateway.
+                                        type: string
+                                      vpnTunnelURI:
+                                        description: A VPN tunnel that is associated
+                                          with this VPN gateway. There may be multiple
+                                          VPN tunnels configured on a VPN gateway,
+                                          and only the one relevant to the test is
+                                          displayed.
+                                        type: string
+                                    type: object
+                                  vpnTunnel:
+                                    description: Display information of a Compute
+                                      Engine VPN tunnel.
+                                    properties:
+                                      displayName:
+                                        description: Name of a VPN tunnel.
+                                        type: string
+                                      networkURI:
+                                        description: URI of a Compute Engine network
+                                          where the VPN tunnel is configured.
+                                        type: string
+                                      region:
+                                        description: Name of a Google Cloud region
+                                          where this VPN tunnel is configured.
+                                        type: string
+                                      remoteGateway:
+                                        description: URI of a VPN gateway at remote
+                                          end of the tunnel.
+                                        type: string
+                                      remoteGatewayIP:
+                                        description: Remote VPN gateway's IP address.
+                                        type: string
+                                      routingType:
+                                        description: Type of the routing policy.
+                                        type: string
+                                      sourceGateway:
+                                        description: URI of the VPN gateway at local
+                                          end of the tunnel.
+                                        type: string
+                                      sourceGatewayIP:
+                                        description: Local VPN gateway's IP address.
+                                        type: string
+                                      uri:
+                                        description: URI of a VPN tunnel.
+                                        type: string
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
+                        type: array
+                      verifyTime:
+                        description: The time of the configuration analysis.
+                        type: string
+                    type: object
+                  source:
+                    description: |-
+                      Required. Source specification of the Connectivity Test.
+
+                       You can use a combination of source IP address, virtual machine
+                       (VM) instance, or Compute Engine network to uniquely identify
+                       the source location.
+
+                       Examples:
+                       If the source IP address is an internal IP address within a Google Cloud
+                       Virtual Private Cloud (VPC) network, then you must also specify the VPC
+                       network. Otherwise, specify the VM instance, which already contains its
+                       internal IP address and VPC network information.
+
+                       If the source of the test is within an on-premises network, then you must
+                       provide the destination VPC network.
+
+                       If the source endpoint is a Compute Engine VM instance with multiple
+                       network interfaces, the instance itself is not sufficient to identify the
+                       endpoint. So, you must also specify the source IP address or VPC network.
+
+                       A reachability analysis proceeds even if the source location is
+                       ambiguous. However, the test result may include endpoints that you don't
+                       intend to test.
+                    properties:
+                      forwardingRuleTarget:
+                        description: Output only. Specifies the type of the target
+                          of the forwarding rule.
+                        type: string
+                      loadBalancerID:
+                        description: Output only. ID of the load balancer the forwarding
+                          rule points to. Empty for forwarding rules not related to
+                          load balancers.
+                        type: string
+                      loadBalancerType:
+                        description: Output only. Type of the load balancer the forwarding
+                          rule points to.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. The time the test's configuration was
+                      updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -266,9 +2989,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
