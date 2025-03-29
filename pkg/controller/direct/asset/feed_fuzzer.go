@@ -24,11 +24,11 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(AssetFeedFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(AssetFeedFuzzer())
 }
 
 func AssetFeedFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Feed{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Feed{},
 		AssetFeedSpec_FromProto, AssetFeedSpec_ToProto,
 	)
 
