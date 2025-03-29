@@ -22,8 +22,8 @@ package asset
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	exprpb "google.golang.org/genproto/googleapis/type/expr"
 )
 
 func AssetFeedSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedSpec {
@@ -270,5 +270,29 @@ func SavedQuery_QueryContent_ToProto(mapCtx *direct.MapContext, in *krm.SavedQue
 	if oneof := IAMPolicyAnalysisQuery_ToProto(mapCtx, in.IAMPolicyAnalysisQuery); oneof != nil {
 		out.QueryContent = &pb.SavedQuery_QueryContent_IamPolicyAnalysisQuery{IamPolicyAnalysisQuery: oneof}
 	}
+	return out
+}
+
+func Expr_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krm.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Expr{}
+	out.Expression = direct.LazyPtr(in.GetExpression())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+
+func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *exprpb.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &exprpb.Expr{}
+	out.Expression = direct.ValueOf(in.Expression)
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	out.Location = direct.ValueOf(in.Location)
 	return out
 }
