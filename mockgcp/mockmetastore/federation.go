@@ -52,7 +52,7 @@ func (s *DataprocMetastoreFederationV1) GetFederation(ctx context.Context, req *
 		}
 		return nil, err
 	}
-
+	// Return the object directly from storage without modification
 	return obj, nil
 }
 
@@ -96,15 +96,14 @@ func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, re
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(now),
-		Target:                fqn,
-		Verb:                  "create",
-		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+		ApiVersion: "v1",
+		// done and requestedCancellation fields are not expected here
 	}
 
 	lro, err := s.operations.NewLRO(ctx)
-	lro.Done = false
 	if err != nil {
 		return nil, err
 	}
@@ -117,14 +116,17 @@ func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, re
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(now)
+		// Update the object in storage to set the final state, message, and UID
 		updated, err := s.updateFederation(ctx, fqn, func(obj *pb.Federation) {
 			obj.State = pb.Federation_ACTIVE
 			obj.StateMessage = "The federation is ready to use"
+			obj.Uid = "test-" + name.Name // Set UID to test-${federationId} in storage
 		})
 		if err != nil {
 			return nil, err
 		}
-		return updated, err
+		// The object fetched by updateFederation already has the correct fields from storage
+		return updated, nil
 	})
 }
 
@@ -165,7 +167,19 @@ func (s *DataprocMetastoreFederationV1) UpdateFederation(ctx context.Context, re
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "update",
+		// done and requestedCancellation fields are not expected here
 	}
+	lro, err := s.operations.NewLRO(ctx)
+	if err != nil {
+		return nil, err
+	}
+	lro.Metadata, err = anypb.New(lroMetadata)
+	if err != nil {
+		return nil, err
+	}
+	lro.Metadata.TypeUrl = "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata"
+	lro.Name = fmt.Sprintf("projects/%s/locations/%s/operations/%s", name.Project.ID, name.Location, strings.Split(lro.Name, "/")[len(strings.Split(lro.Name, "/"))-1])
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(now)
 		return updated, nil
@@ -186,14 +200,37 @@ func (s *DataprocMetastoreFederationV1) DeleteFederation(ctx context.Context, re
 	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion: "v1",
-		CreateTime: timestamppb.Now(),
+		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "delete",
 	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		lroMetadata.EndTime = timestamppb.Now()
+	lroMetadataAny, err := anypb.New(lroMetadata)
+	if err != nil {
+		return nil, err
+	}
+	lroMetadataAny.TypeUrl = "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata"
+
+	// Create the main LRO object
+	lro, err := s.operations.NewLRO(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// Assign the correct name format
+	lro.Name = fmt.Sprintf("projects/%s/locations/%s/operations/%s", name.Project.ID, name.Location, lro.GetName()) // Use the generated LRO ID
+	// Embed the specific metadata
+	lro.Metadata = lroMetadataAny
+	// Note: Delete LRO might complete quickly, but we still return an LRO object.
+	// The actual completion (setting `done=true` and `response`) happens in StartLRO's callback.
+
+	return s.operations.StartLRO(ctx, lroPrefix, lro, func() (proto.Message, error) {
+		// Mark the operation as done and set the response (Empty for delete)
+		lroMetadata.EndTime = timestamppb.New(now) // Update EndTime in the metadata
+		// We need to update the LRO object itself for the final response
+		// The GetOperation call will fetch the LRO with updated metadata
+		// and the operations manager will set Done=true and Response=Empty.
 		return &emptypb.Empty{}, nil
 	})
 }
