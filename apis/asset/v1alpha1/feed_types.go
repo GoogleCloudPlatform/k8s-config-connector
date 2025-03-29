@@ -32,8 +32,14 @@ type AssetFeedSpec struct {
 	//  folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
 	//  organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
 	//
+	// Required. The format will be
+	//  projects/{project_number}/feeds/{client-assigned_feed_identifier} or
+	//  folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
+	//  organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
+	//
 	//  The client-assigned feed identifier must be unique within the parent
 	//  project/folder/organization.
+	// +required
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.name
 	Name *string `json:"name,omitempty"`
 
@@ -64,8 +70,9 @@ type AssetFeedSpec struct {
 
 	// Required. Feed output configuration defining where the asset updates are
 	//  published to.
+	// +required
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.feed_output_config
-	FeedOutputConfig *FeedOutputConfig `json:"feedOutputConfig,omitempty"`
+	FeedOutputConfig *FeedOutputConfig `json:"feedOutputConfig"`
 
 	// A condition which determines whether an asset update should be published.
 	//  If specified, an asset will be returned only when the expression evaluates
