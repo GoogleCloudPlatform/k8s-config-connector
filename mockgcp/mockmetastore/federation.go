@@ -74,7 +74,6 @@ func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, re
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Federation_CREATING
 	obj.EndpointUri = "federation-endpoint-" + name.Name
-	obj.StateMessage = "The federation is being created"
 	obj.Version = "3.1.2"
 
 	if obj.BackendMetastores == nil {
@@ -119,7 +118,6 @@ func (s *DataprocMetastoreFederationV1) CreateFederation(ctx context.Context, re
 		// Update the object in storage to set the final state, message, and UID
 		updated, err := s.updateFederation(ctx, fqn, func(obj *pb.Federation) {
 			obj.State = pb.Federation_ACTIVE
-			obj.StateMessage = "The federation is ready to use"
 			obj.Uid = "test-" + name.Name // Set UID to test-${federationId} in storage
 		})
 		if err != nil {
@@ -201,17 +199,13 @@ func (s *DataprocMetastoreFederationV1) DeleteFederation(ctx context.Context, re
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	now := time.Now()
-	lroMetadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "delete",
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Target:                fqn,
+		Verb:                  "delete",
+		RequestedCancellation: false,
+		ApiVersion:            "v1",
 	}
-	lroMetadataAny, err := anypb.New(lroMetadata)
-	if err != nil {
-		return nil, err
-	}
-	lroMetadataAny.TypeUrl = "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata"
 
 	// Create the main LRO object
 	lro, err := s.operations.NewLRO(ctx)
@@ -221,13 +215,12 @@ func (s *DataprocMetastoreFederationV1) DeleteFederation(ctx context.Context, re
 	// Assign the correct name format
 	lro.Name = fmt.Sprintf("projects/%s/locations/%s/operations/%s", name.Project.ID, name.Location, lro.GetName()) // Use the generated LRO ID
 	// Embed the specific metadata
-	lro.Metadata = lroMetadataAny
 	// Note: Delete LRO might complete quickly, but we still return an LRO object.
 	// The actual completion (setting `done=true` and `response`) happens in StartLRO's callback.
 
-	return s.operations.StartLRO(ctx, lroPrefix, lro, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		// Mark the operation as done and set the response (Empty for delete)
-		lroMetadata.EndTime = timestamppb.New(now) // Update EndTime in the metadata
+		metadata.EndTime = timestamppb.New(now) // Update EndTime in the metadata
 		// We need to update the LRO object itself for the final response
 		// The GetOperation call will fetch the LRO with updated metadata
 		// and the operations manager will set Done=true and Response=Empty.

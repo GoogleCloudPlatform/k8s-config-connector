@@ -25,12 +25,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "create"
   },
@@ -61,7 +59,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "create"
   },
@@ -78,7 +75,7 @@ X-Xss-Protection: 0
     "endpointUri": "thrift://mock-endpoint:9083",
     "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "state": "ACTIVE",
-    "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+    "uid": "test-test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "version": "3.1.2"
   }
@@ -112,7 +109,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+  "uid": "test-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -145,7 +142,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+  "uid": "test-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -178,7 +175,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+  "uid": "test-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -202,7 +199,7 @@ Content-Type: application/json
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+  "uid": "test-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -218,12 +215,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "update"
   },
@@ -254,7 +249,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "update"
   },
@@ -271,7 +265,7 @@ X-Xss-Protection: 0
     "endpointUri": "thrift://mock-endpoint:9083",
     "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "state": "ACTIVE",
-    "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+    "uid": "test-test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "version": "3.1.2"
   }
@@ -305,7 +299,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "5a442221-3c12-4547-a527-a4febcb90558",
+  "uid": "test-test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -328,12 +322,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "delete"
   },
@@ -364,7 +356,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "verb": "delete"
   },
