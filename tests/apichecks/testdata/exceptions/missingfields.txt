@@ -2065,28 +2065,29 @@
 [missing_field] crd=dnsrecordsets.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.routingPolicy.primaryBackup.enableGeoFencingForBackups" is not set in unstructured objects
 [missing_field] crd=dnsrecordsets.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.routingPolicy.primaryBackup.primary.internalLoadBalancers[].regionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dnsrecordsets.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.routingPolicy.primaryBackup.trickleRatio" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.authorization.adminUsers.username" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.local.controlPlaneNodeStorageSchema" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.local.machineFilter" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.local.nodeCount" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.local.nodeLocation" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.local.sharedDeploymentPolicy" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlane.remote.nodeLocation" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEncryption.kmsKeyActiveVersion" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEncryption.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEncryption.kmsKeyState" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEncryption.kmsStatus[].code" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.controlPlaneEncryption.kmsStatus[].message" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultMaxPodsPerNode" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.externalLoadBalancerIpv4AddressPools[]" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.fleet.membership" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.externalLoadBalancerIPV4AddressPools[]" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.externalLoadBalancerIPV6AddressPools[]" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusions[].id" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusions[].window.endTime" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusions[].window.startTime" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.window.recurringWindow.recurrence" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.window.recurringWindow.window.endTime" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.window.recurringWindow.window.startTime" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.clusterIpv6CidrBlocks[]" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.networkType" is not set in unstructured objects
-[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.servicesIpv6CidrBlocks[]" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.clusterIPV4CIDRBlocks[]" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.servicesIPV4CIDRBlocks[]" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.releaseChannel" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.survivabilityConfig.offlineRebootTTL" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.systemAddonsConfig.ingress.disabled" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.systemAddonsConfig.ingress.ipv4Vip" is not set in unstructured objects
+[missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.systemAddonsConfig.vmServiceConfig.vmmEnabled" is not set in unstructured objects
 [missing_field] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.targetVersion" is not set in unstructured objects
 [missing_field] crd=edgecontainernodepools.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.localDiskEncryption.kmsKeyActiveVersion" is not set in unstructured objects
 [missing_field] crd=edgecontainernodepools.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.localDiskEncryption.kmsKeyRef" is not set; neither 'external' nor 'name' are set

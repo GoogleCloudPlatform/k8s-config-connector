@@ -123,11 +123,36 @@ spec:
                 description: Optional. Remote control plane disk encryption options.
                   This field is only used when enabling CMEK support.
                 properties:
-                  kmsKey:
+                  kmsKeyRef:
                     description: Optional. The Cloud KMS CryptoKey e.g. projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
                       to use for protecting control plane disks. If not specified,
                       a Google-managed key will be used instead.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
                 type: object
               defaultMaxPodsPerNode:
                 description: Optional. The default maximum number of pods per node
@@ -151,14 +176,46 @@ spec:
               fleet:
                 description: Required. Fleet configuration.
                 properties:
-                  project:
+                  projectRef:
                     description: |-
                       Required. The name of the Fleet host project where this cluster will be
                        registered.
 
                        Project names are formatted as
                        `projects/<project-number>`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                 type: object
               labels:
                 additionalProperties:
@@ -284,7 +341,7 @@ spec:
                   e.g., for the case when network connectivity is lost. Note: This
                   only applies to local control plane clusters.'
                 properties:
-                  offlineRebootTtl:
+                  offlineRebootTTL:
                     description: Optional. Time period that allows the cluster nodes
                       to be rebooted and become functional without network connectivity
                       to Google. The default 0 means not allowed. The maximum is 7

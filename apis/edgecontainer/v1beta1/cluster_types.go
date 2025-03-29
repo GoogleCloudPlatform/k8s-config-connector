@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -209,7 +210,7 @@ type Fleet struct {
 	//  Project names are formatted as
 	//  `projects/<project-number>`.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Fleet.project
-	Project *string `json:"project,omitempty"`
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.ControlPlane
@@ -270,7 +271,7 @@ type Cluster_ControlPlaneEncryption struct {
 	//  to use for protecting control plane disks. If not specified, a
 	//  Google-managed key will be used instead.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.ControlPlaneEncryption.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
+	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.MaintenanceEvent
@@ -283,7 +284,7 @@ type Cluster_SurvivabilityConfig struct {
 	//  become functional without network connectivity to Google. The default 0
 	//  means not allowed. The maximum is 7 days.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Cluster.SurvivabilityConfig.offline_reboot_ttl
-	OfflineRebootTtl *string `json:"offlineRebootTtl,omitempty"`
+	OfflineRebootTTL *string `json:"offlineRebootTTL,omitempty"`
 }
 
 // +kcc:proto=google.cloud.edgecontainer.v1.Cluster.SystemAddonsConfig

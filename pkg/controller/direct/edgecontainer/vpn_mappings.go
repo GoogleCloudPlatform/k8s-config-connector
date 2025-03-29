@@ -21,7 +21,6 @@ package edgecontainer
 
 import (
 	pb "cloud.google.com/go/edgecontainer/apiv1/edgecontainerpb"
-	edgecontainer "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -57,7 +56,7 @@ func EdgeContainerVpnConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.NATGatewayIP = direct.LazyPtr(in.GetNatGatewayIp())
 	out.BGPRoutingMode = direct.Enum_FromProto(mapCtx, in.GetBgpRoutingMode())
 	if in.GetCluster() != "" {
-		out.EdgeContainerClusterRef = &edgecontainer.ClusterRef{
+		out.EdgeContainerClusterRef = &krm.ClusterRef{
 			External: in.GetCluster(),
 		}
 	}
