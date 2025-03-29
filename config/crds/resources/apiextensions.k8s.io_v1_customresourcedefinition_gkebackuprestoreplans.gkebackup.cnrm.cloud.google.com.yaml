@@ -81,7 +81,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed GKEBackupBackupPlan
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupplans/{{backupplanID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}}".
                     type: string
                   name:
                     description: The name of a GKEBackupBackupPlan resource.
