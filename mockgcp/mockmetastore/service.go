@@ -39,12 +39,18 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *DataprocMetastoreV1
+	v1           *DataprocMetastoreV1
+	federationV1 *DataprocMetastoreFederationV1
 }
 
 type DataprocMetastoreV1 struct {
 	*MockService
 	pb.UnimplementedDataprocMetastoreServer
+}
+
+type DataprocMetastoreFederationV1 struct {
+	*MockService
+	pb.UnimplementedDataprocMetastoreFederationServer
 }
 
 // New creates a MockService.
@@ -55,6 +61,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &DataprocMetastoreV1{MockService: s}
+	s.federationV1 = &DataprocMetastoreFederationV1{MockService: s}
 	return s
 }
 
@@ -64,11 +71,13 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataprocMetastoreServer(grpcServer, s.v1)
+	pb.RegisterDataprocMetastoreFederationServer(grpcServer, s.federationV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterDataprocMetastoreHandler,
+		pb.RegisterDataprocMetastoreFederationHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
