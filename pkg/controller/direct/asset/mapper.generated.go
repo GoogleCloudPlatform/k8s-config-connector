@@ -12,14 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: asset.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.asset.v1
+
 package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AssetFeedSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssetFeedSpec{}
+	// MISSING: Name
+	out.AssetNames = in.AssetNames
+	out.AssetTypes = in.AssetTypes
+	out.ContentType = direct.Enum_FromProto(mapCtx, in.GetContentType())
+	out.FeedOutputConfig = FeedOutputConfig_FromProto(mapCtx, in.GetFeedOutputConfig())
+	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
+	out.RelationshipTypes = in.RelationshipTypes
+	return out
+}
+func AssetFeedSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetFeedSpec) *pb.Feed {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Feed{}
+	// MISSING: Name
+	out.AssetNames = in.AssetNames
+	out.AssetTypes = in.AssetTypes
+	out.ContentType = direct.Enum_ToProto[pb.ContentType](mapCtx, in.ContentType)
+	out.FeedOutputConfig = FeedOutputConfig_ToProto(mapCtx, in.FeedOutputConfig)
+	out.Condition = Expr_ToProto(mapCtx, in.Condition)
+	out.RelationshipTypes = in.RelationshipTypes
+	return out
+}
 func AssetSavedQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryObservedState {
 	if in == nil {
 		return nil
@@ -64,6 +98,24 @@ func AssetSavedQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQu
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
 	out.Content = SavedQuery_QueryContent_ToProto(mapCtx, in.Content)
+	return out
+}
+func FeedOutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krm.FeedOutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FeedOutputConfig{}
+	out.PubsubDestination = PubsubDestination_FromProto(mapCtx, in.GetPubsubDestination())
+	return out
+}
+func FeedOutputConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeedOutputConfig) *pb.FeedOutputConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeedOutputConfig{}
+	if oneof := PubsubDestination_ToProto(mapCtx, in.PubsubDestination); oneof != nil {
+		out.Destination = &pb.FeedOutputConfig_PubsubDestination{PubsubDestination: oneof}
+	}
 	return out
 }
 func IAMPolicyAnalysisQuery_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IAMPolicyAnalysisQuery {
@@ -184,6 +236,22 @@ func IAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.IamPolicyAnalysisQuery_ResourceSelector{}
 	out.FullResourceName = direct.ValueOf(in.FullResourceName)
+	return out
+}
+func PubsubDestination_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubsubDestination{}
+	out.Topic = direct.LazyPtr(in.GetTopic())
+	return out
+}
+func PubsubDestination_ToProto(mapCtx *direct.MapContext, in *krm.PubsubDestination) *pb.PubsubDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PubsubDestination{}
+	out.Topic = direct.ValueOf(in.Topic)
 	return out
 }
 func SavedQuery_QueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
