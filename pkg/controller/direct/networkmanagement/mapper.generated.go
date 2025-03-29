@@ -187,56 +187,6 @@ func DropInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DropInfoOb
 	out.Region = direct.ValueOf(in.Region)
 	return out
 }
-func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Endpoint{}
-	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	out.Port = direct.LazyPtr(in.GetPort())
-	// MISSING: Instance
-	// MISSING: ForwardingRule
-	// MISSING: ForwardingRuleTarget
-	// MISSING: LoadBalancerID
-	// MISSING: LoadBalancerType
-	// MISSING: GKEMasterCluster
-	out.Fqdn = direct.LazyPtr(in.GetFqdn())
-	out.CloudSQLInstance = direct.LazyPtr(in.GetCloudSqlInstance())
-	out.RedisInstance = direct.LazyPtr(in.GetRedisInstance())
-	out.RedisCluster = direct.LazyPtr(in.GetRedisCluster())
-	out.CloudFunction = Endpoint_CloudFunctionEndpoint_FromProto(mapCtx, in.GetCloudFunction())
-	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx, in.GetAppEngineVersion())
-	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx, in.GetCloudRunRevision())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
-	out.ProjectID = direct.LazyPtr(in.GetProjectId())
-	return out
-}
-func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint{}
-	out.IpAddress = direct.ValueOf(in.IPAddress)
-	out.Port = direct.ValueOf(in.Port)
-	// MISSING: Instance
-	// MISSING: ForwardingRule
-	// MISSING: ForwardingRuleTarget
-	// MISSING: LoadBalancerID
-	// MISSING: LoadBalancerType
-	// MISSING: GKEMasterCluster
-	out.Fqdn = direct.ValueOf(in.Fqdn)
-	out.CloudSqlInstance = direct.ValueOf(in.CloudSQLInstance)
-	out.RedisInstance = direct.ValueOf(in.RedisInstance)
-	out.RedisCluster = direct.ValueOf(in.RedisCluster)
-	out.CloudFunction = Endpoint_CloudFunctionEndpoint_ToProto(mapCtx, in.CloudFunction)
-	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_ToProto(mapCtx, in.AppEngineVersion)
-	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx, in.CloudRunRevision)
-	out.Network = direct.ValueOf(in.Network)
-	out.NetworkType = direct.Enum_ToProto[pb.Endpoint_NetworkType](mapCtx, in.NetworkType)
-	out.ProjectId = direct.ValueOf(in.ProjectID)
-	return out
-}
 func EndpointInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EndpointInfo) *krm.EndpointInfoObservedState {
 	if in == nil {
 		return nil
@@ -304,7 +254,7 @@ func Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.Endpoint_CloudRunRevisionEndpoint{}
-	out.URI = direct.LazyPtr(in.GetUri())
+	// MISSING: URI
 	return out
 }
 func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_CloudRunRevisionEndpoint) *pb.Endpoint_CloudRunRevisionEndpoint {
@@ -312,7 +262,7 @@ func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.Endpoint_CloudRunRevisionEndpoint{}
-	out.Uri = direct.ValueOf(in.URI)
+	// MISSING: URI
 	return out
 }
 func FirewallInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallInfo) *krm.FirewallInfoObservedState {
