@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type AutoscalingPolicyIdentity struct {
 	parent *AutoscalingPolicyParent
-	id string
+	id     string
 }
 
 func (i *AutoscalingPolicyIdentity) String() string {
-	return  i.parent.String() + "/autoscalingpolicys/" + i.id
+	return i.parent.String() + "/autoscalingpolicys/" + i.id
 }
 
 func (i *AutoscalingPolicyIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *AutoscalingPolicyIdentity) ID() string {
 }
 
 func (i *AutoscalingPolicyIdentity) Parent() *AutoscalingPolicyParent {
-	return  i.parent
+	return i.parent
 }
 
 type AutoscalingPolicyParent struct {
@@ -51,7 +51,6 @@ type AutoscalingPolicyParent struct {
 func (p *AutoscalingPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a AutoscalingPolicyIdentity from the Config Connector AutoscalingPolicy object.
 func NewAutoscalingPolicyIdentity(ctx context.Context, reader client.Reader, obj *DataprocAutoscalingPolicy) (*AutoscalingPolicyIdentity, error) {

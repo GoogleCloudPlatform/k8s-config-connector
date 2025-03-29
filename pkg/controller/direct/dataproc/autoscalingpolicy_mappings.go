@@ -16,15 +16,15 @@ package dataproc
 
 import (
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AutoscalingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.AutoscalingPolicy {
+func DataprocAutoscalingPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutoscalingPolicy{}
+	out := &krm.DataprocAutoscalingPolicySpec{}
 	out.ID = direct.LazyPtr(in.GetId())
 	// MISSING: Name
 	out.BasicAlgorithm = BasicAutoscalingAlgorithm_FromProto(mapCtx, in.GetBasicAlgorithm())
@@ -33,7 +33,7 @@ func AutoscalingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPo
 	out.Labels = in.Labels
 	return out
 }
-func AutoscalingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingPolicy) *pb.AutoscalingPolicy {
+func DataprocAutoscalingPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
 	if in == nil {
 		return nil
 	}
@@ -48,30 +48,20 @@ func AutoscalingPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingPol
 	out.Labels = in.Labels
 	return out
 }
-func AutoscalingPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.AutoscalingPolicyObservedState {
+func DataprocAutoscalingPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutoscalingPolicyObservedState{}
-	// MISSING: ID
+	out := &krm.DataprocAutoscalingPolicyObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
 	return out
 }
-func AutoscalingPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AutoscalingPolicyObservedState) *pb.AutoscalingPolicy {
+func DataprocAutoscalingPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicyObservedState) *pb.AutoscalingPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AutoscalingPolicy{}
-	// MISSING: ID
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
 	return out
 }
 func BasicAutoscalingAlgorithm_FromProto(mapCtx *direct.MapContext, in *pb.BasicAutoscalingAlgorithm) *krm.BasicAutoscalingAlgorithm {
@@ -116,58 +106,6 @@ func BasicYarnAutoscalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Basic
 	out.ScaleDownFactor = direct.ValueOf(in.ScaleDownFactor)
 	out.ScaleUpMinWorkerFraction = direct.ValueOf(in.ScaleUpMinWorkerFraction)
 	out.ScaleDownMinWorkerFraction = direct.ValueOf(in.ScaleDownMinWorkerFraction)
-	return out
-}
-func DataprocAutoscalingPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataprocAutoscalingPolicyObservedState{}
-	// MISSING: ID
-	// MISSING: Name
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
-	return out
-}
-func DataprocAutoscalingPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicyObservedState) *pb.AutoscalingPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutoscalingPolicy{}
-	// MISSING: ID
-	// MISSING: Name
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
-	return out
-}
-func DataprocAutoscalingPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AutoscalingPolicy) *krm.DataprocAutoscalingPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataprocAutoscalingPolicySpec{}
-	// MISSING: ID
-	// MISSING: Name
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
-	return out
-}
-func DataprocAutoscalingPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocAutoscalingPolicySpec) *pb.AutoscalingPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AutoscalingPolicy{}
-	// MISSING: ID
-	// MISSING: Name
-	// MISSING: BasicAlgorithm
-	// MISSING: WorkerConfig
-	// MISSING: SecondaryWorkerConfig
-	// MISSING: Labels
 	return out
 }
 func InstanceGroupAutoscalingPolicyConfig_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroupAutoscalingPolicyConfig) *krm.InstanceGroupAutoscalingPolicyConfig {
