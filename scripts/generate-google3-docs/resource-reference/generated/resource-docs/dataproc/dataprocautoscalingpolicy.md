@@ -32,7 +32,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpdataprocautoscalingpolicy<br>gcpdataprocautoscalingpolicys<br>dataprocautoscalingpolicy</td>
+<td>gcpdataprocautoscalingpolicy<br>gcpdataprocautoscalingpolicies<br>dataprocautoscalingpolicy</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
