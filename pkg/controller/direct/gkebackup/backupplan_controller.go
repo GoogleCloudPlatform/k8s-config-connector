@@ -199,25 +199,27 @@ func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		paths = append(paths, "backup_config")
 	}
 
+	var updated *pb.BackupPlan
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		// even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateBackupPlanRequest{
+			BackupPlan: resource,
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateBackupPlan(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating gkebackup backupplan %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("gkebackup backupplan %s waiting for update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated gkebackup backupplan", "name", a.id)
 	}
-
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateBackupPlanRequest{
-		BackupPlan: resource,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateBackupPlan(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating gkebackup backupplan %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("gkebackup backupplan %s waiting for update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated gkebackup backupplan", "name", a.id)
 
 	status := &krm.GKEBackupBackupPlanStatus{}
 	status.ObservedState = GKEBackupBackupPlanObservedState_FromProto(mapCtx, updated)
