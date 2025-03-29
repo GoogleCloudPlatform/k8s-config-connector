@@ -518,6 +518,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "asset.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "AssetFeed",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "asset.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "AssetSavedQuery",
 	}: {
 		Labels: map[string]string{
