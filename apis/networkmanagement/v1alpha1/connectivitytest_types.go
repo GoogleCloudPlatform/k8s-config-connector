@@ -15,8 +15,12 @@
 package v1alpha1
 
 import (
+	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -115,6 +119,111 @@ type NetworkManagementConnectivityTestSpec struct {
 	//  If not provided, we assume false.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.bypass_firewall_checks
 	BypassFirewallChecks *bool `json:"bypassFirewallChecks,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint
+type Endpoint struct {
+	// The IP address of the endpoint, which can be an external or internal IP.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// The IP protocol port of the endpoint.
+	//  Only applicable when protocol is TCP or UDP.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.port
+	Port *int32 `json:"port,omitempty"`
+
+	// A Compute Engine instance URI.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.instance
+	ComputeInstanceRef *compute.InstanceRef `json:"computeInstanceRef,omitempty"`
+
+	// TODO: Should be reference.
+
+	// A forwarding rule and its corresponding IP address represent the frontend
+	//  configuration of a Google Cloud load balancer. Forwarding rules are also
+	//  used for protocol forwarding, Private Service Connect and other network
+	//  services to provide forwarding information in the control plane. Format:
+	//   projects/{project}/global/forwardingRules/{id} or
+	//   projects/{project}/regions/{region}/forwardingRules/{id}
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.forwarding_rule
+	ComputeForwardingRuleRef *string `json:"computeForwardingRuleRef,omitempty"`
+
+	// A cluster URI for [Google Kubernetes Engine cluster control
+	//  plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.gke_master_cluster
+	ContainerClusterRef *container.ContainerClusterRef `json:"containerClusterRef,omitempty"`
+
+	// DNS endpoint of [Google Kubernetes Engine cluster control
+	//  plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+	//  Requires gke_master_cluster to be set, can't be used simultaneoulsly with
+	//  ip_address or network. Applicable only to destination endpoint.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.fqdn
+	Fqdn *string `json:"fqdn,omitempty"`
+
+	// A [Cloud SQL](https://cloud.google.com/sql) instance URI.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_sql_instance
+	SQLInstanceRef *refsv1beta1.SQLInstanceRef `json:"sqlInstance,omitempty"`
+
+	// TODO: Should be reference.
+
+	// A [Redis Instance](https://cloud.google.com/memorystore/docs/redis)
+	//  URI.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.redis_instance
+	RedisInstance *string `json:"redisInstance,omitempty"`
+
+	// TODO: Should be reference.
+
+	// A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster)
+	//  URI.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.redis_cluster
+	RedisCluster *string `json:"redisCluster,omitempty"`
+
+	// TODO: Should be reference.
+
+	// A [Cloud Function](https://cloud.google.com/functions).
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_function
+	CloudFunction *Endpoint_CloudFunctionEndpoint `json:"cloudFunction,omitempty"`
+
+	// An [App Engine](https://cloud.google.com/appengine) [service
+	//  version](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions).
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.app_engine_version
+	AppEngineVersion *Endpoint_AppEngineVersionEndpoint `json:"appEngineVersion,omitempty"`
+
+	// A [Cloud Run](https://cloud.google.com/run)
+	//  [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_run_revision
+	CloudRunRevision *Endpoint_CloudRunRevisionEndpoint `json:"cloudRunRevision,omitempty"`
+
+	// A Compute Engine network URI.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.network
+	ComputeNetworkRef *refsv1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
+
+	// Type of the network where the endpoint is located.
+	//  Applicable only to source endpoint, as destination network type can be
+	//  inferred from the source.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.network_type
+	NetworkType *string `json:"networkType,omitempty"`
+
+	// Project ID where the endpoint is located.
+	//  The Project ID can be derived from the URI if you provide a VM instance or
+	//  network URI.
+	//  The following are two cases where you must provide the project ID:
+	//  1. Only the IP address is specified, and the IP address is within a Google
+	//  Cloud project.
+	//  2. When you are using Shared VPC and the IP address that you provide is
+	//  from the service project. In this case, the network that the IP address
+	//  resides in is defined in the host project.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.project_id
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint.CloudRunRevisionEndpoint
+type Endpoint_CloudRunRevisionEndpoint struct {
+	// A [Cloud Run](https://cloud.google.com/run)
+	//  [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
+	//  URI. The format is:
+	//  projects/{project}/locations/{location}/revisions/{revision}
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.CloudRunRevisionEndpoint.uri
+	RunRevisionRef *run.RevisionRef `json:"runRevisionRef,omitempty"`
 }
 
 // NetworkManagementConnectivityTestStatus defines the config connector machine state of NetworkManagementConnectivityTest
@@ -1289,6 +1398,22 @@ type EndpointInfoObservedState struct {
 	// URI of the source telemetry agent this packet originates from.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.EndpointInfo.source_agent_uri
 	SourceAgentURI *string `json:"sourceAgentURI,omitempty"`
+}
+
+// +kcc:proto=google.cloud.networkmanagement.v1.Endpoint
+type EndpointObservedState struct {
+	// Output only. Specifies the type of the target of the forwarding rule.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.forwarding_rule_target
+	ForwardingRuleTarget *string `json:"forwardingRuleTarget,omitempty"`
+
+	// Output only. ID of the load balancer the forwarding rule points to. Empty
+	//  for forwarding rules not related to load balancers.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.load_balancer_id
+	LoadBalancerID *string `json:"loadBalancerID,omitempty"`
+
+	// Output only. Type of the load balancer the forwarding rule points to.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.load_balancer_type
+	LoadBalancerType *string `json:"loadBalancerType,omitempty"`
 }
 
 // +kcc:proto=google.rpc.Status

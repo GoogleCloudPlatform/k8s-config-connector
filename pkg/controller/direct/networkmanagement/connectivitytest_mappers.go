@@ -1,7 +1,22 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package networkmanagement
 
 import (
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
+	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -136,6 +151,73 @@ func NetworkManagementConnectivityTestSpec_RelatedProjects_ToProto(mapCtx *direc
 			continue
 		}
 		out = append(out, p.External)
+	}
+	return out
+}
+
+func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Endpoint{}
+	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
+	out.Port = direct.LazyPtr(in.GetPort())
+	if in.Instance != "" {
+		out.ComputeInstanceRef = &compute.InstanceRef{External: in.Instance}
+	}
+	out.ComputeForwardingRuleRef = direct.LazyPtr(in.ForwardingRule)
+	// MISSING: ForwardingRuleTarget
+	// MISSING: LoadBalancerID
+	// MISSING: LoadBalancerType
+	// MISSING: GKEMasterCluster
+	out.Fqdn = direct.LazyPtr(in.GetFqdn())
+	if in.CloudSqlInstance != "" {
+		out.SQLInstanceRef = &refs.SQLInstanceRef{External: in.CloudSqlInstance}
+	}
+	out.RedisInstance = direct.LazyPtr(in.GetRedisInstance())
+	out.RedisCluster = direct.LazyPtr(in.GetRedisCluster())
+	out.CloudFunction = Endpoint_CloudFunctionEndpoint_FromProto(mapCtx, in.GetCloudFunction())
+	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx, in.GetAppEngineVersion())
+	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx, in.GetCloudRunRevision())
+	if in.Network != "" {
+		out.ComputeNetworkRef = &refs.ComputeNetworkRef{External: in.Network}
+	}
+	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
+	if in.ProjectId != "" {
+		out.ProjectRef = &refs.ProjectRef{External: in.ProjectId}
+	}
+	return out
+}
+func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint{}
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.Port = direct.ValueOf(in.Port)
+	if in.ComputeNetworkRef != nil {
+		out.Instance = in.ComputeNetworkRef.External
+	}
+	out.ForwardingRule = direct.ValueOf(in.ComputeForwardingRuleRef)
+	// MISSING: ForwardingRuleTarget
+	// MISSING: LoadBalancerID
+	// MISSING: LoadBalancerType
+	// MISSING: GKEMasterCluster
+	out.Fqdn = direct.ValueOf(in.Fqdn)
+	if in.SQLInstanceRef != nil {
+		out.CloudSqlInstance = in.SQLInstanceRef.External
+	}
+	out.RedisInstance = direct.ValueOf(in.RedisInstance)
+	out.RedisCluster = direct.ValueOf(in.RedisCluster)
+	out.CloudFunction = Endpoint_CloudFunctionEndpoint_ToProto(mapCtx, in.CloudFunction)
+	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_ToProto(mapCtx, in.AppEngineVersion)
+	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx, in.CloudRunRevision)
+	if in.ComputeNetworkRef != nil {
+		out.Network = in.ComputeNetworkRef.External
+	}
+	out.NetworkType = direct.Enum_ToProto[pb.Endpoint_NetworkType](mapCtx, in.NetworkType)
+	if in.ProjectRef != nil {
+		out.ProjectId = in.ProjectRef.External
 	}
 	return out
 }
