@@ -111,16 +111,19 @@ spec:
                   cloudRunRevision:
                     description: A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
                     properties:
-                      uri:
+                      runRevisionRef:
                         description: 'A [Cloud Run](https://cloud.google.com/run)
                           [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
                           URI. The format is: projects/{project}/locations/{location}/revisions/{revision}'
-                        type: string
+                        properties:
+                          external:
+                            description: A reference to an externally managed RunRevision
+                              resource. Should be in the format "projects/{{project}}/locations/{{location}}/revisions/{{revision}}".
+                            type: string
+                        required:
+                        - external
+                        type: object
                     type: object
-                  cloudSQLInstance:
-                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
-                      URI.
-                    type: string
                   computeForwardingRuleRef:
                     description: 'A forwarding rule and its corresponding IP address
                       represent the frontend configuration of a Google Cloud load
@@ -131,11 +134,92 @@ spec:
                     type: string
                   computeInstanceRef:
                     description: A Compute Engine instance URI.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  computeNetworkRef:
+                    description: A Compute Engine network URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
                   containerClusterRef:
                     description: A cluster URI for [Google Kubernetes Engine cluster
                       control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                          `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                        type: string
+                      name:
+                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          */'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the project resource. More info:
+                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          */'
+                        type: string
+                    type: object
                   fqdn:
                     description: DNS endpoint of [Google Kubernetes Engine cluster
                       control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
@@ -145,9 +229,6 @@ spec:
                   ipAddress:
                     description: The IP address of the endpoint, which can be an external
                       or internal IP.
-                    type: string
-                  network:
-                    description: A Compute Engine network URI.
                     type: string
                   networkType:
                     description: Type of the network where the endpoint is located.
@@ -159,7 +240,7 @@ spec:
                       when protocol is TCP or UDP.
                     format: int32
                     type: integer
-                  projectID:
+                  projectRef:
                     description: 'Project ID where the endpoint is located. The Project
                       ID can be derived from the URI if you provide a VM instance
                       or network URI. The following are two cases where you must provide
@@ -168,7 +249,39 @@ spec:
                       using Shared VPC and the IP address that you provide is from
                       the service project. In this case, the network that the IP address
                       resides in is defined in the host project.'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                   redisCluster:
                     description: A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster)
                       URI.
@@ -177,6 +290,35 @@ spec:
                     description: A [Redis Instance](https://cloud.google.com/memorystore/docs/redis)
                       URI.
                     type: string
+                  sqlInstance:
+                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
+                      URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                 type: object
               labels:
                 additionalProperties:
@@ -320,16 +462,19 @@ spec:
                   cloudRunRevision:
                     description: A [Cloud Run](https://cloud.google.com/run) [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
                     properties:
-                      uri:
+                      runRevisionRef:
                         description: 'A [Cloud Run](https://cloud.google.com/run)
                           [revision](https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get)
                           URI. The format is: projects/{project}/locations/{location}/revisions/{revision}'
-                        type: string
+                        properties:
+                          external:
+                            description: A reference to an externally managed RunRevision
+                              resource. Should be in the format "projects/{{project}}/locations/{{location}}/revisions/{{revision}}".
+                            type: string
+                        required:
+                        - external
+                        type: object
                     type: object
-                  cloudSQLInstance:
-                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
-                      URI.
-                    type: string
                   computeForwardingRuleRef:
                     description: 'A forwarding rule and its corresponding IP address
                       represent the frontend configuration of a Google Cloud load
@@ -340,11 +485,92 @@ spec:
                     type: string
                   computeInstanceRef:
                     description: A Compute Engine instance URI.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  computeNetworkRef:
+                    description: A Compute Engine network URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
                   containerClusterRef:
                     description: A cluster URI for [Google Kubernetes Engine cluster
                       control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'The GKE cluster. Valid formats: `projects/{projectID}/locations/{location}/clusters/{clusterID}`
+                          `projects/{projectID}/zones/{zone}/clusters/{clusterID}`'
+                        type: string
+                      name:
+                        description: 'Name of the project resource. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          */'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the project resource. More info:
+                          https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                          */'
+                        type: string
+                    type: object
                   fqdn:
                     description: DNS endpoint of [Google Kubernetes Engine cluster
                       control plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
@@ -354,9 +580,6 @@ spec:
                   ipAddress:
                     description: The IP address of the endpoint, which can be an external
                       or internal IP.
-                    type: string
-                  network:
-                    description: A Compute Engine network URI.
                     type: string
                   networkType:
                     description: Type of the network where the endpoint is located.
@@ -368,7 +591,7 @@ spec:
                       when protocol is TCP or UDP.
                     format: int32
                     type: integer
-                  projectID:
+                  projectRef:
                     description: 'Project ID where the endpoint is located. The Project
                       ID can be derived from the URI if you provide a VM instance
                       or network URI. The following are two cases where you must provide
@@ -377,7 +600,39 @@ spec:
                       using Shared VPC and the IP address that you provide is from
                       the service project. In this case, the network that the IP address
                       resides in is defined in the host project.'
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                   redisCluster:
                     description: A [Redis Cluster](https://cloud.google.com/memorystore/docs/cluster)
                       URI.
@@ -386,6 +641,35 @@ spec:
                     description: A [Redis Instance](https://cloud.google.com/memorystore/docs/redis)
                       URI.
                     type: string
+                  sqlInstance:
+                    description: A [Cloud SQL](https://cloud.google.com/sql) instance
+                      URI.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                 type: object
             required:
             - destination
