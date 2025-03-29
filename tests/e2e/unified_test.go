@@ -26,6 +26,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -75,7 +76,20 @@ func TestAllInSeries(t *testing.T) {
 	}
 
 	t.Run("samples", func(t *testing.T) {
+		// load test samples
 		samples := create.ListAllSamples(t)
+		if runTestRegex := os.Getenv("RUN_SAMPLE_REGEX"); runTestRegex != "" {
+			samples = create.ListMatchingSamples(t, regexp.MustCompile(runTestRegex))
+		}
+
+		// load samples that we want to skip into skipSet Map
+		skipSet := make(map[string]bool)
+		if skipTestRegex := os.Getenv("SKIP_SAMPLE_REGEX"); skipTestRegex != "" {
+			skippedSamples := create.ListMatchingSamples(t, regexp.MustCompile(skipTestRegex))
+			for _, sample := range skippedSamples {
+				skipSet[sample.Name] = true
+			}
+		}
 
 		for _, sampleKey := range samples {
 			sampleKey := sampleKey
@@ -87,6 +101,10 @@ func TestAllInSeries(t *testing.T) {
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
+					if _, skip := skipSet[sampleKey.Name]; skip {
+						t.Skipf("skipping test %s because it matched SKIP_SAMPLE_REGEX", sampleKey.Name)
+					}
+
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
 					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
