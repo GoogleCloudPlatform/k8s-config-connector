@@ -567,6 +567,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - gkemulticloud.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
   resources:
   - '*'

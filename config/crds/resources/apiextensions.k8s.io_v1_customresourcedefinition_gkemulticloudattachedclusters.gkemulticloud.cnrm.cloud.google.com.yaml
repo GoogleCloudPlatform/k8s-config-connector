@@ -148,6 +148,9 @@ spec:
                        `projects/<project-number>`.
                     type: string
                 type: object
+              location:
+                description: Required.
+                type: string
               loggingConfig:
                 description: Optional. Logging configuration for this cluster.
                 properties:
@@ -220,6 +223,38 @@ spec:
                    calling
                    [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
                 type: string
+              projectRef:
+                description: Required.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               proxyConfig:
                 description: Optional. Proxy configuration for outbound HTTP(S) traffic.
                 properties:
