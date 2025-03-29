@@ -64,30 +64,45 @@
 #### Schema
 ```yaml
 dagTimeout: string
+encryptionConfig:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+id: string
 jobs:
-- hadoopJob:
-    archiveUris:
+- flinkJob:
+    args:
+    - string
+    jarFileURIs:
+    - string
+    loggingConfig: {}
+    mainClass: string
+    mainJarFileURI: string
+    properties:
+      string: string
+    savepointURI: string
+  hadoopJob:
+    archiveURIs:
     - string
     args:
     - string
-    fileUris:
+    fileURIs:
     - string
-    jarFileUris:
+    jarFileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
+    loggingConfig: {}
     mainClass: string
-    mainJarFileUri: string
+    mainJarFileURI: string
     properties:
       string: string
   hiveJob:
     continueOnFailure: boolean
-    jarFileUris:
+    jarFileURIs:
     - string
     properties:
       string: string
-    queryFileUri: string
+    queryFileURI: string
     queryList:
       queries:
       - string
@@ -97,99 +112,101 @@ jobs:
     string: string
   pigJob:
     continueOnFailure: boolean
-    jarFileUris:
+    jarFileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
+    loggingConfig: {}
     properties:
       string: string
-    queryFileUri: string
+    queryFileURI: string
     queryList:
       queries:
       - string
     scriptVariables:
       string: string
-  prerequisiteStepIds:
+  prerequisiteStepIDs:
   - string
   prestoJob:
     clientTags:
     - string
     continueOnFailure: boolean
-    loggingConfig:
-      driverLogLevels:
-        string: string
+    loggingConfig: {}
     outputFormat: string
     properties:
       string: string
-    queryFileUri: string
+    queryFileURI: string
     queryList:
       queries:
       - string
   pysparkJob:
-    archiveUris:
+    archiveURIs:
     - string
     args:
     - string
-    fileUris:
+    fileURIs:
     - string
-    jarFileUris:
+    jarFileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
-    mainPythonFileUri: string
+    loggingConfig: {}
+    mainPythonFileURI: string
     properties:
       string: string
-    pythonFileUris:
+    pythonFileURIs:
     - string
   scheduling:
     maxFailuresPerHour: integer
     maxFailuresTotal: integer
   sparkJob:
-    archiveUris:
+    archiveURIs:
     - string
     args:
     - string
-    fileUris:
+    fileURIs:
     - string
-    jarFileUris:
+    jarFileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
+    loggingConfig: {}
     mainClass: string
-    mainJarFileUri: string
+    mainJarFileURI: string
     properties:
       string: string
   sparkRJob:
-    archiveUris:
+    archiveURIs:
     - string
     args:
     - string
-    fileUris:
+    fileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
-    mainRFileUri: string
+    loggingConfig: {}
+    mainRFileURI: string
     properties:
       string: string
-  sparkSqlJob:
-    jarFileUris:
+  sparkSQLJob:
+    jarFileURIs:
     - string
-    loggingConfig:
-      driverLogLevels:
-        string: string
+    loggingConfig: {}
     properties:
       string: string
-    queryFileUri: string
+    queryFileURI: string
     queryList:
       queries:
       - string
     scriptVariables:
       string: string
-  stepId: string
+  stepID: string
+  trinoJob:
+    clientTags:
+    - string
+    continueOnFailure: boolean
+    loggingConfig: {}
+    outputFormat: string
+    properties:
+      string: string
+    queryFileURI: string
+    queryList:
+      queries:
+      - string
+labels:
+  string: string
 location: string
 parameters:
 - description: string
@@ -212,149 +229,205 @@ placement:
     clusterName: string
     config:
       autoscalingConfig:
-        policyRef:
-          external: string
+        policyURI: string
+      auxiliaryNodeGroups:
+      - nodeGroup:
+          labels:
+            string: string
           name: string
-          namespace: string
+          nodeGroupConfig:
+            accelerators:
+            - acceleratorCount: integer
+              acceleratorTypeURI: string
+            diskConfig:
+              bootDiskProvisionedIops: integer
+              bootDiskProvisionedThroughput: integer
+              bootDiskSizeGB: integer
+              bootDiskType: string
+              localSsdInterface: string
+              numLocalSsds: integer
+            imageURI: string
+            instanceFlexibilityPolicy:
+              instanceSelectionList:
+              - machineTypes:
+                - string
+                rank: integer
+              provisioningModelMix:
+                standardCapacityBase: integer
+                standardCapacityPercentAboveBase: integer
+            machineTypeURI: string
+            minCPUPlatform: string
+            minNumInstances: integer
+            numInstances: integer
+            preemptibility: string
+            startupConfig:
+              requiredRegistrationFraction: float
+          roles:
+          - string
+        nodeGroupID: string
+      configBucket: string
+      dataprocMetricConfig:
+        metrics:
+        - metricOverrides:
+          - string
+          metricSource: string
       encryptionConfig:
-        gcePdKmsKeyRef:
-          external: string
-          name: string
-          namespace: string
+        gcePDKMSKeyName: string
+        kmsKey: string
       endpointConfig:
-        enableHttpPortAccess: boolean
+        enableHTTPPortAccess: boolean
       gceClusterConfig:
+        confidentialInstanceConfig:
+          enableConfidentialCompute: boolean
         internalIPOnly: boolean
         metadata:
           string: string
-        networkRef:
-          external: string
-          name: string
-          namespace: string
+        networkURI: string
         nodeGroupAffinity:
-          nodeGroupRef:
-            external: string
-            name: string
-            namespace: string
-        privateIPv6GoogleAccess: string
+          nodeGroupURI: string
+        privateIPV6GoogleAccess: string
         reservationAffinity:
           consumeReservationType: string
           key: string
           values:
           - string
-        serviceAccountRef:
-          external: string
-          name: string
-          namespace: string
+        serviceAccount: string
         serviceAccountScopes:
         - string
         shieldedInstanceConfig:
           enableIntegrityMonitoring: boolean
           enableSecureBoot: boolean
-          enableVtpm: boolean
-        subnetworkRef:
-          external: string
-          name: string
-          namespace: string
+          enableVTPM: boolean
+        subnetworkURI: string
         tags:
         - string
-        zone: string
+        zoneURI: string
       initializationActions:
       - executableFile: string
         executionTimeout: string
       lifecycleConfig:
+        autoDeleteTTL: string
         autoDeleteTime: string
-        autoDeleteTtl: string
-        idleDeleteTtl: string
+        idleDeleteTTL: string
       masterConfig:
         accelerators:
         - acceleratorCount: integer
-          acceleratorType: string
+          acceleratorTypeURI: string
         diskConfig:
-          bootDiskSizeGb: integer
+          bootDiskProvisionedIops: integer
+          bootDiskProvisionedThroughput: integer
+          bootDiskSizeGB: integer
           bootDiskType: string
+          localSsdInterface: string
           numLocalSsds: integer
-        imageRef:
-          external: string
-          name: string
-          namespace: string
-        machineType: string
-        minCpuPlatform: string
+        imageURI: string
+        instanceFlexibilityPolicy:
+          instanceSelectionList:
+          - machineTypes:
+            - string
+            rank: integer
+          provisioningModelMix:
+            standardCapacityBase: integer
+            standardCapacityPercentAboveBase: integer
+        machineTypeURI: string
+        minCPUPlatform: string
+        minNumInstances: integer
         numInstances: integer
         preemptibility: string
+        startupConfig:
+          requiredRegistrationFraction: float
+      metastoreConfig:
+        dataprocMetastoreService: string
       secondaryWorkerConfig:
         accelerators:
         - acceleratorCount: integer
-          acceleratorType: string
+          acceleratorTypeURI: string
         diskConfig:
-          bootDiskSizeGb: integer
+          bootDiskProvisionedIops: integer
+          bootDiskProvisionedThroughput: integer
+          bootDiskSizeGB: integer
           bootDiskType: string
+          localSsdInterface: string
           numLocalSsds: integer
-        imageRef:
-          external: string
-          name: string
-          namespace: string
-        machineType: string
-        minCpuPlatform: string
+        imageURI: string
+        instanceFlexibilityPolicy:
+          instanceSelectionList:
+          - machineTypes:
+            - string
+            rank: integer
+          provisioningModelMix:
+            standardCapacityBase: integer
+            standardCapacityPercentAboveBase: integer
+        machineTypeURI: string
+        minCPUPlatform: string
+        minNumInstances: integer
         numInstances: integer
         preemptibility: string
+        startupConfig:
+          requiredRegistrationFraction: float
       securityConfig:
+        identityConfig:
+          userServiceAccountMapping:
+            string: string
         kerberosConfig:
           crossRealmTrustAdminServer: string
           crossRealmTrustKdc: string
           crossRealmTrustRealm: string
-          crossRealmTrustSharedPassword: string
+          crossRealmTrustSharedPasswordURI: string
           enableKerberos: boolean
-          kdcDbKey: string
-          keyPassword: string
-          keystore: string
-          keystorePassword: string
-          kmsKeyRef:
-            external: string
-            name: string
-            namespace: string
+          kdcDbKeyURI: string
+          keyPasswordURI: string
+          keystorePasswordURI: string
+          keystoreURI: string
+          kmsKeyURI: string
           realm: string
-          rootPrincipalPassword: string
+          rootPrincipalPasswordURI: string
           tgtLifetimeHours: integer
-          truststore: string
-          truststorePassword: string
+          truststorePasswordURI: string
+          truststoreURI: string
       softwareConfig:
         imageVersion: string
         optionalComponents:
         - string
         properties:
           string: string
-      stagingBucketRef:
-        external: string
-        name: string
-        namespace: string
-      tempBucketRef:
-        external: string
-        name: string
-        namespace: string
+      tempBucket: string
       workerConfig:
         accelerators:
         - acceleratorCount: integer
-          acceleratorType: string
+          acceleratorTypeURI: string
         diskConfig:
-          bootDiskSizeGb: integer
+          bootDiskProvisionedIops: integer
+          bootDiskProvisionedThroughput: integer
+          bootDiskSizeGB: integer
           bootDiskType: string
+          localSsdInterface: string
           numLocalSsds: integer
-        imageRef:
-          external: string
-          name: string
-          namespace: string
-        machineType: string
-        minCpuPlatform: string
+        imageURI: string
+        instanceFlexibilityPolicy:
+          instanceSelectionList:
+          - machineTypes:
+            - string
+            rank: integer
+          provisioningModelMix:
+            standardCapacityBase: integer
+            standardCapacityPercentAboveBase: integer
+        machineTypeURI: string
+        minCPUPlatform: string
+        minNumInstances: integer
         numInstances: integer
         preemptibility: string
+        startupConfig:
+          requiredRegistrationFraction: float
     labels:
       string: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
+version: integer
 ```
 
 <table class="properties responsive">
@@ -371,27 +444,214 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes ("600s") to 24 hours ("86400s"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Timeout duration for the DAG of jobs, expressed in seconds (see [JSON representation of duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). The timeout duration must be from 10 minutes ("600s") to 24 hours ("86400s"). The timer begins when the first job is submitted. If the workflow is running at the end of the timeout period, any remaining jobs are cancelled, the workflow is ended, and if the workflow was running on a [managed cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster), the cluster is deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Encryption settings for encrypting workflow template job arguments.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionConfig.kmsKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The Cloud KMS key name to use for encrypting
+ workflow template job arguments.
+
+ When this this key is provided, the following workflow template
+ [job arguments]
+ (https://cloud.google.com/dataproc/docs/concepts/workflows/use-workflows#adding_jobs_to_a_template),
+ if present, are
+ [CMEK
+ encrypted](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_workflow_template_data):
+
+ * [FlinkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob)
+ * [HadoopJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob)
+ * [SparkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob)
+ * [SparkRJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob)
+ * [PySparkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob)
+ * [SparkSqlJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob)
+   scriptVariables and queryList.queries
+ * [HiveJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob)
+   scriptVariables and queryList.queries
+ * [PigJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob)
+   scriptVariables and queryList.queries
+ * [PrestoJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob)
+   scriptVariables and queryList.queries{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionConfig.kmsKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionConfig.kmsKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionConfig.kmsKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Required. The Directed Acyclic Graph of Jobs to submit.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The Directed Acyclic Graph of Jobs to submit.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[]</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Job is a Flink job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.args</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. The arguments to pass to the driver. Do not include arguments, such as `--conf`, that can be set as job properties, since a collision might occur that causes an incorrect job submission.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.args[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.jarFileURIs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to add to the CLASSPATHs of the Flink driver and tasks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.jarFileURIs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.loggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.mainClass</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the driver's main class. The jar file that contains the class must be in the default CLASSPATH or specified in [jarFileURIs][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.mainJarFileURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The HCFS URI of the jar file that contains the main class.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.properties</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure Flink. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in `/etc/flink/conf/flink-defaults.conf` and classes in user code.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].flinkJob.savepointURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. HCFS URI of the savepoint, which contains the last saved progress for starting the current job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -401,22 +661,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a Hadoop job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a Hadoop job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.archiveUris</code></p>
+            <p><code>jobs[].hadoopJob.archiveURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of archives to be extracted in the working directory of Hadoop drivers and tasks. Supported file types: .jar, .tar, .tar.gz, .tgz, or .zip.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of archives to be extracted in the working directory of Hadoop drivers and tasks. Supported file types: .jar, .tar, .tar.gz, .tgz, or .zip.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.archiveUris[]</code></p>
+            <p><code>jobs[].hadoopJob.archiveURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -431,7 +691,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The arguments to pass to the driver. Do not include arguments, such as `-libjars` or `-Dfoo=bar`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The arguments to pass to the driver. Do not include arguments, such as `-libjars` or `-Dfoo=bar`, that can be set as job properties, since a collision might occur that causes an incorrect job submission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -446,17 +706,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.fileUris</code></p>
+            <p><code>jobs[].hadoopJob.fileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS (Hadoop Compatible Filesystem) URIs of files to be copied to the working directory of Hadoop drivers and distributed tasks. Useful for naively parallel tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS (Hadoop Compatible Filesystem) URIs of files to be copied to the working directory of Hadoop drivers and distributed tasks. Useful for naively parallel tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.fileUris[]</code></p>
+            <p><code>jobs[].hadoopJob.fileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -466,17 +726,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.jarFileUris</code></p>
+            <p><code>jobs[].hadoopJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Jar file URIs to add to the CLASSPATHs of the Hadoop driver and tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Jar file URIs to add to the CLASSPATHs of the Hadoop driver and tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.jarFileUris[]</code></p>
+            <p><code>jobs[].hadoopJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -491,17 +751,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].hadoopJob.loggingConfig.driverLogLevels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -511,17 +761,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the driver's main class. The jar file containing the class must be in the default CLASSPATH or specified in `jar_file_uris`.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the driver's main class. The jar file containing the class must be in the default CLASSPATH or specified in `jar_file_uris`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hadoopJob.mainJarFileUri</code></p>
+            <p><code>jobs[].hadoopJob.mainJarFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the jar file containing the main class. Examples: 'gs://foo-bucket/analytics-binaries/extract-useful-metrics-mr.jar' 'hdfs:/tmp/test-samples/custom-wordcount.jar' 'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the jar file containing the main class. Examples: 'gs://foo-bucket/analytics-binaries/extract-useful-metrics-mr.jar' 'hdfs:/tmp/test-samples/custom-wordcount.jar' 'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -531,7 +781,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure Hadoop. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure Hadoop. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in `/etc/hadoop/conf/*-site` and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -541,7 +791,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a Hive job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a Hive job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -551,22 +801,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hiveJob.jarFileUris</code></p>
+            <p><code>jobs[].hiveJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of jar files to add to the CLASSPATH of the Hive server and Hadoop MapReduce (MR) tasks. Can contain Hive SerDes and UDFs.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to add to the CLASSPATH of the Hive server and Hadoop MapReduce (MR) tasks. Can contain Hive SerDes and UDFs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hiveJob.jarFileUris[]</code></p>
+            <p><code>jobs[].hiveJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -581,17 +831,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names and values, used to configure Hive. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml, /etc/hive/conf/hive-site.xml, and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names and values, used to configure Hive. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`, /etc/hive/conf/hive-site.xml, and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].hiveJob.queryFileUri</code></p>
+            <p><code>jobs[].hiveJob.queryFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the script that contains Hive queries.{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the script that contains Hive queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -601,23 +851,36 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A list of queries.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].hiveJob.queryList.queries</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The queries to execute. You do not need to end a query expression
+ with a semicolon. Multiple queries can be specified in one
+ string by separating each with a semicolon. Here is an example of a
+ Dataproc API snippet that uses a QueryList to specify a HiveJob:
+
+     "hiveJob": {
+       "queryList": {
+         "queries": [
+           "query1",
+           "query2",
+           "query3;query4",
+         ]
+       }
+     }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].hiveJob.queryList.queries[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -631,7 +894,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Mapping of query variable names to values (equivalent to the Hive command: `SET name="value";`).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Mapping of query variable names to values (equivalent to the Hive command: `SET name="value";`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -641,7 +904,16 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The labels to associate with this job. Label keys must be between 1 and 63 characters long, and must conform to the following regular expression: p{Ll}p{Lo}{0,62} Label values must be between 1 and 63 characters long, and must conform to the following regular expression: [p{Ll}p{Lo}p{N}_-]{0,63} No more than 32 labels can be associated with a given job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The labels to associate with this job.
+
+ Label keys must be between 1 and 63 characters long, and must conform to
+ the following regular expression:
+ [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+
+ Label values must be between 1 and 63 characters long, and must conform to
+ the following regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+
+ No more than 32 labels can be associated with a given job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -651,7 +923,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a Pig job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a Pig job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -661,22 +933,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pigJob.jarFileUris</code></p>
+            <p><code>jobs[].pigJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of jar files to add to the CLASSPATH of the Pig Client and Hadoop MapReduce (MR) tasks. Can contain Pig UDFs.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to add to the CLASSPATH of the Pig Client and Hadoop MapReduce (MR) tasks. Can contain Pig UDFs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pigJob.jarFileUris[]</code></p>
+            <p><code>jobs[].pigJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -691,17 +963,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].pigJob.loggingConfig.driverLogLevels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -711,17 +973,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure Pig. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml, /etc/pig/conf/pig.properties, and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure Pig. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`, /etc/pig/conf/pig.properties, and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pigJob.queryFileUri</code></p>
+            <p><code>jobs[].pigJob.queryFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the script that contains the Pig queries.{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the script that contains the Pig queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -731,23 +993,36 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A list of queries.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].pigJob.queryList.queries</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The queries to execute. You do not need to end a query expression
+ with a semicolon. Multiple queries can be specified in one
+ string by separating each with a semicolon. Here is an example of a
+ Dataproc API snippet that uses a QueryList to specify a HiveJob:
+
+     "hiveJob": {
+       "queryList": {
+         "queries": [
+           "query1",
+           "query2",
+           "query3;query4",
+         ]
+       }
+     }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].pigJob.queryList.queries[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -761,22 +1036,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Mapping of query variable names to values (equivalent to the Pig command: `name=[value]`).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Mapping of query variable names to values (equivalent to the Pig command: `name=[value]`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].prerequisiteStepIds</code></p>
+            <p><code>jobs[].prerequisiteStepIDs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The optional list of prerequisite job step_ids. If not specified, the job will start at the beginning of workflow.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The optional list of prerequisite job step_ids. If not specified, the job will start at the beginning of workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].prerequisiteStepIds[]</code></p>
+            <p><code>jobs[].prerequisiteStepIDs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -791,7 +1066,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a Presto job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a Presto job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -801,7 +1076,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Presto client tags to attach to this query{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Presto client tags to attach to this query{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -821,7 +1096,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -831,17 +1106,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].prestoJob.loggingConfig.driverLogLevels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -851,7 +1116,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The format in which query output will be displayed. See the Presto documentation for supported output formats{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The format in which query output will be displayed. See the Presto documentation for supported output formats{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -861,17 +1126,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values. Used to set Presto [session properties](https://prestodb.io/docs/current/sql/set-session.html) Equivalent to using the --session flag in the Presto CLI{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values. Used to set Presto [session properties](https://prestodb.io/docs/current/sql/set-session.html) Equivalent to using the --session flag in the Presto CLI{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].prestoJob.queryFileUri</code></p>
+            <p><code>jobs[].prestoJob.queryFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the script that contains SQL queries.{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the script that contains SQL queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -881,23 +1146,36 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A list of queries.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].prestoJob.queryList.queries</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The queries to execute. You do not need to end a query expression
+ with a semicolon. Multiple queries can be specified in one
+ string by separating each with a semicolon. Here is an example of a
+ Dataproc API snippet that uses a QueryList to specify a HiveJob:
+
+     "hiveJob": {
+       "queryList": {
+         "queries": [
+           "query1",
+           "query2",
+           "query3;query4",
+         ]
+       }
+     }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>jobs[].prestoJob.queryList.queries[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -911,22 +1189,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a PySpark job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a PySpark job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.archiveUris</code></p>
+            <p><code>jobs[].pysparkJob.archiveURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.archiveUris[]</code></p>
+            <p><code>jobs[].pysparkJob.archiveURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -941,7 +1219,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The arguments to pass to the driver. Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The arguments to pass to the driver.  Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -956,17 +1234,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.fileUris</code></p>
+            <p><code>jobs[].pysparkJob.fileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.fileUris[]</code></p>
+            <p><code>jobs[].pysparkJob.fileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -976,17 +1254,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.jarFileUris</code></p>
+            <p><code>jobs[].pysparkJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of jar files to add to the CLASSPATHs of the Python driver and tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to add to the CLASSPATHs of the Python driver and tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.jarFileUris[]</code></p>
+            <p><code>jobs[].pysparkJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1001,27 +1279,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.loggingConfig.driverLogLevels</code></p>
+            <p><code>jobs[].pysparkJob.mainPythonFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].pysparkJob.mainPythonFileUri</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The HCFS URI of the main Python file to use as the driver. Must be a .py file.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The HCFS URI of the main Python file to use as the driver. Must be a .py file.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1031,22 +1299,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure PySpark. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure PySpark. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.pythonFileUris</code></p>
+            <p><code>jobs[].pysparkJob.pythonFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS file URIs of Python files to pass to the PySpark framework. Supported file types: .py, .egg, and .zip.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS file URIs of Python files to pass to the PySpark framework. Supported file types: .py, .egg, and .zip.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].pysparkJob.pythonFileUris[]</code></p>
+            <p><code>jobs[].pysparkJob.pythonFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1061,7 +1329,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job scheduling configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job scheduling configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1071,7 +1339,18 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Maximum number of times per hour a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. A job may be reported as thrashing if driver exits with non-zero code 4 times within 10 minute window. Maximum value is 10.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Maximum number of times per hour a driver can be restarted as
+ a result of driver exiting with non-zero code before job is
+ reported failed.
+
+ A job might be reported as thrashing if the driver exits with a non-zero
+ code four times within a 10-minute window.
+
+ Maximum value is 10.
+
+ **Note:** This restartable job option is not supported in Dataproc
+ [workflow templates]
+ (https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1081,7 +1360,16 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Maximum number of times in total a driver may be restarted as a result of driver exiting with non-zero code before job is reported failed. Maximum value is 240.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Maximum total number of times a driver can be restarted as a
+ result of the driver exiting with a non-zero code. After the maximum number
+ is reached, the job will be reported as failed.
+
+ Maximum value is 240.
+
+ **Note:** Currently, this restartable job option is
+ not supported in Dataproc
+ [workflow
+ templates](https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1091,22 +1379,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a Spark job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a Spark job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.archiveUris</code></p>
+            <p><code>jobs[].sparkJob.archiveURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.archiveUris[]</code></p>
+            <p><code>jobs[].sparkJob.archiveURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1121,7 +1409,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The arguments to pass to the driver. Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The arguments to pass to the driver. Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1136,17 +1424,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.fileUris</code></p>
+            <p><code>jobs[].sparkJob.fileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.fileUris[]</code></p>
+            <p><code>jobs[].sparkJob.fileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1156,17 +1444,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.jarFileUris</code></p>
+            <p><code>jobs[].sparkJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of jar files to add to the CLASSPATHs of the Spark driver and tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to add to the CLASSPATHs of the Spark driver and tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.jarFileUris[]</code></p>
+            <p><code>jobs[].sparkJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1181,17 +1469,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].sparkJob.loggingConfig.driverLogLevels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1201,17 +1479,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the driver's main class. The jar file that contains the class must be in the default CLASSPATH or specified in `jar_file_uris`.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the driver's main class. The jar file that contains the class must be in the default CLASSPATH or specified in SparkJob.jar_file_uris.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkJob.mainJarFileUri</code></p>
+            <p><code>jobs[].sparkJob.mainJarFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the jar file that contains the main class.{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the jar file that contains the main class.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1221,7 +1499,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure Spark. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure Spark. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1231,22 +1509,22 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a SparkR job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a SparkR job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkRJob.archiveUris</code></p>
+            <p><code>jobs[].sparkRJob.archiveURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of archives to be extracted into the working directory of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and .zip.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkRJob.archiveUris[]</code></p>
+            <p><code>jobs[].sparkRJob.archiveURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1261,7 +1539,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The arguments to pass to the driver. Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The arguments to pass to the driver.  Do not include arguments, such as `--conf`, that can be set as job properties, since a collision may occur that causes an incorrect job submission.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1276,17 +1554,17 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkRJob.fileUris</code></p>
+            <p><code>jobs[].sparkRJob.fileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of files to be placed in the working directory of each executor. Useful for naively parallel tasks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkRJob.fileUris[]</code></p>
+            <p><code>jobs[].sparkRJob.fileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1301,27 +1579,17 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkRJob.loggingConfig.driverLogLevels</code></p>
+            <p><code>jobs[].sparkRJob.mainRFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].sparkRJob.mainRFileUri</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The HCFS URI of the main R file to use as the driver. Must be a .R file.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The HCFS URI of the main R file to use as the driver. Must be a .R file.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1331,32 +1599,32 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure SparkR. Properties that conflict with values set by the Dataproc API may be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure SparkR. Properties that conflict with values set by the Dataproc API might be overwritten. Can include properties set in /etc/spark/conf/spark-defaults.conf and classes in user code.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob</code></p>
+            <p><code>jobs[].sparkSQLJob</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Job is a SparkSql job.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Job is a SparkSql job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.jarFileUris</code></p>
+            <p><code>jobs[].sparkSQLJob.jarFileURIs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.jarFileUris[]</code></p>
+            <p><code>jobs[].sparkSQLJob.jarFileURIs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1366,68 +1634,71 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.loggingConfig</code></p>
+            <p><code>jobs[].sparkSQLJob.loggingConfig</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The runtime log config for job execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.loggingConfig.driverLogLevels</code></p>
+            <p><code>jobs[].sparkSQLJob.properties</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The per-package log levels for the driver. This may include "root" package name to configure rootLogger. Examples: 'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A mapping of property names to values, used to configure Spark SQL's SparkConf. Properties that conflict with values set by the Dataproc API might be overwritten.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.properties</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. A mapping of property names to values, used to configure Spark SQL's SparkConf. Properties that conflict with values set by the Dataproc API may be overwritten.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>jobs[].sparkSqlJob.queryFileUri</code></p>
+            <p><code>jobs[].sparkSQLJob.queryFileURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The HCFS URI of the script that contains SQL queries.{% endverbatim %}</p>
+            <p>{% verbatim %}The HCFS URI of the script that contains SQL queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.queryList</code></p>
+            <p><code>jobs[].sparkSQLJob.queryList</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A list of queries.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of queries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.queryList.queries</code></p>
-            <p><i>Required*</i></p>
+            <p><code>jobs[].sparkSQLJob.queryList.queries</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The queries to execute. You do not need to end a query expression with a semicolon. Multiple queries can be specified in one string by separating each with a semicolon. Here is an example of a Dataproc API snippet that uses a QueryList to specify a HiveJob: "hiveJob": { "queryList": { "queries": [ "query1", "query2", "query3;query4", ] } }{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The queries to execute. You do not need to end a query expression
+ with a semicolon. Multiple queries can be specified in one
+ string by separating each with a semicolon. Here is an example of a
+ Dataproc API snippet that uses a QueryList to specify a HiveJob:
+
+     "hiveJob": {
+       "queryList": {
+         "queries": [
+           "query1",
+           "query2",
+           "query3;query4",
+         ]
+       }
+     }{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.queryList.queries[]</code></p>
-            <p><i>Required*</i></p>
+            <p><code>jobs[].sparkSQLJob.queryList.queries[]</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1436,32 +1707,186 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].sparkSqlJob.scriptVariables</code></p>
+            <p><code>jobs[].sparkSQLJob.scriptVariables</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Mapping of query variable names to values (equivalent to the Spark SQL command: SET `name="value";`).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Mapping of query variable names to values (equivalent to the Spark SQL command: SET `name="value";`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>jobs[].stepId</code></p>
-            <p><i>Required</i></p>
+            <p><code>jobs[].stepID</code></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The step id. The id must be unique among all jobs within the template. The step id is used as prefix for job id, as job `goog-dataproc-workflow-step-id` label, and in prerequisiteStepIds field from other steps. The id must contain only letters (a-z, A-Z), numbers (0-9), underscores (_), and hyphens (-). Cannot begin or end with underscore or hyphen. Must consist of between 3 and 50 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The step id. The id must be unique among all jobs
+ within the template.
+
+ The step id is used as prefix for job id, as job
+ `goog-dataproc-workflow-step-id` label, and in
+ [prerequisiteStepIds][google.cloud.dataproc.v1.OrderedJob.prerequisite_step_ids]
+ field from other steps.
+
+ The id must contain only letters (a-z, A-Z), numbers (0-9),
+ underscores (_), and hyphens (-). Cannot begin or end with underscore
+ or hyphen. Must consist of between 3 and 50 characters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Job is a Trino job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.clientTags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Trino client tags to attach to this query{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.clientTags[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.continueOnFailure</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Whether to continue executing queries if a query fails. The default value is `false`. Setting to `true` can be useful when executing independent parallel queries.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.loggingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The runtime log config for job execution.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.outputFormat</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The format in which query output will be displayed. See the Trino documentation for supported output formats{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.properties</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. A mapping of property names to values. Used to set Trino [session properties](https://trino.io/docs/current/sql/set-session.html) Equivalent to using the --session flag in the Trino CLI{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.queryFileURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The HCFS URI of the script that contains SQL queries.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.queryList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A list of queries.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.queryList.queries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Required. The queries to execute. You do not need to end a query expression
+ with a semicolon. Multiple queries can be specified in one
+ string by separating each with a semicolon. Here is an example of a
+ Dataproc API snippet that uses a QueryList to specify a HiveJob:
+
+     "hiveJob": {
+       "queryList": {
+         "queries": [
+           "query1",
+           "query2",
+           "query3;query4",
+         ]
+       }
+     }{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>jobs[].trinoJob.queryList.queries[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. The labels to associate with this template. These labels
+ will be propagated to all jobs and clusters created by the workflow
+ instance.
+
+ Label **keys** must contain 1 to 63 characters, and must conform to
+ [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+
+ Label **values** may be empty, but, if present, must contain 1 to 63
+ characters, and must conform to
+ [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+
+ No more than 32 labels can be associated with a template.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource{% endverbatim %}</p>
+            <p>{% verbatim %}Required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1471,7 +1896,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Template parameters whose values are substituted into the template. Values for parameters must be provided when the template is instantiated.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Template parameters whose values are substituted into the template. Values for parameters must be provided when the template is instantiated.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1491,23 +1916,66 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Brief description of the parameter. Must not exceed 1024 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Brief description of the parameter. Must not exceed 1024 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].fields</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. Paths to all fields that the parameter replaces. A field is allowed to appear in at most one parameter's list of field paths. A field path is similar in syntax to a google.protobuf.FieldMask. For example, a field path that references the zone field of a workflow template's cluster selector would be specified as `placement.clusterSelector.zone`. Also, field paths can reference fields using the following syntax: * Values in maps can be referenced by key: * labels['key'] * placement.clusterSelector.clusterLabels['key'] * placement.managedCluster.labels['key'] * placement.clusterSelector.clusterLabels['key'] * jobs['step-id'].labels['key'] * Jobs in the jobs list can be referenced by step-id: * jobs['step-id'].hadoopJob.mainJarFileUri * jobs['step-id'].hiveJob.queryFileUri * jobs['step-id'].pySparkJob.mainPythonFileUri * jobs['step-id'].hadoopJob.jarFileUris[0] * jobs['step-id'].hadoopJob.archiveUris[0] * jobs['step-id'].hadoopJob.fileUris[0] * jobs['step-id'].pySparkJob.pythonFileUris[0] * Items in repeated fields can be referenced by a zero-based index: * jobs['step-id'].sparkJob.args[0] * Other examples: * jobs['step-id'].hadoopJob.properties['key'] * jobs['step-id'].hadoopJob.args[0] * jobs['step-id'].hiveJob.scriptVariables['key'] * jobs['step-id'].hadoopJob.mainJarFileUri * placement.clusterSelector.zone It may not be possible to parameterize maps and repeated fields in their entirety since only individual map values and individual items in repeated fields can be referenced. For example, the following field paths are invalid: - placement.clusterSelector.clusterLabels - jobs['step-id'].sparkJob.args{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Paths to all fields that the parameter replaces.
+ A field is allowed to appear in at most one parameter's list of field
+ paths.
+
+ A field path is similar in syntax to a
+ [google.protobuf.FieldMask][google.protobuf.FieldMask]. For example, a
+ field path that references the zone field of a workflow template's cluster
+ selector would be specified as `placement.clusterSelector.zone`.
+
+ Also, field paths can reference fields using the following syntax:
+
+ * Values in maps can be referenced by key:
+     * labels['key']
+     * placement.clusterSelector.clusterLabels['key']
+     * placement.managedCluster.labels['key']
+     * placement.clusterSelector.clusterLabels['key']
+     * jobs['step-id'].labels['key']
+
+ * Jobs in the jobs list can be referenced by step-id:
+     * jobs['step-id'].hadoopJob.mainJarFileURI
+     * jobs['step-id'].hiveJob.queryFileURI
+     * jobs['step-id'].pySparkJob.mainPythonFileURI
+     * jobs['step-id'].hadoopJob.jarFileURIs[0]
+     * jobs['step-id'].hadoopJob.archiveURIs[0]
+     * jobs['step-id'].hadoopJob.fileURIs[0]
+     * jobs['step-id'].pySparkJob.pythonFileURIs[0]
+
+ * Items in repeated fields can be referenced by a zero-based index:
+     * jobs['step-id'].sparkJob.args[0]
+
+ * Other examples:
+     * jobs['step-id'].hadoopJob.properties['key']
+     * jobs['step-id'].hadoopJob.args[0]
+     * jobs['step-id'].hiveJob.scriptVariables['key']
+     * jobs['step-id'].hadoopJob.mainJarFileURI
+     * placement.clusterSelector.zone
+
+ It may not be possible to parameterize maps and repeated fields in their
+ entirety since only individual map values and individual items in repeated
+ fields can be referenced. For example, the following field paths are
+ invalid:
+
+ - placement.clusterSelector.clusterLabels
+ - jobs['step-id'].sparkJob.args{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].fields[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1517,11 +1985,11 @@ resourceID: string
     <tr>
         <td>
             <p><code>parameters[].name</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. Parameter name. The parameter name is used as the key, and paired with the parameter value, which are passed to the template when the template is instantiated. The name must contain only capital letters (A-Z), numbers (0-9), and underscores (_), and must not start with a number. The maximum length is 40 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Parameter name. The parameter name is used as the key, and paired with the parameter value, which are passed to the template when the template is instantiated. The name must contain only capital letters (A-Z), numbers (0-9), and underscores (_), and must not start with a number. The maximum length is 40 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1531,7 +1999,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Validation rules to be applied to this parameter's value.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Validation rules to be applied to this parameter's value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1541,23 +2009,23 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Validation based on regular expressions.{% endverbatim %}</p>
+            <p>{% verbatim %}Validation based on regular expressions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].validation.regex.regexes</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. RE2 regular expressions used to validate the parameter's value. The value must match the regex in its entirety (substring matches are not sufficient).{% endverbatim %}</p>
+            <p>{% verbatim %}Required. RE2 regular expressions used to validate the parameter's value. The value must match the regex in its entirety (substring matches are not sufficient).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].validation.regex.regexes[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1571,23 +2039,23 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Validation based on a list of allowed values.{% endverbatim %}</p>
+            <p>{% verbatim %}Validation based on a list of allowed values.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].validation.values.values</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Required. List of allowed values for the parameter.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. List of allowed values for the parameter.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>parameters[].validation.values.values[]</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -1601,7 +2069,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. WorkflowTemplate scheduling information.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. WorkflowTemplate scheduling information.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1611,17 +2079,20 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. A selector that chooses target cluster for jobs based on metadata. The selector is evaluated at the time each job is submitted.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A selector that chooses target cluster for jobs based
+ on metadata.
+
+ The selector is evaluated at the time each job is submitted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>placement.clusterSelector.clusterLabels</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Required. The cluster labels. Cluster must have all labels to match.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The cluster labels. Cluster must have all labels to match.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1631,7 +2102,11 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The zone where workflow process executes. This parameter does not affect the selection of the cluster. If unspecified, the zone of the first cluster matching the selector is used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The zone where workflow process executes. This parameter does not
+ affect the selection of the cluster.
+
+ If unspecified, the zone of the first cluster matching the selector
+ is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1641,27 +2116,32 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. A cluster that is managed by the workflow.{% endverbatim %}</p>
+            <p>{% verbatim %}A cluster that is managed by the workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>placement.managedCluster.clusterName</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. The cluster name prefix. A unique cluster name will be formed by appending a random suffix. The name must contain only lower-case letters (a-z), numbers (0-9), and hyphens (-). Must begin with a letter. Cannot begin or end with hyphen. Must consist of between 2 and 35 characters.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The cluster name prefix. A unique cluster name will be formed by
+ appending a random suffix.
+
+ The name must contain only lower-case letters (a-z), numbers (0-9),
+ and hyphens (-). Must begin with a letter. Cannot begin or end with
+ hyphen. Must consist of between 2 and 35 characters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>placement.managedCluster.config</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. The cluster configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The cluster configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1671,49 +2151,575 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.autoscalingConfig.policyRef</code></p>
+            <p><code>placement.managedCluster.config.autoscalingConfig.policyURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The autoscaling policy used by the cluster.
+
+ Only resource names including projectid and location (region) are valid.
+ Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]`
+ * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]`
+
+ Note that the policy must be in the same project and Dataproc region.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. The node group settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.autoscalingConfig.policyRef.external</code></p>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The autoscaling policy used by the cluster. Only resource names including projectid and location (region) are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` * `projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]` Note that the policy must be in the same project and Dataproc region.
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. Node group configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. Node group labels.
 
-Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` resource (format: `projects/{{project}}/locations/{{location}}/autoscalingPolicies/{{name}}`).{% endverbatim %}</p>
+ * Label **keys** must consist of from 1 to 63 characters and conform to
+   [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+ * Label **values** can be empty. If specified, they must consist of from
+   1 to 63 characters and conform to [RFC 1035]
+   (https://www.ietf.org/rfc/rfc1035.txt).
+ * The node group must have no more than 32 labels.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.autoscalingConfig.policyRef.name</code></p>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The Node group [resource name](https://aip.dev/122).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.autoscalingConfig.policyRef.namespace</code></p>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The node group instance group configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.accelerators</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.accelerators[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.accelerators[].acceleratorCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.accelerators[].acceleratorTypeURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Full URL, partial URI, or short name of the accelerator type resource to
+ expose to this instance. See
+ [Compute Engine
+ AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
+
+ Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `nvidia-tesla-t4`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the accelerator type
+ resource, for example, `nvidia-tesla-t4`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Disk option config settings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.bootDiskProvisionedIops</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.bootDiskProvisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.bootDiskSizeGB</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.bootDiskType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.diskConfig.numLocalSsds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Number of attached SSDs, from 0 to 8 (default is 0).
+ If SSDs are not attached, the boot disk is used to store runtime logs and
+ [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data.
+ If one or more SSDs are attached, this runtime bulk
+ data is spread across them, and the boot disk contains only basic
+ config and installed binaries.
+
+ Note: Local SSD options may vary by machine type and number of vCPUs
+ selected.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.imageURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances.
+
+ The URI can represent an image or image family.
+
+ Image examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
+ * `projects/[project_id]/global/images/[image-id]`
+ * `image-id`
+
+ Image family examples. Dataproc will use the most recent
+ image from the family:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
+ * `projects/[project_id]/global/images/family/[custom-image-family-name]`
+
+ If the URI is unspecified, it will be inferred from
+ `SoftwareConfig.image_version` or the system default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. List of instance selection options that the group will use when creating new VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Full machine-type names, e.g. "n1-standard-16".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.provisioningModelMix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Defines how the Group selects the provisioning model to ensure required reliability.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.machineTypeURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine machine type used for cluster instances.
+
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `n1-standard-2`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the machine type
+ resource, for example, `n1-standard-2`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.minCPUPlatform</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.minNumInstances</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The minimum number of primary worker instances to create.
+ If `min_num_instances` is set, cluster creation will succeed if
+ the number of primary workers created is at least equal to the
+ `min_num_instances` number.
+
+ Example: Cluster creation request with `num_instances` = `5` and
+ `min_num_instances` = `3`:
+
+ *  If 4 VMs are created and 1 instance fails,
+    the failed VM is deleted. The cluster is
+    resized to 4 instances and placed in a `RUNNING` state.
+ *  If 2 instances are created and 3 instances fail,
+    the cluster in placed in an `ERROR` state. The failed VMs
+    are not deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.numInstances</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.preemptibility</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Specifies the preemptibility of the instance group.
+
+ The default value for master and worker groups is
+ `NON_PREEMPTIBLE`. This default cannot be changed.
+
+ The default value for secondary instances is
+ `PREEMPTIBLE`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.startupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Configuration to handle the startup of instances during cluster create and update process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.nodeGroupConfig.startupConfig.requiredRegistrationFraction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.roles</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Required. Node group roles.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroup.roles[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.auxiliaryNodeGroups[].nodeGroupID</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A node group ID. Generated if not specified.
+
+ The ID must contain only letters (a-z, A-Z), numbers (0-9),
+ underscores (_), and hyphens (-). Cannot begin or end with underscore
+ or hyphen. Must consist of from 3 to 33 characters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.configBucket</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.**{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The config for Dataproc metrics.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig.metrics</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Required. Metrics sources to enable.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig.metrics[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig.metrics[].metricOverrides</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Specify one or more [Custom metrics]
+ (https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics)
+ to collect for the metric course (for the `SPARK` metric source (any
+ [Spark metric]
+ (https://spark.apache.org/docs/latest/monitoring.html#metrics) can be
+ specified).
+
+ Provide metrics in the following format:
+ <code><var>METRIC_SOURCE</var>:<var>INSTANCE</var>:<var>GROUP</var>:<var>METRIC</var></code>
+ Use camelcase as appropriate.
+
+ Examples:
+
+ ```
+ yarn:ResourceManager:QueueMetrics:AppsCompleted
+ spark:driver:DAGScheduler:job.allJobs
+ sparkHistoryServer:JVM:Memory:NonHeapMemoryUsage.committed
+ hiveserver2:JVM:Memory:NonHeapMemoryUsage.used
+ ```
+
+ Notes:
+
+ * Only the specified overridden metrics are collected for the
+   metric source. For example, if one or more `spark:executive` metrics
+   are listed as metric overrides, other `SPARK` metrics are not
+   collected. The collection of the metrics for other enabled custom
+   metric sources is unaffected. For example, if both `SPARK` and `YARN`
+   metric sources are enabled, and overrides are provided for Spark
+   metrics only, all YARN metrics are collected.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig.metrics[].metricOverrides[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.dataprocMetricConfig.metrics[].metricSource</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. A standard set of metrics is collected unless `metricOverrides` are specified for the metric source (see [Custom metrics] (https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics) for more information).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1723,49 +2729,52 @@ Allowed value: The Google Cloud resource name of a `DataprocAutoscalingPolicy` r
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Encryption settings for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Encryption settings for the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.encryptionConfig.gcePdKmsKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.encryptionConfig.gcePdKmsKeyRef.external</code></p>
+            <p><code>placement.managedCluster.config.encryptionConfig.gcePDKMSKeyName</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
+            <p>{% verbatim %}Optional. The Cloud KMS key resource name to use for persistent disk encryption for all instances in the cluster. See [Use CMEK with cluster data] (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data) for more information.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.encryptionConfig.kmsKey</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Cloud KMS key resource name to use for cluster persistent
+ disk and job argument encryption. See [Use CMEK with cluster data]
+ (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data)
+ for more information.
 
-Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.encryptionConfig.gcePdKmsKeyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.encryptionConfig.gcePdKmsKeyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+ When this key resource name is provided, the following job arguments of
+ the following job types submitted to the cluster are encrypted using CMEK:
+
+ * [FlinkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob)
+ * [HadoopJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob)
+ * [SparkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob)
+ * [SparkRJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob)
+ * [PySparkJob
+ args](https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob)
+ * [SparkSqlJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob)
+   scriptVariables and queryList.queries
+ * [HiveJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob)
+   scriptVariables and queryList.queries
+ * [PigJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob)
+   scriptVariables and queryList.queries
+ * [PrestoJob](https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob)
+   scriptVariables and queryList.queries{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1775,17 +2784,17 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Port/endpoint configuration for this cluster{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Port/endpoint configuration for this cluster{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.endpointConfig.enableHttpPortAccess</code></p>
+            <p><code>placement.managedCluster.config.endpointConfig.enableHTTPPortAccess</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. If true, enable http access to specific ports on the cluster from external sources. Defaults to false.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If true, enable http access to specific ports on the cluster from external sources. Defaults to false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1795,7 +2804,27 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The shared Compute Engine config settings for all instances in a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The shared Compute Engine config settings for all instances in a cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.confidentialInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Confidential Instance Config for clusters using [Confidential VMs](https://cloud.google.com/compute/confidential-vm/docs).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.gceClusterConfig.confidentialInstanceConfig.enableConfidentialCompute</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Defines whether the instance should have confidential compute enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1805,7 +2834,22 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This `internal_ip_only` restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. This setting applies to subnetwork-enabled networks. It is set to
+ `true` by default in clusters created with image versions 2.2.x.
+
+ When set to `true`:
+
+ * All cluster VMs have internal IP addresses.
+ * [Google Private Access]
+ (https://cloud.google.com/vpc/docs/private-google-access)
+ must be enabled to access Dataproc and other Google Cloud APIs.
+ * Off-cluster dependencies must be configured to be accessible
+ without external IP addresses.
+
+ When set to `false`:
+
+ * Cluster VMs are not restricted to internal IP addresses.
+ * Ephemeral external IP addresses are assigned to each cluster VM.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1815,49 +2859,28 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine metadata entries to add to all instances (see [Project and instance metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.networkRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.networkRef.external</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.networkURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine network to be used for machine communications. Cannot be specified with subnetwork_uri. If neither `network_uri` nor `subnetwork_uri` is specified, the "default" network of the project is used, if it exists. Cannot be a "Custom Subnet Network" (see [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for more information). A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/global/default` * `projects/[project_id]/regions/global/default` * `default`
+            <p>{% verbatim %}Optional. The Compute Engine network to be used for machine
+ communications. Cannot be specified with subnetwork_uri. If neither
+ `network_uri` nor `subnetwork_uri` is specified, the "default" network of
+ the project is used, if it exists. Cannot be a "Custom Subnet Network" (see
+ [Using Subnetworks](https://cloud.google.com/compute/docs/subnetworks) for
+ more information).
 
-Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.networkRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.networkRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/networks/default`
+ * `projects/[project_id]/global/networks/default`
+ * `default`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1867,59 +2890,36 @@ Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbati
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Node Group Affinity for sole-tenant clusters.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Node Group Affinity for sole-tenant clusters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.nodeGroupAffinity.nodeGroupRef</code></p>
-            <p><i>Required*</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.nodeGroupAffinity.nodeGroupRef.external</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.nodeGroupAffinity.nodeGroupURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The URI of a sole-tenant [node group resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups) that the cluster will be created on. A full URL, partial URI, or node group name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `projects/[project_id]/zones/us-central1-a/nodeGroups/node-group-1` * `node-group-1`
+            <p>{% verbatim %}Required. The URI of a
+ sole-tenant [node group
+ resource](https://cloud.google.com/compute/docs/reference/rest/v1/nodeGroups)
+ that the cluster will be created on.
 
-Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverbatim %}</p>
+ A full URL, partial URI, or node group name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/nodeGroups/node-group-1`
+ * `projects/[project_id]/zones/[zone]/nodeGroups/node-group-1`
+ * `node-group-1`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.nodeGroupAffinity.nodeGroupRef.name</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.privateIPV6GoogleAccess</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.nodeGroupAffinity.nodeGroupRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.privateIPv6GoogleAccess</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The type of IPv6 access for a cluster. Possible values: PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED, INHERIT_FROM_SUBNETWORK, OUTBOUND, BIDIRECTIONAL{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The type of IPv6 access for a cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1929,7 +2929,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Reservation Affinity for consuming Zonal reservation.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Reservation Affinity for consuming Zonal reservation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1939,7 +2939,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of reservation to consume Possible values: TYPE_UNSPECIFIED, NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Type of reservation to consume{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1949,7 +2949,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Corresponds to the label key of reservation resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Corresponds to the label key of reservation resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1959,7 +2959,7 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverba
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Corresponds to the label values of reservation resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Corresponds to the label values of reservation resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1974,44 +2974,22 @@ Allowed value: The `selfLink` field of a `ComputeNodeGroup` resource.{% endverba
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.serviceAccountRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.serviceAccountRef.external</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.serviceAccount</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The [Dataproc service account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc) (also see [VM Data Plane identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity)) used by Dataproc cluster VM instances to access Google Cloud Platform services. If not specified, the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account) is used.
+            <p>{% verbatim %}Optional. The [Dataproc service
+ account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
+ (also see [VM Data Plane
+ identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity))
+ used by Dataproc cluster VM instances to access Google Cloud Platform
+ services.
 
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.serviceAccountRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.serviceAccountRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+ If not specified, the
+ [Compute Engine default service
+ account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+ is used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2021,7 +2999,20 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The URIs of service account scopes to be included in Compute Engine instances. The following base set of scopes is always included: * https://www.googleapis.com/auth/cloud.useraccounts.readonly * https://www.googleapis.com/auth/devstorage.read_write * https://www.googleapis.com/auth/logging.write If no scopes are specified, the following defaults are also provided: * https://www.googleapis.com/auth/bigquery * https://www.googleapis.com/auth/bigtable.admin.table * https://www.googleapis.com/auth/bigtable.data * https://www.googleapis.com/auth/devstorage.full_control{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The URIs of service account scopes to be included in
+ Compute Engine instances. The following base set of scopes is always
+ included:
+
+ * https://www.googleapis.com/auth/cloud.useraccounts.readonly
+ * https://www.googleapis.com/auth/devstorage.read_write
+ * https://www.googleapis.com/auth/logging.write
+
+ If no scopes are specified, the following defaults are also provided:
+
+ * https://www.googleapis.com/auth/bigquery
+ * https://www.googleapis.com/auth/bigtable.admin.table
+ * https://www.googleapis.com/auth/bigtable.data
+ * https://www.googleapis.com/auth/devstorage.full_control{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2041,7 +3032,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Shielded Instance Config for clusters using Compute Engine Shielded VMs.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Shielded Instance Config for clusters using [Compute Engine Shielded VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2051,7 +3042,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Defines whether instances have integrity monitoring enabled. Integrity monitoring compares the most recent boot measurements to the integrity policy baseline and returns a pair of pass/fail results depending on whether they match or not.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Defines whether instances have integrity monitoring enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2061,59 +3052,34 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Defines whether the instances have Secure Boot enabled. Secure Boot helps ensure that the system only runs authentic software by verifying the digital signature of all boot components, and halting the boot process if signature verification fails.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Defines whether instances have Secure Boot enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig.enableVtpm</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.shieldedInstanceConfig.enableVTPM</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Defines whether the instance have the vTPM enabled. Virtual Trusted Platform Module protects objects like keys, certificates and enables Measured Boot by performing the measurements needed to create a known good boot baseline, called the integrity policy baseline.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Defines whether instances have the vTPM enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.subnetworkRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.subnetworkRef.external</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.subnetworkURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine subnetwork to be used for machine communications. Cannot be specified with network_uri. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/us-east1/subnetworks/sub0` * `projects/[project_id]/regions/us-east1/subnetworks/sub0` * `sub0`
+            <p>{% verbatim %}Optional. The Compute Engine subnetwork to be used for machine
+ communications. Cannot be specified with network_uri.
 
-Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.subnetworkRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.subnetworkRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/regions/[region]/subnetworks/sub0`
+ * `projects/[project_id]/regions/[region]/subnetworks/sub0`
+ * `sub0`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2123,7 +3089,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The Compute Engine tags to add to all instances (see [Tagging instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).{% endverbatim %}</p>
+            <p>{% verbatim %}The Compute Engine network tags to add to all instances (see [Tagging instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2138,12 +3104,20 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.gceClusterConfig.zone</code></p>
+            <p><code>placement.managedCluster.config.gceClusterConfig.zoneURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the "global" region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]` * `projects/[project_id]/zones/[zone]` * `us-central1-f`{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine zone where the Dataproc cluster will be
+ located. If omitted, the service will pick a zone in the cluster's Compute
+ Engine region. On a get request, zone will always be present.
+
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]`
+ * `projects/[project_id]/zones/[zone]`
+ * `[zone]`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2153,7 +3127,19 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node's `role` metadata to run an executable on a master or worker node, as shown below using `curl` (you can also use `wget`): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ "${ROLE}" == 'Master' ]]; then ... master specific actions ... else ... worker specific actions ... fi{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Commands to execute on each node after config is
+ completed. By default, executables are run on master and all worker nodes.
+ You can test a node's `role` metadata to run an executable on
+ a master or worker node, as shown below using `curl` (you can also use
+ `wget`):
+
+     ROLE=$(curl -H Metadata-Flavor:Google
+     http://metadata/computeMetadata/v1/instance/attributes/dataproc-role)
+     if [[ "${ROLE}" == 'Master' ]]; then
+       ... master specific actions ...
+     else
+       ... worker specific actions ...
+     fi{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2173,7 +3159,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Required. Cloud Storage URI of executable file.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Cloud Storage URI of executable file.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2183,7 +3169,13 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Amount of time executable has to complete. Default is 10 minutes (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)). Cluster creation fails with an explanatory error message (the name of the executable that caused the error and the exceeded timeout period) if the executable is not completed at end of the timeout period.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Amount of time executable has to complete. Default is
+ 10 minutes (see JSON representation of
+ [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+
+ Cluster creation fails with an explanatory error message (the
+ name of the executable that caused the error and the exceeded timeout
+ period) if the executable is not completed at end of the timeout period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2193,7 +3185,17 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Lifecycle setting for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Lifecycle setting for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.lifecycleConfig.autoDeleteTTL</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2203,27 +3205,17 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The time when cluster will be auto-deleted (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.lifecycleConfig.autoDeleteTtl</code></p>
+            <p><code>placement.managedCluster.config.lifecycleConfig.idleDeleteTTL</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The lifetime duration of cluster. The cluster will be auto-deleted at the end of this period. Minimum value is 10 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.lifecycleConfig.idleDeleteTtl</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2233,7 +3225,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine config settings for the master instance in a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine config settings for the cluster's master instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2243,7 +3235,7 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2263,17 +3255,32 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.accelerators[].acceleratorType</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.accelerators[].acceleratorTypeURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.{% endverbatim %}</p>
+            <p>{% verbatim %}Full URL, partial URI, or short name of the accelerator type resource to
+ expose to this instance. See
+ [Compute Engine
+ AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
+
+ Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `nvidia-tesla-t4`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the accelerator type
+ resource, for example, `nvidia-tesla-t4`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2283,17 +3290,37 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Disk option config settings.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Disk option config settings.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.diskConfig.bootDiskSizeGb</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.diskConfig.bootDiskProvisionedIops</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.diskConfig.bootDiskProvisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.diskConfig.bootDiskSizeGB</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2303,7 +3330,17 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2313,69 +3350,187 @@ Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverb
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of attached SSDs, from 0 to 8 (default is 0).
+ If SSDs are not attached, the boot disk is used to store runtime logs and
+ [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data.
+ If one or more SSDs are attached, this runtime bulk
+ data is spread across them, and the boot disk contains only basic
+ config and installed binaries.
+
+ Note: Local SSD options may vary by machine type and number of vCPUs
+ selected.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.imageRef</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.imageURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances.
+
+ The URI can represent an image or image family.
+
+ Image examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
+ * `projects/[project_id]/global/images/[image-id]`
+ * `image-id`
+
+ Image family examples. Dataproc will use the most recent
+ image from the family:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
+ * `projects/[project_id]/global/images/family/[custom-image-family-name]`
+
+ If the URI is unspecified, it will be inferred from
+ `SoftwareConfig.image_version` or the system default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.imageRef.external</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. List of instance selection options that the group will use when creating new VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionList[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Full machine-type names, e.g. "n1-standard-16".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.provisioningModelMix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Defines how the Group selects the provisioning model to ensure required reliability.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.machineTypeURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine machine type used for cluster instances.
 
-Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim %}</p>
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `n1-standard-2`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the machine type
+ resource, for example, `n1-standard-2`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.imageRef.name</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.minCPUPlatform</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.masterConfig.imageRef.namespace</code></p>
+            <p><code>placement.managedCluster.config.masterConfig.minNumInstances</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.masterConfig.machineType</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.masterConfig.minCpuPlatform</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The minimum number of primary worker instances to create.
+ If `min_num_instances` is set, cluster creation will succeed if
+ the number of primary workers created is at least equal to the
+ `min_num_instances` number.
+
+ Example: Cluster creation request with `num_instances` = `5` and
+ `min_num_instances` = `3`:
+
+ *  If 4 VMs are created and 1 instance fails,
+    the failed VM is deleted. The cluster is
+    resized to 4 instances and placed in a `RUNNING` state.
+ *  If 2 instances are created and 3 instances fail,
+    the cluster in placed in an `ERROR` state. The failed VMs
+    are not deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2385,7 +3540,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2395,7 +3550,57 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the preemptibility of the instance group.
+
+ The default value for master and worker groups is
+ `NON_PREEMPTIBLE`. This default cannot be changed.
+
+ The default value for secondary instances is
+ `PREEMPTIBLE`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.startupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Configuration to handle the startup of instances during cluster create and update process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.masterConfig.startupConfig.requiredRegistrationFraction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.metastoreConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Metastore configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.metastoreConfig.dataprocMetastoreService</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Resource name of an existing Dataproc Metastore service.
+
+ Example:
+
+ * `projects/[project_id]/locations/[dataproc_region]/services/[service-name]`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2405,7 +3610,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine config settings for additional worker instances in a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine config settings for a cluster's secondary worker instances{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2415,7 +3620,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2435,17 +3640,32 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.accelerators[].acceleratorType</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.accelerators[].acceleratorTypeURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.{% endverbatim %}</p>
+            <p>{% verbatim %}Full URL, partial URI, or short name of the accelerator type resource to
+ expose to this instance. See
+ [Compute Engine
+ AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
+
+ Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `nvidia-tesla-t4`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the accelerator type
+ resource, for example, `nvidia-tesla-t4`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2455,17 +3675,37 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Disk option config settings.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Disk option config settings.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.diskConfig.bootDiskSizeGb</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.diskConfig.bootDiskProvisionedIops</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.diskConfig.bootDiskProvisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.diskConfig.bootDiskSizeGB</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2475,7 +3715,17 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2485,69 +3735,187 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of attached SSDs, from 0 to 8 (default is 0).
+ If SSDs are not attached, the boot disk is used to store runtime logs and
+ [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data.
+ If one or more SSDs are attached, this runtime bulk
+ data is spread across them, and the boot disk contains only basic
+ config and installed binaries.
+
+ Note: Local SSD options may vary by machine type and number of vCPUs
+ selected.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.imageRef</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.imageURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances.
+
+ The URI can represent an image or image family.
+
+ Image examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
+ * `projects/[project_id]/global/images/[image-id]`
+ * `image-id`
+
+ Image family examples. Dataproc will use the most recent
+ image from the family:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
+ * `projects/[project_id]/global/images/family/[custom-image-family-name]`
+
+ If the URI is unspecified, it will be inferred from
+ `SoftwareConfig.image_version` or the system default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.imageRef.external</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. List of instance selection options that the group will use when creating new VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Full machine-type names, e.g. "n1-standard-16".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Defines how the Group selects the provisioning model to ensure required reliability.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.machineTypeURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine machine type used for cluster instances.
 
-Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim %}</p>
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `n1-standard-2`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the machine type
+ resource, for example, `n1-standard-2`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.imageRef.name</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.minCPUPlatform</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.imageRef.namespace</code></p>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.minNumInstances</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.machineType</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.secondaryWorkerConfig.minCpuPlatform</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The minimum number of primary worker instances to create.
+ If `min_num_instances` is set, cluster creation will succeed if
+ the number of primary workers created is at least equal to the
+ `min_num_instances` number.
+
+ Example: Cluster creation request with `num_instances` = `5` and
+ `min_num_instances` = `3`:
+
+ *  If 4 VMs are created and 1 instance fails,
+    the failed VM is deleted. The cluster is
+    resized to 4 instances and placed in a `RUNNING` state.
+ *  If 2 instances are created and 3 instances fail,
+    the cluster in placed in an `ERROR` state. The failed VMs
+    are not deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2557,7 +3925,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2567,7 +3935,33 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the preemptibility of the instance group.
+
+ The default value for master and worker groups is
+ `NON_PREEMPTIBLE`. This default cannot be changed.
+
+ The default value for secondary instances is
+ `PREEMPTIBLE`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.startupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Configuration to handle the startup of instances during cluster create and update process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.secondaryWorkerConfig.startupConfig.requiredRegistrationFraction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2577,7 +3971,27 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Security settings for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Security settings for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.securityConfig.identityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.securityConfig.identityConfig.userServiceAccountMapping</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Required. Map of user to service account.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2587,7 +4001,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Kerberos related configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Kerberos related configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2597,7 +4011,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2607,7 +4021,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2617,17 +4031,17 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The remote realm the Dataproc on-cluster KDC will trust, should the user enable cross realm trust.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The remote realm the Dataproc on-cluster KDC will trust, should the user enable cross realm trust.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.crossRealmTrustSharedPassword</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.crossRealmTrustSharedPasswordURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the shared password between the on-cluster Kerberos realm and the remote trusted realm, in a cross realm trust relationship.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the shared password between the on-cluster Kerberos realm and the remote trusted realm, in a cross realm trust relationship.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2637,89 +4051,57 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set this field to true to enable Kerberos on a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set this field to true to enable Kerberos on a cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kdcDbKey</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kdcDbKeyURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the master key of the KDC database.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the master key of the KDC database.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keyPassword</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keyPasswordURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided key. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided key. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keystore</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keystorePasswordURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of the keystore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided keystore. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keystorePassword</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.keystoreURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided keystore. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of the keystore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kmsKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kmsKeyRef.external</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kmsKeyURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The uri of the KMS key used to encrypt various sensitive files.
-
-Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kmsKeyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.kmsKeyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The URI of the KMS key used to encrypt sensitive files.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2729,17 +4111,17 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The name of the on-cluster Kerberos realm. If not specified, the uppercased domain of hostnames will be the realm.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.rootPrincipalPassword</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.rootPrincipalPasswordURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the root principal password.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the root principal password.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2749,27 +4131,27 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lifetime of the ticket granting ticket, in hours. If not specified, or user specifies 0, then default value 10 will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.truststore</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.truststorePasswordURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided truststore. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.truststorePassword</code></p>
+            <p><code>placement.managedCluster.config.securityConfig.kerberosConfig.truststoreURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Cloud Storage URI of a KMS encrypted file containing the password to the user provided truststore. For the self-signed certificate, this password is generated by Dataproc.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2779,7 +4161,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The config settings for software inside the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The config settings for cluster software.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2789,7 +4171,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The version of software inside the cluster. It must be one of the supported [Dataproc Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions), such as "1.2" (including a subminor version, such as "1.2.29"), or the ["preview" version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2799,7 +4181,7 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The set of components to activate on the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The set of components to activate on the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2819,91 +4201,34 @@ Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The properties to set on daemon config files. Property keys are specified in `prefix:property` format, for example `core:hadoop.tmp.dir`. The following are supported prefixes and their mappings: * capacity-scheduler: `capacity-scheduler.xml` * core: `core-site.xml` * distcp: `distcp-default.xml` * hdfs: `hdfs-site.xml` * hive: `hive-site.xml` * mapred: `mapred-site.xml` * pig: `pig.properties` * spark: `spark-defaults.conf` * yarn: `yarn-site.xml` For more information, see [Cluster properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.stagingBucketRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.stagingBucketRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see [Dataproc staging bucket](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+            <p>{% verbatim %}Optional. The properties to set on daemon config files.
 
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.stagingBucketRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.stagingBucketRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.tempBucketRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.tempBucketRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. **This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.**
+ Property keys are specified in `prefix:property` format, for example
+ `core:hadoop.tmp.dir`. The following are supported prefixes
+ and their mappings:
 
-Allowed value: The Google Cloud resource name of a `StorageBucket` resource (format: `{{name}}`).{% endverbatim %}</p>
+ * capacity-scheduler: `capacity-scheduler.xml`
+ * core:   `core-site.xml`
+ * distcp: `distcp-default.xml`
+ * hdfs:   `hdfs-site.xml`
+ * hive:   `hive-site.xml`
+ * mapred: `mapred-site.xml`
+ * pig:    `pig.properties`
+ * spark:  `spark-defaults.conf`
+ * yarn:   `yarn-site.xml`
+
+ For more information, see [Cluster
+ properties](https://cloud.google.com/dataproc/docs/concepts/cluster-properties).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.tempBucketRef.name</code></p>
+            <p><code>placement.managedCluster.config.tempBucket</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.tempBucketRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster's temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see [Dataproc staging and temp buckets](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.**{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2913,7 +4238,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine config settings for worker instances in a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine config settings for the cluster's worker instances.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2923,7 +4248,7 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Compute Engine accelerator configuration for these instances.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2943,17 +4268,32 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of the accelerator cards of this type exposed to this instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.accelerators[].acceleratorType</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.accelerators[].acceleratorTypeURI</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Full URL, partial URI, or short name of the accelerator type resource to expose to this instance. See [Compute Engine AcceleratorTypes](https://cloud.google.com/compute/docs/reference/beta/acceleratorTypes). Examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `projects/[project_id]/zones/us-east1-a/acceleratorTypes/nvidia-tesla-k80` * `nvidia-tesla-k80` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the accelerator type resource, for example, `nvidia-tesla-k80`.{% endverbatim %}</p>
+            <p>{% verbatim %}Full URL, partial URI, or short name of the accelerator type resource to
+ expose to this instance. See
+ [Compute Engine
+ AcceleratorTypes](https://cloud.google.com/compute/docs/reference/v1/acceleratorTypes).
+
+ Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `projects/[project_id]/zones/[zone]/acceleratorTypes/nvidia-tesla-t4`
+ * `nvidia-tesla-t4`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the accelerator type
+ resource, for example, `nvidia-tesla-t4`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2963,17 +4303,37 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Optional. Disk option config settings.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Disk option config settings.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.diskConfig.bootDiskSizeGb</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.diskConfig.bootDiskProvisionedIops</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Indicates how many IOPS to provision for the disk. This sets the number of I/O operations per second that the disk can handle. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.diskConfig.bootDiskProvisionedThroughput</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Indicates how much throughput to provision for the disk. This sets the number of throughput mb per second that the disk can handle. Values must be greater than or equal to 1. Note: This field is only supported if boot_disk_type is hyperdisk-balanced.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.diskConfig.bootDiskSizeGB</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Size in GB of the boot disk (default is 500GB).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2983,7 +4343,17 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Type of the boot disk (default is "pd-standard"). Valid values: "pd-balanced" (Persistent Disk Balanced Solid State Drive), "pd-ssd" (Persistent Disk Solid State Drive), or "pd-standard" (Persistent Disk Hard Disk Drive). See [Disk types](https://cloud.google.com/compute/docs/disks#disk-types).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.diskConfig.localSsdInterface</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Interface type of local SSDs (default is "scsi"). Valid values: "scsi" (Small Computer System Interface), "nvme" (Non-Volatile Memory Express). See [local SSD performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2993,69 +4363,187 @@ Allowed value: The Google Cloud resource name of a `StorageBucket` resource (for
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. Number of attached SSDs, from 0 to 4 (default is 0). If SSDs are not attached, the boot disk is used to store runtime logs and [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data. If one or more SSDs are attached, this runtime bulk data is spread across them, and the boot disk contains only basic config and installed binaries.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Number of attached SSDs, from 0 to 8 (default is 0).
+ If SSDs are not attached, the boot disk is used to store runtime logs and
+ [HDFS](https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html) data.
+ If one or more SSDs are attached, this runtime bulk
+ data is spread across them, and the boot disk contains only basic
+ config and installed binaries.
+
+ Note: Local SSD options may vary by machine type and number of vCPUs
+ selected.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.imageRef</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.imageURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances.
+
+ The URI can represent an image or image family.
+
+ Image examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/[image-id]`
+ * `projects/[project_id]/global/images/[image-id]`
+ * `image-id`
+
+ Image family examples. Dataproc will use the most recent
+ image from the family:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/global/images/family/[custom-image-family-name]`
+ * `projects/[project_id]/global/images/family/[custom-image-family-name]`
+
+ If the URI is unspecified, it will be inferred from
+ `SoftwareConfig.image_version` or the system default.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.imageRef.external</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.instanceSelectionList</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. List of instance selection options that the group will use when creating new VMs.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.instanceSelectionList[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. Full machine-type names, e.g. "n1-standard-16".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.instanceSelectionList[].machineTypes[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The Compute Engine image resource used for cluster instances. The URI can represent an image or image family. Image examples: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/[image-id]` * `projects/[project_id]/global/images/[image-id]` * `image-id` Image family examples. Dataproc will use the most recent image from the family: * `https://www.googleapis.com/compute/beta/projects/[project_id]/global/images/family/[custom-image-family-name]` * `projects/[project_id]/global/images/family/[custom-image-family-name]` If the URI is unspecified, it will be inferred from `SoftwareConfig.image_version` or the system default.
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.instanceSelectionList[].rank</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Preference of this instance selection. Lower number means higher preference. Dataproc will first try to create a VM based on the machine-type with priority rank and fallback to next rank based on availability. Machine types and instance selections with the same priority have the same preference.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.provisioningModelMix</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Defines how the Group selects the provisioning model to ensure required reliability.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The base capacity that will always use Standard VMs to avoid risk of more preemption than the minimum capacity you need. Dataproc will create only standard VMs until it reaches standard_capacity_base, then it will start using standard_capacity_percent_above_base to mix Spot with Standard VMs. eg. If 15 instances are requested and standard_capacity_base is 5, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The percentage of target capacity that should use Standard VM. The remaining percentage will use Spot VMs. The percentage applies only to the capacity above standard_capacity_base. eg. If 15 instances are requested and standard_capacity_base is 5 and standard_capacity_percent_above_base is 30, Dataproc will create 5 standard VMs and then start mixing spot and standard VMs for remaining 10 instances. The mix will be 30% standard and 70% spot.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.machineTypeURI</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine machine type used for cluster instances.
 
-Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim %}</p>
+ A full URL, partial URI, or short name are valid. Examples:
+
+ * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `projects/[project_id]/zones/[zone]/machineTypes/n1-standard-2`
+ * `n1-standard-2`
+
+ **Auto Zone Exception**: If you are using the Dataproc
+ [Auto Zone
+ Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement)
+ feature, you must use the short name of the machine type
+ resource, for example, `n1-standard-2`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.imageRef.name</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.minCPUPlatform</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>placement.managedCluster.config.workerConfig.imageRef.namespace</code></p>
+            <p><code>placement.managedCluster.config.workerConfig.minNumInstances</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.workerConfig.machineType</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The Compute Engine machine type used for cluster instances. A full URL, partial URI, or short name are valid. Examples: * `https://www.googleapis.com/compute/v1/projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `projects/[project_id]/zones/us-east1-a/machineTypes/n1-standard-2` * `n1-standard-2` **Auto Zone Exception**: If you are using the Dataproc [Auto Zone Placement](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement) feature, you must use the short name of the machine type resource, for example, `n1-standard-2`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>placement.managedCluster.config.workerConfig.minCpuPlatform</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the minimum cpu platform for the Instance Group. See [Dataproc -> Minimum CPU Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).{% endverbatim %}</p>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. The minimum number of primary worker instances to create.
+ If `min_num_instances` is set, cluster creation will succeed if
+ the number of primary workers created is at least equal to the
+ `min_num_instances` number.
+
+ Example: Cluster creation request with `num_instances` = `5` and
+ `min_num_instances` = `3`:
+
+ *  If 4 VMs are created and 1 instance fails,
+    the failed VM is deleted. The cluster is
+    resized to 4 instances and placed in a `RUNNING` state.
+ *  If 2 instances are created and 3 instances fail,
+    the cluster in placed in an `ERROR` state. The failed VMs
+    are not deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3065,7 +4553,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The number of VM instances in the instance group. For [HA cluster](/dataproc/docs/concepts/configuring-clusters/high-availability) [master_config](#FIELDS.master_config) groups, **must be set to 3**. For standard cluster [master_config](#FIELDS.master_config) groups, **must be set to 1**.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3075,7 +4563,33 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Specifies the preemptibility of the instance group.
+
+ The default value for master and worker groups is
+ `NON_PREEMPTIBLE`. This default cannot be changed.
+
+ The default value for secondary instances is
+ `PREEMPTIBLE`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.startupConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Configuration to handle the startup of instances during cluster create and update process.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>placement.managedCluster.config.workerConfig.startupConfig.requiredRegistrationFraction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">float</code></p>
+            <p>{% verbatim %}Optional. The config setting to enable cluster creation/ updation to be successful only after required_registration_fraction of instances are up and running. This configuration is applicable to only secondary workers for now. The cluster will fail if required_registration_fraction of instances are not available. This will include instance creation, agent registration, and service registration (if enabled).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3085,7 +4599,16 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Immutable. Optional. The labels to associate with this cluster. Label keys must be between 1 and 63 characters long, and must conform to the following PCRE regular expression: p{Ll}p{Lo}{0,62} Label values must be between 1 and 63 characters long, and must conform to the following PCRE regular expression: [p{Ll}p{Lo}p{N}_-]{0,63} No more than 32 labels can be associated with a given cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The labels to associate with this cluster.
+
+ Label keys must be between 1 and 63 characters long, and must conform to
+ the following PCRE regular expression:
+ [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+
+ Label values must be between 1 and 63 characters long, and must conform to
+ the following PCRE regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+
+ No more than 32 labels can be associated with a given cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3095,7 +4618,7 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3105,9 +4628,17 @@ Allowed value: The `selfLink` field of a `ComputeImage` resource.{% endverbatim 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3117,7 +4648,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3127,7 +4658,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3137,14 +4668,30 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The DataprocWorkflowTemplate name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>version</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Used to perform a consistent read-modify-write.
+
+ This field should be left blank for a `CreateWorkflowTemplate` request. It
+ is required for an `UpdateWorkflowTemplate` request, and must match the
+ current server version. A typical update template flow would fetch the
+ current template with a `GetWorkflowTemplate` request, which will return
+ the current template with the `version` field filled in with the
+ current server version. The user updates other fields in the template,
+ then returns it as part of the `UpdateWorkflowTemplate` request.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -3156,39 +4703,33 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
+externalRef: string
 observedGeneration: integer
-placement:
-  managedCluster:
-    config:
-      endpointConfig:
-        httpPorts:
-          string: string
-      lifecycleConfig:
-        idleStartTime: string
-      masterConfig:
-        instanceNames:
-        - string
-        isPreemptible: boolean
-        managedGroupConfig:
-          instanceGroupManagerName: string
-          instanceTemplateName: string
-      secondaryWorkerConfig:
-        instanceNames:
-        - string
-        isPreemptible: boolean
-        managedGroupConfig:
-          instanceGroupManagerName: string
-          instanceTemplateName: string
-      workerConfig:
-        instanceNames:
-        - string
-        isPreemptible: boolean
-        managedGroupConfig:
-          instanceGroupManagerName: string
-          instanceTemplateName: string
-updateTime: string
-version: integer
+observedState:
+  createTime: string
+  name: string
+  placement:
+    managedCluster:
+      config:
+        endpointConfig:
+          httpPorts:
+            string: string
+        lifecycleConfig:
+          idleStartTime: string
+        masterConfig:
+          instanceFlexibilityPolicy:
+            instanceSelectionResults:
+            - {}
+          instanceNames:
+          - string
+          instanceReferences:
+          - instanceID: string
+            instanceName: string
+            publicEciesKey: string
+            publicKey: string
+          isPreemptible: boolean
+          managedGroupConfig: {}
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -3202,7 +4743,7 @@ version: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3248,10 +4789,10 @@ version: integer
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The time template was created.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the DataprocWorkflowTemplate resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3262,213 +4803,187 @@ version: integer
         </td>
     </tr>
     <tr>
-        <td><code>placement</code></td>
+        <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster</code></td>
+        <td><code>observedState.createTime</code></td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time template was created.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config</code></td>
+        <td><code>observedState.name</code></td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The resource name of the workflow template, as described
+ in https://cloud.google.com/apis/design/resource_names.
+
+ * For `projects.regions.workflowTemplates`, the resource name of the
+   template has the following format:
+   `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
+
+ * For `projects.locations.workflowTemplates`, the resource name of the
+   template has the following format:
+   `projects/{project_id}/locations/{location}/workflowTemplates/{template_id}`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.endpointConfig</code></td>
+        <td><code>observedState.placement</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Required. WorkflowTemplate scheduling information.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.endpointConfig.httpPorts</code></td>
+        <td><code>observedState.placement.managedCluster</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A cluster that is managed by the workflow.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The cluster configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.endpointConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Port/endpoint configuration for this cluster{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.endpointConfig.httpPorts</code></td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}Output only. The map of port descriptions to URLs. Will only be populated if enable_http_port_access is true.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.lifecycleConfig</code></td>
+        <td><code>observedState.placement.managedCluster.config.lifecycleConfig</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Lifecycle setting for the cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.lifecycleConfig.idleStartTime</code></td>
+        <td><code>observedState.placement.managedCluster.config.lifecycleConfig.idleStartTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of [Timestamp](https://developers.google.com/protocol-buffers/docs/proto3#json)).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig</code></td>
+        <td><code>observedState.placement.managedCluster.config.masterConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The Compute Engine config settings for the cluster's master instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Instance flexibility Policy allowing a mixture of VM shapes and provisioning models.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionResults</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. A list of instance selection results in the group.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceFlexibilityPolicy.instanceSelectionResults[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig.instanceNames</code></td>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceNames</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig.instanceNames[]</code></td>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceNames[]</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig.isPreemptible</code></td>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. List of references to Compute Engine instances.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences[].instanceID</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unique identifier of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences[].instanceName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The user-friendly name of the Compute Engine instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences[].publicEciesKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public ECIES key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.instanceReferences[].publicKey</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public RSA key used for sharing data with this instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.isPreemptible</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Output only. Specifies that this instance group contains preemptible instances.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig.managedGroupConfig</code></td>
+        <td><code>observedState.placement.managedCluster.config.masterConfig.managedGroupConfig</code></td>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>placement.managedCluster.config.masterConfig.managedGroupConfig.instanceGroupManagerName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Group Manager for this group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.masterConfig.managedGroupConfig.instanceTemplateName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Template used for the Managed Instance Group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.instanceNames</code></td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.instanceNames[]</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.isPreemptible</code></td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Output only. Specifies that this instance group contains preemptible instances.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.managedGroupConfig</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.managedGroupConfig.instanceGroupManagerName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Group Manager for this group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.secondaryWorkerConfig.managedGroupConfig.instanceTemplateName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Template used for the Managed Instance Group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.instanceNames</code></td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Output only. The list of instance names. Dataproc derives the names from `cluster_name`, `num_instances`, and the instance group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.instanceNames[]</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.isPreemptible</code></td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Output only. Specifies that this instance group contains preemptible instances.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.managedGroupConfig</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Output only. The config for Compute Engine Instance Group Manager that manages this group. This is only used for preemptible instance groups.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.managedGroupConfig.instanceGroupManagerName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Group Manager for this group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>placement.managedCluster.config.workerConfig.managedGroupConfig.instanceTemplateName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of the Instance Template used for the Managed Instance Group.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState.updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. The time template was last updated.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>version</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Output only. The current version of this workflow template.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
