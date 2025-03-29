@@ -2,7 +2,6 @@ GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -10,6 +9,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -35,7 +35,6 @@ Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "fields": {
@@ -52,6 +51,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
       "stringValue": "test"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/CZSeavy_MquKv",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid",
   "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}",
   "templateDisplayName": "TestTagTemplate"
 }
@@ -73,7 +73,6 @@ GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-cen
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -81,6 +80,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -101,12 +101,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/CZSeavy_MquKv?alt=json&updateMask=
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid?alt=json&updateMask=
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
-X-Goog-User-Project: ${projectId}
 
 {
   "fields": {
@@ -123,6 +122,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -133,18 +133,17 @@ X-Xss-Protection: 0
       "stringValue": "test_updated"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/CZSeavy_MquKv",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid",
   "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}",
   "templateDisplayName": "TestTagTemplate"
 }
 
 ---
 
-DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/CZSeavy_MquKv?alt=json
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -152,6 +151,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
