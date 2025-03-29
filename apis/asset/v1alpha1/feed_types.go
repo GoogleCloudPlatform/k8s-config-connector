@@ -23,7 +23,7 @@ import (
 var AssetFeedGVK = GroupVersion.WithKind("AssetFeed")
 
 // Parent defines the parent field for AssetFeed
-type Parent struct {
+type AssetFeedParent struct {
 	// +optional
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 	// +optional
@@ -36,26 +36,11 @@ type Parent struct {
 // +kcc:proto=google.cloud.asset.v1.Feed
 type AssetFeedSpec struct {
 	// +required
-	Parent `json:",inline"`
+	Parent AssetFeedParent `json:",inline"`
 
 	// The AssetFeed name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
-
-	// Required. The format will be
-	//  projects/{project_number}/feeds/{client-assigned_feed_identifier} or
-	//  folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
-	//  organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
-	//
-	// Required. The format will be
-	//  projects/{project_number}/feeds/{client-assigned_feed_identifier} or
-	//  folders/{folder_number}/feeds/{client-assigned_feed_identifier} or
-	//  organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
-	//
-	//  The client-assigned feed identifier must be unique within the parent
-	//  project/folder/organization.
-	// +required
 	// +kcc:proto:field=google.cloud.asset.v1.Feed.name
-	Name *string `json:"name,omitempty"`
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	// A list of the full names of the assets to receive updates. You must specify
 	//  either or both of asset_names and asset_types. Only asset updates matching

@@ -71,119 +71,77 @@ func (p *FeedParent) String() string {
 
 // NewFeedIdentity builds a FeedIdentity from the Config Connector Feed object.
 func NewFeedIdentity(ctx context.Context, reader client.Reader, obj *AssetFeed) (*FeedIdentity, error) {
-	desiredParent := &FeedParent{}
-	var err error
-
-	// Try parsing parent from Spec.Name first
-	// Example Name formats:
-	// projects/{project_number}/feeds/{feed_id}
-	// folders/{folder_number}/feeds/{feed_id}
-	// organizations/{organization_number}/feeds/{feed_id}
-	if obj.Spec.Name != nil && *obj.Spec.Name != "" {
-		nameTokens := strings.Split(*obj.Spec.Name, "/")
-		// Check for formats like "type/id/feeds/feed_id" (4 segments)
-		if len(nameTokens) == 4 && nameTokens[2] == "feeds" {
-			switch nameTokens[0] {
-			case "projects":
-				desiredParent.ProjectID = nameTokens[1]
-			case "folders":
-				desiredParent.FolderID = nameTokens[1]
-			case "organizations":
-				desiredParent.OrganizationID = nameTokens[1]
-				// else: invalid format in Name field, fallback below
-			}
-		}
-		// Allow short formats like "type/id" for parent only, if name doesn't include /feeds/ part
-		if len(nameTokens) == 2 && desiredParent.ProjectID == "" && desiredParent.FolderID == "" && desiredParent.OrganizationID == "" {
-			switch nameTokens[0] {
-			case "projects":
-				desiredParent.ProjectID = nameTokens[1]
-			case "folders":
-				desiredParent.FolderID = nameTokens[1]
-			case "organizations":
-				desiredParent.OrganizationID = nameTokens[1]
-			}
-		}
-	}
-
-	// If parent not determined from Name, fallback to ProjectRef (implies project parent)
-	if desiredParent.ProjectID == "" && desiredParent.FolderID == "" && desiredParent.OrganizationID == "" {
-		// If Name wasn't set/valid, we assume it's a project parent resolved via ProjectRef or context.
-		// KCC usually resolves project from context if ProjectRef is nil.
-		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	var projectID, folderID, organizationID string
+	// Get Parent
+	if obj.Spec.Parent.ProjectRef != nil {
+		projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.Parent.ProjectRef)
 		if err != nil {
-			// If ProjectRef is explicitly nil and context resolution also fails (which ResolveProject handles)
-			if obj.Spec.ProjectRef == nil {
-				return nil, fmt.Errorf("cannot determine parent: spec.name does not specify parent and spec.projectRef is nil (or project context cannot be resolved)")
-			}
-			return nil, fmt.Errorf("cannot resolve projectRef: %w", err)
+			return nil, err
 		}
-		if projectRef.ProjectID == "" {
-			// Should not happen if ResolveProject succeeds without error, but check anyway.
-			return nil, fmt.Errorf("resolved projectRef has empty ProjectID")
+		projectID = projectRef.ProjectID
+		if projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project")
 		}
-		desiredParent.ProjectID = projectRef.ProjectID
+	} else if obj.Spec.Parent.FolderRef != nil {
+		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
+		if err != nil {
+			return nil, err
+		}
+		folderID = folderRef.FolderID
+		if folderID == "" {
+			return nil, fmt.Errorf("cannot resolve folder")
+		}
+	} else if obj.Spec.Parent.OrganizationRef != nil {
+		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
+		if err != nil {
+			return nil, err
+		}
+		organizationID = organizationRef.OrganizationID
+		if organizationID == "" {
+			return nil, fmt.Errorf("cannot resolve organization")
+		}
+	} else {
+		return nil, fmt.Errorf("one of spec.parent.projectRef, spec.parent.folderRef, or spec.parent.organizationRef must be set")
 	}
 
-	// Get desired resource ID from spec or metadata.name
+	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
-		resourceID = obj.GetName() // K8s metadata.name
+		resourceID = obj.GetName()
 	}
-	// If spec.name specifies a full resource name, extract the ID from there as highest priority for *desired* ID
-	if obj.Spec.Name != nil && *obj.Spec.Name != "" {
-		_, nameResourceID, nameErr := ParseFeedExternal(*obj.Spec.Name)
-		if nameErr == nil && nameResourceID != "" {
-			resourceID = nameResourceID
-		}
-	}
-
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID from spec.resourceID, metadata.name, or spec.name")
+		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved ExternalRef from Status if available and validate against desired state
+	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
+		// Validate desired with actual
 		actualParent, actualResourceID, err := ParseFeedExternal(externalRef)
 		if err != nil {
-			// Existing resource has unparsable externalRef, treat as error
-			return nil, fmt.Errorf("cannot parse existing status.externalRef %q: %w", externalRef, err)
+			return nil, err
 		}
-
-		// Validate parent hasn't changed
-		// Compare normalized string representations
-		if actualParent.String() != desiredParent.String() {
-			return nil, fmt.Errorf("parent resource changed, expected %q, got %q", actualParent.String(), desiredParent.String())
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-
-		// Validate resource ID hasn't changed
+		if actualParent.FolderID != folderID {
+			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
+		}
+		if actualParent.OrganizationID != organizationID {
+			return nil, fmt.Errorf("spec.organizationRef changed, expect %s, got %s", actualParent.OrganizationID, organizationID)
+		}
 		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot change resource ID to %q once set to %q (via status.externalRef). Ensure spec.resourceID, metadata.name, or the ID in spec.name (%q) matches the existing resource ID",
-				resourceID, actualResourceID, common.ValueOf(obj.Spec.Name))
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
 		}
-		// If validation passes, ensure we use the actual ID
-		resourceID = actualResourceID
 	}
-
-	// Final check: Ensure exactly one parent ID field is set
-	parentCount := 0
-	if desiredParent.ProjectID != "" {
-		parentCount++
-	}
-	if desiredParent.FolderID != "" {
-		parentCount++
-	}
-	if desiredParent.OrganizationID != "" {
-		parentCount++
-	}
-	if parentCount != 1 {
-		return nil, fmt.Errorf("invalid parent configuration: exactly one of ProjectID, FolderID, or OrganizationID must be specified or resolvable (got: %+v)", desiredParent)
-	}
-
 	return &FeedIdentity{
-		parent: desiredParent,
-		id:     resourceID,
+		parent: &FeedParent{
+			ProjectID:      projectID,
+			FolderID:       folderID,
+			OrganizationID: organizationID,
+		},
+		id: resourceID,
 	}, nil
 }
 
