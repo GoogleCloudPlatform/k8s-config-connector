@@ -15,14 +15,16 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  labels:
-    label-one: "value-one"
   name: spannerinstance-sample-${uniqueId}
+  labels:
+    app.kubernetes.io/managed-by: configmanagement.gke.io
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Instance Sample
+  labels:
+    label-one: "value-one"
   autoscalingConfig:
     autoscalingLimits:
       maxNodes: 4
@@ -31,3 +33,4 @@ spec:
       highPriorityCpuUtilizationPercent: 50
       storageUtilizationPercent: 50
   edition: ENTERPRISE
+  defaultBackupScheduleType: NONE
