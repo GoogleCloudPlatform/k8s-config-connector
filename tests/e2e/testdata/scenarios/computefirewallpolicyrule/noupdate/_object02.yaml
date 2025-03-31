@@ -3,6 +3,7 @@ kind: ComputeFirewallPolicyRule
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    test.cnrm.cloud.google.com/reconcile-cookie: (removed)
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
