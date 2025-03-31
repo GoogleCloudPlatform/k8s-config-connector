@@ -3315,6 +3315,10 @@
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.customPlacementConfig.dataLocations[]" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultEventBasedHold" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.encryption.kmsKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.ipFilter.mode" is not set in unstructured objects
+[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.ipFilter.publicNetworkSource.allowedIpCidrRanges[]" is not set in unstructured objects
+[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.ipFilter.vpcNetworkSources[].allowedIpCidrRanges[]" is not set in unstructured objects
+[missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.ipFilter.vpcNetworkSources[].network" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].action.storageClass" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.createdBefore" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.lifecycleRule[].condition.customTimeBefore" is not set in unstructured objects
