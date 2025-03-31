@@ -38,7 +38,6 @@ spec:
       - "10.100.0.1/32"
   priority: 9000
 ---
-TEST: TOUCH
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeFirewallPolicyRule
 metadata:
