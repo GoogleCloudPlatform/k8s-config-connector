@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ConsumerGroupIdentity struct {
 	parent *ConsumerGroupParent
-	id string
+	id     string
 }
 
 func (i *ConsumerGroupIdentity) String() string {
-	return  i.parent.String() + "/consumergroups/" + i.id
+	return i.parent.String() + "/consumergroups/" + i.id
 }
 
 func (i *ConsumerGroupIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ConsumerGroupIdentity) ID() string {
 }
 
 func (i *ConsumerGroupIdentity) Parent() *ConsumerGroupParent {
-	return  i.parent
+	return i.parent
 }
 
 type ConsumerGroupParent struct {
@@ -51,7 +51,6 @@ type ConsumerGroupParent struct {
 func (p *ConsumerGroupParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ConsumerGroupIdentity from the Config Connector ConsumerGroup object.
 func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *ManagedKafkaConsumerGroup) (*ConsumerGroupIdentity, error) {
