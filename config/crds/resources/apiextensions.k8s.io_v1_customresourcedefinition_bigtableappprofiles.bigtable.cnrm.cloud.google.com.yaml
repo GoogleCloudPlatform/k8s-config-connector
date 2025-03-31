@@ -94,15 +94,15 @@ spec:
                     type: string
                 type: object
               multiClusterRoutingClusterIds:
-                description: The set of clusters to route to. The order is ignored;
-                  clusters will be tried in order of distance. If left empty, all
-                  clusters are eligible.
+                description: The set of clusters to route to, if using multi cluster
+                  routing. The order is ignored; clusters will be tried in order of
+                  distance. If left empty, all clusters are eligible.
                 items:
                   type: string
                 type: array
               multiClusterRoutingUseAny:
                 description: Use a multi-cluster routing policy.
-                type: boolean 
+                type: boolean
               resourceID:
                 description: The BigtableAppProfile name. If not given, the metadata.name
                   will be used.

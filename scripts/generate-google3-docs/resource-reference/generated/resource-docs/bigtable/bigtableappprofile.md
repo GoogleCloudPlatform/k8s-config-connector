@@ -110,17 +110,17 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Long form description of the use case for this app profile.{% endverbatim %}</p>
+            <p>{% verbatim %}Long form description of the use case for this AppProfile.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>instanceRef</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The instance to create the app profile within.{% endverbatim %}</p>
+            <p>{% verbatim %}InstanceRef defines the resource reference to BigtableInstance, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `BigtableInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -140,7 +140,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -150,7 +150,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a BigtableInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -160,7 +160,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of clusters to route to. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of clusters to route to, if using multi cluster routing. The order is ignored; clusters will be tried in order of distance. If left empty, all clusters are eligible.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,9 +180,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, read/write requests are routed to the nearest cluster in the instance, and will fail over to the nearest cluster that is available
-in the event of transient errors or delays. Clusters in a region are considered equidistant. Choosing this option sacrifices read-your-writes
-consistency to improve availability.{% endverbatim %}</p>
+            <p>{% verbatim %}Use a multi-cluster routing policy.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -192,7 +190,7 @@ consistency to improve availability.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The appProfileId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The BigtableAppProfile name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -212,14 +210,13 @@ consistency to improve availability.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If true, CheckAndMutateRow and ReadModifyWriteRow requests are allowed by this app profile.
-It is unsafe to send these requests to the same table/row/column in multiple clusters.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are allowed by this app profile. It is unsafe to send these requests to the same table/row/column in multiple clusters.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>singleClusterRouting.clusterId</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -239,18 +236,16 @@ It is unsafe to send these requests to the same table/row/column in multiple clu
     <tr>
         <td>
             <p><code>standardIsolation.priority</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The priority of requests sent using this app profile. Possible values: ["PRIORITY_LOW", "PRIORITY_MEDIUM", "PRIORITY_HIGH"].{% endverbatim %}</p>
+            <p>{% verbatim %}The priority of requests sent using this app profile.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
@@ -262,6 +257,7 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 name: string
 observedGeneration: integer
 ```
@@ -277,7 +273,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -323,10 +319,17 @@ observedGeneration: integer
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the BigtableAppProfile resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unique name of the requested app profile. Values are of the form 'projects/<project>/instances/<instance>/appProfiles/<appProfileId>'.{% endverbatim %}</p>
+            <p>{% verbatim %}The unique name of the app profile. Values are of the form `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

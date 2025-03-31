@@ -34,20 +34,16 @@ type BigtableAppProfileSpec struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.description
 	Description *string `json:"description,omitempty"`
 
+	// The set of clusters to route to, if using multi cluster routing. The order is ignored; clusters will be tried
+	// in order of distance. If left empty, all clusters are eligible.
+	MultiClusterRoutingClusterIds []string `json:"multiClusterRoutingClusterIds,omitempty"`
+
 	// Use a multi-cluster routing policy.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.multi_cluster_routing_use_any
-	MultiClusterRoutingUseAny *AppProfile_MultiClusterRoutingUseAny `json:"multiClusterRoutingUseAny,omitempty"`
+	MultiClusterRoutingUseAny *bool `json:"multiClusterRoutingUseAny,omitempty"`
 
 	// Use a single-cluster routing policy.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
-	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
-
-	// This field has been deprecated in favor of `standard_isolation.priority`.
-	//  If you set this field, `standard_isolation.priority` will be set instead.
-	//
-	//  The priority of requests sent using this app profile.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.priority
-	Priority *string `json:"priority,omitempty"`
+	SingleClusterRouting *AppProfile_SingleClusterRoutingClusterId `json:"singleClusterRouting,omitempty"`
 
 	// The standard options used for isolating this app profile's traffic from
 	//  other use cases.
@@ -85,7 +81,7 @@ type BigtableAppProfileObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableappprofile;gcpbigtableappprofiles
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -108,6 +104,17 @@ type BigtableAppProfileList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigtableAppProfile `json:"items"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
+type AppProfile_SingleClusterRoutingClusterId struct {
+	// The cluster to which read/write requests should be routed.
+	ClusterId *string `json:"clusterId,omitempty"`
+
+	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
+	//  allowed by this app profile. It is unsafe to send these requests to
+	//  the same table/row/column in multiple clusters.
+	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 }
 
 func init() {
