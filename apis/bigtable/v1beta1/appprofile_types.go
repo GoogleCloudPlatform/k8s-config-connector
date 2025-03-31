@@ -42,13 +42,6 @@ type BigtableAppProfileSpec struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
 	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
 
-	// This field has been deprecated in favor of `standard_isolation.priority`.
-	//  If you set this field, `standard_isolation.priority` will be set instead.
-	//
-	//  The priority of requests sent using this app profile.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.priority
-	Priority *string `json:"priority,omitempty"`
-
 	// The standard options used for isolating this app profile's traffic from
 	//  other use cases.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
@@ -85,7 +78,7 @@ type BigtableAppProfileObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableappprofile;gcpbigtableappprofiles
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=stable"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

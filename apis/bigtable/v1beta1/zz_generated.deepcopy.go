@@ -337,11 +337,6 @@ func (in *BigtableAppProfileSpec) DeepCopyInto(out *BigtableAppProfileSpec) {
 		*out = new(AppProfile_SingleClusterRouting)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Priority != nil {
-		in, out := &in.Priority, &out.Priority
-		*out = new(string)
-		**out = **in
-	}
 	if in.StandardIsolation != nil {
 		in, out := &in.StandardIsolation, &out.StandardIsolation
 		*out = new(AppProfile_StandardIsolation)

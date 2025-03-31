@@ -20,12 +20,12 @@
 package bigtable
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 )
+
 func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.AppProfile {
 	if in == nil {
 		return nil
@@ -176,6 +176,42 @@ func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Authorize
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
+func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krmv1alpha1.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Backup{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.SourceTable = direct.LazyPtr(in.GetSourceTable())
+	// MISSING: SourceBackup
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: SizeBytes
+	// MISSING: State
+	// MISSING: EncryptionInfo
+	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
+	out.HotToStandardTime = direct.StringTimestamp_FromProto(mapCtx, in.GetHotToStandardTime())
+	return out
+}
+func Backup_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Backup) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	out.Name = direct.ValueOf(in.Name)
+	out.SourceTable = direct.ValueOf(in.SourceTable)
+	// MISSING: SourceBackup
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: SizeBytes
+	// MISSING: State
+	// MISSING: EncryptionInfo
+	out.BackupType = direct.Enum_ToProto[pb.Backup_BackupType](mapCtx, in.BackupType)
+	out.HotToStandardTime = direct.StringTimestamp_ToProto(mapCtx, in.HotToStandardTime)
+	return out
+}
 func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
@@ -183,6 +219,7 @@ func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krmv1beta1.BigtableAppProfileObservedState{}
 	// MISSING: Name
 	// MISSING: Etag
+	// MISSING: Priority
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
@@ -193,6 +230,7 @@ func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv
 	out := &pb.AppProfile{}
 	// MISSING: Name
 	// MISSING: Etag
+	// MISSING: Priority
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
@@ -206,7 +244,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.MultiClusterRoutingUseAny = AppProfile_MultiClusterRoutingUseAny_FromProto(mapCtx, in.GetMultiClusterRoutingUseAny())
 	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
-	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
+	// MISSING: Priority
 	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
 	// MISSING: DataBoostIsolationReadOnly
 	return out
@@ -225,9 +263,7 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	if oneof := AppProfile_SingleClusterRouting_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
 		out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
 	}
-	if oneof := BigtableAppProfileSpec_Priority_ToProto(mapCtx, in.Priority); oneof != nil {
-		out.Isolation = oneof
-	}
+	// MISSING: Priority
 	if oneof := AppProfile_StandardIsolation_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
 		out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
 	}
@@ -270,26 +306,5 @@ func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Encryption
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
-	return out
-}
-
-func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionInfo{}
-	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
-	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
-	return out
-}
-func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionInfo{}
-	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
-	// MISSING: EncryptionStatus
-	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
 	return out
 }
