@@ -20,11 +20,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Environment{}
+	out := &krm.DataplexEnvironmentSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Uid
@@ -39,7 +39,7 @@ func DataplexEnvironmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Environ
 	// MISSING: Endpoints
 	return out
 }
-func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentSpec) *pb.Environment {
 	if in == nil {
 		return nil
 	}
@@ -58,14 +58,13 @@ func DataplexEnvironmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Environm
 	// MISSING: Endpoints
 	return out
 }
-func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.EnvironmentObservedState {
+func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.DataplexEnvironmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EnvironmentObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DataplexEnvironmentObservedState{}
 	// MISSING: DisplayName
-	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UID = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
@@ -77,14 +76,13 @@ func DataplexEnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
 	return out
 }
-func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentObservedState) *pb.Environment {
+func DataplexEnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEnvironmentObservedState) *pb.Environment {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Environment{}
-	out.Name = direct.ValueOf(in.Name)
 	// MISSING: DisplayName
-	out.Uid = direct.ValueOf(in.Uid)
+	out.Uid = direct.ValueOf(in.UID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels

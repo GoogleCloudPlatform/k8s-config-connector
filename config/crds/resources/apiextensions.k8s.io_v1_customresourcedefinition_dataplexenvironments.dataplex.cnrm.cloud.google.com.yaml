@@ -229,10 +229,22 @@ spec:
                   endpoints:
                     description: Output only. URI Endpoints to access sessions associated
                       with the Environment.
+                    properties:
+                      notebooks:
+                        description: Output only. URI to serve notebook APIs
+                        type: string
+                      sql:
+                        description: Output only. URI to serve SQL APIs
+                        type: string
                     type: object
                   sessionStatus:
                     description: Output only. Status of sessions created for this
                       environment.
+                    properties:
+                      active:
+                        description: Output only. Queries over sessions to mark whether
+                          the environment is currently active or not
+                        type: boolean
                     type: object
                   state:
                     description: Output only. Current state of the environment.

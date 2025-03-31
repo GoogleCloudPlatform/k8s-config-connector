@@ -78,7 +78,7 @@ type DataplexEnvironmentObservedState struct {
 	//  ID will be different if the environment is deleted and re-created with the
 	//  same name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.uid
-	Uid *string `json:"uid,omitempty"`
+	UID *string `json:"uid,omitempty"`
 
 	// Output only. Environment creation time.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.create_time
@@ -94,12 +94,12 @@ type DataplexEnvironmentObservedState struct {
 
 	// Output only. Status of sessions created for this environment.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.session_status
-	SessionStatus *Environment_SessionStatus `json:"sessionStatus,omitempty"`
+	SessionStatus *Environment_SessionStatusObservedState `json:"sessionStatus,omitempty"`
 
 	// Output only. URI Endpoints to access sessions associated with the
 	//  Environment.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.endpoints
-	Endpoints *Environment_Endpoints `json:"endpoints,omitempty"`
+	Endpoints *Environment_EndpointsObservedState `json:"endpoints,omitempty"`
 }
 
 // +genclient
