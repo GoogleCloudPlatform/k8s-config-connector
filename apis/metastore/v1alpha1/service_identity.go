@@ -43,6 +43,7 @@ func (i *ServiceIdentity) Parent() *ServiceParent {
 	return i.parent
 }
 
+// No changes needed based on service_types.go and metastore.proto analysis.
 type ServiceParent struct {
 	ProjectID string
 	Location  string
