@@ -26,16 +26,8 @@ import (
 // ProcessorVersionIdentity defines the resource reference to DocumentAI, which "External" field
 // holds the GCP identifier for the KRM object.
 type ProcessorVersionIdentity struct {
-	parent                  *ProcessorVersionParent
-	id                      string
-	serviceGeneratedIDKnown bool
-}
-
-// HasKnownID tells whether Config Connector knows the resource identity.
-// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
-// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
-func (i *ProcessorVersionIdentity) HasKnownID() bool {
-	return i.serviceGeneratedIDKnown
+	parent *ProcessorVersionParent
+	id     string
 }
 
 func (i *ProcessorVersionIdentity) String() string {
@@ -60,7 +52,6 @@ func (p *ProcessorVersionParent) String() string {
 
 // NewProcessorVersionIdentity builds a ProcessorVersionIdentity from the Config Connector ProcessorVersion object.
 func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj *DocumentAIProcessorVersion) (*ProcessorVersionIdentity, error) {
-	known := false
 	//Get parent
 	processorRef := obj.Spec.ProcessorRef
 	processor, err := processorRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
@@ -69,10 +60,7 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 	}
 
 	// Get desired ID
-	desiredResourceID := common.ValueOf(obj.Spec.ResourceID)
-	if desiredResourceID != "" {
-		known = true
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -85,18 +73,18 @@ func NewProcessorVersionIdentity(ctx context.Context, reader client.Reader, obj 
 		if actualParent.Processor != processor {
 			return nil, fmt.Errorf("spec.processorRef changed, expect %s, got %s", actualParent.Processor, processor)
 		}
-		if desiredResourceID != "" && actualResourceID != desiredResourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				desiredResourceID, actualResourceID)
+		if resourceID != "" && actualResourceID != resourceID {
+			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
 		}
-		desiredResourceID = actualResourceID
+		resourceID = actualResourceID
 	}
+
 	return &ProcessorVersionIdentity{
 		parent: &ProcessorVersionParent{
 			Processor: processor,
 		},
-		id:                      desiredResourceID,
-		serviceGeneratedIDKnown: known,
+		id: resourceID,
 	}, nil
 }
 

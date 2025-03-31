@@ -104,7 +104,10 @@ func (a *ProcessorVersionAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ProcessorVersion", "name", a.id)
 
-	if !a.id.HasKnownID() {
+	// Check whether Config Connector knows the resource identity.
+	// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
+	// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
+	if a.id.ID() == "" {
 		return false, nil
 	}
 
