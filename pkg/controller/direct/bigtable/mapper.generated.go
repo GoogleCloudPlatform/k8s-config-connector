@@ -20,17 +20,17 @@
 package bigtable
 
 import (
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 )
-func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.AppProfile {
+func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.AppProfile {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile{}
+	out := &krmv1beta1.AppProfile{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -41,7 +41,7 @@ func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.App
 	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
 	return out
 }
-func AppProfile_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile) *pb.AppProfile {
+func AppProfile_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
@@ -66,15 +66,15 @@ func AppProfile_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile) *pb.AppPr
 	}
 	return out
 }
-func AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krm.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmv1beta1.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_DataBoostIsolationReadOnly{}
+	out := &krmv1beta1.AppProfile_DataBoostIsolationReadOnly{}
 	out.ComputeBillingOwner = direct.Enum_FromProto(mapCtx, in.GetComputeBillingOwner())
 	return out
 }
-func AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
@@ -84,16 +84,16 @@ func AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx *direct.MapContext, in
 	}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny) *krm.AppProfile_MultiClusterRoutingUseAny {
+func AppProfile_MultiClusterRoutingUseAny_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny) *krmv1beta1.AppProfile_MultiClusterRoutingUseAny {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_MultiClusterRoutingUseAny{}
+	out := &krmv1beta1.AppProfile_MultiClusterRoutingUseAny{}
 	out.ClusterIds = in.ClusterIds
 	out.RowAffinity = AppProfile_MultiClusterRoutingUseAny_RowAffinity_FromProto(mapCtx, in.GetRowAffinity())
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_MultiClusterRoutingUseAny) *pb.AppProfile_MultiClusterRoutingUseAny {
+func AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_MultiClusterRoutingUseAny) *pb.AppProfile_MultiClusterRoutingUseAny {
 	if in == nil {
 		return nil
 	}
@@ -104,30 +104,30 @@ func AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx *direct.MapContext, in 
 	}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
+	out := &krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
-func AppProfile_MultiClusterRoutingUseAny_RowAffinity_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
+func AppProfile_MultiClusterRoutingUseAny_RowAffinity_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_MultiClusterRoutingUseAny_RowAffinity) *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity{}
 	return out
 }
-func AppProfile_SingleClusterRouting_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krm.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmv1beta1.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_SingleClusterRouting{}
+	out := &krmv1beta1.AppProfile_SingleClusterRouting{}
 	out.ClusterID = direct.LazyPtr(in.GetClusterId())
 	out.AllowTransactionalWrites = direct.LazyPtr(in.GetAllowTransactionalWrites())
 	return out
 }
-func AppProfile_SingleClusterRouting_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
@@ -136,15 +136,15 @@ func AppProfile_SingleClusterRouting_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.AllowTransactionalWrites = direct.ValueOf(in.AllowTransactionalWrites)
 	return out
 }
-func AppProfile_StandardIsolation_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krm.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krmv1beta1.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_StandardIsolation{}
+	out := &krmv1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
 	return out
 }
-func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
@@ -152,18 +152,18 @@ func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krm.App
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
 	return out
 }
-func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krm.AuthorizedView {
+func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmv1alpha1.AuthorizedView {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AuthorizedView{}
+	out := &krmv1alpha1.AuthorizedView{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
 	return out
 }
-func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView) *pb.AuthorizedView {
+func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuthorizedView) *pb.AuthorizedView {
 	if in == nil {
 		return nil
 	}
@@ -176,17 +176,17 @@ func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krm.AuthorizedView) *
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileObservedState {
+func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigtableAppProfileObservedState{}
+	out := &krmv1beta1.BigtableAppProfileObservedState{}
 	// MISSING: Name
 	// MISSING: Etag
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
-func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAppProfileObservedState) *pb.AppProfile {
+func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileObservedState) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
@@ -196,11 +196,11 @@ func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
-func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileSpec {
+func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigtableAppProfileSpec{}
+	out := &krmv1beta1.BigtableAppProfileSpec{}
 	// MISSING: Name
 	// MISSING: Etag
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -211,7 +211,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
-func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAppProfileSpec) *pb.AppProfile {
+func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
@@ -234,15 +234,15 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigtableA
 	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
-func BigtableAuthorizedViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krm.BigtableAuthorizedViewObservedState {
+func BigtableAuthorizedViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmv1alpha1.BigtableAuthorizedViewObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigtableAuthorizedViewObservedState{}
+	out := &krmv1alpha1.BigtableAuthorizedViewObservedState{}
 	// MISSING: Name
 	return out
 }
-func BigtableAuthorizedViewObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAuthorizedViewObservedState) *pb.AuthorizedView {
+func BigtableAuthorizedViewObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableAuthorizedViewObservedState) *pb.AuthorizedView {
 	if in == nil {
 		return nil
 	}
@@ -250,18 +250,18 @@ func BigtableAuthorizedViewObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	return out
 }
-func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
+func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionInfo{}
+	out := &krmv1beta1.EncryptionInfo{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
 	return out
 }
-func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
+func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EncryptionInfo) *pb.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
