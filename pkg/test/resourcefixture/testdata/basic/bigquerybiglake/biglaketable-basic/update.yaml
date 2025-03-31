@@ -1,0 +1,38 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1alpha1
+kind: BigLakeTable
+metadata:
+  name: biglaketable-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  catalogRef:
+    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}
+  databaseRef:
+    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
+  type: "HIVE"
+  hiveOptions:
+    parameters:
+      "spark.sql.warehouse.dir": "gs://${projectId}}-biglaketable/warehouse"
+      "new.parameter": "new_value"
+    storageDescriptor:
+      locationURI: "gs:/${projectId}-biglaketable/data"
+      inputFormat:  "org.apache.hadoop.mapred.TextInputFormat"
+      outputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+      serdeInfo:
+        serializationLib: "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
+    tableType: "EXTERNAL_TABLE"

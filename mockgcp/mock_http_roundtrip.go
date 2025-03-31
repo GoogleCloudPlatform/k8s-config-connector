@@ -17,6 +17,7 @@ package mockgcp
 import (
 	"bytes"
 	"context"
+
 	"encoding/json"
 	"fmt"
 	"io"
@@ -46,6 +47,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerybiglake"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryconnection"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerydatatransfer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryreservation"
@@ -69,6 +71,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatastream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
@@ -78,12 +81,15 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkebackup"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmodelarmor"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
@@ -200,6 +206,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockaiplatform.New(env, storage))
 	services = append(services, mockasset.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
+	services = append(services, mockmetastore.New(env, storage))
 	services = append(services, mockbigquery.New(env, storage))
 	services = append(services, mockbigtable.New(env, storage))
 	services = append(services, mockbilling.New(env, storage))
@@ -212,6 +219,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mocklogging.New(env, storage))
+	services = append(services, mockmodelarmor.New(env, storage))
 	services = append(services, mockmanagedkafka.New(env, storage))
 	services = append(services, mocknetworkmanagement.New(env, storage))
 	services = append(services, mockclouddeploy.New(env, storage))
@@ -252,18 +260,21 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockdocumentai.New(env, storage))
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
-	services = append(services, mockdatacatalog.New(env, storage))
+	services = append(services, mockdatastream.New(env, storage))
 	services = append(services, mockessentialcontacts.New(env, storage))
 	services = append(services, mockeventarc.New(env, storage))
+	services = append(services, mockdatacatalog.New(env, storage))
 	services = append(services, mockcloudtasks.New(env, storage))
 	services = append(services, mockbackupdr.New(env, storage))
 	services = append(services, mockbatch.New(env, storage))
 	services = append(services, mockapigateway.New(env, storage))
+	services = append(services, mockbigquerybiglake.New(env, storage))
 	services = append(services, mocknetapp.New(env, storage))
 	services = append(services, mockdataplex.New(env, storage))
 	services = append(services, mockclouddms.New(env, storage))
 	services = append(services, mockvmwareengine.New(env, storage))
 	services = append(services, mockkms.New(env, storage))
+	services = append(services, mockgkebackup.New(env, storage))
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
 
 	for _, service := range services {

@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.datastream.v1 \
     --api-version datastream.cnrm.cloud.google.com/v1alpha1 \
-    --resource DatastreamPrivateConnection:PrivateConnection
+    --resource DatastreamPrivateConnection:PrivateConnection \
+    --resource DatastreamConnectionProfile:ConnectionProfile
 
 go run . generate-mapper \
     --service google.cloud.datastream.v1 \

@@ -7,15 +7,18 @@ toolchain go1.23.4
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
-	cloud.google.com/go/aiplatform v1.74.0
+	cloud.google.com/go/aiplatform v1.78.0
 	cloud.google.com/go/alloydb v1.14.0
+	cloud.google.com/go/apigateway v1.7.3
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.4
+	cloud.google.com/go/asset v1.20.4
 	cloud.google.com/go/backupdr v1.3.1
 	cloud.google.com/go/batch v1.12.0
 	cloud.google.com/go/bigquery v1.66.2
 	cloud.google.com/go/certificatemanager v1.9.3
 	cloud.google.com/go/cloudbuild v1.22.0
+	cloud.google.com/go/clouddms v1.8.6
 	cloud.google.com/go/cloudquotas v1.3.2
 	cloud.google.com/go/cloudtasks v1.13.3
 	cloud.google.com/go/compute v1.34.0
@@ -47,6 +50,8 @@ require (
 	cloud.google.com/go/orchestration v1.11.4
 	cloud.google.com/go/privilegedaccessmanager v0.2.1
 	cloud.google.com/go/profiler v0.4.1
+	cloud.google.com/go/pubsub v1.47.0
+	cloud.google.com/go/recaptchaenterprise/v2 v2.19.4
 	cloud.google.com/go/redis v1.18.0
 	cloud.google.com/go/resourcemanager v1.10.3
 	cloud.google.com/go/secretmanager v1.14.5

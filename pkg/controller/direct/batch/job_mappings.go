@@ -97,8 +97,10 @@ func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPoli
 	out := &krm.AllocationPolicy{}
 	out.Location = AllocationPolicy_LocationPolicy_FromProto(mapCtx, in.GetLocation())
 	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
-	out.ServiceAccountRef = &v1beta1.IAMServiceAccountRef{
-		External: in.GetServiceAccount().String(),
+	if in.GetServiceAccount() != nil {
+		out.ServiceAccountRef = &v1beta1.IAMServiceAccountRef{
+			External: in.GetServiceAccount().GetEmail(),
+		}
 	}
 	out.Labels = in.Labels
 	out.Network = AllocationPolicy_NetworkPolicy_FromProto(mapCtx, in.GetNetwork())
@@ -113,8 +115,10 @@ func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolic
 	out := &pb.AllocationPolicy{}
 	out.Location = AllocationPolicy_LocationPolicy_ToProto(mapCtx, in.Location)
 	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_ToProto)
-	out.ServiceAccount = &pb.ServiceAccount{
-		Email: in.ServiceAccountRef.External,
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = &pb.ServiceAccount{
+			Email: in.ServiceAccountRef.External,
+		}
 	}
 	out.Labels = in.Labels
 	out.Network = AllocationPolicy_NetworkPolicy_ToProto(mapCtx, in.Network)
@@ -229,14 +233,12 @@ func AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx *direct.MapContex
 	}
 	return out
 }
-func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_InstancePolicyOrTemplate_Policy {
+func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate {
 	if in == nil {
 		return nil
 	}
-	out := &pb.AllocationPolicy_InstancePolicyOrTemplate_Policy{
-		Policy: &pb.AllocationPolicy_InstancePolicy{
-			MachineType: direct.ValueOf(in),
-		},
+	out := &pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate{
+		InstanceTemplate: direct.ValueOf(in),
 	}
 	return out
 }

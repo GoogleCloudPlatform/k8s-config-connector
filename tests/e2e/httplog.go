@@ -160,8 +160,12 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+	// Specific to datacatalog
 	addReplacement("dataCatalogTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("dataCatalogTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("sourceSystemTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("sourceSystemTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to cloudbuild
 	addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
@@ -191,6 +195,17 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 	addReplacement("settings.backupConfiguration.startTime", "12:00")
 	addReplacement("settings.settingsVersion", "123")
+
+	// Specific to Dataproc Metastore
+	addReplacement("hiveMetastoreConfig.configOverrides.hive.metastore.warehouse.dir", "gs://gcs-bucket-${uniqueId}/hive-warehouse")
+	addReplacement("artifactGcsUri", "gs://gcs-bucket-${uniqueId}")
+	addReplacement("response.artifactGcsUri", "gs://gcs-bucket-${uniqueId}")
+	addReplacement("endpointUri", "thrift://mock-endpoint:9083")
+	addReplacement("response.endpointUri", "thrift://mock-endpoint:9083")
+	addReplacement("serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//

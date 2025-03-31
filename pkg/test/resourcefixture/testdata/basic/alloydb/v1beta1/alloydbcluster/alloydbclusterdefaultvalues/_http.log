@@ -1,0 +1,804 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
+
+{
+  "automatedBackupPolicy": {
+    "labels": {
+      "source": "kcc-test"
+    }
+  },
+  "clusterType": 1,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/${networkID}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": false,
+      "labels": {
+        "source": "kcc-test"
+      },
+      "location": "us-west2",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "PRIMARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_15",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
+    "networkConfig": {
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
+    },
+    "reconciling": false,
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": false,
+    "labels": {
+      "source": "kcc-test"
+    },
+    "location": "us-west2",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
+  "clusterType": 1,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": 1
+    },
+    "schedule": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": 3,
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "geminiConfig": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "networkConfig": {
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "state": 1,
+  "subscriptionType": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
+
+{
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": true,
+    "labels": {
+      "source": "kcc-test"
+    },
+    "location": "us-west2",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
+  "clusterType": 1,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "databaseVersion": 3,
+  "geminiConfig": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "networkConfig": {
+    "network": "projects/${projectId}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "subscriptionType": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
+    "automatedBackupPolicy": {
+      "backupWindow": "3600s",
+      "enabled": true,
+      "labels": {
+        "source": "kcc-test"
+      },
+      "location": "us-west2",
+      "timeBasedRetention": {
+        "retentionPeriod": "1209600s"
+      },
+      "weeklySchedule": {
+        "daysOfWeek": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ],
+        "startTimes": [
+          {
+            "hours": 23
+          }
+        ]
+      }
+    },
+    "clusterType": "PRIMARY",
+    "continuousBackupConfig": {
+      "enabled": true,
+      "recoveryWindowDays": 14
+    },
+    "continuousBackupInfo": {
+      "enabledTime": "2024-04-01T12:34:56.123456Z",
+      "encryptionInfo": {
+        "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      },
+      "schedule": [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+      ]
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseVersion": "POSTGRES_15",
+    "encryptionInfo": {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    },
+    "geminiConfig": {},
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
+    "networkConfig": {
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
+    },
+    "reconciling": false,
+    "state": "READY",
+    "subscriptionType": "STANDARD",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "automatedBackupPolicy": {
+    "backupWindow": "3600s",
+    "enabled": true,
+    "labels": {
+      "source": "kcc-test"
+    },
+    "location": "us-west2",
+    "timeBasedRetention": {
+      "retentionPeriod": "1209600s"
+    },
+    "weeklySchedule": {
+      "daysOfWeek": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "startTimes": [
+        {
+          "hours": 23
+        }
+      ]
+    }
+  },
+  "clusterType": 1,
+  "continuousBackupConfig": {
+    "enabled": true,
+    "recoveryWindowDays": 14
+  },
+  "continuousBackupInfo": {
+    "enabledTime": "2024-04-01T12:34:56.123456Z",
+    "encryptionInfo": {
+      "encryptionType": 1
+    },
+    "schedule": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseVersion": 3,
+  "encryptionInfo": {
+    "encryptionType": 1
+  },
+  "geminiConfig": {},
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "networkConfig": {
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "state": 1,
+  "subscriptionType": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}"
+}
+
+---
+
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west2/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}

@@ -26,6 +26,16 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["basicalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipNoChange: true, // MBUR fields always triggers an update.
+	}
+
+	resourceContextMap["fullalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipNoChange: true, // MBUR fields always triggers an update.
+	}
+
 	resourceContextMap["restorebackupalloydbcluster"] = ResourceContext{
 		ResourceKind: "AlloyDBCluster",
 		SkipUpdate:   true,

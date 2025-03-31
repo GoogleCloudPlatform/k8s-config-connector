@@ -15,42 +15,68 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  labels:
+    label-one: "value-one"
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/state-into-spec: absent
   name: alloydbcluster-${uniqueId}
 spec:
-  location: us-central1
-  networkConfig:
-    networkRef: 
-      name: computenetwork-${uniqueId}
-  projectRef:
-    external: ${projectId}
-
-  initialUser:
-    user: postgres
-    password:
-      value: Postgres123
-      
   automatedBackupPolicy:
     backupWindow: 7200s
-    enabled: true
+    enabled: false
     encryptionConfig:
-      kmsKeyNameRef: 
-        name: kmscryptokey-${uniqueId}
+      kmsKeyNameRef:
+        name: kmscryptokey-1-${uniqueId}
     labels:
-      source: kcc-test 
+      source: kcc-test
     location: us-central1
     timeBasedRetention:
       retentionPeriod: 86400s
     weeklySchedule:
       daysOfWeek: [MONDAY]
-      startTimes: 
+      startTimes:
+          # startTime must be a full clock and API returns error:
+          # "one of the weekly schedule's start times is not aligned on hours"
+          # if minutes, seconds and nanos are not all 0s
         - hours: 4
           minutes: 0
           seconds: 0
           nanos: 0
-
+  # clusterType cannot be updated from PRIMARY to SECONDARY
+  # clusterType can be updated from SECONDARY to PRIMARY when it has a secondary
+  # AlloyDBInstance
+  clusterType: PRIMARY
+  continuousBackupConfig:
+    enabled: false
+    encryptionConfig:
+      kmsKeyNameRef:
+        name: kmscryptokey-1-${uniqueId}
+    recoveryWindowDays: 10
+  deletionPolicy: DEFAULT
+  displayName: A test alloyDB cluster
   encryptionConfig:
-      kmsKeyNameRef: 
-        name: kmscryptokey-${uniqueId}
-          
+    kmsKeyNameRef: # kmsKeyNameRef is an immutable field blocked by KCC
+      name: kmscryptokey-1-${uniqueId}
+  initialUser:
+    user: postgres
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: secret-1-${uniqueId}
+          key: password
+  location: us-central1
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: TUESDAY
+        startTime:
+          hours: 10
+          minutes: 9
+          seconds: 8
+          nanos: 7
+  networkConfig:
+    allocatedIpRange: test-range-1  # allocatedIpRange is an immutable field blocked by API
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}

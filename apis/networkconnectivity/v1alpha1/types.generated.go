@@ -883,3 +883,14 @@ type Warnings struct {
 	// Output only. A human-readable description of the warning code.
 	WarningMessage *string `json:"warningMessage,omitempty"`
 }
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.Migration
+type Migration struct {
+	// Immutable. Resource path as an URI of the source resource, for example a subnet. The project for the source resource should match the project for the InternalRange. An example: /projects/{project}/regions/{region}/subnetworks/{subnet}
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Migration.source
+	Source *string `json:"source,omitempty"`
+
+	// Immutable. Resource path of the target resource. The target project can be different, as in the cases when migrating to peer networks. The resource For example: /projects/{project}/regions/{region}/subnetworks/{subnet}
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.Migration.target
+	Target *string `json:"target,omitempty"`
+}

@@ -207,10 +207,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "APIGatewayAPI",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "alpha",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -398,6 +396,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "cloudquota.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "APIQuotaAdjusterSettings",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "cloudquota.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "APIQuotaPreference",
 	}: {
 		Labels: map[string]string{
@@ -505,6 +513,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "asset.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AssetSavedQuery",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -747,6 +765,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "bigqueryreservation.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "BigQueryReservationAssignment",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "bigqueryreservation.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "BigQueryReservationCapacityCommitment",
 	}: {
 		Labels: map[string]string{
@@ -806,6 +834,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Group:   "bigtable.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "BigtableAuthorizedView",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "bigtable.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigtableBackup",
 	}: {
 		Labels: map[string]string{
 			"cnrm.cloud.google.com/managed-by-kcc": "true",
@@ -1067,6 +1105,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "clouddms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudDMSConversionWorkspace",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "cloudfunctions2.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "CloudFunctions2Function",
@@ -1172,6 +1220,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "colab.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ColabRuntime",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -1503,6 +1561,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeInterconnect",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -2308,6 +2376,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "dataplex.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "DataplexContent",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "dataplex.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "DataplexLake",
 	}: {
 		Labels: map[string]string{
@@ -2325,6 +2403,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "dataproc.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DataprocBatch",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -2379,10 +2467,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "DatastreamConnectionProfile",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "alpha",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -2405,6 +2491,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "alpha",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "clouddeploy.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DeployCustomTargetType",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -2749,10 +2845,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "EdgeContainerVpnConnection",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -2971,10 +3065,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "GKEBackupBackupPlan",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "alpha",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -3409,6 +3501,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "kms.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "KMSImportJob",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "KMSKeyHandle",
 	}: {
 		Labels: map[string]string{
@@ -3754,6 +3856,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "networkconnectivity.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "NetworkConnectivityInternalRange",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -4156,6 +4268,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "pubsub.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "PubSubSnapshot",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "pubsub.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "PubSubSubscription",
 	}: {
@@ -4176,6 +4298,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "recaptchaenterprise.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ReCAPTCHAEnterpriseFirewallPolicy",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -4476,6 +4608,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
 			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "spanner.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SpannerInstanceConfig",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -4905,6 +5047,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Group:   "vmwareengine.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "VMwareEngineNetwork",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "vmwareengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VMwareEnginePrivateCloud",
 	}: {
 		Labels: map[string]string{
 			"cnrm.cloud.google.com/managed-by-kcc": "true",

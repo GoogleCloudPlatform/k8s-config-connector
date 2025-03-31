@@ -872,10 +872,6 @@ X-Xss-Protection: 0
         "value": "A sample value"
       },
       {
-        "name": "key",
-        "value": "A sample value"
-      },
-      {
         "name": "new-key",
         "value": "A new sample value"
       }
@@ -905,10 +901,6 @@ X-Xss-Protection: 0
   "name": "apgenv-${uniqueId}",
   "properties": {
     "property": [
-      {
-        "name": "key",
-        "value": "A sample value"
-      },
       {
         "name": "key",
         "value": "A sample value"

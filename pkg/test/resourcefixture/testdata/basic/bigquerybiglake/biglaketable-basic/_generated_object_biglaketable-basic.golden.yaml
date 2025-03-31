@@ -1,0 +1,43 @@
+apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1alpha1
+kind: BigLakeTable
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: biglaketable-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  catalogRef:
+    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}
+  databaseRef:
+    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
+  hiveOptions:
+    parameters:
+      new.parameter: new_value
+      spark.sql.warehouse.dir: gs://${projectId}}-biglaketable/warehouse
+    storageDescriptor:
+      inputFormat: org.apache.hadoop.mapred.TextInputFormat
+      locationURI: gs:/${projectId}-biglaketable/data
+      outputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+      serdeInfo:
+        serializationLib: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+    tableType: EXTERNAL_TABLE
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  type: HIVE
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}/tables/biglaketable-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

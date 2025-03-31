@@ -35,9 +35,13 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
+
+	if folderID != "" {
+		replacements.PathIDs[folderID] = "${folderID}"
+	}
 
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
@@ -47,6 +51,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
 		// Deliberately volatile, ignore
 		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
+	}
+	for k, v := range annotations {
+		annotations[k] = replacements.ApplyReplacements(v)
 	}
 	u.SetAnnotations(annotations)
 
@@ -93,6 +100,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to CloudKMS
 	visitor.replacePaths[".primary.createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".primary.generateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.expireTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
@@ -102,6 +110,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
+
+	// Specific to Pubsub
+	visitor.replacePaths[".snapshots[].expireTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
@@ -158,7 +169,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
-	// Specific to Secret Manager
+	// Specific to Secret Manager
 	visitor.replacePaths[".spec.expireTime"] = "2025-10-03T15:01:23Z"
 
 	// Specific to MonitoringDashboard
@@ -247,6 +258,19 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			tokens := strings.Split(s, "/")
 			if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
 				tokens[len(tokens)-1] = "${networkId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to BackupPlanDR
+	// normalize "status.observedState.dataSource"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.dataSource") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+				tokens[len(tokens)-1] = "${dataSourceID}"
 				s = strings.Join(tokens, "/")
 			}
 		}
@@ -794,7 +818,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})

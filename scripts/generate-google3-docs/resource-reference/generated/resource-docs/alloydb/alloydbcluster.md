@@ -778,7 +778,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`. This is required to create a cluster.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -818,7 +818,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead.{% endverbatim %}</p>
+            <p>{% verbatim %}The resource link for the VPC network in which cluster resources are created and from which they are accessible via Private IP. The network must belong to the same project as the cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`. This is required to create a cluster. Deprecated, use network_config.network instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -988,7 +988,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -998,7 +998,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1008,7 +1008,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1048,7 +1048,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed AlloyDBCluster resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1058,7 +1058,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1068,7 +1068,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a AlloyDBCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1103,6 +1103,7 @@ encryptionInfo:
 - encryptionType: string
   kmsKeyVersions:
   - string
+externalRef: string
 migrationSource:
 - hostPort: string
   referenceId: string
@@ -1308,6 +1309,13 @@ uid: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AlloyDBCluster resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

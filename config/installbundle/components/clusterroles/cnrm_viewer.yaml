@@ -71,6 +71,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - backupdr.cnrm.cloud.google.com
   resources:
   - '*'
@@ -200,6 +208,14 @@ rules:
   - watch
 - apiGroups:
   - clouddeploy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - clouddms.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

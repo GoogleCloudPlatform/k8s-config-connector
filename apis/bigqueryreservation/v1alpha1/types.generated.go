@@ -14,6 +14,33 @@
 
 package v1alpha1
 
+// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
+type Assignment struct {
+
+	// The resource which will use the reservation. E.g.
+	//  `projects/myproject`, `folders/123`, or `organizations/456`.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.assignee
+	Assignee *string `json:"assignee,omitempty"`
+
+	// Which type of jobs will use the reservation.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.job_type
+	JobType *string `json:"jobType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
+type AssignmentObservedState struct {
+	// Output only. Name of the resource. E.g.:
+	//  `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
+	//  The assignment_id must only contain lower case alphanumeric characters or
+	//  dashes and the max length is 64 characters.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. State of the assignment.
+	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.state
+	State *string `json:"state,omitempty"`
+}
+
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
 type Reservation struct {
 	// The resource name of the reservation, e.g.,
