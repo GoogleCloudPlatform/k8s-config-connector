@@ -236,13 +236,14 @@ func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps)
 	signature := strings.Join(sets.List(fields), ",")
 
 	var ruleYAML string
+	paths := strings.Split(fieldPath, ".")
 	if signature == "apiVersion,external,kind,name,namespace" {
 		ruleYAML = refRuleWithKind
 	} else if signature == "external,kind,name,namespace" {
 		ruleYAML = refRuleWithKind
 		// kind is optional for projectRef (and maybe in future other well-known ref types)
 		// fieldPath is the best mechanism we have today (?)
-		if fieldPath == ".spec.projectRef" {
+		if fieldPath == ".spec.projectRef" || paths[len(paths)-1] == "projectRef" {
 			ruleYAML = refRuleWithOptionalKind
 		}
 	} else if signature == "external,name,namespace" {
