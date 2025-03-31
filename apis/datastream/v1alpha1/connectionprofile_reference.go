@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ConnectionProfileRef{}
 // holds the GCP identifier for the KRM object.
 type ConnectionProfileRef struct {
 	// A reference to an externally managed DatastreamConnectionProfile resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionprofiles/{{connectionprofileID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionprofileID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DatastreamConnectionProfile resource.

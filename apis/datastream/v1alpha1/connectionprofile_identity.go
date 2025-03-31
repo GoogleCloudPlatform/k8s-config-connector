@@ -32,7 +32,7 @@ type ConnectionProfileIdentity struct {
 }
 
 func (i *ConnectionProfileIdentity) String() string {
-	return i.parent.String() + "/connectionprofiles/" + i.id
+	return i.parent.String() + "/connectionProfiles/" + i.id
 }
 
 func (i *ConnectionProfileIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewConnectionProfileIdentity(ctx context.Context, reader client.Reader, obj
 
 func ParseConnectionProfileExternal(external string) (parent *ConnectionProfileParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectionprofiles" {
-		return nil, "", fmt.Errorf("format of DatastreamConnectionProfile external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectionprofiles/{{connectionprofileID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectionProfiles" {
+		return nil, "", fmt.Errorf("format of DatastreamConnectionProfile external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionprofileID}})", external)
 	}
 	parent = &ConnectionProfileParent{
 		ProjectID: tokens[1],
