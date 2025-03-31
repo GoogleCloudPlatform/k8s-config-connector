@@ -29,10 +29,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "replication": {
     "automatic": {}
   }
@@ -51,10 +47,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
     "automatic": {}
@@ -347,10 +339,6 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
     "automatic": {}
