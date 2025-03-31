@@ -194,7 +194,6 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -250,7 +249,6 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
