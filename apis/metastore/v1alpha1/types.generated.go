@@ -36,16 +36,6 @@ type AuxiliaryVersionConfig struct {
 	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.EncryptionConfig
-type EncryptionConfig struct {
-	// The fully qualified customer provided Cloud KMS key name to use for
-	//  customer data encryption, in the following form:
-	//
-	//  `projects/{project_number}/locations/{location_id}/keyRings/{key_ring_id}/cryptoKeys/{crypto_key_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.EncryptionConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-}
-
 // +kcc:proto=google.cloud.metastore.v1.HiveMetastoreConfig
 type HiveMetastoreConfig struct {
 	// Immutable. The Hive metastore schema version.
@@ -124,20 +114,6 @@ type NetworkConfig struct {
 	Consumers []NetworkConfig_Consumer `json:"consumers,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
-type NetworkConfig_Consumer struct {
-	// Immutable. The subnetwork of the customer project from which an IP
-	//  address is reserved and used as the Dataproc Metastore service's
-	//  endpoint. It is accessible to hosts in the subnet and to all
-	//  hosts in a subnet in the same region and same network. There must
-	//  be at least one IP address available in the subnet's primary range. The
-	//  subnet is specified in the following form:
-	//
-	//  `projects/{project_number}/regions/{region_id}/subnetworks/{subnetwork_id}`
-	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.subnetwork
-	Subnetwork *string `json:"subnetwork,omitempty"`
-}
-
 // +kcc:proto=google.cloud.metastore.v1.Restore
 type Restore struct {
 }
@@ -153,16 +129,6 @@ type ScalingConfig struct {
 	//  increments of 1.0 for values greater than 1.0.
 	// +kcc:proto:field=google.cloud.metastore.v1.ScalingConfig.scaling_factor
 	ScalingFactor *float32 `json:"scalingFactor,omitempty"`
-}
-
-// +kcc:proto=google.cloud.metastore.v1.Secret
-type Secret struct {
-	// The relative resource name of a Secret Manager secret version, in the
-	//  following form:
-	//
-	//  `projects/{project_number}/secrets/{secret_id}/versions/{version_id}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.Secret.cloud_secret
-	CloudSecret *string `json:"cloudSecret,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.TelemetryConfig
