@@ -182,8 +182,17 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *ProcessorVersionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	// no update
-	return nil
+	// no-op, just update obj status
+	mapCtx := &direct.MapContext{}
+	updated := a.actual
+	status := &krm.DocumentAIProcessorVersionStatus{}
+	status.ObservedState = DocumentAIProcessorVersionObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	externalRef := updated.GetName()
+	status.ExternalRef = direct.LazyPtr(externalRef)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
