@@ -42,6 +42,8 @@ type WorkflowsClient interface {
 	// successful update operation. In that case, the new revision is used
 	// in new workflow executions.
 	UpdateWorkflow(ctx context.Context, in *UpdateWorkflowRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists revisions for a given workflow.
+	ListWorkflowRevisions(ctx context.Context, in *ListWorkflowRevisionsRequest, opts ...grpc.CallOption) (*ListWorkflowRevisionsResponse, error)
 }
 
 type workflowsClient struct {
@@ -97,6 +99,15 @@ func (c *workflowsClient) UpdateWorkflow(ctx context.Context, in *UpdateWorkflow
 	return out, nil
 }
 
+func (c *workflowsClient) ListWorkflowRevisions(ctx context.Context, in *ListWorkflowRevisionsRequest, opts ...grpc.CallOption) (*ListWorkflowRevisionsResponse, error) {
+	out := new(ListWorkflowRevisionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.workflows.v1.Workflows/ListWorkflowRevisions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WorkflowsServer is the server API for Workflows service.
 // All implementations must embed UnimplementedWorkflowsServer
 // for forward compatibility
@@ -120,6 +131,8 @@ type WorkflowsServer interface {
 	// successful update operation. In that case, the new revision is used
 	// in new workflow executions.
 	UpdateWorkflow(context.Context, *UpdateWorkflowRequest) (*longrunningpb.Operation, error)
+	// Lists revisions for a given workflow.
+	ListWorkflowRevisions(context.Context, *ListWorkflowRevisionsRequest) (*ListWorkflowRevisionsResponse, error)
 	mustEmbedUnimplementedWorkflowsServer()
 }
 
@@ -141,6 +154,9 @@ func (UnimplementedWorkflowsServer) DeleteWorkflow(context.Context, *DeleteWorkf
 }
 func (UnimplementedWorkflowsServer) UpdateWorkflow(context.Context, *UpdateWorkflowRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorkflow not implemented")
+}
+func (UnimplementedWorkflowsServer) ListWorkflowRevisions(context.Context, *ListWorkflowRevisionsRequest) (*ListWorkflowRevisionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWorkflowRevisions not implemented")
 }
 func (UnimplementedWorkflowsServer) mustEmbedUnimplementedWorkflowsServer() {}
 
@@ -245,6 +261,24 @@ func _Workflows_UpdateWorkflow_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Workflows_ListWorkflowRevisions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListWorkflowRevisionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WorkflowsServer).ListWorkflowRevisions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.workflows.v1.Workflows/ListWorkflowRevisions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WorkflowsServer).ListWorkflowRevisions(ctx, req.(*ListWorkflowRevisionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Workflows_ServiceDesc is the grpc.ServiceDesc for Workflows service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -271,6 +305,10 @@ var Workflows_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateWorkflow",
 			Handler:    _Workflows_UpdateWorkflow_Handler,
+		},
+		{
+			MethodName: "ListWorkflowRevisions",
+			Handler:    _Workflows_ListWorkflowRevisions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

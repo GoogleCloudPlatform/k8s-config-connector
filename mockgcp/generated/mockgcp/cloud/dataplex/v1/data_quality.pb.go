@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -168,8 +168,10 @@ type DataQualitySpec struct {
 	// 100.
 	SamplingPercent float32 `protobuf:"fixed32,4,opt,name=sampling_percent,json=samplingPercent,proto3" json:"sampling_percent,omitempty"`
 	// Optional. A filter applied to all rows in a single DataScan job.
-	// The filter needs to be a valid SQL expression for a WHERE clause in
-	// BigQuery standard SQL syntax.
+	// The filter needs to be a valid SQL expression for a [WHERE clause in
+	// GoogleSQL
+	// syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause).
+	//
 	// Example: col1 >= 0 AND col2 < 10
 	RowFilter string `protobuf:"bytes,5,opt,name=row_filter,json=rowFilter,proto3" json:"row_filter,omitempty"`
 	// Optional. Actions to take upon job completion.
@@ -376,10 +378,10 @@ type DataQualityRuleResult struct {
 	// evaluation, or
 	// * exclude `null` rows from the `evaluated_count`, by setting
 	// `ignore_nulls = true`.
-	EvaluatedCount int64 `protobuf:"varint,9,opt,name=evaluated_count,json=evaluatedCount,proto3" json:"evaluated_count,omitempty"`
-	// The number of rows which passed a rule evaluation.
 	//
-	// This field is only valid for row-level type rules.
+	// This field is not set for rule SqlAssertion.
+	EvaluatedCount int64 `protobuf:"varint,9,opt,name=evaluated_count,json=evaluatedCount,proto3" json:"evaluated_count,omitempty"`
+	// This field is not set for rule SqlAssertion.
 	PassedCount int64 `protobuf:"varint,8,opt,name=passed_count,json=passedCount,proto3" json:"passed_count,omitempty"`
 	// The number of rows with null values in the specified column.
 	NullCount int64 `protobuf:"varint,5,opt,name=null_count,json=nullCount,proto3" json:"null_count,omitempty"`
@@ -1797,8 +1799,9 @@ func (x *DataQualityRule_StatisticRangeExpectation) GetStrictMaxEnabled() bool {
 
 // Evaluates whether each row passes the specified condition.
 //
-// The SQL expression needs to use BigQuery standard SQL syntax and should
-// produce a boolean value per row as the result.
+// The SQL expression needs to use [GoogleSQL
+// syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax)
+// and should produce a boolean value per row as the result.
 //
 // Example: col1 >= 0 AND col2 < 10
 type DataQualityRule_RowConditionExpectation struct {
@@ -1851,8 +1854,9 @@ func (x *DataQualityRule_RowConditionExpectation) GetSqlExpression() string {
 
 // Evaluates whether the provided expression is true.
 //
-// The SQL expression needs to use BigQuery standard SQL syntax and should
-// produce a scalar boolean result.
+// The SQL expression needs to use [GoogleSQL
+// syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax)
+// and should produce a scalar boolean result.
 //
 // Example: MIN(col1) >= 0
 type DataQualityRule_TableConditionExpectation struct {
@@ -1906,8 +1910,9 @@ func (x *DataQualityRule_TableConditionExpectation) GetSqlExpression() string {
 // A SQL statement that is evaluated to return rows that match an invalid
 // state. If any rows are are returned, this rule fails.
 //
-// The SQL statement must use BigQuery standard SQL syntax, and must not
-// contain any semicolons.
+// The SQL statement must use [GoogleSQL
+// syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax),
+// and must not contain any semicolons.
 //
 // You can use the data reference parameter `${data()}` to reference the
 // source table with all of its precondition filters applied. Examples of

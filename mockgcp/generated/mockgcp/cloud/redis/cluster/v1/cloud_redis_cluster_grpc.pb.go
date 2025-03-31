@@ -55,6 +55,37 @@ type CloudRedisClusterClient interface {
 	CreateCluster(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets the details of certificate authority information for Redis cluster.
 	GetClusterCertificateAuthority(ctx context.Context, in *GetClusterCertificateAuthorityRequest, opts ...grpc.CallOption) (*CertificateAuthority, error)
+	// Reschedules upcoming maintenance event.
+	RescheduleClusterMaintenance(ctx context.Context, in *RescheduleClusterMaintenanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists all backup collections owned by a consumer project in either the
+	// specified location (region) or all locations.
+	//
+	// If `location_id` is specified as `-` (wildcard), then all regions
+	// available to the project are queried, and the results are aggregated.
+	ListBackupCollections(ctx context.Context, in *ListBackupCollectionsRequest, opts ...grpc.CallOption) (*ListBackupCollectionsResponse, error)
+	// Get a backup collection.
+	GetBackupCollection(ctx context.Context, in *GetBackupCollectionRequest, opts ...grpc.CallOption) (*BackupCollection, error)
+	// Lists all backups owned by a backup collection.
+	ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
+	// Gets the details of a specific backup.
+	GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error)
+	// Deletes a specific backup.
+	DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Exports a specific backup to a customer target Cloud Storage URI.
+	ExportBackup(ctx context.Context, in *ExportBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Backup Redis Cluster.
+	// If this is the first time a backup is being created, a backup collection
+	// will be created at the backend, and this backup belongs to this collection.
+	// Both collection and backup will have a resource name. Backup will be
+	// executed for each shard. A replica (primary if nonHA) will be selected to
+	// perform the execution. Backup call will be rejected if there is an ongoing
+	// backup or update operation. Be aware that during preview, if the cluster's
+	// internal software version is too old, critical update will be performed
+	// before actual backup. Once the internal software version is updated to the
+	// minimum version required by the backup feature, subsequent backups will not
+	// require critical update. After preview, there will be no critical update
+	// needed for backup.
+	BackupCluster(ctx context.Context, in *BackupClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type cloudRedisClusterClient struct {
@@ -119,6 +150,78 @@ func (c *cloudRedisClusterClient) GetClusterCertificateAuthority(ctx context.Con
 	return out, nil
 }
 
+func (c *cloudRedisClusterClient) RescheduleClusterMaintenance(ctx context.Context, in *RescheduleClusterMaintenanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/RescheduleClusterMaintenance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) ListBackupCollections(ctx context.Context, in *ListBackupCollectionsRequest, opts ...grpc.CallOption) (*ListBackupCollectionsResponse, error) {
+	out := new(ListBackupCollectionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ListBackupCollections", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) GetBackupCollection(ctx context.Context, in *GetBackupCollectionRequest, opts ...grpc.CallOption) (*BackupCollection, error) {
+	out := new(BackupCollection)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetBackupCollection", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error) {
+	out := new(ListBackupsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ListBackups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error) {
+	out := new(Backup)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) DeleteBackup(ctx context.Context, in *DeleteBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/DeleteBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) ExportBackup(ctx context.Context, in *ExportBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ExportBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cloudRedisClusterClient) BackupCluster(ctx context.Context, in *BackupClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/BackupCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CloudRedisClusterServer is the server API for CloudRedisCluster service.
 // All implementations must embed UnimplementedCloudRedisClusterServer
 // for forward compatibility
@@ -155,6 +258,37 @@ type CloudRedisClusterServer interface {
 	CreateCluster(context.Context, *CreateClusterRequest) (*longrunningpb.Operation, error)
 	// Gets the details of certificate authority information for Redis cluster.
 	GetClusterCertificateAuthority(context.Context, *GetClusterCertificateAuthorityRequest) (*CertificateAuthority, error)
+	// Reschedules upcoming maintenance event.
+	RescheduleClusterMaintenance(context.Context, *RescheduleClusterMaintenanceRequest) (*longrunningpb.Operation, error)
+	// Lists all backup collections owned by a consumer project in either the
+	// specified location (region) or all locations.
+	//
+	// If `location_id` is specified as `-` (wildcard), then all regions
+	// available to the project are queried, and the results are aggregated.
+	ListBackupCollections(context.Context, *ListBackupCollectionsRequest) (*ListBackupCollectionsResponse, error)
+	// Get a backup collection.
+	GetBackupCollection(context.Context, *GetBackupCollectionRequest) (*BackupCollection, error)
+	// Lists all backups owned by a backup collection.
+	ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
+	// Gets the details of a specific backup.
+	GetBackup(context.Context, *GetBackupRequest) (*Backup, error)
+	// Deletes a specific backup.
+	DeleteBackup(context.Context, *DeleteBackupRequest) (*longrunningpb.Operation, error)
+	// Exports a specific backup to a customer target Cloud Storage URI.
+	ExportBackup(context.Context, *ExportBackupRequest) (*longrunningpb.Operation, error)
+	// Backup Redis Cluster.
+	// If this is the first time a backup is being created, a backup collection
+	// will be created at the backend, and this backup belongs to this collection.
+	// Both collection and backup will have a resource name. Backup will be
+	// executed for each shard. A replica (primary if nonHA) will be selected to
+	// perform the execution. Backup call will be rejected if there is an ongoing
+	// backup or update operation. Be aware that during preview, if the cluster's
+	// internal software version is too old, critical update will be performed
+	// before actual backup. Once the internal software version is updated to the
+	// minimum version required by the backup feature, subsequent backups will not
+	// require critical update. After preview, there will be no critical update
+	// needed for backup.
+	BackupCluster(context.Context, *BackupClusterRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedCloudRedisClusterServer()
 }
 
@@ -179,6 +313,30 @@ func (UnimplementedCloudRedisClusterServer) CreateCluster(context.Context, *Crea
 }
 func (UnimplementedCloudRedisClusterServer) GetClusterCertificateAuthority(context.Context, *GetClusterCertificateAuthorityRequest) (*CertificateAuthority, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClusterCertificateAuthority not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) RescheduleClusterMaintenance(context.Context, *RescheduleClusterMaintenanceRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RescheduleClusterMaintenance not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) ListBackupCollections(context.Context, *ListBackupCollectionsRequest) (*ListBackupCollectionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackupCollections not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) GetBackupCollection(context.Context, *GetBackupCollectionRequest) (*BackupCollection, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackupCollection not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackups not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) GetBackup(context.Context, *GetBackupRequest) (*Backup, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackup not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) DeleteBackup(context.Context, *DeleteBackupRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackup not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) ExportBackup(context.Context, *ExportBackupRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportBackup not implemented")
+}
+func (UnimplementedCloudRedisClusterServer) BackupCluster(context.Context, *BackupClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BackupCluster not implemented")
 }
 func (UnimplementedCloudRedisClusterServer) mustEmbedUnimplementedCloudRedisClusterServer() {}
 
@@ -301,6 +459,150 @@ func _CloudRedisCluster_GetClusterCertificateAuthority_Handler(srv interface{}, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CloudRedisCluster_RescheduleClusterMaintenance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RescheduleClusterMaintenanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).RescheduleClusterMaintenance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/RescheduleClusterMaintenance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).RescheduleClusterMaintenance(ctx, req.(*RescheduleClusterMaintenanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_ListBackupCollections_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupCollectionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).ListBackupCollections(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ListBackupCollections",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).ListBackupCollections(ctx, req.(*ListBackupCollectionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_GetBackupCollection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupCollectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).GetBackupCollection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetBackupCollection",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).GetBackupCollection(ctx, req.(*GetBackupCollectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_ListBackups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).ListBackups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ListBackups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).ListBackups(ctx, req.(*ListBackupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_GetBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).GetBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/GetBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).GetBackup(ctx, req.(*GetBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_DeleteBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).DeleteBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/DeleteBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).DeleteBackup(ctx, req.(*DeleteBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_ExportBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportBackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).ExportBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/ExportBackup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).ExportBackup(ctx, req.(*ExportBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CloudRedisCluster_BackupCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BackupClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudRedisClusterServer).BackupCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.redis.cluster.v1.CloudRedisCluster/BackupCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudRedisClusterServer).BackupCluster(ctx, req.(*BackupClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CloudRedisCluster_ServiceDesc is the grpc.ServiceDesc for CloudRedisCluster service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -331,6 +633,38 @@ var CloudRedisCluster_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClusterCertificateAuthority",
 			Handler:    _CloudRedisCluster_GetClusterCertificateAuthority_Handler,
+		},
+		{
+			MethodName: "RescheduleClusterMaintenance",
+			Handler:    _CloudRedisCluster_RescheduleClusterMaintenance_Handler,
+		},
+		{
+			MethodName: "ListBackupCollections",
+			Handler:    _CloudRedisCluster_ListBackupCollections_Handler,
+		},
+		{
+			MethodName: "GetBackupCollection",
+			Handler:    _CloudRedisCluster_GetBackupCollection_Handler,
+		},
+		{
+			MethodName: "ListBackups",
+			Handler:    _CloudRedisCluster_ListBackups_Handler,
+		},
+		{
+			MethodName: "GetBackup",
+			Handler:    _CloudRedisCluster_GetBackup_Handler,
+		},
+		{
+			MethodName: "DeleteBackup",
+			Handler:    _CloudRedisCluster_DeleteBackup_Handler,
+		},
+		{
+			MethodName: "ExportBackup",
+			Handler:    _CloudRedisCluster_ExportBackup_Handler,
+		},
+		{
+			MethodName: "BackupCluster",
+			Handler:    _CloudRedisCluster_BackupCluster_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

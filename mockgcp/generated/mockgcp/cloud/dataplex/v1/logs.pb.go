@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1212,6 +1212,87 @@ func (DataQualityScanRuleResult_Result) EnumDescriptor() ([]byte, []int) {
 	return file_mockgcp_cloud_dataplex_v1_logs_proto_rawDescGZIP(), []int{5, 2}
 }
 
+// Type of glossary log event.
+type BusinessGlossaryEvent_EventType int32
+
+const (
+	// An unspecified event type.
+	BusinessGlossaryEvent_EVENT_TYPE_UNSPECIFIED BusinessGlossaryEvent_EventType = 0
+	// Glossary create event.
+	BusinessGlossaryEvent_GLOSSARY_CREATE BusinessGlossaryEvent_EventType = 1
+	// Glossary update event.
+	BusinessGlossaryEvent_GLOSSARY_UPDATE BusinessGlossaryEvent_EventType = 2
+	// Glossary delete event.
+	BusinessGlossaryEvent_GLOSSARY_DELETE BusinessGlossaryEvent_EventType = 3
+	// Glossary category create event.
+	BusinessGlossaryEvent_GLOSSARY_CATEGORY_CREATE BusinessGlossaryEvent_EventType = 4
+	// Glossary category update event.
+	BusinessGlossaryEvent_GLOSSARY_CATEGORY_UPDATE BusinessGlossaryEvent_EventType = 5
+	// Glossary category delete event.
+	BusinessGlossaryEvent_GLOSSARY_CATEGORY_DELETE BusinessGlossaryEvent_EventType = 6
+	// Glossary term create event.
+	BusinessGlossaryEvent_GLOSSARY_TERM_CREATE BusinessGlossaryEvent_EventType = 7
+	// Glossary term update event.
+	BusinessGlossaryEvent_GLOSSARY_TERM_UPDATE BusinessGlossaryEvent_EventType = 8
+	// Glossary term delete event.
+	BusinessGlossaryEvent_GLOSSARY_TERM_DELETE BusinessGlossaryEvent_EventType = 9
+)
+
+// Enum value maps for BusinessGlossaryEvent_EventType.
+var (
+	BusinessGlossaryEvent_EventType_name = map[int32]string{
+		0: "EVENT_TYPE_UNSPECIFIED",
+		1: "GLOSSARY_CREATE",
+		2: "GLOSSARY_UPDATE",
+		3: "GLOSSARY_DELETE",
+		4: "GLOSSARY_CATEGORY_CREATE",
+		5: "GLOSSARY_CATEGORY_UPDATE",
+		6: "GLOSSARY_CATEGORY_DELETE",
+		7: "GLOSSARY_TERM_CREATE",
+		8: "GLOSSARY_TERM_UPDATE",
+		9: "GLOSSARY_TERM_DELETE",
+	}
+	BusinessGlossaryEvent_EventType_value = map[string]int32{
+		"EVENT_TYPE_UNSPECIFIED":   0,
+		"GLOSSARY_CREATE":          1,
+		"GLOSSARY_UPDATE":          2,
+		"GLOSSARY_DELETE":          3,
+		"GLOSSARY_CATEGORY_CREATE": 4,
+		"GLOSSARY_CATEGORY_UPDATE": 5,
+		"GLOSSARY_CATEGORY_DELETE": 6,
+		"GLOSSARY_TERM_CREATE":     7,
+		"GLOSSARY_TERM_UPDATE":     8,
+		"GLOSSARY_TERM_DELETE":     9,
+	}
+)
+
+func (x BusinessGlossaryEvent_EventType) Enum() *BusinessGlossaryEvent_EventType {
+	p := new(BusinessGlossaryEvent_EventType)
+	*p = x
+	return p
+}
+
+func (x BusinessGlossaryEvent_EventType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BusinessGlossaryEvent_EventType) Descriptor() protoreflect.EnumDescriptor {
+	return file_mockgcp_cloud_dataplex_v1_logs_proto_enumTypes[19].Descriptor()
+}
+
+func (BusinessGlossaryEvent_EventType) Type() protoreflect.EnumType {
+	return &file_mockgcp_cloud_dataplex_v1_logs_proto_enumTypes[19]
+}
+
+func (x BusinessGlossaryEvent_EventType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BusinessGlossaryEvent_EventType.Descriptor instead.
+func (BusinessGlossaryEvent_EventType) EnumDescriptor() ([]byte, []int) {
+	return file_mockgcp_cloud_dataplex_v1_logs_proto_rawDescGZIP(), []int{6, 0}
+}
+
 // The payload associated with Discovery data processing.
 type DiscoveryEvent struct {
 	state         protoimpl.MessageState
@@ -2144,6 +2225,73 @@ func (x *DataQualityScanRuleResult) GetAssertionRowCount() int64 {
 	return 0
 }
 
+// Payload associated with Business Glossary related log events.
+type BusinessGlossaryEvent struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// The log message.
+	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	// The type of the event.
+	EventType BusinessGlossaryEvent_EventType `protobuf:"varint,2,opt,name=event_type,json=eventType,proto3,enum=mockgcp.cloud.dataplex.v1.BusinessGlossaryEvent_EventType" json:"event_type,omitempty"`
+	// Name of the resource.
+	Resource string `protobuf:"bytes,3,opt,name=resource,proto3" json:"resource,omitempty"`
+}
+
+func (x *BusinessGlossaryEvent) Reset() {
+	*x = BusinessGlossaryEvent{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BusinessGlossaryEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BusinessGlossaryEvent) ProtoMessage() {}
+
+func (x *BusinessGlossaryEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BusinessGlossaryEvent.ProtoReflect.Descriptor instead.
+func (*BusinessGlossaryEvent) Descriptor() ([]byte, []int) {
+	return file_mockgcp_cloud_dataplex_v1_logs_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *BusinessGlossaryEvent) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *BusinessGlossaryEvent) GetEventType() BusinessGlossaryEvent_EventType {
+	if x != nil {
+		return x.EventType
+	}
+	return BusinessGlossaryEvent_EVENT_TYPE_UNSPECIFIED
+}
+
+func (x *BusinessGlossaryEvent) GetResource() string {
+	if x != nil {
+		return x.Resource
+	}
+	return ""
+}
+
 // Details about configuration events.
 type DiscoveryEvent_ConfigDetails struct {
 	state         protoimpl.MessageState
@@ -2160,7 +2308,7 @@ type DiscoveryEvent_ConfigDetails struct {
 func (x *DiscoveryEvent_ConfigDetails) Reset() {
 	*x = DiscoveryEvent_ConfigDetails{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[6]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2173,7 +2321,7 @@ func (x *DiscoveryEvent_ConfigDetails) String() string {
 func (*DiscoveryEvent_ConfigDetails) ProtoMessage() {}
 
 func (x *DiscoveryEvent_ConfigDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[6]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2212,7 +2360,7 @@ type DiscoveryEvent_EntityDetails struct {
 func (x *DiscoveryEvent_EntityDetails) Reset() {
 	*x = DiscoveryEvent_EntityDetails{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[7]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2225,7 +2373,7 @@ func (x *DiscoveryEvent_EntityDetails) String() string {
 func (*DiscoveryEvent_EntityDetails) ProtoMessage() {}
 
 func (x *DiscoveryEvent_EntityDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[7]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2270,7 +2418,7 @@ type DiscoveryEvent_TableDetails struct {
 func (x *DiscoveryEvent_TableDetails) Reset() {
 	*x = DiscoveryEvent_TableDetails{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[8]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2283,7 +2431,7 @@ func (x *DiscoveryEvent_TableDetails) String() string {
 func (*DiscoveryEvent_TableDetails) ProtoMessage() {}
 
 func (x *DiscoveryEvent_TableDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[8]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2335,7 +2483,7 @@ type DiscoveryEvent_PartitionDetails struct {
 func (x *DiscoveryEvent_PartitionDetails) Reset() {
 	*x = DiscoveryEvent_PartitionDetails{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[9]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2348,7 +2496,7 @@ func (x *DiscoveryEvent_PartitionDetails) String() string {
 func (*DiscoveryEvent_PartitionDetails) ProtoMessage() {}
 
 func (x *DiscoveryEvent_PartitionDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[9]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2408,7 +2556,7 @@ type DiscoveryEvent_ActionDetails struct {
 func (x *DiscoveryEvent_ActionDetails) Reset() {
 	*x = DiscoveryEvent_ActionDetails{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[10]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2421,7 +2569,7 @@ func (x *DiscoveryEvent_ActionDetails) String() string {
 func (*DiscoveryEvent_ActionDetails) ProtoMessage() {}
 
 func (x *DiscoveryEvent_ActionDetails) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[10]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2474,7 +2622,7 @@ type SessionEvent_QueryDetail struct {
 func (x *SessionEvent_QueryDetail) Reset() {
 	*x = SessionEvent_QueryDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[12]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2487,7 +2635,7 @@ func (x *SessionEvent_QueryDetail) String() string {
 func (*SessionEvent_QueryDetail) ProtoMessage() {}
 
 func (x *SessionEvent_QueryDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[12]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2562,7 +2710,7 @@ type GovernanceEvent_Entity struct {
 func (x *GovernanceEvent_Entity) Reset() {
 	*x = GovernanceEvent_Entity{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2575,7 +2723,7 @@ func (x *GovernanceEvent_Entity) String() string {
 func (*GovernanceEvent_Entity) ProtoMessage() {}
 
 func (x *GovernanceEvent_Entity) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2618,7 +2766,7 @@ type DataScanEvent_DataProfileResult struct {
 func (x *DataScanEvent_DataProfileResult) Reset() {
 	*x = DataScanEvent_DataProfileResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2631,7 +2779,7 @@ func (x *DataScanEvent_DataProfileResult) String() string {
 func (*DataScanEvent_DataProfileResult) ProtoMessage() {}
 
 func (x *DataScanEvent_DataProfileResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2693,7 +2841,7 @@ type DataScanEvent_DataQualityResult struct {
 func (x *DataScanEvent_DataQualityResult) Reset() {
 	*x = DataScanEvent_DataQualityResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2706,7 +2854,7 @@ func (x *DataScanEvent_DataQualityResult) String() string {
 func (*DataScanEvent_DataQualityResult) ProtoMessage() {}
 
 func (x *DataScanEvent_DataQualityResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2785,7 +2933,7 @@ type DataScanEvent_DataProfileAppliedConfigs struct {
 func (x *DataScanEvent_DataProfileAppliedConfigs) Reset() {
 	*x = DataScanEvent_DataProfileAppliedConfigs{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2798,7 +2946,7 @@ func (x *DataScanEvent_DataProfileAppliedConfigs) String() string {
 func (*DataScanEvent_DataProfileAppliedConfigs) ProtoMessage() {}
 
 func (x *DataScanEvent_DataProfileAppliedConfigs) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2853,7 +3001,7 @@ type DataScanEvent_DataQualityAppliedConfigs struct {
 func (x *DataScanEvent_DataQualityAppliedConfigs) Reset() {
 	*x = DataScanEvent_DataQualityAppliedConfigs{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2866,7 +3014,7 @@ func (x *DataScanEvent_DataQualityAppliedConfigs) String() string {
 func (*DataScanEvent_DataQualityAppliedConfigs) ProtoMessage() {}
 
 func (x *DataScanEvent_DataQualityAppliedConfigs) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2909,7 +3057,7 @@ type DataScanEvent_PostScanActionsResult struct {
 func (x *DataScanEvent_PostScanActionsResult) Reset() {
 	*x = DataScanEvent_PostScanActionsResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2922,7 +3070,7 @@ func (x *DataScanEvent_PostScanActionsResult) String() string {
 func (*DataScanEvent_PostScanActionsResult) ProtoMessage() {}
 
 func (x *DataScanEvent_PostScanActionsResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2960,7 +3108,7 @@ type DataScanEvent_PostScanActionsResult_BigQueryExportResult struct {
 func (x *DataScanEvent_PostScanActionsResult_BigQueryExportResult) Reset() {
 	*x = DataScanEvent_PostScanActionsResult_BigQueryExportResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[22]
+		mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2973,7 +3121,7 @@ func (x *DataScanEvent_PostScanActionsResult_BigQueryExportResult) String() stri
 func (*DataScanEvent_PostScanActionsResult_BigQueryExportResult) ProtoMessage() {}
 
 func (x *DataScanEvent_PostScanActionsResult_BigQueryExportResult) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[22]
+	mi := &file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3548,14 +3696,42 @@ var file_mockgcp_cloud_dataplex_v1_logs_proto_rawDesc = []byte{
 	0x0a, 0x06, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x16, 0x0a, 0x12, 0x52, 0x45, 0x53, 0x55,
 	0x4c, 0x54, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00,
 	0x12, 0x0a, 0x0a, 0x06, 0x50, 0x41, 0x53, 0x53, 0x45, 0x44, 0x10, 0x01, 0x12, 0x0a, 0x0a, 0x06,
-	0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x02, 0x42, 0x66, 0x0a, 0x1d, 0x63, 0x6f, 0x6d, 0x2e,
-	0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x64, 0x61,
-	0x74, 0x61, 0x70, 0x6c, 0x65, 0x78, 0x2e, 0x76, 0x31, 0x42, 0x09, 0x4c, 0x6f, 0x67, 0x73, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x38, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2f, 0x64, 0x61, 0x74, 0x61,
-	0x70, 0x6c, 0x65, 0x78, 0x2f, 0x61, 0x70, 0x69, 0x76, 0x31, 0x2f, 0x64, 0x61, 0x74, 0x61, 0x70,
-	0x6c, 0x65, 0x78, 0x70, 0x62, 0x3b, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c, 0x65, 0x78, 0x70, 0x62,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x46, 0x41, 0x49, 0x4c, 0x45, 0x44, 0x10, 0x02, 0x22, 0xb9, 0x03, 0x0a, 0x15, 0x42, 0x75, 0x73,
+	0x69, 0x6e, 0x65, 0x73, 0x73, 0x47, 0x6c, 0x6f, 0x73, 0x73, 0x61, 0x72, 0x79, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x59, 0x0a, 0x0a,
+	0x65, 0x76, 0x65, 0x6e, 0x74, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e,
+	0x32, 0x3a, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64,
+	0x2e, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c, 0x65, 0x78, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x75, 0x73,
+	0x69, 0x6e, 0x65, 0x73, 0x73, 0x47, 0x6c, 0x6f, 0x73, 0x73, 0x61, 0x72, 0x79, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65, 0x52, 0x09, 0x65, 0x76,
+	0x65, 0x6e, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72, 0x65, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x22, 0x8e, 0x02, 0x0a, 0x09, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x54, 0x79, 0x70,
+	0x65, 0x12, 0x1a, 0x0a, 0x16, 0x45, 0x56, 0x45, 0x4e, 0x54, 0x5f, 0x54, 0x59, 0x50, 0x45, 0x5f,
+	0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x13, 0x0a,
+	0x0f, 0x47, 0x4c, 0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x43, 0x52, 0x45, 0x41, 0x54, 0x45,
+	0x10, 0x01, 0x12, 0x13, 0x0a, 0x0f, 0x47, 0x4c, 0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x55,
+	0x50, 0x44, 0x41, 0x54, 0x45, 0x10, 0x02, 0x12, 0x13, 0x0a, 0x0f, 0x47, 0x4c, 0x4f, 0x53, 0x53,
+	0x41, 0x52, 0x59, 0x5f, 0x44, 0x45, 0x4c, 0x45, 0x54, 0x45, 0x10, 0x03, 0x12, 0x1c, 0x0a, 0x18,
+	0x47, 0x4c, 0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x43, 0x41, 0x54, 0x45, 0x47, 0x4f, 0x52,
+	0x59, 0x5f, 0x43, 0x52, 0x45, 0x41, 0x54, 0x45, 0x10, 0x04, 0x12, 0x1c, 0x0a, 0x18, 0x47, 0x4c,
+	0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x43, 0x41, 0x54, 0x45, 0x47, 0x4f, 0x52, 0x59, 0x5f,
+	0x55, 0x50, 0x44, 0x41, 0x54, 0x45, 0x10, 0x05, 0x12, 0x1c, 0x0a, 0x18, 0x47, 0x4c, 0x4f, 0x53,
+	0x53, 0x41, 0x52, 0x59, 0x5f, 0x43, 0x41, 0x54, 0x45, 0x47, 0x4f, 0x52, 0x59, 0x5f, 0x44, 0x45,
+	0x4c, 0x45, 0x54, 0x45, 0x10, 0x06, 0x12, 0x18, 0x0a, 0x14, 0x47, 0x4c, 0x4f, 0x53, 0x53, 0x41,
+	0x52, 0x59, 0x5f, 0x54, 0x45, 0x52, 0x4d, 0x5f, 0x43, 0x52, 0x45, 0x41, 0x54, 0x45, 0x10, 0x07,
+	0x12, 0x18, 0x0a, 0x14, 0x47, 0x4c, 0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x54, 0x45, 0x52,
+	0x4d, 0x5f, 0x55, 0x50, 0x44, 0x41, 0x54, 0x45, 0x10, 0x08, 0x12, 0x18, 0x0a, 0x14, 0x47, 0x4c,
+	0x4f, 0x53, 0x53, 0x41, 0x52, 0x59, 0x5f, 0x54, 0x45, 0x52, 0x4d, 0x5f, 0x44, 0x45, 0x4c, 0x45,
+	0x54, 0x45, 0x10, 0x09, 0x42, 0x66, 0x0a, 0x1d, 0x63, 0x6f, 0x6d, 0x2e, 0x6d, 0x6f, 0x63, 0x6b,
+	0x67, 0x63, 0x70, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c,
+	0x65, 0x78, 0x2e, 0x76, 0x31, 0x42, 0x09, 0x4c, 0x6f, 0x67, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f,
+	0x50, 0x01, 0x5a, 0x38, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2f, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c, 0x65, 0x78,
+	0x2f, 0x61, 0x70, 0x69, 0x76, 0x31, 0x2f, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c, 0x65, 0x78, 0x70,
+	0x62, 0x3b, 0x64, 0x61, 0x74, 0x61, 0x70, 0x6c, 0x65, 0x78, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3570,8 +3746,8 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_rawDescGZIP() []byte {
 	return file_mockgcp_cloud_dataplex_v1_logs_proto_rawDescData
 }
 
-var file_mockgcp_cloud_dataplex_v1_logs_proto_enumTypes = make([]protoimpl.EnumInfo, 19)
-var file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_mockgcp_cloud_dataplex_v1_logs_proto_enumTypes = make([]protoimpl.EnumInfo, 20)
+var file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_mockgcp_cloud_dataplex_v1_logs_proto_goTypes = []interface{}{
 	(DiscoveryEvent_EventType)(0),          // 0: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EventType
 	(DiscoveryEvent_EntityType)(0),         // 1: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityType
@@ -3592,82 +3768,85 @@ var file_mockgcp_cloud_dataplex_v1_logs_proto_goTypes = []interface{}{
 	(DataQualityScanRuleResult_RuleType)(0),                             // 16: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.RuleType
 	(DataQualityScanRuleResult_EvaluationType)(0),                       // 17: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.EvaluationType
 	(DataQualityScanRuleResult_Result)(0),                               // 18: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.Result
-	(*DiscoveryEvent)(nil),                                              // 19: mockgcp.cloud.dataplex.v1.DiscoveryEvent
-	(*JobEvent)(nil),                                                    // 20: mockgcp.cloud.dataplex.v1.JobEvent
-	(*SessionEvent)(nil),                                                // 21: mockgcp.cloud.dataplex.v1.SessionEvent
-	(*GovernanceEvent)(nil),                                             // 22: mockgcp.cloud.dataplex.v1.GovernanceEvent
-	(*DataScanEvent)(nil),                                               // 23: mockgcp.cloud.dataplex.v1.DataScanEvent
-	(*DataQualityScanRuleResult)(nil),                                   // 24: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult
-	(*DiscoveryEvent_ConfigDetails)(nil),                                // 25: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails
-	(*DiscoveryEvent_EntityDetails)(nil),                                // 26: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails
-	(*DiscoveryEvent_TableDetails)(nil),                                 // 27: mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails
-	(*DiscoveryEvent_PartitionDetails)(nil),                             // 28: mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails
-	(*DiscoveryEvent_ActionDetails)(nil),                                // 29: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ActionDetails
-	nil,                                                                 // 30: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.ParametersEntry
-	(*SessionEvent_QueryDetail)(nil),                                    // 31: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail
-	(*GovernanceEvent_Entity)(nil),                                      // 32: mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity
-	(*DataScanEvent_DataProfileResult)(nil),                             // 33: mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileResult
-	(*DataScanEvent_DataQualityResult)(nil),                             // 34: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult
-	(*DataScanEvent_DataProfileAppliedConfigs)(nil),                     // 35: mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileAppliedConfigs
-	(*DataScanEvent_DataQualityAppliedConfigs)(nil),                     // 36: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityAppliedConfigs
-	(*DataScanEvent_PostScanActionsResult)(nil),                         // 37: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult
-	nil, // 38: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionPassedEntry
-	nil, // 39: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionScoreEntry
-	nil, // 40: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.ColumnScoreEntry
-	(*DataScanEvent_PostScanActionsResult_BigQueryExportResult)(nil), // 41: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult
-	(*timestamp.Timestamp)(nil),                                      // 42: google.protobuf.Timestamp
-	(*duration.Duration)(nil),                                        // 43: google.protobuf.Duration
+	(BusinessGlossaryEvent_EventType)(0),                                // 19: mockgcp.cloud.dataplex.v1.BusinessGlossaryEvent.EventType
+	(*DiscoveryEvent)(nil),                                              // 20: mockgcp.cloud.dataplex.v1.DiscoveryEvent
+	(*JobEvent)(nil),                                                    // 21: mockgcp.cloud.dataplex.v1.JobEvent
+	(*SessionEvent)(nil),                                                // 22: mockgcp.cloud.dataplex.v1.SessionEvent
+	(*GovernanceEvent)(nil),                                             // 23: mockgcp.cloud.dataplex.v1.GovernanceEvent
+	(*DataScanEvent)(nil),                                               // 24: mockgcp.cloud.dataplex.v1.DataScanEvent
+	(*DataQualityScanRuleResult)(nil),                                   // 25: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult
+	(*BusinessGlossaryEvent)(nil),                                       // 26: mockgcp.cloud.dataplex.v1.BusinessGlossaryEvent
+	(*DiscoveryEvent_ConfigDetails)(nil),                                // 27: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails
+	(*DiscoveryEvent_EntityDetails)(nil),                                // 28: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails
+	(*DiscoveryEvent_TableDetails)(nil),                                 // 29: mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails
+	(*DiscoveryEvent_PartitionDetails)(nil),                             // 30: mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails
+	(*DiscoveryEvent_ActionDetails)(nil),                                // 31: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ActionDetails
+	nil,                                                                 // 32: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.ParametersEntry
+	(*SessionEvent_QueryDetail)(nil),                                    // 33: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail
+	(*GovernanceEvent_Entity)(nil),                                      // 34: mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity
+	(*DataScanEvent_DataProfileResult)(nil),                             // 35: mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileResult
+	(*DataScanEvent_DataQualityResult)(nil),                             // 36: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult
+	(*DataScanEvent_DataProfileAppliedConfigs)(nil),                     // 37: mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileAppliedConfigs
+	(*DataScanEvent_DataQualityAppliedConfigs)(nil),                     // 38: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityAppliedConfigs
+	(*DataScanEvent_PostScanActionsResult)(nil),                         // 39: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult
+	nil, // 40: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionPassedEntry
+	nil, // 41: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionScoreEntry
+	nil, // 42: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.ColumnScoreEntry
+	(*DataScanEvent_PostScanActionsResult_BigQueryExportResult)(nil), // 43: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult
+	(*timestamp.Timestamp)(nil),                                      // 44: google.protobuf.Timestamp
+	(*duration.Duration)(nil),                                        // 45: google.protobuf.Duration
 }
 var file_mockgcp_cloud_dataplex_v1_logs_proto_depIdxs = []int32{
 	0,  // 0: mockgcp.cloud.dataplex.v1.DiscoveryEvent.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EventType
-	25, // 1: mockgcp.cloud.dataplex.v1.DiscoveryEvent.config:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails
-	26, // 2: mockgcp.cloud.dataplex.v1.DiscoveryEvent.entity:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails
-	28, // 3: mockgcp.cloud.dataplex.v1.DiscoveryEvent.partition:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails
-	29, // 4: mockgcp.cloud.dataplex.v1.DiscoveryEvent.action:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ActionDetails
-	27, // 5: mockgcp.cloud.dataplex.v1.DiscoveryEvent.table:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails
-	42, // 6: mockgcp.cloud.dataplex.v1.JobEvent.start_time:type_name -> google.protobuf.Timestamp
-	42, // 7: mockgcp.cloud.dataplex.v1.JobEvent.end_time:type_name -> google.protobuf.Timestamp
+	27, // 1: mockgcp.cloud.dataplex.v1.DiscoveryEvent.config:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails
+	28, // 2: mockgcp.cloud.dataplex.v1.DiscoveryEvent.entity:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails
+	30, // 3: mockgcp.cloud.dataplex.v1.DiscoveryEvent.partition:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails
+	31, // 4: mockgcp.cloud.dataplex.v1.DiscoveryEvent.action:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ActionDetails
+	29, // 5: mockgcp.cloud.dataplex.v1.DiscoveryEvent.table:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails
+	44, // 6: mockgcp.cloud.dataplex.v1.JobEvent.start_time:type_name -> google.protobuf.Timestamp
+	44, // 7: mockgcp.cloud.dataplex.v1.JobEvent.end_time:type_name -> google.protobuf.Timestamp
 	4,  // 8: mockgcp.cloud.dataplex.v1.JobEvent.state:type_name -> mockgcp.cloud.dataplex.v1.JobEvent.State
 	3,  // 9: mockgcp.cloud.dataplex.v1.JobEvent.type:type_name -> mockgcp.cloud.dataplex.v1.JobEvent.Type
 	5,  // 10: mockgcp.cloud.dataplex.v1.JobEvent.service:type_name -> mockgcp.cloud.dataplex.v1.JobEvent.Service
 	6,  // 11: mockgcp.cloud.dataplex.v1.JobEvent.execution_trigger:type_name -> mockgcp.cloud.dataplex.v1.JobEvent.ExecutionTrigger
 	7,  // 12: mockgcp.cloud.dataplex.v1.SessionEvent.type:type_name -> mockgcp.cloud.dataplex.v1.SessionEvent.EventType
-	31, // 13: mockgcp.cloud.dataplex.v1.SessionEvent.query:type_name -> mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail
-	43, // 14: mockgcp.cloud.dataplex.v1.SessionEvent.unassigned_duration:type_name -> google.protobuf.Duration
+	33, // 13: mockgcp.cloud.dataplex.v1.SessionEvent.query:type_name -> mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail
+	45, // 14: mockgcp.cloud.dataplex.v1.SessionEvent.unassigned_duration:type_name -> google.protobuf.Duration
 	9,  // 15: mockgcp.cloud.dataplex.v1.GovernanceEvent.event_type:type_name -> mockgcp.cloud.dataplex.v1.GovernanceEvent.EventType
-	32, // 16: mockgcp.cloud.dataplex.v1.GovernanceEvent.entity:type_name -> mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity
-	42, // 17: mockgcp.cloud.dataplex.v1.DataScanEvent.create_time:type_name -> google.protobuf.Timestamp
-	42, // 18: mockgcp.cloud.dataplex.v1.DataScanEvent.start_time:type_name -> google.protobuf.Timestamp
-	42, // 19: mockgcp.cloud.dataplex.v1.DataScanEvent.end_time:type_name -> google.protobuf.Timestamp
+	34, // 16: mockgcp.cloud.dataplex.v1.GovernanceEvent.entity:type_name -> mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity
+	44, // 17: mockgcp.cloud.dataplex.v1.DataScanEvent.create_time:type_name -> google.protobuf.Timestamp
+	44, // 18: mockgcp.cloud.dataplex.v1.DataScanEvent.start_time:type_name -> google.protobuf.Timestamp
+	44, // 19: mockgcp.cloud.dataplex.v1.DataScanEvent.end_time:type_name -> google.protobuf.Timestamp
 	11, // 20: mockgcp.cloud.dataplex.v1.DataScanEvent.type:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.ScanType
 	12, // 21: mockgcp.cloud.dataplex.v1.DataScanEvent.state:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.State
 	13, // 22: mockgcp.cloud.dataplex.v1.DataScanEvent.trigger:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.Trigger
 	14, // 23: mockgcp.cloud.dataplex.v1.DataScanEvent.scope:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.Scope
-	33, // 24: mockgcp.cloud.dataplex.v1.DataScanEvent.data_profile:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileResult
-	34, // 25: mockgcp.cloud.dataplex.v1.DataScanEvent.data_quality:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult
-	35, // 26: mockgcp.cloud.dataplex.v1.DataScanEvent.data_profile_configs:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileAppliedConfigs
-	36, // 27: mockgcp.cloud.dataplex.v1.DataScanEvent.data_quality_configs:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityAppliedConfigs
-	37, // 28: mockgcp.cloud.dataplex.v1.DataScanEvent.post_scan_actions_result:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult
+	35, // 24: mockgcp.cloud.dataplex.v1.DataScanEvent.data_profile:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileResult
+	36, // 25: mockgcp.cloud.dataplex.v1.DataScanEvent.data_quality:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult
+	37, // 26: mockgcp.cloud.dataplex.v1.DataScanEvent.data_profile_configs:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataProfileAppliedConfigs
+	38, // 27: mockgcp.cloud.dataplex.v1.DataScanEvent.data_quality_configs:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityAppliedConfigs
+	39, // 28: mockgcp.cloud.dataplex.v1.DataScanEvent.post_scan_actions_result:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult
 	16, // 29: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.rule_type:type_name -> mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.RuleType
 	17, // 30: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.evalution_type:type_name -> mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.EvaluationType
 	18, // 31: mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.result:type_name -> mockgcp.cloud.dataplex.v1.DataQualityScanRuleResult.Result
-	30, // 32: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.parameters:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.ParametersEntry
-	1,  // 33: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityType
-	2,  // 34: mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableType
-	1,  // 35: mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityType
-	8,  // 36: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.engine:type_name -> mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.Engine
-	43, // 37: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.duration:type_name -> google.protobuf.Duration
-	10, // 38: mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity.entity_type:type_name -> mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity.EntityType
-	38, // 39: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.dimension_passed:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionPassedEntry
-	39, // 40: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.dimension_score:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionScoreEntry
-	40, // 41: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.column_score:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.ColumnScoreEntry
-	41, // 42: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.bigquery_export_result:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult
-	15, // 43: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult.state:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult.State
-	44, // [44:44] is the sub-list for method output_type
-	44, // [44:44] is the sub-list for method input_type
-	44, // [44:44] is the sub-list for extension type_name
-	44, // [44:44] is the sub-list for extension extendee
-	0,  // [0:44] is the sub-list for field type_name
+	19, // 32: mockgcp.cloud.dataplex.v1.BusinessGlossaryEvent.event_type:type_name -> mockgcp.cloud.dataplex.v1.BusinessGlossaryEvent.EventType
+	32, // 33: mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.parameters:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.ConfigDetails.ParametersEntry
+	1,  // 34: mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityType
+	2,  // 35: mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.TableType
+	1,  // 36: mockgcp.cloud.dataplex.v1.DiscoveryEvent.PartitionDetails.type:type_name -> mockgcp.cloud.dataplex.v1.DiscoveryEvent.EntityType
+	8,  // 37: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.engine:type_name -> mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.Engine
+	45, // 38: mockgcp.cloud.dataplex.v1.SessionEvent.QueryDetail.duration:type_name -> google.protobuf.Duration
+	10, // 39: mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity.entity_type:type_name -> mockgcp.cloud.dataplex.v1.GovernanceEvent.Entity.EntityType
+	40, // 40: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.dimension_passed:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionPassedEntry
+	41, // 41: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.dimension_score:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.DimensionScoreEntry
+	42, // 42: mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.column_score:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.DataQualityResult.ColumnScoreEntry
+	43, // 43: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.bigquery_export_result:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult
+	15, // 44: mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult.state:type_name -> mockgcp.cloud.dataplex.v1.DataScanEvent.PostScanActionsResult.BigQueryExportResult.State
+	45, // [45:45] is the sub-list for method output_type
+	45, // [45:45] is the sub-list for method input_type
+	45, // [45:45] is the sub-list for extension type_name
+	45, // [45:45] is the sub-list for extension extendee
+	0,  // [0:45] is the sub-list for field type_name
 }
 
 func init() { file_mockgcp_cloud_dataplex_v1_logs_proto_init() }
@@ -3749,7 +3928,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DiscoveryEvent_ConfigDetails); i {
+			switch v := v.(*BusinessGlossaryEvent); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3761,7 +3940,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DiscoveryEvent_EntityDetails); i {
+			switch v := v.(*DiscoveryEvent_ConfigDetails); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3773,7 +3952,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DiscoveryEvent_TableDetails); i {
+			switch v := v.(*DiscoveryEvent_EntityDetails); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3785,7 +3964,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DiscoveryEvent_PartitionDetails); i {
+			switch v := v.(*DiscoveryEvent_TableDetails); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3797,6 +3976,18 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DiscoveryEvent_PartitionDetails); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DiscoveryEvent_ActionDetails); i {
 			case 0:
 				return &v.state
@@ -3808,7 +3999,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SessionEvent_QueryDetail); i {
 			case 0:
 				return &v.state
@@ -3820,7 +4011,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GovernanceEvent_Entity); i {
 			case 0:
 				return &v.state
@@ -3832,7 +4023,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_DataProfileResult); i {
 			case 0:
 				return &v.state
@@ -3844,7 +4035,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_DataQualityResult); i {
 			case 0:
 				return &v.state
@@ -3856,7 +4047,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_DataProfileAppliedConfigs); i {
 			case 0:
 				return &v.state
@@ -3868,7 +4059,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_DataQualityAppliedConfigs); i {
 			case 0:
 				return &v.state
@@ -3880,7 +4071,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_PostScanActionsResult); i {
 			case 0:
 				return &v.state
@@ -3892,7 +4083,7 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_dataplex_v1_logs_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DataScanEvent_PostScanActionsResult_BigQueryExportResult); i {
 			case 0:
 				return &v.state
@@ -3927,8 +4118,8 @@ func file_mockgcp_cloud_dataplex_v1_logs_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_mockgcp_cloud_dataplex_v1_logs_proto_rawDesc,
-			NumEnums:      19,
-			NumMessages:   23,
+			NumEnums:      20,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -22,38 +22,55 @@ const _ = grpc.SupportPackageIsVersion7
 // DataTaxonomyServiceClient is the client API for DataTaxonomyService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// Deprecated: Do not use.
 type DataTaxonomyServiceClient interface {
+	// Deprecated: Do not use.
 	// Create a DataTaxonomy resource.
 	CreateDataTaxonomy(ctx context.Context, in *CreateDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataTaxonomy resource.
 	UpdateDataTaxonomy(ctx context.Context, in *UpdateDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a DataTaxonomy resource. All attributes within the DataTaxonomy
 	// must be deleted before the DataTaxonomy can be deleted.
 	DeleteDataTaxonomy(ctx context.Context, in *DeleteDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists DataTaxonomy resources in a project and location.
 	ListDataTaxonomies(ctx context.Context, in *ListDataTaxonomiesRequest, opts ...grpc.CallOption) (*ListDataTaxonomiesResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a DataTaxonomy resource.
 	GetDataTaxonomy(ctx context.Context, in *GetDataTaxonomyRequest, opts ...grpc.CallOption) (*DataTaxonomy, error)
+	// Deprecated: Do not use.
 	// Create a DataAttributeBinding resource.
 	CreateDataAttributeBinding(ctx context.Context, in *CreateDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataAttributeBinding resource.
 	UpdateDataAttributeBinding(ctx context.Context, in *UpdateDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a DataAttributeBinding resource. All attributes within the
 	// DataAttributeBinding must be deleted before the DataAttributeBinding can be
 	// deleted.
 	DeleteDataAttributeBinding(ctx context.Context, in *DeleteDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists DataAttributeBinding resources in a project and location.
 	ListDataAttributeBindings(ctx context.Context, in *ListDataAttributeBindingsRequest, opts ...grpc.CallOption) (*ListDataAttributeBindingsResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a DataAttributeBinding resource.
 	GetDataAttributeBinding(ctx context.Context, in *GetDataAttributeBindingRequest, opts ...grpc.CallOption) (*DataAttributeBinding, error)
+	// Deprecated: Do not use.
 	// Create a DataAttribute resource.
 	CreateDataAttribute(ctx context.Context, in *CreateDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataAttribute resource.
 	UpdateDataAttribute(ctx context.Context, in *UpdateDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a Data Attribute resource.
 	DeleteDataAttribute(ctx context.Context, in *DeleteDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists Data Attribute resources in a DataTaxonomy.
 	ListDataAttributes(ctx context.Context, in *ListDataAttributesRequest, opts ...grpc.CallOption) (*ListDataAttributesResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a Data Attribute resource.
 	GetDataAttribute(ctx context.Context, in *GetDataAttributeRequest, opts ...grpc.CallOption) (*DataAttribute, error)
 }
@@ -62,10 +79,12 @@ type dataTaxonomyServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
+// Deprecated: Do not use.
 func NewDataTaxonomyServiceClient(cc grpc.ClientConnInterface) DataTaxonomyServiceClient {
 	return &dataTaxonomyServiceClient{cc}
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) CreateDataTaxonomy(ctx context.Context, in *CreateDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/CreateDataTaxonomy", in, out, opts...)
@@ -75,6 +94,7 @@ func (c *dataTaxonomyServiceClient) CreateDataTaxonomy(ctx context.Context, in *
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) UpdateDataTaxonomy(ctx context.Context, in *UpdateDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/UpdateDataTaxonomy", in, out, opts...)
@@ -84,6 +104,7 @@ func (c *dataTaxonomyServiceClient) UpdateDataTaxonomy(ctx context.Context, in *
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) DeleteDataTaxonomy(ctx context.Context, in *DeleteDataTaxonomyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/DeleteDataTaxonomy", in, out, opts...)
@@ -93,6 +114,7 @@ func (c *dataTaxonomyServiceClient) DeleteDataTaxonomy(ctx context.Context, in *
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) ListDataTaxonomies(ctx context.Context, in *ListDataTaxonomiesRequest, opts ...grpc.CallOption) (*ListDataTaxonomiesResponse, error) {
 	out := new(ListDataTaxonomiesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/ListDataTaxonomies", in, out, opts...)
@@ -102,6 +124,7 @@ func (c *dataTaxonomyServiceClient) ListDataTaxonomies(ctx context.Context, in *
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) GetDataTaxonomy(ctx context.Context, in *GetDataTaxonomyRequest, opts ...grpc.CallOption) (*DataTaxonomy, error) {
 	out := new(DataTaxonomy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy", in, out, opts...)
@@ -111,6 +134,7 @@ func (c *dataTaxonomyServiceClient) GetDataTaxonomy(ctx context.Context, in *Get
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) CreateDataAttributeBinding(ctx context.Context, in *CreateDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding", in, out, opts...)
@@ -120,6 +144,7 @@ func (c *dataTaxonomyServiceClient) CreateDataAttributeBinding(ctx context.Conte
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) UpdateDataAttributeBinding(ctx context.Context, in *UpdateDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding", in, out, opts...)
@@ -129,6 +154,7 @@ func (c *dataTaxonomyServiceClient) UpdateDataAttributeBinding(ctx context.Conte
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) DeleteDataAttributeBinding(ctx context.Context, in *DeleteDataAttributeBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding", in, out, opts...)
@@ -138,6 +164,7 @@ func (c *dataTaxonomyServiceClient) DeleteDataAttributeBinding(ctx context.Conte
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) ListDataAttributeBindings(ctx context.Context, in *ListDataAttributeBindingsRequest, opts ...grpc.CallOption) (*ListDataAttributeBindingsResponse, error) {
 	out := new(ListDataAttributeBindingsResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributeBindings", in, out, opts...)
@@ -147,6 +174,7 @@ func (c *dataTaxonomyServiceClient) ListDataAttributeBindings(ctx context.Contex
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) GetDataAttributeBinding(ctx context.Context, in *GetDataAttributeBindingRequest, opts ...grpc.CallOption) (*DataAttributeBinding, error) {
 	out := new(DataAttributeBinding)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding", in, out, opts...)
@@ -156,6 +184,7 @@ func (c *dataTaxonomyServiceClient) GetDataAttributeBinding(ctx context.Context,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) CreateDataAttribute(ctx context.Context, in *CreateDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttribute", in, out, opts...)
@@ -165,6 +194,7 @@ func (c *dataTaxonomyServiceClient) CreateDataAttribute(ctx context.Context, in 
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) UpdateDataAttribute(ctx context.Context, in *UpdateDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttribute", in, out, opts...)
@@ -174,6 +204,7 @@ func (c *dataTaxonomyServiceClient) UpdateDataAttribute(ctx context.Context, in 
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) DeleteDataAttribute(ctx context.Context, in *DeleteDataAttributeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttribute", in, out, opts...)
@@ -183,6 +214,7 @@ func (c *dataTaxonomyServiceClient) DeleteDataAttribute(ctx context.Context, in 
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) ListDataAttributes(ctx context.Context, in *ListDataAttributesRequest, opts ...grpc.CallOption) (*ListDataAttributesResponse, error) {
 	out := new(ListDataAttributesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributes", in, out, opts...)
@@ -192,6 +224,7 @@ func (c *dataTaxonomyServiceClient) ListDataAttributes(ctx context.Context, in *
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *dataTaxonomyServiceClient) GetDataAttribute(ctx context.Context, in *GetDataAttributeRequest, opts ...grpc.CallOption) (*DataAttribute, error) {
 	out := new(DataAttribute)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.dataplex.v1.DataTaxonomyService/GetDataAttribute", in, out, opts...)
@@ -204,38 +237,55 @@ func (c *dataTaxonomyServiceClient) GetDataAttribute(ctx context.Context, in *Ge
 // DataTaxonomyServiceServer is the server API for DataTaxonomyService service.
 // All implementations must embed UnimplementedDataTaxonomyServiceServer
 // for forward compatibility
+//
+// Deprecated: Do not use.
 type DataTaxonomyServiceServer interface {
+	// Deprecated: Do not use.
 	// Create a DataTaxonomy resource.
 	CreateDataTaxonomy(context.Context, *CreateDataTaxonomyRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataTaxonomy resource.
 	UpdateDataTaxonomy(context.Context, *UpdateDataTaxonomyRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a DataTaxonomy resource. All attributes within the DataTaxonomy
 	// must be deleted before the DataTaxonomy can be deleted.
 	DeleteDataTaxonomy(context.Context, *DeleteDataTaxonomyRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists DataTaxonomy resources in a project and location.
 	ListDataTaxonomies(context.Context, *ListDataTaxonomiesRequest) (*ListDataTaxonomiesResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a DataTaxonomy resource.
 	GetDataTaxonomy(context.Context, *GetDataTaxonomyRequest) (*DataTaxonomy, error)
+	// Deprecated: Do not use.
 	// Create a DataAttributeBinding resource.
 	CreateDataAttributeBinding(context.Context, *CreateDataAttributeBindingRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataAttributeBinding resource.
 	UpdateDataAttributeBinding(context.Context, *UpdateDataAttributeBindingRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a DataAttributeBinding resource. All attributes within the
 	// DataAttributeBinding must be deleted before the DataAttributeBinding can be
 	// deleted.
 	DeleteDataAttributeBinding(context.Context, *DeleteDataAttributeBindingRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists DataAttributeBinding resources in a project and location.
 	ListDataAttributeBindings(context.Context, *ListDataAttributeBindingsRequest) (*ListDataAttributeBindingsResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a DataAttributeBinding resource.
 	GetDataAttributeBinding(context.Context, *GetDataAttributeBindingRequest) (*DataAttributeBinding, error)
+	// Deprecated: Do not use.
 	// Create a DataAttribute resource.
 	CreateDataAttribute(context.Context, *CreateDataAttributeRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Updates a DataAttribute resource.
 	UpdateDataAttribute(context.Context, *UpdateDataAttributeRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deletes a Data Attribute resource.
 	DeleteDataAttribute(context.Context, *DeleteDataAttributeRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Lists Data Attribute resources in a DataTaxonomy.
 	ListDataAttributes(context.Context, *ListDataAttributesRequest) (*ListDataAttributesResponse, error)
+	// Deprecated: Do not use.
 	// Retrieves a Data Attribute resource.
 	GetDataAttribute(context.Context, *GetDataAttributeRequest) (*DataAttribute, error)
 	mustEmbedUnimplementedDataTaxonomyServiceServer()
@@ -299,6 +349,7 @@ type UnsafeDataTaxonomyServiceServer interface {
 	mustEmbedUnimplementedDataTaxonomyServiceServer()
 }
 
+// Deprecated: Do not use.
 func RegisterDataTaxonomyServiceServer(s grpc.ServiceRegistrar, srv DataTaxonomyServiceServer) {
 	s.RegisterService(&DataTaxonomyService_ServiceDesc, srv)
 }
