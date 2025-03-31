@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type EndpointPolicyIdentity struct {
 	parent *EndpointPolicyParent
-	id string
+	id     string
 }
 
 func (i *EndpointPolicyIdentity) String() string {
-	return  i.parent.String() + "/endpointpolicys/" + i.id
+	return i.parent.String() + "/endpointpolicys/" + i.id
 }
 
 func (i *EndpointPolicyIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *EndpointPolicyIdentity) ID() string {
 }
 
 func (i *EndpointPolicyIdentity) Parent() *EndpointPolicyParent {
-	return  i.parent
+	return i.parent
 }
 
 type EndpointPolicyParent struct {
@@ -51,7 +51,6 @@ type EndpointPolicyParent struct {
 func (p *EndpointPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a EndpointPolicyIdentity from the Config Connector EndpointPolicy object.
 func NewEndpointPolicyIdentity(ctx context.Context, reader client.Reader, obj *NetworkServicesEndpointPolicy) (*EndpointPolicyIdentity, error) {
