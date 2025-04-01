@@ -12,23 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
-import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-)
-
-var NetworkServicesEndpointPolicyGVK = GroupVersion.WithKind("NetworkServicesEndpointPolicy")
-
-\
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-...
+var NetworkServicesEndpointPolicyGVK = GroupVersion.WithKind("NetworkServicesEndpointPolicy")
 
 // NetworkServicesEndpointPolicySpec defines the desired state of NetworkServicesEndpointPolicy
 // +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
@@ -117,6 +109,14 @@ type NetworkServicesEndpointPolicyStatus struct {
 // NetworkServicesEndpointPolicyObservedState is the state of the NetworkServicesEndpointPolicy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
 type NetworkServicesEndpointPolicyObservedState struct {
+
+	// Output only. Create time stamp
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Update time stamp
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
