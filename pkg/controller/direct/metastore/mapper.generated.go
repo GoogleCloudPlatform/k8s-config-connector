@@ -564,7 +564,9 @@ func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
 		return nil
 	}
 	out := &pb.Secret{}
-	out.Value = &pb.Secret_CloudSecret{CloudSecret: in.CloudSecret.External}
+	if in.CloudSecret != nil && in.CloudSecret.External != "" {
+		out.Value = &pb.Secret_CloudSecret{CloudSecret: in.CloudSecret.External}
+	}
 	return out
 }
 func TelemetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.TelemetryConfig) *krm.TelemetryConfig {

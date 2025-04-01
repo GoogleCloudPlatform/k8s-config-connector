@@ -62,6 +62,8 @@ func metastoreServiceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".metadata_management_activity.restores")
 	f.UnimplementedFields.Insert(".network_config.consumers.endpoint_uri")
 	f.UnimplementedFields.Insert(".network_config.consumers.endpoint_location")
+	f.UnimplementedFields.Insert(".scaling_config.instance_size")
+	f.UnimplementedFields.Insert(".scaling_config.scaling_factor")
 
 	return f
 }
