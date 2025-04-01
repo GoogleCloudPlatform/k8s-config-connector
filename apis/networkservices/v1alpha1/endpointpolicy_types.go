@@ -21,9 +21,25 @@ import (
 
 var NetworkServicesEndpointPolicyGVK = GroupVersion.WithKind("NetworkServicesEndpointPolicy")
 
+\
+import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+...
+
 // NetworkServicesEndpointPolicySpec defines the desired state of NetworkServicesEndpointPolicy
 // +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
 type NetworkServicesEndpointPolicySpec struct {
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The location for the resource
+	// +required
+	Location string `json:"location"`
+
 	// Optional. Set of label tags associated with the EndpointPolicy resource.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.labels
 	Labels map[string]string `json:"labels,omitempty"`
