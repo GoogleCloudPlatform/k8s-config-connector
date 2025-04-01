@@ -20,50 +20,11 @@ package managedkafka
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
 func init() {
 	fuzztesting.RegisterKRMFuzzer(managedKafkaConsumerGroupFuzzer())
-}
-
-// Placeholder functions until the real ones are generated or implemented
-// Based on the KRM struct definitions and proto, there are no fields to map between Spec/Status and the Proto.
-func ManagedKafkaConsumerGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedKafkaConsumerGroupSpec{}
-	// No fields in KRM Spec map directly from the proto message. 'topics' is effectively read-only/status.
-	return out
-}
-
-func ManagedKafkaConsumerGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupSpec) *pb.ConsumerGroup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ConsumerGroup{}
-	// No fields in KRM Spec map directly to the proto message.
-	return out
-}
-
-func ManagedKafkaConsumerGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerGroup) *krm.ManagedKafkaConsumerGroupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ManagedKafkaConsumerGroupObservedState{}
-	// KRM ObservedState is empty. The 'topics' field from proto is not mapped here.
-	return out
-}
-
-func ManagedKafkaConsumerGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaConsumerGroupObservedState) *pb.ConsumerGroup {
-	if in == nil {
-		return nil
-	}
-	// KRM ObservedState is empty, so nothing maps back to the proto.
-	return &pb.ConsumerGroup{}
 }
 
 func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {
@@ -74,9 +35,6 @@ func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")   // special field, managed by KCC infrastructure
 	f.UnimplementedFields.Insert(".topics") // Optional field in proto, but not present in KRM spec or status
-
-	// No SpecFields mapped from proto
-	// No StatusFields mapped from proto
 
 	return f
 }
