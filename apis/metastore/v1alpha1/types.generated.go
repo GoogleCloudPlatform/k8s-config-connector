@@ -175,11 +175,11 @@ type MetadataExportObservedState struct {
 type MetadataManagementActivityObservedState struct {
 	// Output only. The latest metadata exports of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.metadata_exports
-	MetadataExports []MetadataExport `json:"metadataExports,omitempty"`
+	MetadataExports []MetadataExportObservedState `json:"metadataExports,omitempty"`
 
 	// Output only. The latest restores of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.restores
-	Restores []Restore `json:"restores,omitempty"`
+	Restores []RestoreObservedState `json:"restores,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.NetworkConfig

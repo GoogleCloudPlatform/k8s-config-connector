@@ -25,12 +25,9 @@ var MetastoreServiceGVK = GroupVersion.WithKind("MetastoreService")
 
 // +kcc:proto=google.cloud.metastore.v1.Secret
 type Secret struct {
-	// The relative resource name of a Secret Manager secret version, in the
-	//  following form:
-	//
-	//  `projects/{project_number}/secrets/{secret_id}/versions/{version_id}`.
+	// The relative resource name of a Secret Manager secret version
 	// +kcc:proto:field=google.cloud.metastore.v1.Secret.cloud_secret
-	CloudSecret *secretmanagerv1beta1.SecretRef `json:"cloudSecret,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretRef `json:"secretRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
@@ -41,7 +38,7 @@ type NetworkConfig_Consumer struct {
 	//  hosts in a subnet in the same region and same network. There must
 	//  be at least one IP address available in the subnet's primary range.
 	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.subnetwork
-	Subnetwork *refsv1beta1.ComputeSubnetworkRef `json:"subnetwork,omitempty"`
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.EncryptionConfig
@@ -49,7 +46,7 @@ type EncryptionConfig struct {
 	// The fully qualified customer provided Cloud KMS key name to use for
 	//  customer data encryption
 	// +kcc:proto:field=google.cloud.metastore.v1.EncryptionConfig.kms_key
-	KMSKey *refsv1beta1.KMSCryptoKeyRef `json:"kmsKey,omitempty"`
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // Parent defines the parent resource hierarchy.
@@ -178,7 +175,7 @@ type MetastoreServiceObservedState struct {
 	// Output only. The globally unique resource identifier of the metastore
 	//  service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.uid
-	Uid *string `json:"uid,omitempty"`
+	UID *string `json:"uid,omitempty"`
 
 	// Output only. The metadata management activities of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.metadata_management_activity

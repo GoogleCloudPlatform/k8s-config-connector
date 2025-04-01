@@ -78,7 +78,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krm.EncryptionConfig{}
-	out.KMSKey = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
@@ -86,7 +86,7 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	out.KmsKey = in.KMSKey.External
+	out.KmsKey = in.KMSKeyRef.External
 	return out
 }
 func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krm.HiveMetastoreConfig {
@@ -241,8 +241,8 @@ func MetadataManagementActivityObservedState_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.MetadataManagementActivityObservedState{}
-	out.MetadataExports = direct.Slice_FromProto(mapCtx, in.MetadataExports, MetadataExport_FromProto)
-	out.Restores = direct.Slice_FromProto(mapCtx, in.Restores, Restore_FromProto)
+	out.MetadataExports = direct.Slice_FromProto(mapCtx, in.MetadataExports, MetadataExportObservedState_FromProto)
+	out.Restores = direct.Slice_FromProto(mapCtx, in.Restores, RestoreObservedState_FromProto)
 	return out
 }
 func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataManagementActivityObservedState) *pb.MetadataManagementActivity {
@@ -250,8 +250,8 @@ func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, 
 		return nil
 	}
 	out := &pb.MetadataManagementActivity{}
-	out.MetadataExports = direct.Slice_ToProto(mapCtx, in.MetadataExports, MetadataExport_ToProto)
-	out.Restores = direct.Slice_ToProto(mapCtx, in.Restores, Restore_ToProto)
+	out.MetadataExports = direct.Slice_ToProto(mapCtx, in.MetadataExports, MetadataExportObservedState_ToProto)
+	out.Restores = direct.Slice_ToProto(mapCtx, in.Restores, RestoreObservedState_ToProto)
 	return out
 }
 func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationObservedState {
@@ -328,7 +328,7 @@ func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateMessage = direct.LazyPtr(in.GetStateMessage())
 	out.ArtifactGCSURI = direct.LazyPtr(in.GetArtifactGcsUri())
-	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UID = direct.LazyPtr(in.GetUid())
 	out.MetadataManagementActivity = MetadataManagementActivityObservedState_FromProto(mapCtx, in.GetMetadataManagementActivity())
 	out.NetworkConfig = NetworkConfigObservedState_FromProto(mapCtx, in.GetNetworkConfig())
 	return out
@@ -345,7 +345,7 @@ func MetastoreServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Me
 	out.State = direct.Enum_ToProto[pb.Service_State](mapCtx, in.State)
 	out.StateMessage = direct.ValueOf(in.StateMessage)
 	out.ArtifactGcsUri = direct.ValueOf(in.ArtifactGCSURI)
-	out.Uid = direct.ValueOf(in.Uid)
+	out.Uid = direct.ValueOf(in.UID)
 	out.MetadataManagementActivity = MetadataManagementActivityObservedState_ToProto(mapCtx, in.MetadataManagementActivity)
 	out.NetworkConfig = NetworkConfigObservedState_ToProto(mapCtx, in.NetworkConfig)
 	return out
@@ -433,7 +433,7 @@ func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkC
 		return nil
 	}
 	out := &krm.NetworkConfig_Consumer{}
-	out.Subnetwork = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+	out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	// MISSING: EndpointURI
 	// MISSING: EndpointLocation
 	return out
@@ -443,9 +443,9 @@ func NetworkConfig_Consumer_ToProto(mapCtx *direct.MapContext, in *krm.NetworkCo
 		return nil
 	}
 	out := &pb.NetworkConfig_Consumer{}
-	if in.Subnetwork != nil {
+	if in.SubnetworkRef != nil {
 		out.VpcResource = &pb.NetworkConfig_Consumer_Subnetwork{
-			Subnetwork: in.Subnetwork.External,
+			Subnetwork: in.SubnetworkRef.External,
 		}
 	}
 	// MISSING: EndpointURI
@@ -556,7 +556,7 @@ func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
 		return nil
 	}
 	out := &krm.Secret{}
-	out.CloudSecret = &secretmanagerv1beta1.SecretRef{External: in.GetCloudSecret()}
+	out.SecretRef = &secretmanagerv1beta1.SecretRef{External: in.GetCloudSecret()}
 	return out
 }
 func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
@@ -564,8 +564,8 @@ func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
 		return nil
 	}
 	out := &pb.Secret{}
-	if in.CloudSecret != nil && in.CloudSecret.External != "" {
-		out.Value = &pb.Secret_CloudSecret{CloudSecret: in.CloudSecret.External}
+	if in.SecretRef != nil && in.SecretRef.External != "" {
+		out.Value = &pb.Secret_CloudSecret{CloudSecret: in.SecretRef.External}
 	}
 	return out
 }

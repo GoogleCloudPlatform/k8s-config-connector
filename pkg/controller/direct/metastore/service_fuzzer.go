@@ -57,11 +57,9 @@ func metastoreServiceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".network_config")
 
 	f.UnimplementedFields.Insert(".name") // special field
+
+	// OneOf fields with null values trips up the fuzzer
 	f.UnimplementedFields.Insert(".hive_metastore_config.auxiliary_versions")
-	f.UnimplementedFields.Insert(".metadata_management_activity.metadata_exports")
-	f.UnimplementedFields.Insert(".metadata_management_activity.restores")
-	f.UnimplementedFields.Insert(".network_config.consumers.endpoint_uri")
-	f.UnimplementedFields.Insert(".network_config.consumers.endpoint_location")
 	f.UnimplementedFields.Insert(".scaling_config.instance_size")
 	f.UnimplementedFields.Insert(".scaling_config.scaling_factor")
 
