@@ -25,54 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-<<<<<<< HEAD
-func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkServicesServiceBindingObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-<<<<<<< HEAD
-=======
-func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkServicesServiceBindingSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Service = direct.LazyPtr(in.GetService())
-	out.Labels = in.Labels
-	return out
-}
-func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	out.Service = direct.ValueOf(in.Service)
-	out.Labels = in.Labels
-	return out
-}
-
-=======
->>>>>>> 65aed05aa (refactor resource API)
 func EndpointMatcher_FromProto(mapCtx *direct.MapContext, in *pb.EndpointMatcher) *krm.EndpointMatcher {
 	if in == nil {
 		return nil
@@ -143,4 +95,3 @@ func TrafficPortSelector_ToProto(mapCtx *direct.MapContext, in *krm.TrafficPortS
 	out.Ports = in.Ports
 	return out
 }
->>>>>>> ac113f041 (conductor: "Generated types and mapper for NetworkServicesEndpointPolicy")

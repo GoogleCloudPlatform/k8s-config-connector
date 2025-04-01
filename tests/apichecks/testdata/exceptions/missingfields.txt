@@ -3023,6 +3023,9 @@
 [missing_field] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverCertificate.grpcEndpoint.targetUri" is not set in unstructured objects
+[missing_field] crd=networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.authorizationPolicy" is not set in unstructured objects
+[missing_field] crd=networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.clientTLSPolicy" is not set in unstructured objects
+[missing_field] crd=networkservicesendpointpolicies.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.serverTLSPolicy" is not set in unstructured objects
 [missing_field] crd=networkservicesgateways.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.addresses[]" is not set in unstructured objects
 [missing_field] crd=networkservicesgrpcroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.gateways[].external" is not set in unstructured objects
 [missing_field] crd=networkservicesgrpcroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.gateways[].namespace" is not set in unstructured objects

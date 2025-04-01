@@ -63,14 +63,8 @@
 ### Spec
 #### Schema
 ```yaml
-authorizationPolicyRef:
-  external: string
-  name: string
-  namespace: string
-clientTlsPolicyRef:
-  external: string
-  name: string
-  namespace: string
+authorizationPolicy: string
+clientTLSPolicy: string
 description: string
 endpointMatcher:
   metadataLabelMatcher:
@@ -78,16 +72,16 @@ endpointMatcher:
     metadataLabels:
     - labelName: string
       labelValue: string
+labels:
+  string: string
 location: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
-serverTlsPolicyRef:
-  external: string
-  name: string
-  namespace: string
+serverTLSPolicy: string
 trafficPortSelector:
   ports:
   - string
@@ -103,86 +97,22 @@ type: string
 <tbody>
     <tr>
         <td>
-            <p><code>authorizationPolicyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>authorizationPolicyRef.external</code></p>
+            <p><code>authorizationPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. This field specifies the URL of AuthorizationPolicy resource that applies authorization policies to the inbound traffic at the matched endpoints. Refer to Authorization. If this field is not specified, authorization is disabled(no authz checks) for this endpoint.
-
-Allowed value: The Google Cloud resource name of a `NetworkSecurityAuthorizationPolicy` resource (format: `projects/{{project}}/locations/{{location}}/authorizationPolicies/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. This field specifies the URL of AuthorizationPolicy resource that applies authorization policies to the inbound traffic at the matched endpoints. Refer to Authorization. If this field is not specified, authorization is disabled(no authz checks) for this endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>authorizationPolicyRef.name</code></p>
+            <p><code>clientTLSPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>authorizationPolicyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>clientTlsPolicyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>clientTlsPolicyRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy can be set to specify the authentication for traffic from the proxy to the actual endpoints. More specifically, it is applied to the outgoing traffic from the proxy to the endpoint. This is typically used for sidecar model where the proxy identifies itself as endpoint to the control plane, with the connection between sidecar and endpoint requiring authentication. If this field is not set, authentication is disabled(open). Applicable only when EndpointPolicyType is SIDECAR_PROXY.
-
-Allowed value: The Google Cloud resource name of a `NetworkSecurityClientTLSPolicy` resource (format: `projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{name}}`).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>clientTlsPolicyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>clientTlsPolicyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy can be set to specify the authentication for traffic from the proxy to the actual endpoints. More specifically, it is applied to the outgoing traffic from the proxy to the endpoint. This is typically used for sidecar model where the proxy identifies itself as endpoint to the control plane, with the connection between sidecar and endpoint requiring authentication. If this field is not set, authentication is disabled(open). Applicable only when EndpointPolicyType is SIDECAR_PROXY.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -222,7 +152,32 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityClientTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Specifies how matching should be done. Supported values are: MATCH_ANY: At least one of the Labels specified in the matcher should match the metadata presented by xDS client. MATCH_ALL: The metadata presented by the xDS client should contain all of the labels specified here. The selection is determined based on the best match. For example, suppose there are three EndpointPolicy resources P1, P2 and P3 and if P1 has a the matcher as MATCH_ANY , P2 has MATCH_ALL , and P3 has MATCH_ALL . If a client with label connects, the config from P1 will be selected. If a client with label connects, the config from P2 will be selected. If a client with label connects, the config from P3 will be selected. If there is more than one best match, (for example, if a config P4 with selector exists and if a client with label connects), an error will be thrown. Possible values: METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED, MATCH_ANY, MATCH_ALL{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies how matching should be done.
+
+ Supported values are:
+ MATCH_ANY: At least one of the Labels specified in the
+   matcher should match the metadata presented by xDS client.
+ MATCH_ALL: The metadata presented by the xDS client should
+   contain all of the labels specified here.
+
+ The selection is determined based on the best match. For
+ example, suppose there are three EndpointPolicy
+ resources P1, P2 and P3 and if P1 has a the matcher as
+ MATCH_ANY <A:1, B:1>, P2 has MATCH_ALL <A:1,B:1>, and P3 has
+ MATCH_ALL <A:1,B:1,C:1>.
+
+ If a client with label <A:1> connects, the config from P1
+ will be selected.
+
+ If a client with label <A:1,B:1> connects, the config from P2
+ will be selected.
+
+ If a client with label <A:1,B:1,C:1> connects, the config
+ from P3 will be selected.
+
+ If there is more than one best match, (for example, if a
+ config P4 with selector <A:1,D:1> exists and if a client with
+ label <A:1,B:1,D:1> connects), an error will be thrown.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -267,22 +222,32 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityClientTLSPoli
     </tr>
     <tr>
         <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. Set of label tags associated with the EndpointPolicy resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>location</code></p>
             <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource{% endverbatim %}</p>
+            <p>{% verbatim %}The location for the resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The Project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The Project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -292,9 +257,17 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityClientTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project for the resource
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -304,7 +277,7 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -314,59 +287,27 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>resourceID</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The NetworkServicesEndpointPolicy name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>serverTlsPolicyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>serverTlsPolicyRef.external</code></p>
+            <p><code>serverTLSPolicy</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is used to determine the authentication policy to be applied to terminate the inbound traffic at the identified backends. If this field is not set, authentication is disabled(open) for this endpoint.
-
-Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPolicy` resource (format: `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{name}}`).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>serverTlsPolicyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>serverTlsPolicyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is used to determine the authentication policy to be applied to terminate the inbound traffic at the identified backends. If this field is not set, authentication is disabled(open) for this endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -386,7 +327,7 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A list of ports. Can be port numbers or port range (example, specifies all ports from 80 to 90, including 80 and 90) or named ports or * to specify all ports. If the list is empty, all ports are selected.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A list of ports. Can be port numbers or port range (example, [80-90] specifies all ports from 80 to 90, including 80 and 90) or named ports or * to specify all ports. If the list is empty, all ports are selected.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -406,7 +347,7 @@ Allowed value: The Google Cloud resource name of a `NetworkSecurityServerTLSPoli
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The type of endpoint config. This is primarily used to validate the configuration. Possible values: ENDPOINT_CONFIG_SELECTOR_TYPE_UNSPECIFIED, SIDECAR_PROXY, GRPC_SERVER{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The type of endpoint policy. This is primarily used to validate the configuration.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -425,9 +366,11 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
+externalRef: string
 observedGeneration: integer
-updateTime: string
+observedState:
+  createTime: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -441,7 +384,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -487,10 +430,10 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The timestamp when the resource was created.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the NetworkServicesEndpointPolicy resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -501,10 +444,24 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The timestamp when the resource was updated.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Create time stamp{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Update time stamp{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

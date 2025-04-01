@@ -18,7 +18,7 @@ spec:
     plural: networkservicesendpointpolicies
     shortNames:
     - gcpnetworkservicesendpointpolicy
-    - gcpnetworkservicesendpointpolicys
+    - gcpnetworkservicesendpointpolicies
     singular: networkservicesendpointpolicy
   preserveUnknownFields: false
   scope: Namespaced
