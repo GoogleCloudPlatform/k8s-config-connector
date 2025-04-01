@@ -15,15 +15,28 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var IAMPolicyBindingGVK = GroupVersion.WithKind("IAMPolicyBinding")
 
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// +optional
+	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+	// +optional
+	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+}
+
 // IAMPolicyBindingSpec defines the desired state of IAMPolicyBinding
 // +kcc:proto=google.iam.v3.PolicyBinding
 type IAMPolicyBindingSpec struct {
+	Parent `json:",inline"`
 	// The IAMPolicyBinding name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
