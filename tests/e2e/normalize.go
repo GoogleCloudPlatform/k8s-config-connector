@@ -1037,6 +1037,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".stateTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// spanner
+	visitor.replacePaths[".metadata.progress.startTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.instanceConfig.etag"] = "abcdef0123A"
+
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		// Deprecated: try to move these into mockgcp normalizers

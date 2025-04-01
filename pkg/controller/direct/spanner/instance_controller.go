@@ -30,7 +30,6 @@ import (
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
 	spannerpb "cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -66,26 +65,13 @@ func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bo
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelSpannerInstance{config: *config}, nil
+	return &modelSpannerInstance{config: config}, nil
 }
 
 var _ directbase.Model = &modelSpannerInstance{}
 
 type modelSpannerInstance struct {
-	config config.ControllerConfig
-}
-
-func (m *modelSpannerInstance) client(ctx context.Context) (*gcp.InstanceAdminClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewInstanceAdminRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building Instance client: %w", err)
-	}
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -100,10 +86,15 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 	}
 
 	// Get spanner GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
+	instanceClient, err := gcpClient.newInstanceAdminClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -113,7 +104,7 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 	}
 	return &SpannerInstanceAdapter{
 		id:        id,
-		gcpClient: gcpClient,
+		gcpClient: instanceClient,
 		desired:   obj,
 	}, nil
 }
