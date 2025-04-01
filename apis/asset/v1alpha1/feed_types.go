@@ -24,12 +24,9 @@ var AssetFeedGVK = GroupVersion.WithKind("AssetFeed")
 
 // Parent defines the parent field for AssetFeed
 type AssetFeedParent struct {
-	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
-	// +optional
+	ProjectRef      *refv1beta1.ProjectRef      `json:"projectRef,omitempty"`
 	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
-	// +optional
-	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	FolderRef       *refv1beta1.FolderRef       `json:"folderRef,omitempty"`
 }
 
 // AssetFeedSpec defines the desired state of AssetFeed
