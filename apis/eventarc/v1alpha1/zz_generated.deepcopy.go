@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	v1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -194,7 +195,7 @@ func (in *EventarcChannelSpec) DeepCopyInto(out *EventarcChannelSpec) {
 	}
 	if in.Provider != nil {
 		in, out := &in.Provider, &out.Provider
-		*out = new(string)
+		*out = new(v1.ProviderRef)
 		**out = **in
 	}
 	if in.KmsKeyRef != nil {

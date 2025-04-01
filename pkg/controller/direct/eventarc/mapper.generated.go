@@ -21,6 +21,7 @@ package eventarc
 
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
+	connectorv1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -78,17 +79,26 @@ func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *k
 	}
 	out := &krm.EventarcChannelSpec{}
 	// MISSING: Name
-	out.Provider = direct.LazyPtr(in.GetProvider())
+	// Provider is a ProviderRef struct in the KRM type, not a string
+	if provider := in.GetProvider(); provider != "" {
+		out.Provider = &connectorv1.ProviderRef{
+			External: provider,
+		}
+	}
 	// MISSING: CryptoKeyName
 	return out
 }
+
 func EventarcChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelSpec) *pb.Channel {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Channel{}
 	// MISSING: Name
-	out.Provider = direct.ValueOf(in.Provider)
+	// Extract the string value from the ProviderRef
+	if in.Provider != nil {
+		out.Provider = in.Provider.External
+	}
 	// MISSING: CryptoKeyName
 	return out
 }

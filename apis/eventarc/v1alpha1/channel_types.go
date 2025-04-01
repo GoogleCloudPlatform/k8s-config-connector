@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	connectorsv1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -38,10 +39,9 @@ type EventarcChannelSpec struct {
 
 	// The name of the event provider (e.g. Eventarc SaaS partner) associated
 	// with the channel. This provider will be granted permissions to publish
-	// events to the channel. Format:
-	// `projects/{project}/locations/{location}/providers/{provider_id}`.
+	// events to the channel.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *connectorsv1.ProviderRef `json:"provider,omitempty"`
 
 	// Resource name of a KMS crypto key (managed by the user) used to
 	// encrypt/decrypt their event data.

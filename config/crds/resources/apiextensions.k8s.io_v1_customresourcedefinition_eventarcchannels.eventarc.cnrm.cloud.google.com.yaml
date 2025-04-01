@@ -127,10 +127,35 @@ spec:
                     type: string
                 type: object
               provider:
-                description: 'The name of the event provider (e.g. Eventarc SaaS partner)
+                description: The name of the event provider (e.g. Eventarc SaaS partner)
                   associated with the channel. This provider will be granted permissions
-                  to publish events to the channel. Format: `projects/{project}/locations/{location}/providers/{provider_id}`.'
-                type: string
+                  to publish events to the channel.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed EventarcChannel
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/channels/{{channelID}}".
+                    type: string
+                  name:
+                    description: The name of a Provider resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a Provider resource.
+                    type: string
+                type: object
               resourceID:
                 description: The EventarcChannel name. If not given, the metadata.name
                   will be used.
