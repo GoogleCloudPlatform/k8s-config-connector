@@ -24,7 +24,58 @@ var NetworkServicesEndpointPolicyGVK = GroupVersion.WithKind("NetworkServicesEnd
 // NetworkServicesEndpointPolicySpec defines the desired state of NetworkServicesEndpointPolicy
 // +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
 type NetworkServicesEndpointPolicySpec struct {
+	// Optional. Set of label tags associated with the EndpointPolicy resource.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. The type of endpoint policy. This is primarily used to validate
+	//  the configuration.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.type
+	Type *string `json:"type"` // NOTE: Marked required based on proto comment
+
+	// Optional. This field specifies the URL of AuthorizationPolicy resource that
+	//  applies authorization policies to the inbound traffic at the
+	//  matched endpoints. Refer to Authorization. If this field is not
+	//  specified, authorization is disabled(no authz checks) for this
+	//  endpoint.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.authorization_policy
+	AuthorizationPolicy *string `json:"authorizationPolicy,omitempty"`
+
+	// Required. A matcher that selects endpoints to which the policies should be
+	//  applied.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.endpoint_matcher
+	EndpointMatcher *EndpointMatcher `json:"endpointMatcher"` // NOTE: Marked required based on proto comment
+
+	// Optional. Port selector for the (matched) endpoints. If no port selector is
+	//  provided, the matched config is applied to all ports.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.traffic_port_selector
+	TrafficPortSelector *TrafficPortSelector `json:"trafficPortSelector,omitempty"`
+
+	// Optional. A free-text description of the resource. Max length 1024
+	//  characters.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is
+	//  used to determine the authentication policy to be applied to terminate the
+	//  inbound traffic at the identified backends. If this field is not set,
+	//  authentication is disabled(open) for this endpoint.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.server_tls_policy
+	ServerTLSPolicy *string `json:"serverTLSPolicy,omitempty"`
+
+	// Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy
+	//  can be set to specify the authentication for traffic from the proxy to the
+	//  actual endpoints. More specifically, it is applied to the outgoing traffic
+	//  from the proxy to the endpoint. This is typically used for sidecar model
+	//  where the proxy identifies itself as endpoint to the control plane, with
+	//  the connection between sidecar and endpoint requiring authentication. If
+	//  this field is not set, authentication is disabled(open). Applicable only
+	//  when EndpointPolicyType is SIDECAR_PROXY.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.client_tls_policy
+	ClientTLSPolicy *string `json:"clientTLSPolicy,omitempty"`
+
 	// The NetworkServicesEndpointPolicy name. If not given, the metadata.name will be used.
+	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.name,resource_name=true
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
