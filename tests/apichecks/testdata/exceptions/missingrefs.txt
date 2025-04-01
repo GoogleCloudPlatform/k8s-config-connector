@@ -78,6 +78,9 @@
 [refs] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
 [refs] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyRing" should be a reference
 [refs] crd=kmssecretciphertexts.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cryptoKey" should be a reference
+[refs] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.keytab.cloudSecret" should be a reference
+[refs] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.kerberosConfig.keytab.cloudSecret.external" should be a reference
+[refs] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.consumers[].subnetwork.external" should be a reference
 [refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.source" should be a reference
 [refs] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field ".spec.migration.target" should be a reference
 [refs] crd=orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
