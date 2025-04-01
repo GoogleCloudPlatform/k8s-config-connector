@@ -22,11 +22,26 @@ import (
 
 var ManagedKafkaConsumerGroupGVK = GroupVersion.WithKind("ManagedKafkaConsumerGroup")
 
+type ClusterRef struct {
+	// +required
+	Name string `json:"name"`
+}
+
 // ManagedKafkaConsumerGroupSpec defines the desired state of ManagedKafkaConsumerGroup
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
 type ManagedKafkaConsumerGroupSpec struct {
+	Parent Parent `json:",inline"`
 	// The ManagedKafkaConsumerGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type Parent struct {
+	// +required
+	Location string `json:"location"`
+	// +required
+	ClusterRef *refv1beta1.ClusterRef `json:"clusterRef"`
+	// +optional
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // ManagedKafkaConsumerGroupStatus defines the config connector machine state of ManagedKafkaConsumerGroup
