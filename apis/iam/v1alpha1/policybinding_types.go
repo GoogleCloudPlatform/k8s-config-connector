@@ -59,6 +59,7 @@ type IAMPolicyBindingSpec struct {
 	// Required. Immutable. Target is the full resource name of the resource to
 	//  which the policy will be bound. Immutable once set.
 	// +kcc:proto:field=google.iam.v3.PolicyBinding.target
+	//+required
 	Target *PolicyBinding_Target `json:"target,omitempty"`
 
 	// Immutable. The kind of the policy to attach in this binding. This field
@@ -73,6 +74,7 @@ type IAMPolicyBindingSpec struct {
 	//  binding parent and policy must belong to the same Organization (or
 	//  Project).
 	// +kcc:proto:field=google.iam.v3.PolicyBinding.policy
+	//+required
 	Policy *string `json:"policy,omitempty"`
 
 	// Optional. Condition can either be a principal condition or a resource
