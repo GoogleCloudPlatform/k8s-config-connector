@@ -171,7 +171,12 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 // PubSubSnapshot does not support update.
 func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	return fmt.Errorf("update pubsub snapshot is not supported")
+	// no-op, just update obj status
+	updated := a.actual
+	status := &krm.PubSubSnapshotStatus{}
+	externalRef := updated.GetName()
+	status.ExternalRef = direct.LazyPtr(externalRef)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *snapshotAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
