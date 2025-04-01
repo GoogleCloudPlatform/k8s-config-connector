@@ -25,7 +25,9 @@ package v1alpha1
 type ConsumerPartitionMetadata struct {
 	// Required. The current offset for this partition, or 0 if no offset has been
 	//  committed.
+	//+required
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.offset
+	//+required
 	Offset *int64 `json:"offset,omitempty"`
 
 	// Optional. The associated metadata for this partition, or empty if it does

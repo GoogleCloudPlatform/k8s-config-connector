@@ -45,6 +45,7 @@ type ManagedKafkaConsumerGroupSpec struct {
 
 type Parent struct {
 	// +required
+	// +required
 	Location string `json:"location"`
 	// +required
 	ClusterRef *refv1beta1.ClusterRef `json:"clusterRef"`
