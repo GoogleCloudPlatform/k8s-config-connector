@@ -32,7 +32,7 @@ type EndpointPolicyIdentity struct {
 }
 
 func (i *EndpointPolicyIdentity) String() string {
-	return i.parent.String() + "/endpointpolicys/" + i.id
+	return i.parent.String() + "/endpointPolicies/" + i.id
 }
 
 func (i *EndpointPolicyIdentity) ID() string {
@@ -43,6 +43,7 @@ func (i *EndpointPolicyIdentity) Parent() *EndpointPolicyParent {
 	return i.parent
 }
 
+// No changes needed, structure matches proto definition.
 type EndpointPolicyParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewEndpointPolicyIdentity(ctx context.Context, reader client.Reader, obj *N
 
 func ParseEndpointPolicyExternal(external string) (parent *EndpointPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "endpointpolicys" {
-		return nil, "", fmt.Errorf("format of NetworkServicesEndpointPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/endpointpolicys/{{endpointpolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "endpointPolicies" {
+		return nil, "", fmt.Errorf("format of NetworkServicesEndpointPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/endpointPolicies/{{endpointpolicyID}})", external)
 	}
 	parent = &EndpointPolicyParent{
 		ProjectID: tokens[1],
