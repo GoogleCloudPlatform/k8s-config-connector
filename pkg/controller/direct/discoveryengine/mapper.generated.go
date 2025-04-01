@@ -38,7 +38,7 @@ func DataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStor
 	// MISSING: ContentConfig
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.LanguageInfo = LanguageInfoObservedState_FromProto(mapCtx, in.GetLanguageInfo())
-	out.IdpConfig = IdpConfig_FromProto(mapCtx, in.GetIdpConfig())
+	// MISSING: IdpConfig
 	// MISSING: AclEnabled
 	// MISSING: WorkspaceConfig
 	// MISSING: DocumentProcessingConfig
@@ -58,7 +58,7 @@ func DataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.D
 	// MISSING: ContentConfig
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.LanguageInfo = LanguageInfoObservedState_ToProto(mapCtx, in.LanguageInfo)
-	out.IdpConfig = IdpConfig_ToProto(mapCtx, in.IdpConfig)
+	// MISSING: IdpConfig
 	// MISSING: AclEnabled
 	// MISSING: WorkspaceConfig
 	// MISSING: DocumentProcessingConfig
@@ -243,52 +243,6 @@ func Engine_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Engine) *pb.Engin
 	out.SolutionType = direct.Enum_ToProto[pb.SolutionType](mapCtx, in.SolutionType)
 	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
 	out.CommonConfig = Engine_CommonConfig_ToProto(mapCtx, in.CommonConfig)
-	return out
-}
-func EngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmv1alpha1.EngineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.EngineObservedState{}
-	// MISSING: SimilarDocumentsConfig
-	// MISSING: ChatEngineConfig
-	// MISSING: SearchEngineConfig
-	// MISSING: MediaRecommendationEngineConfig
-	// out.RecommendationMetadata = Engine_RecommendationMetadata_FromProto(mapCtx, in.GetRecommendationMetadata())
-	// out.ChatEngineMetadata = Engine_ChatEngineMetadata_FromProto(mapCtx, in.GetChatEngineMetadata())
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: DataStoreIds
-	// MISSING: SolutionType
-	// MISSING: IndustryVertical
-	// MISSING: CommonConfig
-	return out
-}
-func EngineObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EngineObservedState) *pb.Engine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Engine{}
-	// MISSING: SimilarDocumentsConfig
-	// MISSING: ChatEngineConfig
-	// MISSING: SearchEngineConfig
-	// MISSING: MediaRecommendationEngineConfig
-	// if oneof := Engine_RecommendationMetadata_ToProto(mapCtx, in.RecommendationMetadata); oneof != nil {
-	// 	out.EngineMetadata = &pb.Engine_RecommendationMetadata_{RecommendationMetadata: oneof}
-	// }
-	// if oneof := Engine_ChatEngineMetadata_ToProto(mapCtx, in.ChatEngineMetadata); oneof != nil {
-	// 	out.EngineMetadata = &pb.Engine_ChatEngineMetadata_{ChatEngineMetadata: oneof}
-	// }
-	// MISSING: Name
-	// MISSING: DisplayName
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: DataStoreIds
-	// MISSING: SolutionType
-	// MISSING: IndustryVertical
-	// MISSING: CommonConfig
 	return out
 }
 func Engine_ChatEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krmv1alpha1.Engine_ChatEngineConfig {

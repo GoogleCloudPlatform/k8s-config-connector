@@ -82,11 +82,6 @@ func (in *DataStoreObservedState) DeepCopyInto(out *DataStoreObservedState) {
 		*out = new(LanguageInfoObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.IdpConfig != nil {
-		in, out := &in.IdpConfig, &out.IdpConfig
-		*out = new(IdpConfig)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.StartingSchema != nil {
 		in, out := &in.StartingSchema, &out.StartingSchema
 		*out = new(SchemaObservedState)
@@ -271,6 +266,11 @@ func (in *DiscoveryEngineDataStoreSpec) DeepCopyInto(out *DiscoveryEngineDataSto
 		in, out := &in.ContentConfig, &out.ContentConfig
 		*out = new(string)
 		**out = **in
+	}
+	if in.IdpConfig != nil {
+		in, out := &in.IdpConfig, &out.IdpConfig
+		*out = new(IdpConfig)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.LanguageInfo != nil {
 		in, out := &in.LanguageInfo, &out.LanguageInfo

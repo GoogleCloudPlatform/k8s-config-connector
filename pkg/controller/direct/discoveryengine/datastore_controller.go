@@ -186,6 +186,7 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.PtrTo(a.id.String())
+
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -196,12 +197,10 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	desired := direct.ProtoClone(a.desired)
 	desired.Name = a.id.String()
 
-	// TODO(user): Update the field if applicable.
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil

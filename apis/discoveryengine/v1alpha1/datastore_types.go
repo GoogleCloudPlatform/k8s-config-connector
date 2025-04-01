@@ -74,6 +74,10 @@ type DiscoveryEngineDataStoreSpec struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.content_config
 	ContentConfig *string `json:"contentConfig,omitempty"`
 
+	// Data store level identity provider config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.idp_config
+	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
+
 	// Language info for DataStore.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.language_info
 	LanguageInfo *LanguageInfo `json:"languageInfo,omitempty"`
@@ -147,10 +151,6 @@ type DataStoreObservedState struct {
 	// Language info for DataStore.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.language_info
 	LanguageInfo *LanguageInfoObservedState `json:"languageInfo,omitempty"`
-
-	// Output only. Data store level identity provider config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.idp_config
-	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
 
 	// The start schema to use for this
 	//  [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] when

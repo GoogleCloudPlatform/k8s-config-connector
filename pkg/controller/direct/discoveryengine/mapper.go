@@ -108,11 +108,30 @@ func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Da
 	out.ContentConfig = direct.Enum_FromProto(mapCtx, in.GetContentConfig())
 	// MISSING: CreateTime
 	out.LanguageInfo = LanguageInfo_FromProto(mapCtx, in.GetLanguageInfo())
-	// MISSING: IdpConfig
 	out.AclEnabled = direct.LazyPtr(in.GetAclEnabled())
+	out.IdpConfig = IDPConfig_FromProto(mapCtx, in.GetIdpConfig())
 	out.WorkspaceConfig = WorkspaceConfig_FromProto(mapCtx, in.GetWorkspaceConfig())
 	// MISSING: DocumentProcessingConfig
 	out.StartingSchema = Schema_FromProto(mapCtx, in.GetStartingSchema())
+	return out
+}
+
+func IDPConfig_FromProto(mapCtx *direct.MapContext, in *pb.IdpConfig) *krmv1alpha1.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.IdpConfig{}
+	out.IdpType = direct.Enum_FromProto(mapCtx, in.GetIdpType())
+	out.ExternalIdpConfig = ExternalIdpConfig_FromProto(mapCtx, in.GetExternalIdpConfig())
+	return out
+}
+
+func ExternalIdpConfig_FromProto(mapCtx *direct.MapContext, in *pb.IdpConfig_ExternalIdpConfig) *krmv1alpha1.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = direct.LazyPtr(in.GetWorkforcePoolName())
 	return out
 }
 func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DiscoveryEngineDataStoreSpec) *pb.DataStore {
@@ -128,11 +147,29 @@ func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1al
 	out.ContentConfig = direct.Enum_ToProto[pb.DataStore_ContentConfig](mapCtx, in.ContentConfig)
 	// MISSING: CreateTime
 	out.LanguageInfo = LanguageInfo_ToProto(mapCtx, in.LanguageInfo)
-	// MISSING: IdpConfig
+	out.IdpConfig = IDPConfig_ToProto(mapCtx, in.IdpConfig)
 	out.AclEnabled = direct.ValueOf(in.AclEnabled)
 	out.WorkspaceConfig = WorkspaceConfig_ToProto(mapCtx, in.WorkspaceConfig)
 	// MISSING: DocumentProcessingConfig
 	out.StartingSchema = Schema_ToProto(mapCtx, in.StartingSchema)
+	return out
+}
+func IDPConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IdpConfig) *pb.IdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IdpConfig{}
+	out.IdpType = direct.Enum_ToProto[pb.IdpConfig_IdpType](mapCtx, in.IdpType)
+	out.ExternalIdpConfig = ExternalIdpConfig_ToProto(mapCtx, in.ExternalIdpConfig)
+	return out
+}
+
+func ExternalIdpConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IdpConfig_ExternalIdpConfig) *pb.IdpConfig_ExternalIdpConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IdpConfig_ExternalIdpConfig{}
+	out.WorkforcePoolName = *in.WorkforcePoolName
 	return out
 }
 
@@ -156,5 +193,52 @@ func DataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discover
 	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedURIPattern)
 	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
 	out.ExactMatch = direct.ValueOf(in.ExactMatch)
+	return out
+}
+
+func EngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmv1alpha1.EngineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EngineObservedState{}
+	// MISSING: SimilarDocumentsConfig
+	// MISSING: ChatEngineConfig
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// out.RecommendationMetadata = Engine_RecommendationMetadata_FromProto(mapCtx, in.GetRecommendationMetadata())
+	// out.ChatEngineMetadata = Engine_ChatEngineMetadata_FromProto(mapCtx, in.GetChatEngineMetadata())
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	// MISSING: IndustryVertical
+	// MISSING: CommonConfig
+	return out
+}
+func EngineObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EngineObservedState) *pb.Engine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine{}
+	// MISSING: SimilarDocumentsConfig
+	// MISSING: ChatEngineConfig
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// if oneof := Engine_RecommendationMetadata_ToProto(mapCtx, in.RecommendationMetadata); oneof != nil {
+	// 	out.EngineMetadata = &pb.Engine_RecommendationMetadata_{RecommendationMetadata: oneof}
+	// }
+	// if oneof := Engine_ChatEngineMetadata_ToProto(mapCtx, in.ChatEngineMetadata); oneof != nil {
+	// 	out.EngineMetadata = &pb.Engine_ChatEngineMetadata_{ChatEngineMetadata: oneof}
+	// }
+	// MISSING: Name
+	// MISSING: DisplayName
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	// MISSING: IndustryVertical
+	// MISSING: CommonConfig
 	return out
 }
