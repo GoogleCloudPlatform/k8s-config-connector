@@ -20,11 +20,19 @@
 package metastore
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"fmt"
+	"strconv"
+
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
+	"google.golang.org/protobuf/types/known/wrapperspb"
+	"k8s.io/klog"
 )
+
 func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krm.AuxiliaryVersionConfig {
 	if in == nil {
 		return nil
@@ -50,7 +58,9 @@ func BackendMetastore_FromProto(mapCtx *direct.MapContext, in *pb.BackendMetasto
 		return nil
 	}
 	out := &krm.BackendMetastore{}
-	// MISSING: Name
+	out.ServiceRef = &krm.ServiceRef{
+		External: in.GetName(),
+	}
 	out.MetastoreType = direct.Enum_FromProto(mapCtx, in.GetMetastoreType())
 	return out
 }
@@ -59,7 +69,7 @@ func BackendMetastore_ToProto(mapCtx *direct.MapContext, in *krm.BackendMetastor
 		return nil
 	}
 	out := &pb.BackendMetastore{}
-	// MISSING: Name
+	out.Name = in.ServiceRef.External
 	out.MetastoreType = direct.Enum_ToProto[pb.BackendMetastore_MetastoreType](mapCtx, in.MetastoreType)
 	return out
 }
@@ -68,7 +78,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krm.EncryptionConfig{}
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	out.KMSKey = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
@@ -76,7 +86,7 @@ func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfi
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	out.KMSKey = EncryptionConfig_KmsKey_ToProto(mapCtx, in.KMSKey)
+	out.KmsKey = in.KMSKey.External
 	return out
 }
 func HiveMetastoreConfig_FromProto(mapCtx *direct.MapContext, in *pb.HiveMetastoreConfig) *krm.HiveMetastoreConfig {
@@ -128,8 +138,13 @@ func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWi
 		return nil
 	}
 	out := &krm.MaintenanceWindow{}
-	out.HourOfDay = Int32Value_FromProto(mapCtx, in.GetHourOfDay())
-	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
+	if in.GetHourOfDay() != nil {
+		value := in.GetHourOfDay().GetValue()
+		out.HourOfDay = &krm.Int32Value{
+			Value: &value,
+		}
+	}
+	out.DayOfWeek = direct.LazyPtr(in.GetDayOfWeek().String())
 	return out
 }
 func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWindow) *pb.MaintenanceWindow {
@@ -137,8 +152,18 @@ func MaintenanceWindow_ToProto(mapCtx *direct.MapContext, in *krm.MaintenanceWin
 		return nil
 	}
 	out := &pb.MaintenanceWindow{}
-	out.HourOfDay = Int32Value_ToProto(mapCtx, in.HourOfDay)
-	out.DayOfWeek = direct.Enum_ToProto[pb.DayOfWeek](mapCtx, in.DayOfWeek)
+	if in.HourOfDay != nil && in.HourOfDay.Value != nil {
+		out.HourOfDay = &wrapperspb.Int32Value{Value: *in.HourOfDay.Value}
+	}
+	if in.DayOfWeek != nil {
+		for enumValue, enumName := range dayofweek.DayOfWeek_name {
+			if enumName == *in.DayOfWeek {
+				dow := dayofweek.DayOfWeek(enumValue)
+				out.DayOfWeek = dow
+				break
+			}
+		}
+	}
 	return out
 }
 func MetadataExport_FromProto(mapCtx *direct.MapContext, in *pb.MetadataExport) *krm.MetadataExport {
@@ -182,8 +207,10 @@ func MetadataExportObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Meta
 		return nil
 	}
 	out := &pb.MetadataExport{}
-	if oneof := MetadataExportObservedState_DestinationGcsUri_ToProto(mapCtx, in.DestinationGCSURI); oneof != nil {
-		out.Destination = oneof
+	if in.DestinationGCSURI != nil {
+		out.Destination = &pb.MetadataExport_DestinationGcsUri{
+			DestinationGcsUri: *in.DestinationGCSURI,
+		}
 	}
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
@@ -263,7 +290,10 @@ func MetastoreFederationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Federat
 	// MISSING: Name
 	out.Labels = in.Labels
 	out.Version = direct.LazyPtr(in.GetVersion())
-	// TODO: map type int32 message for field BackendMetastores
+	out.BackendMetastores = make(map[string]krm.BackendMetastore)
+	for k, v := range in.GetBackendMetastores() {
+		out.BackendMetastores[fmt.Sprintf("%d", k)] = *BackendMetastore_FromProto(mapCtx, v)
+	}
 	return out
 }
 func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreFederationSpec) *pb.Federation {
@@ -275,6 +305,15 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metastor
 	out.Labels = in.Labels
 	out.Version = direct.ValueOf(in.Version)
 	// TODO: map type int32 message for field BackendMetastores
+	out.BackendMetastores = make(map[int32]*pb.BackendMetastore)
+	for k, v := range in.BackendMetastores {
+		ik, err := strconv.ParseInt(k, 10, 32)
+		if err != nil {
+			klog.Fatalf("error parsing int32 key %q: %v", k, err)
+		}
+		out.BackendMetastores[int32(ik)] = BackendMetastore_ToProto(mapCtx, &v)
+	}
+
 	return out
 }
 func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceObservedState {
@@ -320,7 +359,7 @@ func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.*refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Port = direct.LazyPtr(in.GetPort())
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
@@ -394,7 +433,7 @@ func NetworkConfig_Consumer_FromProto(mapCtx *direct.MapContext, in *pb.NetworkC
 		return nil
 	}
 	out := &krm.NetworkConfig_Consumer{}
-	out.Subnetwork = direct.LazyPtr(in.GetSubnetwork())
+	out.Subnetwork = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	// MISSING: EndpointURI
 	// MISSING: EndpointLocation
 	return out
@@ -404,8 +443,10 @@ func NetworkConfig_Consumer_ToProto(mapCtx *direct.MapContext, in *krm.NetworkCo
 		return nil
 	}
 	out := &pb.NetworkConfig_Consumer{}
-	if oneof := NetworkConfig_Consumer_Subnetwork_ToProto(mapCtx, in.Subnetwork); oneof != nil {
-		out.VpcResource = oneof
+	if in.Subnetwork != nil {
+		out.VpcResource = &pb.NetworkConfig_Consumer_Subnetwork{
+			Subnetwork: in.Subnetwork.External,
+		}
 	}
 	// MISSING: EndpointURI
 	// MISSING: EndpointLocation
@@ -497,11 +538,16 @@ func ScalingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ScalingConfig) *pb
 		return nil
 	}
 	out := &pb.ScalingConfig{}
-	if oneof := ScalingConfig_InstanceSize_ToProto(mapCtx, in.InstanceSize); oneof != nil {
-		out.ScalingModel = oneof
+	if in.InstanceSize != nil {
+		instanceSize := direct.Enum_ToProto[pb.ScalingConfig_InstanceSize](mapCtx, in.InstanceSize)
+		out.ScalingModel = &pb.ScalingConfig_InstanceSize_{
+			InstanceSize: instanceSize,
+		}
 	}
-	if oneof := ScalingConfig_ScalingFactor_ToProto(mapCtx, in.ScalingFactor); oneof != nil {
-		out.ScalingModel = oneof
+	if in.ScalingFactor != nil {
+		out.ScalingModel = &pb.ScalingConfig_ScalingFactor{
+			ScalingFactor: *in.ScalingFactor,
+		}
 	}
 	return out
 }
@@ -510,7 +556,7 @@ func Secret_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.Secret {
 		return nil
 	}
 	out := &krm.Secret{}
-	out.CloudSecret = direct.LazyPtr(in.GetCloudSecret())
+	out.CloudSecret = &secretmanagerv1beta1.SecretRef{External: in.GetCloudSecret()}
 	return out
 }
 func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
@@ -518,9 +564,7 @@ func Secret_ToProto(mapCtx *direct.MapContext, in *krm.Secret) *pb.Secret {
 		return nil
 	}
 	out := &pb.Secret{}
-	if oneof := Secret_CloudSecret_ToProto(mapCtx, in.CloudSecret); oneof != nil {
-		out.Value = oneof
-	}
+	out.Value = &pb.Secret_CloudSecret{CloudSecret: in.CloudSecret.External}
 	return out
 }
 func TelemetryConfig_FromProto(mapCtx *direct.MapContext, in *pb.TelemetryConfig) *krm.TelemetryConfig {
