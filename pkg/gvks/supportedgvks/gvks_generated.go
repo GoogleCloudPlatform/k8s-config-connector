@@ -3240,6 +3240,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IAMPolicyBinding",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "IAMPolicyMember",
 	}: {
