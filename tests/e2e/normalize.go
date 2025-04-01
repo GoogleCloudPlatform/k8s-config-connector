@@ -108,6 +108,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
+	//Specific to Dataproc
+	visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.stateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
 
@@ -1023,6 +1028,14 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".lakes[].createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".lakes[].assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Dataproc
+	visitor.replacePaths[".metadata.doneTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.stateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.runtimeInfo.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	visitor.replacePaths[".response.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".stateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {

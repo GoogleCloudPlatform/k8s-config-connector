@@ -32,7 +32,7 @@ type BatchIdentity struct {
 }
 
 func (i *BatchIdentity) String() string {
-	return i.parent.String() + "/batchs/" + i.id
+	return i.parent.String() + "/batches/" + i.id
 }
 
 func (i *BatchIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewBatchIdentity(ctx context.Context, reader client.Reader, obj *DataprocBa
 
 func ParseBatchExternal(external string) (parent *BatchParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "batchs" {
-		return nil, "", fmt.Errorf("format of DataprocBatch external=%q was not known (use projects/{{projectID}}/locations/{{location}}/batchs/{{batchID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "batches" {
+		return nil, "", fmt.Errorf("format of DataprocBatch external=%q was not known (use projects/{{projectID}}/locations/{{location}}/batches/{{batchID}})", external)
 	}
 	parent = &BatchParent{
 		ProjectID: tokens[1],
