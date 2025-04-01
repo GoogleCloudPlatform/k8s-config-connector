@@ -33,9 +33,16 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+	longrunning "google.golang.org/genproto/googleapis/longrunning"
+
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
+
+type DataplexV1 struct {
+	*MockService
+	pb.UnimplementedDataplexServiceServer
+}
 
 func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)
@@ -47,13 +54,15 @@ func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.L
 
 	obj := &pb.Lake{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
+		}
 	}
 
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunningpb.Operation, error) {
+func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/lakes/" + req.LakeId
 	name, err := s.parseLakeName(reqName)
 	if err != nil {
@@ -68,10 +77,16 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.Uid = "lake-" + name.LakeID // TODO: maybe a proper random value?
 	obj.State = pb.State_ACTIVE
-	obj.AssetStatus = &pb.AssetStatus{}
-	obj.MetastoreStatus = &pb.Lake_MetastoreStatus{State: pb.Lake_MetastoreStatus_NONE, UpdateTime: timestamppb.New(time.Now())}
+	if obj.AssetStatus == nil {
+		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
+	}
+	if obj.Metastore == nil {
+		obj.Metastore = &pb.Lake_Metastore{}
+	}
+	if obj.MetastoreStatus == nil {
+		obj.MetastoreStatus = &pb.Lake_MetastoreStatus{State: pb.Lake_MetastoreStatus_NONE, UpdateTime: timestamppb.New(time.Now())}
+	}
 	obj.ServiceAccount = fmt.Sprintf("service-%d@gcp-sa-dataplex.iam.gserviceaccount.com", name.Project.Number)
-	s.populateDefaultsForLake(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -81,20 +96,17 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	lroMetadata := &pb.OperationMetadata{
 		Target:     name.String(),
 		Verb:       "create",
-		ApiVersion: "v1",
 		CreateTime: timestamppb.New(time.Now()),
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.RequestedCancellation = false
-		lroMetadata.EndTime = timestamppb.Now()
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		obj.AssetStatus = &pb.AssetStatus{}
 		return obj, nil
 	})
 }
 
-func (s *DataplexV1) populateDefaultsForLake(obj *pb.Lake) {
-}
-
-func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunningpb.Operation, error) {
+func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.GetLake().GetName())
 	if err != nil {
 		return nil, err
@@ -107,16 +119,35 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 	}
 	obj.UpdateTime = timestamppb.New(time.Now())
 
+	updateMask := req.GetUpdateMask()
+
+	for _, path := range updateMask.GetPaths() {
+		switch path {
+		case "description":
+			obj.Description = req.GetLake().GetDescription()
+		case "metastore":
+			obj.Metastore = req.GetLake().GetMetastore()
+		case "display_name":
+			obj.DisplayName = req.GetLake().GetDisplayName()
+		case "labels":
+			obj.Labels = req.GetLake().GetLabels()
+		default:
+			return nil, fmt.Errorf("mock does not implement update of %q", path)
+		}
+	}
+
+	if obj.Metastore == nil {
+		obj.Metastore = &pb.Lake_Metastore{}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
 		Verb:       "update",
-		EndTime:    timestamppb.Now(),
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -140,7 +171,7 @@ func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunningpb.Operation, error) {
+func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -157,7 +188,6 @@ func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) 
 	lroMetadata := &pb.OperationMetadata{
 		Target:     name.String(),
 		Verb:       "delete",
-		ApiVersion: "v1",
 		CreateTime: timestamppb.New(time.Now()),
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
@@ -167,18 +197,13 @@ func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) 
 }
 
 type lakeName struct {
-	Project    *projects.ProjectData
-	Location   string
-	LakeID     string
-	ResourceID string // Needed for nested resources
+	Project  *projects.ProjectData
+	Location string
+	LakeID   string
 }
 
 func (n *lakeName) String() string {
-	base := fmt.Sprintf("projects/%s/locations/%s/lakes/%s", n.Project.ID, n.Location, n.LakeID)
-	if n.ResourceID != "" {
-		return base + "/" + n.ResourceID
-	}
-	return base
+	return fmt.Sprintf("projects/%s/locations/%s/lakes/%s", n.Project.ID, n.Location, n.LakeID)
 }
 
 // parseLakeName parses a string into a lakeName.
