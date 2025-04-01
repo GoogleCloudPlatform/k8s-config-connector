@@ -44,12 +44,13 @@ func (i *ConsumerGroupIdentity) Parent() *ConsumerGroupParent {
 }
 
 type ConsumerGroupParent struct {
-	ProjectID string
-	Location  string
+	ProjectID   string
+	Location    string
+	ClusterName string
 }
 
 func (p *ConsumerGroupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/clusters/" + p.ClusterName
 }
 
 // New builds a ConsumerGroupIdentity from the Config Connector ConsumerGroup object.
@@ -65,6 +66,7 @@ func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *Ma
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+	clusterName := obj.Spec.ClusterRef.Name
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -89,6 +91,9 @@ func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *Ma
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.ClusterName != clusterName {
+			return nil, fmt.Errorf("spec.clusterRef.name changed, expect %s, got %s", actualParent.ClusterName, clusterName)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -96,8 +101,9 @@ func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *Ma
 	}
 	return &ConsumerGroupIdentity{
 		parent: &ConsumerGroupParent{
-			ProjectID: projectID,
-			Location:  location,
+			ProjectID:   projectID,
+			Location:    location,
+			ClusterName: clusterName,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +111,14 @@ func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *Ma
 
 func ParseConsumerGroupExternal(external string) (parent *ConsumerGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "consumergroups" {
-		return nil, "", fmt.Errorf("format of ManagedKafkaConsumerGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/consumergroups/{{consumergroupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "consumergroups" {
+		return nil, "", fmt.Errorf("format of ManagedKafkaConsumerGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{cluster}}/consumergroups/{{consumergroupID}})", external)
 	}
 	parent = &ConsumerGroupParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:   tokens[1],
+		Location:    tokens[3],
+		ClusterName: tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
