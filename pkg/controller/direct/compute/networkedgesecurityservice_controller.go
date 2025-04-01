@@ -21,16 +21,15 @@
 package compute
 
 import (
-	"context"
-	"fmt"
-	"reflect"
-
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	"context"
+	"fmt"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -44,13 +43,13 @@ func init() {
 }
 
 func NewNetworkEdgeSecurityServiceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelNetworkEdgeSecurityService{config: *config}, nil
+	return &modelNetworkEdgeSecurityService{config: config}, nil
 }
 
 var _ directbase.Model = &modelNetworkEdgeSecurityService{}
 
 type modelNetworkEdgeSecurityService struct {
-	config config.ControllerConfig
+	config *config.ControllerConfig
 }
 
 func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -64,23 +63,19 @@ func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, 
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.SecurityPolicyRef != nil {
-		if _, err := obj.Spec.SecurityPolicyRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get compute GCP client
-	gcpClient, err := newComputeRESTClient(ctx, &m.config)
+	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, err
 	}
 
-	computeClient := gcpClient.NetworkEdgeSecurityServices()
+	networkEdgeSecurityServicesClient, err := gcpClient.newNetworkEdgeSecurityServicesClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return &NetworkEdgeSecurityServiceAdapter{
-		gcpClient: computeClient,
+		gcpClient: networkEdgeSecurityServicesClient,
 		id:        id,
 		desired:   obj,
 		reader:    reader,
@@ -111,11 +106,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Find(ctx context.Context) (bool, err
 	log.V(2).Info("getting ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	req := &computepb.GetNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.ProjectID,
-		Region:                     a.id.Location,
-		NetworkEdgeSecurityService: a.id.Name,
+		Project:                    a.id.Parent().ProjectID,
+		Region:                     a.id.Parent().Location,
+		NetworkEdgeSecurityService: a.id.ID(),
 	}
-	networkedgesecurityservicepb, err := a.gcpClient.Get(ctx, req)
+	actual, err := a.gcpClient.Get(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -123,7 +118,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Find(ctx context.Context) (bool, err
 		return false, fmt.Errorf("getting ComputeNetworkEdgeSecurityService %q: %w", a.id, err)
 	}
 
-	a.actual = networkedgesecurityservicepb
+	a.actual = actual
 	return true, nil
 }
 
@@ -138,11 +133,10 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = &a.id.Name
 
 	req := &computepb.InsertNetworkEdgeSecurityServiceRequest{
-		Project:                            a.id.ProjectID,
-		Region:                             a.id.Location,
+		Project:                            a.id.Parent().ProjectID,
+		Region:                             a.id.Parent().Location,
 		NetworkEdgeSecurityServiceResource: resource,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
@@ -150,26 +144,30 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 		return fmt.Errorf("creating ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
 	}
 
-	// Wait for the regional operation to complete.
-	if err = waitForRegionOp(ctx, op, a.id.ProjectID, a.id.Location, "create", a.gcpClient.RestBaseClient()); err != nil {
-		return err
+	err = op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("compute ComputeNetworkEdgeSecurityService %s waiting creation: %w", a.id.String(), err)
 	}
+
 	log.V(2).Info("successfully created ComputeNetworkEdgeSecurityService", "name", a.id)
 
-	// Fetch the newly created resource to get the output-only fields.
-	if _, err := a.Find(ctx); err != nil {
-		return fmt.Errorf("fetching created ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+	// Get the created resource
+	created := &computepb.NetworkEdgeSecurityService{}
+	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
+		Project:                    a.id.Parent().ProjectID,
+		Region:                     a.id.Parent().Location,
+		NetworkEdgeSecurityService: a.id.ID(),
 	}
-
+	created, err = a.gcpClient.Get(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting compute ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+	}
 	status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	// Compute API does not return the resource body on create, only the operation.
-	// We must fetch the created resource to get the status fields.
-	// status.SelfLink = a.actual.SelfLink // Not present in ObservedState, but could be added if needed.
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -185,43 +183,19 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 		return mapCtx.Err()
 	}
 
-	needsUpdate := false
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		needsUpdate = true
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-	if desired.Spec.SecurityPolicyRef != nil {
-		// Need to normalize the reference again as it might not be fully resolved in the desired object.
-		spRefExt, err := desired.Spec.SecurityPolicyRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
-		if err != nil {
-			return err
-		}
-		if !reflect.DeepEqual(&spRefExt, a.actual.SecurityPolicy) {
-			needsUpdate = true
-		}
-	} else if a.actual.SecurityPolicy != nil { // Check if the field should be unset
-		needsUpdate = true
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return nil
 	}
-
-	if !needsUpdate {
-		log.V(2).Info("no field needs update", "name", a.id)
-		// Update status even if no fields changed.
-		status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-		status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		status.ExternalRef = direct.LazyPtr(a.id.String())
-		return updateOp.UpdateStatus(ctx, status, nil)
-
-	}
-
-	// Add fingerprint for optimistic locking
-	resource.Fingerprint = a.actual.Fingerprint
 
 	req := &computepb.PatchNetworkEdgeSecurityServiceRequest{
-		Project:                            a.id.ProjectID,
-		Region:                             a.id.Location,
-		NetworkEdgeSecurityService:         a.id.Name,
+		Project:                            a.id.Parent().ProjectID,
+		Region:                             a.id.Parent().Location,
+		NetworkEdgeSecurityService:         a.id.ID(),
 		NetworkEdgeSecurityServiceResource: resource,
 	}
 	op, err := a.gcpClient.Patch(ctx, req)
@@ -229,11 +203,23 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 		return fmt.Errorf("updating ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
 	}
 
-	// Wait for the regional operation to complete.
-	if err = waitForRegionOp(ctx, op, a.id.ProjectID, a.id.Location, "update", a.gcpClient.RestBaseClient()); err != nil {
-		return err
+	err = op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("compute ComputeNetworkEdgeSecurityService %s waiting for update: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated ComputeNetworkEdgeSecurityService", "name", a.id)
+
+	// Get the updated resource
+	updated := &computepb.NetworkEdgeSecurityService{}
+	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
+		Project:                    a.id.Parent().ProjectID,
+		Region:                     a.id.Parent().Location,
+		NetworkEdgeSecurityService: a.id.ID(),
+	}
+	updated, err = a.gcpClient.Get(ctx, getReq)
+	if err != nil {
+		return fmt.Errorf("getting ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+	}
 
 	// Fetch the updated resource to get the latest state including new fingerprint.
 	if _, err := a.Find(ctx); err != nil {
@@ -241,12 +227,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	}
 
 	status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
-	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	// status.SelfLink = a.actual.SelfLink // Not present in ObservedState, but could be added if needed.
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -264,15 +249,8 @@ func (a *NetworkEdgeSecurityServiceAdapter) Export(ctx context.Context) (*unstru
 		return nil, mapCtx.Err()
 	}
 
-	// Handle references
-	if a.actual.GetSecurityPolicy() != "" {
-		obj.Spec.SecurityPolicyRef = &refs.ComputeSecurityPolicyRef{
-			External: a.actual.GetSecurityPolicy(),
-		}
-	}
-
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location // Region is the location for this resource.
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location // Region is the location for this resource.
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -280,7 +258,6 @@ func (a *NetworkEdgeSecurityServiceAdapter) Export(ctx context.Context) (*unstru
 
 	u.SetName(a.actual.GetName())
 	u.SetGroupVersionKind(krm.ComputeNetworkEdgeSecurityServiceGVK)
-	// Retain KCC annotations/labels if desired.
 	u.Object = uObj
 	return u, nil
 }
@@ -291,42 +268,21 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 	log.V(2).Info("deleting ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	req := &computepb.DeleteNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.ProjectID,
-		Region:                     a.id.Location,
-		NetworkEdgeSecurityService: a.id.Name,
+		Project:                    a.id.Parent().ProjectID,
+		Region:                     a.id.Parent().Location,
+		NetworkEdgeSecurityService: a.id.ID(),
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent ComputeNetworkEdgeSecurityService, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
-		return false, fmt.Errorf("deleting ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting ComputeNetworkEdgeSecurityService %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully initiated deletion of ComputeNetworkEdgeSecurityService", "name", a.id)
+	log.Info("successfully deleted ComputeNetworkEdgeSecurityService", "name", a.id)
 
-	// Wait for the regional operation to complete.
-	if err = waitForRegionOp(ctx, op, a.id.ProjectID, a.id.Location, "delete", a.gcpClient.RestBaseClient()); err != nil {
-		return false, fmt.Errorf("waiting delete ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
-	}
-
-	return true, nil
-}
-
-// Helper function to wait for regional Compute operations
-func waitForRegionOp(ctx context.Context, op *compute.Operation, project, region, operationDesc string, client *compute.BaseClient) error {
-	log := klog.FromContext(ctx)
-	log.V(2).Info("Waiting for regional operation", "operation", op.Proto().GetName(), "region", region, "description", operationDesc)
-	return op.Wait(ctx)
-	// Note: The above `op.Wait()` uses the default polling interval/timeout.
-	// For fine-grained control or use with a shared poller, you might need a custom implementation:
-	/*
-		_, err := direct.WaitForComputeRegionOperation(ctx, client, project, region, proto.String(op.Proto().GetName()))
+	if !op.Done() {
+		err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting for region operation %q to complete: %w", *op.Proto().Name, err)
+			return false, fmt.Errorf("waiting for deletion of ComputeNetworkEdgeSecurityService %s: %w", a.id.String(), err)
 		}
-		log.V(2).Info("Regional operation completed", "operation", op.Proto().GetName(), "region", region, "description", operationDesc)
-		return nil
-	*/
+	}
+	return true, nil
 }
