@@ -41,8 +41,6 @@ type ClusterRef struct {
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
 type ManagedKafkaConsumerGroupSpec struct {
 	Parent Parent `json:",inline"`
-	// The ManagedKafkaConsumerGroup name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 type Parent struct {
