@@ -73,64 +73,6 @@ type EndpointMatcher_MetadataLabelMatcher_MetadataLabels struct {
 	LabelValue *string `json:"labelValue,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
-type EndpointPolicy struct {
-	// Required. Name of the EndpointPolicy resource. It matches pattern
-	//  `projects/{project}/locations/global/endpointPolicies/{endpoint_policy}`.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Set of label tags associated with the EndpointPolicy resource.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Required. The type of endpoint policy. This is primarily used to validate
-	//  the configuration.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.type
-	Type *string `json:"type,omitempty"`
-
-	// Optional. This field specifies the URL of AuthorizationPolicy resource that
-	//  applies authorization policies to the inbound traffic at the
-	//  matched endpoints. Refer to Authorization. If this field is not
-	//  specified, authorization is disabled(no authz checks) for this
-	//  endpoint.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.authorization_policy
-	AuthorizationPolicy *string `json:"authorizationPolicy,omitempty"`
-
-	// Required. A matcher that selects endpoints to which the policies should be
-	//  applied.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.endpoint_matcher
-	EndpointMatcher *EndpointMatcher `json:"endpointMatcher,omitempty"`
-
-	// Optional. Port selector for the (matched) endpoints. If no port selector is
-	//  provided, the matched config is applied to all ports.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.traffic_port_selector
-	TrafficPortSelector *TrafficPortSelector `json:"trafficPortSelector,omitempty"`
-
-	// Optional. A free-text description of the resource. Max length 1024
-	//  characters.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy is
-	//  used to determine the authentication policy to be applied to terminate the
-	//  inbound traffic at the identified backends. If this field is not set,
-	//  authentication is disabled(open) for this endpoint.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.server_tls_policy
-	ServerTLSPolicy *string `json:"serverTLSPolicy,omitempty"`
-
-	// Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy
-	//  can be set to specify the authentication for traffic from the proxy to the
-	//  actual endpoints. More specifically, it is applied to the outgoing traffic
-	//  from the proxy to the endpoint. This is typically used for sidecar model
-	//  where the proxy identifies itself as endpoint to the control plane, with
-	//  the connection between sidecar and endpoint requiring authentication. If
-	//  this field is not set, authentication is disabled(open). Applicable only
-	//  when EndpointPolicyType is SIDECAR_PROXY.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.client_tls_policy
-	ClientTLSPolicy *string `json:"clientTLSPolicy,omitempty"`
-}
-
 // +kcc:proto=google.cloud.networkservices.v1.TrafficPortSelector
 type TrafficPortSelector struct {
 	// Optional. A list of ports. Can be port numbers or port range
@@ -139,15 +81,4 @@ type TrafficPortSelector struct {
 	//  list is empty, all ports are selected.
 	// +kcc:proto:field=google.cloud.networkservices.v1.TrafficPortSelector.ports
 	Ports []string `json:"ports,omitempty"`
-}
-
-// +kcc:proto=google.cloud.networkservices.v1.EndpointPolicy
-type EndpointPolicyObservedState struct {
-	// Output only. The timestamp when the resource was created.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. The timestamp when the resource was updated.
-	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
