@@ -111,21 +111,6 @@ type IAMPolicyBindingSpec struct {
 	//  'bob@example.com'".
 	// +kcc:proto:field=google.iam.v3.PolicyBinding.condition
 	Condition *Expr `json:"condition,omitempty"`
-
-	// The `Name` field is mapped to the KRM resource name.
-	// Identifier. The name of the policy binding, in the format
-	//  `{binding_parent/locations/{location}/policyBindings/{policy_binding_id}`.
-	//  The binding parent is the closest Resource Manager resource (i.e., Project,
-	//  Folder or Organization) to the binding target.
-	//
-	//  Format:
-	//
-	//  * `projects/{project_id}/locations/{location}/policyBindings/{policy_binding_id}`
-	//  * `projects/{project_number}/locations/{location}/policyBindings/{policy_binding_id}`
-	//  * `folders/{folder_id}/locations/{location}/policyBindings/{policy_binding_id}`
-	//  * `organizations/{organization_id}/locations/{location}/policyBindings/{policy_binding_id}`
-	// +kcc:proto:field=google.iam.v3.PolicyBinding.name
-	// Name *string `json:"name,omitempty"` // This field is handled by metadata.name or the optional resourceID field.
 }
 
 // IAMPolicyBindingStatus defines the config connector machine state of IAMPolicyBinding
