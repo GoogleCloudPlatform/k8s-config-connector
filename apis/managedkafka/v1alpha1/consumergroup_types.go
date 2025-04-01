@@ -23,8 +23,18 @@ import (
 var ManagedKafkaConsumerGroupGVK = GroupVersion.WithKind("ManagedKafkaConsumerGroup")
 
 type ClusterRef struct {
-	// +required
-	Name string `json:"name"`
+	// Name of the referent.
+	// +optional
+	Name string `json:"name,omitempty"`
+	// Namespace of the referent.
+	// +optional
+	Namespace string `json:"namespace,omitempty"`
+	// Kind of the referent.
+	// +optional
+	Kind string `json:"kind,omitempty"`
+	// External to be used for full resource names.
+	// +optional
+	External *string `json:"external,omitempty"`
 }
 
 // ManagedKafkaConsumerGroupSpec defines the desired state of ManagedKafkaConsumerGroup
