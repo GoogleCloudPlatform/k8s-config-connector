@@ -31,6 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/deploy/v1"
 	"github.com/google/uuid"
@@ -121,21 +122,8 @@ func (s *cloudDeploy) UpdateDeliveryPipeline(ctx context.Context, req *pb.Update
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
-	for _, path := range paths {
-		switch path {
-		case "description":
-			obj.Description = req.DeliveryPipeline.Description
-		case "annotations":
-			obj.Annotations = req.DeliveryPipeline.Annotations
-		case "labels":
-			obj.Labels = req.DeliveryPipeline.Labels
-		case "serial_pipeline", "serialPipeline":
-			obj.Pipeline = &pb.DeliveryPipeline_SerialPipeline{
-				SerialPipeline: req.DeliveryPipeline.GetSerialPipeline(),
-			}
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
+	if err := fields.UpdateByFieldMask(obj, req.DeliveryPipeline, req.UpdateMask.Paths); err != nil {
+		return nil, fmt.Errorf("update field_mask.paths: %w", err)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {

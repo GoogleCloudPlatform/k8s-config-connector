@@ -32,7 +32,7 @@ type BackupPolicyIdentity struct {
 }
 
 func (i *BackupPolicyIdentity) String() string {
-	return i.parent.String() + "/backuppolicys/" + i.id
+	return i.parent.String() + "/backupPolicies/" + i.id
 }
 
 func (i *BackupPolicyIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewBackupPolicyIdentity(ctx context.Context, reader client.Reader, obj *Net
 
 func ParseBackupPolicyExternal(external string) (parent *BackupPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backuppolicys" {
-		return nil, "", fmt.Errorf("format of NetAppBackupPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backuppolicys/{{backuppolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "backupPolicies" {
+		return nil, "", fmt.Errorf("format of NetAppBackupPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/backupPolicies/{{backuppolicyID}})", external)
 	}
 	parent = &BackupPolicyParent{
 		ProjectID: tokens[1],

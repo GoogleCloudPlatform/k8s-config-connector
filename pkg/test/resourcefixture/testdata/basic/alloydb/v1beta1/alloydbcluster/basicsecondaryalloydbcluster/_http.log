@@ -892,9 +892,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -916,12 +917,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?alt=json&cluster_id=alloydbcluster-2-${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters:createsecondary?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster-2-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west8
 
 {
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -959,9 +961,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1059,9 +1062,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1083,13 +1087,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1098,7 +1102,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1106,22 +1110,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -1137,21 +1141,23 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
+    "enabled": false,
     "labels": {
       "source": "kcc-test"
     },
@@ -1161,13 +1167,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1176,22 +1182,27 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
   },
+  "databaseVersion": 3,
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "name": "projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   },
+  "reconciling": false,
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
-  }
+  },
+  "subscriptionType": 1
 }
 
 200 OK
@@ -1219,9 +1230,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1322,9 +1334,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1349,13 +1362,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -1364,7 +1377,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "SECONDARY",
+  "clusterType": 2,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -1372,22 +1385,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -1403,17 +1416,18 @@ X-Xss-Protection: 0
   "secondaryConfig": {
     "primaryClusterName": "projects/${projectId}/locations/us-west1/clusters/alloydbcluster-1-${uniqueId}"
   },
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?alt=json&force=true
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&force=true
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1440,9 +1454,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

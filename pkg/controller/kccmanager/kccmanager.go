@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 
 	corev1 "k8s.io/api/core/v1"
@@ -147,6 +148,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		HTTPClient:                 cfg.HTTPClient,
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
+	}
+
+	if cfg.GCPAccessToken != "" {
+		controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
 	}
 
 	// Initialize direct controllers

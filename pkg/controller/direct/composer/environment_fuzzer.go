@@ -33,7 +33,9 @@ func composerEnvironmentFuzzer() fuzztesting.KRMFuzzer {
 		ComposerEnvironmentObservedState_FromProto, ComposerEnvironmentObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".name")          // special field
+	f.UnimplementedFields.Insert(".satisfies_pzs") // field for future use
+	f.UnimplementedFields.Insert(".satisfies_pzi") // field for future use
 
 	f.SpecFields.Insert(".config")
 	f.SpecFields.Insert(".labels")

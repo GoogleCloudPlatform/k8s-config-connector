@@ -15,13 +15,17 @@
 package register
 
 import (
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
+
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/asset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/batch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryanalyticshub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerybiglake"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigqueryconnection"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydataset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigquerydatatransfer"
@@ -33,7 +37,9 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudidentity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudquota"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudtasks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/colab"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/firewallpolicyrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/forwardingrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/targettcpproxy"
@@ -41,6 +47,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataplex"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datastream"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/documentai"
@@ -64,6 +71,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/notebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/privilegedaccessmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/pubsub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/recaptchaenterprise"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis/cluster"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"

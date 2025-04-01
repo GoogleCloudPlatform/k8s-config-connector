@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com
 spec:
   group: edgecontainer.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: EdgeContainerVpnConnection
+    listKind: EdgeContainerVpnConnectionList
     plural: edgecontainervpnconnections
     shortNames:
     - gcpedgecontainervpnconnection
@@ -43,22 +42,32 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: EdgeContainerVpnConnection is the Schema for the EdgeContainerVpnConnection
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: EdgeContainerVpnConnectionSpec defines the desired state
+              of EdgeContainerVpnConnection
             properties:
-              clusterRef:
+              bgpRoutingMode:
+                description: Dynamic routing mode of the VPC network, `regional` or
+                  `global`.
+                type: string
+              edgecontainerClusterRef:
+                description: The canonical Cluster name to connect to. It is in the
+                  form of projects/{project}/locations/{location}/clusters/{cluster}.
                 oneOf:
                 - not:
                     required:
@@ -75,31 +84,37 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of an `EdgeContainerCluster`
-                      resource.'
+                    description: A reference to an externally managed EdgeContainerCluster
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a AlloyDBCluster resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a AlloyDBCluster resource.
                     type: string
                 type: object
               enableHighAvailability:
-                description: Immutable. Whether this VPN connection has HA enabled
-                  on cluster side. If enabled, when creating VPN connection we will
-                  attempt to use 2 ANG floating IPs.
+                description: Whether this VPN connection has HA enabled on cluster
+                  side. If enabled, when creating VPN connection we will attempt to
+                  use 2 ANG floating IPs.
                 type: boolean
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels associated with this resource.
+                type: object
               location:
-                description: Immutable. Google Cloud Platform location.
+                description: Required. The location of the machine.
                 type: string
-              natGatewayIp:
-                description: |-
-                  Immutable. NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the customer needs to configure NAT such that only one external IP maps to the GMEC Anthos cluster.
-                  This is empty if NAT is not used.
+              natGatewayIP:
+                description: NAT gateway IP, or WAN IP address. If a customer has
+                  multiple NAT IPs, the customer needs to configure NAT such that
+                  only one external IP maps to the GMEC Anthos cluster. This is empty
+                  if NAT is not used.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: Required. The host project of the machine.
                 oneOf:
                 - not:
                     required:
@@ -116,45 +131,106 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The EdgeContainerVpnConnection name. If not given, the
+                  metadata.name will be used.
                 type: string
               router:
-                description: The VPN connection Cloud Router name.
+                description: Optional. The VPN connection Cloud Router name.
                 type: string
               vpc:
-                description: Immutable. The network ID of VPC to connect to.
+                description: The network ID of VPC to connect to.
                 type: string
               vpcProject:
-                description: Project detail of the VPC network. Required if VPC is
-                  in a different project than the cluster project.
+                description: Optional. Project detail of the VPC network. Required
+                  if VPC is in a different project than the cluster project.
                 properties:
-                  projectId:
-                    description: Immutable. The project of the VPC to connect to.
-                      If not specified, it is the same as the cluster project.
-                    type: string
+                  projectRef:
+                    description: The project of the VPC to connect to. If not specified,
+                      it is the same as the cluster project.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  serviceAccountRef:
+                    description: 'Optional. Deprecated: do not use.'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 type: object
-            required:
-            - clusterRef
-            - location
-            - projectRef
             type: object
           status:
+            description: EdgeContainerVpnConnectionStatus defines the config connector
+              machine state of EdgeContainerVpnConnection
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -178,50 +254,58 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The time when the VPN connection was created.
+              externalRef:
+                description: A unique specifier for the EdgeContainerVpnConnection
+                  resource in GCP.
                 type: string
-              details:
-                description: A nested object resource.
-                items:
-                  properties:
-                    cloudRouter:
-                      description: The Cloud Router info.
-                      items:
-                        properties:
-                          name:
-                            description: The associated Cloud Router name.
-                            type: string
-                        type: object
-                      type: array
-                    cloudVpns:
-                      description: Each connection has multiple Cloud VPN gateways.
-                      items:
-                        properties:
-                          gateway:
-                            description: The created Cloud VPN gateway name.
-                            type: string
-                        type: object
-                      type: array
-                    error:
-                      description: The error message. This is only populated when
-                        state=ERROR.
-                      type: string
-                    state:
-                      description: The current connection state.
-                      type: string
-                  type: object
-                type: array
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              updateTime:
-                description: The time when the VPN connection was last updated.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the VPN connection was
+                      created.
+                    type: string
+                  details:
+                    description: Output only. The created connection details.
+                    properties:
+                      cloudRouter:
+                        description: The Cloud Router info.
+                        properties:
+                          name:
+                            description: The associated Cloud Router name.
+                            type: string
+                        type: object
+                      cloudVpns:
+                        description: Each connection has multiple Cloud VPN gateways.
+                        items:
+                          properties:
+                            gateway:
+                              description: The created Cloud VPN gateway name.
+                              type: string
+                          type: object
+                        type: array
+                      error:
+                        description: The error message. This is only populated when
+                          state=ERROR.
+                        type: string
+                      state:
+                        description: The state of this connection.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. The time when the VPN connection was
+                      last updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -230,9 +314,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

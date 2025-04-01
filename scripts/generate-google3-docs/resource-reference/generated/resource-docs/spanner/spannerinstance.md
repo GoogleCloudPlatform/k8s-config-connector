@@ -108,8 +108,11 @@ autoscalingConfig:
     highPriorityCpuUtilizationPercent: integer
     storageUtilizationPercent: integer
 config: string
+defaultBackupScheduleType: string
 displayName: string
 edition: string
+labels:
+  string: string
 numNodes: integer
 processingUnits: integer
 resourceID: string
@@ -224,6 +227,25 @@ resourceID: string
     </tr>
     <tr>
         <td>
+            <p><code>defaultBackupScheduleType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Controls the default backup schedule behavior for new databases
+within the instance. By default, a backup schedule is created automatically
+when a new database is created in a new instance.
+
+Note that the `AUTOMATIC` value isn't permitted for free instances,
+as backups and backup schedules aren't supported for free instances.
+
+In the `GetInstance` or `ListInstances` response, if the value of
+`default_backup_schedule_type` isn't set, or set to `NONE`, Spanner doesn't
+create a default backup schedule for new databases in the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>displayName</code></p>
             <p><i>Required</i></p>
         </td>
@@ -240,6 +262,36 @@ resourceID: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Cloud Labels are a flexible and lightweight mechanism for organizing cloud
+resources into groups that reflect a customer's organizational needs and
+deployment strategies. Cloud Labels can be used to filter collections of
+resources. They can be used to control how resource metrics are aggregated.
+And they can be used as arguments to policy management rules (e.g. route,
+firewall, load balancing, etc.).
+
+  - Label keys must be between 1 and 63 characters long and must conform to
+    the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
+  - Label values must be between 0 and 63 characters long and must conform
+    to the regular expression `[a-z0-9_-]{0,63}`.
+  - No more than 64 labels can be associated with a given resource.
+
+See https://goo.gl/xmQnxf for more information on and examples of labels.
+
+If you plan to use labels in your own code, please note that additional
+characters may be allowed in the future. And so you are advised to use an
+internal label representation, such as JSON, which doesn't rely upon
+specific characters being disallowed.  For example, representing labels
+as the string:  name + "_" + value  would prove problematic if we were to
+allow "_" in a future release.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -419,8 +471,6 @@ metadata:
   labels:
     label-one: "value-one"
   name: spannerinstance-sample
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
   displayName: Spanner Instance Sample

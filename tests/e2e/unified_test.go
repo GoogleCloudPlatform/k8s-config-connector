@@ -306,6 +306,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				create.RunCreateDeleteTest(h, opt)
 
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+					folderID := h.FolderID()
+
 					for _, obj := range exportResources {
 						// Get testName from t.Name()
 						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
@@ -324,7 +326,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(t, exportedObj, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, exportedObj, project, folderID, uniqueID); err != nil {
 								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
@@ -342,7 +344,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Fatalf("FAIL: failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -985,6 +987,36 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 						if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
 							t.Fatalf("FAIL: setting nested field: %v", err)
+						}
+					})
+
+					// Specific to BackupPlanDR
+					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+						// normalize "dataSource"
+						if val, found, _ := unstructured.NestedString(obj, "dataSource"); found {
+							tokens := strings.Split(val, "/")
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+								tokens[len(tokens)-1] = "${dataSourceID}"
+								if err := unstructured.SetNestedField(obj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+									t.Fatalf("FAIL: setting nested field: %v", err)
+								}
+							}
+						}
+						// normalize "response.dataSource"
+						responseObj, found, _ := unstructured.NestedMap(obj, "response")
+						if found {
+							if val, found, _ := unstructured.NestedString(responseObj, "dataSource"); found {
+								tokens := strings.Split(val, "/")
+								if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+									tokens[len(tokens)-1] = "${dataSourceID}"
+									if err := unstructured.SetNestedField(responseObj, strings.Join(tokens, "/"), "dataSource"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+									if err := unstructured.SetNestedMap(obj, responseObj, "response"); err != nil {
+										t.Fatalf("FAIL: setting nested field: %v", err)
+									}
+								}
+							}
 						}
 					})
 

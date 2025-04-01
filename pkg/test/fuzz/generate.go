@@ -129,6 +129,16 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 					v := randomString(randStream)
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
+			case "string->enum":
+				mapVal := msg.Mutable(field).Map()
+				for j := 0; j < count; j++ {
+					k := randomString(randStream)
+					fieldDescriptor := field.MapValue().Enum()
+					n := fieldDescriptor.Values().Len()
+					v := fieldDescriptor.Values().Get(randStream.Intn(n))
+					// msg.Set(field.MapValue(), protoreflect.ValueOf(v.Number()))
+					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v.Number()))
+				}
 			case "string->message":
 				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
 					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
@@ -396,6 +406,27 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					v := mapVal.Get(k)
 					Visit(mapPath, v.Message(), setter, visitor)
 
+					return true
+				})
+			case "string->enum":
+				mapVal := msg.Mutable(field).Map()
+				setter := func(v protoreflect.Value) {
+					if v.IsValid() {
+						msg.Set(field, v)
+					} else {
+						msg.Clear(field)
+					}
+				}
+				visitor.VisitMap(path, mapVal, setter)
+
+				// In case the value changes
+				mapVal = msg.Mutable(field).Map()
+				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
+					mapPath := path + "[" + k.String() + "]"
+					setter := func(v protoreflect.Value) {
+						mapVal.Set(k, v)
+					}
+					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
 			case "int32->message":

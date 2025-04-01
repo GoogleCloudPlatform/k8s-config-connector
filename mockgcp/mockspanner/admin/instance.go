@@ -74,7 +74,6 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
 	s.populateDefaultsForSpannerInstance(obj, obj)
 	obj.State = pb.Instance_READY
-	obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
 	if len(obj.DisplayName) < 4 || len(obj.DisplayName) > 30 {
 		return nil, fmt.Errorf("Display name must be between 4-30 characters long")
 	}
@@ -179,6 +178,8 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 			obj.ProcessingUnits = updated.ProcessingUnits
 		case "autoscaling_config":
 			obj.AutoscalingConfig = updated.AutoscalingConfig
+		case "default_backup_schedule_type":
+			obj.DefaultBackupScheduleType = updated.DefaultBackupScheduleType
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

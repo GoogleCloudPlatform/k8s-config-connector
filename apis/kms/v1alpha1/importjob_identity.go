@@ -61,6 +61,17 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 	if err != nil {
 		return nil, err
 	}
+	var parent *ImportJobParent
+	tokens := strings.Split(kmsKeyRing.Ref.External, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" {
+		parent = &ImportJobParent{
+			ProjectID: tokens[1],
+			Location:  tokens[3],
+			KeyRingID: tokens[5],
+		}
+	} else {
+		return nil, fmt.Errorf("format of KMSKeyRingRef external=%q was not known (use projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id])", kmsKeyRing.Ref.External)
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -81,7 +92,7 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.String() != kmsKeyRing.Ref.External {
+		if actualParent.String() != parent.String() {
 			return nil, fmt.Errorf("spec.kmsKeyRingRef changed, expect %s, got %s", actualParent.String(), kmsKeyRing.Ref.External)
 		}
 		if actualResourceID != resourceID {
@@ -90,7 +101,7 @@ func NewImportJobIdentity(ctx context.Context, reader client.Reader, obj *KMSImp
 		}
 	}
 	return &ImportJobIdentity{
-		parent: actualParent,
+		parent: parent,
 		id:     resourceID,
 	}, nil
 }

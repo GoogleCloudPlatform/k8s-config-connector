@@ -46,6 +46,8 @@ var commandMap = map[int64]string{
 	cmdBuildProto:              "buildproto",
 	cmdAdjustTypes:             "adjusttypes",
 	cmdGenerateMapper:          "generatemapper",
+	cmdRunAndFixFuzzTests:      "runandfixfuzztests",
+	cmdRunAndFixAPIChecks:      "runandfixapicheck",
 	cmdControllerClient:        "controllerclient",
 	cmdGenerateController:      "generatecontroller",
 	cmdCreateIdentity:          "createidentity",
@@ -206,8 +208,8 @@ func gitAdd(ctx context.Context, workDir string, files ...string) error {
 }
 
 func gitCommit(ctx context.Context, workDir string, msg string) error {
-	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg)
+	log.Printf("COMMAND: git commit -m %q", fmt.Sprintf("conductor: %q", msg))
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
@@ -502,14 +504,15 @@ func checkMakeReadyPR(opts *RunnerOptions) error {
 	return nil
 }
 
-func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, commitMsg string) error {
+func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, commitMsg string) (bool, error) {
 	// First check for changes in specified paths
+	changesCommitted := false
 	var changedFiles []string
 	for _, path := range paths {
 		log.Printf("Checking for changes in %s", path)
 		changed, err := gitStatusCheck(opts.branchRepoDir, path)
 		if err != nil {
-			return fmt.Errorf("git status failed for %s: %w", path, err)
+			return changesCommitted, fmt.Errorf("git status failed for %s: %w", path, err)
 		}
 		if changed {
 			changedFiles = append(changedFiles, path)
@@ -527,35 +530,38 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 		if err := gitCommit(ctx, opts.branchRepoDir, commitMsg); err != nil {
 			log.Printf("failed to commit changes: %v", err)
 		}
+		changesCommitted = true
 	}
 
 	// Check for any other uncommitted changes
 	changed, err := gitStatusCheck(opts.branchRepoDir, ".")
 	if err != nil {
-		return fmt.Errorf("git status failed: %w", err)
+		return changesCommitted, fmt.Errorf("git status failed: %w", err)
 	}
 
 	if changed {
 		log.Printf("WARNING: Found unexpected changes. Trying to stage and commit them")
 		if err := gitAdd(ctx, opts.branchRepoDir, "."); err != nil {
-			return fmt.Errorf("failed to stage extra files: %w", err)
+			return changesCommitted, fmt.Errorf("failed to stage extra files: %w", err)
 		}
 		if err := gitCommit(ctx, opts.branchRepoDir, fmt.Sprintf("%s. WARN: extra files found, committing them. ", commitMsg)); err != nil {
-			return fmt.Errorf("failed to commit extra files: %w", err)
+			return changesCommitted, fmt.Errorf("failed to commit extra files: %w", err)
 		}
+		changesCommitted = true
 		log.Printf("WARNING: Committed unexpected changes")
 	}
 
-	return nil
+	return changesCommitted, nil
 }
 
 type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error)
 type BranchProcessor struct {
 	CommitMsgTemplate  string
 	Fn                 BranchProcessorFn
-	AttemptsOnNoChange int
+	AttemptsOnNoChange int // Number of attempts to run the processor if no changes are detected
 	VerifyFn           BranchProcessorFn
 	VerifyAttempts     int
+	AttemptsOnChanges  int // Number of attempts to run the processor if changes are detected
 }
 
 func (b *BranchProcessor) CommitMsg(branch Branch) string {
@@ -568,9 +574,10 @@ func (b *BranchProcessor) CommitMsg(branch Branch) string {
 }
 
 // runBranchFnWithRetries runs the processor multiple times until changes are detected and commits them
-func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor, commitMsg string, inExecResults *ExecResults) (*ExecResults, error) {
+func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor, commitMsg string, inExecResults *ExecResults) (bool, *ExecResults, error) {
 	// Try running processor up to N times until we see changes in all affected paths
 	var execResults *ExecResults
+	changesCommitted := false
 	if commitMsg == "" {
 		commitMsg = processor.CommitMsg(branch)
 	}
@@ -590,7 +597,7 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 		affectedPaths, execResults, err = processor.Fn(ctx, opts, branch, inExecResults)
 		if err != nil {
 			log.Printf("failed to process branch %s on attempt %d: %v", branch.Name, attempt, err)
-			break
+			continue
 		}
 
 		// Check if any files changed
@@ -606,6 +613,12 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 				allChanged = false
 				break
 			}
+		}
+
+		// If commitMsg is not set, we don't need to commit the changes
+		// we assume there are no changes to commit
+		if commitMsg == "" {
+			return changesCommitted, execResults, nil
 		}
 
 		lintFailure = false
@@ -639,11 +652,13 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 	if goCmdsFailure {
 		commitMsg = fmt.Sprintf("%s. WARN: go cmds failed.", commitMsg)
 	}
-	if err := stageChanges(ctx, opts, affectedPaths, commitMsg); err != nil {
-		return execResults, fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
+	var err error
+	changesCommitted, err = stageChanges(ctx, opts, affectedPaths, commitMsg)
+	if err != nil {
+		return changesCommitted, execResults, fmt.Errorf("failed to commit changes for branch %s: %w", branch.Name, err)
 	}
 
-	return execResults, nil
+	return changesCommitted, execResults, nil
 }
 
 // processBranch handles the processing of a single branch
@@ -662,8 +677,26 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
 	if processor.VerifyFn == nil || processor.VerifyAttempts == 0 {
-		_, err := runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, "", nil)
-		return err
+		attempts := processor.AttemptsOnChanges
+		if attempts == 0 {
+			attempts = 1
+		}
+
+		// Run atmost attempts times if we see changes. This is for cases like make ready-pr
+		// where we want to run it multiple times if we see changes.
+		for i := 0; i < attempts; i++ {
+			changesCommitted, _, err := runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, "", nil)
+			if err != nil {
+				return err
+			}
+			if !changesCommitted {
+				break
+			}
+			if attempts > 1 {
+				log.Printf("Changes committed. Running again: %d/%d", i+1, attempts)
+			}
+		}
+		return nil
 	}
 
 	// If processor has a VerifyFn and max attempts, run verification loop
@@ -694,7 +727,7 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 		}
 		log.Printf("Verification attempt %d failed for branch %s, commit message: %s", i+1, branch.Name, processor.CommitMsg(branch))
 		commitMsg := fmt.Sprintf("Autofix attempt %d. %s", i+1, processor.CommitMsg(branch))
-		_, err = runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, commitMsg, execResults)
+		_, _, err = runBranchFnWithRetriesAndCommit(ctx, opts, branch, description, processor, commitMsg, execResults)
 		if err != nil {
 			log.Printf("Failed to run branch %s: %v", branch.Name, err)
 			continue
@@ -720,23 +753,32 @@ func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
 	log.Printf("Running go mod tidy")
 	errStrings := []string{}
 
-	for _, path := range affectedPaths {
-		cfg := CommandConfig{
-			Name:        "Go Imports",
-			Cmd:         "goimports",
-			Args:        []string{"-w", path},
-			WorkDir:     opts.branchRepoDir,
-			MaxAttempts: 1,
+	// Filter for paths containing Go files
+	goFilePaths := filterGoFilePaths(opts.branchRepoDir, affectedPaths)
+
+	// Only run goimports if we found Go files
+	if len(goFilePaths) > 0 {
+		for _, path := range goFilePaths {
+			cfg := CommandConfig{
+				Name:        "Go Imports",
+				Cmd:         "goimports",
+				Args:        []string{"-w", path},
+				WorkDir:     opts.branchRepoDir,
+				MaxAttempts: 1,
+			}
+			op, err := executeCommand(opts, cfg)
+			if err != nil {
+				errStrings = append(errStrings, fmt.Sprintf("Error running goimports for %s: %v", path, err))
+			}
+			if op.ExitCode != 0 {
+				errStrings = append(errStrings, fmt.Sprintf("goimports failed with exit code %d for %s", op.ExitCode, path))
+			}
 		}
-		op, err := executeCommand(opts, cfg)
-		if err != nil {
-			errStrings = append(errStrings, fmt.Sprintf("Error running goimports for %s: %v", path, err))
-		}
-		if op.ExitCode != 0 {
-			errStrings = append(errStrings, fmt.Sprintf("goimports failed with exit code %d for %s", op.ExitCode, path))
-		}
+	} else {
+		log.Printf("No Go files found in affected paths, skipping goimports")
 	}
 
+	// Always run go mod tidy regardless of file types
 	cfg := CommandConfig{
 		Name:        "Go Mod Tidy",
 		Cmd:         "go",
@@ -758,4 +800,73 @@ func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
 	}
 
 	return nil
+}
+
+// hasGoFiles checks if the given path (file or directory) contains any Go files
+// If path is a file, it checks if it's a Go file
+// If path is a directory, it walks the directory to find any Go files
+func hasGoFiles(basePath, relativePath string) bool {
+	fullPath := filepath.Join(basePath, relativePath)
+	info, err := os.Stat(fullPath)
+	if err != nil {
+		log.Printf("Warning: Could not stat path %s: %v", relativePath, err)
+		return false
+	}
+
+	// If it's a file, check if it's a Go file
+	if !info.IsDir() {
+		return strings.HasSuffix(strings.ToLower(relativePath), ".go")
+	}
+
+	// If it's a directory, walk it to find Go files
+	foundGoFile := false
+	err = filepath.Walk(fullPath, func(walkPath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(strings.ToLower(walkPath), ".go") {
+			foundGoFile = true
+			return filepath.SkipAll // Stop walking once we find a Go file
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Printf("Warning: Error walking directory %s: %v", relativePath, err)
+		return false
+	}
+
+	return foundGoFile
+}
+
+// filterGoFilePaths returns a slice containing only paths that have Go files
+// Handles both absolute and relative paths
+func filterGoFilePaths(repoRootPath string, inputPaths []string) []string {
+	var goFilePaths []string
+	for _, path := range inputPaths {
+		// Check if this is an absolute path within our repository
+		var checkPath string
+		if filepath.IsAbs(path) && strings.HasPrefix(path, repoRootPath) {
+			// It's an absolute path within our repo, convert to relative for checking
+			relPath, err := filepath.Rel(repoRootPath, path)
+			if err != nil {
+				log.Printf("Warning: Could not convert absolute path %s to relative: %v", path, err)
+				continue
+			}
+			checkPath = relPath
+		} else if filepath.IsAbs(path) {
+			// It's an absolute path outside our repo, skip it
+			log.Printf("Warning: Path %s is outside repository, skipping", path)
+			continue
+		} else {
+			// It's already a relative path
+			checkPath = path
+		}
+
+		// Now check if this path contains Go files
+		if hasGoFiles(repoRootPath, checkPath) {
+			goFilePaths = append(goFilePaths, path) // Keep the original path format
+		}
+	}
+	return goFilePaths
 }

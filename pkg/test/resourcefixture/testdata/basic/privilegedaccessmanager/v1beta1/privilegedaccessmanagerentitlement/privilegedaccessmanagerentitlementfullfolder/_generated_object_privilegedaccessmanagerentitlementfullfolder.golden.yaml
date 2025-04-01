@@ -30,7 +30,7 @@ spec:
   - principals:
     - serviceAccount:gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
   folderRef:
-    external: folders/123451001
+    external: folders/${folderID}
   location: global
   maxRequestDuration: 1h0m0s
   privilegedAccess:
@@ -47,7 +47,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //privilegedaccessmanager.googleapis.com/folders/123451001/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}
+  externalRef: //privilegedaccessmanager.googleapis.com/folders/${folderID}/locations/global/entitlements/privilegedaccessmanagerentitlement-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"

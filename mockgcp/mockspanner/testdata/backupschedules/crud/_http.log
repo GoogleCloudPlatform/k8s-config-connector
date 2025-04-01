@@ -27,7 +27,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
-      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
       "nodeCount": 1,
@@ -71,7 +70,6 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
-      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
       "name": "projects/${projectId}/instances/test-${uniqueId}",
@@ -87,7 +85,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Test Instance",
     "edition": "STANDARD",
     "name": "projects/${projectId}/instances/test-${uniqueId}",
@@ -117,7 +114,6 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": "AUTOMATIC",
   "displayName": "Test Instance",
   "edition": "STANDARD",
   "nodeCount": 1,
