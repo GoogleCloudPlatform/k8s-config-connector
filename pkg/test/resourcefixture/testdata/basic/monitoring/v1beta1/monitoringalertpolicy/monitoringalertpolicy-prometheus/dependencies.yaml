@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: monitoringnotificationchannel1-${uniqueId}
+spec:
+  type: email
+  labels:
+    email_address: dev@example.com
 ---
-version: 2
-interactions: []
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringNotificationChannel
+metadata:
+  name: monitoringnotificationchannel2-${uniqueId}
+spec:
+  type: email
+  labels:
+    email_address: dev@example.com
