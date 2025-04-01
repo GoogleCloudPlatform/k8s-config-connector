@@ -188,26 +188,28 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		paths = append(paths, "access_restriction")
 	}
 
+	var updated *pb.BackupVault
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
+		// even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateBackupVaultRequest{
+			BackupVault: resource,
+			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateBackupVault(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating BackupVault %s: %w", a.id, err)
+		}
 
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateBackupVaultRequest{
-		BackupVault: resource,
-		UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("BackupVault %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated BackupVault", "name", a.id)
 	}
-	op, err := a.gcpClient.UpdateBackupVault(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating BackupVault %s: %w", a.id, err)
-	}
-
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("BackupVault %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated BackupVault", "name", a.id)
 
 	status := &krm.BackupDRBackupVaultStatus{}
 	status.ObservedState = BackupDRBackupVaultObservedState_FromProto(mapCtx, updated)
