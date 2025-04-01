@@ -21,18 +21,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
-type ConsumerGroup struct {
-	// Identifier. The name of the consumer group. The `consumer_group` segment is
-	//  used when connecting directly to the cluster. Structured like:
-	//  projects/{project}/locations/{location}/clusters/{cluster}/consumerGroups/{consumer_group}
-	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerGroup.name
-	Name *string `json:"name,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerPartitionMetadata
 type ConsumerPartitionMetadata struct {
 	// Required. The current offset for this partition, or 0 if no offset has been
@@ -51,12 +39,4 @@ type ConsumerTopicMetadata struct {
 
 	// TODO: unsupported map type with key int32 and value message
 
-}
-
-// +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig
-type RebalanceConfig struct {
-	// Optional. The rebalance behavior for the cluster.
-	//  When not specified, defaults to `NO_REBALANCE`.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.RebalanceConfig.mode
-	Mode *string `json:"mode,omitempty"`
 }
