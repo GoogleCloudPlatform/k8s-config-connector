@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,7 +44,7 @@ type ComputeNetworkEdgeSecurityServiceSpec struct {
 	Fingerprint *string `json:"fingerprint,omitempty"`
 	// The resource URL for the network edge security service associated with this network edge security service.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.security_policy
-	SecurityPolicy *string `json:"securityPolicy,omitempty"`
+	SecurityPolicyRef *computev1beta1.ComputeSecurityPolicyRef `json:"securityPolicyRef,omitempty"`
 }
 
 // ComputeNetworkEdgeSecurityServiceStatus defines the config connector machine state of ComputeNetworkEdgeSecurityService

@@ -22,6 +22,7 @@ package compute
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -61,7 +62,9 @@ func ComputeNetworkEdgeSecurityServiceSpec_FromProto(mapCtx *direct.MapContext, 
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
 	// MISSING: Name
-	out.SecurityPolicy = in.SecurityPolicy
+	if in.SecurityPolicy != nil {
+		out.SecurityPolicyRef = &refs.ComputeSecurityPolicyRef{External: in.GetSecurityPolicy()}
+	}
 	return out
 }
 func ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkEdgeSecurityServiceSpec) *pb.NetworkEdgeSecurityService {
@@ -72,6 +75,8 @@ func ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx *direct.MapContext, in
 	out.Description = in.Description
 	out.Fingerprint = in.Fingerprint
 	// MISSING: Name
-	out.SecurityPolicy = in.SecurityPolicy
+	if in.SecurityPolicyRef != nil {
+		out.SecurityPolicy = direct.LazyPtr(in.SecurityPolicyRef.External)
+	}
 	return out
 }

@@ -121,10 +121,35 @@ spec:
                 description: The ComputeNetworkEdgeSecurityService name. If not given,
                   the metadata.name will be used.
                 type: string
-              securityPolicy:
+              securityPolicyRef:
                 description: The resource URL for the network edge security service
                   associated with this network edge security service.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The value of an externally managed ComputeSecurityPolicy
+                      resource
+                    type: string
+                  name:
+                    description: The name of a ComputeSecurityPolicy resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeSecurityPolicy resource.
+                    type: string
+                type: object
             required:
             - inline
             type: object

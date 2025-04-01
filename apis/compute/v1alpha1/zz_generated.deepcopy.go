@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -703,9 +704,9 @@ func (in *ComputeNetworkEdgeSecurityServiceSpec) DeepCopyInto(out *ComputeNetwor
 		*out = new(string)
 		**out = **in
 	}
-	if in.SecurityPolicy != nil {
-		in, out := &in.SecurityPolicy, &out.SecurityPolicy
-		*out = new(string)
+	if in.SecurityPolicyRef != nil {
+		in, out := &in.SecurityPolicyRef, &out.SecurityPolicyRef
+		*out = new(computev1beta1.ComputeSecurityPolicyRef)
 		**out = **in
 	}
 }
