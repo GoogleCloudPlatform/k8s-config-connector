@@ -32,6 +32,12 @@ X-Goog-User-Project: ${projectId}
 
 {
   "displayName": "My first data store",
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
   "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }
@@ -83,68 +89,6 @@ X-Xss-Protection: 0
   "displayName": "My first data store",
   "industryVertical": 1,
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "servingConfigDataStore": {}
-}
-
----
-
-PATCH https://discoveryengine.googleapis.com/v1alpha/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: data_store.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-{
-  "displayName": "Updated display name",
-  "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
-  "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "naturalLanguageQueryUnderstandingConfig": {},
-  "servingConfigDataStore": {}
-}
-
----
-
-GET https://discoveryengine.googleapis.com/v1alpha/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
-X-Goog-User-Project: ${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
-  "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "naturalLanguageQueryUnderstandingConfig": {},
   "servingConfigDataStore": {}
 }
 

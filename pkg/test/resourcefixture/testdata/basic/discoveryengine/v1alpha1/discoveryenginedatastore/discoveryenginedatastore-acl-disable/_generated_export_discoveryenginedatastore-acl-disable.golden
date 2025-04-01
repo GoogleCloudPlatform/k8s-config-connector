@@ -1,0 +1,11 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineDataStore
+metadata:
+  name: datastore-${uniqueId}
+spec:
+  collection: default_collection
+  displayName: My first data store
+  industryVertical: GENERIC
+  location: global
+  projectRef:
+    external: ${projectId}

@@ -75,6 +75,7 @@ type DiscoveryEngineDataStoreSpec struct {
 	ContentConfig *string `json:"contentConfig,omitempty"`
 
 	// Data store level identity provider config.
+	// This needs to be set up separately in the Vertex AI "Authentication settings"
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.idp_config
 	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
 
