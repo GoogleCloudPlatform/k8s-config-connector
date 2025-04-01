@@ -44,6 +44,7 @@ type NetworkServicesEndpointPolicySpec struct {
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
+	// +required
 	// Required. The type of endpoint policy. This is primarily used to validate
 	//  the configuration.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.type
@@ -57,6 +58,7 @@ type NetworkServicesEndpointPolicySpec struct {
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.authorization_policy
 	AuthorizationPolicy *string `json:"authorizationPolicy,omitempty"`
 
+	// +required
 	// Required. A matcher that selects endpoints to which the policies should be
 	//  applied.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.endpoint_matcher
@@ -90,6 +92,7 @@ type NetworkServicesEndpointPolicySpec struct {
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.client_tls_policy
 	ClientTLSPolicy *string `json:"clientTLSPolicy,omitempty"`
 
+	// +required
 	// The NetworkServicesEndpointPolicy name. If not given, the metadata.name will be used.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointPolicy.name,resource_name=true
 	ResourceID *string `json:"resourceID,omitempty"`

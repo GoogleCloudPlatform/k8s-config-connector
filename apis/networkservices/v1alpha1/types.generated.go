@@ -63,10 +63,14 @@ type EndpointMatcher_MetadataLabelMatcher struct {
 
 // +kcc:proto=google.cloud.networkservices.v1.EndpointMatcher.MetadataLabelMatcher.MetadataLabels
 type EndpointMatcher_MetadataLabelMatcher_MetadataLabels struct {
+	// +required
+	// +required
 	// Required. Label name presented as key in xDS Node Metadata.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointMatcher.MetadataLabelMatcher.MetadataLabels.label_name
 	LabelName *string `json:"labelName,omitempty"`
 
+	// +required
+	// +required
 	// Required. Label value presented as value corresponding to the above
 	//  key, in xDS Node Metadata.
 	// +kcc:proto:field=google.cloud.networkservices.v1.EndpointMatcher.MetadataLabelMatcher.MetadataLabels.label_value
