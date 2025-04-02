@@ -21,30 +21,28 @@ package eventarc
 
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
-
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *krm.EventarcChannelObservedState {
+func EventarcChannelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *krmv1alpha1.EventarcChannelObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EventarcChannelObservedState{}
+	out := &krmv1alpha1.EventarcChannelObservedState{}
 	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
-
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.ActivationToken = direct.LazyPtr(in.GetActivationToken())
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
 	return out
 }
-
-func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChannelObservedState) *pb.Channel {
+func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcChannelObservedState) *pb.Channel {
 	if in == nil {
 		return nil
 	}
@@ -60,5 +58,43 @@ func EventarcChannelObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Eve
 	out.ActivationToken = direct.ValueOf(in.ActivationToken)
 	// MISSING: CryptoKeyName
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	return out
+}
+func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krmv1alpha1.EventarcGoogleChannelConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EventarcGoogleChannelConfigObservedState{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcGoogleChannelConfigObservedState) *pb.GoogleChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleChannelConfig{}
+	// MISSING: Name
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krmv1alpha1.EventarcGoogleChannelConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EventarcGoogleChannelConfigSpec{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
+	return out
+}
+func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleChannelConfig{}
+	// MISSING: Name
+	// MISSING: CryptoKeyName
 	return out
 }
