@@ -380,6 +380,12 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 	case "string", "boolean", "integer", "number":
 		// No child properties
 	default:
+		// if preserveUnknownFields is true, we don't want to check the type
+		// For recursive types, we don't want to recurse into schemaless fields
+		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
+			// We don't want to recurse into schemaless fields
+			return
+		}
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
 	}
 }
