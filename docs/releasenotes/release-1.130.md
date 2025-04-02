@@ -18,12 +18,16 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 ## New Beta Resources (Direct Reconciler):
 
 * [`ManagedKafkaTopic`](https://cloud.google.com/config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic)
+* [`SecureSourceManagerInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md)
+* [`SecureSourceManagerRepository`](https://cloud.google.com/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md)
 
 ## New Alpha Resources (Direct Reconciler):
 
-* `VertexAIFeaturestore`
-* `NotebooksEnvironment`
+* `DataplexLake`
 * `DocumentAIProcessor`
+* `NotebooksEnvironment`
+* `SpannerInstanceConfig`
+* `VertexAIFeaturestore`
 
 ## New Fields:
 
@@ -60,4 +64,4 @@ We have added support for direct reconciliation to more resources, with opt-in b
 
 ## Bug Fixes:
 
-* [SAMPLE_Issue 3007](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007) ComputeBackendService cannot refer clientTLSPolicy due to invalid format (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
+* FirewallPolicyRule cannot refer to FirewallPolicy with resourceID "firewallPolicies/firewallPolicyID" after the direct controller migration. The now accepted formats are "firewallPolicies/firewallPolicyID" and "firewallPolicyID".
