@@ -13,6 +13,7 @@
 // limitations under the License.
 
 // +tool:controller-client
+// proto.service: google.cloud.dataplex.v1.ContentService
 // proto.service: google.cloud.dataplex.v1.DataplexService
 
 package dataplex
@@ -57,4 +58,28 @@ func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 	}
 
 	return grpcClient, err
+}
+
+func (m *gcpClient) newContentClient(ctx context.Context) (*api.ContentClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewContentRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex content client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newDataplexClient(ctx context.Context) (*api.Client, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex client: %w", err)
+	}
+	return client, err
 }
