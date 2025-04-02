@@ -17,6 +17,12 @@ kind: DataprocJob
 metadata:
   name: dataprocjob-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  parent:
+    projectRef:
+      external: ${projectId}
+    location: us-central1
+  placement:
+    clusterName: dataproccluster-${uniqueId}
+  hiveJob:
+    queryFileURI: "gs://config-connector-sample/hivejob_sample.sql"
+    continueOnFailure: true
