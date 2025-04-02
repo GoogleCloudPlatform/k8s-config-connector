@@ -27,12 +27,6 @@ type MetastoreBackupSpec struct {
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Immutable. The relative resource name of the backup, in the following form:
-	//
-	//  `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
-	// +kcc:proto:field=google.cloud.metastore.v1.Backup.name
-	Name *string `json:"name,omitempty"`
-
 	// The description of the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.description
 	Description *string `json:"description,omitempty"`
