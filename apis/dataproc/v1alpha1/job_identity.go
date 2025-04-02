@@ -56,7 +56,7 @@ func (p *JobParent) String() string {
 func NewJobIdentity(ctx context.Context, reader client.Reader, obj *DataprocJob) (*JobIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.DataprocJobParent.ProjectRef)
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *DataprocJob)
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.DataprocJobParent.Region
+	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -105,8 +105,8 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *DataprocJob)
 
 func ParseJobExternal(external string) (parent *JobParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "jobs" {
-		return nil, "", fmt.Errorf("format of DataprocJob external=%q was not known (use projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "jobs" {
+		return nil, "", fmt.Errorf("format of DataprocJob external=%q was not known (use projects/{{projectID}}/regions/{{location}}/jobs/{{jobID}})", external)
 	}
 	parent = &JobParent{
 		ProjectID: tokens[1],
