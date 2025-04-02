@@ -1,6 +1,6 @@
-# Follow `SAMPLE_XXX` format to write the content. 
-# Delete `SAMPLE_` and its content before publishing the release note. 
-# Delete the entire header if no updates.  
+# Follow `SAMPLE_XXX` format to write the content.
+# Delete `SAMPLE_` and its content before publishing the release note.
+# Delete the entire header if no updates.
 
 ** This version is not yet released; this document is gathering release notes for the future release **
 
@@ -9,11 +9,11 @@
 * Special shout-outs to ... for their contributions to this release.
 TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`.
 
-## Announcement 
+## Announcement
 
-### SAMPLE_Simplified and More Reliable Resource Development 
+### SAMPLE_Simplified and More Reliable Resource Development
 
-* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)   
+* We launched a major improvement to the Config Connector resource development!  Our new approach significantly enhances reliability and provides a more native Kubernetes experience. Learn more in our [guide](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/develop-resources)
 
 ## New Beta Resources (Direct Reconciler):
 
@@ -24,7 +24,7 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 * `VertexAIFeaturestore`
 * `NotebooksEnvironment`
 * `DocumentAIProcessor`
- 
+
 ## New Fields:
 
 * [`SAMPLE_AlloyDBInstance`](https://cloud.google.com/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
@@ -36,9 +36,15 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 
   * Added `spec.configmanagement.configSync.stopSyncing` field since 1.129.
 
+* [SpannerInstance](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance). For opt-in direct controller,
+  * Added `spec.labels` field.
+  * Added `spec.defaultBackupScheduleType` field.
+* [SecretManagerSecret](https://cloud.google.com/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret). For opt-in direct controller,
+  * Added `spec.labels` field.
+
 ## Reconciliation Improvements
 
-We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes): 
+We have added support for direct reconciliation to more resources, with opt-in behaviour.  The API is unchanged. To use the direct reconciler, add the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.  The following resources now have direct reconciliation support (and we list some of the issues that this fixes):
 
 * [`SAMPLE_SQLInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/pkg/test/resourcefixture/testdata/basic/sql/v1beta1/sqlinstance) (This is a sample, your actual release note should not contain `SAMPLE_`, otherwise it will be deleted)
 
