@@ -74,48 +74,39 @@ spec:
                   error 412 conditionNotMet. To see the latest fingerprint, make a
                   get() request to retrieve a NetworkEdgeSecurityService.
                 type: string
-              inline:
-                properties:
-                  location:
-                    type: string
-                  projectRef:
-                    description: The Project that this resource belongs to.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
+              location:
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
                       - name
-                      - kind
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                        - required:
-                          - kind
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                required:
-                - location
-                - projectRef
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
                 type: object
               resourceID:
                 description: The ComputeNetworkEdgeSecurityService name. If not given,
@@ -151,7 +142,8 @@ spec:
                     type: string
                 type: object
             required:
-            - inline
+            - location
+            - projectRef
             type: object
           status:
             description: ComputeNetworkEdgeSecurityServiceStatus defines the config

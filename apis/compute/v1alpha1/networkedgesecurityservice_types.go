@@ -33,7 +33,7 @@ type ComputeNetworkEdgeSecurityServiceParent struct {
 // ComputeNetworkEdgeSecurityServiceSpec defines the desired state of ComputeNetworkEdgeSecurityService
 // +kcc:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
 type ComputeNetworkEdgeSecurityServiceSpec struct {
-	ComputeNetworkEdgeSecurityServiceParent `json:"inline"`
+	ComputeNetworkEdgeSecurityServiceParent `json:",inline"`
 	// The ComputeNetworkEdgeSecurityService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 	// An optional description of this resource. Provide this property when you create the resource.
