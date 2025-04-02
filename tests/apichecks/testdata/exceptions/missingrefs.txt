@@ -36,6 +36,10 @@
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.sourceHierarchyDatasets.datasetTemplate.kmsKeyName" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.destinationConnectionProfile" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceConfig.sourceConnectionProfile" should be a reference
+[refs] crd=deploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".anthosCluster.membership" should be a reference
+[refs] crd=deploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".executionConfigs[].privatePool.workerPool" should be a reference
+[refs] crd=deploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".executionConfigs[].workerPool" should be a reference
+[refs] crd=deploytargets.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".gke.cluster" should be a reference
 [refs] crd=dialogflowcxagents.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.securitySettings" should be a reference
 [refs] crd=dialogflowcxentitytypes.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent" should be a reference
 [refs] crd=dialogflowcxflows.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventHandlers[].targetFlow" should be a reference
