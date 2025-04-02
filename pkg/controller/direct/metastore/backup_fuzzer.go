@@ -20,8 +20,6 @@ package metastore
 
 import (
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -45,36 +43,8 @@ func metastoreBackupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 
-	// The fields below are unimplemented in service_revision
-	f.UnimplementedFields.Insert(".service_revision.hive_metastore_config.auxiliary_versions")
-	f.UnimplementedFields.Insert(".service_revision.name")
-	f.UnimplementedFields.Insert(".service_revision.network_config")
-	f.UnimplementedFields.Insert(".service_revision.encryption_config.kms_key_name")
-	f.UnimplementedFields.Insert(".service_revision.management_cluster.stretched_cluster_config")
+	// service_revision is output only and in marked schemaless. lets skip fuzzing
+	f.UnimplementedFields.Insert(".service_revision")
 
 	return f
-}
-
-func MetastoreBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreBackupSpec) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
-
-func MetastoreBackupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MetastoreBackupObservedState) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.State = direct.Enum_ToProto[pb.Backup_State](mapCtx, in.State)
-	out.ServiceRevision = MetastoreServiceSpec_ToProto(mapCtx, in.ServiceRevision)
-	out.RestoringServices = in.RestoringServices
-	return out
 }
