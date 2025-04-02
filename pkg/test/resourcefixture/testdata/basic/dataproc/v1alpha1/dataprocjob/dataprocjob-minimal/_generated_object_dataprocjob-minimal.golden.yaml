@@ -29,20 +29,17 @@ status:
   externalRef: projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}
   observedGeneration: 1
   observedState:
-    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/2df9d2e5-7242-4180-9f55-cc6e1aac7096/jobs/dataprocjob-minimal-${uniqueId}/
-    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/2df9d2e5-7242-4180-9f55-cc6e1aac7096/jobs/dataprocjob-minimal-${uniqueId}/driveroutput
-    jobUUid: 4994c587-b877-4cff-986a-59d30467b2e7
-    placement:
-      clusterUuid: 704222ac-d12d-4dd2-a325-4ba764078083
+    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//
+    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//driveroutput
+    placement: {}
     status:
       state: DONE
-      stateStartTime: '2025-03-06T08:13:36.812902Z'
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
     statusHistory:
     - state: PENDING
-      stateStartTime: '2025-03-06T08:13:27.583173Z'
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
     - state: SETUP_DONE
-      stateStartTime: '2025-03-06T08:13:27.623781Z'
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
     - details: Agent reported job success
       state: RUNNING
-      stateStartTime: '2025-03-06T08:13:27.939687Z'
-
+      stateStartTime: "2024-04-01T12:34:56.123456Z"
