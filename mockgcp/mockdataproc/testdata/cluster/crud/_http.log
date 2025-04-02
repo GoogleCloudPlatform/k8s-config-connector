@@ -318,11 +318,13 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "test-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
-      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -462,11 +464,13 @@ X-Xss-Protection: 0
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "test-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
-    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -615,11 +619,13 @@ X-Xss-Protection: 0
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "test-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
-    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -831,11 +837,13 @@ X-Xss-Protection: 0
       }
     },
     "labels": {
+      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "test-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
-      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+      "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
   }
@@ -976,11 +984,13 @@ X-Xss-Protection: 0
     }
   },
   "labels": {
+    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "test-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
-    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+    "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
   "status": {
@@ -998,6 +1008,10 @@ X-Xss-Protection: 0
     },
     {
       "state": "UPDATING",
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "state": "RUNNING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -1140,11 +1154,13 @@ X-Xss-Protection: 0
         }
       },
       "labels": {
+        "cnrm-test": "true",
         "goog-dataproc-autozone": "enabled",
         "goog-dataproc-cluster-name": "test-${uniqueId}",
         "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
         "goog-dataproc-location": "us-central1",
-        "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}"
+        "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
+        "managed-by-cnrm": "true"
       },
       "projectId": "${projectId}",
       "status": {
@@ -1162,6 +1178,10 @@ X-Xss-Protection: 0
         },
         {
           "state": "UPDATING",
+          "stateStartTime": "2024-04-01T12:34:56.123456Z"
+        },
+        {
+          "state": "RUNNING",
           "stateStartTime": "2024-04-01T12:34:56.123456Z"
         }
       ]

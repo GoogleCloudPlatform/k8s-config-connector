@@ -85,9 +85,23 @@ func (s *jobControllerServer) SubmitJob(ctx context.Context, req *pb.SubmitJobRe
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	updated, err := mutateObject(ctx, s.storage, fqn, func(obj *pb.Job) error {
+		obj.Status.State = pb.JobStatus_SETUP_DONE
+		obj.StatusHistory = append(obj.StatusHistory, &pb.JobStatus{
+			State:          pb.JobStatus_PENDING,
+			StateStartTime: timestamppb.New(now),
+		})
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	updated, err = mutateObject(ctx, s.storage, fqn, func(obj *pb.Job) error {
 		obj.Status.State = pb.JobStatus_RUNNING
+		obj.StatusHistory = append(obj.StatusHistory, &pb.JobStatus{
+			State:          pb.JobStatus_SETUP_DONE,
+			StateStartTime: timestamppb.New(now),
+		})
 		return nil
 	})
 	if err != nil {
@@ -95,6 +109,11 @@ func (s *jobControllerServer) SubmitJob(ctx context.Context, req *pb.SubmitJobRe
 	}
 	updated, err = mutateObject(ctx, s.storage, fqn, func(obj *pb.Job) error {
 		obj.Status.State = pb.JobStatus_DONE
+		obj.StatusHistory = append(obj.StatusHistory, &pb.JobStatus{
+			State:          pb.JobStatus_RUNNING,
+			StateStartTime: timestamppb.New(now),
+			Details:        "Agent reported job success",
+		})
 		return nil
 	})
 	if err != nil {
@@ -177,9 +196,6 @@ func (s *MockService) parseJobName(projectID, region, jobID string) (*jobName, e
 	if region == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "region is required")
 	}
-	// if jobID == "" {
-	// 	return nil, status.Errorf(codes.InvalidArgument, "jobID is required")
-	// }
 
 	name := &jobName{
 		Project: project,
@@ -201,9 +217,6 @@ func (s *MockService) buildJobName(projectName, region, jobID string) (*jobName,
 	if region == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "region is required")
 	}
-	// if jobID == "" {
-	// 	return nil, status.Errorf(codes.InvalidArgument, "jobID is required")
-	// }
 
 	return &jobName{
 		Project: project,
