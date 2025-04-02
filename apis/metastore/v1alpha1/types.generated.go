@@ -16,7 +16,7 @@
 // krm.group: metastore.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.metastore.v1
-// resource: MetastoreService:Service
+// resource: MetastoreBackup:Backup
 
 package v1alpha1
 
@@ -34,6 +34,19 @@ type AuxiliaryVersionConfig struct {
 	//  the auxiliary version's overrides takes precedence.
 	// +kcc:proto:field=google.cloud.metastore.v1.AuxiliaryVersionConfig.config_overrides
 	ConfigOverrides map[string]string `json:"configOverrides,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.Backup
+type Backup struct {
+	// Immutable. The relative resource name of the backup, in the following form:
+	//
+	//  `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.name
+	Name *string `json:"name,omitempty"`
+
+	// The description of the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.description
+	Description *string `json:"description,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.HiveMetastoreConfig
@@ -145,6 +158,29 @@ type Int32Value struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// +kcc:proto=google.cloud.metastore.v1.Backup
+type BackupObservedState struct {
+	// Output only. The time when the backup was started.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the backup finished creating.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.end_time
+	EndTime *string `json:"endTime,omitempty"`
+
+	// Output only. The current state of the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The revision of the service at the time of backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
+	ServiceRevision *Service `json:"serviceRevision,omitempty"`
+
+	// Output only. Services that are restoring from the backup.
+	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services
+	RestoringServices []string `json:"restoringServices,omitempty"`
+}
+
 // +kcc:proto=google.cloud.metastore.v1.MetadataExport
 type MetadataExportObservedState struct {
 	// Output only. A Cloud Storage URI of a folder that metadata are exported
@@ -175,11 +211,11 @@ type MetadataExportObservedState struct {
 type MetadataManagementActivityObservedState struct {
 	// Output only. The latest metadata exports of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.metadata_exports
-	MetadataExports []MetadataExportObservedState `json:"metadataExports,omitempty"`
+	MetadataExports []MetadataExport `json:"metadataExports,omitempty"`
 
 	// Output only. The latest restores of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.restores
-	Restores []RestoreObservedState `json:"restores,omitempty"`
+	Restores []Restore `json:"restores,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.NetworkConfig
@@ -188,19 +224,6 @@ type NetworkConfigObservedState struct {
 	//  Metastore instance.
 	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.consumers
 	Consumers []NetworkConfig_ConsumerObservedState `json:"consumers,omitempty"`
-}
-
-// +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
-type NetworkConfig_ConsumerObservedState struct {
-	// Output only. The URI of the endpoint used to access the metastore
-	//  service.
-	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.endpoint_uri
-	EndpointURI *string `json:"endpointURI,omitempty"`
-
-	// Output only. The location of the endpoint URI. Format:
-	//  `projects/{project}/locations/{location}`.
-	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.endpoint_location
-	EndpointLocation *string `json:"endpointLocation,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.Restore
