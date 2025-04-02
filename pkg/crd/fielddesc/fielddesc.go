@@ -93,8 +93,17 @@ func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescrip
 	case "boolean", "integer", "string", "number":
 		return newFieldDescription(props, parent, name, required)
 	default:
+		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
+			return schemalessToDescription(props, parent, name, required)
+		}
 		panic(fmt.Sprintf("unhandled type: %v", props.Type))
 	}
+}
+
+func schemalessToDescription(props apiextensions.JSONSchemaProps, parent FieldDescription, name string, required bool) FieldDescription {
+	fd := newFieldDescription(props, parent, name, required)
+	fd.Type = "schemaless"
+	return fd
 }
 
 func sliceToDescriptions(props apiextensions.JSONSchemaProps, parent FieldDescription, name string, required bool) FieldDescription {
