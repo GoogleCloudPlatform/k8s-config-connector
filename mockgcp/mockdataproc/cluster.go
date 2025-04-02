@@ -156,6 +156,8 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 				"goog-dataproc-cluster-uuid": obj.ClusterUuid,
 				"goog-dataproc-location":     name.Region,
 				"goog-drz-dataproc-uuid":     "cluster-" + obj.ClusterUuid,
+				"managed-by-cnrm":            "true",
+				"cnrm-test":                  "true",
 			}
 			return nil
 		})
@@ -203,6 +205,9 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	}
 	if obj.Config.WorkerConfig == nil {
 		obj.Config.WorkerConfig = &pb.InstanceGroupConfig{}
+	}
+	if obj.Config.WorkerConfig.DiskConfig == nil {
+		obj.Config.WorkerConfig.DiskConfig = &pb.DiskConfig{}
 	}
 	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
 	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
@@ -292,6 +297,12 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		ret.StatusHistory = nil
 		ret.Config.WorkerConfig.InstanceNames = nil
 		ret.Config.MasterConfig.InstanceNames = nil
+
+		s.setStatus(updated, pb.ClusterStatus_RUNNING)
+
+		if err := s.storage.Update(ctx, fqn, updated); err != nil {
+			return nil, err
+		}
 		return ret, nil
 	})
 }
