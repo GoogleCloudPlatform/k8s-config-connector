@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
-kind: DataprocJob
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
 metadata:
-  name: dataprocjob-minimal-${uniqueId}
+  name: dataproccluster-${uniqueId}
 spec:
-  parent:
-    projectRef:
-      external: ${projectId}
-    location: us-central1
-  placement:
-    clusterName: dataproccluster-${uniqueId}
-  hiveJob:
-    queryFileURI: "gs://config-connector-sample/hivejob_sample.sql"
-    continueOnFailure: true
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  config:
+    gceClusterConfig:
+      internalIPOnly: true
+    masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+      machineType: "n2-standard-4"
+      numInstances: 1
