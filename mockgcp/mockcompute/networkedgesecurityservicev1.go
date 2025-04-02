@@ -32,12 +32,12 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
-type networkEdgeSecurityServices struct {
+type networkEdgeSecurityServicesV1 struct {
 	*MockService
 	pb.UnimplementedNetworkEdgeSecurityServicesServer
 }
 
-func (s *networkEdgeSecurityServices) Get(ctx context.Context, req *pb.GetNetworkEdgeSecurityServiceRequest) (*pb.NetworkEdgeSecurityService, error) {
+func (s *networkEdgeSecurityServicesV1) Get(ctx context.Context, req *pb.GetNetworkEdgeSecurityServiceRequest) (*pb.NetworkEdgeSecurityService, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%s", req.GetProject(), req.GetRegion(), req.GetNetworkEdgeSecurityService())
 	name, err := s.parseNetworkEdgeSecurityServiceName(reqName)
 	if err != nil {
@@ -48,7 +48,7 @@ func (s *networkEdgeSecurityServices) Get(ctx context.Context, req *pb.GetNetwor
 	obj := &pb.NetworkEdgeSecurityService{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "NetworkEdgeSecurityService %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", name)
 		}
 		return nil, err
 	}
@@ -56,28 +56,31 @@ func (s *networkEdgeSecurityServices) Get(ctx context.Context, req *pb.GetNetwor
 	return obj, nil
 }
 
-func (s *networkEdgeSecurityServices) Insert(ctx context.Context, req *pb.InsertNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
+func (s *networkEdgeSecurityServicesV1) Insert(ctx context.Context, req *pb.InsertNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%s", req.GetProject(), req.GetRegion(), req.GetNetworkEdgeSecurityServiceResource().GetName())
 	name, err := s.parseNetworkEdgeSecurityServiceName(reqName)
 	if err != nil {
 		return nil, err
 	}
 	fqn := name.String()
+	id := s.generateID()
 
 	obj := proto.Clone(req.GetNetworkEdgeSecurityServiceResource()).(*pb.NetworkEdgeSecurityService)
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%d", name.Project.ID, name.Region, id)))
 	obj.Kind = PtrTo("compute#networkEdgeSecurityService")
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", name.Project.ID, name.Region))
-	obj.Fingerprint = PtrTo(computeCRC32C(obj))
+	// hard-code generated fingerprint
+	obj.Fingerprint = PtrTo("abcdef0123A=")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	op := &pb.Operation{
-		OperationType: PtrTo("insert"),
+		OperationType: PtrTo("createNetworkEdgeSecurityService"),
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
@@ -87,7 +90,7 @@ func (s *networkEdgeSecurityServices) Insert(ctx context.Context, req *pb.Insert
 	})
 }
 
-func (s *networkEdgeSecurityServices) Patch(ctx context.Context, req *pb.PatchNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
+func (s *networkEdgeSecurityServicesV1) Patch(ctx context.Context, req *pb.PatchNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%s", req.GetProject(), req.GetRegion(), req.GetNetworkEdgeSecurityService())
 	name, err := s.parseNetworkEdgeSecurityServiceName(reqName)
 	if err != nil {
@@ -99,17 +102,28 @@ func (s *networkEdgeSecurityServices) Patch(ctx context.Context, req *pb.PatchNe
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
-	// TODO: Apply field mask.
 	proto.Merge(obj, req.GetNetworkEdgeSecurityServiceResource())
-	obj.Fingerprint = PtrTo(computeCRC32C(obj))
+	// hard-code generated fingerprint
+	obj.Fingerprint = PtrTo("abcdef0123A=")
+
+	paths := strings.Split(req.GetUpdateMask(), ",")
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetNetworkEdgeSecurityServiceResource().Description
+		case "security_policy":
+			obj.SecurityPolicy = req.GetNetworkEdgeSecurityServiceResource().SecurityPolicy
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	op := &pb.Operation{
-		OperationType: PtrTo("patch"),
+		OperationType: PtrTo("updateNetworkEdgeSecurityService"),
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
@@ -119,7 +133,7 @@ func (s *networkEdgeSecurityServices) Patch(ctx context.Context, req *pb.PatchNe
 	})
 }
 
-func (s *networkEdgeSecurityServices) Delete(ctx context.Context, req *pb.DeleteNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
+func (s *networkEdgeSecurityServicesV1) Delete(ctx context.Context, req *pb.DeleteNetworkEdgeSecurityServiceRequest) (*pb.Operation, error) {
 	reqName := fmt.Sprintf("projects/%s/regions/%s/networkEdgeSecurityServices/%s", req.GetProject(), req.GetRegion(), req.GetNetworkEdgeSecurityService())
 	name, err := s.parseNetworkEdgeSecurityServiceName(reqName)
 	if err != nil {
@@ -133,7 +147,7 @@ func (s *networkEdgeSecurityServices) Delete(ctx context.Context, req *pb.Delete
 	}
 
 	op := &pb.Operation{
-		OperationType: PtrTo("delete"),
+		OperationType: PtrTo("deleteNetworkEdgeSecurityService"),
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
 		User:          PtrTo("user@example.com"),
