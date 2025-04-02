@@ -22,6 +22,7 @@ package v1alpha1
 
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type GoogleChannelConfig struct {
+	// +required
 	// Required. The resource name of the config. Must be in the format of,
 	//  `projects/{project}/locations/{location}/googleChannelConfig`.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
