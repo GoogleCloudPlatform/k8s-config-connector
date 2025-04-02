@@ -790,6 +790,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
+			if name == "dclbasedresourceserviceaccountref" {
+				continue
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
