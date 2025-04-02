@@ -21,9 +21,25 @@ import (
 
 var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 
+// MetastoreServiceRef references a MetastoreService resource.
+type MetastoreServiceRef struct {
+	// The external name of the MetastoreService.
+	// Allowed value: The `name` field of a `MetastoreService` resource.
+	// +required
+	External string `json:"external"`
+}
+
+// Parent defines the parent resource of a MetastoreBackup.
+type Parent struct {
+	// +required
+	// The MetastoreService that the backup belongs to.
+	ServiceRef MetastoreServiceRef `json:"serviceRef"`
+}
+
 // MetastoreBackupSpec defines the desired state of MetastoreBackup
 // +kcc:proto=google.cloud.metastore.v1.Backup
 type MetastoreBackupSpec struct {
+	Parent `json:",inline"`
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
