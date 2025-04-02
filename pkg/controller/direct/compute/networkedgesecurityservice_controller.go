@@ -29,14 +29,15 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"reflect"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sort"
+	"strings"
 )
 
 func init() {
@@ -198,9 +199,12 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	// An up-to-date fingerprint must be provided in order to patch
 	resource.Fingerprint = a.actual.Fingerprint
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
-	if err != nil {
-		return err
+	var paths []string
+	if !reflect.DeepEqual(resource.SecurityPolicy, a.actual.SecurityPolicy) {
+		paths = append(paths, "security_policy")
+	}
+	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+		paths = append(paths, "description")
 	}
 
 	if len(paths) == 0 {
@@ -214,20 +218,15 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	}
 
 	// updateMask is a comma-separated list of fully qualified names of fields.
-	var stringSlice []string
-	for path := range paths {
-		stringSlice = append(stringSlice, path)
-	}
-
-	sort.Strings(stringSlice)
-	//updateMask := strings.Join(stringSlice, ",")
+	sort.Strings(paths)
+	updateMask := strings.Join(paths, ",")
 
 	req := &computepb.PatchNetworkEdgeSecurityServiceRequest{
 		Project:                            a.id.Parent().ProjectID,
 		Region:                             a.id.Parent().Location,
 		NetworkEdgeSecurityService:         a.id.ID(),
 		NetworkEdgeSecurityServiceResource: resource,
-		UpdateMask:                         direct.LazyPtr("description,security_policy"),
+		UpdateMask:                         direct.LazyPtr(updateMask),
 	}
 	op, err := a.gcpClient.Patch(ctx, req)
 	if err != nil {
