@@ -32,7 +32,8 @@ type GoogleChannelConfigIdentity struct {
 }
 
 func (i *GoogleChannelConfigIdentity) String() string {
-	return i.parent.String() + "/googlechannelconfigs/" + i.id
+	// Use the singular name 'googleChannelConfig' from the proto definition
+	return i.parent.String() + "/googleChannelConfig/" + i.id
 }
 
 func (i *GoogleChannelConfigIdentity) ID() string {
@@ -105,8 +106,10 @@ func NewGoogleChannelConfigIdentity(ctx context.Context, reader client.Reader, o
 
 func ParseGoogleChannelConfigExternal(external string) (parent *GoogleChannelConfigParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "googlechannelconfigs" {
-		return nil, "", fmt.Errorf("format of EventarcGoogleChannelConfig external=%q was not known (use projects/{{projectID}}/locations/{{location}}/googlechannelconfigs/{{googlechannelconfigID}})", external)
+	// Expected format based on proto pattern `projects/{project}/locations/{location}/googleChannelConfig` and KCC convention of adding resource ID:
+	// projects/{projectID}/locations/{location}/googleChannelConfig/{googlechannelconfigID}
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "googleChannelConfig" {
+		return nil, "", fmt.Errorf("format of EventarcGoogleChannelConfig external=%q was not known (use projects/{projectID}/locations/{location}/googleChannelConfig/{googlechannelconfigID})", external)
 	}
 	parent = &GoogleChannelConfigParent{
 		ProjectID: tokens[1],
