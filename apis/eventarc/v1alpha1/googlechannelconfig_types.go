@@ -15,19 +15,26 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var EventarcGoogleChannelConfigGVK = GroupVersion.WithKind("EventarcGoogleChannelConfig")
 
+// Parent defines the parent resource hierarchy.
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
-	// Required. The resource name of the config. Must be in the format of,
-	//  `projects/{project}/locations/{location}/googleChannelConfig`.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
-	Name *string `json:"name,omitempty"`
+	// +required
+	Parent `json:",inline"`
 
 	// Optional. Resource name of a KMS crypto key (managed by the user) used to
 	//  encrypt/decrypt their event data.
@@ -37,7 +44,7 @@ type EventarcGoogleChannelConfigSpec struct {
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
 	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
 
-	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
+	// The user-provided name of the EventarcGoogleChannelConfig. If not specified, the name of the KRM resource will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
