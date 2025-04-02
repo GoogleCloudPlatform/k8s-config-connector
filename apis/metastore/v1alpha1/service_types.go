@@ -41,6 +41,30 @@ type NetworkConfig_Consumer struct {
 	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
+type NetworkConfig_ConsumerObservedState struct {
+	// Output only. The URI of the endpoint used to access the metastore
+	//  service.
+	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.endpoint_uri
+	EndpointURI *string `json:"endpointURI,omitempty"`
+
+	// Output only. The location of the endpoint URI. Format:
+	//  `projects/{project}/locations/{location}`.
+	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.endpoint_location
+	EndpointLocation *string `json:"endpointLocation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.metastore.v1.MetadataManagementActivity
+type MetadataManagementActivityObservedState struct {
+	// Output only. The latest metadata exports of the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.metadata_exports
+	MetadataExports []MetadataExportObservedState `json:"metadataExports,omitempty"`
+
+	// Output only. The latest restores of the metastore service.
+	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.restores
+	Restores []RestoreObservedState `json:"restores,omitempty"`
+}
+
 // +kcc:proto=google.cloud.metastore.v1.EncryptionConfig
 type EncryptionConfig struct {
 	// The fully qualified customer provided Cloud KMS key name to use for

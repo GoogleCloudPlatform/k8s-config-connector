@@ -21,25 +21,17 @@ import (
 
 var MetastoreBackupGVK = GroupVersion.WithKind("MetastoreBackup")
 
-// MetastoreServiceRef references a MetastoreService resource.
-type MetastoreServiceRef struct {
-	// The external name of the MetastoreService.
-	// Allowed value: The `name` field of a `MetastoreService` resource.
-	// +required
-	External string `json:"external"`
-}
-
 // Parent defines the parent resource of a MetastoreBackup.
-type Parent struct {
+type MetastoreBackupParent struct {
 	// +required
 	// The MetastoreService that the backup belongs to.
-	ServiceRef MetastoreServiceRef `json:"serviceRef"`
+	ServiceRef ServiceRef `json:"serviceRef"`
 }
 
 // MetastoreBackupSpec defines the desired state of MetastoreBackup
 // +kcc:proto=google.cloud.metastore.v1.Backup
 type MetastoreBackupSpec struct {
-	Parent `json:",inline"`
+	MetastoreBackupParent `json:",inline"`
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -81,7 +73,9 @@ type MetastoreBackupObservedState struct {
 
 	// Output only. The revision of the service at the time of backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.service_revision
-	ServiceRevision *Service `json:"serviceRevision,omitempty"`
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
+	ServiceRevision *MetastoreServiceSpec `json:"serviceRevision,omitempty"`
 
 	// Output only. Services that are restoring from the backup.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.restoring_services

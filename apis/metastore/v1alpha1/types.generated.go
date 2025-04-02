@@ -17,6 +17,8 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.metastore.v1
 // resource: MetastoreBackup:Backup
+// resource: MetastoreService:Service
+// resource: MetastoreFederation:Federation
 
 package v1alpha1
 
@@ -169,17 +171,6 @@ type MetadataExportObservedState struct {
 	// Output only. The type of the database dump.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataExport.database_dump_type
 	DatabaseDumpType *string `json:"databaseDumpType,omitempty"`
-}
-
-// +kcc:proto=google.cloud.metastore.v1.MetadataManagementActivity
-type MetadataManagementActivityObservedState struct {
-	// Output only. The latest metadata exports of the metastore service.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.metadata_exports
-	MetadataExports []MetadataExport `json:"metadataExports,omitempty"`
-
-	// Output only. The latest restores of the metastore service.
-	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.restores
-	Restores []Restore `json:"restores,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.NetworkConfig

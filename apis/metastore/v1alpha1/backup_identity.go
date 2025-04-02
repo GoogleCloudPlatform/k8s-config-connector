@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	// TODO: Add import for the parent service reference if needed, e.g.,
 	// metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
@@ -63,55 +62,36 @@ func (p *BackupParent) String() string {
 func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *MetastoreBackup) (*BackupIdentity, error) {
 
 	// Get Parent components
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	serviceRef := obj.Spec.MetastoreBackupParent.ServiceRef
+	serviceExternalRef, err := serviceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
+	serviceParent, serviceID, err := ParseServiceExternal(serviceExternalRef)
+	if err != nil {
+		return nil, err
+	}
+
+	projectID := serviceParent.ProjectID
 	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("cannot resolve projectID from serviceRef")
 	}
 
 	// Assuming Location is directly in Spec as per the original code and backup_types.go.
 	// If Location needs to be resolved from the parent Service, this logic would change.
-	location := obj.Spec.Location
+	location := serviceParent.Location
 	if location == "" {
-		return nil, fmt.Errorf("spec.location must be set")
+		return nil, fmt.Errorf("cannot resolve location from serviceRef")
 	}
 
-	// TODO: Resolve ServiceID. The current MetastoreBackupSpec in backup_types.go doesn't explicitly contain a ServiceRef.
-	// This resolution logic depends on how the parent service is specified in the MetastoreBackup CRD.
-	// Placeholder: This needs to be adapted based on the actual spec design.
-	var serviceID string
-	// Example: If Service ID comes from a field like obj.Spec.ServiceRef
-	// serviceRef, err := resolveMetastoreServiceRef(ctx, reader, obj, obj.Spec.ServiceRef)
-	// if err != nil {
-	// 	 return nil, fmt.Errorf("cannot resolve service: %w", err)
-	// }
-	// serviceID = serviceRef.ServiceID // Extract the ID
-
-	// Example: If Service ID comes from the spec.name field (less ideal)
-	// if obj.Spec.Name != nil {
-	// 	 nameParts := strings.Split(*obj.Spec.Name, "/")
-	// 	 if len(nameParts) == 8 && nameParts[0] == "projects" && nameParts[2] == "locations" && nameParts[4] == "services" && nameParts[6] == "backups" {
-	// 		 serviceID = nameParts[5]
-	// 	 }
-	// }
-
 	if serviceID == "" {
-		// If ServiceID cannot be determined from the spec, this will fail.
-		// This indicates a potential mismatch between the identity logic and the CRD definition.
-		// Or, the ServiceID might need to be retrieved differently (e.g., from parent Service status).
-		return nil, fmt.Errorf("cannot determine service ID from MetastoreBackup spec - resolution logic needs implementation based on CRD design")
+		return nil, fmt.Errorf("cannot determine serviceID from serviceRef")
 	}
 
 	// Get desired Backup ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID (metadata.name or spec.resourceID)")
 	}
 
 	// Use approved External reference if available
