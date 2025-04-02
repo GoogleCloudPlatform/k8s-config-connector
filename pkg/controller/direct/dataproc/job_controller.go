@@ -79,11 +79,15 @@ func (m *dataprocJobModel) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	projectID := obj.Spec.ProjectRef.External
-	if projectID == "" {
-		return nil, fmt.Errorf("projectRef.external is required")
+	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
 	}
-	location := obj.Spec.Region // Note: Dataproc API uses 'region', KCC uses 'location' sometimes, but here KRM uses 'Region'.
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := obj.Spec.Location
 	if location == "" {
 		return nil, fmt.Errorf("region is required")
 	}
@@ -144,8 +148,6 @@ func (m *dataprocJobModel) AdapterForObject(ctx context.Context, reader client.R
 		gcpClient: gcpClient,
 		id:        jobID,
 		desired:   desired,
-		// resourceID is the user-specified name/id from metadata.name or resourceID annotation
-		resourceID: obj.Name,
 	}, nil
 }
 
@@ -157,11 +159,10 @@ func (m *dataprocJobModel) AdapterForURL(ctx context.Context, url string) (direc
 var _ directbase.Adapter = &dataprocJobAdapter{}
 
 type dataprocJobAdapter struct {
-	gcpClient  *dataproc.JobControllerClient
-	id         *krm.JobIdentity // Contains ProjectID, Region, and potentially JobID (after creation or from URL)
-	desired    *pb.Job          // Desired state constructed from KRM spec
-	actual     *pb.Job          // Actual state fetched from GCP
-	resourceID string           // KRM resource name or resourceID annotation
+	gcpClient *dataproc.JobControllerClient
+	id        *krm.JobIdentity // Contains ProjectID, Region, and potentially JobID (after creation or from URL)
+	desired   *pb.Job          // Desired state constructed from KRM spec
+	actual    *pb.Job          // Actual state fetched from GCP
 }
 
 func (a *dataprocJobAdapter) Find(ctx context.Context) (bool, error) {
@@ -212,14 +213,17 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	// Set the user-specified ID if provided in the spec.
 	if a.desired.GetPlacement() != nil && a.desired.GetPlacement().GetClusterUuid() != "" {
 		// Placement.JobUuid is deprecated. Prefer setting reference.job_id
-	} else if a.resourceID != "" {
+	} else {
 		// If no specific job ID is in the spec, use the KRM resource name/resourceID
 		// as the reference ID for submission. This makes jobs findable later if the
 		// service-generated UUID is lost.
 		if a.desired.Reference == nil {
 			a.desired.Reference = &pb.JobReference{}
 		}
-		a.desired.Reference.JobId = a.resourceID
+	}
+	a.desired.Reference.JobId = a.id.ID()
+	if a.desired.Labels == nil {
+		a.desired.Labels = make(map[string]string)
 	}
 	a.desired.Labels["managed-by-cnrm"] = "true"
 
@@ -250,7 +254,7 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	// ExternalRef needs the service-generated ID
-	status.ExternalRef = direct.PtrTo(fmt.Sprintf("//dataproc.googleapis.com/projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
+	status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
 
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -300,7 +304,7 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		status := &krm.DataprocJobStatus{}
 		mapCtx := &direct.MapContext{}
 		status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, a.actual)
-		status.ExternalRef = direct.PtrTo(fmt.Sprintf("//dataproc.googleapis.com/projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.Parent().ProjectID))
+		status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -330,7 +334,7 @@ func (a *dataprocJobAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		mapCtx := &direct.MapContext{}
 		status := &krm.DataprocJobStatus{}
 		status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, updatedJob)
-		status.ExternalRef = direct.PtrTo(fmt.Sprintf("//dataproc.googleapis.com/projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
+		status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -376,7 +380,7 @@ func (a *dataprocJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		Spec: *spec,
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Region = a.id.Parent().Location
+	obj.Spec.Location = a.id.Parent().Location
 
 	// Set the correct job type wrapper in the spec
 	switch jobType := a.actual.TypeJob.(type) {

@@ -238,9 +238,11 @@ spec:
               parent:
                 description: Required.
                 properties:
+                  location:
+                    description: Required.
+                    type: string
                   projectRef:
-                    description: Required. The ID of the Google Cloud Platform project
-                      that the job belongs to.
+                    description: Required.
                     oneOf:
                     - not:
                         required:
@@ -274,10 +276,6 @@ spec:
                         description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
-                  region:
-                    description: Required. The Dataproc region in which to handle
-                      the request.
-                    type: string
                 type: object
               pigJob:
                 description: Optional. Job is a Pig job.

@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -96,19 +95,10 @@ type DataprocJobSpec struct {
 	DriverSchedulingConfig *DriverSchedulingConfig `json:"driverSchedulingConfig,omitempty"`
 
 	// Required.
-	*DataprocJobParent `json:"parent,omitempty"`
+	*Parent `json:"parent,omitempty"`
 
 	// The DataprocJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type DataprocJobParent struct {
-
-	// Required. The ID of the Google Cloud Platform project that the job belongs to.
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
-
-	// Required. The Dataproc region in which to handle the request.
-	Region string `json:"region,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.FlinkJob
