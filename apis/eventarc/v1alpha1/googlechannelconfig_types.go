@@ -24,6 +24,19 @@ var EventarcGoogleChannelConfigGVK = GroupVersion.WithKind("EventarcGoogleChanne
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
+	// Required. The resource name of the config. Must be in the format of,
+	//  `projects/{project}/locations/{location}/googleChannelConfig`.
+	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Resource name of a KMS crypto key (managed by the user) used to
+	//  encrypt/decrypt their event data.
+	//
+	//  It must match the pattern
+	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
+	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
+
 	// The EventarcGoogleChannelConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
