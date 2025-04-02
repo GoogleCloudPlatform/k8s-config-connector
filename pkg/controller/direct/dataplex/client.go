@@ -61,25 +61,15 @@ func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 }
 
 func (m *gcpClient) newContentClient(ctx context.Context) (*api.ContentClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.options()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewContentRESTClient(ctx, opts...)
+
+	grpcClient, err := api.NewContentClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building dataplex content client: %w", err)
 	}
-	return client, err
-}
 
-func (m *gcpClient) newDataplexClient(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	client, err := api.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building dataplex client: %w", err)
-	}
-	return client, err
+	return grpcClient, err
 }
