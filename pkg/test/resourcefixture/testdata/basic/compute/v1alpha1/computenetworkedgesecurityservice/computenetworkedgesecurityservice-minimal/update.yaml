@@ -21,5 +21,6 @@ spec:
     external: ${projectId}
   location: us-central1
   description: "Updated description"
+  # KCC does not support regional security policy, use external reference
   securityPolicyRef:
-    name: computesecuritypolicy-${uniqueId}
+    external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/test-policy

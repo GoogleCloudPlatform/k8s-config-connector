@@ -36,6 +36,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sort"
 )
 
 func init() {
@@ -61,6 +62,16 @@ func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, 
 	id, err := krm.NewNetworkEdgeSecurityServiceIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
+	}
+
+	// resolve securityPolicyRef
+	securityPolicyRef := obj.Spec.SecurityPolicyRef
+	if securityPolicyRef != nil {
+		external, err := securityPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
+		if err != nil {
+			return nil, err
+		}
+		obj.Spec.SecurityPolicyRef.External = external
 	}
 
 	// Get compute GCP client
@@ -133,6 +144,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = direct.LazyPtr(a.id.ID())
 
 	req := &computepb.InsertNetworkEdgeSecurityServiceRequest{
 		Project:                            a.id.Parent().ProjectID,
@@ -182,21 +194,40 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = direct.LazyPtr(a.id.ID())
+	// An up-to-date fingerprint must be provided in order to patch
+	resource.Fingerprint = a.actual.Fingerprint
 
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		log.V(2).Info("no field needs update", "name", a.id)
+		status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
+		status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
+
+	// updateMask is a comma-separated list of fully qualified names of fields.
+	var stringSlice []string
+	for path := range paths {
+		stringSlice = append(stringSlice, path)
+	}
+
+	sort.Strings(stringSlice)
+	//updateMask := strings.Join(stringSlice, ",")
 
 	req := &computepb.PatchNetworkEdgeSecurityServiceRequest{
 		Project:                            a.id.Parent().ProjectID,
 		Region:                             a.id.Parent().Location,
 		NetworkEdgeSecurityService:         a.id.ID(),
 		NetworkEdgeSecurityServiceResource: resource,
+		UpdateMask:                         direct.LazyPtr("description,security_policy"),
 	}
 	op, err := a.gcpClient.Patch(ctx, req)
 	if err != nil {
