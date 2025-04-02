@@ -19,27 +19,3 @@
 // resource: EventarcGoogleChannelConfig:GoogleChannelConfig
 
 package v1alpha1
-
-// +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
-type GoogleChannelConfig struct {
-	// +required
-	// Required. The resource name of the config. Must be in the format of,
-	//  `projects/{project}/locations/{location}/googleChannelConfig`.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Resource name of a KMS crypto key (managed by the user) used to
-	//  encrypt/decrypt their event data.
-	//
-	//  It must match the pattern
-	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
-	CryptoKeyName *string `json:"cryptoKeyName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
-type GoogleChannelConfigObservedState struct {
-	// Output only. The last-modified time.
-	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
