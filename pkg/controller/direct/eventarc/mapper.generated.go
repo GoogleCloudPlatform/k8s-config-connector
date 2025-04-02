@@ -22,7 +22,6 @@ package eventarc
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -77,24 +76,6 @@ func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext,
 	out := &pb.GoogleChannelConfig{}
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: CryptoKeyName
-	return out
-}
-func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krmv1alpha1.EventarcGoogleChannelConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.EventarcGoogleChannelConfigSpec{}
-	// MISSING: Name
-	// MISSING: CryptoKeyName
-	return out
-}
-func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleChannelConfig{}
-	// MISSING: Name
 	// MISSING: CryptoKeyName
 	return out
 }

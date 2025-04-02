@@ -20,65 +20,8 @@ package eventarc
 
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
-
-// Needed for generated fuzzers
-// Autogen overrides
-func EventarcGoogleChannelConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krmv1alpha1.EventarcGoogleChannelConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.EventarcGoogleChannelConfigObservedState{}
-	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: CryptoKeyName
-	return out
-}
-
-// Needed for generated fuzzers
-// Autogen overrides
-func EventarcGoogleChannelConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcGoogleChannelConfigObservedState) *pb.GoogleChannelConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleChannelConfig{}
-	// MISSING: Name
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: CryptoKeyName
-	return out
-}
-
-// Needed for generated fuzzers
-// Autogen overrides
-func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleChannelConfig) *krmv1alpha1.EventarcGoogleChannelConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.EventarcGoogleChannelConfigSpec{}
-	// MISSING: Name
-	if in.GetCryptoKeyName() != "" {
-		out.CryptoKeyRef = &refv1beta1.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
-	}
-	return out
-}
-
-// Needed for generated fuzzers
-// Autogen overrides
-func EventarcGoogleChannelConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EventarcGoogleChannelConfigSpec) *pb.GoogleChannelConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleChannelConfig{}
-	// MISSING: Name
-	if in.CryptoKeyRef != nil {
-		out.CryptoKeyName = in.CryptoKeyRef.External
-	}
-	return out
-}
 
 func init() {
 	fuzztesting.RegisterKRMFuzzer(eventarcGoogleChannelConfigFuzzer())
