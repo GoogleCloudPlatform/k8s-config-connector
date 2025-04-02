@@ -194,8 +194,7 @@ spec:
                    Default value is an empty string.
                 type: string
               entryGroupRef:
-                description: Optional. Reference to the entry group that contains
-                  the entry.
+                description: Reference to the entry group that contains the entry.
                 oneOf:
                 - not:
                     required:
@@ -289,12 +288,6 @@ spec:
                         type: object
                     type: object
                 type: object
-              fullyQualifiedName:
-                description: '[Fully Qualified Name (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
-                  of the resource. Set automatically for entries representing resources
-                  from synced systems. Settable only during creation, and read-only
-                  later. Can be used for search and lookup of the entries.'
-                type: string
               gcsFilesetSpec:
                 description: Specification that applies to a Cloud Storage fileset.
                   Valid only for entries with the `FILESET` type.
@@ -364,10 +357,6 @@ spec:
                    and hashes (#).
                    The maximum size is 200 bytes when encoded in UTF-8.
                 type: string
-              location:
-                description: Optional. The location for the entry. Cannot be specified
-                  if entryGroupRef is specified.
-                type: string
               lookerSystemSpec:
                 description: Specification that applies to Looker sysstem. Only settable
                   when `user_specified_system` is equal to `LOOKER`
@@ -428,39 +417,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                type: object
-              projectRef:
-                description: Optional. Reference to the project that contains the
-                  entry. Cannot be specified if entryGroupRef is specified.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
                 type: object
               resourceID:
                 description: The DataCatalogEntry name. If not given, the metadata.name
@@ -530,8 +486,6 @@ spec:
                       properties:
                         column:
                           description: |-
-                            Required. Name of the column.
-
                             Required. Name of the column.
 
                              Must be a UTF-8 string without dots (.).
@@ -721,6 +675,8 @@ spec:
                    * Can only contain letters, numbers, and underscores.
                    * Must be at least 1 character and at most 64 characters long.
                 type: string
+            required:
+            - entryGroupRef
             type: object
           status:
             description: DataCatalogEntryStatus defines the config connector machine
@@ -1005,13 +961,6 @@ spec:
                     description: Output only. Indicates the entry's source system
                       that Data Catalog integrates with, such as BigQuery, Pub/Sub,
                       or Dataproc Metastore.
-                    type: string
-                  name:
-                    description: |-
-                      Output only. Identifier. The resource name of an entry in URL format.
-
-                       Note: The entry itself and its child resources might not be
-                       stored in the location specified in its name.
                     type: string
                   personalDetails:
                     description: Output only. Additional information related to the

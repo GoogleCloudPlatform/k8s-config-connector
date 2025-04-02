@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -43,17 +42,9 @@ type DataSourceObservedState struct {
 
 // Parent defines the potential parent resources for a DataCatalogEntry.
 type DataCatalogEntryParent struct {
-	// Optional. Reference to the entry group that contains the entry.
-	// +optional
+	// Reference to the entry group that contains the entry.
+	// +required
 	EntryGroupRef *EntryGroupRef `json:"entryGroupRef,omitempty"`
-
-	// Optional. The location for the entry. Cannot be specified if entryGroupRef is specified.
-	// +optional
-	Location *string `json:"location,omitempty"`
-
-	// Optional. Reference to the project that contains the entry. Cannot be specified if entryGroupRef is specified.
-	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
@@ -62,8 +53,6 @@ var DataCatalogEntryGVK = GroupVersion.WithKind("DataCatalogEntry")
 
 // +kcc:proto=google.cloud.datacatalog.v1.ColumnSchema
 type ColumnSchema struct {
-	// Required. Name of the column.
-	//
 	// Required. Name of the column.
 	//
 	//  Must be a UTF-8 string without dots (.).
@@ -162,13 +151,14 @@ type DataCatalogEntrySpec struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.linked_resource
 	LinkedResource *string `json:"linkedResource,omitempty"`
 
+	// REMOVING this field because this is the same as status.externalRef
 	// [Fully Qualified Name
 	//  (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
 	//  of the resource. Set automatically for entries representing resources from
 	//  synced systems. Settable only during creation, and read-only later. Can
 	//  be used for search and lookup of the entries.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.fully_qualified_name
-	FullyQualifiedName *string `json:"fullyQualifiedName,omitempty"`
+	//FullyQualifiedName *string `json:"fullyQualifiedName,omitempty"`
 
 	// The type of the entry.
 	//
@@ -327,12 +317,13 @@ type DataCatalogEntryStatus struct {
 // DataCatalogEntryObservedState is the state of the DataCatalogEntry resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datacatalog.v1.Entry
 type DataCatalogEntryObservedState struct {
+	// TODO: Looks like externalRef is the same as name. Remove name?
 	// Output only. Identifier. The resource name of an entry in URL format.
 	//
 	//  Note: The entry itself and its child resources might not be
 	//  stored in the location specified in its name.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.name
-	Name *string `json:"name,omitempty"`
+	// Name *string `json:"name,omitempty"`
 
 	// Output only. Indicates the entry's source system that Data Catalog
 	//  integrates with, such as BigQuery, Pub/Sub, or Dataproc Metastore.

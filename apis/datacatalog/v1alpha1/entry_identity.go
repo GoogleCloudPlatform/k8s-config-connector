@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -74,32 +73,10 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 		return nil, fmt.Errorf("cannot parse spec.entryGroupRef.external %q: %w", obj.Spec.EntryGroupRef.External, err)
 	}
 
-	// Optional: Validate against legacy fields if they exist.
-	// This maintains consistency if users specify redundant fields, though EntryGroupRef should be authoritative.
-	if obj.Spec.ProjectRef != nil {
-		resolvedProjectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-		if err != nil {
-			// Don't fail validation if resolution fails, maybe ref is invalid or project doesn't exist yet.
-			// Log warning? For now proceed, EntryGroupRef is the primary source.
-			_ = err // Placeholder
-		} else if resolvedProjectRef.ProjectID != "" && resolvedProjectRef.ProjectID != entryGroupParent.ProjectID {
-			return nil, fmt.Errorf("project ID mismatch between spec.entryGroupRef (%s) and spec.projectRef (%s)", entryGroupParent.ProjectID, resolvedProjectRef.ProjectID)
-		}
-	}
-	if obj.Spec.Location != nil {
-		if *obj.Spec.Location != entryGroupParent.Location {
-			return nil, fmt.Errorf("location mismatch between spec.entryGroupRef (%s) and spec.location (%s)", entryGroupParent.Location, *obj.Spec.Location)
-		}
-	}
-
 	// --- Determine Resource ID ---
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		// This case should ideally not happen in K8s with a named object
-		return nil, fmt.Errorf("cannot resolve resource ID (metadata.name or spec.resourceID is empty)")
 	}
 
 	desiredParent := &EntryParent{

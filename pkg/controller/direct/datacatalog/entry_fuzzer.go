@@ -34,8 +34,6 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".linked_resource")
-	f.SpecFields.Insert(".fully_qualified_name")
-	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".user_specified_type")
 	f.SpecFields.Insert(".user_specified_system")
 	f.SpecFields.Insert(".sql_database_system_spec")
@@ -66,11 +64,13 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".usage_signal")
 	f.StatusFields.Insert(".data_source")
 	f.StatusFields.Insert(".personal_details")
+	f.StatusFields.Insert(".source_system_timestamps.expire_time")
 
-	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".integrated_system")
-	f.UnimplementedFields.Insert(".source_system_timestamps.expire_time") // Status field
-	f.UnimplementedFields.Insert(".schema.columns")                       // Status field
+	f.UnimplementedFields.Insert(".type")              // special field: type is oneof enum. fuzzer is setting both type and user_specified_type and it is failing
+	f.UnimplementedFields.Insert(".integrated_system") // special field: integrated_system is oneof enum. fuzzer is setting both integrated_system and user_specified_system and it is failing
+	f.UnimplementedFields.Insert(".fully_qualified_name")
+	f.UnimplementedFields.Insert(".name")           // special field
+	f.UnimplementedFields.Insert(".schema.columns") // Status field schemaless
 
 	return f
 }
