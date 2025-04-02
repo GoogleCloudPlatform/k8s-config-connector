@@ -15,7 +15,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "cluster \"projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "cluster \"projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -69,6 +76,8 @@ X-Xss-Protection: 0
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
+      "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
@@ -115,6 +124,8 @@ X-Xss-Protection: 0
       }
     ],
     "warnings": [
+      "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk.",
+      "The specified custom staging bucket '${dataStoreConfigBucketPath}' is not using uniform bucket level access IAM configuration. It is recommended to update bucket to enable the same. See https://cloud.google.com/storage/docs/uniform-bucket-level-access.",
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
@@ -144,14 +155,14 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
       "softwareConfig": {
-        "imageVersion": "2.2.51-debian12",
+        "imageVersion": "2.2.47-debian12",
         "properties": {
           "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
           "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -170,11 +181,11 @@ X-Xss-Protection: 0
           "hdfs:dfs.namenode.handler.count": "20",
           "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
           "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-          "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
+          "hdfs:dfs.namenode.lifeline.rpc-address": "test-${uniqueId}-m:8050",
           "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
           "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
           "hdfs:dfs.namenode.service.handler.count": "10",
-          "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
+          "hdfs:dfs.namenode.servicerpc-address": "test-${uniqueId}-m:8051",
           "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
           "mapred:mapreduce.job.maps": "21",
           "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
@@ -221,7 +232,7 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
@@ -233,8 +244,8 @@ X-Xss-Protection: 0
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-      "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
       "goog-dataproc-location": "us-central1",
+      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
       "managed-by-cnrm": "true"
     },
     "projectId": "${projectId}"
@@ -281,7 +292,7 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
@@ -291,7 +302,7 @@ X-Xss-Protection: 0
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.51-debian12",
+      "imageVersion": "2.2.47-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -310,11 +321,11 @@ X-Xss-Protection: 0
         "hdfs:dfs.namenode.handler.count": "20",
         "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
         "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-        "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
+        "hdfs:dfs.namenode.lifeline.rpc-address": "test-${uniqueId}-m:8050",
         "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
         "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
         "hdfs:dfs.namenode.service.handler.count": "10",
-        "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
+        "hdfs:dfs.namenode.servicerpc-address": "test-${uniqueId}-m:8051",
         "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
         "mapred:mapreduce.job.maps": "21",
         "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
@@ -361,7 +372,7 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
@@ -377,8 +388,8 @@ X-Xss-Protection: 0
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
+    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
     "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
@@ -414,7 +425,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Job projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -457,357 +475,19 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
+  "driverControlFilesUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//",
+  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//driveroutput",
   "hiveJob": {
     "continueOnFailure": true,
     "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
   },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
   "labels": {
     "managed-by-cnrm": "true"
   },
   "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
+    "clusterName": "dataproccluster-${uniqueId}"
   },
   "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 1,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 8,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot delete non-terminal jobId 'dataprocjob-minimal-${uniqueId}' in projectId '${projectId}'; current state: 'SETUP_DONE'",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 8,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot delete non-terminal jobId 'dataprocjob-minimal-${uniqueId}' in projectId '${projectId}'; current state: 'SETUP_DONE'",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 8,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot delete non-terminal jobId 'dataprocjob-minimal-${uniqueId}' in projectId '${projectId}'; current state: 'SETUP_DONE'",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "status": {
-    "state": 8,
-    "stateStartTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "statusHistory": [
-    {
-      "state": 1,
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    }
-  ]
-}
-
----
-
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot delete non-terminal jobId 'dataprocjob-minimal-${uniqueId}' in projectId '${projectId}'; current state: 'SETUP_DONE'",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "driverControlFilesUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/",
-  "driverOutputResourceUri": "gs://${dataStoreConfigBucketPath}/google-cloud-dataproc-metainfo/${dataStoreClusterUUID}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
-  "hiveJob": {
-    "continueOnFailure": true,
-    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
-  },
-  "jobUuid": "7ecdbb48-dcaa-4a18-b1dd-3fa3f2b3e451",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "placement": {
-    "clusterName": "dataproccluster-${uniqueId}",
-    "clusterUuid": "${dataStoreClusterUUID}"
-  },
-  "reference": {
-    "jobId": "dataprocjob-minimal-${uniqueId}",
     "projectId": "${projectId}"
   },
   "status": {
@@ -833,12 +513,12 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
 
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -848,7 +528,52 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
 
 ---
 
@@ -890,7 +615,7 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-m"
       ],
@@ -900,7 +625,7 @@ X-Xss-Protection: 0
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.51-debian12",
+      "imageVersion": "2.2.47-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -919,11 +644,11 @@ X-Xss-Protection: 0
         "hdfs:dfs.namenode.handler.count": "20",
         "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
         "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
-        "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-${uniqueId}-m:8050",
+        "hdfs:dfs.namenode.lifeline.rpc-address": "test-${uniqueId}-m:8050",
         "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
         "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
         "hdfs:dfs.namenode.service.handler.count": "10",
-        "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-${uniqueId}-m:8051",
+        "hdfs:dfs.namenode.servicerpc-address": "test-${uniqueId}-m:8051",
         "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "4000",
         "mapred:mapreduce.job.maps": "21",
         "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
@@ -970,7 +695,7 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250305-155100-rc02",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
       "instanceNames": [
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
@@ -986,8 +711,8 @@ X-Xss-Protection: 0
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "dataproccluster-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
     "goog-dataproc-location": "us-central1",
+    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
     "managed-by-cnrm": "true"
   },
   "projectId": "${projectId}",
@@ -1100,7 +825,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "cluster \"projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "cluster \"projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
