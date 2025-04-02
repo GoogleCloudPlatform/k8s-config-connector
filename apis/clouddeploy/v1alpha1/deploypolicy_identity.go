@@ -32,7 +32,7 @@ type DeployPolicyIdentity struct {
 }
 
 func (i *DeployPolicyIdentity) String() string {
-	return i.parent.String() + "/deploypolicys/" + i.id
+	return i.parent.String() + "/deployPolicies/" + i.id
 }
 
 func (i *DeployPolicyIdentity) ID() string {
@@ -106,7 +106,7 @@ func NewDeployPolicyIdentity(ctx context.Context, reader client.Reader, obj *Clo
 func ParseDeployPolicyExternal(external string) (parent *DeployPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "deploypolicys" {
-		return nil, "", fmt.Errorf("format of DeployDeployPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/deploypolicys/{{deploypolicyID}})", external)
+		return nil, "", fmt.Errorf("format of DeployDeployPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/deployPolicies/{{deploypolicyID}})", external)
 	}
 	parent = &DeployPolicyParent{
 		ProjectID: tokens[1],
