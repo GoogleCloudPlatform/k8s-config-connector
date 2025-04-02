@@ -136,6 +136,9 @@ func (s *clusterControllerServer) CreateCluster(ctx context.Context, req *pb.Cre
 			s.setStatus(obj, pb.ClusterStatus_RUNNING)
 
 			obj.Config.EndpointConfig = &pb.EndpointConfig{}
+			if obj.Config.GceClusterConfig == nil {
+				obj.Config.GceClusterConfig = &pb.GceClusterConfig{}
+			}
 			obj.Config.GceClusterConfig.InternalIpOnly = PtrTo(true)
 			obj.Config.GceClusterConfig.NetworkUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/global/networks/default"
 			obj.Config.GceClusterConfig.ServiceAccountScopes = []string{"https://www.googleapis.com/auth/cloud-platform"}

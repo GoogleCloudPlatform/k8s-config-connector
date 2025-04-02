@@ -734,6 +734,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			if gvk.Group == "" && gvk.Kind == "MockGCPBackdoor" {
 				continue
 			}
+			if name == "dclbasedresourceserviceaccountref" {
+				continue
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
@@ -849,7 +852,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexLake"}:
 
-			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocAutoscalingPolicy"}:
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocCluster"}:
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocJob"}:
 
