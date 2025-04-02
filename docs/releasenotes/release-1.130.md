@@ -24,6 +24,9 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 * `VertexAIFeaturestore`
 * `NotebooksEnvironment`
 * `DocumentAIProcessor`
+* `CodeDeployDeliveryPipeline`
+* `NetAppBackupPolicy`
+* `BigLakeTable`
  
 ## New Fields:
 
