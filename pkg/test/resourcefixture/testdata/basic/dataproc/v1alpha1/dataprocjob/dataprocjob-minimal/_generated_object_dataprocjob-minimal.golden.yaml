@@ -1,0 +1,48 @@
+apiVersion: dataproc.cnrm.cloud.google.com/v1alpha1
+kind: DataprocJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dataprocjob-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  hiveJob:
+    continueOnFailure: true
+    queryFileURI: gs://config-connector-sample/hivejob_sample.sql
+  parent:
+    location: us-central1
+    projectRef:
+      external: ${projectId}
+  placement:
+    clusterName: dataproccluster-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/2df9d2e5-7242-4180-9f55-cc6e1aac7096/jobs/dataprocjob-minimal-${uniqueId}/
+    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/2df9d2e5-7242-4180-9f55-cc6e1aac7096/jobs/dataprocjob-minimal-${uniqueId}/driveroutput
+    jobUUid: 4994c587-b877-4cff-986a-59d30467b2e7
+    placement:
+      clusterUuid: 704222ac-d12d-4dd2-a325-4ba764078083
+    status:
+      state: DONE
+      stateStartTime: '2025-03-06T08:13:36.812902Z'
+    statusHistory:
+    - state: PENDING
+      stateStartTime: '2025-03-06T08:13:27.583173Z'
+    - state: SETUP_DONE
+      stateStartTime: '2025-03-06T08:13:27.623781Z'
+    - details: Agent reported job success
+      state: RUNNING
+      stateStartTime: '2025-03-06T08:13:27.939687Z'
+
