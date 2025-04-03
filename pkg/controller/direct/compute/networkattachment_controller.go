@@ -68,9 +68,9 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, reader cl
 	}
 
 	// resolve subnetwork
-	if obj.Spec.Subnetworks != nil {
+	if obj.Spec.SubnetworkRefs != nil {
 		var subnetworks []*refsv1beta1.ComputeSubnetworkRef
-		for _, i := range obj.Spec.Subnetworks {
+		for _, i := range obj.Spec.SubnetworkRefs {
 			subnetwork, err := refsv1beta1.ResolveComputeSubnetwork(ctx, reader, obj, i)
 			if err != nil {
 				return nil, err
@@ -78,7 +78,7 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, reader cl
 			i.External = subnetwork.External
 			subnetworks = append(subnetworks, i)
 		}
-		obj.Spec.Subnetworks = subnetworks
+		obj.Spec.SubnetworkRefs = subnetworks
 	}
 
 	// resolve project

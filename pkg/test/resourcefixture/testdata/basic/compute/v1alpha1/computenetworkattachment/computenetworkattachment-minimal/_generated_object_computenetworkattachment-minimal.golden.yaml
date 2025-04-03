@@ -21,7 +21,7 @@ spec:
     name: project-2-${uniqueId}
   projectRef:
     external: ${projectId}
-  subnetworks:
+  subnetworkRefs:
   - name: computesubnetwork-${uniqueId}
 status:
   conditions:
