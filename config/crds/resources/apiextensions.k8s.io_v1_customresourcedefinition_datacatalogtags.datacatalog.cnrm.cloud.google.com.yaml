@@ -139,18 +139,41 @@ spec:
                 description: The DataCatalogTag name. If not given, the metadata.name
                   will be used.
                 type: string
-              template:
+              templateRef:
                 description: |-
-                  Required. The resource name of the tag template this tag uses. Example:
-
-                   `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
+                  Required. The resource name of the tag template this tag uses.
 
                    This field cannot be modified after creation.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataCatalogTagTemplate
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/tagTemplates/{{tagTemplateID}}".
+                    type: string
+                  name:
+                    description: The name of a DataCatalogTagTemplate resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataCatalogTagTemplate resource.
+                    type: string
+                type: object
             required:
             - ""
             - entryRef
-            - template
+            - templateRef
             type: object
           status:
             description: DataCatalogTagStatus defines the config connector machine

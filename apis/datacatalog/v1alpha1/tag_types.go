@@ -41,16 +41,14 @@ type DataCatalogTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Required. The resource name of the tag template this tag uses. Example:
-	//
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
+	// Required. The resource name of the tag template this tag uses.
 	//
 	//  This field cannot be modified after creation.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
 	// +required
 	// +immutable
 	// +kubebuilder:validation:Required
-	Template string `json:"template"`
+	TemplateRef *TagTemplateRef `json:"templateRef,omitempty"`
 
 	// Resources like entry can have schemas associated with them. This scope
 	//  allows you to attach tags to an individual column based on that schema.

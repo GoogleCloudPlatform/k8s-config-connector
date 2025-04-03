@@ -1085,6 +1085,11 @@ func (in *DataCatalogTagSpec) DeepCopyInto(out *DataCatalogTagSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.TemplateRef != nil {
+		in, out := &in.TemplateRef, &out.TemplateRef
+		*out = new(TagTemplateRef)
+		**out = **in
+	}
 	if in.Column != nil {
 		in, out := &in.Column, &out.Column
 		*out = new(string)
