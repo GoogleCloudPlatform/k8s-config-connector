@@ -43,11 +43,13 @@ type FieldType_EnumType struct {
 // +kcc:proto=google.cloud.datacatalog.v1.FieldType.EnumType.EnumValue
 type FieldType_EnumType_EnumValue struct {
 	// Required. The display name of the enum value. Must not be an empty
+	// Required. The display name of the enum value. Must not be an empty
 	//  string.
 	//
 	//  The name must contain only Unicode letters, numbers (0-9), underscores
 	//  (_), dashes (-), spaces ( ), and can't start or end with spaces. The
 	//  maximum length is 200 characters.
+	//+required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.FieldType.EnumType.EnumValue.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 }
@@ -77,6 +79,7 @@ type TagTemplateField struct {
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. The type of value this tag field can contain.
+	//+required
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplateField.type
 	Type *FieldType `json:"type,omitempty"`
 
