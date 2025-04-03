@@ -27,13 +27,6 @@ type DataCatalogTagTemplateSpec struct {
 	// The DataCatalogTagTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Identifier. The resource name of the tag template in URL format.
-	//
-	//  Note: The tag template itself and its child resources might not be
-	//  stored in the location specified in its name.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.name
-	Name *string `json:"name,omitempty"`
-
 	// Display name for this template. Defaults to an empty string.
 	//
 	//  The name must contain only Unicode letters, numbers (0-9), underscores (_),
