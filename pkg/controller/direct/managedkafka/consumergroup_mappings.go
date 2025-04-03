@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:fuzz-gen
 // proto.message: google.cloud.managedkafka.v1.ConsumerGroup
 // api.group: managedkafka.cnrm.cloud.google.com
 
@@ -73,6 +72,14 @@ func ConsumerTopicMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ConsumerT
 		return nil
 	}
 	out := &krm.ConsumerTopicMetadata{}
+	for k, v := range in.Partitions {
+		consumerPartitionMetadata := &krm.ConsumerPartitionMetadata{
+			Key:      direct.LazyPtr(k),
+			Offset:   direct.LazyPtr(v.Offset),
+			Metadata: direct.LazyPtr(v.Metadata),
+		}
+		out.Partitions = append(out.Partitions, consumerPartitionMetadata)
+	}
 	return out
 }
 
@@ -81,5 +88,12 @@ func ConsumerTopicMetadata_ToProto(mapCtx *direct.MapContext, in *krm.ConsumerTo
 		return nil
 	}
 	out := &pb.ConsumerTopicMetadata{}
+	out.Partitions = map[int32]*pb.ConsumerPartitionMetadata{}
+	for _, metadata := range in.Partitions {
+		out.Partitions[direct.ValueOf(metadata.Key)] = &pb.ConsumerPartitionMetadata{
+			Offset:   direct.ValueOf(metadata.Offset),
+			Metadata: direct.ValueOf(metadata.Metadata),
+		}
+	}
 	return out
 }

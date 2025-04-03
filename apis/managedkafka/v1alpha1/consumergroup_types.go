@@ -37,20 +37,22 @@ type ConsumerPartitionMetadata struct {
 	//  committed.
 	//+required
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.offset
-	//+required
 	Offset *int64 `json:"offset,omitempty"`
 
 	// Optional. The associated metadata for this partition, or empty if it does
 	//  not exist.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.metadata
 	Metadata *string `json:"metadata,omitempty"`
+
+	// Optional. Key of the partition index for topic metadata in this consumer group.
+	Key *int32 `json:"key,omitempty"`
 }
 
 // +kcc:proto=google.cloud.managedkafka.v1.ConsumerTopicMetadata
 type ConsumerTopicMetadata struct {
-
-	// TODO: unsupported map type with key int32 and value message
-
+	// Optional. Metadata for this consumer group and topic for all partition
+	// indexes it has metadata for.
+	Partitions []*ConsumerPartitionMetadata `json:"partitions,omitempty"`
 }
 
 type Parent struct {

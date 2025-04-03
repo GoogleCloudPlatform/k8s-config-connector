@@ -33,8 +33,9 @@ func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {
 		ManagedKafkaConsumerGroupObservedState_FromProto, ManagedKafkaConsumerGroupObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")   // special field, managed by KCC infrastructure
-	f.UnimplementedFields.Insert(".topics") // Optional field in proto, but not present in KRM spec or status
+	f.UnimplementedFields.Insert(".name") // special field, managed by KCC infrastructure
+
+	f.StatusFields.Insert(".topics")
 
 	return f
 }
