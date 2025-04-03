@@ -84,17 +84,18 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
-	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName()); err != nil {
+	serviceNamespace := strings.ReplaceAll(u.GetNamespace(), "${NAMESPACE?}", ccc.Namespace)
+	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), serviceNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
 	return manifest.NewObject(u)
 }
 
-func removeStaleControllerManagerService(ctx context.Context, c client.Client, ns string, validSts string) error {
+func removeStaleControllerManagerService(ctx context.Context, c client.Client, ns string, validSts string, serviceNamespace string) error {
 	// List existing controller-manager services for the given namespace, delete stale ones if any
 	// stale services could come from legacy naming or namespaceId changes.
 	svcList := &corev1.ServiceList{}
-	if err := c.List(ctx, svcList, client.InNamespace(k8s.CNRMSystemNamespace),
+	if err := c.List(ctx, svcList, client.InNamespace(serviceNamespace),
 		client.MatchingLabels{k8s.NamespacedComponentLabel: ns}); err != nil {
 		return fmt.Errorf("error listing existing %v Services for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
@@ -141,7 +142,8 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		}
 	}
 
-	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName()); err != nil {
+	statefulsetNamespace := strings.ReplaceAll(u.GetNamespace(), "${NAMESPACE?}", ccc.Namespace)
+	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName(), statefulsetNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
@@ -215,11 +217,11 @@ func removeFlagFromArgs(args []string, flag string) []string {
 	return newArgs
 }
 
-func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Client, ns string, validSts string) error {
+func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Client, ns string, validSts string, statefulsetNamespace string) error {
 	// List existing controller-manager statefulsets for the given namespace, delete stale ones if any
 	// stale statefulsets could come from legacy naming or namespaceId changes.
 	stsList := &appsv1.StatefulSetList{}
-	if err := c.List(ctx, stsList, client.InNamespace(k8s.CNRMSystemNamespace),
+	if err := c.List(ctx, stsList, client.InNamespace(statefulsetNamespace),
 		client.MatchingLabels{k8s.KCCSystemComponentLabel: k8s.KCCControllerManagerComponent, k8s.NamespacedComponentLabel: ns}); err != nil {
 		return fmt.Errorf("error listing existing %v StatefulSets for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
@@ -242,7 +244,7 @@ func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Clien
 		}
 		podList := &corev1.PodList{}
 		if err := wait.ExponentialBackoff(b, func() (done bool, err error) {
-			if err := c.List(ctx, podList, client.InNamespace(k8s.CNRMSystemNamespace),
+			if err := c.List(ctx, podList, client.InNamespace(statefulsetNamespace),
 				client.MatchingLabels{k8s.KCCSystemComponentLabel: k8s.KCCControllerManagerComponent, k8s.NamespacedComponentLabel: ns}); err != nil {
 				return false, errors.Wrap(err, "error listing controller pods")
 			}

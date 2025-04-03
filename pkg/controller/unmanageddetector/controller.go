@@ -147,5 +147,38 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	if err := c.List(ctx, stsList, stsOpts); err != nil {
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)
 	}
+
+	// TODO: NamespaceScoped
+	// Perform two lookups, for namespaces "cnrm-system" and the CR namespace
+	//   Pros:
+	//     - No additional command line parameters requried
+	//     - For non-MT clusters in most cases first lookup will return the result.
+	//       Only MT and the error cases will perform two lookups.
+	//       This reduces impact of the change and help avoiding regression issues
+	//   Cons:
+	//     - Two round trips to apiserver will be required for MT and error cases
+	// Alternatives:
+	// - Lookup across all namespaces: Namespace: ""
+	//   Pros:
+	//     - Minimal and simple code change
+	//   Cons:
+	//     - Lookup across namespaces may be more expensive
+	//     - Potential performance issue for existing deployments
+	// - Pass a command line parameter "namespace-scoped"
+	//   Pros:
+	//     - Single lookup will be performed in any case, non-MT, MT and error
+	//   Cons:
+	//     - Confusing command line parameter for users that are not aware of MT
+	if len(stsList.Items) == 0 {
+		stsOpts = &client.ListOptions{
+			Namespace:     namespace,
+			LabelSelector: stsLabelSelector,
+			Limit:         1,
+		}
+		if err := c.List(ctx, stsList, stsOpts); err != nil {
+			return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)
+		}
+	}
+
 	return len(stsList.Items) > 0, nil
 }

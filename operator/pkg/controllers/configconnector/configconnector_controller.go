@@ -414,7 +414,9 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	}
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     k8s.CNRMSystemNamespace,
+		// TODO: NamespaceScoped : Lookup across all namespaces may me expensive.
+		// This code runs when ConfigConnector is created (in most cases once per lifetime of a cluster).
+		Namespace:     "", // k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
 		Limit:         100,
 	}
@@ -423,9 +425,9 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	}
 	podNames := make([]string, 0, len(podList.Items))
 	for _, p := range podList.Items {
-		podNames = append(podNames, p.Name)
+		podNames = append(podNames, fmt.Sprintf("%s/%s", p.Namespace, p.Name))
 	}
-	r.log.Info("verifying that per-namespace controller manager pods are deleted", "namespace", k8s.CNRMSystemNamespace, "pods", podNames)
+	r.log.Info("verifying that per-namespace controller manager pods are deleted", "pods", podNames)
 	if len(podList.Items) == 0 {
 		return nil
 	}
@@ -459,7 +461,9 @@ func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, c cli
 	}
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     k8s.CNRMSystemNamespace,
+		// TODO: NamespaceScoped : Lookup across all namespaces may me expensive.
+		// This code runs when ConfigConnector is deleted (in most cases once per lifetime of a cluster).
+		Namespace:     "", // k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
 	}
 	if err := wait.ExponentialBackoff(b, func() (done bool, err error) {
