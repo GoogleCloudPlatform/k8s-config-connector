@@ -34,6 +34,8 @@ apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
   name: kmscryptokey-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
 spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}

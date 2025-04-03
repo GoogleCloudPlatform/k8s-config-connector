@@ -1,6 +1,32 @@
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,9 +48,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores?alt=json&metadataStoreId=metadatastore${uniqueId}
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores?%24alt=json%3Benum-encoding%3Dint&metadataStoreId=metadatastore${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "description": "Metadata Store"
@@ -53,9 +80,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -86,9 +114,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -112,9 +141,114 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Metadata Store",
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}",
+  "state": {
+    "diskUtilizationBytes": "1"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}",
+  "projectId": "${projectId}",
+  "state": 1
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Metadata Store",
+  "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}",
+  "state": {
+    "diskUtilizationBytes": "1"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/metadataStores/metadatastore${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FmetadataStores%2Fmetadatastore${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

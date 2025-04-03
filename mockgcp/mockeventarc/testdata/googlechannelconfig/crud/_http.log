@@ -20,28 +20,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectId}/locations/us-central1/googleChannelConfig",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 PATCH https://eventarc.googleapis.com/v1/projects/${projectId}/locations/us-central1/googleChannelConfig?alt=json&updateMask=cryptoKeyName
 Accept: application/json
 Authorization: (removed)

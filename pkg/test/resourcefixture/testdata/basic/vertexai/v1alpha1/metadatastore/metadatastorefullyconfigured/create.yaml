@@ -20,6 +20,7 @@ spec:
   region: us-central1
   description: "An encrypted metadata store"
   encryptionSpec:
-    kmsKeyName: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+    kmsKeyRef: 
+      name: kmscryptokey-${uniqueId}
   projectRef:
       external: ${projectId}

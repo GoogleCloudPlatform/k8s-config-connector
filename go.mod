@@ -124,12 +124,13 @@ require (
 	sigs.k8s.io/yaml v1.4.0
 )
 
+require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
+
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
 	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
-	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.uber.org/goleak v1.3.0 // indirect
 )
 
