@@ -17,7 +17,10 @@ kind: DataplexEnvironment
 metadata:
   name: dataplexenvironment-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  lakeRef:
+    name: dataplexlake-${uniqueId}
   description: "Initial description"
+  infrastructureSpec:
+    oSImage:
+      imageVersion: 1.0
+
