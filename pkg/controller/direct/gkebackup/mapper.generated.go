@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: gkebackup.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.gkebackup.v1
+
 package gkebackup
 
 import (
@@ -120,7 +125,6 @@ func ExclusionWindow_DayOfWeekList_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
 	return out
 }
-
 func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
@@ -139,6 +143,32 @@ func GKEBackupBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBacku
 	out.BackupConfig = BackupPlan_BackupConfig_ToProto(mapCtx, in.BackupConfig)
 	// MISSING: RpoRiskLevel
 	// MISSING: RpoRiskReason
+	return out
+}
+func GKEBackupBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.GKEBackupBackupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GKEBackupBackupSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Labels = in.Labels
+	out.DeleteLockDays = direct.LazyPtr(in.GetDeleteLockDays())
+	out.RetainDays = direct.LazyPtr(in.GetRetainDays())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func GKEBackupBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupSpec) *pb.Backup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Backup{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Labels = in.Labels
+	out.DeleteLockDays = direct.ValueOf(in.DeleteLockDays)
+	out.RetainDays = direct.ValueOf(in.RetainDays)
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }
 func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupRestorePlanSpec) *pb.RestorePlan {
@@ -313,7 +343,6 @@ func RestoreConfig_RestoreOrder_GroupKindDependency_ToProto(mapCtx *direct.MapCo
 	out.Requiring = RestoreConfig_GroupKind_ToProto(mapCtx, in.Requiring)
 	return out
 }
-
 func RestoreConfig_TransformationRule_FromProto(mapCtx *direct.MapContext, in *pb.RestoreConfig_TransformationRule) *krm.RestoreConfig_TransformationRule {
 	if in == nil {
 		return nil

@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: gkebackup.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.gkebackup.v1
+// resource: GKEBackupBackupPlan:BackupPlan
+// resource: GKEBackupRestorePlan:RestorePlan
+// resource: GKEBackupBackup:Backup
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.BackupConfig
