@@ -27,6 +27,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -123,8 +124,12 @@ func (a *ConnectionProfileAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ConnectionProfileAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ConnectionProfile", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamConnectionProfileSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -159,8 +164,12 @@ func (a *ConnectionProfileAdapter) Create(ctx context.Context, createOp *directb
 func (a *ConnectionProfileAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ConnectionProfile", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamConnectionProfileSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -255,4 +264,47 @@ func (a *ConnectionProfileAdapter) Delete(ctx context.Context, deleteOp *directb
 		return false, fmt.Errorf("waiting delete ConnectionProfile %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *ConnectionProfileAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	if obj.Spec.OracleProfile != nil && obj.Spec.OracleProfile.OracleASMConfig != nil && obj.Spec.OracleProfile.OracleASMConfig.SecretRef != nil {
+		if err := refsv1beta1secret.NormalizedSecret(ctx, obj.Spec.OracleProfile.OracleASMConfig.SecretRef, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.ForwardSSHConnectivity != nil && obj.Spec.ForwardSSHConnectivity.SecretRef != nil {
+		if err := refsv1beta1secret.NormalizedSecret(ctx, obj.Spec.ForwardSSHConnectivity.SecretRef, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.MySQLProfile != nil && obj.Spec.MySQLProfile.SecretRef != nil {
+		if err := refsv1beta1secret.NormalizedSecret(ctx, obj.Spec.MySQLProfile.SecretRef, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.OracleProfile != nil && obj.Spec.OracleProfile.SecretRef != nil {
+		if err := refsv1beta1secret.NormalizedSecret(ctx, obj.Spec.OracleProfile.SecretRef, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.OracleProfile != nil && obj.Spec.OracleProfile.SecreteManagerSecretRef != nil {
+		if _, err := refs.ResolveSecretManagerSecretRef(ctx, a.reader, obj, obj.Spec.OracleProfile.SecreteManagerSecretRef); err != nil {
+			return err
+		}
+	}
+	// TODO: PostgresqlProfile is not implemented yet
+	if obj.Spec.SQLServerProfile != nil && obj.Spec.SQLServerProfile.SecretRef != nil {
+		if err := refsv1beta1secret.NormalizedSecret(ctx, obj.Spec.SQLServerProfile.SecretRef, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.PrivateConnectivity != nil && obj.Spec.PrivateConnectivity.PrivateConnectionRef != nil {
+		if _, err := obj.Spec.PrivateConnectivity.PrivateConnectionRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
