@@ -23,13 +23,11 @@ import (
 var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 
 // Parent defines the parent resource for this DataCatalogTag
-type Parent struct {
+type DataCatalogTagParent struct {
 	// Required. Reference to the DataCatalogEntry that owns this Tag.
 	// The entry must be in the same project and location as the tag.
 	// +required
-	// +immutable
-	// +kubebuilder:validation:Required
-	EntryRef DataCatalogEntryRef `json:"entryRef"`
+	EntryRef *EntryRef `json:"entryRef,omitempty"`
 }
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
@@ -37,7 +35,7 @@ type Parent struct {
 type DataCatalogTagSpec struct {
 	// Specifies the parent resource where this DataCatalogTag resides.
 	// +required
-	Parent `json:",inline"`
+	DataCatalogTagParent `json:",inline"`
 
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
 	// +optional
@@ -63,6 +61,9 @@ type DataCatalogTagSpec struct {
 	// +optional
 	// +immutable
 	Column *string `json:"column,omitempty"`
+
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.fields
+	Fields map[string]TagField `json:"fields,omitempty"`
 }
 
 // DataCatalogTagStatus defines the config connector machine state of DataCatalogTag

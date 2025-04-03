@@ -65,35 +65,32 @@ func (p *TagParent) String() string {
 
 // NewTagIdentity builds a TagIdentity from the Config Connector Tag object.
 func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogTag) (*TagIdentity, error) {
-	// Parse EntryRef to get parent components
-	entryRefExternal := obj.Spec.EntryRef.External
-	entryTokens := strings.Split(entryRefExternal, "/")
-	// Expected format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
-	// indices:         0        1        2          3          4            5            6       7
-	if len(entryTokens) != 8 || entryTokens[0] != "projects" || entryTokens[2] != "locations" || entryTokens[4] != "entryGroups" || entryTokens[6] != "entries" {
-		return nil, fmt.Errorf("invalid format for spec.entryRef.external: %q, expected format projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}", entryRefExternal)
+	// --- Determine Parent ---
+	if obj.Spec.EntryRef == nil || obj.Spec.EntryRef.External == "" {
+		// Based on the API structure (CreateTag requires entry parent),
+		// EntryRef is implicitly required.
+		return nil, fmt.Errorf("spec.entryRef.external is required to identify the parent Entry")
 	}
-	projectID := entryTokens[1]
-	locationID := entryTokens[3]
-	entryGroupID := entryTokens[5]
-	entryID := entryTokens[7]
 
+	// Parse parent info from the Entry reference
+	entryParent, entryID, err := ParseEntryExternal(obj.Spec.EntryRef.External)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse spec.entryRef.external %q: %w", obj.Spec.EntryRef.External, err)
+	}
+
+	// --- Determine Resource ID ---
 	// Get desired Tag ID
 	// If spec.resourceID is provided, it's used as the tag ID.
 	// Otherwise, metadata.name is used.
+
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
-	if resourceID == "" {
-		// This case should ideally not happen if metadata.name is always populated.
-		return nil, fmt.Errorf("cannot determine tag ID from spec.resourceID or metadata.name")
-	}
-
 	parent := &TagParent{
-		ProjectID:    projectID,
-		LocationID:   locationID,
-		EntryGroupID: entryGroupID,
+		ProjectID:    entryParent.ProjectID,
+		LocationID:   entryParent.Location,
+		EntryGroupID: entryParent.EntryGroupID,
 		EntryID:      entryID,
 	}
 
