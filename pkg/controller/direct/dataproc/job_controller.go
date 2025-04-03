@@ -159,10 +159,11 @@ func (m *dataprocJobModel) AdapterForURL(ctx context.Context, url string) (direc
 var _ directbase.Adapter = &dataprocJobAdapter{}
 
 type dataprocJobAdapter struct {
-	gcpClient *dataproc.JobControllerClient
-	id        *krm.JobIdentity // Contains ProjectID, Region, and potentially JobID (after creation or from URL)
-	desired   *pb.Job          // Desired state constructed from KRM spec
-	actual    *pb.Job          // Actual state fetched from GCP
+	gcpClient   *dataproc.JobControllerClient
+	id          *krm.JobIdentity // Contains ProjectID, Region, and potentially JobID (after creation or from URL)
+	desired     *pb.Job          // Desired state constructed from KRM spec
+	actual      *pb.Job          // Actual state fetched from GCP
+	generatedId *string
 }
 
 func (a *dataprocJobAdapter) Find(ctx context.Context) (bool, error) {
@@ -179,7 +180,7 @@ func (a *dataprocJobAdapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetJobRequest{
 		ProjectId: a.id.Parent().ProjectID,
 		Region:    a.id.Parent().Location,
-		JobId:     a.id.ID(),
+		JobId:     direct.ValueOf(a.generatedId),
 	}
 
 	klog.V(2).Infof("getting dataproc job %q", a.id)
@@ -234,7 +235,6 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		ProjectId: a.id.Parent().ProjectID,
 		Region:    a.id.Parent().Location,
 		Job:       a.desired,
-		// RequestId: // Consider adding a UUID for idempotency?
 	}
 
 	submittedJob, err := a.gcpClient.SubmitJob(ctx, req)
@@ -255,7 +255,7 @@ func (a *dataprocJobAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	// ExternalRef needs the service-generated ID
 	status.ExternalRef = direct.PtrTo(fmt.Sprintf("projects/%s/regions/%s/jobs/%s", a.id.Parent().ProjectID, a.id.Parent().Location, a.id.ID()))
-
+	a.generatedId = direct.LazyPtr(submittedJob.JobUuid)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -451,7 +451,7 @@ func (a *dataprocJobAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	req := &pb.DeleteJobRequest{
 		ProjectId: a.id.Parent().ProjectID,
 		Region:    a.id.Parent().Location,
-		JobId:     a.id.ID(),
+		JobId:     direct.ValueOf(a.generatedId),
 	}
 
 	err := a.gcpClient.DeleteJob(ctx, req)

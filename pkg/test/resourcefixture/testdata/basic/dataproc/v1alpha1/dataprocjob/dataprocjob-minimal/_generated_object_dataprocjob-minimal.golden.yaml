@@ -29,8 +29,8 @@ status:
   externalRef: projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}
   observedGeneration: 1
   observedState:
-    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//
-    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//driveroutput
+    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/
+    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput
     placement: {}
     status:
       state: DONE
