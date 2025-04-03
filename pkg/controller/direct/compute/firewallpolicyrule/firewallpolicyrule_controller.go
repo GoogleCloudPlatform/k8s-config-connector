@@ -20,6 +20,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
@@ -195,6 +197,15 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	// The field priority should be removed from the patch request body and included as a query parameter.
 	// See API doc: https://cloud.google.com/compute/docs/reference/rest/v1/firewallPolicies/patchRule#query-parameters
 	firewallPolicyRule.Priority = nil
+
+	paths, err := common.CompareProtoMessage(firewallPolicyRule, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
+		return nil
+	}
 
 	updated := &computepb.FirewallPolicyRule{}
 
