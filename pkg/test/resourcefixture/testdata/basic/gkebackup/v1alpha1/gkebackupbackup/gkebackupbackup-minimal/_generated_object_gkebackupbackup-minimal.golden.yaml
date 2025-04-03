@@ -1,0 +1,45 @@
+apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
+kind: GKEBackupBackup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gkebackupbackup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupPlanRef:
+    name: gkebackupbackupplan-minimal-${uniqueId}
+  description: Updated description
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-minimal-${uniqueId}/backups/gkebackupbackup-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    allNamespaces: true
+    clusterMetadata:
+      backupCRDVersions:
+        backupjobs.gkebackup.gke.io: v1
+        protectedapplicationgroups.gkebackup.gke.io: v1
+        protectedapplications.gkebackup.gke.io: v1
+        restorejobs.gkebackup.gke.io: v1
+      cluster: projects/${projectId}/locations/us-central1/clusters/containercluster-minimal-${uniqueId}
+      gkeVersion: v1.31.6-gke.1020000
+      k8sVersion: "1.31"
+    containsSecrets: true
+    containsVolumeData: true
+    createTime: "1970-01-01T00:00:00Z"
+    deleteLockExpireTime: "2025-04-03T23:43:12.610088552Z"
+    etag: abcdef123456
+    manual: true
+    state: IN_PROGRESS
+    stateReason: Starting to back up Kubernetes resources
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
