@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogtags.datacatalog.cnrm.cloud.google.com
 spec:
   group: datacatalog.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: DataCatalogTag
+    listKind: DataCatalogTagList
     plural: datacatalogtags
     shortNames:
     - gcpdatacatalogtag
@@ -43,91 +42,123 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DataCatalogTag is the Schema for the DataCatalogTag API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataCatalogTagSpec defines the desired state of DataCatalogTag
             properties:
               column:
                 description: |-
-                  Resources like Entry can have schemas associated with them. This scope allows users to attach tags to an
-                  individual column based on that schema.
+                  Resources like entry can have schemas associated with them. This scope
+                   allows you to attach tags to an individual column based on that schema.
 
-                  For attaching a tag to a nested column, use '.' to separate the column names. Example:
-                  'outer_column.inner_column'.
+                   To attach a tag to a nested column, separate column names with a dot
+                   (`.`). Example: `column.nested_column`.
                 type: string
+              entryRef:
+                description: Required. Reference to the DataCatalogEntry that owns
+                  this Tag. The entry must be in the same project and location as
+                  the tag.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataCatalogEntry
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/entrys/{{entryID}}".
+                    type: string
+                  name:
+                    description: The name of a DataCatalogEntry resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataCatalogEntry resource.
+                    type: string
+                type: object
               fields:
-                description: |-
-                  This maps the ID of a tag field to the value of and additional information about that field.
-                  Valid field IDs are defined by the tag's template. A tag must have at least 1 field and at most 500 fields.
-                items:
+                additionalProperties:
                   properties:
                     boolValue:
-                      description: Holds the value for a tag field with boolean type.
+                      description: The value of a tag field with a boolean type.
                       type: boolean
-                    displayName:
-                      description: The display name of this field.
-                      type: string
                     doubleValue:
-                      description: Holds the value for a tag field with double type.
+                      description: The value of a tag field with a double type.
                       type: number
                     enumValue:
-                      description: The display name of the enum value.
-                      type: string
-                    fieldName:
-                      type: string
-                    order:
                       description: |-
-                        The order of this field with respect to other fields in this tag. For example, a higher value can indicate
-                        a more important field. The value can be negative. Multiple fields can have the same order, and field orders
-                        within a tag do not have to be sequential.
-                      type: integer
+                        The value of a tag field with an enum type.
+
+                         This value must be one of the allowed values listed in this enum.
+                      properties:
+                        displayName:
+                          description: The display name of the enum value.
+                          type: string
+                      type: object
+                    richtextValue:
+                      description: |-
+                        The value of a tag field with a rich text type.
+
+                         The maximum length is 10 MiB as this value holds HTML descriptions
+                         including encoded images. The maximum length of the text without images
+                         is 100 KiB.
+                      type: string
                     stringValue:
-                      description: Holds the value for a tag field with string type.
+                      description: |-
+                        The value of a tag field with a string type.
+
+                         The maximum length is 2000 UTF-8 characters.
                       type: string
                     timestampValue:
-                      description: Holds the value for a tag field with timestamp
-                        type.
+                      description: The value of a tag field with a timestamp type.
                       type: string
-                  required:
-                  - fieldName
                   type: object
-                type: array
-              parent:
-                description: |-
-                  Immutable. The name of the parent this tag is attached to. This can be the name of an entry or an entry group. If an entry group, the tag will be attached to
-                  all entries in that group.
-                type: string
+                type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The DataCatalogTag name. If not given, the metadata.name
+                  will be used.
                 type: string
               template:
                 description: |-
-                  Immutable. The resource name of the tag template that this tag uses. Example:
-                  projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}
-                  This field cannot be modified after creation.
+                  Required. The resource name of the tag template this tag uses. Example:
+
+                   `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
+
+                   This field cannot be modified after creation.
                 type: string
             required:
-            - fields
+            - ""
+            - entryRef
             - template
             type: object
           status:
+            description: DataCatalogTagStatus defines the config connector machine
+              state of DataCatalogTag
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -151,12 +182,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  The resource name of the tag in URL format. Example:
-                  projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}/tags/{tag_id} or
-                  projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/tags/{tag_id}
-                  where tag_id is a system-generated identifier. Note that this Tag may not actually be stored in the location in this name.
+              externalRef:
+                description: A unique specifier for the DataCatalogTag resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -164,10 +192,20 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              templateDisplayname:
-                description: The display name of the tag template.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  dataplexTransferStatus:
+                    description: Output only. Denotes the transfer status of the Tag
+                      Template.
+                    type: string
+                  templateDisplayName:
+                    description: Output only. The display name of the tag template.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -176,9 +214,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
