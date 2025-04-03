@@ -60,8 +60,7 @@ X-Xss-Protection: 0
     "defaultSchemaId": "default_schema",
     "displayName": "My first data store",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-    "servingConfigDataStore": {}
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
   }
 }
 
@@ -88,8 +87,7 @@ X-Xss-Protection: 0
   "defaultSchemaId": "default_schema",
   "displayName": "My first data store",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "servingConfigDataStore": {}
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }
 
 ---

@@ -57,6 +57,8 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	// Returns with no createTime
 	lroRet := proto.Clone(obj).(*pb.DataStore)
 	lroRet.CreateTime = nil
+	// Real GCP server hides this field from response.
+	lroRet.IdpConfig = nil
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 
@@ -104,6 +106,8 @@ func (s *dataStoreService) UpdateDataStore(ctx context.Context, req *pb.UpdateDa
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+	// Real GCP server hides this field from response.
+	obj.IdpConfig = nil
 	return obj, nil
 }
 
@@ -121,6 +125,8 @@ func (s *dataStoreService) GetDataStore(ctx context.Context, req *pb.GetDataStor
 		}
 		return nil, err
 	}
+	// Real GCP server hides this field from response.
+	obj.IdpConfig = nil
 	return obj, nil
 }
 
