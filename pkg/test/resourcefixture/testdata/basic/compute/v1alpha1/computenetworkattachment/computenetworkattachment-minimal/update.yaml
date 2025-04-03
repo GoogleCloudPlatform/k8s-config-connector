@@ -22,7 +22,7 @@ spec:
   location: us-central1
   description: "Updated description"
   connectionPreference: "ACCEPT_MANUAL"
-  subnetworks:
+  subnetworkRefs:
     - name: computesubnetwork-${uniqueId}
   producerAcceptLists:
     - name: project-1-${uniqueId}
