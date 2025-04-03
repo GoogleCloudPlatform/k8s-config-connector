@@ -22,6 +22,7 @@ package datacatalog
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -52,7 +53,10 @@ func BigQueryDateShardedSpec_FromProto(mapCtx *direct.MapContext, in *pb.BigQuer
 		return nil
 	}
 	out := &krmv1alpha1.BigQueryDateShardedSpec{}
-	// These fields are in ObservedState, not Spec.
+	// MISSING: Dataset
+	// MISSING: TablePrefix
+	// MISSING: ShardCount
+	// MISSING: LatestShardResource
 	return out
 }
 func BigQueryDateShardedSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDateShardedSpec) *pb.BigQueryDateShardedSpec {
@@ -60,7 +64,10 @@ func BigQueryDateShardedSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 		return nil
 	}
 	out := &pb.BigQueryDateShardedSpec{}
-	// These fields are in ObservedState, not Spec.
+	// MISSING: Dataset
+	// MISSING: TablePrefix
+	// MISSING: ShardCount
+	// MISSING: LatestShardResource
 	return out
 }
 func BigQueryDateShardedSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDateShardedSpec) *krmv1alpha1.BigQueryDateShardedSpecObservedState {
@@ -401,11 +408,39 @@ func DataCatalogEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	out.TransferredToDataplex = direct.ValueOf(in.TransferredToDataplex)
 	return out
 }
+func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataCatalogTagTemplateSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
+	// TODO: map type string message for field Fields
+	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	return out
+}
+func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplate{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
+	// TODO: map type string message for field Fields
+	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
+	return out
+}
 func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krmv1alpha1.DataSource {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1alpha1.DataSource{}
+	// MISSING: Service
+	// MISSING: Resource
+	// MISSING: SourceEntry
+	// MISSING: StorageProperties
 	return out
 }
 func DataSource_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataSource) *pb.DataSource {
@@ -413,6 +448,10 @@ func DataSource_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataSource) *
 		return nil
 	}
 	out := &pb.DataSource{}
+	// MISSING: Service
+	// MISSING: Resource
+	// MISSING: SourceEntry
+	// MISSING: StorageProperties
 	return out
 }
 func DataSourceConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataSourceConnectionSpec) *krmv1alpha1.DataSourceConnectionSpec {
@@ -438,8 +477,8 @@ func DataSourceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataSou
 	out := &krmv1alpha1.DataSourceObservedState{}
 	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
 	out.Resource = direct.LazyPtr(in.GetResource())
-	out.StorageProperties = StorageProperties_FromProto(mapCtx, in.GetStorageProperties())
 	out.SourceEntry = direct.LazyPtr(in.GetSourceEntry())
+	out.StorageProperties = StorageProperties_FromProto(mapCtx, in.GetStorageProperties())
 	return out
 }
 func DataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataSourceObservedState) *pb.DataSource {
@@ -449,10 +488,10 @@ func DataSourceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	out := &pb.DataSource{}
 	out.Service = direct.Enum_ToProto[pb.DataSource_Service](mapCtx, in.Service)
 	out.Resource = direct.ValueOf(in.Resource)
+	out.SourceEntry = direct.ValueOf(in.SourceEntry)
 	if oneof := StorageProperties_ToProto(mapCtx, in.StorageProperties); oneof != nil {
 		out.Properties = &pb.DataSource_StorageProperties{StorageProperties: oneof}
 	}
-	out.SourceEntry = direct.ValueOf(in.SourceEntry)
 	return out
 }
 func DatabaseTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatabaseTableSpec) *krmv1alpha1.DatabaseTableSpec {
@@ -505,7 +544,6 @@ func DatabaseTableSpec_DatabaseViewSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.SQLQuery = direct.LazyPtr(in.GetSqlQuery())
 	return out
 }
-
 func DataplexExternalTable_FromProto(mapCtx *direct.MapContext, in *pb.DataplexExternalTable) *krmv1alpha1.DataplexExternalTable {
 	if in == nil {
 		return nil
@@ -650,6 +688,60 @@ func FeatureOnlineStoreSpecObservedState_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.FeatureOnlineStoreSpec{}
 	out.StorageType = direct.Enum_ToProto[pb.FeatureOnlineStoreSpec_StorageType](mapCtx, in.StorageType)
+	return out
+}
+func FieldType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType) *krmv1alpha1.FieldType {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.FieldType{}
+	out.PrimitiveType = direct.Enum_FromProto(mapCtx, in.GetPrimitiveType())
+	out.EnumType = FieldType_EnumType_FromProto(mapCtx, in.GetEnumType())
+	return out
+}
+func FieldType_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FieldType) *pb.FieldType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FieldType{}
+	if oneof := FieldType_PrimitiveType_ToProto(mapCtx, in.PrimitiveType); oneof != nil {
+		out.TypeDecl = oneof
+	}
+	if oneof := FieldType_EnumType_ToProto(mapCtx, in.EnumType); oneof != nil {
+		out.TypeDecl = &pb.FieldType_EnumType_{EnumType: oneof}
+	}
+	return out
+}
+func FieldType_EnumType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType_EnumType) *krmv1alpha1.FieldType_EnumType {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.FieldType_EnumType{}
+	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, FieldType_EnumType_EnumValue_FromProto)
+	return out
+}
+func FieldType_EnumType_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FieldType_EnumType) *pb.FieldType_EnumType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FieldType_EnumType{}
+	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, FieldType_EnumType_EnumValue_ToProto)
+	return out
+}
+func FieldType_EnumType_EnumValue_FromProto(mapCtx *direct.MapContext, in *pb.FieldType_EnumType_EnumValue) *krmv1alpha1.FieldType_EnumType_EnumValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.FieldType_EnumType_EnumValue{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func FieldType_EnumType_EnumValue_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FieldType_EnumType_EnumValue) *pb.FieldType_EnumType_EnumValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FieldType_EnumType_EnumValue{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
 func FilesetSpec_FromProto(mapCtx *direct.MapContext, in *pb.FilesetSpec) *krmv1alpha1.FilesetSpec {
@@ -1052,6 +1144,7 @@ func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestam
 	out := &krmv1alpha1.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SystemTimestamps) *pb.SystemTimestamps {
@@ -1061,6 +1154,7 @@ func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SystemT
 	out := &pb.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: ExpireTime
 	return out
 }
 func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krmv1alpha1.SystemTimestampsObservedState {
@@ -1068,6 +1162,8 @@ func SystemTimestampsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.S
 		return nil
 	}
 	out := &krmv1alpha1.SystemTimestampsObservedState{}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
@@ -1076,6 +1172,8 @@ func SystemTimestampsObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1a
 		return nil
 	}
 	out := &pb.SystemTimestamps{}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
@@ -1084,6 +1182,7 @@ func TableSpec_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krmv1alph
 		return nil
 	}
 	out := &krmv1alpha1.TableSpec{}
+	// MISSING: GroupedEntry
 	return out
 }
 func TableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TableSpec) *pb.TableSpec {
@@ -1091,6 +1190,7 @@ func TableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TableSpec) *pb
 		return nil
 	}
 	out := &pb.TableSpec{}
+	// MISSING: GroupedEntry
 	return out
 }
 func TableSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TableSpec) *krmv1alpha1.TableSpecObservedState {
@@ -1107,6 +1207,32 @@ func TableSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.T
 	}
 	out := &pb.TableSpec{}
 	out.GroupedEntry = direct.ValueOf(in.GroupedEntry)
+	return out
+}
+func TagTemplateField_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krmv1alpha1.TagTemplateField {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.TagTemplateField{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Type = FieldType_FromProto(mapCtx, in.GetType())
+	out.IsRequired = direct.LazyPtr(in.GetIsRequired())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Order = direct.LazyPtr(in.GetOrder())
+	return out
+}
+func TagTemplateField_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TagTemplateField) *pb.TagTemplateField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplateField{}
+	out.Name = direct.ValueOf(in.Name)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Type = FieldType_ToProto(mapCtx, in.Type)
+	out.IsRequired = direct.ValueOf(in.IsRequired)
+	out.Description = direct.ValueOf(in.Description)
+	out.Order = direct.ValueOf(in.Order)
 	return out
 }
 func UsageSignal_FromProto(mapCtx *direct.MapContext, in *pb.UsageSignal) *krmv1alpha1.UsageSignal {
