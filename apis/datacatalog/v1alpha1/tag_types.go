@@ -43,15 +43,6 @@ type DataCatalogTagSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Identifier. The resource name of the tag in URL format where tag ID is a
-	//  system-generated identifier.
-	//
-	//  Note: The tag itself might not be stored in the location specified in its
-	//  name.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.name
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	// Required. The resource name of the tag template this tag uses. Example:
 	//
 	//  `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
