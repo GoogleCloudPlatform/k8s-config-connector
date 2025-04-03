@@ -24,6 +24,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"k8s.io/apimachinery/pkg/util/sets"
+
 	api "cloud.google.com/go/pubsub/apiv1"
 	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 	"google.golang.org/api/option"
@@ -171,6 +174,23 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 // PubSubSnapshot does not support update.
 func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	mapCtx := &direct.MapContext{}
+	resource := PubSubSnapshotSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+
+	if len(paths) != 0 {
+		return fmt.Errorf("update pubsub snapshot is not supported")
+	}
+
 	// no-op, just update obj status
 	updated := a.actual
 	status := &krm.PubSubSnapshotStatus{}

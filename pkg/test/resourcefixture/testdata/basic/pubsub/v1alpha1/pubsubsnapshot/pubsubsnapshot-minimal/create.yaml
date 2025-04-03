@@ -19,8 +19,5 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  description: "Initial description"
-
   pubSubSubscriptionRef:
     name: pubsubsubscription-${uniqueId}
