@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	edgecontainer "github.com/GoogleCloudPlatform/k8s-config-connector/apis/edgecontainer/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -44,7 +43,7 @@ type EdgeContainerVpnConnectionSpec struct {
 	// The canonical Cluster name to connect to. It is in the form of
 	//  projects/{project}/locations/{location}/clusters/{cluster}.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.cluster
-	EdgeContainerClusterRef *edgecontainer.ClusterRef `json:"edgecontainerClusterRef,omitempty"`
+	EdgeContainerClusterRef *ClusterRef `json:"edgecontainerClusterRef,omitempty"`
 
 	// The network ID of VPC to connect to.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.VpnConnection.vpc

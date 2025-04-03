@@ -65,39 +65,40 @@
 ```yaml
 authorization:
   adminUsers:
-    usernameRef:
-      external: string
-      name: string
-      namespace: string
+    username: string
 controlPlane:
   local:
+    controlPlaneNodeStorageSchema: string
     machineFilter: string
     nodeCount: integer
     nodeLocation: string
     sharedDeploymentPolicy: string
-  remote:
-    nodeLocation: string
+  remote: {}
 controlPlaneEncryption:
-  kmsKeyActiveVersion: string
   kmsKeyRef:
     external: string
     name: string
     namespace: string
-  kmsKeyState: string
-  kmsStatus:
-  - code: integer
-    message: string
 defaultMaxPodsPerNode: integer
-externalLoadBalancerIpv4AddressPools:
+externalLoadBalancerIPV4AddressPools:
+- string
+externalLoadBalancerIPV6AddressPools:
 - string
 fleet:
-  membership: string
   projectRef:
     external: string
+    kind: string
     name: string
     namespace: string
+labels:
+  string: string
 location: string
 maintenancePolicy:
+  maintenanceExclusions:
+  - id: string
+    window:
+      endTime: string
+      startTime: string
   window:
     recurringWindow:
       recurrence: string
@@ -105,25 +106,25 @@ maintenancePolicy:
         endTime: string
         startTime: string
 networking:
-  clusterIpv4CidrBlocks:
+  clusterIPV4CIDRBlocks:
   - string
-  clusterIpv6CidrBlocks:
-  - string
-  networkType: string
-  servicesIpv4CidrBlocks:
-  - string
-  servicesIpv6CidrBlocks:
+  servicesIPV4CIDRBlocks:
   - string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 releaseChannel: string
 resourceID: string
+survivabilityConfig:
+  offlineRebootTTL: string
 systemAddonsConfig:
   ingress:
     disabled: boolean
     ipv4Vip: string
+  vmServiceConfig:
+    vmmEnabled: boolean
 targetVersion: string
 ```
 
@@ -137,63 +138,31 @@ targetVersion: string
     <tr>
         <td>
             <p><code>authorization</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. RBAC policy that will be applied and managed by GEC.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Immutable. RBAC policy that will be applied and managed by GEC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>authorization.adminUsers</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}User that will be granted the cluster-admin role on the cluster, providing
-full access to the cluster. Currently, this is a singular field, but will
-be expanded to allow multiple admins in the future.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. User that will be granted the cluster-admin role on the cluster, providing full access to the cluster. Currently, this is a singular field, but will be expanded to allow multiple admins in the future.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>authorization.adminUsers.usernameRef</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>authorization.adminUsers.usernameRef.external</code></p>
+            <p><code>authorization.adminUsers.username</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>authorization.adminUsers.usernameRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>authorization.adminUsers.usernameRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}Required. An active Google username.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -203,7 +172,7 @@ be expanded to allow multiple admins in the future.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The configuration of the cluster control plane.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The configuration of the cluster control plane.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -213,7 +182,27 @@ be expanded to allow multiple admins in the future.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Local control plane configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Local control plane configuration.
+
+ Warning: Local control plane clusters must be created in their own
+ project. Local control plane clusters cannot coexist in the same
+ project with any other type of clusters, including non-GDCE clusters.
+ Mixing local control plane GDCE clusters with any other type of
+ clusters in the same project can result in data loss.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlane.local.controlPlaneNodeStorageSchema</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Name for the storage schema of control plane nodes.
+
+ Warning: Configurable node local storage schema feature is an
+ experimental feature, and is not recommended for general use
+ in production clusters/nodepools.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -223,9 +212,7 @@ be expanded to allow multiple admins in the future.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Only machines matching this filter will be allowed to host control
-plane nodes. The filtering language accepts strings like "name=<name>",
-and is documented here: [AIP-160](https://google.aip.dev/160).{% endverbatim %}</p>
+            <p>{% verbatim %}Only machines matching this filter will be allowed to host control plane nodes. The filtering language accepts strings like "name=<name>", and is documented here: [AIP-160](https://google.aip.dev/160).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,8 +222,7 @@ and is documented here: [AIP-160](https://google.aip.dev/160).{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of nodes to serve as replicas of the Control Plane.
-Only 1 and 3 are supported.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of nodes to serve as replicas of the Control Plane.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -246,8 +232,7 @@ Only 1 and 3 are supported.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-will be created. For example: 'us-central1-edge-customer-a'.{% endverbatim %}</p>
+            <p>{% verbatim %}Name of the Google Distributed Cloud Edge zones where this node pool will be created. For example: `us-central1-edge-customer-a`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +242,7 @@ will be created. For example: 'us-central1-edge-customer-a'.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Policy configuration about how user applications are deployed. Possible values: ["SHARED_DEPLOYMENT_POLICY_UNSPECIFIED", "ALLOWED", "DISALLOWED"].{% endverbatim %}</p>
+            <p>{% verbatim %}Policy configuration about how user applications are deployed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -267,18 +252,7 @@ will be created. For example: 'us-central1-edge-customer-a'.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Remote control plane configuration.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlane.remote.nodeLocation</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Name of the Google Distributed Cloud Edge zones where this node pool
-will be created. For example: 'us-central1-edge-customer-a'.{% endverbatim %}</p>
+            <p>{% verbatim %}Remote control plane configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -288,19 +262,7 @@ will be created. For example: 'us-central1-edge-customer-a'.{% endverbatim %}</p
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Remote control plane disk encryption options. This field is only used when
-enabling CMEK support.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsKeyActiveVersion</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud KMS CryptoKeyVersion currently in use for protecting control
-plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Remote control plane disk encryption options. This field is only used when enabling CMEK support.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -310,7 +272,7 @@ plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The Cloud KMS CryptoKey e.g. projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey} to use for protecting control plane disks. If not specified, a Google-managed key will be used instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -320,7 +282,7 @@ plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -330,7 +292,7 @@ plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -340,62 +302,7 @@ plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsKeyState</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Availability of the Cloud KMS CryptoKey. If not 'KEY_AVAILABLE', then
-nodes may go offline as they cannot access their local data. This can be
-caused by a lack of permissions to use the key, or if the key is disabled
-or deleted.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsStatus</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Error status returned by Cloud KMS when using this key. This field may be
-populated only if 'kms_key_state' is not 'KMS_KEY_STATE_KEY_AVAILABLE'.
-If populated, this field contains the error status reported by Cloud KMS.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsStatus[]</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsStatus[].code</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The status code, which should be an enum value of google.rpc.Code.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>controlPlaneEncryption.kmsStatus[].message</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -405,24 +312,42 @@ If populated, this field contains the error status reported by Cloud KMS.{% endv
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The default maximum number of pods per node used if a maximum value is not
-specified explicitly for a node pool in this cluster. If unspecified, the
-Kubernetes default value will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The default maximum number of pods per node used if a maximum value is not specified explicitly for a node pool in this cluster. If unspecified, the Kubernetes default value will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>externalLoadBalancerIpv4AddressPools</code></p>
+            <p><code>externalLoadBalancerIPV4AddressPools</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Address pools for cluster data plane external load balancing.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. IPv4 address pools for cluster data plane external load balancing.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>externalLoadBalancerIpv4AddressPools[]</code></p>
+            <p><code>externalLoadBalancerIPV4AddressPools[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalLoadBalancerIPV6AddressPools</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Optional. IPv6 address pools for cluster data plane external load balancing.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>externalLoadBalancerIPV6AddressPools[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -433,36 +358,25 @@ Kubernetes default value will be used.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>fleet</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Fleet related configuration.
-Fleets are a Google Cloud concept for logically organizing clusters,
-letting you use and manage multi-cluster capabilities and apply
-consistent policies across your systems.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>fleet.membership</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the managed Hub Membership resource associated to this cluster.
-Membership names are formatted as
-'projects/<project-number>/locations/global/membership/<cluster-id>'.{% endverbatim %}</p>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. Fleet configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>fleet.projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The number of the Fleet host project where this cluster will be registered.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of the Fleet host project where this cluster will be
+ registered.
+
+ Project names are formatted as
+ `projects/<project-number>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -472,7 +386,17 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{value}}`, where {{value}} is the `number` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>fleet.projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -482,7 +406,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -492,17 +416,27 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Labels associated with this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>location</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location of the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The location of the machine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -512,13 +446,73 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Cluster-wide maintenance policy configuration.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Cluster-wide maintenance policy configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. Exclusions to automatic maintenance. Non-emergency maintenance should not occur in these windows. Each exclusion has a unique name and may be active or expired. The max number of maintenance exclusions allowed at a given time is 3.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions[].id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A unique (per cluster) id for the window.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions[].window</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The time window.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions[].window.endTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The time that the window ends. The end time must take place after the start time.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenancePolicy.maintenanceExclusions[].window.startTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The time that the window first starts.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>maintenancePolicy.window</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -528,11 +522,11 @@ Membership names are formatted as
     <tr>
         <td>
             <p><code>maintenancePolicy.window.recurringWindow</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Represents an arbitrary window of time that recurs.{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration of a recurring maintenance window.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -542,9 +536,7 @@ Membership names are formatted as
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
-this window recurs. They go on for the span of time between the start and
-end time.{% endverbatim %}</p>
+            <p>{% verbatim %}An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how this window recurs. They go on for the span of time between the start and end time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -554,7 +546,7 @@ end time.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Represents an arbitrary window of time.{% endverbatim %}</p>
+            <p>{% verbatim %}The window of the first recurrence.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -564,8 +556,7 @@ end time.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time that the window ends. The end time must take place after the
-start time.{% endverbatim %}</p>
+            <p>{% verbatim %}The time that the window ends. The end time must take place after the start time.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -581,54 +572,26 @@ start time.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>networking</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Fleet related configuration.
-Fleets are a Google Cloud concept for logically organizing clusters,
-letting you use and manage multi-cluster capabilities and apply
-consistent policies across your systems.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Cluster-wide networking configuration.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>networking.clusterIpv4CidrBlocks</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. All pods in the cluster are assigned an RFC1918 IPv4 address from these
-blocks. Only a single block is supported. This field cannot be changed
-after creation.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>networking.clusterIpv4CidrBlocks[]</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>networking.clusterIpv6CidrBlocks</code></p>
+            <p><code>networking.clusterIPV4CIDRBlocks</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. If specified, dual stack mode is enabled and all pods in the cluster are
-assigned an IPv6 address from these blocks alongside from an IPv4
-address. Only a single block is supported. This field cannot be changed
-after creation.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. All pods in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>networking.clusterIpv6CidrBlocks[]</code></p>
+            <p><code>networking.clusterIPV4CIDRBlocks[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -638,52 +601,17 @@ after creation.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>networking.networkType</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}IP addressing type of this cluster i.e. SINGLESTACK_V4 vs DUALSTACK_V4_V6.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>networking.servicesIpv4CidrBlocks</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. All services in the cluster are assigned an RFC1918 IPv4 address from these
-blocks. Only a single block is supported. This field cannot be changed
-after creation.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>networking.servicesIpv4CidrBlocks[]</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>networking.servicesIpv6CidrBlocks</code></p>
+            <p><code>networking.servicesIPV4CIDRBlocks</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. If specified, dual stack mode is enabled and all services in the cluster are
-assigned an IPv6 address from these blocks alongside from an IPv4
-address. Only a single block is supported. This field cannot be changed
-after creation.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. All services in the cluster are assigned an RFC1918 IPv4 address from these blocks. Only a single block is supported. This field cannot be changed after creation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>networking.servicesIpv6CidrBlocks[]</code></p>
+            <p><code>networking.servicesIPV4CIDRBlocks[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -694,11 +622,11 @@ after creation.{% endverbatim %}</p>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The host project of the machine.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -708,7 +636,17 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -718,7 +656,7 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -728,7 +666,7 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -738,7 +676,7 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The release channel a cluster is subscribed to. Possible values: ["RELEASE_CHANNEL_UNSPECIFIED", "NONE", "REGULAR"].{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The release channel a cluster is subscribed to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -748,7 +686,27 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The EdgeContainerCluster name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>survivabilityConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Configuration of the cluster survivability, e.g., for the case when network connectivity is lost. Note: This only applies to local control plane clusters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>survivabilityConfig.offlineRebootTTL</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Time period that allows the cluster nodes to be rebooted and become functional without network connectivity to Google. The default 0 means not allowed. The maximum is 7 days.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -758,7 +716,7 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Config that customers are allowed to define for GDCE system add-ons.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The configuration of the system add-ons.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -768,9 +726,7 @@ after creation.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Config for the Ingress add-on which allows customers to create an Ingress
-object to manage external access to the servers in a cluster. The add-on
-consists of istiod and istio-ingress.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Config for Ingress.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -780,7 +736,7 @@ consists of istiod and istio-ingress.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Whether Ingress is disabled.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Whether Ingress is disabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -790,7 +746,27 @@ consists of istiod and istio-ingress.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Ingress VIP.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Ingress VIP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>systemAddonsConfig.vmServiceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Config for VM Service.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>systemAddonsConfig.vmServiceConfig.vmmEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Whether VMM is enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -800,45 +776,49 @@ consists of istiod and istio-ingress.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The target cluster version. For example: "1.5.0".{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The target cluster version. For example: "1.5.0".{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
 </table>
 
 
-<p>* Field is required when parent field is specified</p>
-
 
 ### Status
 #### Schema
 ```yaml
-clusterCaCertificate: string
 conditions:
 - lastTransitionTime: string
   message: string
   reason: string
   status: string
   type: string
-controlPlaneVersion: string
-createTime: string
-endpoint: string
-maintenanceEvents:
-- createTime: string
-  endTime: string
-  operation: string
-  schedule: string
-  startTime: string
-  state: string
-  targetVersion: string
-  type: string
-  updateTime: string
-  uuid: string
-nodeVersion: string
+externalRef: string
 observedGeneration: integer
-port: integer
-status: string
-updateTime: string
+observedState:
+  clusterCACertificate: string
+  connectionState: {}
+  controlPlaneEncryption:
+    kmsKeyActiveVersion: string
+    kmsKeyState: string
+    kmsStatus:
+      code: integer
+      details:
+      - typeURL: string
+        value: string
+      message: string
+    resourceState: string
+  controlPlaneVersion: string
+  createTime: string
+  endpoint: string
+  fleet:
+    membership: string
+  maintenanceEvents:
+  - {}
+  nodeVersion: string
+  port: integer
+  status: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -849,17 +829,10 @@ updateTime: string
 </thead>
 <tbody>
     <tr>
-        <td><code>clusterCaCertificate</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The PEM-encoded public certificate of the cluster's CA.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -905,122 +878,10 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>controlPlaneVersion</code></td>
+        <td><code>externalRef</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The control plane release version.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>createTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time the cluster was created, in RFC3339 text format.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>endpoint</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The IP address of the Kubernetes API server.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}All the maintenance events scheduled for the cluster, including the ones
-ongoing, planned for the future and done in the past (up to 90 days).{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].createTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the maintenance event request was created.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].endTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the maintenance event ended, either successfully or not. If
-the maintenance event is split into multiple maintenance windows,
-end_time is only updated when the whole flow ends.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].operation</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The operation for running the maintenance event. Specified in the format
-projects/*/locations/*/operations/*. If the maintenance event is split
-into multiple operations (e.g. due to maintenance windows), the latest
-one is recorded.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].schedule</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The schedule of the maintenance event.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].startTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the maintenance event started.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].state</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Indicates the maintenance event state.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].targetVersion</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The target version of the cluster.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].type</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Indicates the maintenance event type.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].updateTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time when the maintenance event message was updated.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>maintenanceEvents[].uuid</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}UUID of the maintenance event.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>nodeVersion</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lowest release version among all worker nodes. This field can be empty
-if the cluster does not have any worker nodes.{% endverbatim %}</p>
+            <p>{% verbatim %}A unique specifier for the EdgeContainerCluster resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1031,24 +892,208 @@ if the cluster does not have any worker nodes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>port</code></td>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clusterCACertificate</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The PEM-encoded public certificate of the cluster's CA.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.connectionState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The current connection state of the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. Remote control plane disk encryption options. This field is only used when enabling CMEK support.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsKeyActiveVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The Cloud KMS CryptoKeyVersion currently in use for protecting control plane disks. Only applicable if kms_key is set.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsKeyState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Availability of the Cloud KMS CryptoKey. If not `KEY_AVAILABLE`, then nodes may go offline as they cannot access their local data. This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. Error status returned by Cloud KMS when using this key. This field may be populated only if `kms_key_state` is not `KMS_KEY_STATE_KEY_AVAILABLE`. If populated, this field contains the error status reported by Cloud KMS.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.code</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The port number of the Kubernetes API server.{% endverbatim %}</p>
+            <p>{% verbatim %}The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>status</code></td>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.details</code></td>
         <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Indicates the status of the cluster.{% endverbatim %}</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}A list of messages that carry the error details.  There is a common set of message types for APIs to use.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.details[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.details[].typeURL</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time the cluster was last updated, in RFC3339 text format.{% endverbatim %}</p>
+            <p>{% verbatim %}A URL/resource name that uniquely identifies the type of the serialized
+ protocol buffer message. This string must contain at least
+ one "/" character. The last segment of the URL's path must represent
+ the fully qualified name of the type (as in
+ `path/google.protobuf.Duration`). The name should be in a canonical form
+ (e.g., leading "." is not accepted).
+
+ In practice, teams usually precompile into the binary all types that they
+ expect it to use in the context of Any. However, for URLs which use the
+ scheme `http`, `https`, or no scheme, one can optionally set up a type
+ server that maps type URLs to message definitions as follows:
+
+ * If no scheme is provided, `https` is assumed.
+ * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+   value in binary format, or produce an error.
+ * Applications are allowed to cache lookup results based on the
+   URL, or have them precompiled into a binary to avoid any
+   lookup. Therefore, binary compatibility needs to be preserved
+   on changes to types. (Use versioned type names to manage
+   breaking changes.)
+
+ Note: this functionality is not currently available in the official
+ protobuf release, and it is not used for type URLs beginning with
+ type.googleapis.com.
+
+ Schemes other than `http`, `https` (or the empty scheme) might be
+ used with implementation specific semantics.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.details[].value</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Must be a valid serialized protocol buffer of the above specified type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsStatus.message</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.resourceState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current resource state associated with the cmek.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The control plane release version{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the cluster was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.endpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The IP address of the Kubernetes API server.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. Fleet configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet.membership</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The name of the managed Hub Membership resource associated to
+ this cluster.
+
+ Membership names are formatted as
+ `projects/<project-number>/locations/global/membership/<cluster-id>`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceEvents</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. All the maintenance events scheduled for the cluster, including the ones ongoing, planned for the future and done in the past (up to 90 days).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenanceEvents[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The lowest release version among all worker nodes. This field can be empty if the cluster does not have any worker nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.port</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Output only. The port number of the Kubernetes API server.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.status</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The current status of the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the cluster was last updated.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
