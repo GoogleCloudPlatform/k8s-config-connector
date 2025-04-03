@@ -26,6 +26,36 @@ var DataCatalogTagTemplateGVK = GroupVersion.WithKind("DataCatalogTagTemplate")
 type DataCatalogTagTemplateSpec struct {
 	// The DataCatalogTagTemplate name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Identifier. The resource name of the tag template in URL format.
+	//
+	//  Note: The tag template itself and its child resources might not be
+	//  stored in the location specified in its name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.name
+	Name *string `json:"name,omitempty"`
+
+	// Display name for this template. Defaults to an empty string.
+	//
+	//  The name must contain only Unicode letters, numbers (0-9), underscores (_),
+	//  dashes (-), spaces ( ), and can't start or end with spaces.
+	//  The maximum length is 200 characters.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Indicates whether tags created with this template are public. Public tags
+	//  do not require tag template access to appear in
+	//  [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags] API response.
+	//
+	//  Additionally, you can search for a public tag by value with a
+	//  simple search query in addition to using a ``tag:`` predicate.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable
+	IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+	// Optional. Transfer status of the TagTemplate
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 // DataCatalogTagTemplateStatus defines the config connector machine state of DataCatalogTagTemplate
@@ -42,11 +72,6 @@ type DataCatalogTagTemplateStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *DataCatalogTagTemplateObservedState `json:"observedState,omitempty"`
-}
-
-// DataCatalogTagTemplateObservedState is the state of the DataCatalogTagTemplate resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datacatalog.v1.TagTemplate
-type DataCatalogTagTemplateObservedState struct {
 }
 
 // +genclient
