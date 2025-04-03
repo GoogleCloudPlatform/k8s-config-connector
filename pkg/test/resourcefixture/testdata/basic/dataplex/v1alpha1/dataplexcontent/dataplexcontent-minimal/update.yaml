@@ -17,11 +17,8 @@ kind: DataplexContent
 metadata:
   name: dataplexcontent-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
-  path: "test-content"
-  dataText: ""
+  path: "test-content2"
+  dataText: "test-datetext2"
   lakeRef:
     name: dataplexlake-${uniqueId}
   description: "Updated description"

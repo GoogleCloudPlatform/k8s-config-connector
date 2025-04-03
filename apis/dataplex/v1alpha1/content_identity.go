@@ -73,8 +73,11 @@ func NewContentIdentity(ctx context.Context, reader client.Reader, obj *Dataplex
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.parent != parent {
-			return nil, fmt.Errorf("parent changed, expect %s, got %s", actualParent.parent, parent)
+		if actualParent.parent.ProjectID != parent.ProjectID {
+			return nil, fmt.Errorf("parent ProjectID changed, expect %s, got %s", actualParent.parent.ProjectID, parent.ProjectID)
+		}
+		if actualParent.parent.Location != parent.Location {
+			return nil, fmt.Errorf("parent location changed, expect %s, got %s", actualParent.parent.Location, parent.Location)
 		}
 		if actualParent.id != lakeId {
 			return nil, fmt.Errorf("spec.lakeRef changed, expect %s, got %s", actualParent.id, lakeId)
