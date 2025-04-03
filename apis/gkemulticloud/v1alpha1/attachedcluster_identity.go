@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -55,8 +56,12 @@ func (p *AttachedClusterParent) String() string {
 func NewAttachedClusterIdentity(ctx context.Context, reader client.Reader, obj *GkeMultiCloudAttachedCluster) (*AttachedClusterIdentity, error) {
 
 	// Get Parent
-	projectID := obj.Spec.Fleet.Project
-	if projectID == nil || *projectID == "" {
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := "global"
@@ -78,8 +83,8 @@ func NewAttachedClusterIdentity(ctx context.Context, reader client.Reader, obj *
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != *projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, *projectID)
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
@@ -91,7 +96,7 @@ func NewAttachedClusterIdentity(ctx context.Context, reader client.Reader, obj *
 	}
 	return &AttachedClusterIdentity{
 		parent: &AttachedClusterParent{
-			ProjectID: *projectID,
+			ProjectID: projectID,
 			Location:  location,
 		},
 		id: resourceID,
