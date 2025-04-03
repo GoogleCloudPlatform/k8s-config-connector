@@ -407,6 +407,50 @@ func DataCatalogEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	out.TransferredToDataplex = direct.ValueOf(in.TransferredToDataplex)
 	return out
 }
+func DataCatalogTagObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1alpha1.DataCatalogTagObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataCatalogTagObservedState{}
+	// MISSING: Name
+	out.TemplateDisplayName = direct.LazyPtr(in.GetTemplateDisplayName())
+	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	return out
+}
+func DataCatalogTagObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagObservedState) *pb.Tag {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tag{}
+	// MISSING: Name
+	out.TemplateDisplayName = direct.ValueOf(in.TemplateDisplayName)
+	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
+	return out
+}
+func DataCatalogTagSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tag) *krmv1alpha1.DataCatalogTagSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataCatalogTagSpec{}
+	// MISSING: Name
+	out.Template = direct.LazyPtr(in.GetTemplate())
+	out.Column = direct.LazyPtr(in.GetColumn())
+	// TODO: map type string message for field Fields
+	return out
+}
+func DataCatalogTagSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagSpec) *pb.Tag {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tag{}
+	// MISSING: Name
+	out.Template = DataCatalogTagSpec_Template_ToProto(mapCtx, in.Template)
+	if oneof := DataCatalogTagSpec_Column_ToProto(mapCtx, in.Column); oneof != nil {
+		out.Scope = oneof
+	}
+	// TODO: map type string message for field Fields
+	return out
+}
 func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krmv1alpha1.DataSource {
 	if in == nil {
 		return nil
@@ -1182,6 +1226,64 @@ func TableSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.T
 	}
 	out := &pb.TableSpec{}
 	out.GroupedEntry = direct.ValueOf(in.GroupedEntry)
+	return out
+}
+func TagField_FromProto(mapCtx *direct.MapContext, in *pb.TagField) *krmv1alpha1.TagField {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.TagField{}
+	// MISSING: DisplayName
+	out.DoubleValue = direct.LazyPtr(in.GetDoubleValue())
+	out.StringValue = direct.LazyPtr(in.GetStringValue())
+	out.BoolValue = direct.LazyPtr(in.GetBoolValue())
+	out.TimestampValue = direct.StringTimestamp_FromProto(mapCtx, in.GetTimestampValue())
+	out.EnumValue = TagField_EnumValue_FromProto(mapCtx, in.GetEnumValue())
+	out.RichtextValue = direct.LazyPtr(in.GetRichtextValue())
+	// MISSING: Order
+	return out
+}
+func TagField_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TagField) *pb.TagField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagField{}
+	// MISSING: DisplayName
+	if oneof := TagField_DoubleValue_ToProto(mapCtx, in.DoubleValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := TagField_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := TagField_BoolValue_ToProto(mapCtx, in.BoolValue); oneof != nil {
+		out.Kind = oneof
+	}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.TimestampValue); oneof != nil {
+		out.Kind = &pb.TagField_TimestampValue{TimestampValue: oneof}
+	}
+	if oneof := TagField_EnumValue_ToProto(mapCtx, in.EnumValue); oneof != nil {
+		out.Kind = &pb.TagField_EnumValue_{EnumValue: oneof}
+	}
+	if oneof := TagField_RichtextValue_ToProto(mapCtx, in.RichtextValue); oneof != nil {
+		out.Kind = oneof
+	}
+	// MISSING: Order
+	return out
+}
+func TagField_EnumValue_FromProto(mapCtx *direct.MapContext, in *pb.TagField_EnumValue) *krmv1alpha1.TagField_EnumValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.TagField_EnumValue{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func TagField_EnumValue_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TagField_EnumValue) *pb.TagField_EnumValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagField_EnumValue{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out
 }
 func TagTemplateField_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplateField) *krmv1alpha1.TagTemplateField {
