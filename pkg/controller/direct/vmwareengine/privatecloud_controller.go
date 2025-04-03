@@ -66,13 +66,6 @@ func (m *privateCloudModel) AdapterForObject(ctx context.Context, reader client.
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.VMwareEngineNetworkRef != nil {
-		if _, err := obj.Spec.NetworkConfig.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get VMwareEngine GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -86,6 +79,7 @@ func (m *privateCloudModel) AdapterForObject(ctx context.Context, reader client.
 		gcpClient: client,
 		id:        id,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -99,6 +93,7 @@ type privateCloudAdapter struct {
 	id        *krm.PrivateCloudIdentity
 	desired   *krm.VMwareEnginePrivateCloud
 	actual    *pb.PrivateCloud
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &privateCloudAdapter{}
@@ -123,8 +118,12 @@ func (a *privateCloudAdapter) Find(ctx context.Context) (bool, error) {
 func (a *privateCloudAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine private cloud", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEnginePrivateCloudSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -158,8 +157,12 @@ func (a *privateCloudAdapter) Create(ctx context.Context, createOp *directbase.C
 func (a *privateCloudAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine private cloud", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEnginePrivateCloudSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -249,4 +252,14 @@ func (a *privateCloudAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *privateCloudAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.NetworkConfig.VMwareEngineNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	return nil
 }
