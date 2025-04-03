@@ -22,7 +22,19 @@
 * `ApphubApplication`
 * `BatchJob`
 * `TaskQueue`
- 
+* `BackupDRManagementServer`
+* `BackupDRBackupVault`
+* `BackupDRBackupPlan`
+* `BackupDRBackupPlanAssociation`
+* `VMwareEnginePrivateCloud`
+* `VMwareEngineNetwork`
+* `VMwareEngineNetworkPeering`
+* `VMwareEngineNetworkPolicy`
+* `GKEBackupBackupPlan`
+* `GKEBackupRestorePlan`
+* `DatastreamPrivateConnection`
+* `DatastreamConnectionProfile`
+
 ## New Fields:
 
 * [`GKEHubFeatureMembership`](https://cloud.google.com/config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership)
