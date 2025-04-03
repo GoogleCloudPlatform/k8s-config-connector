@@ -16,22 +16,21 @@ package mockdataplex
 
 // +tool:mockgcp-service
 // http.host: dataplex.googleapis.com
-// proto.service: google.cloud.dataplex.v1.DataplexService
+// proto.service: google.cloud.dataplex.v1.ContentService
 
 import (
 	"context"
 	"net/http"
 
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/dataplex/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-
-	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	iampb "google.golang.org/genproto/googleapis/iam/v1"
 )
 
 // MockService represents a mocked dataplex service.
@@ -40,6 +39,16 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
+
+	// Embed the previously defined DataplexV1 if merging
+	// dataplexV1 *DataplexV1
+
+	contentV1 *ContentServiceV1
+}
+
+type ContentServiceV1 struct {
+	*MockService
+	pb.UnimplementedContentServiceServer
 }
 
 // New creates a MockService.
@@ -49,6 +58,9 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	// If merging, initialize other services like:
+	// s.dataplexV1 = &DataplexV1{MockService: s}
+	s.contentV1 = &ContentServiceV1{MockService: s}
 	return s
 }
 
@@ -57,17 +69,52 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataplexServiceServer(grpcServer, &DataplexV1{MockService: s})
-	//s.operations.RegisterGRPCServices(grpcServer)
+	// If merging, include registrations for other services like:
+	// pb.RegisterDataplexServiceServer(grpcServer, s.dataplexV1)
+	pb.RegisterContentServiceServer(grpcServer, s.contentV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		grpcpb.RegisterDataplexServiceHandler,
+		// If merging, include handlers for other services like:
+		// pb.RegisterDataplexServiceHandler,
+		pb.RegisterContentServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
 
+	// Potentially shared mux configuration like RewriteHeaders or RewriteError
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Del("Cache-Control")
+	}
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
+}
+
+// Implement IAM methods potentially shared across services or specific to ContentService
+func (s *ContentServiceV1) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	// Simplified IAM Get - return empty policy or error
+	// Replace with actual IAM logic if needed
+	return &iampb.Policy{}, nil
+	// return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+
+func (s *ContentServiceV1) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	// Simplified IAM Set - return request policy or error
+	// Replace with actual IAM logic if needed
+	return req.Policy, nil
+	// return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+
+func (s *ContentServiceV1) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	// Simplified IAM Test - return all permissions or error
+	// Replace with actual IAM logic if needed
+	return &iampb.TestIamPermissionsResponse{Permissions: req.Permissions}, nil
+	// return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
 }
