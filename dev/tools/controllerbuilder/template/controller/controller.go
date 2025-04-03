@@ -277,7 +277,7 @@ func (a *{{.ProtoResource}}Adapter) Export(ctx context.Context) (*unstructured.U
 		return nil, err
 	}
 
-	u.SetName(a.actual.Id)
+	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.{{.Kind}}GVK)
 
 	u.Object = uObj
