@@ -21,6 +21,7 @@ package datacatalog
 
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -32,4 +33,34 @@ func FieldType_PrimitiveType_ToProto(mapCtx *direct.MapContext, in *string) *pb.
 	return &pb.FieldType_PrimitiveType_{
 		PrimitiveType: primitiveType,
 	}
+}
+func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataCatalogTagTemplateSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
+	out.Fields = make(map[string]krmv1alpha1.TagTemplateField)
+	for k, v := range in.GetFields() {
+		out.Fields[k] = *TagTemplateField_FromProto(mapCtx, v)
+	}
+	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	return out
+}
+func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplate{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
+	out.Fields = make(map[string]*pb.TagTemplateField)
+	for k, v := range in.Fields {
+		out.Fields[k] = TagTemplateField_ToProto(mapCtx, &v)
+	}
+	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
+	return out
 }

@@ -407,30 +407,7 @@ func DataCatalogEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	out.TransferredToDataplex = direct.ValueOf(in.TransferredToDataplex)
 	return out
 }
-func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.DataCatalogTagTemplateSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.IsPubliclyReadable = direct.LazyPtr(in.GetIsPubliclyReadable())
-	// TODO: map type string message for field Fields
-	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
-	return out
-}
-func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TagTemplate{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.IsPubliclyReadable = direct.ValueOf(in.IsPubliclyReadable)
-	// TODO: map type string message for field Fields
-	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
-	return out
-}
+
 func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krmv1alpha1.DataSource {
 	if in == nil {
 		return nil
