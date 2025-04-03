@@ -78,32 +78,6 @@ func DataprocNodeGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataprocNo
 	out.Labels = in.Labels
 	return out
 }
-func DiskConfig_FromProto(mapCtx *direct.MapContext, in *pb.DiskConfig) *krm.DiskConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DiskConfig{}
-	out.BootDiskType = direct.LazyPtr(in.GetBootDiskType())
-	out.BootDiskSizeGB = direct.LazyPtr(in.GetBootDiskSizeGb())
-	out.NumLocalSsds = direct.LazyPtr(in.GetNumLocalSsds())
-	out.LocalSsdInterface = direct.LazyPtr(in.GetLocalSsdInterface())
-	out.BootDiskProvisionedIops = in.BootDiskProvisionedIops
-	out.BootDiskProvisionedThroughput = in.BootDiskProvisionedThroughput
-	return out
-}
-func DiskConfig_ToProto(mapCtx *direct.MapContext, in *krm.DiskConfig) *pb.DiskConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DiskConfig{}
-	out.BootDiskType = direct.ValueOf(in.BootDiskType)
-	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
-	out.NumLocalSsds = direct.ValueOf(in.NumLocalSsds)
-	out.LocalSsdInterface = direct.ValueOf(in.LocalSsdInterface)
-	out.BootDiskProvisionedIops = in.BootDiskProvisionedIops
-	out.BootDiskProvisionedThroughput = in.BootDiskProvisionedThroughput
-	return out
-}
 func InstanceFlexibilityPolicy_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krm.InstanceFlexibilityPolicy {
 	if in == nil {
 		return nil

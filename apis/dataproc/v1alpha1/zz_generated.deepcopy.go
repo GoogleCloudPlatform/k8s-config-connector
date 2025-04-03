@@ -826,18 +826,18 @@ func (in *DiskConfig) DeepCopyInto(out *DiskConfig) {
 		*out = new(int32)
 		**out = **in
 	}
-	if in.NumLocalSsds != nil {
-		in, out := &in.NumLocalSsds, &out.NumLocalSsds
+	if in.NumLocalSSDs != nil {
+		in, out := &in.NumLocalSSDs, &out.NumLocalSSDs
 		*out = new(int32)
 		**out = **in
 	}
-	if in.LocalSsdInterface != nil {
-		in, out := &in.LocalSsdInterface, &out.LocalSsdInterface
+	if in.LocalSSDInterface != nil {
+		in, out := &in.LocalSSDInterface, &out.LocalSSDInterface
 		*out = new(string)
 		**out = **in
 	}
-	if in.BootDiskProvisionedIops != nil {
-		in, out := &in.BootDiskProvisionedIops, &out.BootDiskProvisionedIops
+	if in.BootDiskProvisionedIOPs != nil {
+		in, out := &in.BootDiskProvisionedIOPs, &out.BootDiskProvisionedIOPs
 		*out = new(int64)
 		**out = **in
 	}
