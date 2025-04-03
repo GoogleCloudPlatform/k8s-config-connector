@@ -34,7 +34,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -219,7 +218,7 @@ func (a *backupAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 	}
 
 	// Populate required Spec fields from identity
-	obj.Spec.BackupPlanRef = refs.GKEBackupBackupPlanRef{
+	obj.Spec.BackupPlanRef = &krm.BackupPlanRef{
 		External: a.id.Parent().String(),
 	}
 
@@ -228,7 +227,7 @@ func (a *backupAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 		return nil, err
 	}
 
-	u.SetName(a.id.ResourceID) // Name should be the K8s resource name, which matches the Backup ID
+	u.SetName(a.id.ID()) // Name should be the K8s resource name, which matches the Backup ID
 	u.SetGroupVersionKind(krm.GKEBackupBackupGVK)
 	u.Object = uObj
 
@@ -273,137 +272,4 @@ func (a *backupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 	}
 	log.V(2).Info("successfully deleted gkebackup backup", "name", a.id)
 	return true, nil
-}
-
-// /////////////////////////////////////////////////////////////////////////////
-// Generally boiler plate code that is unlikely to change, but if it does,
-// generate it based on the corresponding KRM object definition.
-// /////////////////////////////////////////////////////////////////////////////
-
-func GKEBackupBackupSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEBackupBackupSpec) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	out.Labels = in.Labels
-	out.DeleteLockDays = direct.ValueOf(in.DeleteLockDays)
-	out.RetainDays = direct.ValueOf(in.RetainDays)
-	out.Description = direct.ValueOf(in.Description)
-	return out
-}
-
-func GKEBackupBackupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.GKEBackupBackupObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupObservedState{}
-	out.UID = direct.LazyPtr(in.GetUid())
-	out.CreateTime = direct.ProtoTimestampToTime(in.GetCreateTime())
-	out.UpdateTime = direct.ProtoTimestampToTime(in.GetUpdateTime())
-	out.Manual = direct.LazyPtr(in.GetManual())
-	out.DeleteLockExpireTime = direct.ProtoTimestampToTime(in.GetDeleteLockExpireTime())
-	out.RetainExpireTime = direct.ProtoTimestampToTime(in.GetRetainExpireTime())
-	out.EncryptionKey = GKEBackupBackupEncryptionKey_FromProto(mapCtx, in.GetEncryptionKey())
-	out.AllNamespaces = direct.LazyPtr(in.GetAllNamespaces())
-	out.SelectedNamespaces = GKEBackupBackupSelectedNamespaces_FromProto(mapCtx, in.GetSelectedNamespaces())
-	out.SelectedApplications = GKEBackupBackupSelectedApplications_FromProto(mapCtx, in.GetSelectedApplications())
-	out.ContainsVolumeData = direct.LazyPtr(in.GetContainsVolumeData())
-	out.ContainsSecrets = direct.LazyPtr(in.GetContainsSecrets())
-	out.ClusterMetadata = GKEBackupBackupClusterMetadata_FromProto(mapCtx, in.GetClusterMetadata())
-	out.State = direct.EnumFromProto(GKEBackupBackupStateEnum_FromProto, in.GetState())
-	out.StateReason = direct.LazyPtr(in.GetStateReason())
-	out.CompleteTime = direct.ProtoTimestampToTime(in.GetCompleteTime())
-	out.ResourceCount = direct.LazyPtr(in.GetResourceCount())
-	out.VolumeCount = direct.LazyPtr(in.GetVolumeCount())
-	out.SizeBytes = direct.LazyPtr(in.GetSizeBytes())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.PodCount = direct.LazyPtr(in.GetPodCount())
-	out.ConfigBackupSizeBytes = direct.LazyPtr(in.GetConfigBackupSizeBytes())
-	out.PermissiveMode = direct.LazyPtr(in.GetPermissiveMode())
-	return out
-}
-
-func GKEBackupBackupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krm.GKEBackupBackupSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupSpec{}
-	// BackupPlanRef is required in Spec, but not present in Backup proto.
-	// It needs to be populated from the identity during export.
-	out.Labels = in.GetLabels()
-	out.DeleteLockDays = direct.LazyPtr(in.GetDeleteLockDays())
-	out.RetainDays = direct.LazyPtr(in.GetRetainDays())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	return out
-}
-
-func GKEBackupBackupEncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *krm.GKEBackupBackupEncryptionKey {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupEncryptionKey{}
-	// KMSKeyRef needs to be inferred during export if possible or left unset.
-	// This field in Backup is output only.
-	out.GcpKmsEncryptionKey = direct.LazyPtr(in.GetGcpKmsEncryptionKey())
-	return out
-}
-
-func GKEBackupBackupSelectedNamespaces_FromProto(mapCtx *direct.MapContext, in *pb.Namespaces) *krm.GKEBackupBackupSelectedNamespaces {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupSelectedNamespaces{}
-	out.Namespaces = in.GetNamespaces()
-	return out
-}
-
-func GKEBackupBackupSelectedApplications_FromProto(mapCtx *direct.MapContext, in *pb.NamespacedNames) *krm.GKEBackupBackupSelectedApplications {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupSelectedApplications{}
-	out.NamespacedNames = GKEBackupBackupNamespacedNames_FromProto(mapCtx, in.GetNamespacedNames())
-	return out
-}
-
-func GKEBackupBackupNamespacedNames_FromProto(mapCtx *direct.MapContext, in []*pb.NamespacedName) []krm.GKEBackupBackupNamespacedNames {
-	if in == nil {
-		return nil
-	}
-	var out []krm.GKEBackupBackupNamespacedNames
-	for _, item := range in {
-		out = append(out, direct.ValueOf(GKEBackupBackupNamespacedName_FromProto(mapCtx, item)))
-	}
-	return out
-}
-
-func GKEBackupBackupNamespacedName_FromProto(mapCtx *direct.MapContext, in *pb.NamespacedName) *krm.GKEBackupBackupNamespacedNames {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupNamespacedNames{}
-	out.Namespace = direct.LazyPtr(in.GetNamespace())
-	out.Name = direct.LazyPtr(in.GetName())
-	return out
-}
-
-func GKEBackupBackupClusterMetadata_FromProto(mapCtx *direct.MapContext, in *pb.Backup_ClusterMetadata) *krm.GKEBackupBackupClusterMetadata {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GKEBackupBackupClusterMetadata{}
-	out.Cluster = direct.LazyPtr(in.GetCluster())
-	out.K8sVersion = direct.LazyPtr(in.GetK8sVersion())
-	out.BackupCrdVersions = in.GetBackupCrdVersions()
-	out.GkeVersion = direct.LazyPtr(in.GetGkeVersion())
-	out.AnthosVersion = direct.LazyPtr(in.GetAnthosVersion())
-	return out
-}
-
-func GKEBackupBackupStateEnum_FromProto(mapCtx *direct.MapContext, in pb.Backup_State) *string {
-	if in == pb.Backup_STATE_UNSPECIFIED {
-		return nil
-	}
-	s := in.String()
-	return &s
 }
