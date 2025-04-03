@@ -145,9 +145,10 @@ func (m *dataprocJobModel) AdapterForObject(ctx context.Context, reader client.R
 	}
 
 	return &dataprocJobAdapter{
-		gcpClient: gcpClient,
-		id:        jobID,
-		desired:   desired,
+		gcpClient:   gcpClient,
+		id:          jobID,
+		desired:     desired,
+		generatedId: direct.LazyPtr(jobID.ID()),
 	}, nil
 }
 
@@ -406,6 +407,8 @@ func (a *dataprocJobAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		// This should ideally not happen if the job was fetched correctly
 		klog.Warningf("unknown job type found during export: %T", jobType)
 	}
+	obj.Status = krm.DataprocJobStatus{}
+	obj.Status.ObservedState = DataprocJobObservedState_FromProto(mapCtx, a.actual)
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
