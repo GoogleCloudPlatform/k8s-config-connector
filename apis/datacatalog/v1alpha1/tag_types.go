@@ -26,6 +26,30 @@ var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 type DataCatalogTagSpec struct {
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Identifier. The resource name of the tag in URL format where tag ID is a
+	//  system-generated identifier.
+	//
+	//  Note: The tag itself might not be stored in the location specified in its
+	//  name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The resource name of the tag template this tag uses. Example:
+	//
+	//  `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
+	//
+	//  This field cannot be modified after creation.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
+	Template *string `json:"template,omitempty"`
+
+	// Resources like entry can have schemas associated with them. This scope
+	//  allows you to attach tags to an individual column based on that schema.
+	//
+	//  To attach a tag to a nested column, separate column names with a dot
+	//  (`.`). Example: `column.nested_column`.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.column
+	Column *string `json:"column,omitempty"`
 }
 
 // DataCatalogTagStatus defines the config connector machine state of DataCatalogTag
@@ -47,6 +71,13 @@ type DataCatalogTagStatus struct {
 // DataCatalogTagObservedState is the state of the DataCatalogTag resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagObservedState struct {
+	// Output only. The display name of the tag template.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template_display_name
+	TemplateDisplayName *string `json:"templateDisplayName,omitempty"`
+
+	// Output only. Denotes the transfer status of the Tag Template.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.dataplex_transfer_status
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 // +genclient
