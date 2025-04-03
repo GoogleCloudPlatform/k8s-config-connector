@@ -56,6 +56,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/firestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkebackup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iap"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/autokeyconfig"

@@ -1,0 +1,327 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: iampolicybindings.iam.cnrm.cloud.google.com
+spec:
+  group: iam.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: IAMPolicyBinding
+    listKind: IAMPolicyBindingList
+    plural: iampolicybindings
+    shortNames:
+    - gcpiampolicybinding
+    - gcpiampolicybindings
+    singular: iampolicybinding
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: IAMPolicyBinding is the Schema for the IAMPolicyBinding API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IAMPolicyBindingSpec defines the desired state of IAMPolicyBinding
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Optional. User defined annotations. See https://google.aip.dev/148#annotations
+                  for more details such as format and size limitations
+                type: object
+              condition:
+                description: |-
+                  Optional. Condition can either be a principal condition or a resource
+                   condition. It depends on the type of target, the policy it is attached to,
+                   and/or the expression itself. When set, the `expression` field in the
+                   `Expr` must include from 1 to 10 subexpressions, joined by the "||"(Logical
+                   OR),
+                   "&&"(Logical AND) or "!"(Logical NOT) operators and cannot contain more
+                   than 250 characters.
+                   Allowed operations for principal.subject:
+
+                   - `principal.subject == <principal subject string>`
+                   - `principal.subject != <principal subject string>`
+                   - `principal.subject in [<list of principal subjects>]`
+                   - `principal.subject.startsWith(<string>)`
+                   - `principal.subject.endsWith(<string>)`
+
+                   Allowed operations for principal.type:
+
+                   - `principal.type == <principal type string>`
+                   - `principal.type != <principal type string>`
+                   - `principal.type in [<list of principal types>]`
+
+                   Supported principal types are Workspace, Workforce Pool, Workload Pool and
+                   Service Account. Allowed string must be one of:
+
+                   - iam.googleapis.com/WorkspaceIdentity
+                   - iam.googleapis.com/WorkforcePoolIdentity
+                   - iam.googleapis.com/WorkloadPoolIdentity
+                   - iam.googleapis.com/ServiceAccount
+
+                   When the bound policy is a principal access boundary policy, the only
+                   supported attributes in any subexpression are `principal.type` and
+                   `principal.subject`. An example expression is: "principal.type ==
+                   'iam.googleapis.com/ServiceAccount'" or "principal.subject ==
+                   'bob@example.com'".
+                properties:
+                  description:
+                    description: Optional. Description of the expression. This is
+                      a longer text which describes the expression, e.g. when hovered
+                      over it in a UI.
+                    type: string
+                  expression:
+                    description: Textual representation of an expression in Common
+                      Expression Language syntax.
+                    type: string
+                  location:
+                    description: Optional. String indicating the location of the expression
+                      for error reporting, e.g. a file name and a position in the
+                      file.
+                    type: string
+                  title:
+                    description: Optional. Title for the expression, i.e. a short
+                      string describing its purpose. This can be used e.g. in UIs
+                      which allow to enter the expression.
+                    type: string
+                type: object
+              displayName:
+                description: Optional. The description of the policy binding. Must
+                  be less than or equal to 63 characters.
+                type: string
+              etag:
+                description: Optional. The etag for the policy binding. If this is
+                  provided on update, it must match the server's etag.
+                type: string
+              folderRef:
+                description: FolderRef represents the Folder that this resource belongs
+                  to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              location:
+                type: string
+              organizationRef:
+                description: OrganizationRef represents the Organization that this
+                  resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              policy:
+                description: Required. Immutable. The resource name of the policy
+                  to be bound. The binding parent and policy must belong to the same
+                  Organization (or Project).
+                type: string
+              policyKind:
+                description: |-
+                  Immutable. The kind of the policy to attach in this binding. This field
+                   must be one of the following:
+
+                   - Left empty (will be automatically set to the policy kind)
+                   - The input policy kind
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The IAMPolicyBinding name. If not given, the metadata.name
+                  will be used.
+                type: string
+              target:
+                description: Required. Immutable. Target is the full resource name
+                  of the resource to which the policy will be bound. Immutable once
+                  set.
+                properties:
+                  principalSet:
+                    description: |-
+                      Immutable. Full Resource Name used for principal access boundary policy
+                       bindings Examples:
+
+                       * Organization:
+                       `//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID`
+                       * Folder: `//cloudresourcemanager.googleapis.com/folders/FOLDER_ID`
+                       * Project:
+                           * `//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER`
+                           * `//cloudresourcemanager.googleapis.com/projects/PROJECT_ID`
+                       * Workload Identity Pool:
+                       `//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID`
+                       * Workforce Identity:
+                       `//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID`
+                       * Workspace Identity:
+                       `//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID`
+                    type: string
+                type: object
+            required:
+            - location
+            - policy
+            - target
+            type: object
+          status:
+            description: IAMPolicyBindingStatus defines the config connector machine
+              state of IAMPolicyBinding
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the IAMPolicyBinding resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the policy binding was
+                      created.
+                    type: string
+                  policyUid:
+                    description: Output only. The globally unique ID of the policy
+                      to be bound.
+                    type: string
+                  uid:
+                    description: Output only. The globally unique ID of the policy
+                      binding. Assigned when the policy binding is created.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the policy binding was
+                      most recently updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
