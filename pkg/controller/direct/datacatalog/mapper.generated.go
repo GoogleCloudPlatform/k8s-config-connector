@@ -22,7 +22,6 @@ package datacatalog
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -699,6 +698,7 @@ func FieldType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType) *krmv1alph
 	out.EnumType = FieldType_EnumType_FromProto(mapCtx, in.GetEnumType())
 	return out
 }
+
 func FieldType_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FieldType) *pb.FieldType {
 	if in == nil {
 		return nil
