@@ -60,9 +60,6 @@ spec:
           spec:
             description: DataCatalogTagTemplateSpec defines the desired state of DataCatalogTagTemplate
             properties:
-              dataplexTransferStatus:
-                description: Optional. Transfer status of the TagTemplate
-                type: string
               displayName:
                 description: |-
                   Display name for this template. Defaults to an empty string.
@@ -249,6 +246,10 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  dataplexTransferStatus:
+                    description: Optional. Transfer status of the TagTemplate
+                    type: string
                 type: object
             type: object
         required:

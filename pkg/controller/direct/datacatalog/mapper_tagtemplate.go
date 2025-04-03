@@ -46,7 +46,6 @@ func DataCatalogTagTemplateSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagT
 	for k, v := range in.GetFields() {
 		out.Fields[k] = *TagTemplateField_FromProto(mapCtx, v)
 	}
-	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
 	return out
 }
 func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateSpec) *pb.TagTemplate {
@@ -61,6 +60,22 @@ func DataCatalogTagTemplateSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 	for k, v := range in.Fields {
 		out.Fields[k] = TagTemplateField_ToProto(mapCtx, &v)
 	}
+	return out
+}
+
+func DataCatalogTagTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagTemplate) *krmv1alpha1.DataCatalogTagTemplateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataCatalogTagTemplateObservedState{}
+	out.DataplexTransferStatus = direct.Enum_FromProto(mapCtx, in.GetDataplexTransferStatus())
+	return out
+}
+func DataCatalogTagTemplateObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogTagTemplateObservedState) *pb.TagTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagTemplate{}
 	out.DataplexTransferStatus = direct.Enum_ToProto[pb.TagTemplate_DataplexTransferStatus](mapCtx, in.DataplexTransferStatus)
 	return out
 }

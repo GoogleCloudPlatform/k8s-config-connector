@@ -24,17 +24,19 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(dataCatalogTagTemplateFuzzer())
+	fuzztesting.RegisterKRMFuzzer(dataCatalogTagTemplateFuzzer())
 }
 
 func dataCatalogTagTemplateFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.TagTemplate{},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.TagTemplate{},
 		DataCatalogTagTemplateSpec_FromProto, DataCatalogTagTemplateSpec_ToProto,
+		DataCatalogTagTemplateObservedState_FromProto, DataCatalogTagTemplateObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".is_publicly_readable")
-	f.SpecFields.Insert(".dataplex_transfer_status")
+
+	f.StatusFields.Insert(".dataplex_transfer_status")
 
 	f.UnimplementedFields.Insert(".name")   // special field
 	f.UnimplementedFields.Insert(".fields") // .fields.type is a oneof + enum combination. fuzzer sets both enums

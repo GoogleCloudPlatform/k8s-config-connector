@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &TagTemplateRef{}
 // holds the GCP identifier for the KRM object.
 type TagTemplateRef struct {
 	// A reference to an externally managed DataCatalogTagTemplate resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tagtemplates/{{tagtemplateID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tagTemplates/{{tagTemplateID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataCatalogTagTemplate resource.

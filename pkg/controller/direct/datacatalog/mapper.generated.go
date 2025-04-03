@@ -407,7 +407,6 @@ func DataCatalogEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	out.TransferredToDataplex = direct.ValueOf(in.TransferredToDataplex)
 	return out
 }
-
 func DataSource_FromProto(mapCtx *direct.MapContext, in *pb.DataSource) *krmv1alpha1.DataSource {
 	if in == nil {
 		return nil
@@ -675,7 +674,6 @@ func FieldType_FromProto(mapCtx *direct.MapContext, in *pb.FieldType) *krmv1alph
 	out.EnumType = FieldType_EnumType_FromProto(mapCtx, in.GetEnumType())
 	return out
 }
-
 func FieldType_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.FieldType) *pb.FieldType {
 	if in == nil {
 		return nil

@@ -58,10 +58,6 @@ type DataCatalogTagTemplateSpec struct {
 	// Fields used to create a Tag
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.fields
 	Fields map[string]TagTemplateField `json:"fields,omitempty"`
-
-	// Optional. Transfer status of the TagTemplate
-	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
-	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 // DataCatalogTagTemplateStatus defines the config connector machine state of DataCatalogTagTemplate
@@ -81,6 +77,9 @@ type DataCatalogTagTemplateStatus struct {
 }
 
 type DataCatalogTagTemplateObservedState struct {
+	// Optional. Transfer status of the TagTemplate
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
+	DataplexTransferStatus *string `json:"dataplexTransferStatus,omitempty"`
 }
 
 // +genclient
