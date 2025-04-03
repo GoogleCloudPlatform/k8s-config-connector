@@ -38,6 +38,10 @@ func (i *EnvironmentIdentity) ID() string {
 	return i.id
 }
 
+func (i *EnvironmentIdentity) Parent() string {
+	return i.parent.String()
+}
+
 // New builds a EnvironmentIdentity from the Config Connector Environment object.
 func NewEnvironmentIdentity(ctx context.Context, reader client.Reader, obj *DataplexEnvironment) (*EnvironmentIdentity, error) {
 

@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import (
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -130,7 +129,7 @@ func (a *environmentAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	}
 
 	req := &pb.CreateEnvironmentRequest{
-		Parent:        a.id.Parent().String(),
+		Parent:        a.id.Parent(),
 		Environment:   environment,
 		EnvironmentId: a.id.ID(),
 	}
@@ -226,9 +225,7 @@ func (a *environmentAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Parent().Location
-	obj.Spec.LakeRef = &refs.DataplexLakeRef{External: a.id.Parent().String()}
+	obj.Spec.LakeRef = krm.LakeRef{External: a.id.Parent()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
