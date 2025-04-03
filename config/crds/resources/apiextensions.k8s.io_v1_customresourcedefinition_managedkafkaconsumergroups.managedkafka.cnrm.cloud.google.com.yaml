@@ -180,6 +180,30 @@ spec:
                 properties:
                   topics:
                     additionalProperties:
+                      properties:
+                        partitions:
+                          description: Optional. Metadata for this consumer group
+                            and topic for all partition indexes it has metadata for.
+                          items:
+                            properties:
+                              key:
+                                description: Optional. Key of the partition index
+                                  for topic metadata in this consumer group.
+                                format: int32
+                                type: integer
+                              metadata:
+                                description: Optional. The associated metadata for
+                                  this partition, or empty if it does not exist.
+                                type: string
+                              offset:
+                                description: Required. The current offset for this
+                                  partition, or 0 if no offset has been committed.
+                                format: int64
+                                type: integer
+                            required:
+                            - offset
+                            type: object
+                          type: array
                       type: object
                     description: 'Optional. Metadata for this consumer group for all
                       topics it has metadata for. The key of the map is a topic name,
