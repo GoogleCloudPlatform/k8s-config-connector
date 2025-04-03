@@ -244,10 +244,31 @@ spec:
 
                            This field is supported for Cloud Composer environments in versions
                            composer-3.*.*-airflow-*.*.* and newer.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
                             description: The value of an externally managed ComputeNetworkAttachment
                               resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".
+                            type: string
+                          name:
+                            description: The name of a ComputeNetworkAttachment resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ComputeNetworkAttachment
+                              resource.
                             type: string
                         type: object
                       diskSizeGB:
