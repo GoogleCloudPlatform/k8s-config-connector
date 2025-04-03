@@ -64,12 +64,14 @@ func (m *contentModel) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.LakeRef != nil {
-		if _, err := obj.Spec.LakeRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
+	//// normalize reference fields
+	//if obj.Spec.LakeRef != nil {
+	//	external, err := obj.Spec.LakeRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	//	if err != nil {
+	//		return nil, err
+	//	}
+	//	obj.Spec.LakeRef.External = external
+	//}
 
 	// Get GCP client
 	gcpClient, err := newGCPClient(ctx, m.config)
@@ -132,14 +134,10 @@ func (a *contentAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	parent, err := desired.Spec.LakeRef.NormalizedExternal(ctx, a.reader, desired.GetNamespace())
-	if err != nil {
-		return fmt.Errorf("cannot resolve lakeRef: %w", err)
-	}
+	resource.Name = a.id.String()
 
 	req := &pb.CreateContentRequest{
-		Parent:  parent,
+		Parent:  a.id.Parent(),
 		Content: resource,
 	}
 	created, err := a.gcpClient.CreateContent(ctx, req)

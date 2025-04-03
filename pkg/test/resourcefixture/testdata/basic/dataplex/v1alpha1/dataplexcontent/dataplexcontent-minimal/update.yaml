@@ -20,4 +20,8 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
+  path: "test-content"
+  dataText: ""
+  lakeRef:
+    name: dataplexlake-${uniqueId}
   description: "Updated description"

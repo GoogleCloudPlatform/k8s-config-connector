@@ -31,7 +31,7 @@ type ContentIdentity struct {
 }
 
 func (i *ContentIdentity) String() string {
-	return i.parent.String() + "/contents/" + i.id
+	return i.parent.String() + "/content/" + i.id
 }
 
 func (i *ContentIdentity) ID() string {
@@ -95,8 +95,8 @@ func NewContentIdentity(ctx context.Context, reader client.Reader, obj *Dataplex
 
 func ParseContentExternal(external string) (parent *LakeIdentity, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "lakes" || tokens[6] != "contents" {
-		return nil, "", fmt.Errorf("format of DataplexContent external=%q was not known (use projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/contents/{{contentID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "lakes" || tokens[6] != "content" {
+		return nil, "", fmt.Errorf("format of DataplexContent external=%q was not known (use projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/content/{{contentID}})", external)
 	}
 	parent = &LakeIdentity{
 		parent: &LakeParent{
