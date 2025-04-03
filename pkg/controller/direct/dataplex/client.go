@@ -22,15 +22,15 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/dataplex/apiv1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	kcc_config "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
-	config config.ControllerConfig
+	config kcc_config.ControllerConfig
 }
 
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
+func newGCPClient(ctx context.Context, config *kcc_config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}
@@ -38,6 +38,7 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) options() ([]option.ClientOption, error) {
+	// Dataplex uses gRPC, so get GRPC options
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
