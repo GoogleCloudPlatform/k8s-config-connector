@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &NetworkEdgeSecurityServiceRef{}
 // holds the GCP identifier for the KRM object.
 type NetworkEdgeSecurityServiceRef struct {
 	// A reference to an externally managed ComputeNetworkEdgeSecurityService resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkedgesecurityservices/{{networkedgesecurityserviceID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/networkEdgeSecurityServices/{{networkedgesecurityserviceID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeNetworkEdgeSecurityService resource.

@@ -106,7 +106,7 @@ func NewNetworkEdgeSecurityServiceIdentity(ctx context.Context, reader client.Re
 func ParseNetworkEdgeSecurityServiceExternal(external string) (parent *NetworkEdgeSecurityServiceParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "networkEdgeSecurityServices" {
-		return nil, "", fmt.Errorf("format of ComputeNetworkEdgeSecurityService external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkedgesecurityservices/{{networkedgesecurityserviceID}})", external)
+		return nil, "", fmt.Errorf("format of networkEdgeSecurityServices external=%q was not known (use projects/{{projectID}}/locations/{{location}}/networkedgesecurityservices/{{networkedgesecurityserviceID}})", external)
 	}
 	parent = &NetworkEdgeSecurityServiceParent{
 		ProjectID: tokens[1],
