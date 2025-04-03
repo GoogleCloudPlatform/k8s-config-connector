@@ -15,16 +15,32 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 )
 
 var DataCatalogTagGVK = GroupVersion.WithKind("DataCatalogTag")
 
+// Parent defines the parent resource for this DataCatalogTag
+type Parent struct {
+	// Required. Reference to the DataCatalogEntry that owns this Tag.
+	// The entry must be in the same project and location as the tag.
+	// +required
+	// +immutable
+	// +kubebuilder:validation:Required
+	EntryRef DataCatalogEntryRef `json:"entryRef"`
+}
+
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
+	// Specifies the parent resource where this DataCatalogTag resides.
+	// +required
+	Parent `json:",inline"`
+
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Identifier. The resource name of the tag in URL format where tag ID is a
@@ -33,6 +49,7 @@ type DataCatalogTagSpec struct {
 	//  Note: The tag itself might not be stored in the location specified in its
 	//  name.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.name
+	// +optional
 	Name *string `json:"name,omitempty"`
 
 	// Required. The resource name of the tag template this tag uses. Example:
@@ -41,7 +58,10 @@ type DataCatalogTagSpec struct {
 	//
 	//  This field cannot be modified after creation.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
-	Template *string `json:"template,omitempty"`
+	// +required
+	// +immutable
+	// +kubebuilder:validation:Required
+	Template string `json:"template"`
 
 	// Resources like entry can have schemas associated with them. This scope
 	//  allows you to attach tags to an individual column based on that schema.
@@ -49,6 +69,8 @@ type DataCatalogTagSpec struct {
 	//  To attach a tag to a nested column, separate column names with a dot
 	//  (`.`). Example: `column.nested_column`.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.column
+	// +optional
+	// +immutable
 	Column *string `json:"column,omitempty"`
 }
 
