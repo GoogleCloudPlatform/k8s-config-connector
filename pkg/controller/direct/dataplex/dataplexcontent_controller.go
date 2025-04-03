@@ -28,7 +28,6 @@ import (
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -173,7 +172,7 @@ func (a *contentAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	resource.Name = a.id.String()
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if desired.Spec.DataText != nil && !reflect.DeepEqual(resource.DataText, a.actual.DataText) {
+	if desired.Spec.DataText != nil && !reflect.DeepEqual(resource.GetDataText(), a.actual.GetDataText()) {
 		updateMask.Paths = append(updateMask.Paths, "data_text")
 	}
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
@@ -185,7 +184,7 @@ func (a *contentAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if desired.Spec.Path != nil && !reflect.DeepEqual(resource.Path, a.actual.Path) {
 		updateMask.Paths = append(updateMask.Paths, "path")
 	}
-	if desired.Spec.SqlScript != nil && !reflect.DeepEqual(resource.GetSqlScript(), a.actual.GetSqlScript()) {
+	if desired.Spec.SQLScript != nil && !reflect.DeepEqual(resource.GetSqlScript(), a.actual.GetSqlScript()) {
 		updateMask.Paths = append(updateMask.Paths, "sql_script")
 	}
 	if desired.Spec.Notebook != nil && !reflect.DeepEqual(resource.GetNotebook(), a.actual.GetNotebook()) {
@@ -231,9 +230,7 @@ func (a *contentAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
-	obj.Spec.LakeRef = &refs.DataplexLakeRef{External: a.id.Lake}
+	obj.Spec.LakeRef = &krm.LakeRef{External: a.id.Parent()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

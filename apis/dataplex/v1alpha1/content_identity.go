@@ -38,6 +38,10 @@ func (i *ContentIdentity) ID() string {
 	return i.id
 }
 
+func (i *ContentIdentity) Parent() string {
+	return i.parent.String()
+}
+
 // New builds a ContentIdentity from the Config Connector Content object.
 func NewContentIdentity(ctx context.Context, reader client.Reader, obj *DataplexContent) (*ContentIdentity, error) {
 

@@ -20,11 +20,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
+func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Content{}
+	out := &krm.DataplexContentSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	out.Path = direct.LazyPtr(in.GetPath())
@@ -37,7 +37,7 @@ func DataplexContentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Content) *k
 	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
-func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb.Content {
+func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentSpec) *pb.Content {
 	if in == nil {
 		return nil
 	}
@@ -60,12 +60,11 @@ func DataplexContentSpec_ToProto(mapCtx *direct.MapContext, in *krm.Content) *pb
 	}
 	return out
 }
-func DataplexContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.ContentObservedState {
+func DataplexContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.DataplexContentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ContentObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DataplexContentObservedState{}
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: Path
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -77,12 +76,11 @@ func DataplexContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Co
 	// MISSING: Notebook
 	return out
 }
-func DataplexContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentObservedState) *pb.Content {
+func DataplexContentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexContentObservedState) *pb.Content {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Content{}
-	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
 	// MISSING: Path
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
