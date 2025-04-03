@@ -2,6 +2,7 @@
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.ingressPolicies[].ingressTo.resources[]" should be a reference
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.egressPolicies[].egressTo.resources[]" should be a reference
 [refs] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.ingressPolicies[].ingressTo.resources[]" should be a reference
+[refs] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.versionAliases" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyName" should be a reference
 [refs] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.backendConfig.googleServiceAccount" should be a reference

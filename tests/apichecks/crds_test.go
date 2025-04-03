@@ -377,7 +377,8 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 			}
 		}
 
-	case "string", "boolean", "integer", "number":
+	// Add handling for google.protobuf.Value
+	case "string", "boolean", "integer", "number", "":
 		// No child properties
 	default:
 		// if preserveUnknownFields is true, we don't want to check the type
