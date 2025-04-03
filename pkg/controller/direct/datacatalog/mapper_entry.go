@@ -21,15 +21,15 @@ package datacatalog
 
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataCatalogEntryObservedState {
+func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krmv1alpha1.DataCatalogEntryObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogEntryObservedState{}
+	out := &krmv1alpha1.DataCatalogEntryObservedState{}
 	// MISSING: Name
 	out.IntegratedSystem = direct.Enum_FromProto(mapCtx, in.GetIntegratedSystem())
 	out.GCSFilesetSpec = GCSFilesetSpecObservedState_FromProto(mapCtx, in.GetGcsFilesetSpec())
@@ -42,7 +42,7 @@ func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.PersonalDetails = PersonalDetails_FromProto(mapCtx, in.GetPersonalDetails())
 	return out
 }
-func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogEntryObservedState) *pb.Entry {
+func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogEntryObservedState) *pb.Entry {
 	if in == nil {
 		return nil
 	}
@@ -71,11 +71,11 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Da
 	out.PersonalDetails = PersonalDetails_ToProto(mapCtx, in.PersonalDetails)
 	return out
 }
-func DataCatalogEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krm.DataCatalogEntrySpec {
+func DataCatalogEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *krmv1alpha1.DataCatalogEntrySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogEntrySpec{}
+	out := &krmv1alpha1.DataCatalogEntrySpec{}
 	// MISSING: FullyQualifiedName - removed on purpose
 	out.LinkedResource = direct.LazyPtr(in.GetLinkedResource())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
@@ -102,7 +102,7 @@ func DataCatalogEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *kr
 	out.Labels = in.Labels
 	return out
 }
-func DataCatalogEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogEntrySpec) *pb.Entry {
+func DataCatalogEntrySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataCatalogEntrySpec) *pb.Entry {
 	if in == nil {
 		return nil
 	}
@@ -161,5 +161,29 @@ func DataCatalogEntrySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalog
 	out.SourceSystemTimestamps = SystemTimestamps_ToProto(mapCtx, in.SourceSystemTimestamps)
 	out.UsageSignal = UsageSignal_ToProto(mapCtx, in.UsageSignal)
 	out.Labels = in.Labels
+	return out
+}
+
+func DatabaseTableSpec_DatabaseViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DatabaseTableSpec_DatabaseViewSpec) *pb.DatabaseTableSpec_DatabaseViewSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DatabaseTableSpec_DatabaseViewSpec{}
+	out.ViewType = direct.Enum_ToProto[pb.DatabaseTableSpec_DatabaseViewSpec_ViewType](mapCtx, in.ViewType)
+	if val := direct.ValueOf(in.BaseTable); val != "" {
+		out.SourceDefinition = &pb.DatabaseTableSpec_DatabaseViewSpec_BaseTable{BaseTable: val}
+	}
+	if val := direct.ValueOf(in.SQLQuery); val != "" {
+		out.SourceDefinition = &pb.DatabaseTableSpec_DatabaseViewSpec_SqlQuery{SqlQuery: val}
+	}
+	return out
+}
+func GCSFilesetSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GcsFilesetSpec) *krmv1alpha1.GCSFilesetSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.GCSFilesetSpecObservedState{}
+	// MISSING: FilePatterns
+	out.SampleGCSFileSpecs = direct.Slice_FromProto(mapCtx, in.SampleGcsFileSpecs, GCSFileSpec_FromProto)
 	return out
 }

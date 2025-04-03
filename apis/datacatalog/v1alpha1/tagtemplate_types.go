@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -26,7 +27,7 @@ type Parent struct {
 	// +required
 	Location string `json:"location"`
 	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
 }
 
 // DataCatalogTagTemplateSpec defines the desired state of DataCatalogTagTemplate
@@ -54,7 +55,9 @@ type DataCatalogTagTemplateSpec struct {
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable
 	IsPubliclyReadable *bool `json:"isPubliclyReadable,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// Fields used to create a Tag
+	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.fields
+	Fields map[string]TagTemplateField `json:"fields,omitempty"`
 
 	// Optional. Transfer status of the TagTemplate
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
@@ -75,6 +78,9 @@ type DataCatalogTagTemplateStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *DataCatalogTagTemplateObservedState `json:"observedState,omitempty"`
+}
+
+type DataCatalogTagTemplateObservedState struct {
 }
 
 // +genclient

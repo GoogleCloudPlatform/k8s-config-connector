@@ -43,7 +43,6 @@ type FieldType_EnumType struct {
 // +kcc:proto=google.cloud.datacatalog.v1.FieldType.EnumType.EnumValue
 type FieldType_EnumType_EnumValue struct {
 	// Required. The display name of the enum value. Must not be an empty
-	// Required. The display name of the enum value. Must not be an empty
 	//  string.
 	//
 	//  The name must contain only Unicode letters, numbers (0-9), underscores
@@ -57,9 +56,6 @@ type FieldType_EnumType_EnumValue struct {
 // +kcc:proto=google.cloud.datacatalog.v1.TagTemplateField
 type TagTemplateField struct {
 	// Identifier. The resource name of the tag template field in URL format.
-	//  Example:
-	//
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
 	//
 	//  Note: The tag template field itself might not be stored in the location
 	//  specified in its name.
