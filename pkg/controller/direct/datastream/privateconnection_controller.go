@@ -65,13 +65,6 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, reader cl
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.VPCPeeringConfig != nil && obj.Spec.VPCPeeringConfig.NetworkRef != nil {
-		if err := obj.Spec.VPCPeeringConfig.NetworkRef.Normalize(ctx, reader, obj); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get datastream GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -129,8 +122,12 @@ func (a *PrivateConnectionAdapter) Find(ctx context.Context) (bool, error) {
 func (a *PrivateConnectionAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating PrivateConnection", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -165,8 +162,12 @@ func (a *PrivateConnectionAdapter) Create(ctx context.Context, createOp *directb
 func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating PrivateConnection", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -247,4 +248,16 @@ func (a *PrivateConnectionAdapter) Delete(ctx context.Context, deleteOp *directb
 		return false, fmt.Errorf("waiting delete PrivateConnection %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *PrivateConnectionAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	if obj.Spec.VPCPeeringConfig != nil && obj.Spec.VPCPeeringConfig.NetworkRef != nil {
+		if err := obj.Spec.VPCPeeringConfig.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
