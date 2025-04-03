@@ -20,7 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	// refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1" // No longer needed directly
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -31,87 +31,125 @@ type TagIdentity struct {
 	id     string
 }
 
+// String returns the full GCP resource name for the Tag.
 func (i *TagIdentity) String() string {
+	// Format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tagID}
 	return i.parent.String() + "/tags/" + i.id
 }
 
+// ID returns the Tag ID (the last segment of the resource name).
 func (i *TagIdentity) ID() string {
 	return i.id
 }
 
+// Parent returns the TagParent struct containing the parent hierarchy information.
 func (i *TagIdentity) Parent() *TagParent {
 	return i.parent
 }
 
+// TagParent represents the parent of a DataCatalogTag, which is a DataCatalogEntry.
+// It holds the components of the DataCatalogEntry's resource name.
 type TagParent struct {
-	ProjectID string
-	Location  string
+	ProjectID    string
+	LocationID   string
+	EntryGroupID string
+	EntryID      string
 }
 
+// String returns the GCP resource name for the parent DataCatalogEntry.
 func (p *TagParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	// Format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+	return fmt.Sprintf("projects/%s/locations/%s/entryGroups/%s/entries/%s",
+		p.ProjectID, p.LocationID, p.EntryGroupID, p.EntryID)
 }
 
-// New builds a TagIdentity from the Config Connector Tag object.
+// NewTagIdentity builds a TagIdentity from the Config Connector Tag object.
 func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogTag) (*TagIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	// Parse EntryRef to get parent components
+	entryRefExternal := obj.Spec.EntryRef.External
+	entryTokens := strings.Split(entryRefExternal, "/")
+	// Expected format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}
+	// indices:         0        1        2          3          4            5            6       7
+	if len(entryTokens) != 8 || entryTokens[0] != "projects" || entryTokens[2] != "locations" || entryTokens[4] != "entryGroups" || entryTokens[6] != "entries" {
+		return nil, fmt.Errorf("invalid format for spec.entryRef.external: %q, expected format projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}", entryRefExternal)
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
+	projectID := entryTokens[1]
+	locationID := entryTokens[3]
+	entryGroupID := entryTokens[5]
+	entryID := entryTokens[7]
 
-	// Get desired ID
+	// Get desired Tag ID
+	// If spec.resourceID is provided, it's used as the tag ID.
+	// Otherwise, metadata.name is used.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		// This case should ideally not happen if metadata.name is always populated.
+		return nil, fmt.Errorf("cannot determine tag ID from spec.resourceID or metadata.name")
 	}
 
-	// Use approved External
+	parent := &TagParent{
+		ProjectID:    projectID,
+		LocationID:   locationID,
+		EntryGroupID: entryGroupID,
+		EntryID:      entryID,
+	}
+
+	// Use approved External (status.externalRef) for validation if available
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
+		// Validate desired parent and resourceID with actual values derived from status.externalRef
 		actualParent, actualResourceID, err := ParseTagExternal(externalRef)
 		if err != nil {
-			return nil, err
+			// If parsing fails, the externalRef might be malformed or represent an unexpected state.
+			// Proceeding might lead to incorrect state assumptions. It's safer to error out.
+			return nil, fmt.Errorf("failed to parse existing status.externalRef %q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+
+		// Check if the parent components derived from spec match the parent components from status
+		if actualParent.ProjectID != parent.ProjectID ||
+			actualParent.LocationID != parent.LocationID ||
+			actualParent.EntryGroupID != parent.EntryGroupID ||
+			actualParent.EntryID != parent.EntryID {
+			// This indicates an attempt to reparent the tag, which is likely unsupported or unintended.
+			return nil, fmt.Errorf("parent derived from spec.entryRef (%s) conflicts with parent from status.externalRef (%s)", parent.String(), actualParent.String())
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
+
+		// Check if the resourceID derived from spec/metadata matches the resourceID from status
 		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+			// This indicates an attempt to change the tag's ID after it has been established in GCP.
+			// The `spec.resourceID` or `metadata.name` determines the *desired* ID.
+			// The `status.externalRef` reflects the *actual* ID in GCP. Changing this is not allowed.
+			return nil, fmt.Errorf("cannot change tag ID from %q (derived from status.externalRef) to %q (derived from spec.resourceID/metadata.name)",
+				actualResourceID, resourceID)
 		}
 	}
+
+	// If validation passes or status.externalRef is empty, return the identity based on spec.
 	return &TagIdentity{
-		parent: &TagParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
+		parent: parent,
+		id:     resourceID,
 	}, nil
 }
 
+// ParseTagExternal parses the full GCP resource name string for a DataCatalogTag
+// into its parent components and the tag ID.
 func ParseTagExternal(external string) (parent *TagParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "tags" {
-		return nil, "", fmt.Errorf("format of DataCatalogTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/tags/{{tagID}})", external)
+	// Expected format: projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tagID}
+	// indices:         0        1        2          3          4            5            6       7      8     9
+	if len(tokens) != 10 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" || tokens[6] != "entries" || tokens[8] != "tags" {
+		// Provide a more specific error message including the expected format.
+		return nil, "", fmt.Errorf("format of DataCatalogTag externalRef %q is invalid, expected format: projects/{projectID}/locations/{locationID}/entryGroups/{entryGroupID}/entries/{entryID}/tags/{tagID}", external)
 	}
 	parent = &TagParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID:    tokens[1],
+		LocationID:   tokens[3], // Use LocationID consistently
+		EntryGroupID: tokens[5],
+		EntryID:      tokens[7],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[9]
 	return parent, resourceID, nil
 }
