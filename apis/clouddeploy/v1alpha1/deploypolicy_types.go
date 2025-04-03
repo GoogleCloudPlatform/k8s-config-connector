@@ -20,7 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var DeployDeployPolicyGVK = GroupVersion.WithKind("CloudDeployDeployPolicy")
+var CloudDeployDeployPolicyGVK = GroupVersion.WithKind("CloudDeployDeployPolicy")
 
 type Parent struct {
 	// +required
