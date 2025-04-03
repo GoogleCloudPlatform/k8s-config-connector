@@ -407,10 +407,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
+X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -428,11 +428,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+        "message": "job \"projects/${projectId}/regions/us-central1/jobs/\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
+    "message": "job \"projects/${projectId}/regions/us-central1/jobs/\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -475,8 +475,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "driverControlFilesUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//",
-  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs//driveroutput",
+  "driverControlFilesUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/",
+  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
   "hiveJob": {
     "continueOnFailure": true,
     "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
@@ -488,6 +488,7 @@ X-Xss-Protection: 0
     "clusterName": "dataproccluster-${uniqueId}"
   },
   "reference": {
+    "jobId": "dataprocjob-minimal-${uniqueId}",
     "projectId": "${projectId}"
   },
   "status": {
@@ -513,12 +514,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
+X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -529,28 +530,51 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
+  "driverControlFilesUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/",
+  "driverOutputResourceUri": "gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput",
+  "hiveJob": {
+    "continueOnFailure": true,
+    "queryFileUri": "gs://config-connector-sample/hivejob_sample.sql"
+  },
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "placement": {
+    "clusterName": "dataproccluster-${uniqueId}"
+  },
+  "reference": {
+    "jobId": "dataprocjob-minimal-${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "status": {
+    "state": 5,
+    "stateStartTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "statusHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "state": 8,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "details": "Agent reported job success",
+      "state": 2,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
 }
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/jobs/?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=dataprocjob-minimal-${uniqueId}
+X-Goog-Request-Params: project_id=${projectId}&region=us-central1&job_id=
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -560,20 +584,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "job \"projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
-}
+{}
 
 ---
 

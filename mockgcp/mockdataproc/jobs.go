@@ -71,9 +71,13 @@ func (s *jobControllerServer) SubmitJob(ctx context.Context, req *pb.SubmitJobRe
 	now := time.Now()
 
 	obj := proto.Clone(req.GetJob()).(*pb.Job)
-	obj.Reference = &pb.JobReference{
-		JobId:     name.JobID,
-		ProjectId: name.Project.ID,
+	if obj.Reference != nil {
+		obj.Reference.ProjectId = name.Project.ID
+	} else {
+		obj.Reference = &pb.JobReference{
+			JobId:     name.JobID,
+			ProjectId: name.Project.ID,
+		}
 	}
 	obj.Status = &pb.JobStatus{
 		State:          pb.JobStatus_PENDING,
@@ -132,8 +136,8 @@ func (s *jobControllerServer) populateDefaultsForJob(obj *pb.Job, name *jobName)
 	}
 
 	// Output only fields, set by service
-	obj.DriverOutputResourceUri = fmt.Sprintf("gs://dataproc-staging-%s-%d-abcdef/google-cloud-dataproc-metainfo/%s/jobs/%s/driveroutput", name.Region, name.Project.Number, obj.Placement.ClusterName, name.JobID)
-	obj.DriverControlFilesUri = fmt.Sprintf("gs://dataproc-staging-%s-%d-abcdef/google-cloud-dataproc-metainfo/%s/jobs/%s/", name.Region, name.Project.Number, obj.Placement.ClusterName, name.JobID)
+	obj.DriverOutputResourceUri = fmt.Sprintf("gs://dataproc-staging-%s-%d-abcdef/google-cloud-dataproc-metainfo/%s/jobs/%s/driveroutput", name.Region, name.Project.Number, obj.Placement.ClusterName, obj.Reference.JobId)
+	obj.DriverControlFilesUri = fmt.Sprintf("gs://dataproc-staging-%s-%d-abcdef/google-cloud-dataproc-metainfo/%s/jobs/%s/", name.Region, name.Project.Number, obj.Placement.ClusterName, obj.Reference.JobId)
 
 }
 
