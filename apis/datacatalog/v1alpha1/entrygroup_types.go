@@ -24,7 +24,7 @@ var DataCatalogEntryGroupGVK = GroupVersion.WithKind("DataCatalogEntryGroup")
 
 // DataCatalogEntryGroupSpec defines the desired state of DataCatalogEntryGroup
 
-type Parent struct {
+type DataCatalogEntryGroupParent struct {
 	// +required
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
 	// +required
@@ -34,7 +34,7 @@ type Parent struct {
 // +kcc:alias=datacatalog-entrygroup
 // +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupSpec struct {
-	Parent `json:",inline"`
+	DataCatalogEntryGroupParent `json:",inline"`
 	// The DataCatalogEntryGroup name. If not given, the metadata.name will be used.
 	//+required
 	ResourceID *string `json:"resourceID,omitempty"`
