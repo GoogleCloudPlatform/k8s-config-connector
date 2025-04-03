@@ -139,14 +139,46 @@ spec:
               fleet:
                 description: Required. Fleet configuration.
                 properties:
-                  project:
+                  projectRef:
                     description: |-
                       Required. The name of the Fleet host project where this cluster will be
                        registered.
 
                        Project names are formatted as
                        `projects/<project-number>`.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                 type: object
               location:
                 description: Required.
@@ -185,16 +217,6 @@ spec:
                         type: boolean
                     type: object
                 type: object
-              name:
-                description: |-
-                  The name of this resource.
-
-                   Cluster names are formatted as
-                   `projects/<project-number>/locations/<region>/attachedClusters/<cluster-id>`.
-
-                   See [Resource Names](https://cloud.google.com/apis/design/resource_names)
-                   for more details on Google Cloud Platform resource names.
-                type: string
               oidcConfig:
                 description: Required. OpenID Connect (OIDC) configuration for the
                   cluster.
@@ -258,18 +280,36 @@ spec:
               proxyConfig:
                 description: Optional. Proxy configuration for outbound HTTP(S) traffic.
                 properties:
-                  kubernetesSecret:
+                  kubernetesSecretRef:
                     description: The Kubernetes Secret resource that contains the
                       HTTP(S) proxy configuration. The secret must be a JSON encoded
                       proxy configuration as described in https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/eks/how-to/use-a-proxy#configure-proxy-support
                       for EKS clusters and https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/aks/how-to/use-a-proxy#configure-proxy-support
                       for AKS clusters.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
                     properties:
+                      external:
+                        description: ' If provided must be in the format `projects/*/secrets/*`.'
+                        type: string
                       name:
-                        description: Name of the kubernetes secret.
+                        description: The `name` field of a `SecretManagerSecret` resource.
                         type: string
                       namespace:
-                        description: Namespace in which the kubernetes secret is stored.
+                        description: The `metadata.namespace` field of a `SecretManagerSecret`
+                          resource.
                         type: string
                     type: object
                 type: object

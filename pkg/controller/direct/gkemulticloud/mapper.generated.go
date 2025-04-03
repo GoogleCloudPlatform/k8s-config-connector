@@ -17,15 +17,15 @@ package gkemulticloud
 import (
 	pb "cloud.google.com/go/gkemulticloud/apiv1/gkemulticloudpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkemulticloud/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func GkeMultiCloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.AttachedCluster {
+func GkeMultiCloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.GkeMultiCloudAttachedClusterSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttachedCluster{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.GkeMultiCloudAttachedClusterSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.OIDCConfig = AttachedOIDCConfig_FromProto(mapCtx, in.GetOidcConfig())
 	out.PlatformVersion = direct.LazyPtr(in.GetPlatformVersion())
@@ -42,12 +42,11 @@ func GkeMultiCloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out.Tags = in.Tags
 	return out
 }
-func GkeMultiCloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.AttachedCluster) *pb.AttachedCluster {
+func GkeMultiCloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.GkeMultiCloudAttachedClusterSpec) *pb.AttachedCluster {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AttachedCluster{}
-	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
 	out.OidcConfig = AttachedOIDCConfig_ToProto(mapCtx, in.OIDCConfig)
 	out.PlatformVersion = direct.ValueOf(in.PlatformVersion)
@@ -188,7 +187,9 @@ func AttachedProxyConfig_FromProto(mapCtx *direct.MapContext, in *pb.AttachedPro
 		return nil
 	}
 	out := &krm.AttachedProxyConfig{}
-	out.KubernetesSecret = KubernetesSecret_FromProto(mapCtx, in.GetKubernetesSecret())
+	out.KubernetesSecretRef = &v1beta1.SecretManagerSecretRef{
+		External: in.GetKubernetesSecret().String(),
+	}
 	return out
 }
 func AttachedProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedProxyConfig) *pb.AttachedProxyConfig {
@@ -196,7 +197,12 @@ func AttachedProxyConfig_ToProto(mapCtx *direct.MapContext, in *krm.AttachedProx
 		return nil
 	}
 	out := &pb.AttachedProxyConfig{}
-	out.KubernetesSecret = KubernetesSecret_ToProto(mapCtx, in.KubernetesSecret)
+	if in.KubernetesSecretRef != nil {
+		out.KubernetesSecret = &pb.KubernetesSecret{
+			Name:      in.KubernetesSecretRef.External,
+			Namespace: in.KubernetesSecretRef.Namespace,
+		}
+	}
 	return out
 }
 func BinaryAuthorization_FromProto(mapCtx *direct.MapContext, in *pb.BinaryAuthorization) *krm.BinaryAuthorization {
@@ -236,7 +242,9 @@ func Fleet_FromProto(mapCtx *direct.MapContext, in *pb.Fleet) *krm.Fleet {
 		return nil
 	}
 	out := &krm.Fleet{}
-	out.Project = direct.LazyPtr(in.GetProject())
+	out.ProjectRef = &v1beta1.ProjectRef{
+		External: in.GetProject(),
+	}
 	// MISSING: Membership
 	return out
 }
@@ -245,7 +253,9 @@ func Fleet_ToProto(mapCtx *direct.MapContext, in *krm.Fleet) *pb.Fleet {
 		return nil
 	}
 	out := &pb.Fleet{}
-	out.Project = direct.ValueOf(in.Project)
+	if in.ProjectRef != nil {
+		out.Project = in.ProjectRef.External
+	}
 	// MISSING: Membership
 	return out
 }
@@ -265,24 +275,6 @@ func FleetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.FleetObserved
 	out := &pb.Fleet{}
 	// MISSING: Project
 	out.Membership = direct.ValueOf(in.Membership)
-	return out
-}
-func KubernetesSecret_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecret {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KubernetesSecret{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Namespace = direct.LazyPtr(in.GetNamespace())
-	return out
-}
-func KubernetesSecret_ToProto(mapCtx *direct.MapContext, in *krm.KubernetesSecret) *pb.KubernetesSecret {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KubernetesSecret{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Namespace = direct.ValueOf(in.Namespace)
 	return out
 }
 func LoggingComponentConfig_FromProto(mapCtx *direct.MapContext, in *pb.LoggingComponentConfig) *krm.LoggingComponentConfig {

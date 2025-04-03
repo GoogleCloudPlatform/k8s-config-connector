@@ -30,16 +30,6 @@ type GkeMultiCloudAttachedClusterSpec struct {
 	// The GkeMultiCloudAttachedCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// The name of this resource.
-	//
-	//  Cluster names are formatted as
-	//  `projects/<project-number>/locations/<region>/attachedClusters/<cluster-id>`.
-	//
-	//  See [Resource Names](https://cloud.google.com/apis/design/resource_names)
-	//  for more details on Google Cloud Platform resource names.
-	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.name
-	Name *string `json:"name,omitempty"`
-
 	// Optional. A human readable description of this cluster.
 	//  Cannot be longer than 255 UTF-8 encoded bytes.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.description
@@ -134,6 +124,46 @@ type Parent struct {
 
 	// Required.
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkemulticloud.v1.Fleet
+type Fleet struct {
+	// Required. The name of the Fleet host project where this cluster will be
+	//  registered.
+	//
+	//  Project names are formatted as
+	//  `projects/<project-number>`.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Fleet.project
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkemulticloud.v1.AttachedProxyConfig
+type AttachedProxyConfig struct {
+	// The Kubernetes Secret resource that contains the HTTP(S) proxy
+	//  configuration. The secret must be a JSON encoded proxy configuration
+	//  as described in
+	//  https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/eks/how-to/use-a-proxy#configure-proxy-support
+	//  for EKS clusters and
+	//  https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/aks/how-to/use-a-proxy#configure-proxy-support
+	//  for AKS clusters.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedProxyConfig.kubernetes_secret
+	KubernetesSecretRef *v1beta1.SecretManagerSecretRef `json:"kubernetesSecretRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
+type WorkloadIdentityConfig struct {
+	// The OIDC issuer URL for this cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.issuer_uri
+	IssuerURI *string `json:"issuerURI,omitempty"`
+
+	// The Workload Identity Pool associated to the cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.workload_pool
+	WorkloadPool *string `json:"workloadPool,omitempty"`
+
+	// The ID of the OIDC Identity Provider (IdP) associated to the Workload
+	//  Identity Pool.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig.identity_provider
+	IdentityProvider *string `json:"identityProvider,omitempty"`
 }
 
 // GkeMultiCloudAttachedClusterStatus defines the config connector machine state of GkeMultiCloudAttachedCluster
