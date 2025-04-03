@@ -261,7 +261,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	// MISSING: Name
 	// MISSING: Etag
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.MultiClusterRoutingUseAny = bool_FromProto(mapCtx, in.GetMultiClusterRoutingUseAny())
+	out.MultiClusterRoutingUseAny = in.GetMultiClusterRoutingUseAny()
 	out.SingleClusterRouting = AppProfile_SingleClusterRoutingClusterId_FromProto(mapCtx, in.GetSingleClusterRouting())
 	// MISSING: Priority
 	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
@@ -276,7 +276,7 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	// MISSING: Name
 	// MISSING: Etag
 	out.Description = direct.ValueOf(in.Description)
-	if oneof := bool_ToProto(mapCtx, in.MultiClusterRoutingUseAny); oneof != nil {
+	if oneof := in.MultiClusterRoutingUseAny; oneof != nil {
 		out.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{MultiClusterRoutingUseAny: oneof}
 	}
 	if oneof := AppProfile_SingleClusterRoutingClusterId_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
