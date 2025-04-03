@@ -320,18 +320,17 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 				"Function signature:\n"+
 				"func <resourceName>Fuzzer() fuzztesting.KRMFuzzer\n\n"+
 				"The function should:\n"+
-				"1. Create a new fuzzer using:\n"+
+				"1. Create a new fuzzer with fuzztesting.NewKRMTypedFuzzer() using:\n"+
 				"   - Proto message type (&pb.YourType{})\n"+
 				"   - Top-level mapping functions (Spec_FromProto, Spec_ToProto, and if exists: ObservedState_FromProto, ObservedState_ToProto, or Status_FromProto, Status_ToProto)\n\n"+
 				"2. Configure field sets:\n"+
-				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, or a field conversion that is missing in the mapping function of its parent message)\n"+
+				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, a field that is not included in the mapping function of its parent message)\n"+
 				"   - SpecFields: fields in the resource spec\n"+
 				"   - StatusFields: fields in the resource status\n\n"+
 				"Context:\n"+
 				"- All mapper functions for the resource are provided for reference\n"+
 				"- Nested mapper functions can help identify which fields should be marked as unimplemented\n"+
-				"- Only top-level mapper functions are needed in the fuzzer initialization\n"+
-				"- Use the same protobuf import alias ('pb') as used in the mapper functions\n\n"+
+				"- Only top-level mapper functions are needed in the fuzzer initialization\n\n"+
 				"Examples:\n")
 	}
 
@@ -373,19 +372,14 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 
 	lines := strings.Split(strings.TrimSpace(text), "\n")
 
-	// First remove trailing empty lines
-	for len(lines) > 0 && strings.TrimSpace(lines[len(lines)-1]) == "" {
-		lines = lines[:len(lines)-1]
-	}
-
-	// Then remove decorative elements
+	// Remove some of the decoration
 	for len(lines) > 1 {
 		if lines[0] == "```go" {
 			lines = lines[1:]
 			continue
 		}
 
-		if lines[len(lines)-1] == "```" || lines[len(lines)-1] == "``" {
+		if lines[len(lines)-1] == "```" {
 			lines = lines[:len(lines)-1]
 			continue
 		}
