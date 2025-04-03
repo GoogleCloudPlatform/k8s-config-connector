@@ -35,14 +35,14 @@ func dataCatalogTagFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".template")
 	f.SpecFields.Insert(".column")
-	f.SpecFields.Insert(".fields")
 
 	f.StatusFields.Insert(".template_display_name")
 	f.StatusFields.Insert(".dataplex_transfer_status")
 
 	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".fields.display_name")
-	f.UnimplementedFields.Insert(".fields.order")
+	// has oneof of multiple fields (double, string, bool, timestamp, enum, richtext)
+	// fuzzer sets multiple fields but we only round trip by definition
+	f.UnimplementedFields.Insert(".fields")
 
 	return f
 }
