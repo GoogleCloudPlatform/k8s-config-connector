@@ -177,7 +177,7 @@ func (a *environmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(environment.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if desired.Spec.InfrastructureSpec != nil && !reflect.DeepEqual(environment.InfrastructureSpec, a.actual.InfrastructureSpec) {
+	if desired.Spec.InfrastructureSpec != nil && !reflect.DeepEqual(environment.InfrastructureSpec.GetOsImage(), a.actual.InfrastructureSpec.GetOsImage()) {
 		updateMask.Paths = append(updateMask.Paths, "infrastructure_spec")
 	}
 	if desired.Spec.SessionSpec != nil && !reflect.DeepEqual(environment.SessionSpec, a.actual.SessionSpec) {

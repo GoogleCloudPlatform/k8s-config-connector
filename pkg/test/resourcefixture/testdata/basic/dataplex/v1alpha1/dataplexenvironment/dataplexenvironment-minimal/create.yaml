@@ -21,6 +21,6 @@ spec:
     name: dataplexlake-${uniqueId}
   description: "Initial description"
   infrastructureSpec:
-    oSImage:
-      imageVersion: 1.0
+    osImage:
+      imageVersion: "1.0"
 

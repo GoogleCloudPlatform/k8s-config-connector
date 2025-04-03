@@ -27,15 +27,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
 func (s *DataplexV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
@@ -74,20 +73,19 @@ func (s *DataplexV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.State_ACTIVE
-	s.populateEnvironmentDefaults(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
 		ApiVersion: "v1",
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	// todo: verify prefix
+	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
@@ -136,14 +134,14 @@ func (s *DataplexV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "update",
 		ApiVersion: "v1",
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	// todo: verify prefix
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
@@ -162,7 +160,6 @@ func (s *DataplexV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnviro
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	now := time.Now()
 	metadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
@@ -170,78 +167,20 @@ func (s *DataplexV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnviro
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	// todo: verify prefix
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(now)
 		return &emptypb.Empty{}, nil
 	})
 }
 
-func (s *DataplexV1) ListEnvironments(ctx context.Context, req *pb.ListEnvironmentsRequest) (*pb.ListEnvironmentsResponse, error) {
-	parent, err := s.parseLakeName(req.Parent)
-	if err != nil {
-		return nil, err
-	}
-
-	response := &pb.ListEnvironmentsResponse{}
-
-	environmentKind := (&pb.Environment{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, environmentKind, storage.ListOptions{}, func(obj proto.Message) error {
-		env := obj.(*pb.Environment)
-		if strings.HasPrefix(env.GetName(), parent.String()+"/environments/") {
-			response.Environments = append(response.Environments, env)
-		}
-		return nil
-	}); err != nil {
-		return nil, err
-	}
-
-	return response, nil
-}
-
-func (s *DataplexV1) populateEnvironmentDefaults(obj *pb.Environment) {
-	if obj.SessionSpec == nil {
-		obj.SessionSpec = &pb.Environment_SessionSpec{}
-	}
-	if obj.SessionSpec.MaxIdleDuration == nil {
-		obj.SessionSpec.MaxIdleDuration = durationpb.New(3 * time.Hour) // 10800s
-	}
-	if obj.SessionStatus == nil {
-		obj.SessionStatus = &pb.Environment_SessionStatus{Active: true}
-	}
-	if obj.InfrastructureSpec == nil {
-		obj.InfrastructureSpec = &pb.Environment_InfrastructureSpec{}
-	}
-	if obj.InfrastructureSpec.GetOsImage() == nil {
-		obj.InfrastructureSpec.Runtime = &pb.Environment_InfrastructureSpec_OsImage{
-			OsImage: &pb.Environment_InfrastructureSpec_OsImageRuntime{
-				ImageVersion: "1.0.0", // Default if not provided?
-			},
-		}
-	}
-	if obj.InfrastructureSpec.GetCompute() == nil {
-		obj.InfrastructureSpec.Resources = &pb.Environment_InfrastructureSpec_Compute{
-			Compute: &pb.Environment_InfrastructureSpec_ComputeResources{
-				DiskSizeGb: 100, // Default disk size
-			},
-		}
-	}
-	if obj.Endpoints == nil {
-		obj.Endpoints = &pb.Environment_Endpoints{
-			Notebooks: fmt.Sprintf("https://notebooks.dataplex.goog/%s", obj.Name), // Example format
-			Sql:       fmt.Sprintf("https://sql.dataplex.goog/%s", obj.Name),       // Example format
-		}
-	}
-}
-
 type environmentName struct {
-	Project       *projects.ProjectData
-	Location      string
-	LakeID        string
+	Lake          string
 	EnvironmentID string
 }
 
 func (n *environmentName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/lakes/%s/environments/%s", n.Project.ID, n.Location, n.LakeID, n.EnvironmentID)
+	return fmt.Sprintf("%s/environments/%s", n.Lake, n.EnvironmentID)
 }
 
 // parseEnvironmentName parses a string into an environmentName.
@@ -250,15 +189,8 @@ func (s *MockService) parseEnvironmentName(name string) (*environmentName, error
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lakes" && tokens[6] == "environments" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
 		name := &environmentName{
-			Project:       project,
-			Location:      tokens[3],
-			LakeID:        tokens[5],
+			Lake:          strings.Join(tokens[:len(tokens)-2], "/"),
 			EnvironmentID: tokens[7],
 		}
 
