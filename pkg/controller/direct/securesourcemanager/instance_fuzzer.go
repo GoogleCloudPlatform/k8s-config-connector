@@ -37,6 +37,8 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".create_time") // Output only
 	f.UnimplementedFields.Insert(".update_time") // Output only
 	f.UnimplementedFields.Insert(".labels")      // NOTYET
+	f.UnimplementedFields.Insert(".private_config.ssh_service_attachment")
+	f.UnimplementedFields.Insert(".private_config.http_service_attachment")
 
 	f.SpecFields.Insert(".private_config")
 	f.SpecFields.Insert(".kms_key")

@@ -35,6 +35,23 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // Identifier
 
+	// New Fields in the updated version of Redis Cluster
+	f.UnimplementedFields.Insert(".backup_collection")
+	f.UnimplementedFields.Insert(".managed_backup_source")
+	f.UnimplementedFields.Insert(".psc_service_attachments")
+	f.UnimplementedFields.Insert(".psc_connections[].psc_connection_status")
+	f.UnimplementedFields.Insert(".psc_connections[].service_attachment")
+	f.UnimplementedFields.Insert(".psc_connections[].connection_type")
+	f.UnimplementedFields.Insert(".cross_cluster_replication_config")
+	f.UnimplementedFields.Insert(".kms_key")
+	f.UnimplementedFields.Insert(".maintenance_policy")
+	f.UnimplementedFields.Insert(".maintenance_schedule")
+	f.UnimplementedFields.Insert(".automated_backup_config")
+	f.UnimplementedFields.Insert(".encryption_info")
+	f.UnimplementedFields.Insert(".gcs_source")
+	f.UnimplementedFields.Insert(".cluster_endpoints")
+	f.UnimplementedFields.Insert(".labels")
+
 	f.SpecFields.Insert(".authorization_mode")
 	f.SpecFields.Insert(".transit_encryption_mode")
 	f.SpecFields.Insert(".shard_count")
