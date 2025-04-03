@@ -34,13 +34,16 @@ type BigtableAppProfileSpec struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.description
 	Description *string `json:"description,omitempty"`
 
+	// The set of clusters to route to, if using multi cluster routing. The order is ignored; clusters will be tried
+	// in order of distance. If left empty, all clusters are eligible.
+	MultiClusterRoutingClusterIds []string `json:"multiClusterRoutingClusterIds,omitempty"`
+
 	// Use a multi-cluster routing policy.
-	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.multi_cluster_routing_use_any
-	MultiClusterRoutingUseAny *AppProfile_MultiClusterRoutingUseAny `json:"multiClusterRoutingUseAny,omitempty"`
+	MultiClusterRoutingUseAny *bool `json:"multiClusterRoutingUseAny,omitempty"`
 
 	// Use a single-cluster routing policy.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
-	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
+	SingleClusterRouting *AppProfile_SingleClusterRoutingClusterId `json:"singleClusterRouting,omitempty"`
 
 	// The standard options used for isolating this app profile's traffic from
 	//  other use cases.
@@ -101,6 +104,17 @@ type BigtableAppProfileList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigtableAppProfile `json:"items"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
+type AppProfile_SingleClusterRoutingClusterId struct {
+	// The cluster to which read/write requests should be routed.
+	ClusterId *string `json:"clusterId,omitempty"`
+
+	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
+	//  allowed by this app profile. It is unsafe to send these requests to
+	//  the same table/row/column in multiple clusters.
+	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 }
 
 func init() {
