@@ -104,6 +104,8 @@ required permission ‘secretmanager.versions.access’ is included in this role
 annotations:
   string: string
 expireTime: string
+labels:
+  string: string
 replication:
   auto:
     customerManagedEncryption:
@@ -170,6 +172,26 @@ versionAliases:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Timestamp in UTC when the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to expire. This is always provided on output, regardless of what was sent on input.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The labels assigned to this Secret.
+
+Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
+of maximum 128 bytes, and must conform to the following PCRE regular
+expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
+
+Label values must be between 0 and 63 characters long, have a UTF-8
+encoding of maximum 128 bytes, and must conform to the following PCRE
+regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
+
+No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
