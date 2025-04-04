@@ -30,11 +30,15 @@ import (
 // BuildGeminiClient builds a client for the Gemini API.
 func BuildGeminiClient(ctx context.Context) (Client, error) {
 	var opts []option.ClientOption
-
 	if s := os.Getenv("GEMINI_API_KEY"); s != "" {
 		opts = append(opts, option.WithAPIKey(s))
 	}
 
+	model := os.Getenv("GEMINI_MODEL")
+	if model == "" {
+		model = "gemini-2.0-pro-exp-02-05"
+		// model = "gemini-2.5-pro-exp-03-25"
+	}
 	client, err := genai.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building gemini client: %w", err)
@@ -42,7 +46,7 @@ func BuildGeminiClient(ctx context.Context) (Client, error) {
 
 	return &GeminiClient{
 		client: client,
-		model:  "gemini-2.0-pro-exp-02-05",
+		model:  model,
 	}, nil
 }
 
@@ -67,7 +71,7 @@ func (c *GeminiClient) StartChat(systemPrompt string) Chat {
 	model.SetTemperature(1)
 	model.SetTopK(40)
 	model.SetTopP(0.95)
-	model.SetMaxOutputTokens(8192)
+	model.SetMaxOutputTokens(65536)
 	model.ResponseMIMEType = "text/plain"
 
 	model.SystemInstruction = &genai.Content{

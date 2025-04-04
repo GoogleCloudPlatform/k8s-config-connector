@@ -49,9 +49,10 @@ type Options struct {
 	// Prompt is the prompt to be passed in non-interactive mode
 	Prompt string
 
-	UIType   string
-	Project  string
-	Location string
+	UIType    string
+	Project   string
+	Location  string
+	LLMClient string // New field for selecting the LLM client type
 }
 
 type CodeBot struct {
@@ -79,6 +80,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 	flag.StringVar(&o.UIType, "ui-type", o.UIType, "available value is terminal, tview, prompt or bash.")
 	flag.StringVar(&o.Project, "project", o.Project, "the GCP project that the LLM service files billing for, Default to gcloud config")
 	flag.StringVar(&o.Location, "location", o.Location, "the GCP location. Default to gcloud config")
+	flag.StringVar(&o.LLMClient, "llmclient", "vertexai", "LLM client to use (available options: gemini, vertexai)")
 
 	flag.Parse()
 
@@ -122,9 +124,26 @@ func (cb *CodeBot) run(ctx context.Context) error {
 		}
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx, &o)
+	// Select the LLM client based on the command line parameter
+	var llmClient llm.Client
+	var err error
+
+	if s := os.Getenv("CODEBOT_LLM_CLIENT"); s != "" {
+		o.LLMClient = s
+	}
+	switch strings.ToLower(o.LLMClient) {
+	case "vertexai":
+		klog.Infof("Using VertexAI LLM client")
+		llmClient, err = llm.BuildVertexAIClient(ctx, &o)
+	case "gemini", "": // Default to Gemini if not specified
+		klog.Infof("Using Gemini LLM client")
+		llmClient, err = llm.BuildGeminiClient(ctx)
+	default:
+		return fmt.Errorf("unknown LLM client type: %s (supported types: gemini, vertexai)", o.LLMClient)
+	}
+
 	if err != nil {
-		return fmt.Errorf("initializing LLM: %w", err)
+		return fmt.Errorf("initializing LLM client %s: %w", o.LLMClient, err)
 	}
 
 	defer llmClient.Close()
