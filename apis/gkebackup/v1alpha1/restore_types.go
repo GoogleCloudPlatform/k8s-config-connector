@@ -39,10 +39,9 @@ type GKEBackupRestoreSpec struct {
 	//  [Backup][google.cloud.gkebackup.v1.Backup] used as the source from which
 	//  this Restore will restore. Note that this Backup must be a sub-resource of
 	//  the RestorePlan's
-	//  [backup_plan][google.cloud.gkebackup.v1.RestorePlan.backup_plan]. Format:
-	//  `projects/*/locations/*/backupPlans/*/backups/*`.
+	//  [backup_plan][google.cloud.gkebackup.v1.RestorePlan.backup_plan].
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Restore.backup
-	Backup *string `json:"backup,omitempty"`
+	BackupRef *BackupRef `json:"backupRef,omitempty"`
 
 	// A set of custom labels supplied by user.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Restore.labels
