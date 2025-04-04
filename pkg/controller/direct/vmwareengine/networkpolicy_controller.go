@@ -66,13 +66,6 @@ func (m *networkPolicyModel) AdapterForObject(ctx context.Context, reader client
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.VMwareEngineNetworkRef != nil {
-		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get VMwareEngine GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -86,6 +79,7 @@ func (m *networkPolicyModel) AdapterForObject(ctx context.Context, reader client
 		gcpClient: client,
 		id:        id,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -99,6 +93,7 @@ type networkPolicyAdapter struct {
 	id        *krm.NetworkPolicyIdentity
 	desired   *krm.VMwareEngineNetworkPolicy
 	actual    *pb.NetworkPolicy
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &networkPolicyAdapter{}
@@ -123,8 +118,12 @@ func (a *networkPolicyAdapter) Find(ctx context.Context) (bool, error) {
 func (a *networkPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine network policy", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineNetworkPolicySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -158,8 +157,12 @@ func (a *networkPolicyAdapter) Create(ctx context.Context, createOp *directbase.
 func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine network policy", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineNetworkPolicySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -259,4 +262,14 @@ func (a *networkPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *networkPolicyAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	return nil
 }
