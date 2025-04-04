@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -32,7 +31,7 @@ type ExternalAddressIdentity struct {
 }
 
 func (i *ExternalAddressIdentity) String() string {
-	return i.parent.String() + "/externaladdresss/" + i.id
+	return i.parent.String() + "/externalAddresses/" + i.id
 }
 
 func (i *ExternalAddressIdentity) ID() string {
@@ -44,27 +43,20 @@ func (i *ExternalAddressIdentity) Parent() *ExternalAddressParent {
 }
 
 type ExternalAddressParent struct {
-	ProjectID string
-	Location  string
+	PrivateCloud string
 }
 
 func (p *ExternalAddressParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.PrivateCloud
 }
 
 // New builds a ExternalAddressIdentity from the Config Connector ExternalAddress object.
 func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *VMwareEngineExternalAddress) (*ExternalAddressIdentity, error) {
-
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	privateCloud, err := obj.Spec.PrivateCloudRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +75,8 @@ func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.PrivateCloud != privateCloud {
+			return nil, fmt.Errorf("spec.privateCloudRef changed, expect %s, got %s", actualParent.PrivateCloud, privateCloud)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +85,7 @@ func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *
 	}
 	return &ExternalAddressIdentity{
 		parent: &ExternalAddressParent{
-			ProjectID: projectID,
-			Location:  location,
+			PrivateCloud: privateCloud,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +93,13 @@ func NewExternalAddressIdentity(ctx context.Context, reader client.Reader, obj *
 
 func ParseExternalAddressExternal(external string) (parent *ExternalAddressParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "externaladdresss" {
-		return nil, "", fmt.Errorf("format of VMwareEngineExternalAddress external=%q was not known (use projects/{{projectID}}/locations/{{location}}/externaladdresss/{{externaladdressID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "privateClouds" || tokens[6] != "externalAddresses" {
+		return nil, "", fmt.Errorf("format of VMwareEngineExternalAddress external=%q was not known (use projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}})", external)
 	}
+	privateCloud := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &ExternalAddressParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		PrivateCloud: privateCloud,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
