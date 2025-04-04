@@ -114,34 +114,6 @@ func VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: Uid
 	return out
 }
-func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krmv1alpha1.VMwareEngineExternalAddressObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.VMwareEngineExternalAddressObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.ExternalIP = direct.LazyPtr(in.GetExternalIp())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	return out
-}
-func VMwareEngineExternalAddressObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VMwareEngineExternalAddressObservedState) *pb.ExternalAddress {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ExternalAddress{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.ExternalIp = direct.ValueOf(in.ExternalIP)
-	out.State = direct.Enum_ToProto[pb.ExternalAddress_State](mapCtx, in.State)
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	return out
-}
 func VMwareEngineExternalAddressSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krmv1alpha1.VMwareEngineExternalAddressSpec {
 	if in == nil {
 		return nil
