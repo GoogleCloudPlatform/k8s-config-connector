@@ -104,6 +104,11 @@ func (a *taxonomyAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DataCatalogTaxonomy", "name", a.id)
 
+	if a.id.ID() == "" {
+		log.V(2).Info("no resource ID in get indicates the create intention", "name", a.id)
+		return false, nil
+	}
+
 	req := &pb.GetTaxonomyRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetTaxonomy(ctx, req)
 	if err != nil {
@@ -128,7 +133,6 @@ func (a *taxonomyAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
 	req := &pb.CreateTaxonomyRequest{
 		Parent:   a.id.Parent().String(),
 		Taxonomy: resource,
@@ -144,7 +148,11 @@ func (a *taxonomyAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	_, actualResourceID, err := krm.ParseTaxonomyExternal(created.Name)
+	if err != nil {
+		return fmt.Errorf("parsing the resource name in the response of CreateFirewallPolicy: %w", err)
+	}
+	status.ExternalRef = direct.LazyPtr(fmt.Sprintf("%s/taxonomies/%s", a.id.Parent(), actualResourceID))
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
