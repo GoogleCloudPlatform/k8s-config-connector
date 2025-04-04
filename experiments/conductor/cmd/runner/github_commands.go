@@ -203,7 +203,7 @@ func makeReadyPR(ctx context.Context, opts *RunnerOptions, branch Branch, execRe
 	// Run git push command with force flag
 	if opts.skipMakeReadyPR {
 		log.Printf("Skipping make ready-pr for branch %s (--skip-makereadypr flag is set)", branch.Name)
-		return nil, nil, nil
+		return []string{"."}, nil, nil
 	}
 
 	cfg := CommandConfig{
@@ -220,5 +220,5 @@ func makeReadyPR(ctx context.Context, opts *RunnerOptions, branch Branch, execRe
 	if err != nil {
 		log.Printf("Make ready PR error for branch %s: %v", branch.Name, err)
 	}
-	return nil, &output, err
+	return []string{"."}, &output, err
 }
