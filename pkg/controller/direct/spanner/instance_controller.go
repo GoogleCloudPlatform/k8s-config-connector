@@ -61,7 +61,7 @@ func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bo
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
 	}
-	return obj.Spec.DefaultBackupScheduleType != nil
+	return obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
