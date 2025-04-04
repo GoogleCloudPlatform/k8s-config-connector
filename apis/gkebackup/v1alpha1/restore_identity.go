@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -44,27 +43,21 @@ func (i *RestoreIdentity) Parent() *RestoreParent {
 }
 
 type RestoreParent struct {
-	ProjectID string
-	Location  string
+	RestorePlan string
 }
 
 func (p *RestoreParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.RestorePlan
 }
 
 // New builds a RestoreIdentity from the Config Connector Restore object.
 func NewRestoreIdentity(ctx context.Context, reader client.Reader, obj *GKEBackupRestore) (*RestoreIdentity, error) {
-
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	restorePlanRef := obj.Spec.RestorePlanRef
+	restorePlan, err := restorePlanRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +76,8 @@ func NewRestoreIdentity(ctx context.Context, reader client.Reader, obj *GKEBacku
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.RestorePlan != restorePlan {
+			return nil, fmt.Errorf("spec.restorePlanRef changed, expect %s, got %s", actualParent.RestorePlan, restorePlan)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +86,7 @@ func NewRestoreIdentity(ctx context.Context, reader client.Reader, obj *GKEBacku
 	}
 	return &RestoreIdentity{
 		parent: &RestoreParent{
-			ProjectID: projectID,
-			Location:  location,
+			RestorePlan: restorePlan,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +94,13 @@ func NewRestoreIdentity(ctx context.Context, reader client.Reader, obj *GKEBacku
 
 func ParseRestoreExternal(external string) (parent *RestoreParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "restores" {
-		return nil, "", fmt.Errorf("format of GKEBackupRestore external=%q was not known (use projects/{{projectID}}/locations/{{location}}/restores/{{restoreID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "restorePlans" || tokens[6] != "restores" {
+		return nil, "", fmt.Errorf("format of GKEBackupRestore external=%q was not known (use projects/{{projectID}}/locations/{{location}}/restorePlans/{{restoreplanID}}/restores/{{restoreID}})", external)
 	}
+	restorePlan := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &RestoreParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		RestorePlan: restorePlan,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
