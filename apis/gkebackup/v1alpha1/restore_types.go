@@ -50,7 +50,7 @@ type GKEBackupRestoreSpec struct {
 	// Optional. Immutable. Filters resources for `Restore`. If not specified, the
 	//  scope of the restore will remain the same as defined in the `RestorePlan`.
 	//  If this is specified, and no resources are matched by the
-	//  `inclusion_filters` or everyting is excluded by the `exclusion_filters`,
+	//  `inclusion_filters` or everything is excluded by the `exclusion_filters`,
 	//  nothing will be restored. This filter can only be specified if the value of
 	//  [namespaced_resource_restore_mode][google.cloud.gkebackup.v1.RestoreConfig.namespaced_resource_restore_mode]
 	//  is set to `MERGE_SKIP_ON_CONFLICT`, `MERGE_REPLACE_VOLUME_ON_CONFLICT` or
