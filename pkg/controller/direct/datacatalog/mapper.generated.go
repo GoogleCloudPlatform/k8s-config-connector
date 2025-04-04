@@ -1139,7 +1139,7 @@ func SystemTimestamps_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestam
 	out := &krmv1alpha1.SystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: ExpireTime
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
 func SystemTimestamps_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SystemTimestamps) *pb.SystemTimestamps {
