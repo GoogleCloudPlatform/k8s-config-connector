@@ -4,7 +4,7 @@ Conductor is a tool for automating the maintenance of Config Connector (KCC).
 It is a command line tool which is largely driven by the metadata it is passed.
 The complete metadata is curently held in branches-all.yaml.
 We recommend you copy the metadata for the reosurces you want to work on into a separate file.
-An example of this is the braqnches.yaml file.
+An example of this is the branches.yaml file.
 Conductor will then work on that subset of resources.
 We recommend when working on KCC that you point conductor at a separate git copy than the one in which conductor is running in.
 This is especially true if you are making changes to the tool.
