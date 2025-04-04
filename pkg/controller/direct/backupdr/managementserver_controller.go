@@ -66,16 +66,6 @@ func (m *modelManagementServer) AdapterForObject(ctx context.Context, reader cli
 		return nil, err
 	}
 
-	if obj.Spec.Networks != nil {
-		for _, network := range obj.Spec.Networks {
-			if network.NetworkRef != nil {
-				if err := network.NetworkRef.Normalize(ctx, reader, obj); err != nil {
-					return nil, err
-				}
-			}
-		}
-	}
-
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -133,8 +123,12 @@ func (a *ManagementServerAdapter) Find(ctx context.Context) (bool, error) {
 func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating ManagementServer", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := BackupDRManagementServerSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -169,8 +163,12 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ManagementServer", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := BackupDRManagementServerSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -253,4 +251,18 @@ func (a *ManagementServerAdapter) Delete(ctx context.Context, deleteOp *directba
 		return false, fmt.Errorf("waiting delete ManagementServer %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *ManagementServerAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.Networks != nil {
+		for _, network := range obj.Spec.Networks {
+			if network.NetworkRef != nil {
+				if err := network.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	return nil
 }
