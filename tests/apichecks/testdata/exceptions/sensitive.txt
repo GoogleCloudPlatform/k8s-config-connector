@@ -3,9 +3,4 @@ crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spe
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.keystorePassword" is sensitive data, should use secretRef
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.rootPrincipalPassword" is sensitive data, should use secretRef
 crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.truststorePassword" is sensitive data, should use secretRef
-crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.crossRealmTrustSharedPassword" is sensitive data, should use secretRef
-crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.keyPassword" is sensitive data, should use secretRef
-crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.keystorePassword" is sensitive data, should use secretRef
-crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.rootPrincipalPassword" is sensitive data, should use secretRef
-crd=dataprocworkflowtemplates.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.placement.managedCluster.config.securityConfig.kerberosConfig.truststorePassword" is sensitive data, should use secretRef
 crd=dialogflowfulfillments.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericWebService.password" is sensitive data, should use secretRef
