@@ -65,20 +65,6 @@ func (m *modelBackupPlanAssociation) AdapterForObject(ctx context.Context, reade
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.BackupPlanRef != nil {
-		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-	if obj.Spec.Resource != nil {
-		if obj.Spec.Resource.ComputeInstanceRef != nil {
-			if _, err := obj.Spec.Resource.ComputeInstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-				return nil, err
-			}
-		}
-	}
-
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -136,8 +122,12 @@ func (a *BackupPlanAssociationAdapter) Find(ctx context.Context) (bool, error) {
 func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupPlanAssociation", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -180,8 +170,12 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupPlan", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -262,4 +256,23 @@ func (a *BackupPlanAssociationAdapter) Delete(ctx context.Context, deleteOp *dir
 		return false, fmt.Errorf("waiting delete BackupPlanAssociation %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *BackupPlanAssociationAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	if obj.Spec.BackupPlanRef != nil {
+		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.Resource != nil {
+		if obj.Spec.Resource.ComputeInstanceRef != nil {
+			if _, err := obj.Spec.Resource.ComputeInstanceRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
