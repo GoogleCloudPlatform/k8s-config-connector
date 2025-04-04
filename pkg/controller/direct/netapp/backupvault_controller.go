@@ -179,28 +179,29 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
+	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
-	}
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: sets.List(paths),
+		}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &netapppb.UpdateBackupVaultRequest{
-		UpdateMask:  updateMask,
-		BackupVault: desiredPb,
+		req := &netapppb.UpdateBackupVaultRequest{
+			UpdateMask:  updateMask,
+			BackupVault: desiredPb,
+		}
+		op, err := a.gcpClient.UpdateBackupVault(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating BackupVault %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("BackupVault %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated BackupVault", "name", a.id)
 	}
-	op, err := a.gcpClient.UpdateBackupVault(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating BackupVault %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("BackupVault %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated BackupVault", "name", a.id)
 
 	status := &krm.BackupVaultStatus{}
 	status.ObservedState = BackupVaultObservedState_FromProto(mapCtx, updated)
