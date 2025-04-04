@@ -38,7 +38,6 @@ type DataCatalogTagSpec struct {
 	DataCatalogTagParent `json:",inline"`
 
 	// The DataCatalogTag name. If not given, the metadata.name will be used.
-	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The resource name of the tag template this tag uses.
@@ -46,8 +45,6 @@ type DataCatalogTagSpec struct {
 	//  This field cannot be modified after creation.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template
 	// +required
-	// +immutable
-	// +kubebuilder:validation:Required
 	TemplateRef *TagTemplateRef `json:"templateRef,omitempty"`
 
 	// Resources like entry can have schemas associated with them. This scope
@@ -56,8 +53,6 @@ type DataCatalogTagSpec struct {
 	//  To attach a tag to a nested column, separate column names with a dot
 	//  (`.`). Example: `column.nested_column`.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.column
-	// +optional
-	// +immutable
 	Column *string `json:"column,omitempty"`
 
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.fields
