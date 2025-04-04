@@ -24,6 +24,7 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func BackupPlan_BackupConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BackupPlan_BackupConfig) *pb.BackupPlan_BackupConfig {
 	if in == nil {
 		return nil
@@ -170,50 +171,6 @@ func GKEBackupBackupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.GKEB
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func GKEBackupRestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krmv1alpha1.GKEBackupRestoreObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.GKEBackupRestoreObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Cluster = direct.LazyPtr(in.GetCluster())
-	out.RestoreConfig = RestoreConfig_FromProto(mapCtx, in.GetRestoreConfig())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StateReason = direct.LazyPtr(in.GetStateReason())
-	out.CompleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCompleteTime())
-	out.ResourcesRestoredCount = direct.LazyPtr(in.GetResourcesRestoredCount())
-	out.ResourcesExcludedCount = direct.LazyPtr(in.GetResourcesExcludedCount())
-	out.ResourcesFailedCount = direct.LazyPtr(in.GetResourcesFailedCount())
-	out.VolumesRestoredCount = direct.LazyPtr(in.GetVolumesRestoredCount())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func GKEBackupRestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.GKEBackupRestoreObservedState) *pb.Restore {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Restore{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Cluster = direct.ValueOf(in.Cluster)
-	out.RestoreConfig = RestoreConfig_ToProto(mapCtx, in.RestoreConfig)
-	out.State = direct.Enum_ToProto[pb.Restore_State](mapCtx, in.State)
-	out.StateReason = direct.ValueOf(in.StateReason)
-	out.CompleteTime = direct.StringTimestamp_ToProto(mapCtx, in.CompleteTime)
-	out.ResourcesRestoredCount = direct.ValueOf(in.ResourcesRestoredCount)
-	out.ResourcesExcludedCount = direct.ValueOf(in.ResourcesExcludedCount)
-	out.ResourcesFailedCount = direct.ValueOf(in.ResourcesFailedCount)
-	out.VolumesRestoredCount = direct.ValueOf(in.VolumesRestoredCount)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
 func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.GKEBackupRestorePlanSpec) *pb.RestorePlan {
 	if in == nil {
 		return nil
@@ -230,22 +187,6 @@ func GKEBackupRestorePlanSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1
 	}
 	out.RestoreConfig = RestoreConfig_ToProto(mapCtx, in.RestoreConfig)
 	out.Labels = in.Labels
-	return out
-}
-func GKEBackupRestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *krmv1alpha1.GKEBackupRestoreSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.GKEBackupRestoreSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.GetBackup() != "" {
-		out.BackupRef = &refs.*BackupRef{External: in.GetBackup()}
-	}
-	out.Labels = in.Labels
-	out.Filter = Restore_Filter_FromProto(mapCtx, in.GetFilter())
-	out.VolumeDataRestorePolicyOverrides = direct.Slice_FromProto(mapCtx, in.VolumeDataRestorePolicyOverrides, VolumeDataRestorePolicyOverride_FromProto)
 	return out
 }
 func GKEBackupRestoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.GKEBackupRestoreSpec) *pb.Restore {
