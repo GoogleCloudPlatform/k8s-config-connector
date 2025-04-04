@@ -68,7 +68,7 @@ func (m *restorePlanModel) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 
-	// normalize reference fields
+	// normalize required reference fields
 	if obj.Spec.BackupPlanRef != nil {
 		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
