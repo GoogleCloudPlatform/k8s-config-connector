@@ -59,6 +59,35 @@ spec:
           spec:
             description: DataprocNodeGroupSpec defines the desired state of DataprocNodeGroup
             properties:
+              clusterRef:
+                description: NodeGroupRef defines the resource reference to DataprocNodeGroup,
+                  which "External" field holds the GCP identifier for the KRM object.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataprocNodeGroup
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+                    type: string
+                  name:
+                    description: The name of a DataprocNodeGroup resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataprocNodeGroup resource.
+                    type: string
+                type: object
               labels:
                 additionalProperties:
                   type: string

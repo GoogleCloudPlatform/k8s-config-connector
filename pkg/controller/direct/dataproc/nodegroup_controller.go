@@ -17,33 +17,26 @@ package dataproc
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	// TODO(contributor): Update the import with the google cloud client
-	gcp "cloud.google.com/go/dataproc/apiv1"
-
-	// TODO(contributor): Update the import with the google cloud client api protobuf
-	dataprocpb "cloud.google.com/go/dataproc/v1/dataprocpb"
+	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
+	dataprocpb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
-	registry.RegisterModel(krm.DataprocNodegroupGVK, NewNodegroupModel)
+	registry.RegisterModel(krm.DataprocNodeGroupGVK, NewNodegroupModel)
 }
 
 func NewNodegroupModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -56,13 +49,13 @@ type modelNodegroup struct {
 	config config.ControllerConfig
 }
 
-func (m *modelNodegroup) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelNodegroup) client(ctx context.Context) (*dataproc.NodeGroupControllerClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := dataproc.NewNodeGroupControllerRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Nodegroup client: %w", err)
 	}
@@ -70,12 +63,12 @@ func (m *modelNodegroup) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *modelNodegroup) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.DataprocNodegroup{}
+	obj := &krm.DataprocNodeGroup{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewNodegroupIdentity(ctx, reader, obj)
+	id, err := krm.NewNodeGroupIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -98,10 +91,10 @@ func (m *modelNodegroup) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type NodegroupAdapter struct {
-	id        *krm.NodegroupIdentity
-	gcpClient *gcp.Client
-	desired   *krm.DataprocNodegroup
-	actual    *dataprocpb.Nodegroup
+	id        *krm.NodeGroupIdentity
+	gcpClient *dataproc.NodeGroupControllerClient
+	desired   *krm.DataprocNodeGroup
+	actual    *dataprocpb.NodeGroup
 }
 
 var _ directbase.Adapter = &NodegroupAdapter{}
@@ -114,8 +107,8 @@ func (a *NodegroupAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting Nodegroup", "name", a.id)
 
-	req := &dataprocpb.GetNodegroupRequest{Name: a.id.String()}
-	nodegrouppb, err := a.gcpClient.GetNodegroup(ctx, req)
+	req := &dataprocpb.GetNodeGroupRequest{Name: a.id.String()}
+	nodegrouppb, err := a.gcpClient.GetNodeGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -134,17 +127,16 @@ func (a *NodegroupAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DataprocNodegroupSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DataprocNodeGroupSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
-	req := &dataprocpb.CreateNodegroupRequest{
+	req := &dataprocpb.CreateNodeGroupRequest{
 		Parent:    a.id.Parent().String(),
-		Nodegroup: resource,
+		NodeGroup: resource,
 	}
-	op, err := a.gcpClient.CreateNodegroup(ctx, req)
+	op, err := a.gcpClient.CreateNodeGroup(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating Nodegroup %s: %w", a.id, err)
 	}
@@ -154,8 +146,8 @@ func (a *NodegroupAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 	log.V(2).Info("successfully created Nodegroup", "name", a.id)
 
-	status := &krm.DataprocNodegroupStatus{}
-	status.ObservedState = DataprocNodegroupObservedState_FromProto(mapCtx, created)
+	status := &krm.DataprocNodeGroupStatus{}
+	status.ObservedState = DataprocNodeGroupObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -166,62 +158,9 @@ func (a *NodegroupAdapter) Create(ctx context.Context, createOp *directbase.Crea
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *NodegroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Nodegroup", "name", a.id)
-	mapCtx := &direct.MapContext{}
+	log.V(2).Info("Dataproc Nodegroup update is not supported", "name", a.id)
 
-	desiredPb := DataprocNodegroupSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	paths := make(sets.Set[string])
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
-	}
-
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = paths.Insert("display_name")
-		}
-	}
-
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
-	}
-
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &dataprocpb.UpdateNodegroupRequest{
-		Name:       a.id.String(),
-		UpdateMask: updateMask,
-		Nodegroup:  desiredPb,
-	}
-	op, err := a.gcpClient.UpdateNodegroup(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Nodegroup %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Nodegroup %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated Nodegroup", "name", a.id)
-
-	status := &krm.DataprocNodegroupStatus{}
-	status.ObservedState = DataprocNodegroupObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	status := &krm.DataprocNodeGroupStatus{}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -232,9 +171,9 @@ func (a *NodegroupAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.DataprocNodegroup{}
+	obj := &krm.DataprocNodeGroup{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DataprocNodegroupSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DataprocNodeGroupSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -246,7 +185,7 @@ func (a *NodegroupAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.DataprocNodegroupGVK)
+	u.SetGroupVersionKind(krm.DataprocNodeGroupGVK)
 
 	u.Object = uObj
 	return u, nil
@@ -257,21 +196,5 @@ func (a *NodegroupAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Nodegroup", "name", a.id)
 
-	req := &dataprocpb.DeleteNodegroupRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteNodegroup(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent Nodegroup, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
-		return false, fmt.Errorf("deleting Nodegroup %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted Nodegroup", "name", a.id)
-
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete Nodegroup %s: %w", a.id, err)
-	}
 	return true, nil
 }
