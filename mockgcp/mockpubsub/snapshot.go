@@ -43,7 +43,7 @@ func (s *subscriberService) GetSnapshot(ctx context.Context, req *pb.GetSnapshot
 	obj := &pb.Snapshot{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "snapshot %q not found", req.GetSnapshot())
+			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.Snapshot)
 		}
 		return nil, err
 	}
@@ -64,6 +64,7 @@ func (s *subscriberService) CreateSnapshot(ctx context.Context, req *pb.CreateSn
 		ExpireTime: timestamppb.New(time.Now()),
 		Name:       fqn,
 		Topic:      topicName,
+		Labels:     req.Labels,
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
