@@ -27,6 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/essentialcontacts/apiv1"
 	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -38,7 +39,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
 func init() {
@@ -71,7 +71,7 @@ func (m *contactModel) AdapterForObject(ctx context.Context, reader client.Reade
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpClient.newClient(ctx)
+	client, err := gcpClient.newEssentialContactsClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (a *contactAdapter) Find(ctx context.Context) (bool, error) {
 	// Use the calculated name if available (from status), otherwise construct from ID
 	name := direct.ValueOf(a.desired.Status.ExternalRef)
 	if name == "" {
-		name = a.id.ResourceID()
+		name = a.id.String()
 	}
 
 	req := &pb.GetContactRequest{Name: name}
@@ -138,7 +138,7 @@ func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 
 	req := &pb.CreateContactRequest{
-		Parent:  a.id.Parent(),
+		Parent:  a.id.Parent().String(),
 		Contact: resource,
 	}
 	created, err := a.gcpClient.CreateContact(ctx, req)
@@ -203,7 +203,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// Handle potential status-only updates if KCC resource was acquired.
 	if len(paths) == 0 && a.desired.Status.ExternalRef == nil {
-		status.ObservedState.Email = &a.desired.Spec.Email // email is immutable but needed for acquisition
+		status.ObservedState.ValidationState = a.desired.Status.ObservedState.ValidationState // email is immutable but needed for acquisition
 	}
 
 	return updateOp.UpdateStatus(ctx, status, nil)
@@ -224,18 +224,23 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 
 	// Set parent ref based on the actual name format
-	parentIdentity, err := krm.ParseParentResourceID(a.actual.Name)
+	parentIdentity, resourceID, err := krm.ParseContactExternal(a.actual.Name)
 	if err != nil {
 		return nil, fmt.Errorf("parsing parent from actual name %q: %w", a.actual.Name, err)
 	}
-	switch parentIdentity.Type {
-	case krm.ParentTypeProject:
-		obj.Spec.ProjectRef = parentIdentity.ProjectRef()
-	case krm.ParentTypeFolder:
-		obj.Spec.FolderRef = parentIdentity.FolderRef()
-	case krm.ParentTypeOrganization:
-		obj.Spec.OrganizationRef = parentIdentity.OrganizationRef()
-	default:
+	if parentIdentity.ProjectID != "" {
+		obj.Spec.ProjectRef = &refv1beta1.ProjectRef{
+			External: parentIdentity.String(),
+		}
+	} else if parentIdentity.FolderID != "" {
+		obj.Spec.FolderRef = &refv1beta1.FolderRef{
+			External: parentIdentity.String(),
+		}
+	} else if parentIdentity.OrganizationID != "" {
+		obj.Spec.OrganizationRef = &refv1beta1.OrganizationRef{
+			External: parentIdentity.String(),
+		}
+	} else {
 		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}
 
@@ -244,7 +249,7 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, err
 	}
 
-	u.SetName(k8s.GetResourceName(a.actual.Name))
+	u.SetName(resourceID)
 	u.SetGroupVersionKind(krm.EssentialContactsContactGVK)
 
 	u.Object = uObj
