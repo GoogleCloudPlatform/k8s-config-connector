@@ -1,3 +1,0 @@
-// +tool:mockgcp-support
-// proto.service: 
-// proto.message: google.bigtable.admin.v2.Backup

@@ -1,5 +1,0 @@
-
-- exec: gcloud dataplex assets create test-${uniqueId} --location=us-central1 --lake=test-lake --zone=test-zone --resource-type=STORAGE_BUCKET --resource-name=projects/test-project/buckets/test-bucket --discovery-enabled
-- exec: gcloud dataplex assets describe test-${uniqueId} --location=us-central1 --lake=test-lake --zone=test-zone
-- exec: gcloud dataplex assets update test-${uniqueId} --location=us-central1 --lake=test-lake --zone=test-zone --display-name="Updated Asset" --discovery-enabled
-- exec: gcloud dataplex assets delete test-${uniqueId} --location=us-central1 --lake=test-lake --zone=test-zone --async
