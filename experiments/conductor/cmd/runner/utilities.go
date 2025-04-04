@@ -208,8 +208,12 @@ func gitAdd(ctx context.Context, workDir string, files ...string) error {
 }
 
 func gitCommit(ctx context.Context, workDir string, msg string) error {
-	log.Printf("COMMAND: git commit -m %q", fmt.Sprintf("conductor: %q", msg))
-	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
+	authorName := "k8s-config-connector-conductor[bot]"
+	authorEmail := "conductor@example.com" // TODO: create a real robot account?
+	authorFlag := fmt.Sprintf("%s <%s>", authorName, authorEmail)
+
+	log.Printf("COMMAND: git commit -m %q --author=%q", msg, authorFlag)
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg, "--author", authorFlag)
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
