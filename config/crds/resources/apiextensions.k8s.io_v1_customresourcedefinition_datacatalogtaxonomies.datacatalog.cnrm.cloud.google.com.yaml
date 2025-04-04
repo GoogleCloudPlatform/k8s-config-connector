@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogtaxonomies.datacatalog.cnrm.cloud.google.com
 spec:
   group: datacatalog.cnrm.cloud.google.com
@@ -16,10 +14,11 @@ spec:
     categories:
     - gcp
     kind: DataCatalogTaxonomy
+    listKind: DataCatalogTaxonomyList
     plural: datacatalogtaxonomies
     shortNames:
     - gcpdatacatalogtaxonomy
-    - gcpdatacatalogtaxonomies
+    - gcpdatacatalogtaxonomys
     singular: datacatalogtaxonomy
   preserveUnknownFields: false
   scope: Namespaced
@@ -40,46 +39,55 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DataCatalogTaxonomy is the Schema for the DataCatalogTaxonomy
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataCatalogTaxonomySpec defines the desired state of DataCatalogTaxonomy
             properties:
               activatedPolicyTypes:
-                description: |-
-                  A list of policy types that are activated for this taxonomy. If not set,
-                  defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"].
+                description: Optional. A list of policy types that are activated for
+                  this taxonomy. If not set, defaults to an empty list.
                 items:
                   type: string
                 type: array
               description:
                 description: |-
-                  Description of this taxonomy. It must: contain only unicode characters,
-                  tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
-                  long when encoded in UTF-8. If not set, defaults to an empty description.
+                  Optional. Description of this taxonomy. If not set, defaults to empty.
+
+                   The description must contain only Unicode characters, tabs, newlines,
+                   carriage returns, and page breaks, and be at most 2000 bytes long when
+                   encoded in UTF-8.
                 type: string
               displayName:
                 description: |-
-                  User defined name of this taxonomy.
-                  It must: contain only unicode letters, numbers, underscores, dashes
-                  and spaces; not start or end with spaces; and be at most 200 bytes
-                  long when encoded in UTF-8.
+                  Required. User-defined name of this taxonomy.
+
+                   The name can't start or end with spaces, must contain only Unicode letters,
+                   numbers, underscores, dashes, and spaces, and be at most 200 bytes long
+                   when encoded in UTF-8.
+
+                   The taxonomy display name must be unique within an organization.
+                type: string
+              location:
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -96,32 +104,34 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                description: Immutable. Taxonomy location region.
-                type: string
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The DataCatalogTaxonomy name. If not given, the metadata.name
+                  will be used.
                 type: string
             required:
-            - displayName
-            - projectRef
+            - location
             type: object
           status:
+            description: DataCatalogTaxonomyStatus defines the config connector machine
+              state of DataCatalogTaxonomy
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -145,10 +155,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  Resource name of this taxonomy, whose format is:
-                  "projects/{project}/locations/{region}/taxonomies/{taxonomy}".
+              externalRef:
+                description: A unique specifier for the DataCatalogTaxonomy resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -156,7 +165,49 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  policyTagCount:
+                    description: Output only. Number of policy tags in this taxonomy.
+                    format: int32
+                    type: integer
+                  service:
+                    description: Output only. Identity of the service which owns the
+                      Taxonomy. This field is only populated when the taxonomy is
+                      created by a Google Cloud service. Currently only 'DATAPLEX'
+                      is supported.
+                    properties:
+                      identity:
+                        description: The service agent for the service.
+                        type: string
+                      name:
+                        description: The Google Cloud service name.
+                        type: string
+                    type: object
+                  taxonomyTimestamps:
+                    description: Output only. Creation and modification timestamps
+                      of this taxonomy.
+                    properties:
+                      createTime:
+                        description: Creation timestamp of the resource within the
+                          given system.
+                        type: string
+                      updateTime:
+                        description: |-
+                          Timestamp of the last modification of the resource or its metadata within
+                           a given system.
+
+                           Note: Depending on the source system, not every modification updates this
+                           timestamp.
+                           For example, BigQuery timestamps every metadata modification but not data
+                           or permission changes.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec
@@ -165,9 +216,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
