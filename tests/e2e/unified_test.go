@@ -810,6 +810,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					})
 
+					// Specific to Data Catalog
+					addReplacement("taxonomyTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("taxonomyTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to KMS
 					addReplacement("policy.etag", "abcdef0123A=")
 					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")

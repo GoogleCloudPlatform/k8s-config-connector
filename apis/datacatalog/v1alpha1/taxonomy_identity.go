@@ -32,7 +32,7 @@ type TaxonomyIdentity struct {
 }
 
 func (i *TaxonomyIdentity) String() string {
-	return i.parent.String() + "/taxonomys/" + i.id
+	return i.parent.String() + "/taxonomies/" + i.id
 }
 
 func (i *TaxonomyIdentity) ID() string {
@@ -68,12 +68,6 @@ func NewTaxonomyIdentity(ctx context.Context, reader client.Reader, obj *DataCat
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -89,10 +83,11 @@ func NewTaxonomyIdentity(ctx context.Context, reader client.Reader, obj *DataCat
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
-		if actualResourceID != resourceID {
+		if resourceID != "" && actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		resourceID = actualResourceID
 	}
 	return &TaxonomyIdentity{
 		parent: &TaxonomyParent{
@@ -105,8 +100,8 @@ func NewTaxonomyIdentity(ctx context.Context, reader client.Reader, obj *DataCat
 
 func ParseTaxonomyExternal(external string) (parent *TaxonomyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "taxonomys" {
-		return nil, "", fmt.Errorf("format of DataCatalogTaxonomy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomys/{{taxonomyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "taxonomies" {
+		return nil, "", fmt.Errorf("format of DataCatalogTaxonomy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}})", external)
 	}
 	parent = &TaxonomyParent{
 		ProjectID: tokens[1],

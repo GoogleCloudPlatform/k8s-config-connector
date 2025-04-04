@@ -17,7 +17,6 @@ kind: DataCatalogTaxonomy
 metadata:
   name: datacatalogtaxonomy-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
   location: us-central1
   description: "Initial description"
+  displayName: "Taxonomy displayName"
