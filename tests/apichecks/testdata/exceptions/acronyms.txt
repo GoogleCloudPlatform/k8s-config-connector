@@ -480,6 +480,8 @@
 [acronyms] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.servicesIpv6CidrBlocks" should be ".spec.networking.servicesIPV6CIDRBlocks"
 [acronyms] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.networking.servicesIpv6CidrBlocks[]" should be ".spec.networking.servicesIPV6CIDRBlocks[]"
 [acronyms] crd=edgecontainerclusters.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".status.clusterCaCertificate" should be ".status.clusterCACertificate"
+[acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.natGatewayIp" should be ".spec.natGatewayIP"
+[acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpcProject.projectId" should be ".spec.vpcProject.projectID"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv4Cidr" should be ".spec.ipv4CIDR"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6Cidr" should be ".spec.ipv6CIDR"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.vlanId" should be ".spec.vlanID"
