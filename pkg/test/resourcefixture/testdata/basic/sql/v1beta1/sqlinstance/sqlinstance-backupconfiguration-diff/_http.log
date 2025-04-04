@@ -32,7 +32,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "databaseVersion": "POSTGRES_13",
+  "databaseVersion": "POSTGRES_9_6",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
   "name": "test-${uniqueId}",
@@ -152,35 +152,32 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:europe-west3:test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_13_20",
-  "databaseVersion": "POSTGRES_13",
+  "databaseInstalledVersion": "POSTGRES_9_6",
+  "databaseVersion": "POSTGRES_9_6",
   "etag": "abcdef0123A=",
-  "failoverReplica": {
-    "available": true
-  },
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": true
+    "oomSessionCancelEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_13_20.R20250302.00_04",
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",
-  "satisfiesPzi": true,
-  "secondaryGceZone": "europe-west3-a",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/test-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -205,10 +202,10 @@ X-Xss-Protection: 0
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
-      "replicationLogArchivingEnabled": true,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "CLOUD_STORAGE"
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "10",
@@ -233,10 +230,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "europe-west3-b"
+      "zone": "europe-west3-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -248,29 +244,7 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "PostgreSQL 14",
-      "majorVersion": "POSTGRES_14",
-      "name": "POSTGRES_14"
-    },
-    {
-      "displayName": "PostgreSQL 15",
-      "majorVersion": "POSTGRES_15",
-      "name": "POSTGRES_15"
-    },
-    {
-      "displayName": "PostgreSQL 16",
-      "majorVersion": "POSTGRES_16",
-      "name": "POSTGRES_16"
-    },
-    {
-      "displayName": "PostgreSQL 17",
-      "majorVersion": "POSTGRES_17",
-      "name": "POSTGRES_17"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---
@@ -321,35 +295,32 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:europe-west3:test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_13_20",
-  "databaseVersion": "POSTGRES_13",
+  "databaseInstalledVersion": "POSTGRES_9_6",
+  "databaseVersion": "POSTGRES_9_6",
   "etag": "abcdef0123A=",
-  "failoverReplica": {
-    "available": true
-  },
   "gceZone": "us-central1-a",
   "geminiConfig": {
     "activeQueryEnabled": false,
     "entitled": false,
     "googleVacuumMgmtEnabled": false,
     "indexAdvisorEnabled": false,
-    "oomSessionCancelEnabled": true
+    "oomSessionCancelEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
       "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_13_20.R20250302.00_04",
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",
-  "satisfiesPzi": true,
-  "secondaryGceZone": "europe-west3-a",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/test-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -374,10 +345,10 @@ X-Xss-Protection: 0
       "enabled": true,
       "kind": "sql#backupConfiguration",
       "pointInTimeRecoveryEnabled": true,
-      "replicationLogArchivingEnabled": true,
+      "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
-      "transactionalLogStorageState": "CLOUD_STORAGE"
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
     "dataDiskSizeGb": "10",
@@ -402,10 +373,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "europe-west3-b"
+      "zone": "europe-west3-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -417,29 +387,7 @@ X-Xss-Protection: 0
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "upgradableDatabaseVersions": [
-    {
-      "displayName": "PostgreSQL 14",
-      "majorVersion": "POSTGRES_14",
-      "name": "POSTGRES_14"
-    },
-    {
-      "displayName": "PostgreSQL 15",
-      "majorVersion": "POSTGRES_15",
-      "name": "POSTGRES_15"
-    },
-    {
-      "displayName": "PostgreSQL 16",
-      "majorVersion": "POSTGRES_16",
-      "name": "POSTGRES_16"
-    },
-    {
-      "displayName": "PostgreSQL 17",
-      "majorVersion": "POSTGRES_17",
-      "name": "POSTGRES_17"
-    }
-  ]
+  "state": "RUNNABLE"
 }
 
 ---

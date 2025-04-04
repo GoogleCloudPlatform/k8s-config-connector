@@ -16,7 +16,7 @@ metadata:
   name: test-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: POSTGRES_13
+  databaseVersion: POSTGRES_9_6
   region: europe-west3
   resourceID: test-${uniqueId}
   settings:

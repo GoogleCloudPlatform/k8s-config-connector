@@ -13,7 +13,7 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   name: test-${uniqueId}
 spec:
-  databaseVersion: POSTGRES_13
+  databaseVersion: POSTGRES_9_6 # POSTGRES_13 is not supported by mock
   region: europe-west3
   resourceID: test-${uniqueId}
   settings:
