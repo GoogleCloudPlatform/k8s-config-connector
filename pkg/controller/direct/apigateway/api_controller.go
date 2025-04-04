@@ -137,7 +137,9 @@ func (a *apiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	if err != nil {
 		return fmt.Errorf("creating apigateway api %s: %w", a.id.String(), err)
 	}
+	fmt.Println("=============== HERE ===============")
 	created, err := op.Wait(ctx)
+	fmt.Println("=============== HERE2 ===============")
 	if err != nil {
 		return fmt.Errorf("apigateway api %s waiting creation: %w", a.id, err)
 	}
