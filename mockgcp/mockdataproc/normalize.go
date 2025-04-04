@@ -32,6 +32,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".clusters[].statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".metadata.statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
 
+	// Job
+	replacements.ReplacePath(".statusHistory[].stateStartTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".status.stateStartTime", "2024-04-01T12:34:56.123456Z")
+
 	// metrics are volatile and more "data plane"
 	replacements.RemovePath(".metrics")
 	replacements.RemovePath(".response.metrics")
