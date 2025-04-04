@@ -36,7 +36,7 @@ status:
     containsSecrets: true
     containsVolumeData: true
     createTime: "1970-01-01T00:00:00Z"
-    deleteLockExpireTime: "2025-04-03T23:43:12.610088552Z"
+    deleteLockExpireTime: "1970-01-01T00:00:00Z"
     etag: abcdef123456
     manual: true
     state: IN_PROGRESS
