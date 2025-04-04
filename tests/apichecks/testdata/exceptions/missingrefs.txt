@@ -32,7 +32,6 @@
 [refs] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" should be a reference
 [refs] crd=containeranalysisnotes.containeranalysis.cnrm.cloud.google.com version=v1beta1: field ".spec.relatedNoteNames[].external" should be a reference
 [refs] crd=datacatalogtags.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.template" should be a reference
-[refs] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].name" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.singleTargetDataset.datasetId" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.sourceHierarchyDatasets.datasetTemplate.kmsKeyName" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.destinationConnectionProfile" should be a reference

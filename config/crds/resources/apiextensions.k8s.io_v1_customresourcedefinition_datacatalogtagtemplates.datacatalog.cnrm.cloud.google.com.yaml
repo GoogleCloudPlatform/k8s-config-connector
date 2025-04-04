@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com
 spec:
   group: datacatalog.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: DataCatalogTagTemplate
+    listKind: DataCatalogTagTemplateList
     plural: datacatalogtagtemplates
     shortNames:
     - gcpdatacatalogtagtemplate
@@ -43,98 +42,127 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DataCatalogTagTemplate is the Schema for the DataCatalogTagTemplate
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataCatalogTagTemplateSpec defines the desired state of DataCatalogTagTemplate
             properties:
               displayName:
-                description: The display name for this template.
+                description: |-
+                  Display name for this template. Defaults to an empty string.
+
+                   The name must contain only Unicode letters, numbers (0-9), underscores (_),
+                   dashes (-), spaces ( ), and can't start or end with spaces.
+                   The maximum length is 200 characters.
                 type: string
               fields:
-                description: Set of tag template field IDs and the settings for the
-                  field. This set is an exhaustive list of the allowed fields. This
-                  set must contain at least one field and at most 500 fields. The
-                  change of field_id will be resulting in re-creating of field. The
-                  change of primitive_type will be resulting in re-creating of field,
-                  however if the field is a required, you cannot update it.
-                items:
+                additionalProperties:
                   properties:
                     description:
-                      description: A description for this field.
+                      description: The description for this field. Defaults to an
+                        empty string.
                       type: string
                     displayName:
-                      description: The display name for this field.
-                      type: string
-                    fieldId:
+                      description: |-
+                        The display name for this field. Defaults to an empty string.
+
+                         The name must contain only Unicode letters, numbers (0-9), underscores (_),
+                         dashes (-), spaces ( ), and can't start or end with spaces.
+                         The maximum length is 200 characters.
                       type: string
                     isRequired:
-                      description: Whether this is a required field. Defaults to false.
+                      description: If true, this field is required. Defaults to false.
                       type: boolean
                     name:
-                      description: 'The resource name of the tag template field in
-                        URL format. Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}/fields/{field}.'
+                      description: |-
+                        Identifier. The resource name of the tag template field in URL format.
+
+                         Note: The tag template field itself might not be stored in the location
+                         specified in its name.
+
+                         The name must contain only letters (a-z, A-Z), numbers (0-9),
+                         or underscores (_), and must start with a letter or underscore.
+                         The maximum length is 64 characters.
                       type: string
                     order:
                       description: |-
-                        The order of this field with respect to other fields in this tag template.
-                        A higher value indicates a more important field. The value can be negative.
-                        Multiple fields can have the same order, and field orders within a tag do not have to be sequential.
+                        The order of this field with respect to other fields in this tag
+                         template.
+
+                         For example, a higher value can indicate a more important field.
+                         The value can be negative. Multiple fields can have the same order and
+                         field orders within a tag don't have to be sequential.
+                      format: int32
                       type: integer
                     type:
-                      description: The type of value this tag field can contain.
+                      description: Required. The type of value this tag field can
+                        contain.
                       properties:
                         enumType:
-                          description: |-
-                            Represents an enum type.
-                             Exactly one of 'primitive_type' or 'enum_type' must be set.
+                          description: An enum type.
                           properties:
                             allowedValues:
                               description: |-
-                                The set of allowed values for this enum. The display names of the
-                                values must be case-insensitively unique within this set. Currently,
-                                enum values can only be added to the list of allowed values. Deletion
-                                and renaming of enum values are not supported.
-                                Can have up to 500 allowed values.
+                                The set of allowed values for this enum.
+
+                                 This set must not be empty and can include up to 100 allowed values.
+                                 The display names of the values in this set must not be empty and must
+                                 be case-insensitively unique within this set.
+
+                                 The order of items in this set is preserved. This field can be used to
+                                 create, remove, and reorder enum values. To rename enum values, use the
+                                 `RenameTagTemplateFieldEnumValue` method.
                               items:
                                 properties:
                                   displayName:
-                                    description: The display name of the enum value.
+                                    description: |-
+                                      Required. The display name of the enum value. Must not be an empty
+                                       string.
+
+                                       The name must contain only Unicode letters, numbers (0-9), underscores
+                                       (_), dashes (-), spaces ( ), and can't start or end with spaces. The
+                                       maximum length is 200 characters.
                                     type: string
                                 required:
                                 - displayName
                                 type: object
                               type: array
-                          required:
-                          - allowedValues
                           type: object
                         primitiveType:
-                          description: |-
-                            Represents primitive types - string, bool etc.
-                             Exactly one of 'primitive_type' or 'enum_type' must be set Possible values: ["DOUBLE", "STRING", "BOOL", "TIMESTAMP"].
+                          description: Primitive types, such as string, boolean, etc.
                           type: string
                       type: object
                   required:
-                  - fieldId
                   - type
                   type: object
-                type: array
-              forceDelete:
-                description: This confirms the deletion of any possible tags using
-                  this template. Must be set to true in order to delete the tag template.
+                description: Fields used to create a Tag
+                type: object
+              isPubliclyReadable:
+                description: |-
+                  Indicates whether tags created with this template are public. Public tags
+                   do not require tag template access to appear in
+                   [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags] API response.
+
+                   Additionally, you can search for a public tag by value with a
+                   simple search query in addition to using a ``tag:`` predicate.
                 type: boolean
+              location:
+                type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -151,36 +179,35 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              region:
-                description: Immutable. Template location region.
-                type: string
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
-                type: string
-              tagTemplateId:
-                description: Immutable. The id of the tag template to create.
+                description: The DataCatalogTagTemplate name. If not given, the metadata.name
+                  will be used.
                 type: string
             required:
-            - fields
-            - projectRef
-            - tagTemplateId
+            - ""
+            - location
             type: object
           status:
+            description: DataCatalogTagTemplateStatus defines the config connector
+              machine state of DataCatalogTagTemplate
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -204,9 +231,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: 'The resource name of the tag template in URL format.
-                  Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}.'
+              externalRef:
+                description: A unique specifier for the DataCatalogTagTemplate resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -214,7 +241,16 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  dataplexTransferStatus:
+                    description: Optional. Transfer status of the TagTemplate
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -223,9 +259,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
