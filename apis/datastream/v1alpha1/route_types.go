@@ -26,6 +26,26 @@ var DatastreamRouteGVK = GroupVersion.WithKind("DatastreamRoute")
 type DatastreamRouteSpec struct {
 	// The DatastreamRoute name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. The parent that owns the collection of Routes.
+	// +required
+	PrivateConnectionRef *PrivateConnectionRef `json:"privateConnectionRef,omitempty"`
+
+	// Labels.
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Display name.
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Required. Destination address for connection
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.destination_address
+	DestinationAddress *string `json:"destinationAddress,omitempty"`
+
+	// Destination port for connection
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.destination_port
+	DestinationPort *int32 `json:"destinationPort,omitempty"`
 }
 
 // DatastreamRouteStatus defines the config connector machine state of DatastreamRoute
@@ -47,6 +67,18 @@ type DatastreamRouteStatus struct {
 // DatastreamRouteObservedState is the state of the DatastreamRoute resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datastream.v1.Route
 type DatastreamRouteObservedState struct {
+	// Output only. The resource's name.
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.name
+	// NOTYET: this field serves the same purpose as externalRef
+	// Name *string `json:"name,omitempty"`
+
+	// Output only. The create time of the resource.
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The update time of the resource.
+	// +kcc:proto:field=google.cloud.datastream.v1.Route.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

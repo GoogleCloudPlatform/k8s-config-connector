@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -44,27 +43,20 @@ func (i *RouteIdentity) Parent() *RouteParent {
 }
 
 type RouteParent struct {
-	ProjectID string
-	Location  string
+	PrivateConnection string
 }
 
 func (p *RouteParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return p.PrivateConnection
 }
 
 // New builds a RouteIdentity from the Config Connector Route object.
 func NewRouteIdentity(ctx context.Context, reader client.Reader, obj *DatastreamRoute) (*RouteIdentity, error) {
-
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	privateConnection, err := obj.Spec.PrivateConnectionRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -83,11 +75,8 @@ func NewRouteIdentity(ctx context.Context, reader client.Reader, obj *Datastream
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.PrivateConnection != privateConnection {
+			return nil, fmt.Errorf("spec.privateConnectionRef changed, expect %s, got %s", actualParent.PrivateConnection, privateConnection)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -96,8 +85,7 @@ func NewRouteIdentity(ctx context.Context, reader client.Reader, obj *Datastream
 	}
 	return &RouteIdentity{
 		parent: &RouteParent{
-			ProjectID: projectID,
-			Location:  location,
+			PrivateConnection: privateConnection,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +93,13 @@ func NewRouteIdentity(ctx context.Context, reader client.Reader, obj *Datastream
 
 func ParseRouteExternal(external string) (parent *RouteParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "routes" {
-		return nil, "", fmt.Errorf("format of DatastreamRoute external=%q was not known (use projects/{{projectID}}/locations/{{location}}/routes/{{routeID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "privateConnections" || tokens[6] != "routes" {
+		return nil, "", fmt.Errorf("format of DatastreamRoute external=%q was not known (use projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}/routes/{{routeID}})", external)
 	}
+	privateConnection := strings.Join(tokens[:len(tokens)-2], "/")
 	parent = &RouteParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		PrivateConnection: privateConnection,
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }

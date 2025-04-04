@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &RouteRef{}
 // holds the GCP identifier for the KRM object.
 type RouteRef struct {
 	// A reference to an externally managed DatastreamRoute resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/routes/{{routeID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/privateConnections/{{privateconnectionID}}/routes/{{routeID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DatastreamRoute resource.
