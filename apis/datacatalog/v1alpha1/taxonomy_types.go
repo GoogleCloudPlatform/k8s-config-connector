@@ -69,6 +69,17 @@ type DataCatalogTaxonomyStatus struct {
 	ObservedState *DataCatalogTaxonomyObservedState `json:"observedState,omitempty"`
 }
 
+// +kcc:proto=google.cloud.datacatalog.v1.Taxonomy.Service
+type Taxonomy_Service struct {
+	// The Google Cloud service name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// The service agent for the service.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.identity
+	Identity *string `json:"identity,omitempty"`
+}
+
 // DataCatalogTaxonomyObservedState is the state of the DataCatalogTaxonomy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.datacatalog.v1.Taxonomy
 type DataCatalogTaxonomyObservedState struct {
