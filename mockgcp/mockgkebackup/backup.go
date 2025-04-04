@@ -88,10 +88,7 @@ func (s *BackupForGKEV1) CreateBackup(ctx context.Context, req *pb.CreateBackupR
 	obj.Uid = name.BackupID // Consider generating a real UUID if needed
 	obj.Manual = true       // Created via API call
 	obj.State = pb.Backup_CREATING
-
-	if err := setBackupDefaultValuesAndInherit(obj, parentPlan); err != nil {
-		return nil, err
-	}
+	obj.StateReason = "BackupJob is being pushed to target cluster."
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -101,25 +98,21 @@ func (s *BackupForGKEV1) CreateBackup(ctx context.Context, req *pb.CreateBackupR
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		// Simulate successful backup creation
-		completeTime := timestamppb.Now()
-		lroMetadata.EndTime = completeTime
-		obj.State = pb.Backup_SUCCEEDED
-		obj.StateReason = "Backup completed successfully."
-		obj.CompleteTime = completeTime
-		// Simulate some backup stats
-		obj.ResourceCount = 150
-		obj.VolumeCount = 5
-		obj.SizeBytes = 1024 * 1024 * 50 // 50 MiB
-		obj.PodCount = 30
-		obj.ConfigBackupSizeBytes = 1024 * 1024 * 2 // 2 MiB
-		obj.UpdateTime = completeTime
+		lroMetadata.EndTime = timestamppb.New(now)
+
+		setBackupDefaultValuesAndInherit(obj, parentPlan)
+
+		obj.State = pb.Backup_IN_PROGRESS
+		obj.StateReason = "Starting to back up Kubernetes resources"
+		obj.UpdateTime = timestamppb.New(now)
+		obj.DeleteLockExpireTime = timestamppb.New(now.Add(time.Duration(obj.DeleteLockDays) * 24 * time.Hour))
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
@@ -222,19 +215,6 @@ func (s *BackupForGKEV1) DeleteBackup(ctx context.Context, req *pb.DeleteBackupR
 	fqn := name.String()
 	now := time.Now()
 
-	// TODO: Check delete_lock_expire_time? The API might enforce this.
-	// For mock simplicity, we allow deletion but real API might return FailedPrecondition.
-	/*
-		existing := &pb.Backup{}
-		if err := s.storage.Get(ctx, fqn, existing); err == nil {
-			if existing.DeleteLockExpireTime != nil && timestamppb.Now().Before(existing.DeleteLockExpireTime) {
-				return nil, status.Errorf(codes.FailedPrecondition, "backup %q is locked until %v", fqn, existing.DeleteLockExpireTime.AsTime())
-			}
-		} else if status.Code(err) != codes.NotFound {
-			return nil, err // Return internal error if Get failed for other reasons
-		}
-	*/
-
 	deletedObj := &pb.Backup{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		if status.Code(err) == codes.NotFound {
@@ -291,19 +271,21 @@ func (s *MockService) parseBackupName(name string) (*backupName, error) {
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid format for a backup", name)
 }
 
-// setBackupDefaultValuesAndInherit copies required fields from the parent plan
-// and calculates computed fields like expiry times.
-func setBackupDefaultValuesAndInherit(obj *pb.Backup, parentPlan *pb.BackupPlan) error {
-	// Inherit ClusterMetadata
-	// In a real scenario, this would be fetched at backup time. Mocking with plan cluster.
+func setBackupDefaultValuesAndInherit(obj *pb.Backup, parentPlan *pb.BackupPlan) {
 	obj.ClusterMetadata = &pb.Backup_ClusterMetadata{
 		Cluster: parentPlan.Cluster,
-		// TODO: Populate K8s version, CRD versions etc. if needed for tests
-		K8sVersion:        "1.27.5-gke.100", // Example
-		BackupCrdVersions: map[string]string{"example.com/v1": "v1"},
+		PlatformVersion: &pb.Backup_ClusterMetadata_GkeVersion{
+			GkeVersion: "v1.31.6-gke.1020000",
+		},
+		K8SVersion: "1.31",
+		BackupCrdVersions: map[string]string{
+			"backupjobs.gkebackup.gke.io":                 "v1",
+			"protectedapplicationgroups.gkebackup.gke.io": "v1",
+			"protectedapplications.gkebackup.gke.io":      "v1",
+			"restorejobs.gkebackup.gke.io":                "v1",
+		},
 	}
 
-	// Inherit BackupConfig fields
 	if parentPlan.BackupConfig != nil {
 		switch scope := parentPlan.BackupConfig.BackupScope.(type) {
 		case *pb.BackupPlan_BackupConfig_AllNamespaces:
@@ -315,38 +297,5 @@ func setBackupDefaultValuesAndInherit(obj *pb.Backup, parentPlan *pb.BackupPlan)
 		}
 		obj.ContainsVolumeData = parentPlan.BackupConfig.IncludeVolumeData
 		obj.ContainsSecrets = parentPlan.BackupConfig.IncludeSecrets
-		obj.EncryptionKey = parentPlan.BackupConfig.EncryptionKey // Assume it's copied directly
-		obj.PermissiveMode = parentPlan.BackupConfig.PermissiveMode
 	}
-
-	// Inherit RetentionPolicy fields if not set on the backup itself
-	if parentPlan.RetentionPolicy != nil {
-		if obj.DeleteLockDays == 0 { // Use parent default only if not explicitly set
-			obj.DeleteLockDays = parentPlan.RetentionPolicy.BackupDeleteLockDays
-		}
-		if obj.RetainDays == 0 { // Use parent default only if not explicitly set
-			obj.RetainDays = parentPlan.RetentionPolicy.BackupRetainDays
-		}
-	}
-
-	// Validate and calculate expiry times based on potentially inherited values
-	if obj.RetainDays > 0 && obj.RetainDays < obj.DeleteLockDays {
-		return status.Errorf(codes.InvalidArgument, "Backup creation failed: retain_days (%d) must be >= delete_lock_days (%d)", obj.RetainDays, obj.DeleteLockDays)
-	}
-
-	if obj.DeleteLockDays > 0 {
-		expireTime := obj.CreateTime.AsTime().Add(time.Duration(obj.DeleteLockDays) * 24 * time.Hour)
-		obj.DeleteLockExpireTime = timestamppb.New(expireTime)
-	} else {
-		obj.DeleteLockExpireTime = nil // No lock
-	}
-
-	if obj.RetainDays > 0 {
-		expireTime := obj.CreateTime.AsTime().Add(time.Duration(obj.RetainDays) * 24 * time.Hour)
-		obj.RetainExpireTime = timestamppb.New(expireTime)
-	} else {
-		obj.RetainExpireTime = nil // No automatic deletion
-	}
-
-	return nil
 }
