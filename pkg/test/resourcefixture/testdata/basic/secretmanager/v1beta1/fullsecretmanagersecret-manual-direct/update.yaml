@@ -30,9 +30,6 @@ spec:
           kmsKeyRef:
             name: kmscryptokey-${uniqueId}
         location: us-central1
-  labels:
-    label-one: value-one
-    label-two: value-two
   topics:
     - topicRef:
         name: topic-2-${uniqueId}

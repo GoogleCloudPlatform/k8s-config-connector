@@ -17,11 +17,11 @@ package secretmanager
 import (
 	"strconv"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 )
 
 func SecretManagerSecretStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretManagerSecretObservedState {
@@ -108,7 +108,7 @@ func SecretManagerSecretSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecretMa
 	out.Rotation = Rotation_ToProto(mapCtx, in.Rotation)
 	out.VersionAliases = MapStringString_ToMapStringInt64(mapCtx, in.VersionAliases)
 	out.Annotations = in.Annotations
-	out.Labels = common.ComputeGCPLabels(in.Labels)
+	// MISSING: Labels
 	// MISSING: VersionDestroyTtl
 	// MISSING: CustomerManagedEncryption
 	return out

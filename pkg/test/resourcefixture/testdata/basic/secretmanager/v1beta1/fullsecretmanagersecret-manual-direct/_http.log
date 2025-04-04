@@ -670,6 +670,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
     "foo": "secretmanagersecret"
   },
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -715,6 +716,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -767,6 +769,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -809,6 +812,7 @@ X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -856,6 +860,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -909,6 +914,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -963,6 +969,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
