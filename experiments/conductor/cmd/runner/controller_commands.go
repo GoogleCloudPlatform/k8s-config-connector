@@ -110,7 +110,7 @@ func generateController(ctx context.Context, opts *RunnerOptions, branch Branch,
 
 	// Create the prompt for controllerbuilder
 	prompt := fmt.Sprintf("// +tool:controller\n// proto.service: %s\n// proto.message: %s\n// crd.type: %s\n// crd.version: %s\n",
-		branch.ProtoSvc, branch.ProtoMsg, branch.Kind, "v1alpha1") // Using v1alpha1 as default CRD version
+		branch.ProtoSvc, branch.ProtoMsg, branch.Kind, branch.CRDVersion())
 
 	// Ensure the directory exists
 	controllerDir := filepath.Join(opts.branchRepoDir, "pkg", "controller", "direct", branch.Group)
@@ -169,7 +169,7 @@ func generateControllerIdentity(ctx context.Context, opts *RunnerOptions, branch
 	}
 
 	// Default CRD version
-	crdVersion := "v1alpha1"
+	crdVersion := branch.CRDVersion()
 
 	// Create the identity file
 	identityFileName := strings.ToLower(branch.Kind) + "_identity.go"
@@ -236,7 +236,7 @@ func generateControllerReference(ctx context.Context, opts *RunnerOptions, branc
 	}
 
 	// Default CRD version
-	crdVersion := "v1alpha1"
+	crdVersion := branch.CRDVersion()
 
 	// Create the reference file
 	referenceFileName := strings.ToLower(branch.Kind) + "_reference.go"
@@ -295,7 +295,7 @@ func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branc
 	}
 
 	// Default CRD version and group
-	crdVersion := "v1alpha1"
+	crdVersion := branch.CRDVersion()
 	crdGroup := fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group)
 
 	// Create the test directory

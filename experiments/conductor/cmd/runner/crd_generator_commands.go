@@ -166,7 +166,7 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	}
 
 	// Generate types
-	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
+	apiDirPathRelative := filepath.Join("apis", branch.Group, branch.CRDVersion(), string(filepath.Separator))
 	apiDirPath := filepath.Join(opts.branchRepoDir, apiDirPathRelative)
 	affectedPaths := []string{apiDirPathRelative}
 	if _, err := os.Stat(apiDirPath); errors.Is(err, os.ErrNotExist) || opts.force {
@@ -177,7 +177,7 @@ func generateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 				"run", ".",
 				"generate-types",
 				"--service", branch.Package,
-				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/%s", branch.Group, branch.CRDVersion()),
 				"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 			},
 			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
@@ -218,7 +218,7 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 				"run", ".",
 				"generate-mapper",
 				"--service", branch.Package,
-				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+				"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/%s", branch.Group, branch.CRDVersion()),
 			},
 			WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
 			MaxAttempts: 2,
@@ -236,7 +236,7 @@ func generateMapper(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 }
 
 func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	apiDirPathRelative := filepath.Join("apis", branch.Group, "v1alpha1", string(filepath.Separator))
+	apiDirPathRelative := filepath.Join("apis", branch.Group, branch.CRDVersion(), string(filepath.Separator))
 	affectedPaths := []string{"config/crds/resources/", apiDirPathRelative}
 
 	// Generate CRDs
@@ -253,7 +253,7 @@ func generateCRD(ctx context.Context, opts *RunnerOptions, branch Branch, execRe
 
 func generateSpecStatus(opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	affectedPaths := []string{
-		filepath.Join("apis", branch.Group, "v1alpha1",
+		filepath.Join("apis", branch.Group, branch.CRDVersion(),
 			fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource))),
 	}
 
@@ -367,9 +367,9 @@ ${RESOURCE_TYPES_FILES_CONTENTS}
 `
 
 func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
-	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
-	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
+	resourceTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	generatedTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), "types.generated.go")
+	identityPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
 	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
 
@@ -518,9 +518,9 @@ ${PROTO_FILES_CONTENTS}
 `
 
 func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
-	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
-	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
+	resourceTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	generatedTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), "types.generated.go")
+	identityPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
 	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
 
@@ -582,8 +582,8 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 }
 
 func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
-	generatedTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", "types.generated.go")
+	resourceTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	generatedTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), "types.generated.go")
 	// Regenerate types
 	cfg := CommandConfig{
 		Name: "Regenerate types",
@@ -592,7 +592,7 @@ func regenerateTypes(ctx context.Context, opts *RunnerOptions, branch Branch, ex
 			"run", ".",
 			"generate-types",
 			"--service", branch.Package,
-			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/v1alpha1", branch.Group),
+			"--api-version", fmt.Sprintf("%s.cnrm.cloud.google.com/%s", branch.Group, branch.CRDVersion()),
 			"--resource", fmt.Sprintf("%s:%s", branch.Kind, branch.Proto),
 		},
 		WorkDir:     filepath.Join(opts.branchRepoDir, "dev", "tools", "controllerbuilder"),
@@ -675,8 +675,8 @@ ${PROTO_FILES_CONTENTS}
 `
 
 func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
-	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
+	resourceTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	identityPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
 	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
 
@@ -769,8 +769,8 @@ ${RESOURCE_TYPES_FILES_CONTENTS}
 `
 
 func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	resourceTypesPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
-	identityPath := filepath.Join("apis", branch.Group, "v1alpha1", fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
+	resourceTypesPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_types.go", strings.ToLower(branch.Resource)))
+	identityPath := filepath.Join("apis", branch.Group, branch.CRDVersion(), fmt.Sprintf("%s_identity.go", strings.ToLower(branch.Resource)))
 	// Read all proto files in the directory
 	protoDirRelative := filepath.Dir(filepath.Join(".build", "third_party", "googleapis", branch.ProtoPath))
 
