@@ -141,6 +141,118 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect=computeinterconnect-minimal-${uniqueId}
+
+{
+  "customerName": "customer",
+  "description": "Updated description",
+  "interconnectType": "DEDICATED",
+  "linkType": "LINK_TYPE_ETHERNET_10G_LR",
+  "location": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectLocations/iad-zone1-1",
+  "name": "${interconnectID}",
+  "requestedLinkCount": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${interconnectID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/${interconnectID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&operation=${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "patch",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${interconnectID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/${interconnectID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=${projectId}&interconnect=computeinterconnect-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "adminEnabled": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "customerName": "customer",
+  "description": "Updated description",
+  "googleReferenceId": "1234567890",
+  "id": "000000000000000000000",
+  "interconnectType": "DEDICATED",
+  "kind": "compute#interconnect",
+  "labelFingerprint": "abcdef0123A=",
+  "linkType": "LINK_TYPE_ETHERNET_10G_LR",
+  "location": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnectLocations/iad-zone1-1",
+  "macsecEnabled": false,
+  "name": "${interconnectID}",
+  "operationalStatus": "OS_UNPROVISIONED",
+  "requestedLinkCount": 1,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/${interconnectID}",
+  "state": "UNPROVISIONED"
+}
+
+---
+
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/interconnects/computeinterconnect-minimal-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}

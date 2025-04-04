@@ -181,7 +181,10 @@ func (a *interconnectAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		updated := a.actual
+		status := &krm.ComputeInterconnectStatus{}
+		status.ObservedState = ComputeInterconnectObservedState_FromProto(mapCtx, updated)
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	req := &computepb.PatchInterconnectRequest{
