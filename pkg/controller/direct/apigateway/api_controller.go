@@ -61,24 +61,16 @@ func (m *apiModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAPIIdentity(ctx, reader, obj)
+	id, err := krm.NewApiIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
-
-	// normalize reference fields
-	if obj.Spec.ManagedServiceRef != nil {
-		if _, err := refs.ResolveServiceManagementManagedServiceRef(ctx, reader, obj, obj.Spec.ManagedServiceRef); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get apigateway GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
 		return nil, err
 	}
-	apiGatewayClient, err := gcpClient.newClient(ctx)
+	apiGatewayClient, err := gcpClient.newApiGatewayClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +88,7 @@ func (m *apiModel) AdapterForURL(ctx context.Context, url string) (directbase.Ad
 
 type apiAdapter struct {
 	gcpClient *gcp.Client
-	id        *krm.APIIdentity
+	id        *krm.ApiIdentity
 	desired   *krm.APIGatewayAPI
 	actual    *pb.Api
 }
