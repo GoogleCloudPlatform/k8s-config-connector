@@ -17,6 +17,7 @@ package documentai
 import (
 	"context"
 	"fmt"
+	"time"
 
 	gcp "cloud.google.com/go/documentai/apiv1"
 	documentaipb "cloud.google.com/go/documentai/apiv1/documentaipb"
@@ -28,6 +29,7 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -151,23 +153,14 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 		return fmt.Errorf("waiting create Version %s: %w", a.id, err)
 	}
 
-	created := &documentaipb.ProcessorVersion{}
+	// op.wait() returns once the version resource exists, but the version's state can still be "creating."
+	// It takes a few seconds to reach a stable state like "failed" or "undeployed."
+	// Retrieve the resource and check its state to determine if the operation has finished.
 	getReq := &documentaipb.GetProcessorVersionRequest{Name: metadata.GetCommonMetadata().GetResource()}
-
-	// if state is creating, keep retrieving until creation failed
-	// todo: currently we expect resource state to be FAILED after creation as there's no training data
-	// handle other successful state, i.e. undeployed after creation
-	done := false
-	for !done {
-		created, err = a.gcpClient.GetProcessorVersion(ctx, getReq)
-		if err != nil {
-			return fmt.Errorf("getting created version %q: %w", a.id, err)
-		}
-		if created.State == documentaipb.ProcessorVersion_FAILED {
-			done = true
-		}
+	created, err := a.getCreatedResource(ctx, 5*time.Second, 5*time.Minute, getReq)
+	if err != nil {
+		return fmt.Errorf("waiting create Version %s: %w", a.id, err)
 	}
-
 	log.V(2).Info("successfully created ProcessorVersion", "name", a.id)
 
 	status := &krm.DocumentAIProcessorVersionStatus{}
@@ -244,4 +237,36 @@ func (a *ProcessorVersionAdapter) Delete(ctx context.Context, deleteOp *directba
 		}
 	}
 	return true, nil
+}
+
+// Get created resource by making sure its state is a stable state such as FAILED or DEPLOYED or UNDEPLOYED.
+// Set a poll interval and a timeout to avoid potential quota issue and excessive GET calls.
+// If it still hasn't reached a stable state after a certain time, we'll consider it a "fail".
+func (a *ProcessorVersionAdapter) getCreatedResource(ctx context.Context, pollInterval, timeout time.Duration, getReq *documentaipb.GetProcessorVersionRequest) (*documentaipb.ProcessorVersion, error) {
+	var createdVersion *documentaipb.ProcessorVersion
+	err := wait.PollImmediateWithContext(ctx, pollInterval, timeout, func(ctx context.Context) (bool, error) {
+		created, err := a.gcpClient.GetProcessorVersion(ctx, getReq)
+		if err != nil {
+			return false, fmt.Errorf("getting created version %q: %w", a.id, err)
+		}
+		switch created.State {
+		// Currently we expect resource state to be FAILED after creation as there's no training data
+		case documentaipb.ProcessorVersion_FAILED,
+			documentaipb.ProcessorVersion_DEPLOYED,
+			documentaipb.ProcessorVersion_UNDEPLOYED:
+			createdVersion = created
+			return true, nil
+		// Keep polling if state is CREATING
+		case documentaipb.ProcessorVersion_CREATING:
+			return false, nil
+		// todo: Handle other states, i.e. STATE_UNSPECIFIED, DEPLOYING, etc
+		default:
+			return false, nil
+		}
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	return createdVersion, nil
 }
