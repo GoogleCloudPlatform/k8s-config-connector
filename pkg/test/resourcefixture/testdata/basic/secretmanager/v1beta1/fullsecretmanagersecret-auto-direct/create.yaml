@@ -24,12 +24,14 @@ metadata:
 spec:
   replication:
     automatic: true
-  # TF-based resource is broken, got the error even if not changing this field 
+  # TF-based resource is broken, got the error even if not changing this field
   # "cannot make changes to immutable field(s): [Field Name: replication.0.auto.#, Got: 1, Wanted: 0]"
     auto:
       customerManagedEncryption:
         kmsKeyRef:
           name: kmscryptokey-${uniqueId}
+  labels:
+    label-one: value-one
   topics:
     - topicRef:
         name: topic-${uniqueId}
