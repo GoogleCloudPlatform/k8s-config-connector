@@ -293,44 +293,6 @@ func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.Ma
 	}
 	return out
 }
-func SpeechCustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechCustomClassObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
-	return out
-}
-func SpeechCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassObservedState) *pb.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomClass{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.State = direct.Enum_ToProto[pb.CustomClass_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
-	return out
-}
 func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
 	if in == nil {
 		return nil
