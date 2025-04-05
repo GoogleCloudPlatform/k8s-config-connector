@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &TaxonomyRef{}
 // holds the GCP identifier for the KRM object.
 type TaxonomyRef struct {
 	// A reference to an externally managed DataCatalogTaxonomy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomys/{{taxonomyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataCatalogTaxonomy resource.
