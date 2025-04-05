@@ -19,5 +19,8 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}
+  location: global
+  prefixLength: 24
   description: "Initial description"
