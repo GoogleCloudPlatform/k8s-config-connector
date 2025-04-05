@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // +generated:mapper
-// proto.service: google.cloud.apigateway.v1
 // krm.group: apigateway.cnrm.cloud.google.com
 // krm.version: v1alpha1
+// proto.service: google.cloud.apigateway.v1
 
 package apigateway
 
