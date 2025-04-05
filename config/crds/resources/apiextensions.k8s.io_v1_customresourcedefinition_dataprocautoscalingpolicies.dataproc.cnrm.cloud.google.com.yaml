@@ -7,7 +7,6 @@ metadata:
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com
 spec:
@@ -16,6 +15,7 @@ spec:
     categories:
     - gcp
     kind: DataprocAutoscalingPolicy
+    listKind: DataprocAutoscalingPolicyList
     plural: dataprocautoscalingpolicies
     shortNames:
     - gcpdataprocautoscalingpolicy
@@ -43,89 +43,117 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: DataprocAutoscalingPolicy is the Schema for the DataprocAutoscalingPolicy
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataprocAutoscalingPolicySpec defines the desired state of
+              DataprocAutoscalingPolicy
             properties:
               basicAlgorithm:
                 properties:
                   cooldownPeriod:
-                    description: 'Optional. Duration between scaling events. A scaling
-                      period starts after the update operation from the previous event
-                      has completed. Bounds: . Default: 2m.'
+                    description: |-
+                      Optional. Duration between scaling events. A scaling period starts after
+                       the update operation from the previous event has completed.
+
+                       Bounds: [2m, 1d]. Default: 2m.
                     type: string
                   yarnConfig:
                     description: Required. YARN autoscaling configuration.
                     properties:
                       gracefulDecommissionTimeout:
-                        description: Required. Timeout for YARN graceful decommissioning
-                          of Node Managers. Specifies the duration to wait for jobs
-                          to complete before forcefully removing workers (and potentially
-                          interrupting jobs). Only applicable to downscaling operations.
+                        description: |-
+                          Required. Timeout for YARN graceful decommissioning of Node Managers.
+                           Specifies the duration to wait for jobs to complete before forcefully
+                           removing workers (and potentially interrupting jobs). Only applicable to
+                           downscaling operations.
+
+                           Bounds: [0s, 1d].
                         type: string
                       scaleDownFactor:
-                        description: Required. Fraction of average YARN pending memory
-                          in the last cooldown period for which to remove workers.
-                          A scale-down factor of 1 will result in scaling down so
-                          that there is no available memory remaining after the update
-                          (more aggressive scaling). A scale-down factor of 0 disables
-                          removing workers, which can be beneficial for autoscaling
-                          a single job. See .
-                        format: double
+                        description: |-
+                          Required. Fraction of average YARN pending memory in the last cooldown
+                           period for which to remove workers. A scale-down factor of 1 will result in
+                           scaling down so that there is no available memory remaining after the
+                           update (more aggressive scaling). A scale-down factor of 0 disables
+                           removing workers, which can be beneficial for autoscaling a single job.
+                           See [How autoscaling
+                           works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+                           for more information.
+
+                           Bounds: [0.0, 1.0].
                         type: number
                       scaleDownMinWorkerFraction:
-                        description: 'Optional. Minimum scale-down threshold as a
-                          fraction of total cluster size before scaling occurs. For
-                          example, in a 20-worker cluster, a threshold of 0.1 means
-                          the autoscaler must recommend at least a 2 worker scale-down
-                          for the cluster to scale. A threshold of 0 means the autoscaler
-                          will scale down on any recommended change. Bounds: . Default:
-                          0.0.'
-                        format: double
+                        description: |-
+                          Optional. Minimum scale-down threshold as a fraction of total cluster size
+                           before scaling occurs. For example, in a 20-worker cluster, a threshold of
+                           0.1 means the autoscaler must recommend at least a 2 worker scale-down for
+                           the cluster to scale. A threshold of 0 means the autoscaler will scale down
+                           on any recommended change.
+
+                           Bounds: [0.0, 1.0]. Default: 0.0.
                         type: number
                       scaleUpFactor:
-                        description: Required. Fraction of average YARN pending memory
-                          in the last cooldown period for which to add workers. A
-                          scale-up factor of 1.0 will result in scaling up so that
-                          there is no pending memory remaining after the update (more
-                          aggressive scaling). A scale-up factor closer to 0 will
-                          result in a smaller magnitude of scaling up (less aggressive
-                          scaling). See .
-                        format: double
+                        description: |-
+                          Required. Fraction of average YARN pending memory in the last cooldown
+                           period for which to add workers. A scale-up factor of 1.0 will result in
+                           scaling up so that there is no pending memory remaining after the update
+                           (more aggressive scaling). A scale-up factor closer to 0 will result in a
+                           smaller magnitude of scaling up (less aggressive scaling). See [How
+                           autoscaling
+                           works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+                           for more information.
+
+                           Bounds: [0.0, 1.0].
                         type: number
                       scaleUpMinWorkerFraction:
-                        description: 'Optional. Minimum scale-up threshold as a fraction
-                          of total cluster size before scaling occurs. For example,
-                          in a 20-worker cluster, a threshold of 0.1 means the autoscaler
-                          must recommend at least a 2-worker scale-up for the cluster
-                          to scale. A threshold of 0 means the autoscaler will scale
-                          up on any recommended change. Bounds: . Default: 0.0.'
-                        format: double
+                        description: |-
+                          Optional. Minimum scale-up threshold as a fraction of total cluster size
+                           before scaling occurs. For example, in a 20-worker cluster, a threshold of
+                           0.1 means the autoscaler must recommend at least a 2-worker scale-up for
+                           the cluster to scale. A threshold of 0 means the autoscaler will scale up
+                           on any recommended change.
+
+                           Bounds: [0.0, 1.0]. Default: 0.0.
                         type: number
-                    required:
-                    - gracefulDecommissionTimeout
-                    - scaleDownFactor
-                    - scaleUpFactor
                     type: object
-                required:
-                - yarnConfig
+                type: object
+              id:
+                description: |-
+                  Required. The policy id.
+
+                   The id must contain only letters (a-z, A-Z), numbers (0-9),
+                   underscores (_), and hyphens (-). Cannot begin or end with underscore
+                   or hyphen. Must consist of between 3 and 50 characters.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. The labels to associate with this autoscaling
+                  policy. Label **keys** must contain 1 to 63 characters, and must
+                  conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt). Label
+                  **values** may be empty, but, if present, must contain 1 to 63 characters,
+                  and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
+                  No more than 32 labels can be associated with an autoscaling policy.
                 type: object
               location:
-                description: Immutable. The location for the resource
+                description: Required.
                 type: string
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: Required.
                 oneOf:
                 - not:
                     required:
@@ -142,59 +170,67 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The project for the resource
-
-                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The DataprocAutoscalingPolicy name. If not given, the
+                  metadata.name will be used.
                 type: string
               secondaryWorkerConfig:
                 description: Optional. Describes how the autoscaler will operate for
                   secondary workers.
                 properties:
                   maxInstances:
-                    description: 'Optional. Maximum number of instances for this group.
-                      Note that by default, clusters will not use secondary workers.
-                      Required for secondary workers if the minimum secondary instances
-                      is set. Primary workers - Bounds: [min_instances, ). Secondary
-                      workers - Bounds: [min_instances, ). Default: 0.'
-                    format: int64
+                    description: |-
+                      Required. Maximum number of instances for this group. Required for primary
+                       workers. Note that by default, clusters will not use secondary workers.
+                       Required for secondary workers if the minimum secondary instances is set.
+
+                       Primary workers - Bounds: [min_instances, ).
+                       Secondary workers - Bounds: [min_instances, ). Default: 0.
+                    format: int32
                     type: integer
                   minInstances:
-                    description: 'Optional. Minimum number of instances for this group.
-                      Primary workers - Bounds: . Default: 0.'
-                    format: int64
+                    description: |-
+                      Optional. Minimum number of instances for this group.
+
+                       Primary workers - Bounds: [2, max_instances]. Default: 2.
+                       Secondary workers - Bounds: [0, max_instances]. Default: 0.
+                    format: int32
                     type: integer
                   weight:
-                    description: 'Optional. Weight for the instance group, which is
-                      used to determine the fraction of total workers in the cluster
-                      from this instance group. For example, if primary workers have
-                      weight 2, and secondary workers have weight 1, the cluster will
-                      have approximately 2 primary workers for each secondary worker.
-                      The cluster may not reach the specified balance if constrained
-                      by min/max bounds or other autoscaling settings. For example,
-                      if `max_instances` for secondary workers is 0, then only primary
-                      workers will be added. The cluster can also be out of balance
-                      when created. If weight is not set on any instance group, the
-                      cluster will default to equal weight for all groups: the cluster
-                      will attempt to maintain an equal number of workers in each
-                      group within the configured size bounds for each group. If weight
-                      is set for one group only, the cluster will default to zero
-                      weight on the unset group. For example if weight is set only
-                      on primary workers, the cluster will use primary workers only
-                      and no secondary workers.'
-                    format: int64
+                    description: |-
+                      Optional. Weight for the instance group, which is used to determine the
+                       fraction of total workers in the cluster from this instance group.
+                       For example, if primary workers have weight 2, and secondary workers have
+                       weight 1, the cluster will have approximately 2 primary workers for each
+                       secondary worker.
+
+                       The cluster may not reach the specified balance if constrained
+                       by min/max bounds or other autoscaling settings. For example, if
+                       `max_instances` for secondary workers is 0, then only primary workers will
+                       be added. The cluster can also be out of balance when created.
+
+                       If weight is not set on any instance group, the cluster will default to
+                       equal weight for all groups: the cluster will attempt to maintain an equal
+                       number of workers in each group within the configured size bounds for each
+                       group. If weight is set for one group only, the cluster will default to
+                       zero weight on the unset group. For example if weight is set only on
+                       primary workers, the cluster will use primary workers only and no
+                       secondary workers.
+                    format: int32
                     type: integer
                 type: object
               workerConfig:
@@ -202,52 +238,54 @@ spec:
                   primary workers.
                 properties:
                   maxInstances:
-                    description: 'Required. Maximum number of instances for this group.
-                      Required for primary workers. Note that by default, clusters
-                      will not use secondary workers. Required for secondary workers
-                      if the minimum secondary instances is set. Primary workers -
-                      Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances,
-                      ). Default: 0.'
-                    format: int64
+                    description: |-
+                      Required. Maximum number of instances for this group. Required for primary
+                       workers. Note that by default, clusters will not use secondary workers.
+                       Required for secondary workers if the minimum secondary instances is set.
+
+                       Primary workers - Bounds: [min_instances, ).
+                       Secondary workers - Bounds: [min_instances, ). Default: 0.
+                    format: int32
                     type: integer
                   minInstances:
-                    description: 'Optional. Minimum number of instances for this group.
-                      Primary workers - Bounds: . Default: 0.'
-                    format: int64
+                    description: |-
+                      Optional. Minimum number of instances for this group.
+
+                       Primary workers - Bounds: [2, max_instances]. Default: 2.
+                       Secondary workers - Bounds: [0, max_instances]. Default: 0.
+                    format: int32
                     type: integer
                   weight:
-                    description: 'Optional. Weight for the instance group, which is
-                      used to determine the fraction of total workers in the cluster
-                      from this instance group. For example, if primary workers have
-                      weight 2, and secondary workers have weight 1, the cluster will
-                      have approximately 2 primary workers for each secondary worker.
-                      The cluster may not reach the specified balance if constrained
-                      by min/max bounds or other autoscaling settings. For example,
-                      if `max_instances` for secondary workers is 0, then only primary
-                      workers will be added. The cluster can also be out of balance
-                      when created. If weight is not set on any instance group, the
-                      cluster will default to equal weight for all groups: the cluster
-                      will attempt to maintain an equal number of workers in each
-                      group within the configured size bounds for each group. If weight
-                      is set for one group only, the cluster will default to zero
-                      weight on the unset group. For example if weight is set only
-                      on primary workers, the cluster will use primary workers only
-                      and no secondary workers.'
-                    format: int64
+                    description: |-
+                      Optional. Weight for the instance group, which is used to determine the
+                       fraction of total workers in the cluster from this instance group.
+                       For example, if primary workers have weight 2, and secondary workers have
+                       weight 1, the cluster will have approximately 2 primary workers for each
+                       secondary worker.
+
+                       The cluster may not reach the specified balance if constrained
+                       by min/max bounds or other autoscaling settings. For example, if
+                       `max_instances` for secondary workers is 0, then only primary workers will
+                       be added. The cluster can also be out of balance when created.
+
+                       If weight is not set on any instance group, the cluster will default to
+                       equal weight for all groups: the cluster will attempt to maintain an equal
+                       number of workers in each group within the configured size bounds for each
+                       group. If weight is set for one group only, the cluster will default to
+                       zero weight on the unset group. For example if weight is set only on
+                       primary workers, the cluster will use primary workers only and no
+                       secondary workers.
+                    format: int32
                     type: integer
-                required:
-                - maxInstances
                 type: object
-            required:
-            - basicAlgorithm
-            - location
-            - workerConfig
             type: object
           status:
+            description: DataprocAutoscalingPolicyStatus defines the config connector
+              machine state of DataprocAutoscalingPolicy
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -271,13 +309,36 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the DataprocAutoscalingPolicy
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  name:
+                    description: |-
+                      Output only. The "resource name" of the autoscaling policy, as described
+                       in https://cloud.google.com/apis/design/resource_names.
+
+                       * For `projects.regions.autoscalingPolicies`, the resource name of the
+                         policy has the following format:
+                         `projects/{project_id}/regions/{region}/autoscalingPolicies/{policy_id}`
+
+                       * For `projects.locations.autoscalingPolicies`, the resource name of the
+                         policy has the following format:
+                         `projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}`
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -286,9 +347,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
