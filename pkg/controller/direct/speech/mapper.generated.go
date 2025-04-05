@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: speech.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.speech.v2
+
 package speech
 
 import (
@@ -32,48 +37,6 @@ func AutoDetectDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoDet
 		return nil
 	}
 	out := &pb.AutoDetectDecodingConfig{}
-	return out
-}
-func CustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomClass{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto)
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func CustomClass_ToProto(mapCtx *direct.MapContext, in *krm.CustomClass) *pb.CustomClass {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomClass{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
 	return out
 }
 func CustomClass_ClassItem_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass_ClassItem) *krm.CustomClass_ClassItem {
@@ -288,42 +251,6 @@ func SpeakerDiarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Speaker
 	out.MaxSpeakerCount = direct.ValueOf(in.MaxSpeakerCount)
 	return out
 }
-func SpeechAdaptation_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptation {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_FromProto)
-	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, CustomClass_FromProto)
-	return out
-}
-func SpeechAdaptation_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation) *pb.SpeechAdaptation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_ToProto)
-	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, CustomClass_ToProto)
-	return out
-}
-func SpeechAdaptationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptationObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechAdaptationObservedState{}
-	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_FromProto)
-	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, CustomClassObservedState_FromProto)
-	return out
-}
-func SpeechAdaptationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptationObservedState) *pb.SpeechAdaptation {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto)
-	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, CustomClassObservedState_ToProto)
-	return out
-}
 func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
 	if in == nil {
 		return nil
@@ -364,6 +291,30 @@ func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.Ma
 	if oneof := PhraseSetObservedState_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
 		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
 	}
+	return out
+}
+func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechCustomClassSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto)
+	out.Annotations = in.Annotations
+	return out
+}
+func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassSpec) *pb.CustomClass {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomClass{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
+	out.Annotations = in.Annotations
 	return out
 }
 func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerSpec {
