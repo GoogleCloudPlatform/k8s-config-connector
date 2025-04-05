@@ -20,5 +20,5 @@ spec:
   projectRef:
     external: ${projectId}
   labels:
-    label-one: "updated value-one"
+    name: "updatedwrench"
   displayName: "Updated displayName"

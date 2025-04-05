@@ -20,5 +20,5 @@ spec:
   projectRef:
     external: ${projectId}
   labels:
-    label-one: "initial value-one"
+    name: "wrench"
   displayName: "Initial displayName"
