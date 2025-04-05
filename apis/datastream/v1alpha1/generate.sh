@@ -25,7 +25,8 @@ go run . generate-types \
     --service google.cloud.datastream.v1 \
     --api-version datastream.cnrm.cloud.google.com/v1alpha1 \
     --resource DatastreamPrivateConnection:PrivateConnection \
-    --resource DatastreamConnectionProfile:ConnectionProfile
+    --resource DatastreamConnectionProfile:ConnectionProfile \
+    --resource DatastreamRoute:Route
 
 go run . generate-mapper \
     --service google.cloud.datastream.v1 \
