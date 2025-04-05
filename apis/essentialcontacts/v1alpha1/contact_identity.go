@@ -126,8 +126,8 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 			}
 		}
 		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+			// This is expected in the case of EssentialContactsContact. The actual resource ID is set by the GCP API.
+			resourceID = actualResourceID
 		}
 	}
 	return &ContactIdentity{

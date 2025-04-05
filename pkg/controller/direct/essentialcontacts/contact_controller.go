@@ -104,7 +104,7 @@ var _ directbase.Adapter = &contactAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *contactAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting essential contact", "name", a.id)
+	log.Info("getting essential contact", "name", a.id)
 
 	// Use the calculated name if available (from status), otherwise construct from ID
 	name := direct.ValueOf(a.desired.Status.ExternalRef)
@@ -128,7 +128,7 @@ func (a *contactAdapter) Find(ctx context.Context) (bool, error) {
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating essential contact", "name", a.id)
+	log.Info("creating essential contact", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -145,7 +145,7 @@ func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if err != nil {
 		return fmt.Errorf("creating essential contact %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created essential contact", "name", a.id)
+	log.Info("successfully created essential contact", "name", a.id)
 
 	status := &krm.EssentialContactsContactStatus{}
 	status.ObservedState = EssentialContactsContactObservedState_FromProto(mapCtx, created)
@@ -159,7 +159,7 @@ func (a *contactAdapter) Create(ctx context.Context, createOp *directbase.Create
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating essential contact", "name", a.id)
+	log.Info("updating essential contact", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -179,7 +179,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	var updated *pb.Contact
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
+		log.Info("no field needs update", "name", a.id)
 		updated = a.actual
 	} else {
 		req := &pb.UpdateContactRequest{
@@ -191,7 +191,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		if err != nil {
 			return fmt.Errorf("updating essential contact %s: %w", a.id, err)
 		}
-		log.V(2).Info("successfully updated essential contact", "name", a.id)
+		log.Info("successfully updated essential contact", "name", a.id)
 	}
 
 	status := &krm.EssentialContactsContactStatus{}
@@ -259,19 +259,19 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *contactAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting essential contact", "name", a.actual.Name)
+	log.Info("deleting essential contact", "name", a.actual.Name)
 
 	req := &pb.DeleteContactRequest{Name: a.actual.Name}
 	err := a.gcpClient.DeleteContact(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent essential contact, assuming it was already deleted", "name", a.actual.Name)
+			log.Info("skipping delete for non-existent essential contact, assuming it was already deleted", "name", a.actual.Name)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting essential contact %s: %w", a.actual.Name, err)
 	}
-	log.V(2).Info("successfully deleted essential contact", "name", a.actual.Name)
+	log.Info("successfully deleted essential contact", "name", a.actual.Name)
 
 	return true, nil
 }
