@@ -21,6 +21,7 @@
 // resource: VMwareEngineNetworkPolicy:NetworkPolicy
 // resource: VMwareEngineExternalAccessRule:ExternalAccessRule
 // resource: VMwareEnginePrivateCloud:PrivateCloud
+// resource: VMwareEngineExternalAddress:ExternalAddress
 
 package v1alpha1
 
