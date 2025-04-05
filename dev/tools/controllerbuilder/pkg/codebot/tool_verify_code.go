@@ -100,8 +100,13 @@ func (t *VerifyCode) BuildFunctionDefinition() *llm.FunctionDefinition {
 Verifies the result of changes by trying to build, lint and vet the code.
 `,
 		Parameters: &llm.Schema{
-			Type:       llm.TypeObject,
-			Properties: map[string]*llm.Schema{},
+			Type: llm.TypeObject,
+			Properties: map[string]*llm.Schema{
+				"ignore_errors": {
+					Type:        llm.TypeBoolean,
+					Description: `Ignore errors from the build.`,
+				},
+			},
 		},
 	}
 	// TODO: Response?
