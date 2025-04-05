@@ -17,6 +17,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.speech.v2
 // resource: SpeechRecognizer:Recognizer
+// resource: SpeechCustomClass:CustomClass
 
 package v1alpha1
 

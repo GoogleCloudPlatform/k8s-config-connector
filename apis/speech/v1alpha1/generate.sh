@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.speech.v2  \
     --api-version speech.cnrm.cloud.google.com/v1alpha1 \
-    --resource SpeechRecognizer:Recognizer
+    --resource SpeechRecognizer:Recognizer \
+    --resource SpeechCustomClass:CustomClass
 
 go run . generate-mapper \
     --service google.cloud.speech.v2 \
