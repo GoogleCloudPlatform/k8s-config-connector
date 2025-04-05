@@ -233,4 +233,3 @@ func (s *MockService) parseTaxonomyParent(name string) (*taxonomyParent, error) 
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid parent name %q", name)
 }
-
