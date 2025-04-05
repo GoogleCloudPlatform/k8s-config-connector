@@ -264,6 +264,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to DataCatalog
+	visitor.replacePaths[".status.observedState.taxonomyTimestamps.createTime"] = "2025-01-17T18:51:02.320337735Z"
+	visitor.replacePaths[".status.observedState.taxonomyTimestamps.updateTime"] = "2025-01-17T18:51:02.320337735Z"
+
 	// Specific to VMwareEngineNetwork
 	// normalize "observedState.vpcNetworks[].network"
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -409,6 +413,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				if typeName == "rules" {
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+					})
+				}
+				if typeName == "taxonomies" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${taxonomyID}")
 					})
 				}
 			}
