@@ -32,7 +32,7 @@ type CustomClassIdentity struct {
 }
 
 func (i *CustomClassIdentity) String() string {
-	return i.parent.String() + "/customclasss/" + i.id
+	return i.parent.String() + "/customClasses/" + i.id
 }
 
 func (i *CustomClassIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewCustomClassIdentity(ctx context.Context, reader client.Reader, obj *Spee
 
 func ParseCustomClassExternal(external string) (parent *CustomClassParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customclasss" {
-		return nil, "", fmt.Errorf("format of SpeechCustomClass external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customclasss/{{customclassID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customClasses" {
+		return nil, "", fmt.Errorf("format of SpeechCustomClass external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customClasses/{{customclassID}})", external)
 	}
 	parent = &CustomClassParent{
 		ProjectID: tokens[1],

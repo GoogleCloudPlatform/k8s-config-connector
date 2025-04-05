@@ -177,18 +177,6 @@ type RecognitionFeatures struct {
 	MaxAlternatives *int32 `json:"maxAlternatives,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
-type SpeechAdaptation struct {
-	// A list of inline or referenced PhraseSets.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.phrase_sets
-	PhraseSets []SpeechAdaptation_AdaptationPhraseSet `json:"phraseSets,omitempty"`
-
-	// A list of inline CustomClasses. Existing CustomClass resources can be
-	//  referenced directly in a PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.custom_classes
-	CustomClasses []CustomClass `json:"customClasses,omitempty"`
-}
-
 // +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet
 type SpeechAdaptation_AdaptationPhraseSet struct {
 	// The name of an existing PhraseSet resource. The user must have read
@@ -232,18 +220,6 @@ type RecognitionConfigObservedState struct {
 	//  words and phrases.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
 	Adaptation *SpeechAdaptationObservedState `json:"adaptation,omitempty"`
-}
-
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
-type SpeechAdaptationObservedState struct {
-	// A list of inline or referenced PhraseSets.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.phrase_sets
-	PhraseSets []SpeechAdaptation_AdaptationPhraseSetObservedState `json:"phraseSets,omitempty"`
-
-	// A list of inline CustomClasses. Existing CustomClass resources can be
-	//  referenced directly in a PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.custom_classes
-	CustomClasses []CustomClassObservedState `json:"customClasses,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet

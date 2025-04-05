@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &CustomClassRef{}
 // holds the GCP identifier for the KRM object.
 type CustomClassRef struct {
 	// A reference to an externally managed SpeechCustomClass resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customclasss/{{customclassID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/customClasses/{{customclassID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SpeechCustomClass resource.
