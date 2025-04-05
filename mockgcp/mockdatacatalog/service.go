@@ -40,7 +40,7 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *DataCatalogV1
+	v1        *DataCatalogV1
 	policyTag *policyTagManagerServer
 }
 

@@ -43,7 +43,6 @@ func dataCatalogTaxonomyFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".taxonomy_timestamps")
 	f.StatusFields.Insert(".taxonomy_timestamps.create_time")
 	f.StatusFields.Insert(".taxonomy_timestamps.update_time")
-	f.StatusFields.Insert(".taxonomy_timestamps.expire_time")
 	f.StatusFields.Insert(".service")
 	f.StatusFields.Insert(".service.name")
 	f.StatusFields.Insert(".service.identity")
