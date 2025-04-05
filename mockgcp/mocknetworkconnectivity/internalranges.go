@@ -123,7 +123,20 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 			switch path {
 			case "prefixLength":
 				obj.PrefixLength = patch.PrefixLength
-
+			case "ip_cidr_range":
+				obj.IpCidrRange = patch.IpCidrRange
+			case "labels":
+				obj.Labels = patch.Labels
+			case "description":
+				obj.Description = patch.Description
+			case "network":
+				obj.Network = patch.Network
+			case "peering":
+				obj.Peering = patch.Peering
+			case "target_cidr_range":
+				obj.TargetCidrRange = patch.TargetCidrRange
+			case "usage":
+				obj.Usage = patch.Usage
 			default:
 				log.Info("unsupported update_mask", "req", req)
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock", path)
