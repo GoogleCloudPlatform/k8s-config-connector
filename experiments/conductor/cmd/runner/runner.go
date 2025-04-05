@@ -120,6 +120,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Suffix to append to remote branch names when pushing")
 	cmd.Flags().BoolVarP(&opts.skipMakeReadyPR, "skip-makereadypr",
 		"", false, "Skip the make ready-pr step when pushing branches")
+	cmd.Flags().StringVarP(&opts.processors, "processors",
+		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
 
 	return cmd
 }
@@ -139,6 +141,7 @@ type RunnerOptions struct {
 	verbose           bool   // Verbose output flag
 	branchSuffix      string // Suffix to append to remote branch names when pushing
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
+	processors        string // Comma-separated list of processor function names to run
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -343,9 +346,9 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case cmdPushBranch: // 9
 		processors := []BranchProcessor{
-			{Fn: runAPIChecks, CommitMsgTemplate: "{{kind}}: Normalize api checks"},
-			{Fn: makeReadyPR, CommitMsgTemplate: "make ready-pr", AttemptsOnChanges: 5},
-			{Fn: pushBranch, CommitMsgTemplate: "push branch"},
+			{Fn: runAPIChecks, CommitMsgTemplate: "{{kind}}: Normalize api checks", AttemptsOnNoChange: 1},
+			{Fn: makeReadyPR, CommitMsgTemplate: "make ready-pr", AttemptsOnChanges: 5, AttemptsOnNoChange: 1},
+			{Fn: pushBranch, CommitMsgTemplate: "push branch", AttemptsOnNoChange: 1},
 		}
 		processBranches(ctx, opts, branches.Branches, "Prep and Push Branch", processors)
 	case cmdCreateScriptYaml: // 10
@@ -366,9 +369,9 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "{{kind}}: Add generated types"}})
 	case cmdAdjustTypes: // 21
 		processors := []BranchProcessor{
-			{Fn: setTypeSpecStatus, CommitMsgTemplate: "{{kind}}: Add spec and status to generated type"},
-			{Fn: setTypeParent, CommitMsgTemplate: "{{kind}}: Add parent to generated type"},
-			{Fn: adjustIdentityParent, CommitMsgTemplate: "{{kind}}: Adjust identity parent"},
+			{Fn: setTypeSpecStatus, CommitMsgTemplate: "{{kind}}: Add spec and status to generated type", AttemptsOnNoChange: 6},
+			{Fn: setTypeParent, CommitMsgTemplate: "{{kind}}: Add parent to generated type", AttemptsOnNoChange: 6},
+			{Fn: adjustIdentityParent, CommitMsgTemplate: "{{kind}}: Adjust identity parent", AttemptsOnNoChange: 6},
 			{Fn: regenerateTypes, CommitMsgTemplate: "{{kind}}: Regenerate types"},
 			{Fn: removeNameField, CommitMsgTemplate: "{{kind}}: Remove Name Field"},
 			{Fn: moveEtagField, CommitMsgTemplate: "{{kind}}: Move Etag Field", AttemptsOnNoChange: 1},
