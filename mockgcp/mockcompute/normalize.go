@@ -45,6 +45,68 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	addReplacement := func(kind, value string) {
+		// Never replace empty values
+		if value == "" {
+			klog.Fatalf("ignoring empty replacement kind=%q value=%q", kind, value)
+			return
+		}
+
+		// TODO: unify with placeholderForGCPResource
+
+		placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
+		if strings.HasSuffix(kind, "ies") {
+			placeholder = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
+		}
+		switch kind {
+		case "addresses":
+			placeholder = "${addressID}"
+		case "projects":
+			// Specially handled
+			return
+		case "regions":
+			// Specially handled (not replaced)
+			return
+		}
+
+		if value == "default" {
+			// Don't replace, "default" is a well-known value used for both subnetwork and network
+			// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
+		} else {
+			replacements.ReplaceStringValue(value, placeholder)
+		}
+	}
+
+	visitLink := func(link string) {
+		s, _, _ := strings.Cut(link, "?")
+
+		s = strings.TrimPrefix(s, "https://compute.googleapis.com/")
+		s = strings.TrimPrefix(s, "https://www.googleapis.com/")
+		s = strings.TrimPrefix(s, "/")
+		s = strings.TrimPrefix(s, "compute/v1/")
+
+		s = strings.TrimSuffix(s, "/")
+
+		tokens := strings.Split(s, "/")
+		for i := 0; i+1 < len(tokens); i += 2 {
+			kind := tokens[i]
+			if kind == "global" {
+				// Special singleton token
+				i--
+				continue
+			}
+			value := tokens[i+1]
+
+			addReplacement(kind, value)
+		}
+	}
+
+	// Extract IDs from normal resource URLs
+	if isComputeAPI(event) && !isGetOperation(event) {
+		visitLink(event.URL())
+	}
+
+	// Extract IDs from operations (via the targetId and targetLink fields)
 	if isComputeAPI(event) && isGetOperation(event) {
 		targetLink := ""
 		targetId := ""
@@ -64,29 +126,14 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			if n >= 2 {
 				kind := tokens[n-2]
 
-				placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
-				if strings.HasSuffix(kind, "ies") {
-					placeholder = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
-				}
-				switch kind {
-				case "addresses":
-					placeholder = "${addressID}"
-				}
-
 				// We _should_ differentiate between ID and number.
 				// But this causes too many diffs right now.
 
-				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
-
-				replacements.ReplaceStringValue(targetId, placeholder)
-
-				if v := tokens[n-1]; v == "default" {
-					// Don't replace, "default" is a well-known value used for both subnetwork and network
-					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
-				} else {
-					replacements.ReplaceStringValue(v, placeholder)
-				}
+				addReplacement(kind, targetId)
+				addReplacement(kind, tokens[n-1])
 			}
+
+			visitLink(targetLink)
 		}
 	}
 }
