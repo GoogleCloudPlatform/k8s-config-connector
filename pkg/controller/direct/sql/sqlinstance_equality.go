@@ -303,19 +303,21 @@ func BackupConfigurationsMatch(desired *api.BackupConfiguration, actual *api.Bac
 	if desired.PointInTimeRecoveryEnabled != actual.PointInTimeRecoveryEnabled {
 		return false
 	}
+	// Ignore StartTime if it is not set. empty string is not a valid start time.
+	if desired.StartTime != "" && desired.StartTime != actual.StartTime {
+		return false
+	}
+	// Ignore TransactionLogRetentionDays if it is not set. 0 is not a valid transaction log retention days.
+	if desired.TransactionLogRetentionDays != 0 && desired.TransactionLogRetentionDays != actual.TransactionLogRetentionDays {
+		return false
+	}
+
 	// Ignore ReplicationLogArchivingEnabled. It is not supported in KRM API.
-	if desired.StartTime != actual.StartTime {
-		return false
-	}
-	if desired.TransactionLogRetentionDays != actual.TransactionLogRetentionDays {
-		return false
-	}
 	// Ignore TransactionalLogStorageState. It is not supported in KRM API.
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return true
 }
-
 func BackupRetentionSettingsMatch(desired *api.BackupRetentionSettings, actual *api.BackupRetentionSettings) bool {
 	if desired == nil && actual == nil {
 		return true
