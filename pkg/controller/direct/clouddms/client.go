@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/clouddms/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -36,12 +37,20 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newDataMigrationClient(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+func (m *gcpClient) options() ([]option.ClientOption, error) {
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewRESTClient(ctx, opts...)
+	return opts, nil
+}
+
+func (m *gcpClient) newDataMigrationClient(ctx context.Context) (*api.DataMigrationClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewDataMigrationClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building datamigration client: %w", err)
 	}
