@@ -84,6 +84,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
+	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = "1970-01-01T00:00:00Z"
 
 	// Apigee
 	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
