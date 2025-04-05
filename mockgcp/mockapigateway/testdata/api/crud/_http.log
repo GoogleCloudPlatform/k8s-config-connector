@@ -61,6 +61,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.Api",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "test-${uniqueId}",
+    "managedService": "test-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
     "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -87,6 +88,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
+  "managedService": "test-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -112,6 +114,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "test-${uniqueId}",
+  "managedService": "test-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/test-${uniqueId}",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
