@@ -113,9 +113,6 @@ spec:
                       Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}/cryptoKeyVersions/{{version}}`.
                     type: string
                 type: object
-              location:
-                description: 'The location of the resource, for example: "us" or "europe".'
-                type: string
               processorRef:
                 description: ProcessorRef defines the resource reference to DocumentAIProcessor,
                   which "External" field holds the GCP identifier for the KRM object.
@@ -145,46 +142,12 @@ spec:
                     description: The namespace of a DocumentAIProcessor resource.
                     type: string
                 type: object
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The DocumentAIProcessorVersion name. If not given, the
                   metadata.name will be used.
                 type: string
             required:
-            - location
             - processorRef
-            - projectRef
             type: object
           status:
             description: DocumentAIProcessorVersionStatus defines the config connector

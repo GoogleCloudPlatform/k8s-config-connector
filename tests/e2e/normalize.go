@@ -232,6 +232,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
+	if u.GetKind() == "DocumentAIProcessorVersion" {
+		visitor.replacePaths[".status.observedState.create_time"] = "1970-01-01T00:00:00Z"
+	}
 
 	// Specific to WorflowsWorkflow
 	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
@@ -394,18 +397,33 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 
-		// Get firewall policy id from firewall policy rule's externalRef and replace it
 		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
 			if n >= 3 {
+				// Get firewall policy id from firewall policy rule's externalRef and replace it
 				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
 				typeName := tokens[len(tokens)-2]
 				firewallPolicyId := tokens[len(tokens)-3]
 				if typeName == "rules" {
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+					})
+				}
+			}
+			if n >= 3 {
+				// Get processor id and version id from processor version's externalRef and replace it
+				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
+				typeName := tokens[len(tokens)-2]
+				processorId := tokens[len(tokens)-3]
+				processorVersionId := tokens[len(tokens)-1]
+				if typeName == "processorVersions" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, processorId, "${processorID}")
+					})
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
 					})
 				}
 			}
