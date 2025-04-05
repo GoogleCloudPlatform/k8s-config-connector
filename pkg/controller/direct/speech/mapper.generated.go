@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: speech.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.speech.v2
+
 package speech
 
 import (
@@ -286,6 +291,68 @@ func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.Ma
 	if oneof := PhraseSetObservedState_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
 		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
 	}
+	return out
+}
+func SpeechCustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechCustomClassObservedState{}
+	// MISSING: Name
+	// MISSING: Uid
+	// (near miss): "Uid" vs "UID"
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	return out
+}
+func SpeechCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassObservedState) *pb.CustomClass {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomClass{}
+	// MISSING: Name
+	// MISSING: Uid
+	// (near miss): "Uid" vs "UID"
+	out.State = direct.Enum_ToProto[pb.CustomClass_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
+	return out
+}
+func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechCustomClassSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto)
+	out.Annotations = in.Annotations
+	return out
+}
+func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassSpec) *pb.CustomClass {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomClass{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
+	out.Annotations = in.Annotations
 	return out
 }
 func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerSpec {
