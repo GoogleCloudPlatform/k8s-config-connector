@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &FirewallPolicyRef{}
 // holds the GCP identifier for the KRM object.
 type FirewallPolicyRef struct {
 	// A reference to an externally managed ReCAPTCHAEnterpriseFirewallPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/firewallpolicys/{{firewallpolicyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/firewallpolicies/{{firewallpolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ReCAPTCHAEnterpriseFirewallPolicy resource.

@@ -1,0 +1,8 @@
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1alpha1
+kind: ReCAPTCHAEnterpriseFirewallPolicy
+metadata:
+  name: recaptchaenterprisefirewallpolicy-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  description: "Initial description"

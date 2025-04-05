@@ -33,7 +33,7 @@ X-Xss-Protection: 0
   ],
   "condition": "true",
   "description": "test policy ${uniqueId}",
-  "name": "projects/${projectNumber}/firewallpolicies/100",
+  "name": "projects/${projectNumber}/firewallpolicies/200",
   "path": "/testpath/*"
 }
 
@@ -64,7 +64,7 @@ X-Xss-Protection: 0
       ],
       "condition": "true",
       "description": "test policy ${uniqueId}",
-      "name": "projects/${projectId}/firewallpolicies/100",
+      "name": "projects/${projectId}/firewallpolicies/200",
       "path": "/testpath/*"
     }
   ]
@@ -72,7 +72,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
+GET https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/200?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
   ],
   "condition": "true",
   "description": "test policy ${uniqueId}",
-  "name": "projects/${projectId}/firewallpolicies/100",
+  "name": "projects/${projectId}/firewallpolicies/200",
   "path": "/testpath/*"
 }
 
@@ -126,7 +126,7 @@ X-Xss-Protection: 0
       ],
       "condition": "true",
       "description": "test policy ${uniqueId}",
-      "name": "projects/${projectId}/firewallpolicies/100",
+      "name": "projects/${projectId}/firewallpolicies/200",
       "path": "/testpath/*"
     }
   ]
@@ -134,7 +134,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/100?alt=json
+DELETE https://public-preview-recaptchaenterprise.googleapis.com/v1/projects/${projectId}/firewallpolicies/200?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
