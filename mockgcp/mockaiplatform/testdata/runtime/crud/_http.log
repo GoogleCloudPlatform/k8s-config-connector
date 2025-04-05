@@ -100,7 +100,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectNumber}/locations/us-central1/notebookRuntimes/test-${uniqueId}",
   "notebookRuntimeTemplateRef": {
-    "notebookRuntimeTemplate": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}"
+    "notebookRuntimeTemplate": "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/colabruntimetemplate-${uniqueId}"
   },
   "notebookRuntimeType": "USER_DEFINED",
   "proxyUri": "test-${projectNumber}-dot-notebooks.googleusercontent.com",

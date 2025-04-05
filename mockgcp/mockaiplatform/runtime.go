@@ -47,7 +47,7 @@ func (s *notebookService) GetNotebookRuntime(ctx context.Context, req *pb.GetNot
 	obj := &pb.NotebookRuntime{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "notebookRuntime %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "NotebookRuntime %s is not found.", fqn)
 		}
 		return nil, err
 	}
@@ -85,14 +85,30 @@ func (s *notebookService) AssignNotebookRuntime(ctx context.Context, req *pb.Ass
 	obj.ProxyUri = fmt.Sprintf("test-%d-dot-notebooks.googleusercontent.com", name.Project.Number)
 	obj.RuntimeUser = "${user}"
 	obj.ExpirationTime = timestamppb.New(now)
-	obj.Labels = map[string]string{
-		"aiplatform.googleapis.com/colab_enterprise_pool":            "false",
-		"aiplatform.googleapis.com/notebook_runtime_gce_instance_id": "1234567890",
+	if obj.Labels == nil {
+		obj.Labels = map[string]string{
+			"aiplatform.googleapis.com/colab_enterprise_pool":            "false",
+			"aiplatform.googleapis.com/notebook_runtime_gce_instance_id": "1234567890",
+		}
 	}
 	obj.NotebookRuntimeTemplateRef = &pb.NotebookRuntimeTemplateRef{
-		NotebookRuntimeTemplate: "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/test-${uniqueId}",
+		NotebookRuntimeTemplate: "projects/${projectNumber}/locations/us-central1/notebookRuntimeTemplates/colabruntimetemplate-${uniqueId}",
 	}
 	obj.Name = fqn
+	// Set DataPersistentDiskSpec, EucConfig, MachineSpec, NetworkSpec when the
+	// fields are supported in the mockpb.
+	//- 	  "dataPersistentDiskSpec": {
+	//- 	    "diskSizeGb": "100",
+	//- 	    "diskType": "pd-standard"
+	//- 	  },
+	//- 	  "eucConfig": {},
+	//- 	  "machineSpec": {
+	//- 	    "machineType": "e2-standard-2"
+	//- 	  },
+	//- 	  "networkSpec": {
+	//- 	    "network": "projects/${projectId}/global/networks/${subnetworkID}",
+	//- 	    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+	//- 	  },
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
