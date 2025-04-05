@@ -3,7 +3,7 @@ kind: DataflowFlexTemplateJob
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion","parameters":{"inputFileFormat":"csv","inputFileSpec":"gs://config-connector-samples/dataflowflextemplate/numbertest.csv","outputBucket":"gs://storagebucket-${uniqueId}","outputFileFormat":"avro","schema":"gs://config-connector-samples/dataflowflextemplate/numbers.avsc"}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"containerSpecGcsPath":"gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion","parameters":{"autoscalingAlgorithm":"AUTOSCALING_ALGORITHM_NONE","inputFileFormat":"csv","inputFileSpec":"gs://config-connector-samples/dataflowflextemplate/numbertest.csv","outputBucket":"gs://storagebucket-${uniqueId}","outputFileFormat":"avro","schema":"gs://config-connector-samples/dataflowflextemplate/numbers.avsc"}}}'
     cnrm.cloud.google.com/on-delete: cancel
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
@@ -18,6 +18,7 @@ metadata:
 spec:
   containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
   parameters:
+    autoscalingAlgorithm: AUTOSCALING_ALGORITHM_NONE
     inputFileFormat: csv
     inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
     outputBucket: gs://storagebucket-${uniqueId}
