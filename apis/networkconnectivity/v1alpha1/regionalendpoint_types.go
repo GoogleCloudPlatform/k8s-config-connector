@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -46,13 +47,13 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// The name of the VPC network for this private regional endpoint. Format: `projects/{project}/global/networks/{network}`
+	// The name of the VPC network for this private regional endpoint.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.network
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
-	// The name of the subnetwork from which the IP address will be allocated. Format: `projects/{project}/regions/{region}/subnetworks/{subnetwork}`
+	// The name of the subnetwork from which the IP address will be allocated.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.subnetwork
-	Subnetwork *string `json:"subnetwork,omitempty"`
+	SubnetworkRef *v1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com".
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.RegionalEndpoint.target_google_api
