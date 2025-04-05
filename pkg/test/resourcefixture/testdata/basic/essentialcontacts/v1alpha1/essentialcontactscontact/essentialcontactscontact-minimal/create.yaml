@@ -19,5 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  description: "Initial description"
+  languageTag: en
+  notificationCategorySubscriptions:
+    - BILLING
+  email: "bill-alerts@test.com"

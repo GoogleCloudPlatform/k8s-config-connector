@@ -206,6 +206,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to EssentialContactContact
+	visitor.replacePaths[".validateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 

@@ -66,8 +66,14 @@ func (m *contactModel) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 
+	config := m.config
+	// the service requires that a quota project be set
+	if !config.UserProjectOverride || config.BillingProject == "" {
+		config.UserProjectOverride = true
+		config.BillingProject = id.Parent().ProjectID
+	}
 	// Get GCP client
-	gcpClient, err := newGCPClient(ctx, &m.config)
+	gcpClient, err := newGCPClient(ctx, &config)
 	if err != nil {
 		return nil, err
 	}
@@ -106,19 +112,28 @@ func (a *contactAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting essential contact", "name", a.id)
 
-	// Use the calculated name if available (from status), otherwise construct from ID
-	name := direct.ValueOf(a.desired.Status.ExternalRef)
-	if name == "" {
-		name = a.id.String()
+	// This resource has a server-generated ID. This means user should not know
+	// the ID before the resource is created, and 'metadata.name' won't be used
+	// as the default resource ID. So empty value for 'spec.resourceID' should
+	// also be valid:
+	// 1. When 'spec.resourceID' is not set or set to an empty value, the
+	//    intention is to create the resource.
+	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
+	//    resource.
+	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//         is not found, then it is a real error.
+	if a.id.ID() == "" {
+		log.V(2).Info("no resource ID in get indicates the create intention", "name", a.id)
+		return false, nil
 	}
 
-	req := &pb.GetContactRequest{Name: name}
+	req := &pb.GetContactRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetContact(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting essential contact %q: %w", name, err)
+		return false, fmt.Errorf("getting essential contact %q: %w", a.id, err)
 	}
 
 	a.actual = actual
@@ -167,7 +182,7 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.actual.Name // Set name for update request
+	resource.Name = a.id.String() // Set name for update request
 
 	paths := []string{}
 	if !reflect.DeepEqual(resource.NotificationCategorySubscriptions, a.actual.NotificationCategorySubscriptions) {
@@ -224,9 +239,9 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 
 	// Set parent ref based on the actual name format
-	parentIdentity, resourceID, err := krm.ParseContactExternal(a.actual.Name)
+	parentIdentity, resourceID, err := krm.ParseContactExternal(a.id.String())
 	if err != nil {
-		return nil, fmt.Errorf("parsing parent from actual name %q: %w", a.actual.Name, err)
+		return nil, fmt.Errorf("parsing parent from actual name %q: %w", a.id, err)
 	}
 	if parentIdentity.ProjectID != "" {
 		obj.Spec.ProjectRef = &refv1beta1.ProjectRef{
@@ -259,19 +274,19 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *contactAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting essential contact", "name", a.actual.Name)
+	log.V(2).Info("deleting essential contact", "name", a.id)
 
-	req := &pb.DeleteContactRequest{Name: a.actual.Name}
+	req := &pb.DeleteContactRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteContact(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent essential contact, assuming it was already deleted", "name", a.actual.Name)
+			log.V(2).Info("skipping delete for non-existent essential contact, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting essential contact %s: %w", a.actual.Name, err)
+		return false, fmt.Errorf("deleting essential contact %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted essential contact", "name", a.actual.Name)
+	log.V(2).Info("successfully deleted essential contact", "name", a.id)
 
 	return true, nil
 }
