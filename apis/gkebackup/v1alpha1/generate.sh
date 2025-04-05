@@ -26,7 +26,8 @@ go run . generate-types \
     --api-version gkebackup.cnrm.cloud.google.com/v1alpha1 \
     --resource GKEBackupBackupPlan:BackupPlan \
     --resource GKEBackupRestorePlan:RestorePlan \
-    --resource GKEBackupBackup:Backup
+    --resource GKEBackupBackup:Backup \
+    --resource GKEBackupRestore:Restore
 
 go run . generate-mapper \
     --service google.cloud.gkebackup.v1 \
