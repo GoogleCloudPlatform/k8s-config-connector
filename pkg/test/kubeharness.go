@@ -29,6 +29,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
@@ -193,7 +194,7 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 	namespace := obj.GetNamespace()
 
 	id := types.NamespacedName{Name: name, Namespace: namespace}
-	if err := wait.PollImmediate(2*time.Second, 1*time.Minute, func() (bool, error) {
+	if err := wait.PollUntilContextTimeout(h.Ctx, 2*time.Second, 1*time.Minute, true, func() (bool, error) {
 		u := &unstructured.Unstructured{}
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
@@ -235,34 +236,38 @@ func (h *KubeHarness) EnsureNamespaceExists(name string) {
 }
 
 // CreateDummyCRD registers a CRD so we can create objects in tests
-func (h *KubeHarness) CreateDummyCRD(group, version, kind string) {
+func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 	ctx := h.Ctx
 
-	resource := strings.ToLower(kind) + "s"
+	singular := strings.ToLower(gvk.Kind)
+	plural := singular + "s"
+	preserveUnknownFields := true
 	crd := &apiextensions.CustomResourceDefinition{}
+	crd.Name = plural + "." + gvk.Group
 	crd.SetGroupVersionKind(apiextensions.SchemeGroupVersion.WithKind("CustomResourceDefinition"))
 
-	crd.SetName(resource + "." + group)
-	crd.Spec.Group = group
-	crd.Spec.Names.Kind = kind
-	crd.Spec.Names.Plural = resource
-	crd.Spec.Scope = apiextensions.NamespaceScoped
-
-	crd.Spec.Versions = append(crd.Spec.Versions, apiextensions.CustomResourceDefinitionVersion{
-		Name:    version,
-		Served:  true,
-		Storage: true,
-		Schema: &apiextensions.CustomResourceValidation{
-			OpenAPIV3Schema: &apiextensions.JSONSchemaProps{
-				Type: "object",
-				Properties: map[string]apiextensions.JSONSchemaProps{
-					"spec": {
-						Type: "object",
+	crd.Spec = apiextensions.CustomResourceDefinitionSpec{
+		Group: gvk.Group,
+		Names: apiextensions.CustomResourceDefinitionNames{
+			Plural:   plural,
+			Singular: singular,
+			Kind:     gvk.Kind,
+		},
+		Scope: apiextensions.NamespaceScoped,
+		Versions: []apiextensions.CustomResourceDefinitionVersion{
+			{
+				Name:    gvk.Version,
+				Storage: true,
+				Served:  true,
+				Schema: &apiextensions.CustomResourceValidation{
+					OpenAPIV3Schema: &apiextensions.JSONSchemaProps{
+						Type:                   "object",
+						XPreserveUnknownFields: &preserveUnknownFields,
 					},
 				},
 			},
 		},
-	})
+	}
 
 	if err := h.client.Create(ctx, crd); err != nil {
 		h.Fatalf("error creating crd %v: %v", crd.GroupVersionKind(), err)
