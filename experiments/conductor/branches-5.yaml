@@ -215,7 +215,6 @@ branches:
       notes:
         - long running operation
         - subresource of privateconnection
-      skip: true # NOTYET
     - name: datastream-connectionprofile
       local: resource-datastream-connectionprofile
       remote: resource-datastream-connectionprofile
@@ -268,8 +267,9 @@ branches:
       proto-msg: google.cloud.datastream.v1.StreamObject
       host-name: ""
       notes: 
+        - No CREATE, UPDATE and DELETE https://cloud.google.com/datastream/docs/reference/rest/v1/projects.locations.streams.objects
         - subresource of stream
-      skip: true # NOTYET
+      skip: true
     - name: gkebackup-backup
       local: resource-gkebackup-backup
       remote: resource-gkebackup-backup
@@ -329,7 +329,6 @@ branches:
       notes:
         - long running operation
         - subresource of restoreplan
-      skip: true # NOTYET
     - name: gkebackup-restoreplan
       local: resource-gkebackup-restoreplan
       remote: resource-gkebackup-restoreplan
@@ -403,6 +402,7 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
+      skip: true # DCL beta
     - name: networksecurity-clienttlspolicy
       local: resource-networksecurity-clienttlspolicy
       remote: resource-networksecurity-clienttlspolicy
@@ -421,7 +421,7 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
-      skip: true # NOTYET
+      skip: true # DCL beta
     - name: networksecurity-servertlspolicy
       local: resource-networksecurity-servertlspolicy
       remote: resource-networksecurity-servertlspolicy
@@ -440,7 +440,7 @@ branches:
         - "networksecurity.googleapis.com"
       notes:
         - long running operation
-      skip: true # NOTYET
+      skip: true # DCL beta
     - name: privilegedaccessmanager-grant
       local: resource-privilegedaccessmanager-grant
       remote: resource-privilegedaccessmanager-grant
@@ -535,7 +535,7 @@ branches:
     - name: speech-recognizer
       local: resource-speech-recognizer
       remote: resource-speech-recognizer
-      command: gcloud ml speech recognizers
+      command:
       group: speech
       resource: recognizer
       controller: Unknown
@@ -543,8 +543,44 @@ branches:
       package: google.cloud.speech.v2
       proto: Recognizer
       proto-path: google/cloud/speech/v2/cloud_speech.proto
-      proto-service: ""
+      proto-service: "google.cloud.speech.v2.Speech"
       proto-msg: google.cloud.speech.v2.Recognizer
+      host-name: ""
+      apis-enabled:
+        - "speech.googleapis.com"
+      notes:
+        - long running operation
+    - name: speech-phraseset
+      local: resource-speech-phraseset
+      remote: resource-speech-phraseset
+      command: 
+      group: speech
+      resource: phraseset
+      controller: Unknown
+      kind: SpeechPhraseSet
+      package: google.cloud.speech.v2
+      proto: PhraseSet
+      proto-path: google/cloud/speech/v2/cloud_speech.proto
+      proto-service: "google.cloud.speech.v2.Speech"
+      proto-msg: google.cloud.speech.v2.PhraseSet
+      host-name: ""
+      apis-enabled:
+        - "speech.googleapis.com"
+      notes:
+        - long running operation
+    - name: speech-customclass
+      local: resource-speech-customclass
+      remote: resource-speech-customclass
+      command: 
+      group: speech
+      resource: customclass
+      controller: Unknown
+      kind: SpeechCustomClass
+      package: google.cloud.speech.v2
+      proto: CustomClass
+      proto-path: google/cloud/speech/v2/cloud_speech.proto
+      proto-service: "google.cloud.speech.v2.Speech"
+      proto-msg: google.cloud.speech.v2.CustomClass
       host-name: ""
       apis-enabled:
         - "speech.googleapis.com"
@@ -587,7 +623,6 @@ branches:
       notes:
         - long running operation
         - subresource of privatecloud
-      skip: true # NOTYET
     - name: vmwareengine-nodetype
       local: resource-vmwareengine-nodetype
       remote: resource-vmwareengine-nodetype
@@ -720,23 +755,6 @@ branches:
       command: gcloud backup-dr locations
       group: backupdr
       resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: backupdr-operations
-      local: resource-backupdr-operations
-      remote: resource-backupdr-operations
-      command: gcloud backup-dr operations
-      group: backupdr
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
@@ -987,23 +1005,6 @@ branches:
         - long running operation
         - already implemented
       skip: true
-    - name: privilegedaccessmanager-operations
-      local: resource-privilegedaccessmanager-operations
-      remote: resource-privilegedaccessmanager-operations
-      command: gcloud pam operations
-      group: privilegedaccessmanager
-      resource: operations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
     - name: resourcemanager-orgpolicies
       local: resource-resourcemanager-orgpolicies
       remote: resource-resourcemanager-orgpolicies
@@ -1044,40 +1045,6 @@ branches:
       command: gcloud run domain-mappings
       group: run
       resource: domainmappings
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: run-regions
-      local: resource-run-regions
-      remote: resource-run-regions
-      command: gcloud run regions
-      group: run
-      resource: regions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-    - name: speech-operations
-      local: resource-speech-operations
-      remote: resource-speech-operations
-      command: gcloud ml speech operations
-      group: speech
-      resource: operations
       controller: Unknown
       kind: ""
       package: ""
@@ -1157,21 +1124,3 @@ branches:
       notes: 
         - already implemented
       skip: true
-    - name: composer-operations
-      local: resource-composer-operations
-      remote: resource-composer-operations
-      command: gcloud composer operations
-      group: composer
-      resource: operations
-      controller: unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: 
-        - Did not find proto
-      skip: true
-
