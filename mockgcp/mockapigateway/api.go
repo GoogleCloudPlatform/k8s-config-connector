@@ -70,8 +70,12 @@ func (s *ApiGatewayV1) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Api_ACTIVE
-	obj.DisplayName = name.Api
-
+	if obj.DisplayName == "" {
+		obj.DisplayName = name.Api
+	}
+	if obj.ManagedService == "" {
+		obj.ManagedService = fmt.Sprintf("%s-{generatedId}.apigateway.${projectId}.cloud.goog", req.GetApiId())
+	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
