@@ -22,7 +22,7 @@ import (
 
 var DataplexAspectTypeGVK = GroupVersion.WithKind("DataplexAspectType")
 
-type Parent struct {
+type DataplexAspectTypeParent struct {
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 
 	Location string `json:"location"`
@@ -34,7 +34,7 @@ type DataplexAspectTypeSpec struct {
 	// The DataplexAspectType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	DataplexAspectTypeParent `json:",inline"`
 
 	// Optional. Description of the AspectType.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.description

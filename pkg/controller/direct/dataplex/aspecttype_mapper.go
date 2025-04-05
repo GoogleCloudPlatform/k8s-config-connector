@@ -15,11 +15,12 @@
 package dataplex
 
 import (
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	"encoding/json"
+	"log"
+
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"log"
 )
 
 func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectType) *krm.DataplexAspectTypeSpec {
@@ -36,7 +37,7 @@ func DataplexAspectTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.AspectTy
 	out.Labels = in.Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Authorization = AspectType_Authorization_FromProto(mapCtx, in.GetAuthorization())
-	out.MetadataTemplate = direct.LazyPtr(in.String())
+	out.MetadataTemplate = direct.LazyPtr(in.MetadataTemplate.String())
 	// MISSING: TransferStatus
 	return out
 }
@@ -108,6 +109,7 @@ func AspectType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.AspectT
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
+
 func AspectType_MetadataTemplate_ToProto(mapCtx *direct.MapContext, in *string) *pb.AspectType_MetadataTemplate {
 	if in == nil {
 		return nil

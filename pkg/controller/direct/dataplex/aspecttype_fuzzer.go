@@ -38,7 +38,7 @@ func DataplexAspectTypeFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".authorization")
-	f.SpecFields.Insert(".metadata_template")
+	f.UnimplementedFields.Insert(".metadata_template")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
