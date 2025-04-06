@@ -15,9 +15,11 @@
 apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
 kind: NetworkConnectivityRegionalEndpoint
 metadata:
-  name: networkconnectivityregionalendpoint-minimal-${uniqueId}
+  name: regionalendpoint-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
   description: "Initial description"
+  targetGoogleAPI: cloudkms.us-central1.p.rep.googleapis.com
+  accessType: REGIONAL

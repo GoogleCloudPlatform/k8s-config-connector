@@ -32,7 +32,7 @@ type RegionalEndpointIdentity struct {
 }
 
 func (i *RegionalEndpointIdentity) String() string {
-	return i.parent.String() + "/regionalendpoints/" + i.id
+	return i.parent.String() + "/regionalEndpoints/" + i.id
 }
 
 func (i *RegionalEndpointIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewRegionalEndpointIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseRegionalEndpointExternal(external string) (parent *RegionalEndpointParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "regionalendpoints" {
-		return nil, "", fmt.Errorf("format of NetworkConnectivityRegionalEndpoint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/regionalendpoints/{{regionalendpointID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "regionalEndpoints" {
+		return nil, "", fmt.Errorf("format of NetworkConnectivityRegionalEndpoint external=%q was not known (use projects/{{projectID}}/locations/{{location}}/regionalEndpoints/{{regionalendpointID}})", external)
 	}
 	parent = &RegionalEndpointParent{
 		ProjectID: tokens[1],
