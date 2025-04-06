@@ -27,10 +27,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/clouddms/v1"
+	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/clouddms/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
-	realPb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 )
 
 // MockService represents a mocked datamigration service.
@@ -43,7 +43,7 @@ type MockService struct {
 
 type DataMigrationServiceV1 struct {
 	*MockService
-	realPb.UnimplementedDataMigrationServiceServer
+	pb.UnimplementedDataMigrationServiceServer
 }
 
 // New creates a MockService.
@@ -61,12 +61,12 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	realPb.RegisterDataMigrationServiceServer(grpcServer, &DataMigrationServiceV1{MockService: s})
+	pb.RegisterDataMigrationServiceServer(grpcServer, &DataMigrationServiceV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterDataMigrationServiceHandler,
+		grpcpb.RegisterDataMigrationServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 
 	if err != nil {
