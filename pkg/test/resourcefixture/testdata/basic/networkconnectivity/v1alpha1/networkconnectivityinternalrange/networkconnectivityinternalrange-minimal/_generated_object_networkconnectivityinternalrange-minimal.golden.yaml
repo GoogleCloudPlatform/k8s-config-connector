@@ -4,17 +4,17 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: networkconnectivityinternalrange-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Initial description
+  description: Updated description
   location: global
   networkRef:
     name: computenetwork-${uniqueId}
-  prefixLength: 24
+  prefixLength: 28
   projectRef:
     external: ${projectId}
 status:
@@ -24,5 +24,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 1
+  observedGeneration: 2
   observedState: {}

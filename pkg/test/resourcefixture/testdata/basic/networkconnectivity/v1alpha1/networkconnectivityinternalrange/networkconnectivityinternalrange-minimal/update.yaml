@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityInternalRange
 metadata:
-  name: computenetwork-${uniqueId}
+  name: networkconnectivityinternalrange-minimal-${uniqueId}
 spec:
-  autoCreateSubnetworks: false
+  projectRef:
+    external: ${projectId}
+  networkRef:
+    name: computenetwork-${uniqueId}
+  location: global
+  prefixLength: 28
+  description: "Updated description"

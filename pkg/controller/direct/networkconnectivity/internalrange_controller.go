@@ -190,22 +190,19 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		paths = append(paths, "description")
 	}
 	if desired.Spec.IPCIDRRange != nil && !reflect.DeepEqual(resource.IpCidrRange, a.actual.IpCidrRange) {
-		paths = append(paths, "ip_cidr_range")
+		paths = append(paths, "ipCidrRange")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
-	}
-	if desired.Spec.NetworkRef != nil && !reflect.DeepEqual(resource.Network, a.actual.Network) {
-		paths = append(paths, "network")
 	}
 	if desired.Spec.Peering != nil && !reflect.DeepEqual(resource.Peering, a.actual.Peering) {
 		paths = append(paths, "peering")
 	}
 	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
-		paths = append(paths, "prefix_length")
+		paths = append(paths, "prefixLength")
 	}
 	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
-		paths = append(paths, "target_cidr_range")
+		paths = append(paths, "targetCidrRange")
 	}
 	if desired.Spec.Usage != nil && !reflect.DeepEqual(resource.Usage, a.actual.Usage) {
 		paths = append(paths, "usage")
