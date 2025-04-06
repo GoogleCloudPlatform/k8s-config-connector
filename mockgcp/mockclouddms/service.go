@@ -29,6 +29,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/clouddms/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
+	realPb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 )
 
 // MockService represents a mocked datamigration service.
@@ -37,13 +39,11 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
-
-	v1 *DataMigrationServiceV1
 }
 
 type DataMigrationServiceV1 struct {
 	*MockService
-	pb.UnimplementedDataMigrationServiceServer
+	realPb.UnimplementedDataMigrationServiceServer
 }
 
 // New creates a MockService.
@@ -53,7 +53,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &DataMigrationServiceV1{MockService: s}
 	return s
 }
 
@@ -62,7 +61,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataMigrationServiceServer(grpcServer, s.v1)
+	realPb.RegisterDataMigrationServiceServer(grpcServer, &DataMigrationServiceV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
