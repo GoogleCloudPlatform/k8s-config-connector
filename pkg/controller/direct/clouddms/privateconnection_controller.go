@@ -123,10 +123,6 @@ func (a *PrivateConnectionAdapter) Create(ctx context.Context, createOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating PrivateConnection", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := CloudDMSPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
@@ -164,10 +160,6 @@ func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directb
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating PrivateConnection", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := CloudDMSPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
@@ -182,7 +174,7 @@ func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directb
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.VPCPeeringConfig != nil && !reflect.DeepEqual(resource.VpcPeeringConfig, a.actual.VpcPeeringConfig) {
+	if !reflect.DeepEqual(resource.GetVpcPeeringConfig(), a.actual.GetVpcPeeringConfig()) {
 		paths = append(paths, "vpc_peering_config")
 	}
 
@@ -251,16 +243,4 @@ func (a *PrivateConnectionAdapter) Delete(ctx context.Context, deleteOp *directb
 	}
 	log.V(2).Info("successfully deleted PrivateConnection", "name", a.id)
 	return true, nil
-}
-
-func (a *PrivateConnectionAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-
-	if obj.Spec.VPCPeeringConfig != nil && obj.Spec.VPCPeeringConfig.VPCRef != nil {
-		if err := obj.Spec.VPCPeeringConfig.VPCRef.Normalize(ctx, a.reader, obj); err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
