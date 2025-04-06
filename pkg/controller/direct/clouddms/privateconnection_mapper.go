@@ -24,6 +24,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	status "google.golang.org/genproto/googleapis/rpc/status"
 )
 
 func CloudDMSPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.CloudDMSPrivateConnectionObservedState {
@@ -35,6 +36,7 @@ func CloudDMSPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext,
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = CloudDMSPrivateConnectionStatus_FromProto(mapCtx, in.Error)
 	return out
 }
 func CloudDMSPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudDMSPrivateConnectionObservedState) *pb.PrivateConnection {
@@ -46,6 +48,7 @@ func CloudDMSPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
+	out.Error = CloudDMSPrivateConnectionStatus_ToProto(mapCtx, in.Error)
 	return out
 }
 func CloudDMSPrivateConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.CloudDMSPrivateConnectionSpec {
@@ -92,5 +95,25 @@ func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfi
 		out.VpcName = in.VpcName.External
 	}
 	out.Subnet = direct.ValueOf(in.Subnet)
+	return out
+}
+
+func CloudDMSPrivateConnectionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Status) *status.Status {
+	if in == nil {
+		return nil
+	}
+	out := &status.Status{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+
+func CloudDMSPrivateConnectionStatus_FromProto(mapCtx *direct.MapContext, in *status.Status) *krm.Status {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Status{}
+	out.Code = direct.LazyPtr(in.Code)
+	out.Message = direct.LazyPtr(in.Message)
 	return out
 }
