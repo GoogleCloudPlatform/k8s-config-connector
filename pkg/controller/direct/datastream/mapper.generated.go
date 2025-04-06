@@ -21,29 +21,29 @@ package datastream
 
 import (
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryProfile_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryProfile) *krm.BigQueryProfile {
+func BigQueryProfile_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryProfile) *krmv1alpha1.BigQueryProfile {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryProfile{}
+	out := &krmv1alpha1.BigQueryProfile{}
 	return out
 }
-func BigQueryProfile_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryProfile) *pb.BigQueryProfile {
+func BigQueryProfile_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryProfile) *pb.BigQueryProfile {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BigQueryProfile{}
 	return out
 }
-func DatastreamPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.DatastreamPrivateConnectionObservedState {
+func DatastreamPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krmv1alpha1.DatastreamPrivateConnectionObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DatastreamPrivateConnectionObservedState{}
+	out := &krmv1alpha1.DatastreamPrivateConnectionObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -52,7 +52,7 @@ func DatastreamPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: VpcPeeringConfig
 	return out
 }
-func DatastreamPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DatastreamPrivateConnectionObservedState) *pb.PrivateConnection {
+func DatastreamPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DatastreamPrivateConnectionObservedState) *pb.PrivateConnection {
 	if in == nil {
 		return nil
 	}
@@ -65,16 +65,60 @@ func DatastreamPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: VpcPeeringConfig
 	return out
 }
-func GCSProfile_FromProto(mapCtx *direct.MapContext, in *pb.GcsProfile) *krm.GCSProfile {
+func DatastreamRouteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krmv1alpha1.DatastreamRouteObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GCSProfile{}
+	out := &krmv1alpha1.DatastreamRouteObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func DatastreamRouteObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DatastreamRouteObservedState) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func DatastreamRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.Route) *krmv1alpha1.DatastreamRouteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DatastreamRouteSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.DestinationAddress = direct.LazyPtr(in.GetDestinationAddress())
+	out.DestinationPort = direct.LazyPtr(in.GetDestinationPort())
+	return out
+}
+func DatastreamRouteSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DatastreamRouteSpec) *pb.Route {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Route{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.DestinationAddress = direct.ValueOf(in.DestinationAddress)
+	out.DestinationPort = direct.ValueOf(in.DestinationPort)
+	return out
+}
+func GCSProfile_FromProto(mapCtx *direct.MapContext, in *pb.GcsProfile) *krmv1alpha1.GCSProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.GCSProfile{}
 	out.Bucket = direct.LazyPtr(in.GetBucket())
 	out.RootPath = direct.LazyPtr(in.GetRootPath())
 	return out
 }
-func GCSProfile_ToProto(mapCtx *direct.MapContext, in *krm.GCSProfile) *pb.GcsProfile {
+func GCSProfile_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.GCSProfile) *pb.GcsProfile {
 	if in == nil {
 		return nil
 	}
@@ -83,11 +127,11 @@ func GCSProfile_ToProto(mapCtx *direct.MapContext, in *krm.GCSProfile) *pb.GcsPr
 	out.RootPath = direct.ValueOf(in.RootPath)
 	return out
 }
-func MysqlProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krm.MysqlProfileObservedState {
+func MysqlProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krmv1alpha1.MysqlProfileObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MysqlProfileObservedState{}
+	out := &krmv1alpha1.MysqlProfileObservedState{}
 	// MISSING: Hostname
 	// MISSING: Port
 	// MISSING: Username
@@ -95,7 +139,7 @@ func MysqlProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Mysql
 	out.SSLConfig = MysqlSSLConfigObservedState_FromProto(mapCtx, in.GetSslConfig())
 	return out
 }
-func MysqlProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MysqlProfileObservedState) *pb.MysqlProfile {
+func MysqlProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MysqlProfileObservedState) *pb.MysqlProfile {
 	if in == nil {
 		return nil
 	}
@@ -107,11 +151,11 @@ func MysqlProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MysqlP
 	out.SslConfig = MysqlSSLConfigObservedState_ToProto(mapCtx, in.SSLConfig)
 	return out
 }
-func MysqlSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) *krm.MysqlSSLConfig {
+func MysqlSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) *krmv1alpha1.MysqlSSLConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MysqlSSLConfig{}
+	out := &krmv1alpha1.MysqlSSLConfig{}
 	out.ClientKey = direct.LazyPtr(in.GetClientKey())
 	// MISSING: ClientKeySet
 	out.ClientCertificate = direct.LazyPtr(in.GetClientCertificate())
@@ -120,7 +164,7 @@ func MysqlSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) 
 	// MISSING: CACertificateSet
 	return out
 }
-func MysqlSSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.MysqlSSLConfig) *pb.MysqlSslConfig {
+func MysqlSSLConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MysqlSSLConfig) *pb.MysqlSslConfig {
 	if in == nil {
 		return nil
 	}
@@ -133,11 +177,11 @@ func MysqlSSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.MysqlSSLConfig) *
 	// MISSING: CACertificateSet
 	return out
 }
-func MysqlSSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) *krm.MysqlSSLConfigObservedState {
+func MysqlSSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) *krmv1alpha1.MysqlSSLConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MysqlSSLConfigObservedState{}
+	out := &krmv1alpha1.MysqlSSLConfigObservedState{}
 	// MISSING: ClientKey
 	out.ClientKeySet = direct.LazyPtr(in.GetClientKeySet())
 	// MISSING: ClientCertificate
@@ -146,7 +190,7 @@ func MysqlSSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Mys
 	out.CACertificateSet = direct.LazyPtr(in.GetCaCertificateSet())
 	return out
 }
-func MysqlSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.MysqlSSLConfigObservedState) *pb.MysqlSslConfig {
+func MysqlSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MysqlSSLConfigObservedState) *pb.MysqlSslConfig {
 	if in == nil {
 		return nil
 	}
@@ -159,11 +203,11 @@ func MysqlSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Mysq
 	out.CaCertificateSet = direct.ValueOf(in.CACertificateSet)
 	return out
 }
-func OracleProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleProfile) *krm.OracleProfileObservedState {
+func OracleProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleProfile) *krmv1alpha1.OracleProfileObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OracleProfileObservedState{}
+	out := &krmv1alpha1.OracleProfileObservedState{}
 	// MISSING: Hostname
 	// MISSING: Port
 	// MISSING: Username
@@ -175,7 +219,7 @@ func OracleProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Orac
 	// MISSING: SecretManagerStoredPassword
 	return out
 }
-func OracleProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OracleProfileObservedState) *pb.OracleProfile {
+func OracleProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.OracleProfileObservedState) *pb.OracleProfile {
 	if in == nil {
 		return nil
 	}
@@ -191,16 +235,16 @@ func OracleProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Oracl
 	// MISSING: SecretManagerStoredPassword
 	return out
 }
-func OracleSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.OracleSslConfig) *krm.OracleSSLConfig {
+func OracleSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.OracleSslConfig) *krmv1alpha1.OracleSSLConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OracleSSLConfig{}
+	out := &krmv1alpha1.OracleSSLConfig{}
 	out.CACertificate = direct.LazyPtr(in.GetCaCertificate())
 	// MISSING: CACertificateSet
 	return out
 }
-func OracleSSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.OracleSSLConfig) *pb.OracleSslConfig {
+func OracleSSLConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.OracleSSLConfig) *pb.OracleSslConfig {
 	if in == nil {
 		return nil
 	}
@@ -209,16 +253,16 @@ func OracleSSLConfig_ToProto(mapCtx *direct.MapContext, in *krm.OracleSSLConfig)
 	// MISSING: CACertificateSet
 	return out
 }
-func OracleSSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleSslConfig) *krm.OracleSSLConfigObservedState {
+func OracleSSLConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleSslConfig) *krmv1alpha1.OracleSSLConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OracleSSLConfigObservedState{}
+	out := &krmv1alpha1.OracleSSLConfigObservedState{}
 	// MISSING: CACertificate
 	out.CACertificateSet = direct.LazyPtr(in.GetCaCertificateSet())
 	return out
 }
-func OracleSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OracleSSLConfigObservedState) *pb.OracleSslConfig {
+func OracleSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.OracleSSLConfigObservedState) *pb.OracleSslConfig {
 	if in == nil {
 		return nil
 	}
@@ -227,7 +271,7 @@ func OracleSSLConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Ora
 	out.CaCertificateSet = direct.ValueOf(in.CACertificateSet)
 	return out
 }
-func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConnectivity) *pb.PrivateConnectivity {
+func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PrivateConnectivity) *pb.PrivateConnectivity {
 	if in == nil {
 		return nil
 	}
@@ -237,14 +281,14 @@ func PrivateConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateConne
 	}
 	return out
 }
-func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krm.StaticServiceIPConnectivity {
+func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krmv1alpha1.StaticServiceIPConnectivity {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StaticServiceIPConnectivity{}
+	out := &krmv1alpha1.StaticServiceIPConnectivity{}
 	return out
 }
-func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.StaticServiceIPConnectivity) *pb.StaticServiceIpConnectivity {
+func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.StaticServiceIPConnectivity) *pb.StaticServiceIpConnectivity {
 	if in == nil {
 		return nil
 	}

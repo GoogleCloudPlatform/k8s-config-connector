@@ -18,6 +18,7 @@
 // proto.service: google.cloud.datastream.v1
 // resource: DatastreamPrivateConnection:PrivateConnection
 // resource: DatastreamConnectionProfile:ConnectionProfile
+// resource: DatastreamRoute:Route
 
 package v1alpha1
 
