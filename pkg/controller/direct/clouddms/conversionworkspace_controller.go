@@ -72,7 +72,7 @@ func (m *modelConversionWorkspace) AdapterForObject(ctx context.Context, reader 
 	if err != nil {
 		return nil, err
 	}
-	clouddmsClient, err := gcpClient.newDataMigrationServiceClient(ctx)
+	clouddmsClient, err := gcpClient.newDataMigrationClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -99,19 +99,9 @@ type conversionWorkspaceAdapter struct {
 
 var _ directbase.Adapter = &conversionWorkspaceAdapter{}
 
-// Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
-// Return a non-nil error requeues the requests.
 func (a *conversionWorkspaceAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ConversionWorkspace", "name", a.id)
-
-	// Handle server-generated ID: if the resource ID is empty, it means we intend to create.
-	if a.id.ID() == "" {
-		log.V(2).Info("conversion workspace id is empty, assuming resource does not exist", "name", a.id)
-		return false, nil
-	}
 
 	req := &pb.GetConversionWorkspaceRequest{Name: a.id.String()}
 	conversionworkspacepb, err := a.gcpClient.GetConversionWorkspace(ctx, req)
@@ -141,7 +131,7 @@ func (a *conversionWorkspaceAdapter) Create(ctx context.Context, createOp *direc
 	}
 
 	// The API requires a server-generated ID. We use the k8s object name as the ID hint.
-	conversionWorkspaceID := a.id.KRMName()
+	conversionWorkspaceID := a.id.ID()
 
 	req := &pb.CreateConversionWorkspaceRequest{
 		Parent:                a.id.Parent().String(),
@@ -157,13 +147,6 @@ func (a *conversionWorkspaceAdapter) Create(ctx context.Context, createOp *direc
 		return fmt.Errorf("ConversionWorkspace %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created ConversionWorkspace", "name", a.id)
-
-	// Update the resource ID with the server-generated value
-	_, actualResourceID, err := krm.ParseConversionWorkspaceExternal(created.Name)
-	if err != nil {
-		return fmt.Errorf("parsing the resource name %q in the response of CreateConversionWorkspace: %w", created.Name, err)
-	}
-	a.id.SetID(actualResourceID) // Update the adapter's ID
 
 	status := &krm.CloudDMSConversionWorkspaceStatus{}
 	status.ObservedState = CloudDMSConversionWorkspaceObservedState_FromProto(mapCtx, created)
@@ -228,11 +211,10 @@ func (a *conversionWorkspaceAdapter) Update(ctx context.Context, updateOp *direc
 
 // Export maps the GCP object to a Config Connector resource `spec`.
 func (a *conversionWorkspaceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	log := klog.FromContext(ctx)
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
-
 	obj := &krm.CloudDMSConversionWorkspace{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(CloudDMSConversionWorkspaceSpec_FromProto(mapCtx, a.actual))
@@ -241,17 +223,16 @@ func (a *conversionWorkspaceAdapter) Export(ctx context.Context) (*unstructured.
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID()) // Export the server-generated ID
-
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.id.KRMName()) // Set the KRM name
+	u := &unstructured.Unstructured{Object: uObj}
+	u.SetName(a.id.String())
 	u.SetGroupVersionKind(krm.CloudDMSConversionWorkspaceGVK)
 
-	u.Object = uObj
+	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
 	return u, nil
 }
 
@@ -259,13 +240,6 @@ func (a *conversionWorkspaceAdapter) Export(ctx context.Context) (*unstructured.
 func (a *conversionWorkspaceAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ConversionWorkspace", "name", a.id)
-
-	// Handle server-generated ID: if the resource ID is empty, it likely means Find returned false,
-	// and we shouldn't attempt deletion. This scenario should ideally be prevented by the controller flow.
-	if a.id.ID() == "" {
-		log.V(2).Info("skipping delete for ConversionWorkspace with empty resource ID, resource likely doesn't exist", "name", a.id.KRMName())
-		return true, nil // Assume already deleted or never created
-	}
 
 	req := &pb.DeleteConversionWorkspaceRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteConversionWorkspace(ctx, req)
