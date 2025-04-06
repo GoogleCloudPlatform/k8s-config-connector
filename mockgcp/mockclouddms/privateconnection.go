@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 func (s *DataMigrationServiceV1) GetPrivateConnection(ctx context.Context, req *pb.GetPrivateConnectionRequest) (*pb.PrivateConnection, error) {
