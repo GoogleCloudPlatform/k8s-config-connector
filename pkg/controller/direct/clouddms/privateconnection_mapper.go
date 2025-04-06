@@ -1,0 +1,93 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:mapper
+// krm.group: clouddms.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.clouddms.v1
+
+package clouddms
+
+import (
+	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func CloudDMSPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.CloudDMSPrivateConnectionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudDMSPrivateConnectionObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Error = Status_FromProto(mapCtx, in.GetError())
+	return out
+}
+func CloudDMSPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudDMSPrivateConnectionObservedState) *pb.PrivateConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnection{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
+	out.Error = Status_ToProto(mapCtx, in.Error)
+	return out
+}
+func CloudDMSPrivateConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.CloudDMSPrivateConnectionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudDMSPrivateConnectionSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.VpcPeeringConfig = VpcPeeringConfig_FromProto(mapCtx, in.GetVpcPeeringConfig())
+	return out
+}
+func CloudDMSPrivateConnectionSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDMSPrivateConnectionSpec) *pb.PrivateConnection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivateConnection{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if oneof := VpcPeeringConfig_ToProto(mapCtx, in.VpcPeeringConfig); oneof != nil {
+		out.Connectivity = &pb.PrivateConnection_VpcPeeringConfig{VpcPeeringConfig: oneof}
+	}
+	return out
+}
+func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConfig) *krm.VpcPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VpcPeeringConfig{}
+	out.VpcName = direct.LazyPtr(in.GetVpcName())
+	out.Subnet = direct.LazyPtr(in.GetSubnet())
+	return out
+}
+func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfig) *pb.VpcPeeringConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VpcPeeringConfig{}
+	out.VpcName = VpcPeeringConfig_VpcName_ToProto(mapCtx, in.VpcName)
+	out.Subnet = direct.ValueOf(in.Subnet)
+	return out
+}
