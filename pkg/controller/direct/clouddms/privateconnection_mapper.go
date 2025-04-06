@@ -22,6 +22,7 @@ package clouddms
 import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -34,7 +35,6 @@ func CloudDMSPrivateConnectionObservedState_FromProto(mapCtx *direct.MapContext,
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Error = Status_FromProto(mapCtx, in.GetError())
 	return out
 }
 func CloudDMSPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudDMSPrivateConnectionObservedState) *pb.PrivateConnection {
@@ -46,7 +46,6 @@ func CloudDMSPrivateConnectionObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.PrivateConnection_State](mapCtx, in.State)
-	out.Error = Status_ToProto(mapCtx, in.Error)
 	return out
 }
 func CloudDMSPrivateConnectionSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateConnection) *krm.CloudDMSPrivateConnectionSpec {
@@ -78,7 +77,9 @@ func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConf
 		return nil
 	}
 	out := &krm.VpcPeeringConfig{}
-	out.VpcName = direct.LazyPtr(in.GetVpcName())
+	if in.GetVpcName() != "" {
+		out.VpcName = &refsv1beta1.ComputeNetworkRef{External: in.GetVpcName()}
+	}
 	out.Subnet = direct.LazyPtr(in.GetSubnet())
 	return out
 }
@@ -87,7 +88,9 @@ func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfi
 		return nil
 	}
 	out := &pb.VpcPeeringConfig{}
-	out.VpcName = VpcPeeringConfig_VpcName_ToProto(mapCtx, in.VpcName)
+	if in.VpcName != nil {
+		out.VpcName = in.VpcName.External
+	}
 	out.Subnet = direct.ValueOf(in.Subnet)
 	return out
 }

@@ -81,10 +81,11 @@ type Status struct {
 	// +kcc:proto:field=google.rpc.Status.message
 	Message *string `json:"message,omitempty"`
 
+	// NOT YET
 	// A list of messages that carry the error details.  There is a common set of
 	//  message types for APIs to use.
 	// +kcc:proto:field=google.rpc.Status.details
-	Details []Any `json:"details,omitempty"`
+	// Details []Any `json:"details,omitempty"`
 }
 
 // +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConfig
