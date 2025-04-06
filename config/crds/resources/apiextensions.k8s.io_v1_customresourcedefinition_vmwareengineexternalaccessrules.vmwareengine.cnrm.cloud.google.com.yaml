@@ -81,10 +81,31 @@ spec:
                       description: The name of an `ExternalAddress` resource. The
                         external address must have been reserved in the scope of this
                         external access rule's parent network policy.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
                       properties:
                         external:
                           description: A reference to an externally managed VMwareEngineExternalAddress
                             resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}}".
+                          type: string
+                        name:
+                          description: The name of a VMwareEngineExternalAddress resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a VMwareEngineExternalAddress
+                            resource.
                           type: string
                       type: object
                     ipAddress:
@@ -167,10 +188,31 @@ spec:
                       description: The name of an `ExternalAddress` resource. The
                         external address must have been reserved in the scope of this
                         external access rule's parent network policy.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
                       properties:
                         external:
                           description: A reference to an externally managed VMwareEngineExternalAddress
                             resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/privateClouds/{{privatecloudID}}/externalAddresses/{{externaladdressID}}".
+                          type: string
+                        name:
+                          description: The name of a VMwareEngineExternalAddress resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a VMwareEngineExternalAddress
+                            resource.
                           type: string
                       type: object
                     ipAddress:

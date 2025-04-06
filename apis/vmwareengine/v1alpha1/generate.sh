@@ -28,7 +28,8 @@ go run . generate-types \
     --resource VMwareEngineNetworkPeering:NetworkPeering \
     --resource VMwareEngineNetworkPolicy:NetworkPolicy \
     --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
-    --resource VMwareEnginePrivateCloud:PrivateCloud
+    --resource VMwareEnginePrivateCloud:PrivateCloud \
+    --resource VMwareEngineExternalAddress:ExternalAddress
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \
