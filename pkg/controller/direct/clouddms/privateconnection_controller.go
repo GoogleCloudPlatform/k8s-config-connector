@@ -23,7 +23,6 @@ package clouddms
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/clouddms/apiv1"
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
@@ -65,15 +64,11 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, reader cl
 		return nil, err
 	}
 	// normalize reference fields
-	fmt.Println("=============================================")
-	fmt.Printf("")
-	fmt.Println("=============================================")
 	if obj.Spec.VpcPeeringConfig.VpcName != nil {
 		if err := obj.Spec.VpcPeeringConfig.VpcName.Normalize(ctx, reader, obj); err != nil {
 			return nil, err
 		}
 	}
-
 	// Get clouddms GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -167,40 +162,8 @@ func (a *PrivateConnectionAdapter) Create(ctx context.Context, createOp *directb
 // Note: The Cloud DMS API currently does not support updating Private Connections.
 func (a *PrivateConnectionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating PrivateConnection", "name", a.id)
-
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := CloudDMSPrivateConnectionSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	paths := []string{}
-	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		paths = append(paths, "display_name")
-	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		paths = append(paths, "labels")
-	}
-	if !reflect.DeepEqual(resource.GetVpcPeeringConfig(), a.actual.GetVpcPeeringConfig()) {
-		paths = append(paths, "vpc_peering_config")
-	}
-
-	if len(paths) != 0 {
-		// The GCP API for Cloud DMS PrivateConnection does not currently support updates.
-		// If the API starts supporting updates in the future, this section will need to be implemented.
-		return fmt.Errorf("updating CloudDMSPrivateConnection is not supported, fields: %v", paths)
-	}
-
-	// Still need to update status (in the event of acquiring an existing resource)
-	status := &krm.CloudDMSPrivateConnectionStatus{}
-	status.ObservedState = CloudDMSPrivateConnectionObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	log.V(2).Info("CloudDMS PrivateConnection does not support update")
+	return nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
