@@ -65,6 +65,9 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, reader cl
 		return nil, err
 	}
 	// normalize reference fields
+	fmt.Println("=============================================")
+	fmt.Printf("")
+	fmt.Println("=============================================")
 	if obj.Spec.VpcPeeringConfig.VpcName != nil {
 		if err := obj.Spec.VpcPeeringConfig.VpcName.Normalize(ctx, reader, obj); err != nil {
 			return nil, err
