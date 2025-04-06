@@ -19,6 +19,7 @@
 // resource: GKEBackupBackupPlan:BackupPlan
 // resource: GKEBackupRestorePlan:RestorePlan
 // resource: GKEBackupBackup:Backup
+// resource: GKEBackupRestore:Restore
 
 package v1alpha1
 
@@ -143,6 +144,53 @@ type Namespaces struct {
 	// Optional. A list of Kubernetes Namespaces
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Namespaces.namespaces
 	Namespaces []string `json:"namespaces,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.ResourceSelector
+type ResourceSelector struct {
+	// Optional. Selects resources using their Kubernetes GroupKinds. If
+	//  specified, only resources of provided GroupKind will be selected.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ResourceSelector.group_kind
+	GroupKind *RestoreConfig_GroupKind `json:"groupKind,omitempty"`
+
+	// Optional. Selects resources using their resource names. If specified,
+	//  only resources with the provided name will be selected.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ResourceSelector.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Selects resources using their namespaces. This only applies to
+	//  namespace scoped resources and cannot be used for selecting
+	//  cluster scoped resources. If specified, only resources in the provided
+	//  namespace will be selected. If not specified, the filter will apply to
+	//  both cluster scoped and namespace scoped resources (e.g. name or label).
+	//  The [Namespace](https://pkg.go.dev/k8s.io/api/core/v1#Namespace) resource
+	//  itself will be restored if and only if any resources within the namespace
+	//  are restored.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ResourceSelector.namespace
+	Namespace *string `json:"namespace,omitempty"`
+
+	// Optional. Selects resources using Kubernetes
+	//  [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
+	//  If specified, a resource will be selected if and only if the resource
+	//  has all of the provided labels and all the label values match.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.ResourceSelector.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.Restore.Filter
+type Restore_Filter struct {
+	// Optional. Selects resources for restoration. If specified, only resources
+	//  which match `inclusion_filters` will be selected for restoration. A
+	//  resource will be selected if it matches any `ResourceSelector` of the
+	//  `inclusion_filters`.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.Restore.Filter.inclusion_filters
+	InclusionFilters []ResourceSelector `json:"inclusionFilters,omitempty"`
+
+	// Optional. Excludes resources from restoration. If specified,
+	//  a resource will not be restored if it matches
+	//  any `ResourceSelector` of the `exclusion_filters`.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.Restore.Filter.exclusion_filters
+	ExclusionFilters []ResourceSelector `json:"exclusionFilters,omitempty"`
 }
 
 // +kcc:proto=google.cloud.gkebackup.v1.RestoreConfig
@@ -276,6 +324,18 @@ type RestoreConfig_RestoreOrder struct {
 	//  generate a group kind restore order.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.RestoreOrder.group_kind_dependencies
 	GroupKindDependencies []RestoreConfig_RestoreOrder_GroupKindDependency `json:"groupKindDependencies,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride
+type VolumeDataRestorePolicyOverride struct {
+	// Required. The VolumeDataRestorePolicy to apply when restoring volumes in
+	//  scope.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.policy
+	Policy *string `json:"policy,omitempty"`
+
+	// A list of PVCs to apply the policy override to.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.selected_pvcs
+	SelectedPvcs *NamespacedNames `json:"selectedPvcs,omitempty"`
 }
 
 // +kcc:proto=google.type.Date
