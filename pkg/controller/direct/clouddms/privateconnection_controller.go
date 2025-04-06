@@ -64,6 +64,12 @@ func (m *modelPrivateConnection) AdapterForObject(ctx context.Context, reader cl
 	if err != nil {
 		return nil, err
 	}
+	// normalize reference fields
+	if obj.Spec.VpcPeeringConfig.VpcName != nil {
+		if err := obj.Spec.VpcPeeringConfig.VpcName.Normalize(ctx, reader, obj); err != nil {
+			return nil, err
+		}
+	}
 
 	// Get clouddms GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
