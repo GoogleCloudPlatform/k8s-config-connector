@@ -12,29 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: speech.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.speech.v2
+// resource: SpeechRecognizer:Recognizer
+// resource: SpeechCustomClass:CustomClass
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.speech.v2.AutoDetectDecodingConfig
 type AutoDetectDecodingConfig struct {
-}
-
-// +kcc:proto=google.cloud.speech.v2.CustomClass
-type CustomClass struct {
-
-	// Optional. User-settable, human-readable name for the CustomClass. Must be
-	//  63 characters or less.
-	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// A collection of class items.
-	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.items
-	Items []CustomClass_ClassItem `json:"items,omitempty"`
-
-	// Optional. Allows users to store small amounts of arbitrary data.
-	//  Both the key and the value must be 63 characters or less each.
-	//  At most 100 annotations.
-	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.annotations
-	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.CustomClass.ClassItem
@@ -42,34 +30,6 @@ type CustomClass_ClassItem struct {
 	// The class item's value.
 	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.ClassItem.value
 	Value *string `json:"value,omitempty"`
-}
-
-// +kcc:proto=google.cloud.speech.v2.PhraseSet
-type PhraseSet struct {
-
-	// A list of word and phrases.
-	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.phrases
-	Phrases []PhraseSet_Phrase `json:"phrases,omitempty"`
-
-	// Hint Boost. Positive value will increase the probability that a specific
-	//  phrase will be recognized over other similar sounding phrases. The higher
-	//  the boost, the higher the chance of false positive recognition as well.
-	//  Valid `boost` values are between 0 (exclusive) and 20. We recommend using a
-	//  binary search approach to finding the optimal value for your use case as
-	//  well as adding phrases both with and without boost to your requests.
-	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.boost
-	Boost *float32 `json:"boost,omitempty"`
-
-	// User-settable, human-readable name for the PhraseSet. Must be 63
-	//  characters or less.
-	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Allows users to store small amounts of arbitrary data.
-	//  Both the key and the value must be 63 characters or less each.
-	//  At most 100 annotations.
-	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.annotations
-	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.PhraseSet.Phrase
@@ -217,18 +177,6 @@ type RecognitionFeatures struct {
 	MaxAlternatives *int32 `json:"maxAlternatives,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
-type SpeechAdaptation struct {
-	// A list of inline or referenced PhraseSets.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.phrase_sets
-	PhraseSets []SpeechAdaptation_AdaptationPhraseSet `json:"phraseSets,omitempty"`
-
-	// A list of inline CustomClasses. Existing CustomClass resources can be
-	//  referenced directly in a PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.custom_classes
-	CustomClasses []CustomClass `json:"customClasses,omitempty"`
-}
-
 // +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet
 type SpeechAdaptation_AdaptationPhraseSet struct {
 	// The name of an existing PhraseSet resource. The user must have read
@@ -272,18 +220,6 @@ type RecognitionConfigObservedState struct {
 	//  words and phrases.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
 	Adaptation *SpeechAdaptationObservedState `json:"adaptation,omitempty"`
-}
-
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
-type SpeechAdaptationObservedState struct {
-	// A list of inline or referenced PhraseSets.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.phrase_sets
-	PhraseSets []SpeechAdaptation_AdaptationPhraseSetObservedState `json:"phraseSets,omitempty"`
-
-	// A list of inline CustomClasses. Existing CustomClass resources can be
-	//  referenced directly in a PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.custom_classes
-	CustomClasses []CustomClassObservedState `json:"customClasses,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet
