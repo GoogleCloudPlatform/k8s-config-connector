@@ -42,9 +42,8 @@ func cloudDMSPrivateConnectionFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".error")
 
-	f.UnimplementedFields.Insert(".name")         // special field
+	f.UnimplementedFields.Insert(".name")          // special field
 	f.UnimplementedFields.Insert(".error.details") // NOTYET
 
 	return f
 }
-
