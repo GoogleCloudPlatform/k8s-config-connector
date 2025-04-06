@@ -77,3 +77,23 @@ func GKEBackupRestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Restore) *
 	out.VolumeDataRestorePolicyOverrides = direct.Slice_FromProto(mapCtx, in.VolumeDataRestorePolicyOverrides, VolumeDataRestorePolicyOverride_FromProto)
 	return out
 }
+func VolumeDataRestorePolicyOverride_FromProto(mapCtx *direct.MapContext, in *pb.VolumeDataRestorePolicyOverride) *krmv1alpha1.VolumeDataRestorePolicyOverride {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VolumeDataRestorePolicyOverride{}
+	out.Policy = direct.Enum_FromProto(mapCtx, in.GetPolicy())
+	out.SelectedPVCs = NamespacedNames_FromProto(mapCtx, in.GetSelectedPvcs())
+	return out
+}
+func VolumeDataRestorePolicyOverride_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VolumeDataRestorePolicyOverride) *pb.VolumeDataRestorePolicyOverride {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VolumeDataRestorePolicyOverride{}
+	out.Policy = direct.Enum_ToProto[pb.RestoreConfig_VolumeDataRestorePolicy](mapCtx, in.Policy)
+	if oneof := NamespacedNames_ToProto(mapCtx, in.SelectedPVCs); oneof != nil {
+		out.Scope = &pb.VolumeDataRestorePolicyOverride_SelectedPvcs{SelectedPvcs: oneof}
+	}
+	return out
+}

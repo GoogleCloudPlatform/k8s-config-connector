@@ -194,3 +194,15 @@ type GKEBackupRestoreList struct {
 func init() {
 	SchemeBuilder.Register(&GKEBackupRestore{}, &GKEBackupRestoreList{})
 }
+
+// +kcc:proto=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride
+type VolumeDataRestorePolicyOverride struct {
+	// Required. The VolumeDataRestorePolicy to apply when restoring volumes in
+	//  scope.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.policy
+	Policy *string `json:"policy,omitempty"`
+
+	// A list of PVCs to apply the policy override to.
+	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.selected_pvcs
+	SelectedPVCs *NamespacedNames `json:"selectedPVCs,omitempty"`
+}
