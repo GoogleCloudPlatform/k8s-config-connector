@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// proto.message: google.cloud.managedkafka.v1.ConsumerGroup
-// api.group: managedkafka.cnrm.cloud.google.com
-
 package managedkafka
 
 import (

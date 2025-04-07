@@ -187,7 +187,7 @@ spec:
                           items:
                             properties:
                               key:
-                                description: Optional. Key of the partition index
+                                description: Required. Key of the partition index
                                   for topic metadata in this consumer group.
                                 format: int32
                                 type: integer
@@ -201,6 +201,7 @@ spec:
                                 format: int64
                                 type: integer
                             required:
+                            - key
                             - offset
                             type: object
                           type: array

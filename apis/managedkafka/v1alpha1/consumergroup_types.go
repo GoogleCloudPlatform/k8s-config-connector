@@ -44,7 +44,8 @@ type ConsumerPartitionMetadata struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.ConsumerPartitionMetadata.metadata
 	Metadata *string `json:"metadata,omitempty"`
 
-	// Optional. Key of the partition index for topic metadata in this consumer group.
+	// Required. Key of the partition index for topic metadata in this consumer group.
+	//+required
 	Key *int32 `json:"key,omitempty"`
 }
 
