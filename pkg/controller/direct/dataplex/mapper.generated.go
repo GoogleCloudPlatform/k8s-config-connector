@@ -12,83 +12,144 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: dataplex.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataplex.v1
+
 package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupObservedState {
+func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.Content {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexEntryGroupObservedState{}
+	out := &krmv1alpha1.Content{}
 	// MISSING: Name
 	// MISSING: Uid
+	out.Path = direct.LazyPtr(in.GetPath())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TransferStatus
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataText = direct.LazyPtr(in.GetDataText())
+	out.SQLScript = Content_SQLScript_FromProto(mapCtx, in.GetSqlScript())
+	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
-func DataplexEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupObservedState) *pb.EntryGroup {
+func Content_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Content) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Path = direct.ValueOf(in.Path)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Content_DataText_ToProto(mapCtx, in.DataText); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Content_SQLScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Content = &pb.Content_SqlScript_{SqlScript: oneof}
+	}
+	if oneof := Content_Notebook_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Content = &pb.Content_Notebook_{Notebook: oneof}
+	}
+	return out
+}
+func ContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.ContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ContentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
+	return out
+}
+func ContentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ContentObservedState) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
+	return out
+}
+func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krmv1alpha1.DataplexEntryGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataplexEntryGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
+	return out
+}
+func DataplexEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataplexEntryGroupObservedState) *pb.EntryGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EntryGroup{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TransferStatus
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
 	return out
 }
-func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupSpec {
+func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krmv1alpha1.DataplexEntryGroupSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexEntryGroupSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TransferStatus
+	out := &krmv1alpha1.DataplexEntryGroupSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Labels = in.Labels
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
-func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupSpec) *pb.EntryGroup {
+func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataplexEntryGroupSpec) *pb.EntryGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EntryGroup{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TransferStatus
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Labels = in.Labels
+	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
-func EntryGroup_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.EntryGroup {
+func EntryGroup_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krmv1alpha1.EntryGroup {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryGroup{}
+	out := &krmv1alpha1.EntryGroup{}
 	// MISSING: Name
 	// MISSING: Uid
 	// MISSING: CreateTime
@@ -100,7 +161,7 @@ func EntryGroup_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.Ent
 	// MISSING: TransferStatus
 	return out
 }
-func EntryGroup_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroup) *pb.EntryGroup {
+func EntryGroup_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryGroup) *pb.EntryGroup {
 	if in == nil {
 		return nil
 	}
@@ -116,11 +177,11 @@ func EntryGroup_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroup) *pb.Entry
 	// MISSING: TransferStatus
 	return out
 }
-func EntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.EntryGroupObservedState {
+func EntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krmv1alpha1.EntryGroupObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryGroupObservedState{}
+	out := &krmv1alpha1.EntryGroupObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -132,7 +193,7 @@ func EntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGr
 	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
 	return out
 }
-func EntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryGroupObservedState) *pb.EntryGroup {
+func EntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryGroupObservedState) *pb.EntryGroup {
 	if in == nil {
 		return nil
 	}
@@ -146,5 +207,191 @@ func EntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryGro
 	// MISSING: Labels
 	// MISSING: Etag
 	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
+	return out
+}
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.SessionSpec = Environment_SessionSpec_FromProto(mapCtx, in.GetSessionSpec())
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.SessionSpec = Environment_SessionSpec_ToProto(mapCtx, in.SessionSpec)
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EnvironmentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
+	return out
+}
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
+	return out
+}
+func Environment_Endpoints_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krmv1alpha1.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_Endpoints_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_Endpoints) *pb.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_SessionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krmv1alpha1.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func Environment_SessionStatus_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_SessionStatus) *pb.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_FromProto(mapCtx, in.GetMetastore())
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func Lake_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Lake) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func LakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.LakeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LakeObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
+	return out
+}
+func LakeObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.LakeObservedState) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
 	return out
 }
