@@ -15,15 +15,23 @@
 package v1alpha1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexEntryTypeGVK = GroupVersion.WithKind("DataplexEntryType")
 
+type DataplexEntryTypeParent struct {
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	Location string `json:"location"`
+}
+
 // DataplexEntryTypeSpec defines the desired state of DataplexEntryType
 // +kcc:proto=google.cloud.dataplex.v1.EntryType
 type DataplexEntryTypeSpec struct {
+	DataplexEntryTypeParent `json:",inline"`
 	// The DataplexEntryType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -51,7 +59,6 @@ type DataplexEntryTypeStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexentrytype;gcpdataplexentrytypes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
