@@ -174,30 +174,6 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if !reflect.DeepEqual(resource.Etag, a.actual.Etag) && resource.Etag != "" { // etag is optional
-		// Etag cannot be directly updated, it's used for optimistic concurrency control.
-		// It seems the intention here is to match the actual etag for the update.
-		// If the spec includes an etag, and it doesn't match the actual, we should fail.
-		// The update request itself doesn't use the etag field directly in the resource,
-		// but rather the Etag field in the UpdateEntryGroupRequest if needed (which we aren't using here).
-		// For KCC, we generally don't set etag in Spec, but if it is set, it should match.
-		// If it doesn't match, it implies the resource was modified outside KCC.
-		log.V(2).Info("etag mismatch", "desired", resource.Etag, "actual", a.actual.Etag)
-		// We don't add 'etag' to the updateMask.
-		// If the user provided an etag in spec and it differs from actual, the update might implicitly fail
-		// due to concurrency control on the server side if the server uses it.
-		// However, the UpdateEntryGroupRequest doesn't seem to have an etag field for this purpose.
-		// Let's proceed with other updates if any, or return if only etag differs.
-	}
-
-	// Remove Etag from the comparison as it's not part of the update mask paths.
-	pathsWithoutEtag := make([]string, 0, len(updateMask.Paths))
-	for _, p := range updateMask.Paths {
-		if p != "etag" {
-			pathsWithoutEtag = append(pathsWithoutEtag, p)
-		}
-	}
-	updateMask.Paths = pathsWithoutEtag
 
 	var updated *pb.EntryGroup
 	if len(updateMask.Paths) == 0 {

@@ -42,20 +42,8 @@ type MockService struct {
 	operations *operations.Operations
 
 	// Store the underlying GRPC servers
-	dataplexV1 *DataplexV1
-	catalogV1  *CatalogV1
-}
-
-// DataplexV1 implements the DataplexService GRPC service.
-type DataplexV1 struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
-// CatalogV1 implements the CatalogService GRPC service.
-type CatalogV1 struct {
-	*MockService
-	pb.UnimplementedCatalogServiceServer
+	dataplexV1     *DataplexV1
+	catalogService *CatalogService
 }
 
 // New creates a MockService.
@@ -66,7 +54,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.dataplexV1 = &DataplexV1{MockService: s}
-	s.catalogV1 = &CatalogV1{MockService: s}
+	s.catalogService = &CatalogService{MockService: s}
 	return s
 }
 
@@ -76,7 +64,7 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexV1)
-	pb.RegisterCatalogServiceServer(grpcServer, s.catalogV1)
+	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
