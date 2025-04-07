@@ -58,3 +58,17 @@ func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 
 	return grpcClient, err
 }
+
+func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+
+	grpcClient, err := api.NewCatalogClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building dataplex catalog client: %w", err)
+	}
+
+	return grpcClient, err
+}
