@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -32,6 +33,10 @@ import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
 
+func init() {
+	mockgcpregistry.Register(New)
+}
+
 // MockService represents a mocked bigtable service.
 type MockService struct {
 	*common.MockEnvironment
@@ -41,7 +46,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
