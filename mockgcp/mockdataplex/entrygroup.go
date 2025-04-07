@@ -24,6 +24,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -32,9 +34,17 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
+
+// CatalogService implements the CatalogService GRPC service.
+type CatalogService struct {
+	*MockService
+	pb.UnimplementedCatalogServiceServer
+}
 
 func (s *CatalogService) GetEntryGroup(ctx context.Context, req *pb.GetEntryGroupRequest) (*pb.EntryGroup, error) {
 	name, err := s.parseEntryGroupName(req.Name)
@@ -47,7 +57,7 @@ func (s *CatalogService) GetEntryGroup(ctx context.Context, req *pb.GetEntryGrou
 	obj := &pb.EntryGroup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "entryGroup %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
 		}
 		return nil, err
 	}
@@ -69,7 +79,7 @@ func (s *CatalogService) CreateEntryGroup(ctx context.Context, req *pb.CreateEnt
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Uid = fields.NewUID()
+	obj.Uid = uuid.NewString()
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	s.populateDefaultsForEntryGroup(obj)
@@ -83,7 +93,6 @@ func (s *CatalogService) CreateEntryGroup(ctx context.Context, req *pb.CreateEnt
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
-		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -140,7 +149,6 @@ func (s *CatalogService) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEnt
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "update",
-		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -167,7 +175,6 @@ func (s *CatalogService) DeleteEntryGroup(ctx context.Context, req *pb.DeleteEnt
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "delete",
-		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
