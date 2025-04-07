@@ -17,7 +17,8 @@ kind: GKEBackupRestore
 metadata:
   name: gkebackuprestore-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  restorePlanRef:
+    name: gkebackuprestoreplan-minimal-${uniqueId}
   description: "Updated description"
+  backupRef:
+    name: gkebackupbackup-minimal-${uniqueId}
