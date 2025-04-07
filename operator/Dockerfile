@@ -23,6 +23,7 @@ COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
+COPY operator/per-namespace-channels/ operator/per-namespace-channels/
 COPY apis/ apis/
 COPY dev/metadata/   dev/metadata/
 COPY mockgcp/ mockgcp/
@@ -52,6 +53,7 @@ COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/gke_addon_poststart .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/channels/ channels/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/autopilot-channels/ autopilot-channels/
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/operator/per-namespace-channels/ per-namespace-channels/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 

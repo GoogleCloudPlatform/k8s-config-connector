@@ -151,7 +151,7 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	// TODO: NamespaceScoped
 	// Perform two lookups, for namespaces "cnrm-system" and the CR namespace
 	//   Pros:
-	//     - No additional command line parameters requried
+	//     - No additional command line parameters required
 	//     - For non-MT clusters in most cases first lookup will return the result.
 	//       Only MT and the error cases will perform two lookups.
 	//       This reduces impact of the change and help avoiding regression issues
