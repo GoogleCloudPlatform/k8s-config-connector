@@ -7,6 +7,7 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogtaxonomies.datacatalog.cnrm.cloud.google.com
 spec:
   group: datacatalog.cnrm.cloud.google.com
@@ -39,7 +40,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: DataCatalogTaxonomy is the Schema for the DataCatalogTaxonomy
@@ -84,8 +85,6 @@ spec:
 
                    The taxonomy display name must be unique within an organization.
                 type: string
-              location:
-                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -118,12 +117,15 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              region:
+                type: string
               resourceID:
                 description: The DataCatalogTaxonomy name. If not given, the metadata.name
                   will be used.
                 type: string
             required:
-            - location
+            - projectRef
+            - region
             type: object
           status:
             description: DataCatalogTaxonomyStatus defines the config connector machine
@@ -195,6 +197,12 @@ spec:
                       createTime:
                         description: Creation timestamp of the resource within the
                           given system.
+                        type: string
+                      expiredTime:
+                        description: |-
+                          Output only. Expiration timestamp of the resource within the given system.
+
+                          Currently only applicable to BigQuery resources.
                         type: string
                       updateTime:
                         description: |-

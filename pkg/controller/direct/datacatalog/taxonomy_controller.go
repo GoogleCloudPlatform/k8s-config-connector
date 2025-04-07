@@ -16,7 +16,7 @@
 // proto.service: google.cloud.datacatalog.v1.PolicyTagManager
 // proto.message: google.cloud.datacatalog.v1.Taxonomy
 // crd.type: DataCatalogTaxonomy
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package datacatalog
 
@@ -27,13 +27,14 @@ import (
 
 	gcp "cloud.google.com/go/datacatalog/apiv1"
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -42,7 +43,18 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.DataCatalogTaxonomyGVK, NewTaxonomyModel)
+	rg := &TaxonomyReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.DataCatalogTaxonomyGVK, NewTaxonomyModel, rg)
+}
+
+type TaxonomyReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &TaxonomyReconcileGate{}
+
+func (r *TaxonomyReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	return r.optIn.ShouldReconcile(o)
 }
 
 func NewTaxonomyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -218,7 +230,7 @@ func (a *taxonomyAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Region = a.id.Parent().Region
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

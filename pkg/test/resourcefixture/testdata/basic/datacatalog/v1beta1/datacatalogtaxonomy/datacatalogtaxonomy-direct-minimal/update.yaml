@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
+apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
 kind: DataCatalogTaxonomy
 metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: datacatalogtaxonomy-minimal-${uniqueId}
 spec:
-  location: us-central1
+  region: us-central1
   description: "Updated description"
   displayName: "Taxonomy displayName"

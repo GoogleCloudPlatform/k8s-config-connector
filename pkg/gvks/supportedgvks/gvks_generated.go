@@ -2349,12 +2349,13 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "datacatalog.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "DataCatalogTaxonomy",
 	}: {
 		Labels: map[string]string{
 			"cnrm.cloud.google.com/managed-by-kcc": "true",
 			"cnrm.cloud.google.com/system":         "true",
+			"cnrm.cloud.google.com/tf2crd":         "true",
 		},
 	},
 	{
