@@ -59,6 +59,7 @@ type DataplexZoneSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// Required. Immutable. The type of the zone.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.type
 	Type *string `json:"type,omitempty"`
 
