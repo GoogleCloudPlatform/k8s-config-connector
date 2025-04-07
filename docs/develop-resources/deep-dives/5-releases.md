@@ -59,8 +59,8 @@ tell the script which sample to use for generating snippets. Update the
 
 ## 5.5 Add reference document 
 
-To add or update the Config Connector 
-[reference doc](https://cloud.google.com/config-connector/docs/reference/overview), please do the following.
+All beta resource can have a Google Reference documentation Connector 
+[reference doc](https://cloud.google.com/config-connector/docs/reference/overview). Please follow the steps to add the reference doc.
 
 1.  Copy one of existing files under
     [scripts/generate-google3-docs/resource-reference/templates](./../../../scripts/generate-google3-docs/resource-reference/templates),
@@ -82,7 +82,10 @@ To add or update the Config Connector
     by adding an entry and path to the corresponding API section. If there is no
     entry for the API, add one.
 
-To generate the new resource doc, run `make resource-docs`. You should see your
-resource generated to the
-[scripts/generate-google3-docs/resource-reference/generated/resource-docs](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs)
-folder.
+1.  Run `make resource-docs`. You should see your resource generated to the [scripts/generate-google3-docs/resource-reference/generated/resource-docs](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs) folder.
+
+1. Wait for the next Config Connector release, the release sheriff will publish the reference doc in Google based on the auto-generated doc folder. 
+
+## 5.6 Add reference document 
+
+Once you finish adding an Alpha resource, a Beta resource, or new fields to existing resources, you can add a [releasenote](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/master/docs/releasenotes) for the next release. The release sheriff will publish the note.
