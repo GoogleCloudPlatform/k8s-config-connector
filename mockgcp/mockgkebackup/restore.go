@@ -121,26 +121,17 @@ func (s *BackupForGKEV1) CreateRestore(ctx context.Context, req *pb.CreateRestor
 		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		// Simulate restore process
 		obj.State = pb.Restore_IN_PROGRESS
 		obj.StateReason = "Restoring resources."
 		obj.UpdateTime = timestamppb.New(time.Now())
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			// Should we mark as failed?
 			return nil, err
 		}
 
-		// Simulate completion
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		obj.State = pb.Restore_SUCCEEDED
-		obj.StateReason = "Restore completed."
-		obj.CompleteTime = lroMetadata.EndTime
+		obj.State = pb.Restore_CREATING
+		obj.StateReason = "RestoreJob is being pushed to target cluster."
 		obj.UpdateTime = lroMetadata.EndTime
-		// Set dummy counts
-		obj.ResourcesRestoredCount = 10
-		obj.ResourcesExcludedCount = 1
-		obj.ResourcesFailedCount = 0
-		obj.VolumesRestoredCount = 2
 
 		if err := s.storage.Update(ctx, fqn, obj); err != nil {
 			return nil, err
@@ -192,10 +183,11 @@ func (s *BackupForGKEV1) UpdateRestore(ctx context.Context, req *pb.UpdateRestor
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "update",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "update",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -227,10 +219,11 @@ func (s *BackupForGKEV1) DeleteRestore(ctx context.Context, req *pb.DeleteRestor
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "delete",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "delete",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
