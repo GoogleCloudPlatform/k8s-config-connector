@@ -1,0 +1,5 @@
+- exec: gcloud bigtable instances create test-${uniqueId} --display-name="Test Instance ${uniqueId}" --cluster-config=id=test-cluster-${uniqueId},zone=us-central1-b --project=${projectId}
+- exec: gcloud bigtable instances list --project=${projectId}
+- exec: gcloud bigtable instances describe test-${uniqueId} --project=${projectId}
+- exec: gcloud bigtable instances update test-${uniqueId} --display-name="Updated ${uniqueId}" --project=${projectId}
+- exec: gcloud bigtable instances delete test-${uniqueId} --project=${projectId}
