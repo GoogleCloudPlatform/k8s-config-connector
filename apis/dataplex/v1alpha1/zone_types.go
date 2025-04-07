@@ -21,27 +21,17 @@ import (
 
 var DataplexZoneGVK = GroupVersion.WithKind("DataplexZone")
 
-// DataplexLakeRef defines a reference to a DataplexLake resource.
-type DataplexLakeRef struct {
-	// The DataplexLake resource name, in the format:
-	// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
-	// +required
-	Name string `json:"name"`
-	// +optional
-	Namespace *string `json:"namespace,omitempty"`
-}
-
 // Parent defines the parent resource for the DataplexZone.
-type Parent struct {
+type DataplexZoneParent struct {
 	// Reference to the parent DataplexLake that owns this Zone.
 	// +required
-	LakeRef *DataplexLakeRef `json:"lakeRef"`
+	LakeRef *LakeRef `json:"lakeRef"`
 }
 
 // DataplexZoneSpec defines the desired state of DataplexZone
 // +kcc:proto=google.cloud.dataplex.v1.Zone
 type DataplexZoneSpec struct {
-	Parent `json:",inline"`
+	DataplexZoneParent `json:",inline"`
 
 	// The DataplexZone name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -61,7 +51,7 @@ type DataplexZoneSpec struct {
 	// Required. Immutable. The type of the zone.
 	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.type
-	Type *string `json:"type,omitempty"`
+	Type *string `json:"type"`
 
 	// Optional. Specification of the discovery feature applied to data in this
 	//  zone.
@@ -70,8 +60,9 @@ type DataplexZoneSpec struct {
 
 	// Required. Specification of the resources that are referenced by the assets
 	//  within this zone.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.resource_spec
-	ResourceSpec *Zone_ResourceSpec `json:"resourceSpec,omitempty"`
+	ResourceSpec *Zone_ResourceSpec `json:"resourceSpec"`
 }
 
 // DataplexZoneStatus defines the config connector machine state of DataplexZone
@@ -93,11 +84,6 @@ type DataplexZoneStatus struct {
 // DataplexZoneObservedState is the state of the DataplexZone resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.dataplex.v1.Zone
 type DataplexZoneObservedState struct {
-	// Output only. The relative resource name of the zone, of the form:
-	//  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.name
-	Name *string `json:"name,omitempty"`
-
 	// Output only. System generated globally unique ID for the zone. This ID will
 	//  be different if the zone is deleted and re-created with the same name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.uid
@@ -122,7 +108,6 @@ type DataplexZoneObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplexzone;gcpdataplexzones
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

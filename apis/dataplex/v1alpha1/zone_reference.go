@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ZoneRef{}
 // holds the GCP identifier for the KRM object.
 type ZoneRef struct {
 	// A reference to an externally managed DataplexZone resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/zones/{{zoneID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/zones/{{zoneID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataplexZone resource.
