@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type EntryGroupIdentity struct {
 	parent *EntryGroupParent
-	id string
+	id     string
 }
 
 func (i *EntryGroupIdentity) String() string {
-	return  i.parent.String() + "/entrygroups/" + i.id
+	return i.parent.String() + "/entrygroups/" + i.id
 }
 
 func (i *EntryGroupIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *EntryGroupIdentity) ID() string {
 }
 
 func (i *EntryGroupIdentity) Parent() *EntryGroupParent {
-	return  i.parent
+	return i.parent
 }
 
 type EntryGroupParent struct {
@@ -51,7 +51,6 @@ type EntryGroupParent struct {
 func (p *EntryGroupParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a EntryGroupIdentity from the Config Connector EntryGroup object.
 func NewEntryGroupIdentity(ctx context.Context, reader client.Reader, obj *DataplexEntryGroup) (*EntryGroupIdentity, error) {
