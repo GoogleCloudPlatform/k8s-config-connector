@@ -26,6 +26,14 @@ var DataplexEntryTypeGVK = GroupVersion.WithKind("DataplexEntryType")
 type DataplexEntryTypeSpec struct {
 	// The DataplexEntryType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// AspectInfo contains overriding configuration for aspects.
+	// +kcc:proto=required_aspects
+	RequiredAspects []EntryType_AspectInfo `json:"requiredAspects,omitempty"`
+
+	// Authorization contains constraints on the visibility of Entries that conform
+	//  to the EntryType.
+	Authorization *EntryType_Authorization `json:"authorization,omitempty"`
 }
 
 // DataplexEntryTypeStatus defines the config connector machine state of DataplexEntryType
@@ -39,14 +47,6 @@ type DataplexEntryTypeStatus struct {
 
 	// A unique specifier for the DataplexEntryType resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DataplexEntryTypeObservedState `json:"observedState,omitempty"`
-}
-
-// DataplexEntryTypeObservedState is the state of the DataplexEntryType resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataplex.v1.EntryType
-type DataplexEntryTypeObservedState struct {
 }
 
 // +genclient
