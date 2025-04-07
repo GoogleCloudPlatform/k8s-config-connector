@@ -224,30 +224,31 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 		}
 	}
 
-
+	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
-	}
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: sets.List(paths),
+		}
 
-	// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-	req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
-		Name:       			a.id.String(),
-		UpdateMask:             updateMask,
-		{{.ProtoResource}}:     desiredPb,
+		// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
+		req := &{{.KCCService}}pb.Update{{.ProtoResource}}Request{
+			Name:       			a.id.String(),
+			UpdateMask:             updateMask,
+			{{.ProtoResource}}:     desiredPb,
+		}
+		op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id)
 	}
-	op, err := a.gcpClient.Update{{.ProtoResource}}(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating {{.ProtoResource}} %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("{{.ProtoResource}} %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated {{.ProtoResource}}", "name", a.id)
 
 	status := &krm.{{.Kind}}Status{}
 	status.ObservedState = {{.Kind}}ObservedState_FromProto(mapCtx, updated)
