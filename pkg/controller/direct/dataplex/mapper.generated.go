@@ -12,19 +12,98 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: dataplex.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataplex.v1
+
 package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeObservedState {
+func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.Content {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexEntryTypeObservedState{}
+	out := &krmv1alpha1.Content{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Path = direct.LazyPtr(in.GetPath())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataText = direct.LazyPtr(in.GetDataText())
+	out.SQLScript = Content_SQLScript_FromProto(mapCtx, in.GetSqlScript())
+	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
+	return out
+}
+func Content_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Content) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Path = direct.ValueOf(in.Path)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Content_DataText_ToProto(mapCtx, in.DataText); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Content_SQLScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Content = &pb.Content_SqlScript_{SqlScript: oneof}
+	}
+	if oneof := Content_Notebook_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Content = &pb.Content_Notebook_{Notebook: oneof}
+	}
+	return out
+}
+func ContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.ContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ContentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
+	return out
+}
+func ContentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ContentObservedState) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
+	return out
+}
+func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krmv1alpha1.DataplexEntryTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DataplexEntryTypeSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	// MISSING: CreateTime
@@ -36,11 +115,11 @@ func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: TypeAliases
 	// MISSING: Platform
 	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
+	out.RequiredAspects = direct.Slice_FromProto(mapCtx, in.RequiredAspects, EntryType_AspectInfo_FromProto)
+	out.Authorization = EntryType_Authorization_FromProto(mapCtx, in.GetAuthorization())
 	return out
 }
-func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeObservedState) *pb.EntryType {
+func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataplexEntryTypeSpec) *pb.EntryType {
 	if in == nil {
 		return nil
 	}
@@ -56,55 +135,15 @@ func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.D
 	// MISSING: TypeAliases
 	// MISSING: Platform
 	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
+	out.RequiredAspects = direct.Slice_ToProto(mapCtx, in.RequiredAspects, EntryType_AspectInfo_ToProto)
+	out.Authorization = EntryType_Authorization_ToProto(mapCtx, in.Authorization)
 	return out
 }
-func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeSpec {
+func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krmv1alpha1.EntryType {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexEntryTypeSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
-func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeSpec) *pb.EntryType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryType{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
-func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.EntryType {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EntryType{}
+	out := &krmv1alpha1.EntryType{}
 	// MISSING: Name
 	// MISSING: Uid
 	// MISSING: CreateTime
@@ -120,7 +159,7 @@ func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.Entry
 	out.Authorization = EntryType_Authorization_FromProto(mapCtx, in.GetAuthorization())
 	return out
 }
-func EntryType_ToProto(mapCtx *direct.MapContext, in *krm.EntryType) *pb.EntryType {
+func EntryType_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryType) *pb.EntryType {
 	if in == nil {
 		return nil
 	}
@@ -140,11 +179,11 @@ func EntryType_ToProto(mapCtx *direct.MapContext, in *krm.EntryType) *pb.EntryTy
 	out.Authorization = EntryType_Authorization_ToProto(mapCtx, in.Authorization)
 	return out
 }
-func EntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.EntryTypeObservedState {
+func EntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krmv1alpha1.EntryTypeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryTypeObservedState{}
+	out := &krmv1alpha1.EntryTypeObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
@@ -160,7 +199,7 @@ func EntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryTyp
 	// MISSING: Authorization
 	return out
 }
-func EntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryTypeObservedState) *pb.EntryType {
+func EntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryTypeObservedState) *pb.EntryType {
 	if in == nil {
 		return nil
 	}
@@ -180,15 +219,15 @@ func EntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryType
 	// MISSING: Authorization
 	return out
 }
-func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_AspectInfo) *krm.EntryType_AspectInfo {
+func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_AspectInfo) *krmv1alpha1.EntryType_AspectInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryType_AspectInfo{}
+	out := &krmv1alpha1.EntryType_AspectInfo{}
 	out.Type = direct.LazyPtr(in.GetType())
 	return out
 }
-func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
+func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
 	if in == nil {
 		return nil
 	}
@@ -196,19 +235,205 @@ func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_A
 	out.Type = direct.ValueOf(in.Type)
 	return out
 }
-func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krm.EntryType_Authorization {
+func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krmv1alpha1.EntryType_Authorization {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryType_Authorization{}
+	out := &krmv1alpha1.EntryType_Authorization{}
 	out.AlternateUsePermission = direct.LazyPtr(in.GetAlternateUsePermission())
 	return out
 }
-func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_Authorization) *pb.EntryType_Authorization {
+func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryType_Authorization) *pb.EntryType_Authorization {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EntryType_Authorization{}
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
+	return out
+}
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.SessionSpec = Environment_SessionSpec_FromProto(mapCtx, in.GetSessionSpec())
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.SessionSpec = Environment_SessionSpec_ToProto(mapCtx, in.SessionSpec)
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EnvironmentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
+	return out
+}
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EnvironmentObservedState) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
+	return out
+}
+func Environment_Endpoints_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krmv1alpha1.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_Endpoints_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_Endpoints) *pb.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_SessionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krmv1alpha1.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func Environment_SessionStatus_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_SessionStatus) *pb.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_FromProto(mapCtx, in.GetMetastore())
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func Lake_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Lake) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func LakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.LakeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LakeObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
+	return out
+}
+func LakeObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.LakeObservedState) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
 	return out
 }
