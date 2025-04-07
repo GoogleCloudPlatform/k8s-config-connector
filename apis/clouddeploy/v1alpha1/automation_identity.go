@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type AutomationIdentity struct {
 	parent *AutomationParent
-	id string
+	id     string
 }
 
 func (i *AutomationIdentity) String() string {
-	return  i.parent.String() + "/automations/" + i.id
+	return i.parent.String() + "/automations/" + i.id
 }
 
 func (i *AutomationIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *AutomationIdentity) ID() string {
 }
 
 func (i *AutomationIdentity) Parent() *AutomationParent {
-	return  i.parent
+	return i.parent
 }
 
 type AutomationParent struct {
@@ -52,9 +52,8 @@ func (p *AutomationParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-
 // New builds a AutomationIdentity from the Config Connector Automation object.
-func NewAutomationIdentity(ctx context.Context, reader client.Reader, obj *DeployAutomation) (*AutomationIdentity, error) {
+func NewAutomationIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployAutomation) (*AutomationIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
