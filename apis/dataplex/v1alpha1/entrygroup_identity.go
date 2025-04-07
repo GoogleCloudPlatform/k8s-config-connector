@@ -32,7 +32,7 @@ type EntryGroupIdentity struct {
 }
 
 func (i *EntryGroupIdentity) String() string {
-	return i.parent.String() + "/entrygroups/" + i.id
+	return i.parent.String() + "/entryGroups/" + i.id
 }
 
 func (i *EntryGroupIdentity) ID() string {
@@ -43,6 +43,7 @@ func (i *EntryGroupIdentity) Parent() *EntryGroupParent {
 	return i.parent
 }
 
+// No changes needed as EntryGroupParent fields and resource pattern are correct.
 type EntryGroupParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewEntryGroupIdentity(ctx context.Context, reader client.Reader, obj *Datap
 
 func ParseEntryGroupExternal(external string) (parent *EntryGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entrygroups" {
-		return nil, "", fmt.Errorf("format of DataplexEntryGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entrygroups/{{entrygroupID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryGroups" {
+		return nil, "", fmt.Errorf("format of DataplexEntryGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryGroups/{{entrygroupID}})", external)
 	}
 	parent = &EntryGroupParent{
 		ProjectID: tokens[1],
