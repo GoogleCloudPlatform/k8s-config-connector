@@ -120,8 +120,8 @@ func (a *entryTypeAdapter) Find(ctx context.Context) (bool, error) {
 func (a *entryTypeAdapter) normalizeReferences(ctx context.Context) error {
 	if a.desired.Spec.RequiredAspects != nil {
 		for i := range a.desired.Spec.RequiredAspects {
-			if a.desired.Spec.RequiredAspects[i].AspectTypeRef != nil {
-				_, err := a.desired.Spec.RequiredAspects[i].AspectTypeRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
+			if a.desired.Spec.RequiredAspects[i].TypeRef != nil {
+				_, err := a.desired.Spec.RequiredAspects[i].TypeRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
 				if err != nil {
 					return err
 				}
@@ -277,7 +277,6 @@ func (a *entryTypeAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 
 	req := &pb.DeleteEntryTypeRequest{
 		Name: a.id.String(),
-		Etag: direct.ValueOf(a.desired.Spec.Etag),
 	}
 	op, err := a.gcpClient.DeleteEntryType(ctx, req)
 	if err != nil {

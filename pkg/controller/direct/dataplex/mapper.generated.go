@@ -20,86 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEntryTypeObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
-func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeObservedState) *pb.EntryType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryType{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
-func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DataplexEntryTypeSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
-func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeSpec) *pb.EntryType {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryType{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
-	return out
-}
 func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.EntryType {
 	if in == nil {
 		return nil
@@ -178,37 +98,5 @@ func EntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryType
 	// MISSING: System
 	// MISSING: RequiredAspects
 	// MISSING: Authorization
-	return out
-}
-func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_AspectInfo) *krm.EntryType_AspectInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EntryType_AspectInfo{}
-	out.Type = direct.LazyPtr(in.GetType())
-	return out
-}
-func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryType_AspectInfo{}
-	out.Type = direct.ValueOf(in.Type)
-	return out
-}
-func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krm.EntryType_Authorization {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EntryType_Authorization{}
-	out.AlternateUsePermission = direct.LazyPtr(in.GetAlternateUsePermission())
-	return out
-}
-func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_Authorization) *pb.EntryType_Authorization {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntryType_Authorization{}
-	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
