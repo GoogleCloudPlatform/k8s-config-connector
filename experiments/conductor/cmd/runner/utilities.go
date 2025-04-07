@@ -24,6 +24,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -323,6 +324,45 @@ func setLoggingWriter(opts *RunnerOptions, branch Branch) closer {
 			log.Printf("Failed to close logging file %s, :%v", logFile, err)
 		}
 	}
+}
+
+func readLog(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	if opts.loggingDir == "" {
+		log.Println("Logging dir not set")
+	}
+	logDir := filepath.Join(opts.loggingDir, branch.Name)
+	log.Printf("Logging dir: %s", logDir)
+	if _, err := os.Stat(logDir); os.IsNotExist(err) {
+		log.Printf("SKIPPING %s, %s does not exists", branch.Name, logDir)
+		return
+	}
+
+	var err error
+	logFileName := "output.log"
+	commandNumberStr := strings.Split(opts.readFileType, "-")[1]
+	commandNumber, err := strconv.ParseInt(commandNumberStr, 10, 64)
+	if err != nil {
+		log.Fatalf("error converting command number from string to int64: %v", err)
+		return
+	}
+	commandMessage, ok := commandMap[commandNumber]
+	if ok {
+		logFileName = fmt.Sprintf("%v_%v.log", commandNumber, commandMessage)
+	}
+	logFile := filepath.Join(logDir, logFileName)
+	if _, err := os.Stat(logFile); errors.Is(err, os.ErrNotExist) {
+		log.Printf("SKIPPING %s, %s does not exists", branch.Name, logFile)
+		return
+	}
+	data, err := os.ReadFile(logFile)
+	if err != nil {
+		fmt.Println("Error reading file:", err)
+		return
+	}
+	fmt.Println(string(data))
 }
 
 func noOp() {
