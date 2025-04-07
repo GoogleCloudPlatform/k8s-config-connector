@@ -16,14 +16,25 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	// GCP Resource Reference type.
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexEntryGroupGVK = GroupVersion.WithKind("DataplexEntryGroup")
 
+// The Parent resource that the DataplexEntryGroup resource resides in.
+type Parent struct {
+	// +required
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
+}
+
 // DataplexEntryGroupSpec defines the desired state of DataplexEntryGroup
 // +kcc:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupSpec struct {
+	Parent `json:",inline"`
 	// The DataplexEntryGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
