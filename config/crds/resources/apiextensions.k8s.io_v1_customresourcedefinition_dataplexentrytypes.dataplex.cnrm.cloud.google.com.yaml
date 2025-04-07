@@ -69,7 +69,27 @@ spec:
                       Entry Types, only settable for Dataplex owned Types.
                     type: string
                 type: object
+              description:
+                description: Optional. Description of the EntryType.
+                type: string
+              displayName:
+                description: Optional. User friendly display name.
+                type: string
+              etag:
+                description: Optional. This checksum is computed by the service, and
+                  might be sent on update and delete requests to ensure the client
+                  has an up-to-date value before proceeding.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. User-defined labels for the EntryType.
+                type: object
               location:
+                type: string
+              platform:
+                description: Optional. The platform that Entries of this type belongs
+                  to.
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
@@ -107,17 +127,32 @@ spec:
                 description: AspectInfo contains overriding configuration for aspects.
                 items:
                   properties:
-                    type:
+                    typeRef:
                       description: Required aspect type for the entry type.
-                      type: string
+                      properties:
+                        external:
+                          description: A reference to an externally managed DataplexAspectType
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
+                          type: string
+                      type: object
                   required:
-                  - type
+                  - typeRef
                   type: object
                 type: array
               resourceID:
                 description: The DataplexEntryType name. If not given, the metadata.name
                   will be used.
                 type: string
+              system:
+                description: Optional. The system that Entries of this type belongs
+                  to. Examples include CloudSQL, MariaDB etc
+                type: string
+              typeAliases:
+                description: Optional. Indicates the classes this Entry Type belongs
+                  to, for example, TABLE, DATABASE, MODEL.
+                items:
+                  type: string
+                type: array
             required:
             - location
             - projectRef
@@ -164,6 +199,23 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the EntryType was created.
+                    type: string
+                  uid:
+                    description: Output only. System generated globally unique ID
+                      for the EntryType. This ID will be different if the EntryType
+                      is deleted and re-created with the same name.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the EntryType was last
+                      updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec
