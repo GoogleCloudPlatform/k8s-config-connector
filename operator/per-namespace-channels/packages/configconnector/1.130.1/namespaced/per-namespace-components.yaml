@@ -13,15 +13,6 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    cnrm.cloud.google.com/version: 1.130.1
-  labels:
-    cnrm.cloud.google.com/system: "true"
-  name: cnrm-system-${NAMESPACE?}
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
@@ -31,7 +22,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -44,7 +35,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-admin-binding-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -52,7 +43,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -65,7 +56,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-ns-binding-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -73,7 +64,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -84,7 +75,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-ns-binding-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: cnrm-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -92,7 +83,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -110,7 +101,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 ---
 apiVersion: v1
 kind: Service
@@ -124,7 +115,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 spec:
   ports:
   - name: controller-manager
@@ -146,7 +137,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: cnrm-system-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
 spec:
   selector:
     matchLabels:
@@ -169,7 +160,7 @@ spec:
         - --prometheus-scrape-endpoint=:8888
         command:
         - /configconnector/manager
-        image: us-central1-docker.pkg.dev/dshnayder-gke-dev/cnrm/controller:9cc7f26
+        image: us-central1-docker.pkg.dev/dshnayder-gke-dev/cnrm/controller:0db4a89
         imagePullPolicy: Always
         name: manager
         ports:
