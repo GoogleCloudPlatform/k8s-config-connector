@@ -70,7 +70,6 @@ cloud.google.com/go/compute v1.34.0 h1:+k/kmViu4TEi97NGaxAATYtpYBviOWJySPZ+ekA95
 cloud.google.com/go/compute v1.34.0/go.mod h1:zWZwtLwZQyonEvIQBuIa0WvraMYK69J5eDCOw9VZU4g=
 cloud.google.com/go/compute/metadata v0.6.0 h1:A6hENjEsCDtC1k8byVsgwvVcioamEHvZ4j01OwKxG9I=
 cloud.google.com/go/compute/metadata v0.6.0/go.mod h1:FjyFAW1MW0C203CEOMDTu3Dk1FlqW3Rga40jzHL4hfg=
-<<<<<<< HEAD
 cloud.google.com/go/datacatalog v1.24.3 h1:3bAfstDB6rlHyK0TvqxEwaeOvoN9UgCs2bn03+VXmss=
 cloud.google.com/go/datacatalog v1.24.3/go.mod h1:Z4g33XblDxWGHngDzcpfeOU0b1ERlDPTuQoYG6NkF1s=
 cloud.google.com/go/dataflow v0.10.3 h1:+7IfIXzYWSybIIDGK9FN2uqBsP/5b/Y0pBYzNhcmKSU=
@@ -81,16 +80,6 @@ cloud.google.com/go/dataplex v1.22.0 h1:j4hD6opb+gq9CJNPFIlIggoW8Kjymg8Wmy2mdHmQ
 cloud.google.com/go/dataplex v1.22.0/go.mod h1:g166QMCGHvwc3qlTG4p34n+lHwu7JFfaNpMfI2uO7b8=
 cloud.google.com/go/dataproc/v2 v2.11.0 h1:6aRpyoRfNOP+r2+pGb7HeHtF+SYQID8kzztfHuK0plk=
 cloud.google.com/go/dataproc/v2 v2.11.0/go.mod h1:9vgGrn57ra7KBqz+B2KD+ltzEXvnHAUClFgq/ryU99g=
-cloud.google.com/go/datacatalog v1.23.0 h1:9F2zIbWNNmtrSkPIyGRQNsIugG5VgVVFip6+tXSdWLg=
-cloud.google.com/go/datacatalog v1.23.0/go.mod h1:9Wamq8TDfL2680Sav7q3zEhBJSPBrDxJU8WtPJ25dBM=
-cloud.google.com/go/dataflow v0.10.2 h1:o9P5/zR2mOYJmCnfp9/7RprKFZCwmSu3TvemQSmCaFM=
-cloud.google.com/go/dataflow v0.10.2/go.mod h1:+HIb4HJxDCZYuCqDGnBHZEglh5I0edi/mLgVbxDf0Ag=
-cloud.google.com/go/dataform v0.10.2 h1:t16DoejuOHoxJR88qrpdmFFlCXA9+x5PKrqI9qiDYz0=
-cloud.google.com/go/dataform v0.10.2/go.mod h1:oZHwMBxG6jGZCVZqqMx+XWXK+dA/ooyYiyeRbUxI15M=
-cloud.google.com/go/dataplex v1.19.2 h1:R2xnsZnuWpHi2NmBR0e43GZk2IZcQ1AFEAo1fUI0xsw=
-cloud.google.com/go/dataplex v1.19.2/go.mod h1:vsxxdF5dgk3hX8Ens9m2/pMNhQZklUhSgqTghZtF1v4=
-cloud.google.com/go/dataproc/v2 v2.10.0 h1:B0b7eLRXzFTzb4UaxkGGidIF23l/Xpyce28m1Q0cHmU=
-cloud.google.com/go/dataproc/v2 v2.10.0/go.mod h1:HD16lk4rv2zHFhbm8gGOtrRaFohMDr9f0lAUMLmg1PM=
 cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7TKLgZqpHYE=
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
 cloud.google.com/go/datastream v1.13.0 h1:C5AeEdze55feJVb17a40QmlnyH/aMhn/uf3Go3hIqPA=
