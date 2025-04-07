@@ -123,7 +123,6 @@ func HiveTableOptions_StorageDescriptor_ToProto(mapCtx *direct.MapContext, in *k
 	return out
 }
 
-
 func BigLakeCatalogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.BigLakeCatalogObservedState {
 	if in == nil {
 		return nil
