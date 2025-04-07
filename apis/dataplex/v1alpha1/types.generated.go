@@ -14,6 +14,7 @@
 
 package v1alpha1
 
+<<<<<<< HEAD
 // +kcc:proto=google.cloud.dataplex.v1.AssetStatus
 type AssetStatus struct {
 	// Last update time of the status.
