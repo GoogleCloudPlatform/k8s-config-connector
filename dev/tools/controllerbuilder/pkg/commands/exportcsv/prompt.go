@@ -165,7 +165,7 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 
 	model := os.Getenv("LLM_MODEL")
 	if model == "" {
-		model = "gemini-2.0-pro-exp-02-05"
+		model = "gemini-2.5-pro-exp-03-25"
 	}
 	log.Info("using model", "model", model)
 

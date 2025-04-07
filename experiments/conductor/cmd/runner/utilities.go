@@ -24,6 +24,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -601,16 +603,15 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 		}
 
 		// Check if any files changed
-		allChanged := true
+		someChanged := false
 		for _, path := range affectedPaths {
 			changed, err := gitStatusCheck(opts.branchRepoDir, path)
 			if err != nil {
-				allChanged = false
 				log.Printf("failed to check status of %s: %v", path, err)
 				continue
 			}
-			if !changed {
-				allChanged = false
+			if changed {
+				someChanged = true
 				break
 			}
 		}
@@ -634,11 +635,12 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 			lintFailure = true
 		}
 		// Exit loop if we saw changes or hit max attempts
-		if allChanged || attempt >= maxAttempts {
+		if someChanged || attempt >= maxAttempts {
 			break
 		}
 
 		log.Printf("No changes detected in attempt %d, retrying...", attempt)
+		time.Sleep(10 * time.Second)
 	}
 
 	//if err := checkMakeReadyPR(opts); err != nil {
@@ -737,7 +739,40 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 	return nil
 }
 
+// processBranches applies the given processors to each branch
 func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, description string, processors []BranchProcessor) {
+	// If processors filter is provided, filter the processors
+	if opts.processors != "" {
+		selectedProcessors := strings.Split(opts.processors, ",")
+		// Create a map for faster lookup
+		processorSet := make(map[string]bool)
+		for _, p := range selectedProcessors {
+			processorSet[strings.TrimSpace(p)] = true
+		}
+
+		// Filter processors
+		var filteredProcessors []BranchProcessor
+		for _, processor := range processors {
+			// Get the function name using reflection
+			fnName := getFunctionName(processor.Fn)
+			if processorSet[fnName] {
+				filteredProcessors = append(filteredProcessors, processor)
+				log.Printf("Including processor: %s", fnName)
+			} else {
+				log.Printf("Skipping processor: %s (not in --processors list)", fnName)
+			}
+		}
+
+		// If no processors matched, log a warning
+		if len(filteredProcessors) == 0 {
+			log.Printf("WARNING: No processors matched the filter: %s", opts.processors)
+			log.Printf("Available processors: %s", getAllProcessorNames(processors))
+			return
+		}
+
+		processors = filteredProcessors
+	}
+
 	for _, branch := range branches {
 		for _, processor := range processors {
 			err := processBranch(ctx, opts, branch, description, processor)
@@ -747,6 +782,31 @@ func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch
 			}
 		}
 	}
+}
+
+// getFunctionName returns the name of a function
+func getFunctionName(fn BranchProcessorFn) string {
+	// Get the function value using reflection
+	fnValue := reflect.ValueOf(fn)
+
+	// Get the function pointer
+	fnPointer := fnValue.Pointer()
+
+	// Get the full function name including package path
+	fullName := runtime.FuncForPC(fnPointer).Name()
+
+	// Extract just the function name without package path
+	parts := strings.Split(fullName, ".")
+	return parts[len(parts)-1]
+}
+
+// getAllProcessorNames returns a comma-separated list of all processor function names
+func getAllProcessorNames(processors []BranchProcessor) string {
+	var names []string
+	for _, processor := range processors {
+		names = append(names, getFunctionName(processor.Fn))
+	}
+	return strings.Join(names, ", ")
 }
 
 func runGoCmds(opts *RunnerOptions, affectedPaths []string) error {
