@@ -112,6 +112,7 @@ type LakeObservedState struct {
 // +kcc:proto=google.cloud.dataplex.v1.Content
 type Content struct {
 
+	//+required
 	// Required. The path for the Content file, represented as directory
 	//  structure. Unique within a lake. Limited to alphanumerics, hyphens,
 	//  underscores, dots and slashes.
