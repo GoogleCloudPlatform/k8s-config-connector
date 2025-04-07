@@ -1,0 +1,278 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataplexzones.dataplex.cnrm.cloud.google.com
+spec:
+  group: dataplex.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataplexZone
+    listKind: DataplexZoneList
+    plural: dataplexzones
+    shortNames:
+    - gcpdataplexzone
+    - gcpdataplexzones
+    singular: dataplexzone
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataplexZone is the Schema for the DataplexZone API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataplexZoneSpec defines the desired state of DataplexZone
+            properties:
+              description:
+                description: Optional. Description of the zone.
+                type: string
+              discoverySpec:
+                description: Optional. Specification of the discovery feature applied
+                  to data in this zone.
+                properties:
+                  csvOptions:
+                    description: Optional. Configuration for CSV data.
+                    properties:
+                      delimiter:
+                        description: Optional. The delimiter being used to separate
+                          values. This defaults to ','.
+                        type: string
+                      disableTypeInference:
+                        description: Optional. Whether to disable the inference of
+                          data type for CSV data. If true, all columns will be registered
+                          as strings.
+                        type: boolean
+                      encoding:
+                        description: Optional. The character encoding of the data.
+                          The default is UTF-8.
+                        type: string
+                      headerRows:
+                        description: Optional. The number of rows to interpret as
+                          header rows that should be skipped when reading data rows.
+                        format: int32
+                        type: integer
+                    type: object
+                  enabled:
+                    description: Required. Whether discovery is enabled.
+                    type: boolean
+                  excludePatterns:
+                    description: Optional. The list of patterns to apply for selecting
+                      data to exclude during discovery.  For Cloud Storage bucket
+                      assets, these are interpreted as glob patterns used to match
+                      object names. For BigQuery dataset assets, these are interpreted
+                      as patterns to match table names.
+                    items:
+                      type: string
+                    type: array
+                  includePatterns:
+                    description: Optional. The list of patterns to apply for selecting
+                      data to include during discovery if only a subset of the data
+                      should considered. For Cloud Storage bucket assets, these are
+                      interpreted as glob patterns used to match object names. For
+                      BigQuery dataset assets, these are interpreted as patterns to
+                      match table names.
+                    items:
+                      type: string
+                    type: array
+                  jsonOptions:
+                    description: Optional. Configuration for Json data.
+                    properties:
+                      disableTypeInference:
+                        description: Optional. Whether to disable the inference of
+                          data type for Json data. If true, all columns will be registered
+                          as their primitive types (strings, number or boolean).
+                        type: boolean
+                      encoding:
+                        description: Optional. The character encoding of the data.
+                          The default is UTF-8.
+                        type: string
+                    type: object
+                  schedule:
+                    description: 'Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron)
+                      for running discovery periodically. Successive discovery runs
+                      must be scheduled at least 60 minutes apart. The default value
+                      is to run discovery every 60 minutes. To explicitly set a timezone
+                      to the cron tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}"
+                      or TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be
+                      a valid string from IANA time zone database. For example, `CRON_TZ=America/New_York
+                      1 * * * *`, or `TZ=America/New_York 1 * * * *`.'
+                    type: string
+                type: object
+              displayName:
+                description: Optional. User friendly display name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. User defined labels for the zone.
+                type: object
+              lakeRef:
+                description: Reference to the parent DataplexLake that owns this Zone.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DataplexLake
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}".
+                    type: string
+                  name:
+                    description: The name of a DataplexLake resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DataplexLake resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataplexZone name. If not given, the metadata.name
+                  will be used.
+                type: string
+              resourceSpec:
+                description: Required. Specification of the resources that are referenced
+                  by the assets within this zone.
+                properties:
+                  locationType:
+                    description: Required. Immutable. The location type of the resources
+                      that are allowed to be attached to the assets within this zone.
+                    type: string
+                type: object
+              type:
+                description: Required. Immutable. The type of the zone.
+                type: string
+            required:
+            - lakeRef
+            - resourceSpec
+            - type
+            type: object
+          status:
+            description: DataplexZoneStatus defines the config connector machine state
+              of DataplexZone
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataplexZone resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  assetStatus:
+                    description: Output only. Aggregated status of the underlying
+                      assets of the zone.
+                    properties:
+                      activeAssets:
+                        description: Number of active assets.
+                        format: int32
+                        type: integer
+                      securityPolicyApplyingAssets:
+                        description: Number of assets that are in process of updating
+                          the security policy on attached resources.
+                        format: int32
+                        type: integer
+                      updateTime:
+                        description: Last update time of the status.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The time when the zone was created.
+                    type: string
+                  state:
+                    description: Output only. Current state of the zone.
+                    type: string
+                  uid:
+                    description: Output only. System generated globally unique ID
+                      for the zone. This ID will be different if the zone is deleted
+                      and re-created with the same name.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the zone was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
