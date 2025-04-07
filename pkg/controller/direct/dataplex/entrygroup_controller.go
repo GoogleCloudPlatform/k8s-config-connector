@@ -26,8 +26,7 @@ import (
 	"reflect"
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
-	catalogpb "cloud.google.com/go/dataplex/apiv1/catalogpb"
-	pb "cloud.google.com/go/dataplex/apiv1/catalogpb"
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -71,7 +70,7 @@ func (m *entryGroupModel) AdapterForObject(ctx context.Context, reader client.Re
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)
 	}
-	catalogClient, err := gcpClient.newCatalogClient(ctx)
+	catalogClient, err := gcpClient.catalogClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +102,7 @@ func (a *entryGroupAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting dataplex entry group", "name", a.id)
 
-	req := &catalogpb.GetEntryGroupRequest{Name: a.id.String()}
+	req := &pb.GetEntryGroupRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetEntryGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -127,7 +126,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return mapCtx.Err()
 	}
 
-	req := &catalogpb.CreateEntryGroupRequest{
+	req := &pb.CreateEntryGroupRequest{
 		Parent:       a.id.Parent().String(),
 		EntryGroupId: a.id.ID(),
 		EntryGroup:   resource,
@@ -206,7 +205,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
-		req := &catalogpb.UpdateEntryGroupRequest{
+		req := &pb.UpdateEntryGroupRequest{
 			UpdateMask: updateMask,
 			EntryGroup: resource,
 		}
@@ -259,7 +258,7 @@ func (a *entryGroupAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting dataplex entry group", "name", a.id)
 
-	req := &catalogpb.DeleteEntryGroupRequest{
+	req := &pb.DeleteEntryGroupRequest{
 		Name: a.id.String(),
 		Etag: direct.ValueOf(a.desired.Spec.Etag), // Use etag from spec if provided for concurrency control
 	}
