@@ -32,7 +32,7 @@ type EntryTypeIdentity struct {
 }
 
 func (i *EntryTypeIdentity) String() string {
-	return i.parent.String() + "/entrytypes/" + i.id
+	return i.parent.String() + "/entryTypes/" + i.id
 }
 
 func (i *EntryTypeIdentity) ID() string {
@@ -43,6 +43,7 @@ func (i *EntryTypeIdentity) Parent() *EntryTypeParent {
 	return i.parent
 }
 
+// No changes were needed as the existing structure and methods align with the resource definition.
 type EntryTypeParent struct {
 	ProjectID string
 	Location  string
@@ -105,8 +106,8 @@ func NewEntryTypeIdentity(ctx context.Context, reader client.Reader, obj *Datapl
 
 func ParseEntryTypeExternal(external string) (parent *EntryTypeParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entrytypes" {
-		return nil, "", fmt.Errorf("format of DataplexEntryType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entrytypes/{{entrytypeID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "entryTypes" {
+		return nil, "", fmt.Errorf("format of DataplexEntryType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/entryTypes/{{entrytypeID}})", external)
 	}
 	parent = &EntryTypeParent{
 		ProjectID: tokens[1],
