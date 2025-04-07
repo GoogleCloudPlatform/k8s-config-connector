@@ -29,9 +29,11 @@ status:
   externalRef: projects/${projectId}/regions/us-central1/jobs/dataprocjob-minimal-${uniqueId}
   observedGeneration: 1
   observedState:
-    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/
-    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-abcdef/google-cloud-dataproc-metainfo/dataproccluster-${uniqueId}/jobs/dataprocjob-minimal-${uniqueId}/driveroutput
-    placement: {}
+    driverControlFilesURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/b729797b-f0bf-4ea6-98a4-f6459834c070/jobs/dataprocjob-minimal-${uniqueId}/
+    driverOutputResourceURI: gs://dataproc-staging-us-central1-${projectNumber}-hyktfe58/google-cloud-dataproc-metainfo/b729797b-f0bf-4ea6-98a4-f6459834c070/jobs/dataprocjob-minimal-${uniqueId}/driveroutput
+    jobUUid: 15961f8b-050d-40fc-8b19-b0a1db527c55
+    placement:
+      clusterUuid: b729797b-f0bf-4ea6-98a4-f6459834c070
     status:
       state: DONE
       stateStartTime: "2024-04-01T12:34:56.123456Z"
