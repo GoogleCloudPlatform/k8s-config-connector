@@ -67,25 +67,6 @@ func (m *networkPeeringModel) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.PeerNetwork != nil {
-		if obj.Spec.PeerNetwork.ComputeNetworkRef != nil {
-			if err := obj.Spec.PeerNetwork.ComputeNetworkRef.Normalize(ctx, reader, obj); err != nil {
-				return nil, err
-			}
-		}
-		if obj.Spec.PeerNetwork.VMwareEngineNetworkRef != nil {
-			if _, err := obj.Spec.PeerNetwork.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-				return nil, err
-			}
-		}
-	}
-	if obj.Spec.VMwareEngineNetworkRef != nil {
-		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get VMwareEngine GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -99,6 +80,7 @@ func (m *networkPeeringModel) AdapterForObject(ctx context.Context, reader clien
 		gcpClient: client,
 		id:        id,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -112,6 +94,7 @@ type networkPeeringAdapter struct {
 	id        *krm.NetworkPeeringIdentity
 	desired   *krm.VMwareEngineNetworkPeering
 	actual    *pb.NetworkPeering
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &networkPeeringAdapter{}
@@ -136,8 +119,12 @@ func (a *networkPeeringAdapter) Find(ctx context.Context) (bool, error) {
 func (a *networkPeeringAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine networkpeering", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineNetworkPeeringSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -171,8 +158,12 @@ func (a *networkPeeringAdapter) Create(ctx context.Context, createOp *directbase
 func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine networkpeering", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineNetworkPeeringSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -285,4 +276,29 @@ func (a *networkPeeringAdapter) Delete(ctx context.Context, deleteOp *directbase
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *networkPeeringAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	// normalize reference fields
+	if obj.Spec.PeerNetwork != nil {
+		if obj.Spec.PeerNetwork.ComputeNetworkRef != nil {
+			if err := obj.Spec.PeerNetwork.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.PeerNetwork.VMwareEngineNetworkRef != nil {
+			if _, err := obj.Spec.PeerNetwork.VMwareEngineNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+	}
+	if obj.Spec.VMwareEngineNetworkRef != nil {
+		if _, err := obj.Spec.VMwareEngineNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
