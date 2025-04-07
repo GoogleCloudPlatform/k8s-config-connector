@@ -35,6 +35,38 @@ type DataplexEntryTypeSpec struct {
 	// The DataplexEntryType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Optional. Description of the EntryType.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the EntryType.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. This checksum is computed by the service, and might be sent on
+	//  update and delete requests to ensure the client has an up-to-date value
+	//  before proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. Indicates the classes this Entry Type belongs to, for example,
+	//  TABLE, DATABASE, MODEL.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.type_aliases
+	TypeAliases []string `json:"typeAliases,omitempty"`
+
+	// Optional. The platform that Entries of this type belongs to.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.platform
+	Platform *string `json:"platform,omitempty"`
+
+	// Optional. The system that Entries of this type belongs to. Examples include
+	//  CloudSQL, MariaDB etc
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.system
+	System *string `json:"system,omitempty"`
+
 	// AspectInfo contains overriding configuration for aspects.
 	// +kcc:proto=required_aspects
 	RequiredAspects []EntryType_AspectInfo `json:"requiredAspects,omitempty"`
@@ -55,6 +87,27 @@ type DataplexEntryTypeStatus struct {
 
 	// A unique specifier for the DataplexEntryType resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *DataplexEntryTypeObservedState `json:"observedState,omitempty"`
+}
+
+// DataplexEntryTypeObservedState is the state of the DataplexEntryType resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.dataplex.v1.EntryType
+type DataplexEntryTypeObservedState struct {
+	// Output only. System generated globally unique ID for the EntryType. This ID
+	//  will be different if the EntryType is deleted and re-created with the same
+	//  name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the EntryType was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the EntryType was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient
