@@ -41,7 +41,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 )
 
 func init() {
@@ -69,20 +68,6 @@ func (m *backupPlanModel) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, err
 	}
 
-	// normalize reference fields
-	if obj.Spec.ClusterRef != nil {
-		if _, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-	if obj.Spec.BackupConfig != nil &&
-		obj.Spec.BackupConfig.EncryptionKey != nil &&
-		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get gkebackup GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -96,6 +81,7 @@ func (m *backupPlanModel) AdapterForObject(ctx context.Context, reader client.Re
 		gcpClient: client,
 		id:        id,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -105,11 +91,11 @@ func (m *backupPlanModel) AdapterForURL(ctx context.Context, url string) (direct
 }
 
 type backupPlanAdapter struct {
-	gcpClient         *gcp.BackupForGKEClient
-	id                *krm.BackupPlanIdentity
-	desired           *krm.GKEBackupBackupPlan
-	actual            *pb.BackupPlan
-	resourceOverrides resourceoverrides.ResourceOverrides
+	gcpClient *gcp.BackupForGKEClient
+	id        *krm.BackupPlanIdentity
+	desired   *krm.GKEBackupBackupPlan
+	actual    *pb.BackupPlan
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &backupPlanAdapter{}
@@ -134,8 +120,12 @@ func (a *backupPlanAdapter) Find(ctx context.Context) (bool, error) {
 func (a *backupPlanAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating gkebackup backupplan", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := GKEBackupBackupPlanSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -169,8 +159,12 @@ func (a *backupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 func (a *backupPlanAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating gkebackup backupplan", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := GKEBackupBackupPlanSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -329,4 +323,23 @@ func backupConfigsEqual(a, b *gkebackuppb.BackupPlan_BackupConfig) bool {
 	}
 
 	return true
+}
+
+func (a *backupPlanAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	if obj.Spec.ClusterRef != nil {
+		if _, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+			return err
+		}
+	}
+	if obj.Spec.BackupConfig != nil &&
+		obj.Spec.BackupConfig.EncryptionKey != nil &&
+		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
+		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

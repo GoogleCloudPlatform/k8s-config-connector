@@ -64,6 +64,7 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, err
 	}
 
+	// resolve required reference fields
 	if obj.Spec.BackupVaultRef != nil {
 		if _, err := obj.Spec.BackupVaultRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
