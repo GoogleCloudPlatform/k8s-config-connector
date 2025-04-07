@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: dataplex.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataplex.v1
+// resource: DataplexZone:Zone
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataplex.v1.AssetStatus
@@ -606,5 +612,4 @@ type ZoneObservedState struct {
 	// Output only. Aggregated status of the underlying assets of the zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.asset_status
 	AssetStatus *AssetStatus `json:"assetStatus,omitempty"`
->>>>>>> f703b56d0 (conductor: "Generated types and mapper for DataplexZone")
 }
