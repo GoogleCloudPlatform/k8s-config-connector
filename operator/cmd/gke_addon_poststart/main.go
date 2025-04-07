@@ -35,6 +35,10 @@ apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnector
 metadata:
   name: configconnector.core.cnrm.cloud.google.com
+  labels:
+    tenancy.gke.io/access-level: tenant
+    tenancy.gke.io/project: no-project
+    tenancy.gke.io/tenant: no-tenant
 spec:
   mode: namespaced
 `
