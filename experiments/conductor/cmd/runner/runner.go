@@ -283,7 +283,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case cmdHelp: // 0
 		printHelp()
 	case cmdCheckRepo: // 1
-		checkRepoDir(opts, branches)
+		checkRepoDir(ctx, opts, branches)
 	case cmdCreateGitBranch: // 2
 		for idx, branch := range branches.Branches {
 			/*
@@ -444,32 +444,16 @@ func printHelp() {
 	log.Println("\t45 - [Controller] Capture golden test output for each branch")
 }
 
-func checkRepoDir(opts *RunnerOptions, branches Branches) {
-	stdin, stdout, exit, err := startBash()
+func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
+	cmd := exec.CommandContext(ctx, "ls", "-alh")
+	cmd.Dir = opts.branchRepoDir
+
+	results, err := execCommand(cmd)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer stdin.Close()
-	defer exit()
 
-	cdRepoBranchDirBash(opts, "", stdin, stdout)
-
-	log.Println("COMMAND: ls and echo")
-	if _, err = stdin.Write([]byte("ls -alh && echo done\n")); err != nil {
-		log.Fatal(err)
-	}
-	done := false
-	outBuffer := make([]byte, 1000)
-	var msg string
-	for !done {
-		length, err := stdout.Read(outBuffer)
-		if err != nil {
-			log.Fatal(err)
-		}
-		msg += string(outBuffer[:length])
-		done = strings.HasSuffix(msg, "done\n")
-	}
-	log.Printf("LS OUT %s\r\n", msg)
+	log.Printf("ls-alh: %s", results.Stdout)
 
 	// Check for uniqueness constraints in the metadata.
 	gcloudMap := make(map[string]string)
