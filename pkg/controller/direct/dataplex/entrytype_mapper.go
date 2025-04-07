@@ -108,7 +108,9 @@ func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_
 		return nil
 	}
 	out := &krmv1alpha1.EntryType_AspectInfo{}
-	out.Type = direct.LazyPtr(in.GetType())
+	if in.GetType() != "" {
+		out.TypeRef = &krmv1alpha1.AspectTypeRef{External: in.GetType()}
+	}
 	return out
 }
 func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
@@ -116,7 +118,9 @@ func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Ent
 		return nil
 	}
 	out := &pb.EntryType_AspectInfo{}
-	out.Type = direct.ValueOf(in.Type)
+	if in.TypeRef != nil {
+		out.Type = in.TypeRef.External
+	}
 	return out
 }
 func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krmv1alpha1.EntryType_Authorization {
