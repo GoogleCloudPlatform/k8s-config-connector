@@ -11,7 +11,6 @@ require (
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apigateway v1.7.3
 	cloud.google.com/go/apikeys v1.1.12
-<<<<<<< HEAD
 	cloud.google.com/go/apphub v0.2.4
 	cloud.google.com/go/asset v1.20.4
 	cloud.google.com/go/backupdr v1.3.1
@@ -30,15 +29,6 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.11.0
 	cloud.google.com/go/datastream v1.13.0
 	cloud.google.com/go/deploy v1.26.2
-=======
-	cloud.google.com/go/bigquery v1.65.0
-	cloud.google.com/go/certificatemanager v1.9.2
-	cloud.google.com/go/cloudbuild v1.19.0
-	cloud.google.com/go/compute v1.29.0
-	cloud.google.com/go/dataflow v0.10.2
-	cloud.google.com/go/dataform v0.10.2
-	cloud.google.com/go/dataplex v1.19.2
->>>>>>> f39d3a757 (conductor: "Add generated types. WARN: extra files found, committing them. ")
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.2
 	cloud.google.com/go/edgecontainer v1.4.1
