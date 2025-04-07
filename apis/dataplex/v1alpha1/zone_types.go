@@ -21,9 +21,28 @@ import (
 
 var DataplexZoneGVK = GroupVersion.WithKind("DataplexZone")
 
+// DataplexLakeRef defines a reference to a DataplexLake resource.
+type DataplexLakeRef struct {
+	// The DataplexLake resource name, in the format:
+	// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+	// +required
+	Name string `json:"name"`
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+// Parent defines the parent resource for the DataplexZone.
+type Parent struct {
+	// Reference to the parent DataplexLake that owns this Zone.
+	// +required
+	LakeRef *DataplexLakeRef `json:"lakeRef"`
+}
+
 // DataplexZoneSpec defines the desired state of DataplexZone
 // +kcc:proto=google.cloud.dataplex.v1.Zone
 type DataplexZoneSpec struct {
+	Parent `json:",inline"`
+
 	// The DataplexZone name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
