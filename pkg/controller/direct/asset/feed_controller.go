@@ -1,0 +1,295 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +tool:controller
+// proto.service: google.cloud.asset.v1.AssetService
+// proto.message: google.cloud.asset.v1.Feed
+// crd.type: AssetFeed
+// crd.version: v1alpha1
+
+package asset
+
+import (
+	"context"
+	"fmt"
+
+	gcp "cloud.google.com/go/asset/apiv1"
+	pb "cloud.google.com/go/asset/apiv1/assetpb"
+	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+)
+
+func init() {
+	registry.RegisterModel(krm.AssetFeedGVK, NewFeedModel)
+}
+
+func NewFeedModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &feedModel{config: *config}, nil
+}
+
+var _ directbase.Model = &feedModel{}
+
+type feedModel struct {
+	config config.ControllerConfig
+}
+
+func (m *feedModel) client(ctx context.Context) (*gcp.Client, error) {
+	var opts []option.ClientOption
+
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building asset feed client: %w", err)
+	}
+
+	return gcpClient, err
+}
+
+func (m *feedModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	obj := &krm.AssetFeed{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	id, err := krm.NewFeedIdentity(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &feedAdapter{
+		gcpClient: gcpClient,
+		id:        id,
+		desired:   obj,
+		reader:    reader,
+	}, nil
+}
+
+func (m *feedModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// TODO: Support URLs
+	return nil, nil
+}
+
+type feedAdapter struct {
+	gcpClient *gcp.Client
+	id        *krm.FeedIdentity
+	desired   *krm.AssetFeed
+	actual    *pb.Feed
+	reader    client.Reader
+}
+
+var _ directbase.Adapter = &feedAdapter{}
+
+func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("getting asset feed", "name", a.id)
+
+	req := &pb.GetFeedRequest{Name: a.id.String()}
+	actual, err := a.gcpClient.GetFeed(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting asset feed %q from gcp: %w", a.id.String(), err)
+	}
+
+	a.actual = actual
+	return true, nil
+}
+
+func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.FeedOutputConfig.PubSubDestination != nil && obj.Spec.FeedOutputConfig.PubSubDestination.PubSubTopicRef != nil {
+		if err := obj.Spec.FeedOutputConfig.PubSubDestination.PubSubTopicRef.Resolve(ctx, a.reader, obj); err != nil {
+			return fmt.Errorf("resolving pubsub topic ref: %w", err)
+		}
+	}
+	if obj.Spec.FeedOutputConfig.BigqueryDestination != nil && obj.Spec.FeedOutputConfig.BigqueryDestination.BigQueryDatasetRef != nil {
+		if err := obj.Spec.FeedOutputConfig.BigqueryDestination.BigQueryDatasetRef.Resolve(ctx, a.reader, obj); err != nil {
+			return fmt.Errorf("resolving bigquery dataset ref: %w", err)
+		}
+	}
+	return nil
+}
+
+func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating asset feed", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	desired := a.desired.DeepCopy()
+	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	resource.Name = a.id.String() // Name is required for CreateFeed
+
+	req := &pb.CreateFeedRequest{
+		Parent: a.id.Parent(),
+		FeedId: a.id.ID(),
+		Feed:   resource,
+	}
+	created, err := a.gcpClient.CreateFeed(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating asset feed %s: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully created asset feed in gcp", "name", a.id)
+
+	status := &krm.AssetFeedStatus{}
+	status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating asset feed", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing references: %w", err)
+	}
+
+	desired := a.desired.DeepCopy()
+	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Name = a.id.String() // Name must be set for update
+
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return fmt.Errorf("comparing proto messages: %w", err)
+	}
+	// Name is output only, but is required in the update request object.
+	paths.Delete("name")
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		// Update status even if no fields changed in spec
+		status := &krm.AssetFeedStatus{}
+		status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
+	log.V(2).Info("updating asset feed fields", "paths", sets.List(paths))
+
+	updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
+	req := &pb.UpdateFeedRequest{
+		Feed:       resource,
+		UpdateMask: updateMask,
+	}
+	updated, err := a.gcpClient.UpdateFeed(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating asset feed %s: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully updated asset feed", "name", a.id)
+
+	status := &krm.AssetFeedStatus{}
+	status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+	u := &unstructured.Unstructured{}
+
+	obj := &krm.AssetFeed{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(AssetFeedSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	parentRef, err := refs.NewParentRefFromFullResourceName(a.actual.Name)
+	if err != nil {
+		return nil, fmt.Errorf("parsing parent from name %q: %w", a.actual.Name, err)
+	}
+	switch parentRef.Type {
+	case refs.ParentTypeProject:
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: parentRef.Value}
+	case refs.ParentTypeFolder:
+		obj.Spec.FolderRef = &refs.FolderRef{External: parentRef.Value}
+	case refs.ParentTypeOrganization:
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: parentRef.Value}
+	default:
+		return nil, fmt.Errorf("unknown parent type %q in name %q", parentRef.Type, a.actual.Name)
+	}
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u.SetName(a.id.ID())
+	u.SetGroupVersionKind(krm.AssetFeedGVK)
+	u.Object = uObj
+	return u, nil
+}
+
+func (a *feedAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting asset feed", "name", a.id)
+
+	req := &pb.DeleteFeedRequest{Name: a.id.String()}
+	err := a.gcpClient.DeleteFeed(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			// Return success if not found (assume it was already deleted).
+			log.V(2).Info("skipping delete for non-existent asset feed, assuming it was already deleted", "name", a.id)
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting asset feed %s: %w", a.id.String(), err)
+	}
+	log.V(2).Info("successfully deleted asset feed", "name", a.id)
+
+	return true, nil
+}
