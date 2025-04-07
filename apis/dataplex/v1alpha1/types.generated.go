@@ -430,6 +430,7 @@ type EntryType struct {
 type EntryType_AspectInfo struct {
 	// Required aspect type for the entry type.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.AspectInfo.type
+	//+required
 	Type *string `json:"type,omitempty"`
 }
 
