@@ -166,10 +166,6 @@ spec:
                   createTime:
                     description: Output only. The time when the EntryGroup was created.
                     type: string
-                  name:
-                    description: Output only. The relative resource name of the EntryGroup,
-                      in the format projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}.
-                    type: string
                   transferStatus:
                     description: Output only. Denotes the transfer status of the Entry
                       Group. It is unspecified for Entry Group created from Dataplex
