@@ -15,8 +15,13 @@
 package v1alpha1
 
 import (
+	"context"
 	"fmt"
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // CatalogIdentity defines the resource reference to BigLakeCatalog, which "External" field
@@ -48,56 +53,56 @@ func (p *CatalogParent) String() string {
 }
 
 // NOT YET
-// // New builds a CatalogIdentity from the Config Connector Catalog object.
-// func NewCatalogIdentity(ctx context.Context, reader client.Reader, obj *BigLakeCatalog) (*CatalogIdentity, error) {
+// New builds a CatalogIdentity from the Config Connector Catalog object.
+func NewCatalogIdentity(ctx context.Context, reader client.Reader, obj *BigLakeCatalog) (*CatalogIdentity, error) {
 
-// 	// Get Parent
-// 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	projectID := projectRef.ProjectID
-// 	if projectID == "" {
-// 		return nil, fmt.Errorf("cannot resolve project")
-// 	}
-// 	location := obj.Spec.Location
+	// Get Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := obj.Spec.Location
 
-// 	// Get desired ID
-// 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-// 	if resourceID == "" {
-// 		resourceID = obj.GetName()
-// 	}
-// 	if resourceID == "" {
-// 		return nil, fmt.Errorf("cannot resolve resource ID")
-// 	}
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
 
-// 	// Use approved External
-// 	externalRef := common.ValueOf(obj.Status.ExternalRef)
-// 	if externalRef != "" {
-// 		// Validate desired with actual
-// 		actualParent, actualResourceID, err := ParseCatalogExternal(externalRef)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		if actualParent.ProjectID != projectID {
-// 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-// 		}
-// 		if actualParent.Location != location {
-// 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-// 		}
-// 		if actualResourceID != resourceID {
-// 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-// 				resourceID, actualResourceID)
-// 		}
-// 	}
-// 	return &CatalogIdentity{
-// 		parent: &CatalogParent{
-// 			ProjectID: projectID,
-// 			Location:  location,
-// 		},
-// 		id: resourceID,
-// 	}, nil
-// }
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actualParent, actualResourceID, err := ParseCatalogExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
+		if actualResourceID != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualResourceID)
+		}
+	}
+	return &CatalogIdentity{
+		parent: &CatalogParent{
+			ProjectID: projectID,
+			Location:  location,
+		},
+		id: resourceID,
+	}, nil
+}
 
 func ParseCatalogExternal(external string) (parent *CatalogParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
