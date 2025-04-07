@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -30,8 +29,8 @@ func init() {
 
 func dataplexZoneFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Zone{},
-		krmv1alpha1.DataplexZoneSpec_FromProto, krmv1alpha1.DataplexZoneSpec_ToProto,
-		krmv1alpha1.DataplexZoneObservedState_FromProto, krmv1alpha1.DataplexZoneObservedState_ToProto,
+		DataplexZoneSpec_FromProto, DataplexZoneSpec_ToProto,
+		DataplexZoneObservedState_FromProto, DataplexZoneObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")
