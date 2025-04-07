@@ -24,7 +24,7 @@ import (
 var DataplexEntryGroupGVK = GroupVersion.WithKind("DataplexEntryGroup")
 
 // The Parent resource that the DataplexEntryGroup resource resides in.
-type Parent struct {
+type DataplexEntryGroupParent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 	// +required
@@ -34,7 +34,7 @@ type Parent struct {
 // DataplexEntryGroupSpec defines the desired state of DataplexEntryGroup
 // +kcc:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupSpec struct {
-	Parent `json:",inline"`
+	DataplexEntryGroupParent `json:",inline"`
 	// The DataplexEntryGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
