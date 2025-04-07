@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,11 +31,18 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/dataplex/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+
+	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
+
+type CatalogService struct {
+	*MockService
+	pb.UnimplementedCatalogServiceServer
+}
 
 func (s *CatalogService) GetEntryType(ctx context.Context, req *pb.GetEntryTypeRequest) (*pb.EntryType, error) {
 	name, err := s.parseEntryTypeName(req.Name)
@@ -48,7 +55,7 @@ func (s *CatalogService) GetEntryType(ctx context.Context, req *pb.GetEntryTypeR
 	obj := &pb.EntryType{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "EntryType %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
 		}
 		return nil, err
 	}
@@ -94,6 +101,9 @@ func (s *CatalogService) CreateEntryType(ctx context.Context, req *pb.CreateEntr
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = uuid.NewString()
+	if obj.Authorization == nil {
+		obj.Authorization = &pb.EntryType_Authorization{}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -104,7 +114,6 @@ func (s *CatalogService) CreateEntryType(ctx context.Context, req *pb.CreateEntr
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "create",
-		ApiVersion: "v1",
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
@@ -166,7 +175,6 @@ func (s *CatalogService) UpdateEntryType(ctx context.Context, req *pb.UpdateEntr
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "update",
-		ApiVersion: "v1",
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
@@ -194,7 +202,6 @@ func (s *CatalogService) DeleteEntryType(ctx context.Context, req *pb.DeleteEntr
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "delete",
-		ApiVersion: "v1",
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
