@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type ZoneIdentity struct {
 	parent *ZoneParent
-	id string
+	id     string
 }
 
 func (i *ZoneIdentity) String() string {
-	return  i.parent.String() + "/zones/" + i.id
+	return i.parent.String() + "/zones/" + i.id
 }
 
 func (i *ZoneIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *ZoneIdentity) ID() string {
 }
 
 func (i *ZoneIdentity) Parent() *ZoneParent {
-	return  i.parent
+	return i.parent
 }
 
 type ZoneParent struct {
@@ -51,7 +51,6 @@ type ZoneParent struct {
 func (p *ZoneParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a ZoneIdentity from the Config Connector Zone object.
 func NewZoneIdentity(ctx context.Context, reader client.Reader, obj *DataplexZone) (*ZoneIdentity, error) {
