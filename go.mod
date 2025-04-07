@@ -29,6 +29,13 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.11.0
 	cloud.google.com/go/datastream v1.13.0
 	cloud.google.com/go/deploy v1.26.2
+	cloud.google.com/go/bigquery v1.65.0
+	cloud.google.com/go/certificatemanager v1.9.2
+	cloud.google.com/go/cloudbuild v1.19.0
+	cloud.google.com/go/compute v1.29.0
+	cloud.google.com/go/dataflow v0.10.2
+	cloud.google.com/go/dataform v0.10.2
+	cloud.google.com/go/dataplex v1.19.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/documentai v1.35.2
 	cloud.google.com/go/edgecontainer v1.4.1
