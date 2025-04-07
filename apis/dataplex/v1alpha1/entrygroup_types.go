@@ -76,11 +76,6 @@ type DataplexEntryGroupStatus struct {
 // DataplexEntryGroupObservedState is the state of the DataplexEntryGroup resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupObservedState struct {
-	// Output only. The relative resource name of the EntryGroup, in the format
-	//  projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}.
-	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.name
-	Name *string `json:"name,omitempty"`
-
 	// Output only. System generated globally unique ID for the EntryGroup. If you
 	//  delete and recreate the EntryGroup with the same name, this ID will be
 	//  different.
