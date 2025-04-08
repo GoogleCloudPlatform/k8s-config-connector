@@ -12,12 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: datastream.cnrm.cloud.google.com/v1alpha1
-kind: DatastreamRoute
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
 metadata:
-  name: datastreamroute-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: computenetwork-minimal-${uniqueId}
+spec:
+  description: Test network for the project
+  autoCreateSubnetworks: false
+---
+apiVersion: datastream.cnrm.cloud.google.com/v1alpha1
+kind: DatastreamPrivateConnection
+metadata:
+  name: datastreamprivateconnection-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Updated description"
+  displayName: "test datastream private connection"
+  vpcPeeringConfig:
+    networkRef:
+      name: computenetwork-minimal-${uniqueId}
+    subnet: 10.0.0.0/29
