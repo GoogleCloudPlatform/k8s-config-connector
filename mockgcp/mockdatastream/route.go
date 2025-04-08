@@ -74,12 +74,13 @@ func (s *DatastreamV1) CreateRoute(ctx context.Context, req *pb.CreateRouteReque
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s/privateConnections/%s", name.Project.ID, name.Location, name.PrivateConnectionID)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "create",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(now),
+		Target:                name.String(),
+		Verb:                  "create",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
@@ -100,12 +101,13 @@ func (s *DatastreamV1) DeleteRoute(ctx context.Context, req *pb.DeleteRouteReque
 		return nil, err
 	}
 
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s/privateConnections/%s", name.Project.ID, name.Location, name.PrivateConnectionID)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(time.Now()),
-		Target:     name.String(),
-		Verb:       "delete",
-		ApiVersion: "v1",
+		CreateTime:            timestamppb.New(time.Now()),
+		Target:                name.String(),
+		Verb:                  "delete",
+		ApiVersion:            "v1",
+		RequestedCancellation: false,
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
