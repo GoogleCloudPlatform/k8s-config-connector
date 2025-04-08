@@ -19,6 +19,7 @@
 [refs] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.projects[].external" should be a reference
 [refs] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].external" should be a reference
 [refs] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.build.options.workerPool" should be a reference
+[refs] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConfig.vpcName.external" should be a reference
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computefirewallpolicyrules.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetResources[].external" should be a reference
 [refs] crd=computeinstances.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccount" should be a reference
