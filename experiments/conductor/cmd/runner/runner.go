@@ -44,35 +44,39 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	readFileTypeFlag        = "file-type"
 
 	// Command values
-	cmdDeleteGitBranch         = -5
-	cmdHelp                    = 0
-	cmdCheckRepo               = 1
-	cmdCreateGitBranch         = 2
-	cmdEnableGCPAPIs           = 4
-	cmdReadFiles               = 5
-	cmdWriteFiles              = 6
-	cmdDiff                    = 7
-	cmdRevert                  = 8
-	cmdPushBranch              = 9 // New command for force pushing branches
-	cmdCreateScriptYaml        = 10
-	cmdCaptureHttpLog          = 11
-	cmdGenerateMockGo          = 12
-	cmdAddServiceRoundTrip     = 13
-	cmdAddProtoMakefile        = 14
-	cmdBuildProto              = 15
-	cmdRunMockTests            = 16
-	cmdGenerateTypes           = 20
-	cmdAdjustTypes             = 21
-	cmdGenerateCRD             = 22
-	cmdGenerateMapper          = 23
-	cmdGenerateFuzzer          = 24
-	cmdRunAndFixFuzzTests      = 25
-	cmdRunAndFixAPIChecks      = 26
-	cmdControllerClient        = 40
-	cmdGenerateController      = 41
-	cmdCreateIdentity          = 43
-	cmdControllerCreateTest    = 44
-	cmdCaptureGoldenTestOutput = 45
+	cmdDeleteGitBranch              = -5
+	cmdHelp                         = 0
+	cmdCheckRepo                    = 1
+	cmdCreateGitBranch              = 2
+	cmdEnableGCPAPIs                = 4
+	cmdReadFiles                    = 5
+	cmdWriteFiles                   = 6
+	cmdDiff                         = 7
+	cmdRevert                       = 8
+	cmdPushBranch                   = 9 // New command for force pushing branches
+	cmdCreateScriptYaml             = 10
+	cmdCaptureHttpLog               = 11
+	cmdGenerateMockGo               = 12
+	cmdAddServiceRoundTrip          = 13
+	cmdAddProtoMakefile             = 14
+	cmdBuildProto                   = 15
+	cmdRunMockTests                 = 16
+	cmdGenerateTypes                = 20
+	cmdAdjustTypes                  = 21
+	cmdGenerateCRD                  = 22
+	cmdGenerateMapper               = 23
+	cmdGenerateFuzzer               = 24
+	cmdRunAndFixFuzzTests           = 25
+	cmdRunAndFixAPIChecks           = 26
+	cmdControllerClient             = 40
+	cmdGenerateController           = 41
+	cmdBuildAndFixController        = 42
+	cmdCreateIdentity               = 43
+	cmdControllerCreateTest         = 44
+	cmdCaptureGoldenRealGCPOutput   = 45
+	cmdRunAndFixGoldenRealGCPOutput = 46
+	cmdCaptureGoldenMockOutput      = 47
+	cmdRunAndFixGoldenMockOutput    = 48
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -395,6 +399,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsgTemplate: "{{kind}}: Add controller client"}})
 	case cmdGenerateController: // 41
 		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsgTemplate: "{{kind}}: Add controller"}})
+	case cmdBuildAndFixController: // 42
+		processBranches(ctx, opts, branches.Branches, "Build and Fix Controller", []BranchProcessor{{Fn: fixControllerBuild, CommitMsgTemplate: "{{kind}}: Build and fix controller", VerifyFn: buildController, VerifyAttempts: 10}})
 	case cmdCreateIdentity: // 43
 		processBranches(ctx, opts, branches.Branches, "Identity and Reference", []BranchProcessor{
 			{Fn: generateControllerIdentity, CommitMsgTemplate: "{{kind}}: Add controller identity"},
@@ -405,8 +411,14 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			{Fn: createControllerTest, CommitMsgTemplate: "{{kind}}: Create minimal test"},
 			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
 		})
-	case cmdCaptureGoldenTestOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Golden Test Output", []BranchProcessor{{Fn: captureGoldenTestOutput, CommitMsgTemplate: "{{kind}}: Capture golden output"}})
+	case cmdCaptureGoldenRealGCPOutput: // 45
+		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests"}})
+	case cmdRunAndFixGoldenRealGCPOutput: // 46
+		processBranches(ctx, opts, branches.Branches, "Fix Real GCP Tests", []BranchProcessor{{Fn: fixGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix real GCP tests", VerifyFn: runGoldenRealGCPTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+	case cmdCaptureGoldenMockOutput: // 47
+		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests"}})
+	case cmdRunAndFixGoldenMockOutput: // 48
+		processBranches(ctx, opts, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix mock GCP tests", VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -442,9 +454,13 @@ func printHelp() {
 	log.Println("\t26 - [CRD] Run and Fix API checks for each branch")
 	log.Println("\t40 - [Controller] Generate controller client for each branch")
 	log.Println("\t41 - [Controller] Generate controller for each branch")
+	log.Println("\t42 - [Controller] Build and fix controller for each branch")
 	log.Println("\t43 - [Controller] [optional, simialr to 20, 21] Create identity and reference files for each branch")
 	log.Println("\t44 - [Controller] Create minimal test files for each branch")
-	log.Println("\t45 - [Controller] Capture golden test output for each branch")
+	log.Println("\t45 - [Controller] Capture golden logs for real GCP tests for each branch")
+	log.Println("\t46 - [Controller] Run and Fix real GCP tests for each branch")
+	log.Println("\t47 - [Controller] Capture golden logs for mock GCP tests for each branch")
+	log.Println("\t48 - [Controller] Run and Fix mock GCP tests for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
