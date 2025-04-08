@@ -26,7 +26,6 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -123,10 +122,6 @@ func (a *RouteAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Route", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamRouteSpec_ToProto(mapCtx, &desired.Spec)
@@ -134,13 +129,8 @@ func (a *RouteAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 		return mapCtx.Err()
 	}
 
-	parent, err := a.id.Parent(ctx, a.reader)
-	if err != nil {
-		return err
-	}
-
 	req := &pb.CreateRouteRequest{
-		Parent:  parent.String(),
+		Parent:  a.id.Parent().String(),
 		RouteId: a.id.ID(),
 		Route:   resource,
 	}
@@ -168,10 +158,6 @@ func (a *RouteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Route", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := DatastreamRouteSpec_ToProto(mapCtx, &desired.Spec)
@@ -179,30 +165,25 @@ func (a *RouteAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		return mapCtx.Err()
 	}
 
-	// Check for differences. DatastreamRoute is immutable except for labels and displayName.
-	// However, there is no UpdateRoute RPC. Therefore, we cannot update the resource.
-	// We only check if an update is needed to decide whether to error out or just update status.
-	changed := false
+	paths := []string{}
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
-		changed = true
+		paths = append(paths, "display_name")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		changed = true
+		paths = append(paths, "labels")
 	}
 	if desired.Spec.DestinationAddress != nil && !reflect.DeepEqual(resource.DestinationAddress, a.actual.DestinationAddress) {
-		changed = true
+		paths = append(paths, "destination_address")
 	}
 	if desired.Spec.DestinationPort != nil && !reflect.DeepEqual(resource.DestinationPort, a.actual.DestinationPort) {
-		changed = true
+		paths = append(paths, "destination_port")
 	}
 
-	if changed {
-		return fmt.Errorf("updating Route %q is not supported", a.id)
+	if len(paths) != 0 {
+		return fmt.Errorf("updating Route %q is not supported, fields: %v", a.id, paths)
 	}
 
-	log.V(2).Info("no update needed for Route", "name", a.id)
-
-	// Update status even if no GCP changes are made (e.g. acquiring existing resource)
+	// still need to update status (in the event of acquiring an existing resource)
 	status := &krm.DatastreamRouteStatus{}
 	status.ObservedState = DatastreamRouteObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
@@ -225,16 +206,7 @@ func (a *RouteAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-
-	parentID, err := a.id.Parent(ctx, a.reader)
-	if err != nil {
-		return nil, fmt.Errorf("getting parent identity: %w", err)
-	}
-
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: parentID.Parent().ProjectID}
-	obj.Spec.Location = parentID.Parent().Location
-	obj.Spec.PrivateConnectionRef = &krm.PrivateConnectionRef{External: parentID.String()}
-
+	obj.Spec.PrivateConnectionRef = &krm.PrivateConnectionRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, fmt.Errorf("converting DatastreamRoute to unstructured: %w", err)
@@ -269,11 +241,4 @@ func (a *RouteAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 		return false, fmt.Errorf("waiting delete Route %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func (a *RouteAdapter) normalizeReferenceFields(ctx context.Context) error {
-	// obj := a.desired
-	// Route spec has no fields needing reference normalization,
-	// the PrivateConnectionRef is handled by the identity construction.
-	return nil
 }
