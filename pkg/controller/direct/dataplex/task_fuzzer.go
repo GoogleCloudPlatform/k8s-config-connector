@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -30,8 +29,8 @@ func init() {
 
 func dataplexTaskFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Task{},
-		krmv1alpha1.DataplexTaskSpec_FromProto, krmv1alpha1.DataplexTaskSpec_ToProto,
-		krmv1alpha1.DataplexTaskObservedState_FromProto, krmv1alpha1.DataplexTaskObservedState_ToProto,
+		DataplexTaskSpec_FromProto, DataplexTaskSpec_ToProto,
+		DataplexTaskObservedState_FromProto, DataplexTaskObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
@@ -49,9 +48,6 @@ func dataplexTaskFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".execution_status")
 
 	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".execution_spec.kms_key")               // type *refsv1beta1.KMSCryptoKeyRef in krm
-	f.UnimplementedFields.Insert(".notebook.infrastructure_spec.network") // type oneof in proto
-	f.UnimplementedFields.Insert(".spark.infrastructure_spec.network")    // type oneof in proto
 
 	return f
 }
