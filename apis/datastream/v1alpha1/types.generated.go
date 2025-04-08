@@ -61,15 +61,6 @@ type BigQueryDestinationConfig_AppendOnly struct {
 type BigQueryDestinationConfig_Merge struct {
 }
 
-// +kcc:proto=google.cloud.datastream.v1.BigQueryDestinationConfig.SingleTargetDataset
-type BigQueryDestinationConfig_SingleTargetDataset struct {
-	// The dataset ID of the target dataset.
-	//  DatasetIds allowed characters:
-	//  https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference.
-	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SingleTargetDataset.dataset_id
-	DatasetID *string `json:"datasetID,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets
 type BigQueryDestinationConfig_SourceHierarchyDatasets struct {
 	// The dataset template to use for dynamic dataset creation.
@@ -77,49 +68,8 @@ type BigQueryDestinationConfig_SourceHierarchyDatasets struct {
 	DatasetTemplate *BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate `json:"datasetTemplate,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate
-type BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate struct {
-	// Required. The geographic location where the dataset should reside. See
-	//  https://cloud.google.com/bigquery/docs/locations for supported
-	//  locations.
-	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.location
-	Location *string `json:"location,omitempty"`
-
-	// If supplied, every created dataset will have its name prefixed by the
-	//  provided value. The prefix and name will be separated by an underscore.
-	//  i.e. <prefix>_<dataset_name>.
-	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.dataset_id_prefix
-	DatasetIDPrefix *string `json:"datasetIDPrefix,omitempty"`
-
-	// Describes the Cloud KMS encryption key that will be used to
-	//  protect destination BigQuery table. The BigQuery Service Account
-	//  associated with your project requires access to this encryption key.
-	//  i.e.
-	//  projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{cryptoKey}.
-	//  See https://cloud.google.com/bigquery/docs/customer-managed-encryption
-	//  for more information.
-	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datastream.v1.BigQueryProfile
 type BigQueryProfile struct {
-}
-
-// +kcc:proto=google.cloud.datastream.v1.DestinationConfig
-type DestinationConfig struct {
-	// Required. Destination connection profile resource.
-	//  Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`
-	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.destination_connection_profile
-	DestinationConnectionProfile *string `json:"destinationConnectionProfile,omitempty"`
-
-	// A configuration for how data should be loaded to Cloud Storage.
-	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.gcs_destination_config
-	GCSDestinationConfig *GCSDestinationConfig `json:"gcsDestinationConfig,omitempty"`
-
-	// BigQuery destination configuration.
-	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.bigquery_destination_config
-	BigqueryDestinationConfig *BigQueryDestinationConfig `json:"bigqueryDestinationConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.GcsDestinationConfig

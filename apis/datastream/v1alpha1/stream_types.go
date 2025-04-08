@@ -15,7 +15,10 @@
 package v1alpha1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -144,9 +147,8 @@ func init() {
 // +kcc:proto=google.cloud.datastream.v1.SourceConfig
 type SourceConfig struct {
 	// Required. Source connection profile resoource.
-	//  Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`
 	// +kcc:proto:field=google.cloud.datastream.v1.SourceConfig.source_connection_profile
-	SourceConnectionProfile *string `json:"sourceConnectionProfile,omitempty"`
+	SourceConnectionProfileRef *ConnectionProfileRef `json:"sourceConnectionProfileRef,omitempty"`
 
 	// Oracle data source configuration.
 	// +kcc:proto:field=google.cloud.datastream.v1.SourceConfig.oracle_source_config
@@ -319,4 +321,51 @@ type PostgreSQLColumn struct {
 	// The ordinal position of the column in the table.
 	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlColumn.ordinal_position
 	OrdinalPosition *int32 `json:"ordinalPosition,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate
+type BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate struct {
+	// Required. The geographic location where the dataset should reside. See
+	//  https://cloud.google.com/bigquery/docs/locations for supported
+	//  locations.
+	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.location
+	Location *string `json:"location,omitempty"`
+
+	// If supplied, every created dataset will have its name prefixed by the
+	//  provided value. The prefix and name will be separated by an underscore.
+	//  i.e. <prefix>_<dataset_name>.
+	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.dataset_id_prefix
+	DatasetIDPrefix *string `json:"datasetIDPrefix,omitempty"`
+
+	// Describes the Cloud KMS encryption key that will be used to
+	//  protect destination BigQuery table. The BigQuery Service Account
+	//  associated with your project requires access to this encryption key.
+	//  See https://cloud.google.com/bigquery/docs/customer-managed-encryption
+	//  for more information.
+	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.kms_key_name
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datastream.v1.DestinationConfig
+type DestinationConfig struct {
+	// Required. Destination connection profile resource.
+	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.destination_connection_profile
+	DestinationConnectionProfileRef *ConnectionProfileRef `json:"destinationConnectionProfileRef,omitempty"`
+
+	// A configuration for how data should be loaded to Cloud Storage.
+	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.gcs_destination_config
+	GCSDestinationConfig *GCSDestinationConfig `json:"gcsDestinationConfig,omitempty"`
+
+	// BigQuery destination configuration.
+	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.bigquery_destination_config
+	BigqueryDestinationConfig *BigQueryDestinationConfig `json:"bigqueryDestinationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datastream.v1.BigQueryDestinationConfig.SingleTargetDataset
+type BigQueryDestinationConfig_SingleTargetDataset struct {
+	// The dataset ID of the target dataset.
+	//  DatasetIds allowed characters:
+	//  https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference.
+	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SingleTargetDataset.dataset_id
+	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef,omitempty"`
 }
