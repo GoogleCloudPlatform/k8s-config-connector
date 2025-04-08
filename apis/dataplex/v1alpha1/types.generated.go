@@ -16,13 +16,11 @@
 // krm.group: dataplex.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.dataplex.v1
-// resource: DataplexTask:Task
+// resource: DataplexZone:Zone
 
 package v1alpha1
 
-import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-)
+import refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 // +kcc:proto=google.cloud.dataplex.v1.AssetStatus
 type AssetStatus struct {
@@ -122,6 +120,7 @@ type LakeObservedState struct {
 // +kcc:proto=google.cloud.dataplex.v1.Content
 type Content struct {
 
+	//+required
 	// Required. The path for the Content file, represented as directory
 	//  structure. Unique within a lake. Limited to alphanumerics, hyphens,
 	//  underscores, dots and slashes.
@@ -340,6 +339,281 @@ type Environment_SessionStatusObservedState struct {
 	//  currently active or not
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionStatus.active
 	Active *bool `json:"active,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryGroup
+type EntryGroup struct {
+
+	// Optional. Description of the EntryGroup.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the EntryGroup.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// This checksum is computed by the service, and might be sent on update and
+	//  delete requests to ensure the client has an up-to-date value before
+	//  proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.etag
+	Etag *string `json:"etag,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryGroup
+type EntryGroupObservedState struct {
+	// Output only. The relative resource name of the EntryGroup, in the format
+	//  projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the EntryGroup. If you
+	//  delete and recreate the EntryGroup with the same name, this ID will be
+	//  different.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the EntryGroup was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the EntryGroup was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Denotes the transfer status of the Entry Group. It is
+	//  unspecified for Entry Group created from Dataplex API.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.transfer_status
+	TransferStatus *string `json:"transferStatus,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryType
+type EntryType struct {
+
+	// Optional. Description of the EntryType.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the EntryType.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. This checksum is computed by the service, and might be sent on
+	//  update and delete requests to ensure the client has an up-to-date value
+	//  before proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. Indicates the classes this Entry Type belongs to, for example,
+	//  TABLE, DATABASE, MODEL.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.type_aliases
+	TypeAliases []string `json:"typeAliases,omitempty"`
+
+	// Optional. The platform that Entries of this type belongs to.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.platform
+	Platform *string `json:"platform,omitempty"`
+
+	// Optional. The system that Entries of this type belongs to. Examples include
+	//  CloudSQL, MariaDB etc
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.system
+	System *string `json:"system,omitempty"`
+
+	// AspectInfo for the entry type.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.required_aspects
+	RequiredAspects []EntryType_AspectInfo `json:"requiredAspects,omitempty"`
+
+	// Immutable. Authorization defined for this type.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.authorization
+	Authorization *EntryType_Authorization `json:"authorization,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryType.AspectInfo
+type EntryType_AspectInfo struct {
+	// Required aspect type for the entry type.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.AspectInfo.type
+	//+required
+	TypeRef *AspectTypeRef `json:"typeRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
+type EntryType_Authorization struct {
+	// Immutable. The IAM permission grantable on the Entry Group to allow
+	//  access to instantiate Entries of Dataplex owned Entry Types, only
+	//  settable for Dataplex owned Types.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
+	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryType
+type EntryTypeObservedState struct {
+	// Output only. The relative resource name of the EntryType, of the form:
+	//  projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the EntryType. This ID
+	//  will be different if the EntryType is deleted and re-created with the same
+	//  name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the EntryType was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the EntryType was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone
+type Zone struct {
+
+	// Optional. User friendly display name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User defined labels for the zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Description of the zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.description
+	Description *string `json:"description,omitempty"`
+
+	// Required. Immutable. The type of the zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.type
+	Type *string `json:"type,omitempty"`
+
+	// Optional. Specification of the discovery feature applied to data in this
+	//  zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.discovery_spec
+	DiscoverySpec *Zone_DiscoverySpec `json:"discoverySpec,omitempty"`
+
+	// Required. Specification of the resources that are referenced by the assets
+	//  within this zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.resource_spec
+	ResourceSpec *Zone_ResourceSpec `json:"resourceSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec
+type Zone_DiscoverySpec struct {
+	// Required. Whether discovery is enabled.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to include
+	//  during discovery if only a subset of the data should considered. For
+	//  Cloud Storage bucket assets, these are interpreted as glob patterns used
+	//  to match object names. For BigQuery dataset assets, these are interpreted
+	//  as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.include_patterns
+	IncludePatterns []string `json:"includePatterns,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to exclude
+	//  during discovery.  For Cloud Storage bucket assets, these are interpreted
+	//  as glob patterns used to match object names. For BigQuery dataset assets,
+	//  these are interpreted as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.exclude_patterns
+	ExcludePatterns []string `json:"excludePatterns,omitempty"`
+
+	// Optional. Configuration for CSV data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.csv_options
+	CsvOptions *Zone_DiscoverySpec_CsvOptions `json:"csvOptions,omitempty"`
+
+	// Optional. Configuration for Json data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.json_options
+	JsonOptions *Zone_DiscoverySpec_JsonOptions `json:"jsonOptions,omitempty"`
+
+	// Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron) for
+	//  running discovery periodically. Successive discovery runs must be
+	//  scheduled at least 60 minutes apart. The default value is to run
+	//  discovery every 60 minutes. To explicitly set a timezone to the cron
+	//  tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+	//  TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
+	//  from IANA time zone database. For example, `CRON_TZ=America/New_York 1
+	//  * * * *`, or `TZ=America/New_York 1 * * * *`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.schedule
+	Schedule *string `json:"schedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions
+type Zone_DiscoverySpec_CsvOptions struct {
+	// Optional. The number of rows to interpret as header rows that should be
+	//  skipped when reading data rows.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.header_rows
+	HeaderRows *int32 `json:"headerRows,omitempty"`
+
+	// Optional. The delimiter being used to separate values. This defaults to
+	//  ','.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.delimiter
+	Delimiter *string `json:"delimiter,omitempty"`
+
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for CSV data.
+	//  If true, all columns will be registered as strings.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions
+type Zone_DiscoverySpec_JsonOptions struct {
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for Json data.
+	//  If true, all columns will be registered as their primitive types
+	//  (strings, number or boolean).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.ResourceSpec
+type Zone_ResourceSpec struct {
+	// Required. Immutable. The location type of the resources that are allowed
+	//  to be attached to the assets within this zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
+	LocationType *string `json:"locationType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone
+type ZoneObservedState struct {
+	// Output only. The relative resource name of the zone, of the form:
+	//  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. System generated globally unique ID for the zone. This ID will
+	//  be different if the zone is deleted and re-created with the same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The time when the zone was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the zone was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Aggregated status of the underlying assets of the zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.asset_status
+	AssetStatus *AssetStatus `json:"assetStatus,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.ExecutionSpec
