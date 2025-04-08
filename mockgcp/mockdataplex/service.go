@@ -16,7 +16,7 @@ package mockdataplex
 
 // +tool:mockgcp-service
 // http.host: dataplex.googleapis.com
-// proto.service: google.cloud.dataplex.v1.DataplexService
+// proto.service: google.cloud.dataplex.v1.CatalogService
 
 import (
 	"context"
@@ -40,6 +40,10 @@ type MockService struct {
 	storage storage.Storage
 
 	operations *operations.Operations
+
+	// Store the underlying GRPC servers
+	dataplexV1     *DataplexV1
+	catalogService *CatalogService
 }
 
 // New creates a MockService.
@@ -49,6 +53,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.dataplexV1 = &DataplexV1{MockService: s}
+	s.catalogService = &CatalogService{MockService: s}
 	return s
 }
 
@@ -57,13 +63,14 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataplexServiceServer(grpcServer, &DataplexV1{MockService: s})
-	//s.operations.RegisterGRPCServices(grpcServer)
+	pb.RegisterDataplexServiceServer(grpcServer, s.dataplexV1)
+	pb.RegisterCatalogServiceServer(grpcServer, s.catalogService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterDataplexServiceHandler,
+		grpcpb.RegisterCatalogServiceHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
