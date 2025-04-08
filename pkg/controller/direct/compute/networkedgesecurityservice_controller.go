@@ -131,7 +131,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	log.V(2).Info("creating ComputeNetworkEdgeSecurityService", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	err := resolveDependencies(ctx, a.reader, a.desired)
+	err := a.resolveDependencies(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -181,7 +181,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	log.V(2).Info("updating ComputeNetworkEdgeSecurityService", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	err := resolveDependencies(ctx, a.reader, a.desired)
+	err := a.resolveDependencies(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -320,7 +320,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) get(ctx context.Context) (*computepb
 	return resource, nil
 }
 
-func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkEdgeSecurityService) error {
+func (a *NetworkEdgeSecurityServiceAdapter) resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkEdgeSecurityService) error {
 	// resolve securityPolicyRef
 	securityPolicyRef := obj.Spec.SecurityPolicyRef
 	if securityPolicyRef != nil {
