@@ -168,8 +168,6 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		return mapCtx.Err()
 	}
 	zone.Name = a.id.String()
-	zone.Type = a.actual.Type                                           // Immutable field
-	zone.ResourceSpec.LocationType = a.actual.ResourceSpec.LocationType // Immutable field
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(zone.DisplayName, a.actual.DisplayName) {
@@ -181,9 +179,21 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	if !reflect.DeepEqual(zone.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if !reflect.DeepEqual(zone.DiscoverySpec, a.actual.DiscoverySpec) {
+
+	// default value:
+	//"discoverySpec": {
+	//    "csvOptions": {},
+	//    "jsonOptions": {},
+	//    "schedule": ""
+	//  })
+	if zone.DiscoverySpec != nil {
+		if !reflect.DeepEqual(zone.DiscoverySpec, a.actual.DiscoverySpec) {
+			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
+		}
+	} else if a.actual.DiscoverySpec.GetSchedule() != "" || a.actual.DiscoverySpec.GetCsvOptions() != nil || a.actual.DiscoverySpec.GetJsonOptions() != nil {
 		updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 	}
+	// Type is immutable, no need to check Type
 	// ResourceSpec.LocationType is immutable, no need to check ResourceSpec
 
 	var updated *pb.Zone
