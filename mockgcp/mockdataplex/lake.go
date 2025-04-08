@@ -39,11 +39,6 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-type DataplexV1 struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
 func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {

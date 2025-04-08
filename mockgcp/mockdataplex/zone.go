@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,12 +75,19 @@ func (s *DataplexV1) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) 
 	if obj.AssetStatus == nil {
 		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
 	}
+	if obj.DiscoverySpec == nil {
+		obj.DiscoverySpec = &pb.Zone_DiscoverySpec{
+			CsvOptions:  &pb.Zone_DiscoverySpec_CsvOptions{},
+			JsonOptions: &pb.Zone_DiscoverySpec_JsonOptions{},
+			Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s/lakes/%s", name.Project.ID, name.Location, name.LakeID)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		Target:     name.String(),
 		Verb:       "create",
@@ -89,17 +96,8 @@ func (s *DataplexV1) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) 
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.RequestedCancellation = false
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		// Set the asset status after the LRO completes simulation
-		obj.AssetStatus = &pb.AssetStatus{
-			UpdateTime:                   timestamppb.New(time.Now()),
-			ActiveAssets:                 0, // Assuming no assets initially
-			SecurityPolicyApplyingAssets: 0,
-		}
+		obj.AssetStatus = &pb.AssetStatus{}
 		// Update the object in storage after LRO completion simulation
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			// Log error, but the LRO technically succeeded in creating the initial object
-			fmt.Printf("Error updating zone state after LRO completion: %v\n", err)
-		}
 		return obj, nil
 	})
 }
@@ -135,21 +133,23 @@ func (s *DataplexV1) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) 
 		// case "type":
 		// case "resource_spec":
 		default:
-			// Return error for attempts to update unhandled or immutable fields.
-			// Check if the path targets an immutable field specifically.
-			if path == "type" || path == "resource_spec" {
-				return nil, status.Errorf(codes.InvalidArgument, "field %q cannot be updated", path)
-			}
 			// For other unhandled fields, return a generic error or log a warning.
 			return nil, status.Errorf(codes.InvalidArgument, "mock does not implement update of field %q for Zone", path)
 
+		}
+	}
+	if obj.DiscoverySpec == nil {
+		obj.DiscoverySpec = &pb.Zone_DiscoverySpec{
+			CsvOptions:  &pb.Zone_DiscoverySpec_CsvOptions{},
+			JsonOptions: &pb.Zone_DiscoverySpec_JsonOptions{},
+			Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
 		}
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s/lakes/%s", name.Project.ID, name.Location, name.LakeID)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.Now(),
 		Target:     name.String(),
@@ -157,6 +157,7 @@ func (s *DataplexV1) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) 
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
+		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
 		return obj, nil
 	})
 }
@@ -200,7 +201,7 @@ func (s *DataplexV1) DeleteZone(ctx context.Context, req *pb.DeleteZoneRequest) 
 		return nil, err // Return other storage errors
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s/lakes/%s", name.Project.ID, name.Location, name.LakeID)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		Target:     name.String(),
 		Verb:       "delete",
