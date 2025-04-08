@@ -133,8 +133,9 @@ func (a *NodegroupAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 
 	req := &dataprocpb.CreateNodeGroupRequest{
-		Parent:    a.id.Parent().String(),
-		NodeGroup: resource,
+		Parent:      a.id.Parent().String(),
+		NodeGroup:   resource,
+		NodeGroupId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateNodeGroup(ctx, req)
 	if err != nil {
