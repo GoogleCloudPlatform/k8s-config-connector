@@ -111,6 +111,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 
+	pb.RegisterInterconnectsServer(grpcServer, &interconnectsV1{MockService: s})
+
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
 }
 
@@ -249,6 +251,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterInstancesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterInterconnectsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterZonesHandler(ctx, mux.ServeMux, conn); err != nil {
