@@ -42,6 +42,11 @@ type MockService struct {
 	operations *operations.Operations
 }
 
+type DataplexV1 struct {
+	*MockService
+	pb.UnimplementedDataplexServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
@@ -58,7 +63,6 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataplexServiceServer(grpcServer, &DataplexV1{MockService: s})
-	//s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
