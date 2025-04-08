@@ -19,5 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  location: global # Expected resource location to be global
   displayName: "Initial description"
+  items: # CustomClass must have at least one item specified
+    - value: "value1"
