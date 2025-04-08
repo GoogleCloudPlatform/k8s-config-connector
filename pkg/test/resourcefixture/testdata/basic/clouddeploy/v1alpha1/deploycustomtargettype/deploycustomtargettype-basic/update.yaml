@@ -1,5 +1,5 @@
 apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
-kind: DeployCustomTargetType
+kind: CloudDeployCustomTargetType
 metadata:
   name: deploycustomtargettype-${uniqueId}
 spec:

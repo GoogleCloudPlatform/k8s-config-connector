@@ -73,7 +73,7 @@ func (m *customTargetTypeModel) client(ctx context.Context, projectID string) (*
 }
 
 func (m *customTargetTypeModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.DeployCustomTargetType{}
+	obj := &krm.CloudDeployCustomTargetType{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -103,7 +103,7 @@ func (m *customTargetTypeModel) AdapterForURL(ctx context.Context, url string) (
 type customTargetTypeAdapter struct {
 	gcpClient *deploy.CloudDeployClient
 	id        *krm.CustomTargetTypeIdentity
-	desired   *krm.DeployCustomTargetType
+	desired   *krm.CloudDeployCustomTargetType
 	actual    *deploypb.CustomTargetType
 }
 
@@ -222,7 +222,7 @@ func (a *customTargetTypeAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.DeployCustomTargetType{}
+	obj := &krm.CloudDeployCustomTargetType{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(CustomTargetType_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
