@@ -79,7 +79,7 @@ func (m *entryGroupModel) client(ctx context.Context, projectID string) (*api.Cl
 		return nil, fmt.Errorf("building datacatalog entrygroup client: %w", err)
 	}
 
-	return gcpClient, err
+	return gcpClient, nil
 }
 
 func (m *entryGroupModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -177,7 +177,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 	desired.Name = a.id.String()
 
-	paths, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
+	_, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
