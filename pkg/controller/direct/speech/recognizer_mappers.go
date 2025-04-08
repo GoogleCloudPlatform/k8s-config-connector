@@ -62,44 +62,36 @@ func InlineCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func PhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.PhraseSetObservedState {
+func InlinePhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PhraseSetObservedState{}
+	out := &krm.InlinePhraseSetObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.UID = direct.LazyPtr(in.GetUid())
-	// MISSING: Phrases
-	// MISSING: Boost
-	// MISSING: DisplayName
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: Annotations
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Reconciling = direct.LazyPtr(in.GetReconciling())
 	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func PhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSetObservedState) *pb.PhraseSet {
+func InlinePhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSetObservedState) *pb.PhraseSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PhraseSet{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.UID)
-	// MISSING: Phrases
-	// MISSING: Boost
-	// MISSING: DisplayName
 	out.State = direct.Enum_ToProto[pb.PhraseSet_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: Annotations
 	out.Etag = direct.ValueOf(in.Etag)
 	out.Reconciling = direct.ValueOf(in.Reconciling)
 	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
@@ -144,12 +136,12 @@ func SpeechRecognizerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sp
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx *direct.MapContext, in *string) *pb.SpeechAdaptation_AdaptationPhraseSet_PhraseSet {
+func SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSetRef) *pb.SpeechAdaptation_AdaptationPhraseSet_PhraseSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SpeechAdaptation_AdaptationPhraseSet_PhraseSet{}
-	out.PhraseSet = direct.ValueOf(in)
+	out.PhraseSet = in.External
 	return out
 }
 func InlineCustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.InlineCustomClass {
@@ -206,5 +198,72 @@ func SpeechAdaptationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sp
 	out := &pb.SpeechAdaptation{}
 	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto)
 	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, InlineCustomClassObservedState_ToProto)
+	return out
+}
+func InlinePhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.InlinePhraseSet{}
+	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
+	out.Boost = direct.LazyPtr(in.GetBoost())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Annotations = in.Annotations
+	return out
+}
+func InlinePhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet) *pb.PhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PhraseSet{}
+
+	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
+	out.Boost = direct.ValueOf(in.Boost)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Annotations = in.Annotations
+	return out
+}
+func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechAdaptation_AdaptationPhraseSet{}
+	if in.GetPhraseSet() != "" {
+		out.PhraseSetRef = &krm.PhraseSetRef{
+			External: in.GetPhraseSet(),
+		}
+	}
+	out.InlinePhraseSet = InlinePhraseSet_FromProto(mapCtx, in.GetInlinePhraseSet())
+	return out
+}
+func SpeechAdaptation_AdaptationPhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSet) *pb.SpeechAdaptation_AdaptationPhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
+	if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx, in.PhraseSetRef); oneof != nil {
+		out.Value = oneof
+	}
+	if oneof := InlinePhraseSet_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
+		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
+	}
+	return out
+}
+func SpeechAdaptation_AdaptationPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SpeechAdaptation_AdaptationPhraseSetObservedState{}
+	out.InlinePhraseSet = InlinePhraseSetObservedState_FromProto(mapCtx, in.GetInlinePhraseSet())
+	return out
+}
+func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSetObservedState) *pb.SpeechAdaptation_AdaptationPhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
+	if oneof := InlinePhraseSetObservedState_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
+		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
+	}
 	return out
 }

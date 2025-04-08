@@ -75,50 +75,6 @@ func ExplicitDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExplicitD
 	out.AudioChannelCount = direct.ValueOf(in.AudioChannelCount)
 	return out
 }
-func PhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
-	out.Boost = direct.LazyPtr(in.GetBoost())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
-func PhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSet) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
-	out.Boost = direct.ValueOf(in.Boost)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	// MISSING: State
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DeleteTime
-	// MISSING: ExpireTime
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	// MISSING: Reconciling
-	// MISSING: KMSKeyName
-	// MISSING: KMSKeyVersionName
-	return out
-}
 func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krm.PhraseSet_Phrase {
 	if in == nil {
 		return nil
@@ -249,48 +205,6 @@ func SpeakerDiarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Speaker
 	out := &pb.SpeakerDiarizationConfig{}
 	out.MinSpeakerCount = direct.ValueOf(in.MinSpeakerCount)
 	out.MaxSpeakerCount = direct.ValueOf(in.MaxSpeakerCount)
-	return out
-}
-func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechAdaptation_AdaptationPhraseSet{}
-	out.PhraseSet = direct.LazyPtr(in.GetPhraseSet())
-	out.InlinePhraseSet = PhraseSet_FromProto(mapCtx, in.GetInlinePhraseSet())
-	return out
-}
-func SpeechAdaptation_AdaptationPhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSet) *pb.SpeechAdaptation_AdaptationPhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
-	if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx, in.PhraseSet); oneof != nil {
-		out.Value = oneof
-	}
-	if oneof := PhraseSet_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
-		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
-	}
-	return out
-}
-func SpeechAdaptation_AdaptationPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SpeechAdaptation_AdaptationPhraseSetObservedState{}
-	// MISSING: PhraseSet
-	out.InlinePhraseSet = PhraseSetObservedState_FromProto(mapCtx, in.GetInlinePhraseSet())
-	return out
-}
-func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSetObservedState) *pb.SpeechAdaptation_AdaptationPhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
-	// MISSING: PhraseSet
-	if oneof := PhraseSetObservedState_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
-		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
-	}
 	return out
 }
 func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
