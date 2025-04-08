@@ -1,0 +1,297 @@
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Grpc-Status-Details-Bin: CAUSX1VuYWJsZSB0byBmaW5kIEN1c3RvbUNsYXNzIHNwZWVjaGN1c3RvbWNsYXNzLW1pbmltYWwtY2V1cWN0djJ3bXJydmZxIGZyb20gcHJvamVjdCA2MDAxMzk1NjYxMTYuGoECCiR0eXBlLmdvb2dsZWFwaXMuY29tL3V0aWwuU3RhdHVzUHJvdG8S2AEIBRIHZ2VuZXJpYxpfVW5hYmxlIHRvIGZpbmQgQ3VzdG9tQ2xhc3Mgc3BlZWNoY3VzdG9tY2xhc3MtbWluaW1hbC1jZXVxY3R2MndtcnJ2ZnEgZnJvbSBwcm9qZWN0IDYwMDEzOTU2NjExNi4qagsQhtaNJxphEl9VbmFibGUgdG8gZmluZCBDdXN0b21DbGFzcyBzcGVlY2hjdXN0b21jbGFzcy1taW5pbWFsLWNldXFjdHYyd21ycnZmcSBmcm9tIHByb2plY3QgNjAwMTM5NTY2MTE2Lgw=
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DbWGPz4VmpkZQQ==
+X-Goog-Ext-9650773-Bin: DT2hlUE=
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Unable to find CustomClass speechcustomclass-minimal-${uniqueId} from project ${projectNumber}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses?%24alt=json%3Benum-encoding%3Dint&customClassId=speechcustomclass-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "Initial description",
+  "items": [
+    {
+      "value": "value1"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DZ4hYj4Vmpk5QQ==
+X-Goog-Ext-9650773-Bin: DUSqsEE=
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createCustomClassRequest": {
+      "customClass": {
+        "displayName": "Initial description",
+        "items": [
+          {
+            "value": "value1"
+          }
+        ]
+      },
+      "customClassId": "speechcustomclass-minimal-${uniqueId}",
+      "parent": "projects/${projectNumber}/locations/global"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.CreateCustomClass",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.CustomClass",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Initial description",
+    "etag": "abcdef0123A=",
+    "items": [
+      {
+        "value": "value1"
+      }
+    ],
+    "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DW0oQj4VAAAYQQ==
+X-Goog-Ext-9650773-Bin: DZWvl0E=
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Initial description",
+  "etag": "abcdef0123A=",
+  "items": [
+    {
+      "value": "value1"
+    }
+  ],
+  "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Citems
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: custom_class.name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-minimal-${uniqueId}
+
+{
+  "displayName": "Updated description",
+  "items": [
+    {
+      "value": "value1"
+    },
+    {
+      "value": "value2"
+    }
+  ],
+  "name": "projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DUcnaj4VZmY2QQ==
+X-Goog-Ext-9650773-Bin: Da/utkE=
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.UpdateCustomClass",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "updateCustomClassRequest": {
+      "customClass": {
+        "displayName": "Updated description",
+        "items": [
+          {
+            "value": "value1"
+          },
+          {
+            "value": "value2"
+          }
+        ],
+        "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}"
+      },
+      "updateMask": "displayName,items"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.CustomClass",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "items": [
+      {
+        "value": "value1"
+      },
+      {
+        "value": "value2"
+      }
+    ],
+    "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DYFHcj4VZmY2QQ==
+X-Goog-Ext-9650773-Bin: Dd1HvUE=
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated description",
+  "etag": "abcdef0123A=",
+  "items": [
+    {
+      "value": "value1"
+    },
+    {
+      "value": "value2"
+    }
+  ],
+  "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://speech.googleapis.com/v2/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FcustomClasses%2Fspeechcustomclass-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Goog-Ext-27651507-Bin: DYntiD4VMzNLQQ==
+X-Goog-Ext-9650773-Bin: DSfz1UE=
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteCustomClassRequest": {
+      "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}"
+    },
+    "method": "google.cloud.speech.v2.Speech.DeleteCustomClass",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.CustomClass",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "items": [
+      {
+        "value": "value1"
+      },
+      {
+        "value": "value2"
+      }
+    ],
+    "name": "projects/${projectNumber}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}",
+    "state": 4,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
