@@ -23,6 +23,7 @@ package dataplex
 import (
 	"context"
 	"fmt"
+	"github.com/go-test/deep"
 	"reflect"
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
@@ -180,18 +181,25 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	// default value:
+	// API default value:
 	//"discoverySpec": {
 	//    "csvOptions": {},
 	//    "jsonOptions": {},
 	//    "schedule": ""
 	//  })
+	emptyDiscoverySpec := &pb.Zone_DiscoverySpec{
+		CsvOptions:  &pb.Zone_DiscoverySpec_CsvOptions{},
+		JsonOptions: &pb.Zone_DiscoverySpec_JsonOptions{},
+		Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
+	}
 	if zone.DiscoverySpec != nil {
-		if !reflect.DeepEqual(zone.DiscoverySpec, a.actual.DiscoverySpec) {
+		if path := deep.Equal(zone.DiscoverySpec, a.actual.DiscoverySpec); len(path) != 0 {
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
-	} else if a.actual.DiscoverySpec.GetSchedule() != "" || a.actual.DiscoverySpec.GetCsvOptions() != nil || a.actual.DiscoverySpec.GetJsonOptions() != nil {
-		updateMask.Paths = append(updateMask.Paths, "discovery_spec")
+	} else {
+		if path := deep.Equal(emptyDiscoverySpec, a.actual.DiscoverySpec); len(path) != 0 {
+			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
+		}
 	}
 	// Type is immutable, no need to check Type
 	// ResourceSpec.LocationType is immutable, no need to check ResourceSpec
