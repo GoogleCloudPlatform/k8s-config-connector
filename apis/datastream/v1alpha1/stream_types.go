@@ -37,14 +37,17 @@ type DatastreamStreamSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Display name.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.Stream.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
 	// Required. Source connection profile configuration.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.Stream.source_config
 	SourceConfig *SourceConfig `json:"sourceConfig,omitempty"`
 
 	// Required. Destination connection profile configuration.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.Stream.destination_config
 	DestinationConfig *DestinationConfig `json:"destinationConfig,omitempty"`
 
@@ -147,6 +150,7 @@ func init() {
 // +kcc:proto=google.cloud.datastream.v1.SourceConfig
 type SourceConfig struct {
 	// Required. Source connection profile resoource.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.SourceConfig.source_connection_profile
 	SourceConnectionProfileRef *ConnectionProfileRef `json:"sourceConnectionProfileRef,omitempty"`
 
@@ -328,6 +332,7 @@ type BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate struct {
 	// Required. The geographic location where the dataset should reside. See
 	//  https://cloud.google.com/bigquery/docs/locations for supported
 	//  locations.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SourceHierarchyDatasets.DatasetTemplate.location
 	Location *string `json:"location,omitempty"`
 
@@ -349,6 +354,7 @@ type BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate struct {
 // +kcc:proto=google.cloud.datastream.v1.DestinationConfig
 type DestinationConfig struct {
 	// Required. Destination connection profile resource.
+	// +required
 	// +kcc:proto:field=google.cloud.datastream.v1.DestinationConfig.destination_connection_profile
 	DestinationConnectionProfileRef *ConnectionProfileRef `json:"destinationConnectionProfileRef,omitempty"`
 
@@ -368,4 +374,46 @@ type BigQueryDestinationConfig_SingleTargetDataset struct {
 	//  https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference.
 	// +kcc:proto:field=google.cloud.datastream.v1.BigQueryDestinationConfig.SingleTargetDataset.dataset_id
 	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories
+type OracleSourceConfig_BinaryLogParser_LogFileDirectories struct {
+	// Required. Oracle directory for online logs.
+	// +required
+	// +kcc:proto:field=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories.online_log_directory
+	OnlineLogDirectory *string `json:"onlineLogDirectory,omitempty"`
+
+	// Required. Oracle directory for archived logs.
+	// +required
+	// +kcc:proto:field=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories.archived_log_directory
+	ArchivedLogDirectory *string `json:"archivedLogDirectory,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datastream.v1.PostgresqlSourceConfig
+type PostgresqlSourceConfig struct {
+	// PostgreSQL objects to include in the stream.
+	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.include_objects
+	IncludeObjects *PostgresqlRdbms `json:"includeObjects,omitempty"`
+
+	// PostgreSQL objects to exclude from the stream.
+	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.exclude_objects
+	ExcludeObjects *PostgresqlRdbms `json:"excludeObjects,omitempty"`
+
+	// Required. Immutable. The name of the logical replication slot that's
+	//  configured with the pgoutput plugin.
+	// +required
+	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.replication_slot
+	ReplicationSlot *string `json:"replicationSlot,omitempty"`
+
+	// Required. The name of the publication that includes the set of all tables
+	//  that are defined in the stream's include_objects.
+	// +required
+	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.publication
+	Publication *string `json:"publication,omitempty"`
+
+	// Maximum number of concurrent backfill tasks. The number should be non
+	//  negative. If not set (or set to 0), the system's default value will be
+	//  used.
+	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.max_concurrent_backfill_tasks
+	MaxConcurrentBackfillTasks *int32 `json:"maxConcurrentBackfillTasks,omitempty"`
 }

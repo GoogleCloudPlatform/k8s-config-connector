@@ -271,17 +271,6 @@ type OracleSourceConfig_BinaryLogParser struct {
 	LogFileDirectories *OracleSourceConfig_BinaryLogParser_LogFileDirectories `json:"logFileDirectories,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories
-type OracleSourceConfig_BinaryLogParser_LogFileDirectories struct {
-	// Required. Oracle directory for online logs.
-	// +kcc:proto:field=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories.online_log_directory
-	OnlineLogDirectory *string `json:"onlineLogDirectory,omitempty"`
-
-	// Required. Oracle directory for archived logs.
-	// +kcc:proto:field=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.LogFileDirectories.archived_log_directory
-	ArchivedLogDirectory *string `json:"archivedLogDirectory,omitempty"`
-}
-
 // +kcc:proto=google.cloud.datastream.v1.OracleSourceConfig.BinaryLogParser.OracleAsmLogFileAccess
 type OracleSourceConfig_BinaryLogParser_OracleAsmLogFileAccess struct {
 }
@@ -317,33 +306,6 @@ type OracleTable struct {
 	//  everything.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleTable.oracle_columns
 	OracleColumns []OracleColumn `json:"oracleColumns,omitempty"`
-}
-
-// +kcc:proto=google.cloud.datastream.v1.PostgresqlSourceConfig
-type PostgresqlSourceConfig struct {
-	// PostgreSQL objects to include in the stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.include_objects
-	IncludeObjects *PostgresqlRdbms `json:"includeObjects,omitempty"`
-
-	// PostgreSQL objects to exclude from the stream.
-	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.exclude_objects
-	ExcludeObjects *PostgresqlRdbms `json:"excludeObjects,omitempty"`
-
-	// Required. Immutable. The name of the logical replication slot that's
-	//  configured with the pgoutput plugin.
-	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.replication_slot
-	ReplicationSlot *string `json:"replicationSlot,omitempty"`
-
-	// Required. The name of the publication that includes the set of all tables
-	//  that are defined in the stream's include_objects.
-	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.publication
-	Publication *string `json:"publication,omitempty"`
-
-	// Maximum number of concurrent backfill tasks. The number should be non
-	//  negative. If not set (or set to 0), the system's default value will be
-	//  used.
-	// +kcc:proto:field=google.cloud.datastream.v1.PostgresqlSourceConfig.max_concurrent_backfill_tasks
-	MaxConcurrentBackfillTasks *int32 `json:"maxConcurrentBackfillTasks,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.SqlServerChangeTables
