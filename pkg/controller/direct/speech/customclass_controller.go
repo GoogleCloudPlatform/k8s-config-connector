@@ -27,7 +27,6 @@ import (
 
 	gcp "cloud.google.com/go/speech/apiv2"
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -56,24 +55,6 @@ type customClassModel struct {
 	config config.ControllerConfig
 }
 
-func (m *customClassModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building speech customclass client: %w", err)
-	}
-
-	return gcpClient, err
-}
-
 func (m *customClassModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SpeechCustomClass{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -85,13 +66,17 @@ func (m *customClassModel) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	client, err := gcpClient.newSpeechClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &customClassAdapter{
-		gcpClient: gcpClient,
+		gcpClient: client,
 		id:        id,
 		desired:   obj,
 		reader:    reader,
