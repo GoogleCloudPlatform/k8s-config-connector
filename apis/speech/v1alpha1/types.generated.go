@@ -18,6 +18,7 @@
 // proto.service: google.cloud.speech.v2
 // resource: SpeechRecognizer:Recognizer
 // resource: SpeechCustomClass:CustomClass
+// resource: SpeechPhraseSet:PhraseSet
 
 package v1alpha1
 
