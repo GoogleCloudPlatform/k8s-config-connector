@@ -25,7 +25,37 @@ var DataplexTaskGVK = GroupVersion.WithKind("DataplexTask")
 // +kcc:proto=google.cloud.dataplex.v1.Task
 type DataplexTaskSpec struct {
 	// The DataplexTask name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID *string `json:"resourceID,omitempty"` // Existing field preserved
+
+	// Optional. Description of the task.
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	// Optional. User friendly display name.
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. User-defined labels for the task.
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Required. Spec related to how often and when a task should be triggered.
+	// +required
+	TriggerSpec *Task_TriggerSpec `json:"triggerSpec,omitempty"`
+
+	// Required. Spec related to how a task is executed.
+	// +required
+	ExecutionSpec *Task_ExecutionSpec `json:"executionSpec,omitempty"`
+
+	// Config related to running custom Spark tasks.
+	// Exactly one of spark or notebook must be set.
+	// +optional
+	Spark *Task_SparkTaskConfig `json:"spark,omitempty"`
+
+	// Config related to running scheduled Notebooks.
+	// Exactly one of spark or notebook must be set.
+	// +optional
+	Notebook *Task_NotebookTaskConfig `json:"notebook,omitempty"`
 }
 
 // DataplexTaskStatus defines the config connector machine state of DataplexTask
@@ -45,8 +75,15 @@ type DataplexTaskStatus struct {
 }
 
 // DataplexTaskObservedState is the state of the DataplexTask resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataplex.v1.Task
+// Based on fields from Task_ExecutionStatusObservedState in types.generated.go
 type DataplexTaskObservedState struct {
+	// Output only. Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.update_time // Copied from Task_ExecutionStatusObservedState
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. latest job execution
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.latest_job // Copied from Task_ExecutionStatusObservedState
+	LatestJob *Job `json:"latestJob,omitempty"` // Requires 'Job' type defined in types.generated.go
 }
 
 // +genclient
