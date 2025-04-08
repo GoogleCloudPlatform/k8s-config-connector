@@ -22,16 +22,19 @@ import (
 
 var BigLakeCatalogGVK = GroupVersion.WithKind("BigLakeCatalog")
 
+type Parent struct {
+	// Required. The location of the application.
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the application.
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // BigLakeCatalogSpec defines the desired state of BigLakeCatalog
 // +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
 type BigLakeCatalogSpec struct {
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
-
-	// Immutable. The location where the Table should reside.
-	// +required
-	Location string `json:"location,omitempty"`
+	// Required. Defines the parent path of the resource.
+	*Parent `json:",inline"`
 
 	// The BigLakeCatalog name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
