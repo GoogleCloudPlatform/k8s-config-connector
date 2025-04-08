@@ -125,7 +125,7 @@ X-Xss-Protection: 0
   "name": "${networkEdgeSecurityServiceID}",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServicesID}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}"
 }
 
 ---
@@ -229,7 +229,7 @@ X-Xss-Protection: 0
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "securityPolicy": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/securityPolicies/test-policy",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServicesID}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}"
 }
 
 ---

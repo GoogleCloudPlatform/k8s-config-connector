@@ -588,7 +588,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								id := tokens[n-1]
 								switch kind {
 								case "networkEdgeSecurityServices":
-									r.PathIDs[id] = "${networkEdgeSecurityServicesID}"
+									r.PathIDs[id] = "${networkEdgeSecurityServiceID}"
 								}
 							}
 						}

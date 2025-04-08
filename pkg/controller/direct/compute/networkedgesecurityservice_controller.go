@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -66,16 +66,6 @@ func (m *modelNetworkEdgeSecurityService) AdapterForObject(ctx context.Context, 
 		return nil, err
 	}
 
-	// resolve securityPolicyRef
-	securityPolicyRef := obj.Spec.SecurityPolicyRef
-	if securityPolicyRef != nil {
-		external, err := securityPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
-		if err != nil {
-			return nil, err
-		}
-		obj.Spec.SecurityPolicyRef.External = external
-	}
-
 	// Get compute GCP client
 	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
@@ -141,6 +131,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	log.V(2).Info("creating ComputeNetworkEdgeSecurityService", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
+	err := resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
+
 	desired := a.desired.DeepCopy()
 	resource := ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -166,16 +161,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Create(ctx context.Context, createOp
 	log.V(2).Info("successfully created ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	// Get the created resource
-	created := &computepb.NetworkEdgeSecurityService{}
-	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.Parent().ProjectID,
-		Region:                     a.id.Parent().Location,
-		NetworkEdgeSecurityService: a.id.ID(),
-	}
-	created, err = a.gcpClient.Get(ctx, getReq)
+	created, err := a.get(ctx)
 	if err != nil {
-		return fmt.Errorf("getting compute ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+		return fmt.Errorf("getting ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
 	}
+
 	status := &krm.ComputeNetworkEdgeSecurityServiceStatus{}
 	status.ObservedState = ComputeNetworkEdgeSecurityServiceObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -190,6 +180,11 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeNetworkEdgeSecurityService", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	err := resolveDependencies(ctx, a.reader, a.desired)
+	if err != nil {
+		return err
+	}
 
 	desired := a.desired.DeepCopy()
 	resource := ComputeNetworkEdgeSecurityServiceSpec_ToProto(mapCtx, &desired.Spec)
@@ -241,13 +236,7 @@ func (a *NetworkEdgeSecurityServiceAdapter) Update(ctx context.Context, updateOp
 	log.V(2).Info("successfully updated ComputeNetworkEdgeSecurityService", "name", a.id)
 
 	// Get the updated resource
-	updated := &computepb.NetworkEdgeSecurityService{}
-	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
-		Project:                    a.id.Parent().ProjectID,
-		Region:                     a.id.Parent().Location,
-		NetworkEdgeSecurityService: a.id.ID(),
-	}
-	updated, err = a.gcpClient.Get(ctx, getReq)
+	updated, err := a.get(ctx)
 	if err != nil {
 		return fmt.Errorf("getting ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
 	}
@@ -316,4 +305,30 @@ func (a *NetworkEdgeSecurityServiceAdapter) Delete(ctx context.Context, deleteOp
 		}
 	}
 	return true, nil
+}
+
+func (a *NetworkEdgeSecurityServiceAdapter) get(ctx context.Context) (*computepb.NetworkEdgeSecurityService, error) {
+	getReq := &computepb.GetNetworkEdgeSecurityServiceRequest{
+		Project:                    a.id.Parent().ProjectID,
+		Region:                     a.id.Parent().Location,
+		NetworkEdgeSecurityService: a.id.ID(),
+	}
+	resource, err := a.gcpClient.Get(ctx, getReq)
+	if err != nil {
+		return nil, fmt.Errorf("getting ComputeNetworkEdgeSecurityService %s: %w", a.id, err)
+	}
+	return resource, nil
+}
+
+func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkEdgeSecurityService) error {
+	// resolve securityPolicyRef
+	securityPolicyRef := obj.Spec.SecurityPolicyRef
+	if securityPolicyRef != nil {
+		external, err := securityPolicyRef.NormalizedExternal(ctx, reader, obj.Namespace)
+		if err != nil {
+			return err
+		}
+		obj.Spec.SecurityPolicyRef.External = external
+	}
+	return nil
 }
