@@ -61,6 +61,8 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterExternalVpnGatewaysServer(grpcServer, &externalVPNGateways{MockService: s})
 
+	pb.RegisterNetworkEdgeSecurityServicesServer(grpcServer, &networkEdgeSecurityServicesV1{MockService: s})
+
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
@@ -132,6 +134,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterExternalVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterNetworkEdgeSecurityServicesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

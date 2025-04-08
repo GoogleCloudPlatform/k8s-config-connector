@@ -172,6 +172,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.certificateId"] = 1111111111111111
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
 
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
@@ -397,7 +398,21 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				}
 			}
 		}
-
+		observedStateId, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "selfLinkWithID")
+		if observedStateId != "" {
+			tokens := strings.Split(observedStateId, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "networkEdgeSecurityServices" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${networkEdgeSecurityServiceID}")
+					})
+				}
+			}
+		}
+		// Get firewall policy id from firewall policy rule's externalRef and replace it
 		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")

@@ -576,7 +576,25 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
-
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						selfLinkWithId, _, _ := unstructured.NestedString(responseBody, "selfLinkWithId")
+						if selfLinkWithId != "" {
+							tokens := strings.Split(selfLinkWithId, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "networkEdgeSecurityServices":
+									r.PathIDs[id] = "${networkEdgeSecurityServiceID}"
+								}
+							}
+						}
+					}
 					// Specific to IAM/policy
 					addReplacement("policy.etag", "abcdef0123A=")
 
