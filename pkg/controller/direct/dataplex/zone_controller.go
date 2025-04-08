@@ -28,7 +28,6 @@ import (
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -132,7 +131,7 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	}
 
 	req := &pb.CreateZoneRequest{
-		Parent: a.id.Parent().String(),
+		Parent: a.id.Parent(),
 		Zone:   zone,
 		ZoneId: a.id.ID(),
 	}
@@ -230,22 +229,6 @@ func (a *zoneAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	obj.Spec = direct.ValueOf(DataplexZoneSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
-	}
-
-	// Populate refs
-	lakeId, err := krm.ParseLakeIdentity(a.id.Parent().String())
-	if err != nil {
-		return nil, fmt.Errorf("parsing lake id %q: %w", a.id.Parent().String(), err)
-	}
-	obj.Spec.LakeRef = &refs.DataplexLakeRef{
-		External: lakeId.String(),
-	}
-	// Set resource ID if it was autopopulated
-	if obj.ObjectMeta.Annotations == nil {
-		obj.ObjectMeta.Annotations = make(map[string]string)
-	}
-	if _, ok := obj.ObjectMeta.Annotations[krm.KCCResourceIDKey]; !ok {
-		obj.ObjectMeta.Annotations[krm.KCCResourceIDKey] = a.id.ID()
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)

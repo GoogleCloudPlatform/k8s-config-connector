@@ -38,6 +38,10 @@ func (i *ZoneIdentity) ID() string {
 	return i.id
 }
 
+func (i *ZoneIdentity) Parent() string {
+	return i.parent.String()
+}
+
 // New builds a ZoneIdentity from the Config Connector Content object.
 func NewZoneIdentity(ctx context.Context, reader client.Reader, obj *DataplexZone) (*ZoneIdentity, error) {
 
