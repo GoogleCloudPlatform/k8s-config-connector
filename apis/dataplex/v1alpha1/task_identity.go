@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type TaskIdentity struct {
 	parent *TaskParent
-	id string
+	id     string
 }
 
 func (i *TaskIdentity) String() string {
-	return  i.parent.String() + "/tasks/" + i.id
+	return i.parent.String() + "/tasks/" + i.id
 }
 
 func (i *TaskIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *TaskIdentity) ID() string {
 }
 
 func (i *TaskIdentity) Parent() *TaskParent {
-	return  i.parent
+	return i.parent
 }
 
 type TaskParent struct {
@@ -51,7 +51,6 @@ type TaskParent struct {
 func (p *TaskParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a TaskIdentity from the Config Connector Task object.
 func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *DataplexTask) (*TaskIdentity, error) {
