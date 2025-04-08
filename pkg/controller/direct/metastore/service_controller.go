@@ -61,7 +61,7 @@ func (m *MetastoreServiceModel) AdapterForObject(ctx context.Context, reader cli
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewMetastoreServiceIdentity(ctx, reader, obj)
+	id, err := krm.NewServiceIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (m *MetastoreServiceModel) AdapterForObject(ctx context.Context, reader cli
 	if err != nil {
 		return nil, err
 	}
-	metastoreClient, err := gcpClient.newMetastoreClient(ctx)
+	metastoreClient, err := gcpClient.newDataprocMetastoreClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (m *MetastoreServiceModel) AdapterForURL(ctx context.Context, url string) (
 
 type MetastoreServiceAdapter struct {
 	gcpClient *gcp.DataprocMetastoreClient
-	id        *krm.MetastoreServiceIdentity
+	id        *krm.ServiceIdentity
 	desired   *krm.MetastoreService
 	actual    *pb.Service
 	reader    client.Reader
@@ -139,10 +139,12 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 	if obj.Spec.NetworkConfig != nil {
 		for i := range obj.Spec.NetworkConfig.Consumers {
 			consumer := &obj.Spec.NetworkConfig.Consumers[i]
-			if consumer.VPCSNetworkRef != nil {
-				if err := consumer.VPCSNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
-					return fmt.Errorf("normalizing networkConfig.consumers[%d].vpcNetworkRef: %w", i, err)
+			if consumer.SubnetworkRef != nil {
+				resolvedRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, consumer.SubnetworkRef)
+				if err != nil {
+					return fmt.Errorf("resolving networkConfig.consumers[%d].subnetworkRef: %w", i, err)
 				}
+				consumer.SubnetworkRef = resolvedRef
 			}
 		}
 	}
