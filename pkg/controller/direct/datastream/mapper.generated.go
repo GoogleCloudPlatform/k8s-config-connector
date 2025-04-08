@@ -24,6 +24,7 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func AvroFileFormat_FromProto(mapCtx *direct.MapContext, in *pb.AvroFileFormat) *krmv1alpha1.AvroFileFormat {
 	if in == nil {
 		return nil
@@ -98,22 +99,6 @@ func BigQueryDestinationConfig_Merge_ToProto(mapCtx *direct.MapContext, in *krmv
 	out := &pb.BigQueryDestinationConfig_Merge{}
 	return out
 }
-func BigQueryDestinationConfig_SingleTargetDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestinationConfig_SingleTargetDataset) *krmv1alpha1.BigQueryDestinationConfig_SingleTargetDataset {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.BigQueryDestinationConfig_SingleTargetDataset{}
-	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
-	return out
-}
-func BigQueryDestinationConfig_SingleTargetDataset_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDestinationConfig_SingleTargetDataset) *pb.BigQueryDestinationConfig_SingleTargetDataset {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryDestinationConfig_SingleTargetDataset{}
-	out.DatasetId = direct.ValueOf(in.DatasetID)
-	return out
-}
 func BigQueryDestinationConfig_SourceHierarchyDatasets_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestinationConfig_SourceHierarchyDatasets) *krmv1alpha1.BigQueryDestinationConfig_SourceHierarchyDatasets {
 	if in == nil {
 		return nil
@@ -128,26 +113,6 @@ func BigQueryDestinationConfig_SourceHierarchyDatasets_ToProto(mapCtx *direct.Ma
 	}
 	out := &pb.BigQueryDestinationConfig_SourceHierarchyDatasets{}
 	out.DatasetTemplate = BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate_ToProto(mapCtx, in.DatasetTemplate)
-	return out
-}
-func BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate) *krmv1alpha1.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate{}
-	out.Location = direct.LazyPtr(in.GetLocation())
-	out.DatasetIDPrefix = direct.LazyPtr(in.GetDatasetIdPrefix())
-	// MISSING: KMSKeyName
-	return out
-}
-func BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate) *pb.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate {
-	if in == nil {
-		return nil
-	}
-	out := &pb.BigQueryDestinationConfig_SourceHierarchyDatasets_DatasetTemplate{}
-	out.Location = direct.ValueOf(in.Location)
-	out.DatasetIdPrefix = direct.ValueOf(in.DatasetIDPrefix)
-	// MISSING: KMSKeyName
 	return out
 }
 func BigQueryProfile_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryProfile) *krmv1alpha1.BigQueryProfile {
@@ -294,18 +259,6 @@ func DatastreamStreamSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Dat
 	out.CustomerManagedEncryptionKey = in.CustomerManagedEncryptionKey
 	return out
 }
-func DestinationConfig_FromProto(mapCtx *direct.MapContext, in *pb.DestinationConfig) *krmv1alpha1.DestinationConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.DestinationConfig{}
-	if in.GetDestinationConnectionProfile() != "" {
-		out.DestinationConnectionProfileRef = &refs.*ConnectionProfileRef{External: in.GetDestinationConnectionProfile()}
-	}
-	out.GCSDestinationConfig = GCSDestinationConfig_FromProto(mapCtx, in.GetGcsDestinationConfig())
-	out.BigqueryDestinationConfig = BigQueryDestinationConfig_FromProto(mapCtx, in.GetBigqueryDestinationConfig())
-	return out
-}
 func DestinationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DestinationConfig) *pb.DestinationConfig {
 	if in == nil {
 		return nil
@@ -418,46 +371,6 @@ func MySQLColumn_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MySQLColumn)
 	out.Scale = direct.ValueOf(in.Scale)
 	return out
 }
-func MySQLDatabase_FromProto(mapCtx *direct.MapContext, in *pb.MysqlDatabase) *krmv1alpha1.MySQLDatabase {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.MySQLDatabase{}
-	out.Database = direct.LazyPtr(in.GetDatabase())
-	// MISSING: MysqlTables
-	// (near miss): "MysqlTables" vs "MySQLTables"
-	return out
-}
-func MySQLDatabase_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MySQLDatabase) *pb.MysqlDatabase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MysqlDatabase{}
-	out.Database = direct.ValueOf(in.Database)
-	// MISSING: MysqlTables
-	// (near miss): "MysqlTables" vs "MySQLTables"
-	return out
-}
-func MySQLTable_FromProto(mapCtx *direct.MapContext, in *pb.MysqlTable) *krmv1alpha1.MySQLTable {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.MySQLTable{}
-	out.Table = direct.LazyPtr(in.GetTable())
-	// MISSING: MysqlColumns
-	// (near miss): "MysqlColumns" vs "MySQLColumns"
-	return out
-}
-func MySQLTable_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MySQLTable) *pb.MysqlTable {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MysqlTable{}
-	out.Table = direct.ValueOf(in.Table)
-	// MISSING: MysqlColumns
-	// (near miss): "MysqlColumns" vs "MySQLColumns"
-	return out
-}
 func MysqlProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MysqlProfile) *krmv1alpha1.MysqlProfileObservedState {
 	if in == nil {
 		return nil
@@ -480,24 +393,6 @@ func MysqlProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	// MISSING: Username
 	// MISSING: Password
 	out.SslConfig = MysqlSSLConfigObservedState_ToProto(mapCtx, in.SSLConfig)
-	return out
-}
-func MysqlRdbms_FromProto(mapCtx *direct.MapContext, in *pb.MysqlRdbms) *krmv1alpha1.MysqlRdbms {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.MysqlRdbms{}
-	// MISSING: MysqlDatabases
-	// (near miss): "MysqlDatabases" vs "MySQLDatabases"
-	return out
-}
-func MysqlRdbms_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.MysqlRdbms) *pb.MysqlRdbms {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MysqlRdbms{}
-	// MISSING: MysqlDatabases
-	// (near miss): "MysqlDatabases" vs "MySQLDatabases"
 	return out
 }
 func MysqlSSLConfig_FromProto(mapCtx *direct.MapContext, in *pb.MysqlSslConfig) *krmv1alpha1.MysqlSSLConfig {
@@ -926,64 +821,6 @@ func PostgreSQLColumn_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Postgre
 	out.OrdinalPosition = direct.ValueOf(in.OrdinalPosition)
 	return out
 }
-func PostgreSQLSchema_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlSchema) *krmv1alpha1.PostgreSQLSchema {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.PostgreSQLSchema{}
-	out.Schema = direct.LazyPtr(in.GetSchema())
-	// MISSING: PostgresqlTables
-	// (near miss): "PostgresqlTables" vs "PostgreSQLTables"
-	return out
-}
-func PostgreSQLSchema_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PostgreSQLSchema) *pb.PostgresqlSchema {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PostgresqlSchema{}
-	out.Schema = direct.ValueOf(in.Schema)
-	// MISSING: PostgresqlTables
-	// (near miss): "PostgresqlTables" vs "PostgreSQLTables"
-	return out
-}
-func PostgreSQLTable_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlTable) *krmv1alpha1.PostgreSQLTable {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.PostgreSQLTable{}
-	out.Table = direct.LazyPtr(in.GetTable())
-	// MISSING: PostgresqlColumns
-	// (near miss): "PostgresqlColumns" vs "PostgreSQLColumns"
-	return out
-}
-func PostgreSQLTable_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PostgreSQLTable) *pb.PostgresqlTable {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PostgresqlTable{}
-	out.Table = direct.ValueOf(in.Table)
-	// MISSING: PostgresqlColumns
-	// (near miss): "PostgresqlColumns" vs "PostgreSQLColumns"
-	return out
-}
-func PostgresqlRdbms_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlRdbms) *krmv1alpha1.PostgresqlRdbms {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.PostgresqlRdbms{}
-	// MISSING: PostgresqlSchemas
-	// (near miss): "PostgresqlSchemas" vs "PostgreSQLSchemas"
-	return out
-}
-func PostgresqlRdbms_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PostgresqlRdbms) *pb.PostgresqlRdbms {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PostgresqlRdbms{}
-	// MISSING: PostgresqlSchemas
-	// (near miss): "PostgresqlSchemas" vs "PostgreSQLSchemas"
-	return out
-}
 func PostgresqlSourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.PostgresqlSourceConfig) *krmv1alpha1.PostgresqlSourceConfig {
 	if in == nil {
 		return nil
@@ -1158,42 +995,6 @@ func SQLServerTransactionLogs_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1
 	out := &pb.SqlServerTransactionLogs{}
 	return out
 }
-func SourceConfig_FromProto(mapCtx *direct.MapContext, in *pb.SourceConfig) *krmv1alpha1.SourceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.SourceConfig{}
-	if in.GetSourceConnectionProfile() != "" {
-		out.SourceConnectionProfileRef = &refs.*ConnectionProfileRef{External: in.GetSourceConnectionProfile()}
-	}
-	out.OracleSourceConfig = OracleSourceConfig_FromProto(mapCtx, in.GetOracleSourceConfig())
-	// MISSING: MysqlSourceConfig
-	// (near miss): "MysqlSourceConfig" vs "MySQLSourceConfig"
-	// MISSING: PostgresqlSourceConfig
-	// (near miss): "PostgresqlSourceConfig" vs "PostgreSQLSourceConfig"
-	out.SQLServerSourceConfig = SQLServerSourceConfig_FromProto(mapCtx, in.GetSqlServerSourceConfig())
-	return out
-}
-func SourceConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SourceConfig) *pb.SourceConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SourceConfig{}
-	if in.SourceConnectionProfileRef != nil {
-		out.SourceConnectionProfile = in.SourceConnectionProfileRef.External
-	}
-	if oneof := OracleSourceConfig_ToProto(mapCtx, in.OracleSourceConfig); oneof != nil {
-		out.SourceStreamConfig = &pb.SourceConfig_OracleSourceConfig{OracleSourceConfig: oneof}
-	}
-	// MISSING: MysqlSourceConfig
-	// (near miss): "MysqlSourceConfig" vs "MySQLSourceConfig"
-	// MISSING: PostgresqlSourceConfig
-	// (near miss): "PostgresqlSourceConfig" vs "PostgreSQLSourceConfig"
-	if oneof := SQLServerSourceConfig_ToProto(mapCtx, in.SQLServerSourceConfig); oneof != nil {
-		out.SourceStreamConfig = &pb.SourceConfig_SqlServerSourceConfig{SqlServerSourceConfig: oneof}
-	}
-	return out
-}
 func StaticServiceIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticServiceIpConnectivity) *krmv1alpha1.StaticServiceIPConnectivity {
 	if in == nil {
 		return nil
@@ -1206,36 +1007,6 @@ func StaticServiceIPConnectivity_ToProto(mapCtx *direct.MapContext, in *krmv1alp
 		return nil
 	}
 	out := &pb.StaticServiceIpConnectivity{}
-	return out
-}
-func Stream_BackfillAllStrategy_FromProto(mapCtx *direct.MapContext, in *pb.Stream_BackfillAllStrategy) *krmv1alpha1.Stream_BackfillAllStrategy {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.Stream_BackfillAllStrategy{}
-	out.OracleExcludedObjects = OracleRdbms_FromProto(mapCtx, in.GetOracleExcludedObjects())
-	// MISSING: MysqlExcludedObjects
-	// (near miss): "MysqlExcludedObjects" vs "MySQLExcludedObjects"
-	// MISSING: PostgresqlExcludedObjects
-	// (near miss): "PostgresqlExcludedObjects" vs "PostgreSQLExcludedObjects"
-	out.SQLServerExcludedObjects = SQLServerRdbms_FromProto(mapCtx, in.GetSqlServerExcludedObjects())
-	return out
-}
-func Stream_BackfillAllStrategy_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Stream_BackfillAllStrategy) *pb.Stream_BackfillAllStrategy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Stream_BackfillAllStrategy{}
-	if oneof := OracleRdbms_ToProto(mapCtx, in.OracleExcludedObjects); oneof != nil {
-		out.ExcludedObjects = &pb.Stream_BackfillAllStrategy_OracleExcludedObjects{OracleExcludedObjects: oneof}
-	}
-	// MISSING: MysqlExcludedObjects
-	// (near miss): "MysqlExcludedObjects" vs "MySQLExcludedObjects"
-	// MISSING: PostgresqlExcludedObjects
-	// (near miss): "PostgresqlExcludedObjects" vs "PostgreSQLExcludedObjects"
-	if oneof := SQLServerRdbms_ToProto(mapCtx, in.SQLServerExcludedObjects); oneof != nil {
-		out.ExcludedObjects = &pb.Stream_BackfillAllStrategy_SqlServerExcludedObjects{SqlServerExcludedObjects: oneof}
-	}
 	return out
 }
 func Stream_BackfillNoneStrategy_FromProto(mapCtx *direct.MapContext, in *pb.Stream_BackfillNoneStrategy) *krmv1alpha1.Stream_BackfillNoneStrategy {
