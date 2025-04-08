@@ -29,6 +29,14 @@ type AssetFeedParent struct {
 	FolderRef       *refv1beta1.FolderRef       `json:"folderRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.asset.v1.PubsubDestination
+type PubsubDestination struct {
+	// The name of the Pub/Sub topic to publish to.
+	//  Example: `projects/PROJECT_ID/topics/TOPIC_ID`.
+	// +kcc:proto:field=google.cloud.asset.v1.PubsubDestination.topic
+	TopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+}
+
 // AssetFeedSpec defines the desired state of AssetFeed
 // +kcc:proto=google.cloud.asset.v1.Feed
 type AssetFeedSpec struct {
