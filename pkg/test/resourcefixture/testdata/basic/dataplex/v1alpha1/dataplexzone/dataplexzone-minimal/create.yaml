@@ -17,7 +17,9 @@ kind: DataplexZone
 metadata:
   name: dataplexzone-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  lakeRef:
+    name: dataplexlake-${uniqueId}
+  type: "RAW"
+  resourceSpec:
+    locationType: "MULTI_REGION"
   description: "Initial description"
