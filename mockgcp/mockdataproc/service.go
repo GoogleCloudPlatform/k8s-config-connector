@@ -56,6 +56,11 @@ type workflowTemplateServer struct {
 	pb.UnimplementedWorkflowTemplateServiceServer
 }
 
+type nodeGroupControllerServer struct {
+	*MockService
+	pb.UnimplementedNodeGroupControllerServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -75,6 +80,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterAutoscalingPolicyServiceServer(grpcServer, &autoscalingPolicyServiceServer{MockService: s})
 	pb.RegisterWorkflowTemplateServiceServer(grpcServer, &workflowTemplateServer{MockService: s})
 	pb.RegisterBatchControllerServer(grpcServer, &batchControllerServer{MockService: s})
+	pb.RegisterNodeGroupControllerServer(grpcServer, &nodeGroupControllerServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -83,6 +89,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pbhttp.RegisterAutoscalingPolicyServiceHandler,
 		pbhttp.RegisterWorkflowTemplateServiceHandler,
 		pbhttp.RegisterBatchControllerHandler,
+		pbhttp.RegisterNodeGroupControllerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
