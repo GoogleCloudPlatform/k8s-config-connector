@@ -231,44 +231,6 @@ func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Sp
 	out.Annotations = in.Annotations
 	return out
 }
-func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.SpeechPhraseSetObservedState{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Reconciling = direct.LazyPtr(in.GetReconciling())
-	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
-	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
-	return out
-}
-func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetObservedState) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	out.State = direct.Enum_ToProto[pb.PhraseSet_State](mapCtx, in.State)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Reconciling = direct.ValueOf(in.Reconciling)
-	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
-	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
-	return out
-}
 func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetSpec {
 	if in == nil {
 		return nil
