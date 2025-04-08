@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // +generated:mapper
+// krm.group: workflowexecutions.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.workflows.executions.v1
-// krm.group: workflowexecutions.cnrm.cloud.google.com
 
 package workflowexecutions
 
