@@ -178,18 +178,6 @@ type RecognitionFeatures struct {
 	MaxAlternatives *int32 `json:"maxAlternatives,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet
-type SpeechAdaptation_AdaptationPhraseSet struct {
-	// The name of an existing PhraseSet resource. The user must have read
-	//  access to the resource and it must not be deleted.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet.phrase_set
-	PhraseSet *string `json:"phraseSet,omitempty"`
-
-	// An inline defined PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet.inline_phrase_set
-	InlinePhraseSet *PhraseSet `json:"inlinePhraseSet,omitempty"`
-}
-
 // +kcc:proto=google.cloud.speech.v2.TranscriptNormalization
 type TranscriptNormalization struct {
 	// A list of replacement entries. We will perform replacement with one entry
@@ -221,11 +209,4 @@ type RecognitionConfigObservedState struct {
 	//  words and phrases.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
 	Adaptation *SpeechAdaptationObservedState `json:"adaptation,omitempty"`
-}
-
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet
-type SpeechAdaptation_AdaptationPhraseSetObservedState struct {
-	// An inline defined PhraseSet.
-	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet.inline_phrase_set
-	InlinePhraseSet *PhraseSetObservedState `json:"inlinePhraseSet,omitempty"`
 }

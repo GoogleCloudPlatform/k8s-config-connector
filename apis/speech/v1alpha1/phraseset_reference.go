@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &PhraseSetRef{}
 // holds the GCP identifier for the KRM object.
 type PhraseSetRef struct {
 	// A reference to an externally managed SpeechPhraseSet resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/phrasesets/{{phrasesetID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/phraseSets/{{phrasesetID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SpeechPhraseSet resource.
