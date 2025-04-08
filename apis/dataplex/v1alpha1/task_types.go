@@ -21,11 +21,17 @@ import (
 
 var DataplexTaskGVK = GroupVersion.WithKind("DataplexTask")
 
+type DataplexTaskParent struct {
+	LakeRef *LakeRef `json:"lakeRef,omitempty"`
+}
+
 // DataplexTaskSpec defines the desired state of DataplexTask
 // +kcc:proto=google.cloud.dataplex.v1.Task
 type DataplexTaskSpec struct {
 	// The DataplexTask name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"` // Existing field preserved
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	DataplexTaskParent `json:",inline"`
 
 	// Optional. Description of the task.
 	// +optional
@@ -74,21 +80,29 @@ type DataplexTaskStatus struct {
 	ObservedState *DataplexTaskObservedState `json:"observedState,omitempty"`
 }
 
-// DataplexTaskObservedState is the state of the DataplexTask resource as most recently observed in GCP.
-// Based on fields from Task_ExecutionStatusObservedState in types.generated.go
 type DataplexTaskObservedState struct {
-	// Output only. Last update time of the status.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.update_time // Copied from Task_ExecutionStatusObservedState
+	// Output only. System generated globally unique ID for the task. This ID will
+	// be different if the task is deleted and re-created with the same name.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.uid
+	UID string `json:"uid,omitempty"`
+	// Output only. The time when the task was created.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time when the task was last updated.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	// Output only. latest job execution
-	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.latest_job // Copied from Task_ExecutionStatusObservedState
-	LatestJob *Job `json:"latestJob,omitempty"` // Requires 'Job' type defined in types.generated.go
+	// Output only. Current state of the task.
+	State *string `json:"state,omitempty"`
+
+	//  Status of the task execution (e.g. Jobs).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus
+	ExecutionStatus *Task_ExecutionStatusObservedState `json:"executionStatus,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplextask;gcpdataplextasks
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
