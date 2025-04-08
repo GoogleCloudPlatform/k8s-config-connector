@@ -21,33 +21,33 @@ package speech
 
 import (
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AutoDetectDecodingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoDetectDecodingConfig) *krm.AutoDetectDecodingConfig {
+func AutoDetectDecodingConfig_FromProto(mapCtx *direct.MapContext, in *pb.AutoDetectDecodingConfig) *krmv1alpha1.AutoDetectDecodingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AutoDetectDecodingConfig{}
+	out := &krmv1alpha1.AutoDetectDecodingConfig{}
 	return out
 }
-func AutoDetectDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krm.AutoDetectDecodingConfig) *pb.AutoDetectDecodingConfig {
+func AutoDetectDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AutoDetectDecodingConfig) *pb.AutoDetectDecodingConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AutoDetectDecodingConfig{}
 	return out
 }
-func CustomClass_ClassItem_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass_ClassItem) *krm.CustomClass_ClassItem {
+func CustomClass_ClassItem_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass_ClassItem) *krmv1alpha1.CustomClass_ClassItem {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CustomClass_ClassItem{}
+	out := &krmv1alpha1.CustomClass_ClassItem{}
 	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func CustomClass_ClassItem_ToProto(mapCtx *direct.MapContext, in *krm.CustomClass_ClassItem) *pb.CustomClass_ClassItem {
+func CustomClass_ClassItem_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.CustomClass_ClassItem) *pb.CustomClass_ClassItem {
 	if in == nil {
 		return nil
 	}
@@ -55,17 +55,17 @@ func CustomClass_ClassItem_ToProto(mapCtx *direct.MapContext, in *krm.CustomClas
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func ExplicitDecodingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExplicitDecodingConfig) *krm.ExplicitDecodingConfig {
+func ExplicitDecodingConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExplicitDecodingConfig) *krmv1alpha1.ExplicitDecodingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExplicitDecodingConfig{}
+	out := &krmv1alpha1.ExplicitDecodingConfig{}
 	out.Encoding = direct.Enum_FromProto(mapCtx, in.GetEncoding())
 	out.SampleRateHertz = direct.LazyPtr(in.GetSampleRateHertz())
 	out.AudioChannelCount = direct.LazyPtr(in.GetAudioChannelCount())
 	return out
 }
-func ExplicitDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExplicitDecodingConfig) *pb.ExplicitDecodingConfig {
+func ExplicitDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ExplicitDecodingConfig) *pb.ExplicitDecodingConfig {
 	if in == nil {
 		return nil
 	}
@@ -75,16 +75,16 @@ func ExplicitDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExplicitD
 	out.AudioChannelCount = direct.ValueOf(in.AudioChannelCount)
 	return out
 }
-func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krm.PhraseSet_Phrase {
+func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krmv1alpha1.PhraseSet_Phrase {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PhraseSet_Phrase{}
+	out := &krmv1alpha1.PhraseSet_Phrase{}
 	out.Value = direct.LazyPtr(in.GetValue())
 	out.Boost = direct.LazyPtr(in.GetBoost())
 	return out
 }
-func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSet_Phrase) *pb.PhraseSet_Phrase {
+func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PhraseSet_Phrase) *pb.PhraseSet_Phrase {
 	if in == nil {
 		return nil
 	}
@@ -93,11 +93,11 @@ func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSet_Phras
 	out.Boost = direct.ValueOf(in.Boost)
 	return out
 }
-func RecognitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionConfig) *krm.RecognitionConfig {
+func RecognitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionConfig) *krmv1alpha1.RecognitionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RecognitionConfig{}
+	out := &krmv1alpha1.RecognitionConfig{}
 	out.AutoDecodingConfig = AutoDetectDecodingConfig_FromProto(mapCtx, in.GetAutoDecodingConfig())
 	out.ExplicitDecodingConfig = ExplicitDecodingConfig_FromProto(mapCtx, in.GetExplicitDecodingConfig())
 	out.Model = direct.LazyPtr(in.GetModel())
@@ -108,7 +108,7 @@ func RecognitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionCo
 	out.TranslationConfig = TranslationConfig_FromProto(mapCtx, in.GetTranslationConfig())
 	return out
 }
-func RecognitionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionConfig) *pb.RecognitionConfig {
+func RecognitionConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RecognitionConfig) *pb.RecognitionConfig {
 	if in == nil {
 		return nil
 	}
@@ -127,11 +127,11 @@ func RecognitionConfig_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionCon
 	out.TranslationConfig = TranslationConfig_ToProto(mapCtx, in.TranslationConfig)
 	return out
 }
-func RecognitionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionConfig) *krm.RecognitionConfigObservedState {
+func RecognitionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionConfig) *krmv1alpha1.RecognitionConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RecognitionConfigObservedState{}
+	out := &krmv1alpha1.RecognitionConfigObservedState{}
 	// MISSING: AutoDecodingConfig
 	// MISSING: ExplicitDecodingConfig
 	// MISSING: Model
@@ -142,7 +142,7 @@ func RecognitionConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: TranslationConfig
 	return out
 }
-func RecognitionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionConfigObservedState) *pb.RecognitionConfig {
+func RecognitionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RecognitionConfigObservedState) *pb.RecognitionConfig {
 	if in == nil {
 		return nil
 	}
@@ -157,11 +157,11 @@ func RecognitionConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.R
 	// MISSING: TranslationConfig
 	return out
 }
-func RecognitionFeatures_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionFeatures) *krm.RecognitionFeatures {
+func RecognitionFeatures_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionFeatures) *krmv1alpha1.RecognitionFeatures {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RecognitionFeatures{}
+	out := &krmv1alpha1.RecognitionFeatures{}
 	out.ProfanityFilter = direct.LazyPtr(in.GetProfanityFilter())
 	out.EnableWordTimeOffsets = direct.LazyPtr(in.GetEnableWordTimeOffsets())
 	out.EnableWordConfidence = direct.LazyPtr(in.GetEnableWordConfidence())
@@ -173,7 +173,7 @@ func RecognitionFeatures_FromProto(mapCtx *direct.MapContext, in *pb.Recognition
 	out.MaxAlternatives = direct.LazyPtr(in.GetMaxAlternatives())
 	return out
 }
-func RecognitionFeatures_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionFeatures) *pb.RecognitionFeatures {
+func RecognitionFeatures_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RecognitionFeatures) *pb.RecognitionFeatures {
 	if in == nil {
 		return nil
 	}
@@ -189,16 +189,16 @@ func RecognitionFeatures_ToProto(mapCtx *direct.MapContext, in *krm.RecognitionF
 	out.MaxAlternatives = direct.ValueOf(in.MaxAlternatives)
 	return out
 }
-func SpeakerDiarizationConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeakerDiarizationConfig) *krm.SpeakerDiarizationConfig {
+func SpeakerDiarizationConfig_FromProto(mapCtx *direct.MapContext, in *pb.SpeakerDiarizationConfig) *krmv1alpha1.SpeakerDiarizationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SpeakerDiarizationConfig{}
+	out := &krmv1alpha1.SpeakerDiarizationConfig{}
 	out.MinSpeakerCount = direct.LazyPtr(in.GetMinSpeakerCount())
 	out.MaxSpeakerCount = direct.LazyPtr(in.GetMaxSpeakerCount())
 	return out
 }
-func SpeakerDiarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.SpeakerDiarizationConfig) *pb.SpeakerDiarizationConfig {
+func SpeakerDiarizationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeakerDiarizationConfig) *pb.SpeakerDiarizationConfig {
 	if in == nil {
 		return nil
 	}
@@ -207,11 +207,11 @@ func SpeakerDiarizationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Speaker
 	out.MaxSpeakerCount = direct.ValueOf(in.MaxSpeakerCount)
 	return out
 }
-func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.SpeechCustomClassSpec {
+func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krmv1alpha1.SpeechCustomClassSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SpeechCustomClassSpec{}
+	out := &krmv1alpha1.SpeechCustomClassSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
@@ -219,7 +219,7 @@ func SpeechCustomClassSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomCla
 	out.Annotations = in.Annotations
 	return out
 }
-func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCustomClassSpec) *pb.CustomClass {
+func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechCustomClassSpec) *pb.CustomClass {
 	if in == nil {
 		return nil
 	}
@@ -231,11 +231,75 @@ func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechCust
 	out.Annotations = in.Annotations
 	return out
 }
-func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerSpec {
+func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SpeechRecognizerSpec{}
+	out := &krmv1alpha1.SpeechPhraseSetObservedState{}
+	// MISSING: Name
+	// MISSING: Uid
+	// (near miss): "Uid" vs "UID"
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.KMSKeyName = direct.LazyPtr(in.GetKmsKeyName())
+	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
+	return out
+}
+func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetObservedState) *pb.PhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PhraseSet{}
+	// MISSING: Name
+	// MISSING: Uid
+	// (near miss): "Uid" vs "UID"
+	out.State = direct.Enum_ToProto[pb.PhraseSet_State](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.KmsKeyName = direct.ValueOf(in.KMSKeyName)
+	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
+	return out
+}
+func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.SpeechPhraseSetSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
+	out.Boost = direct.LazyPtr(in.GetBoost())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Annotations = in.Annotations
+	return out
+}
+func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetSpec) *pb.PhraseSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PhraseSet{}
+	// MISSING: Name
+	// MISSING: Uid
+	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
+	out.Boost = direct.ValueOf(in.Boost)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Annotations = in.Annotations
+	return out
+}
+func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krmv1alpha1.SpeechRecognizerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.SpeechRecognizerSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
@@ -245,7 +309,7 @@ func SpeechRecognizerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer
 	out.Annotations = in.Annotations
 	return out
 }
-func SpeechRecognizerSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecognizerSpec) *pb.Recognizer {
+func SpeechRecognizerSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechRecognizerSpec) *pb.Recognizer {
 	if in == nil {
 		return nil
 	}
@@ -259,15 +323,15 @@ func SpeechRecognizerSpec_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecog
 	out.Annotations = in.Annotations
 	return out
 }
-func TranscriptNormalization_FromProto(mapCtx *direct.MapContext, in *pb.TranscriptNormalization) *krm.TranscriptNormalization {
+func TranscriptNormalization_FromProto(mapCtx *direct.MapContext, in *pb.TranscriptNormalization) *krmv1alpha1.TranscriptNormalization {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TranscriptNormalization{}
+	out := &krmv1alpha1.TranscriptNormalization{}
 	out.Entries = direct.Slice_FromProto(mapCtx, in.Entries, TranscriptNormalization_Entry_FromProto)
 	return out
 }
-func TranscriptNormalization_ToProto(mapCtx *direct.MapContext, in *krm.TranscriptNormalization) *pb.TranscriptNormalization {
+func TranscriptNormalization_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TranscriptNormalization) *pb.TranscriptNormalization {
 	if in == nil {
 		return nil
 	}
@@ -275,17 +339,17 @@ func TranscriptNormalization_ToProto(mapCtx *direct.MapContext, in *krm.Transcri
 	out.Entries = direct.Slice_ToProto(mapCtx, in.Entries, TranscriptNormalization_Entry_ToProto)
 	return out
 }
-func TranscriptNormalization_Entry_FromProto(mapCtx *direct.MapContext, in *pb.TranscriptNormalization_Entry) *krm.TranscriptNormalization_Entry {
+func TranscriptNormalization_Entry_FromProto(mapCtx *direct.MapContext, in *pb.TranscriptNormalization_Entry) *krmv1alpha1.TranscriptNormalization_Entry {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TranscriptNormalization_Entry{}
+	out := &krmv1alpha1.TranscriptNormalization_Entry{}
 	out.Search = direct.LazyPtr(in.GetSearch())
 	out.Replace = direct.LazyPtr(in.GetReplace())
 	out.CaseSensitive = direct.LazyPtr(in.GetCaseSensitive())
 	return out
 }
-func TranscriptNormalization_Entry_ToProto(mapCtx *direct.MapContext, in *krm.TranscriptNormalization_Entry) *pb.TranscriptNormalization_Entry {
+func TranscriptNormalization_Entry_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TranscriptNormalization_Entry) *pb.TranscriptNormalization_Entry {
 	if in == nil {
 		return nil
 	}
@@ -295,15 +359,15 @@ func TranscriptNormalization_Entry_ToProto(mapCtx *direct.MapContext, in *krm.Tr
 	out.CaseSensitive = direct.ValueOf(in.CaseSensitive)
 	return out
 }
-func TranslationConfig_FromProto(mapCtx *direct.MapContext, in *pb.TranslationConfig) *krm.TranslationConfig {
+func TranslationConfig_FromProto(mapCtx *direct.MapContext, in *pb.TranslationConfig) *krmv1alpha1.TranslationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TranslationConfig{}
+	out := &krmv1alpha1.TranslationConfig{}
 	out.TargetLanguage = direct.LazyPtr(in.GetTargetLanguage())
 	return out
 }
-func TranslationConfig_ToProto(mapCtx *direct.MapContext, in *krm.TranslationConfig) *pb.TranslationConfig {
+func TranslationConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.TranslationConfig) *pb.TranslationConfig {
 	if in == nil {
 		return nil
 	}
