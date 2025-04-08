@@ -131,14 +131,9 @@ func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.FeedOutputConfig.PubSubDestination != nil && obj.Spec.FeedOutputConfig.PubSubDestination.PubSubTopicRef != nil {
-		if err := obj.Spec.FeedOutputConfig.PubSubDestination.PubSubTopicRef.Resolve(ctx, a.reader, obj); err != nil {
+	if obj.Spec.FeedOutputConfig.PubsubDestination != nil && obj.Spec.FeedOutputConfig.PubsubDestination.Topic != nil {
+		if err := obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef.Resolve(ctx, a.reader, obj); err != nil {
 			return fmt.Errorf("resolving pubsub topic ref: %w", err)
-		}
-	}
-	if obj.Spec.FeedOutputConfig.BigqueryDestination != nil && obj.Spec.FeedOutputConfig.BigqueryDestination.BigQueryDatasetRef != nil {
-		if err := obj.Spec.FeedOutputConfig.BigqueryDestination.BigQueryDatasetRef.Resolve(ctx, a.reader, obj); err != nil {
-			return fmt.Errorf("resolving bigquery dataset ref: %w", err)
 		}
 	}
 	return nil
@@ -162,21 +157,22 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	resource.Name = a.id.String() // Name is required for CreateFeed
 
 	req := &pb.CreateFeedRequest{
-		Parent: a.id.Parent(),
+		Parent: a.id.Parent().String(),
 		FeedId: a.id.ID(),
 		Feed:   resource,
 	}
-	created, err := a.gcpClient.CreateFeed(ctx, req)
+	_, err := a.gcpClient.CreateFeed(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating asset feed %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully created asset feed in gcp", "name", a.id)
 
 	status := &krm.AssetFeedStatus{}
-	status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, created)
+
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -208,7 +204,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		log.V(2).Info("no field needs update", "name", a.id)
 		// Update status even if no fields changed in spec
 		status := &krm.AssetFeedStatus{}
-		status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, a.actual)
+
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -222,14 +218,14 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		Feed:       resource,
 		UpdateMask: updateMask,
 	}
-	updated, err := a.gcpClient.UpdateFeed(ctx, req)
+	_, err = a.gcpClient.UpdateFeed(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating asset feed %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated asset feed", "name", a.id)
 
 	status := &krm.AssetFeedStatus{}
-	status.ObservedState = AssetFeedObservedState_FromProto(mapCtx, updated)
+
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -249,19 +245,18 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 		return nil, mapCtx.Err()
 	}
 
-	parentRef, err := refs.NewParentRefFromFullResourceName(a.actual.Name)
+	parentRef, id, err := krm.ParseFeedExternal(a.actual.Name)
 	if err != nil {
 		return nil, fmt.Errorf("parsing parent from name %q: %w", a.actual.Name, err)
 	}
-	switch parentRef.Type {
-	case refs.ParentTypeProject:
-		obj.Spec.ProjectRef = &refs.ProjectRef{External: parentRef.Value}
-	case refs.ParentTypeFolder:
-		obj.Spec.FolderRef = &refs.FolderRef{External: parentRef.Value}
-	case refs.ParentTypeOrganization:
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: parentRef.Value}
-	default:
-		return nil, fmt.Errorf("unknown parent type %q in name %q", parentRef.Type, a.actual.Name)
+	if parentRef.ProjectID != "" {
+		obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: parentRef.String()}
+	} else if parentRef.FolderID != "" {
+		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentRef.String()}
+	} else if parentRef.OrganizationID != "" {
+		obj.Spec.Parent.OrganizationRef = &refs.OrganizationRef{External: parentRef.String()}
+	} else {
+		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
@@ -269,7 +264,7 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 		return nil, err
 	}
 
-	u.SetName(a.id.ID())
+	u.SetName(id)
 	u.SetGroupVersionKind(krm.AssetFeedGVK)
 	u.Object = uObj
 	return u, nil
