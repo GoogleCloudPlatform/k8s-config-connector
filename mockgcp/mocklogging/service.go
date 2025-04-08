@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: logging.googleapis.com
+// proto.service: mockgcp.logging.v2.ConfigServiceV2
+// proto.service: mockgcp.logging.v2.MetricsServiceV2
+
 package mocklogging
 
 import (
@@ -20,22 +25,39 @@ import (
 
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
+	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/logging/v2"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked networkservices service.
+func init() {
+	mockgcpregistry.Register(New)
+}
+
+// MockService represents a mocked logging service.
 type MockService struct {
 	*common.MockEnvironment
-	storage    storage.Storage
+	storage storage.Storage
+
 	operations *operations.Operations
 }
 
+type configServiceV2 struct {
+	*MockService
+	pb.UnimplementedConfigServiceV2Server
+}
+
+type metricsServiceV2 struct {
+	*MockService
+	pb.UnimplementedMetricsServiceV2Server
+}
+
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -49,14 +71,14 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterMetricsServiceV2Server(grpcServer, &metricsService{MockService: s})
-	pb.RegisterConfigServiceV2Server(grpcServer, &configService{MockService: s})
+	pb.RegisterMetricsServiceV2Server(grpcServer, &metricsServiceV2{MockService: s})
+	pb.RegisterConfigServiceV2Server(grpcServer, &configServiceV2{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterMetricsServiceV2Handler,
-		pb.RegisterConfigServiceV2Handler)
+		pb_http.RegisterMetricsServiceV2Handler,
+		pb_http.RegisterConfigServiceV2Handler)
 	if err != nil {
 		return nil, err
 	}
