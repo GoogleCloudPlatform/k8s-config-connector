@@ -216,9 +216,8 @@ func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 		}
 		switch dataPoint.Type {
 		case "fuzz-gen":
-			// only include data points with "api.group" marker
-			if dataPoint.Input["api.group"] == "" {
-				continue
+			if dataPoint.Input["api.group"] == input.Input["api.group"] {
+				sameAPIGroupExamples = append(sameAPIGroupExamples, dataPoint)
 			}
 		case "mockgcp-support", "controller":
 			// collect examples with the same proto service (API group)
