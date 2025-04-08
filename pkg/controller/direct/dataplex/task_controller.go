@@ -28,7 +28,6 @@ import (
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -110,13 +109,6 @@ func (a *taskAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		// tasks can reference KMS keys or service accounts in other projects
-		// which the controller SA may not have access to check.
-		// We treat PermissionDenied as Not Found for Get calls
-		if direct.IsPermissionDenied(err) {
-			log.V(1).Info("permission denied getting dataplex task, treating as not found", "name", a.id, "error", err)
-			return false, nil
-		}
 		return false, fmt.Errorf("getting dataplex task %q: %w", a.id.String(), err)
 	}
 
@@ -137,18 +129,8 @@ func (a *taskAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 		return mapCtx.Err()
 	}
 
-	// Ensure required fields are set if they have defaults from the underlying proto/API
-	// Set the required trigger type explicitly if unset, default to ON_DEMAND.
-	if task.TriggerSpec == nil {
-		task.TriggerSpec = &pb.Task_TriggerSpec{}
-	}
-	if task.TriggerSpec.Type == pb.Task_TriggerSpec_TYPE_UNSPECIFIED {
-		log.V(2).Info("defaulting triggerSpec.type to ON_DEMAND", "name", a.id)
-		task.TriggerSpec.Type = pb.Task_TriggerSpec_ON_DEMAND
-	}
-
 	req := &pb.CreateTaskRequest{
-		Parent: a.id.Parent().String(),
+		Parent: a.id.Parent(),
 		Task:   task,
 		TaskId: a.id.ID(),
 	}
@@ -284,13 +266,7 @@ func (a *taskAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	}
 
 	// Set parent references
-	if lakeRef, err := refs.ParseDataplexLakeRef(a.id.Parent().String()); err != nil {
-		return nil, err
-	} else {
-		obj.Spec.LakeRef = lakeRef
-	}
-	obj.Spec.Location = a.id.Parent().Location
-
+	obj.Spec.LakeRef = &krm.LakeRef{External: a.id.Parent()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -313,23 +289,13 @@ func (a *taskAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOpe
 	req := &pb.DeleteTaskRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteTask(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			log.Info("dataplex task already deleted", "name", a.id)
-			return true, nil // Already deleted
-		}
 		return false, fmt.Errorf("deleting dataplex task %s: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully initiated dataplex task deletion", "name", a.id)
 
-	if !op.Done() {
-		err = op.Wait(ctx)
-		if err != nil {
-			if direct.IsNotFound(err) {
-				log.Info("dataplex task successfully deleted after wait", "name", a.id)
-				return true, nil // Deletion finished during wait
-			}
-			return false, fmt.Errorf("waiting for deletion of dataplex task %s: %w", a.id.String(), err)
-		}
+	err = op.Wait(ctx)
+	if err != nil {
+		return false, fmt.Errorf("waiting for deletion of dataplex task %s: %w", a.id.String(), err)
 	}
 	log.Info("successfully deleted dataplex task", "name", a.id)
 	return true, nil
