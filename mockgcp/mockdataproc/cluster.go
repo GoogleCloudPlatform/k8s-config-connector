@@ -300,7 +300,6 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 		ret.StatusHistory = nil
 		ret.Config.WorkerConfig.InstanceNames = nil
 		ret.Config.MasterConfig.InstanceNames = nil
-
 		s.setStatus(updated, pb.ClusterStatus_RUNNING)
 
 		if err := s.storage.Update(ctx, fqn, updated); err != nil {
