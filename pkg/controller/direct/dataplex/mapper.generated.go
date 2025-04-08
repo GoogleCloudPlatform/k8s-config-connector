@@ -12,175 +12,98 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: dataplex.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataplex.v1
+
 package dataplex
 
 import (
-	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 )
-
-func DataplexTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskObservedState {
+func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.Content {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexTaskObservedState{}
+	out := &krmv1alpha1.Content{}
 	// MISSING: Name
 	// MISSING: Uid
+	out.Path = direct.LazyPtr(in.GetPath())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	// MISSING: ExecutionStatus
-	// MISSING: Spark
-	// MISSING: Notebook
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DataText = direct.LazyPtr(in.GetDataText())
+	out.SQLScript = Content_SQLScript_FromProto(mapCtx, in.GetSqlScript())
+	out.Notebook = Content_Notebook_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
-func DataplexTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexTaskObservedState) *pb.Task {
+func Content_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Content) *pb.Content {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Task{}
+	out := &pb.Content{}
 	// MISSING: Name
 	// MISSING: Uid
+	out.Path = direct.ValueOf(in.Path)
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	// MISSING: ExecutionStatus
-	// MISSING: Spark
-	// MISSING: Notebook
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := Content_DataText_ToProto(mapCtx, in.DataText); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Content_SQLScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Content = &pb.Content_SqlScript_{SqlScript: oneof}
+	}
+	if oneof := Content_Notebook_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Content = &pb.Content_Notebook_{Notebook: oneof}
+	}
 	return out
 }
-func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskSpec {
+func ContentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmv1alpha1.ContentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataplexTaskSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	// MISSING: ExecutionStatus
-	// MISSING: Spark
-	// MISSING: Notebook
-	return out
-}
-func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexTaskSpec) *pb.Task {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Task{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Description
-	// MISSING: DisplayName
-	// MISSING: State
-	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	// MISSING: ExecutionStatus
-	// MISSING: Spark
-	// MISSING: Notebook
-	return out
-}
-func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: State
-	// MISSING: RetryCount
-	// MISSING: Service
-	// MISSING: ServiceJob
-	// MISSING: Message
-	// MISSING: Labels
-	// MISSING: Trigger
-	// MISSING: ExecutionSpec
-	return out
-}
-func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: State
-	// MISSING: RetryCount
-	// MISSING: Service
-	// MISSING: ServiceJob
-	// MISSING: Message
-	// MISSING: Labels
-	// MISSING: Trigger
-	// MISSING: ExecutionSpec
-	return out
-}
-func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.JobObservedState{}
+	out := &krmv1alpha1.ContentObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RetryCount = direct.LazyPtr(in.GetRetryCount())
-	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
-	out.ServiceJob = direct.LazyPtr(in.GetServiceJob())
-	out.Message = direct.LazyPtr(in.GetMessage())
-	out.Labels = in.Labels
-	out.Trigger = direct.Enum_FromProto(mapCtx, in.GetTrigger())
-	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
 	return out
 }
-func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
+func ContentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ContentObservedState) *pb.Content {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Job{}
+	out := &pb.Content{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.State = direct.Enum_ToProto[pb.Job_State](mapCtx, in.State)
-	out.RetryCount = direct.ValueOf(in.RetryCount)
-	out.Service = direct.Enum_ToProto[pb.Job_Service](mapCtx, in.Service)
-	out.ServiceJob = direct.ValueOf(in.ServiceJob)
-	out.Message = direct.ValueOf(in.Message)
-	out.Labels = in.Labels
-	out.Trigger = direct.Enum_ToProto[pb.Job_Trigger](mapCtx, in.Trigger)
-	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	// MISSING: Path
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: DataText
+	// MISSING: SQLScript
+	// MISSING: Notebook
 	return out
 }
-func Task_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Task {
+func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krmv1alpha1.DataplexTaskSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task{}
+	out := &krmv1alpha1.DataplexTaskSpec{}
 	// MISSING: Name
 	// MISSING: Uid
 	// MISSING: CreateTime
@@ -196,7 +119,7 @@ func Task_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.Task {
 	out.Notebook = Task_NotebookTaskConfig_FromProto(mapCtx, in.GetNotebook())
 	return out
 }
-func Task_ToProto(mapCtx *direct.MapContext, in *krm.Task) *pb.Task {
+func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataplexTaskSpec) *pb.Task {
 	if in == nil {
 		return nil
 	}
@@ -220,59 +143,245 @@ func Task_ToProto(mapCtx *direct.MapContext, in *krm.Task) *pb.Task {
 	}
 	return out
 }
-func TaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.TaskObservedState {
+func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.Environment {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaskObservedState{}
+	out := &krmv1alpha1.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.SessionSpec = Environment_SessionSpec_FromProto(mapCtx, in.GetSessionSpec())
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func Environment_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment) *pb.Environment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	out.InfrastructureSpec = Environment_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.SessionSpec = Environment_SessionSpec_ToProto(mapCtx, in.SessionSpec)
+	// MISSING: SessionStatus
+	// MISSING: Endpoints
+	return out
+}
+func EnvironmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krmv1alpha1.EnvironmentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.EnvironmentObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Description
-	// MISSING: DisplayName
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	out.ExecutionStatus = Task_ExecutionStatus_FromProto(mapCtx, in.GetExecutionStatus())
-	// MISSING: Spark
-	// MISSING: Notebook
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_FromProto(mapCtx, in.GetSessionStatus())
+	out.Endpoints = Environment_EndpointsObservedState_FromProto(mapCtx, in.GetEndpoints())
 	return out
 }
-func TaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskObservedState) *pb.Task {
+func EnvironmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EnvironmentObservedState) *pb.Environment {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Task{}
+	out := &pb.Environment{}
 	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Description
-	// MISSING: DisplayName
-	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
 	// MISSING: Labels
-	// MISSING: TriggerSpec
-	// MISSING: ExecutionSpec
-	out.ExecutionStatus = Task_ExecutionStatus_ToProto(mapCtx, in.ExecutionStatus)
-	// MISSING: Spark
-	// MISSING: Notebook
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	// MISSING: InfrastructureSpec
+	// MISSING: SessionSpec
+	out.SessionStatus = Environment_SessionStatusObservedState_ToProto(mapCtx, in.SessionStatus)
+	out.Endpoints = Environment_EndpointsObservedState_ToProto(mapCtx, in.Endpoints)
 	return out
 }
-func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpec {
+func Environment_Endpoints_FromProto(mapCtx *direct.MapContext, in *pb.Environment_Endpoints) *krmv1alpha1.Environment_Endpoints {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_ExecutionSpec{}
+	out := &krmv1alpha1.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_Endpoints_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_Endpoints) *pb.Environment_Endpoints {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_Endpoints{}
+	// MISSING: Notebooks
+	// MISSING: SQL
+	return out
+}
+func Environment_SessionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Environment_SessionStatus) *krmv1alpha1.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func Environment_SessionStatus_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Environment_SessionStatus) *pb.Environment_SessionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Environment_SessionStatus{}
+	// MISSING: Active
+	return out
+}
+func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmv1alpha1.JobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.JobObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.RetryCount = direct.LazyPtr(in.GetRetryCount())
+	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
+	out.ServiceJob = direct.LazyPtr(in.GetServiceJob())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.Labels = in.Labels
+	out.Trigger = direct.Enum_FromProto(mapCtx, in.GetTrigger())
+	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	return out
+}
+func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.JobObservedState) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Job_State](mapCtx, in.State)
+	out.RetryCount = direct.ValueOf(in.RetryCount)
+	out.Service = direct.Enum_ToProto[pb.Job_Service](mapCtx, in.Service)
+	out.ServiceJob = direct.ValueOf(in.ServiceJob)
+	out.Message = direct.ValueOf(in.Message)
+	out.Labels = in.Labels
+	out.Trigger = direct.Enum_ToProto[pb.Job_Trigger](mapCtx, in.Trigger)
+	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	return out
+}
+func Lake_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_FromProto(mapCtx, in.GetMetastore())
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func Lake_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Lake) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: State
+	// MISSING: ServiceAccount
+	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
+	// MISSING: AssetStatus
+	// MISSING: MetastoreStatus
+	return out
+}
+func LakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krmv1alpha1.LakeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LakeObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: DisplayName
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
+	return out
+}
+func LakeObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.LakeObservedState) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: DisplayName
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	// MISSING: Metastore
+	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
+	return out
+}
+func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krmv1alpha1.Task_ExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Task_ExecutionSpec{}
 	out.Args = in.Args
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	out.Project = direct.LazyPtr(in.GetProject())
 	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
-	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &refs.*refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
 	return out
 }
-func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionSpec) *pb.Task_ExecutionSpec {
+func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_ExecutionSpec) *pb.Task_ExecutionSpec {
 	if in == nil {
 		return nil
 	}
@@ -281,56 +390,40 @@ func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_Executio
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	out.Project = direct.ValueOf(in.Project)
 	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
-	out.KmsKey = direct.ValueOf(in.KMSKey)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
+	}
 	return out
 }
-func Task_ExecutionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatus {
+func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krmv1alpha1.Task_ExecutionStatusObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_ExecutionStatus{}
-	// MISSING: UpdateTime
-	// MISSING: LatestJob
-	return out
-}
-func Task_ExecutionStatus_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionStatus) *pb.Task_ExecutionStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Task_ExecutionStatus{}
-	// MISSING: UpdateTime
-	// MISSING: LatestJob
-	return out
-}
-func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatusObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Task_ExecutionStatusObservedState{}
+	out := &krmv1alpha1.Task_ExecutionStatusObservedState{}
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.LatestJob = Job_FromProto(mapCtx, in.GetLatestJob())
+	out.LatestJob = JobObservedState_FromProto(mapCtx, in.GetLatestJob())
 	return out
 }
-func Task_ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionStatusObservedState) *pb.Task_ExecutionStatus {
+func Task_ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_ExecutionStatusObservedState) *pb.Task_ExecutionStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Task_ExecutionStatus{}
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.LatestJob = Job_ToProto(mapCtx, in.LatestJob)
+	out.LatestJob = JobObservedState_ToProto(mapCtx, in.LatestJob)
 	return out
 }
-func Task_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec) *krm.Task_InfrastructureSpec {
+func Task_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec) *krmv1alpha1.Task_InfrastructureSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_InfrastructureSpec{}
+	out := &krmv1alpha1.Task_InfrastructureSpec{}
 	out.Batch = Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx, in.GetBatch())
 	out.ContainerImage = Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx, in.GetContainerImage())
 	out.VpcNetwork = Task_InfrastructureSpec_VpcNetwork_FromProto(mapCtx, in.GetVpcNetwork())
 	return out
 }
-func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec) *pb.Task_InfrastructureSpec {
+func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_InfrastructureSpec) *pb.Task_InfrastructureSpec {
 	if in == nil {
 		return nil
 	}
@@ -346,16 +439,16 @@ func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_Inf
 	}
 	return out
 }
-func Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_BatchComputeResources) *krm.Task_InfrastructureSpec_BatchComputeResources {
+func Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_BatchComputeResources) *krmv1alpha1.Task_InfrastructureSpec_BatchComputeResources {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_InfrastructureSpec_BatchComputeResources{}
+	out := &krmv1alpha1.Task_InfrastructureSpec_BatchComputeResources{}
 	out.ExecutorsCount = direct.LazyPtr(in.GetExecutorsCount())
 	out.MaxExecutorsCount = direct.LazyPtr(in.GetMaxExecutorsCount())
 	return out
 }
-func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_BatchComputeResources) *pb.Task_InfrastructureSpec_BatchComputeResources {
+func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_InfrastructureSpec_BatchComputeResources) *pb.Task_InfrastructureSpec_BatchComputeResources {
 	if in == nil {
 		return nil
 	}
@@ -364,18 +457,18 @@ func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapCon
 	out.MaxExecutorsCount = direct.ValueOf(in.MaxExecutorsCount)
 	return out
 }
-func Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_ContainerImageRuntime) *krm.Task_InfrastructureSpec_ContainerImageRuntime {
+func Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_ContainerImageRuntime) *krmv1alpha1.Task_InfrastructureSpec_ContainerImageRuntime {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_InfrastructureSpec_ContainerImageRuntime{}
+	out := &krmv1alpha1.Task_InfrastructureSpec_ContainerImageRuntime{}
 	out.Image = direct.LazyPtr(in.GetImage())
 	out.JavaJars = in.JavaJars
 	out.PythonPackages = in.PythonPackages
 	out.Properties = in.Properties
 	return out
 }
-func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_ContainerImageRuntime) *pb.Task_InfrastructureSpec_ContainerImageRuntime {
+func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_InfrastructureSpec_ContainerImageRuntime) *pb.Task_InfrastructureSpec_ContainerImageRuntime {
 	if in == nil {
 		return nil
 	}
@@ -386,17 +479,17 @@ func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapCon
 	out.Properties = in.Properties
 	return out
 }
-func Task_InfrastructureSpec_VpcNetwork_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_VpcNetwork) *krm.Task_InfrastructureSpec_VpcNetwork {
+func Task_InfrastructureSpec_VpcNetwork_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_VpcNetwork) *krmv1alpha1.Task_InfrastructureSpec_VpcNetwork {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_InfrastructureSpec_VpcNetwork{}
+	out := &krmv1alpha1.Task_InfrastructureSpec_VpcNetwork{}
 	out.Network = direct.LazyPtr(in.GetNetwork())
 	out.SubNetwork = direct.LazyPtr(in.GetSubNetwork())
 	out.NetworkTags = in.NetworkTags
 	return out
 }
-func Task_InfrastructureSpec_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_VpcNetwork) *pb.Task_InfrastructureSpec_VpcNetwork {
+func Task_InfrastructureSpec_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_InfrastructureSpec_VpcNetwork) *pb.Task_InfrastructureSpec_VpcNetwork {
 	if in == nil {
 		return nil
 	}
@@ -410,18 +503,18 @@ func Task_InfrastructureSpec_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *k
 	out.NetworkTags = in.NetworkTags
 	return out
 }
-func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_NotebookTaskConfig) *krm.Task_NotebookTaskConfig {
+func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_NotebookTaskConfig) *krmv1alpha1.Task_NotebookTaskConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_NotebookTaskConfig{}
+	out := &krmv1alpha1.Task_NotebookTaskConfig{}
 	out.Notebook = direct.LazyPtr(in.GetNotebook())
 	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
 	out.FileUris = in.FileUris
 	out.ArchiveUris = in.ArchiveUris
 	return out
 }
-func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_NotebookTaskConfig) *pb.Task_NotebookTaskConfig {
+func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_NotebookTaskConfig) *pb.Task_NotebookTaskConfig {
 	if in == nil {
 		return nil
 	}
@@ -432,11 +525,11 @@ func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_Not
 	out.ArchiveUris = in.ArchiveUris
 	return out
 }
-func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_SparkTaskConfig) *krm.Task_SparkTaskConfig {
+func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_SparkTaskConfig) *krmv1alpha1.Task_SparkTaskConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_SparkTaskConfig{}
+	out := &krmv1alpha1.Task_SparkTaskConfig{}
 	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
 	out.MainClass = direct.LazyPtr(in.GetMainClass())
 	out.PythonScriptFile = direct.LazyPtr(in.GetPythonScriptFile())
@@ -447,7 +540,7 @@ func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_Spark
 	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
 	return out
 }
-func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_SparkTaskConfig) *pb.Task_SparkTaskConfig {
+func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_SparkTaskConfig) *pb.Task_SparkTaskConfig {
 	if in == nil {
 		return nil
 	}
@@ -472,11 +565,11 @@ func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_SparkT
 	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
 	return out
 }
-func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSpec) *krm.Task_TriggerSpec {
+func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSpec) *krmv1alpha1.Task_TriggerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Task_TriggerSpec{}
+	out := &krmv1alpha1.Task_TriggerSpec{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
@@ -484,7 +577,7 @@ func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSp
 	out.Schedule = direct.LazyPtr(in.GetSchedule())
 	return out
 }
-func Task_TriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_TriggerSpec) *pb.Task_TriggerSpec {
+func Task_TriggerSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_TriggerSpec) *pb.Task_TriggerSpec {
 	if in == nil {
 		return nil
 	}
