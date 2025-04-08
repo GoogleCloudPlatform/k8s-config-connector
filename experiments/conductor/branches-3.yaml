@@ -1,0 +1,1205 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+branches:
+  - name: appengine-instance
+    local: resource-appengine-instance
+    remote: resource-appengine-instance
+    command: gcloud app instances
+    group: appengine
+    resource: instance
+    controller: Unknown
+    kind: AppEngineInstance
+    package: google.appengine.v1
+    proto: Instance
+    proto-path: google/appengine/v1/appengine.proto
+    proto-service: ""
+    proto-msg: google.appengine.v1.Instance
+    host-name: ""
+    notes: ["Further research needed: Only supports delete."]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: apigeeregistry-api
+    local: resource-apigeeregistry-api
+    remote: resource-apigeeregistry-api
+    command: gcloud apigee apis
+    group: apigeeregistry
+    resource: api
+    controller: Unknown
+    kind: APIgeeRegistryApi
+    package: google.cloud.apigeeregistry.v1
+    proto: Api
+    proto-path: google/cloud/apigeeregistry/v1/provisioning_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.apigeeregistry.v1.Api
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: apigeeregistry-apideployment
+    local: resource-apigeeregistry-apideployment
+    remote: resource-apigeeregistry-apideployment
+    command: gcloud apigee deployments
+    group: apigeeregistry
+    resource: apideployment
+    controller: Unknown
+    kind: APIgeeRegistryApiDeployment
+    package: google.cloud.apigeeregistry.v1
+    proto: ApiDeployment
+    proto-path: google/cloud/apigeeregistry/v1/provisioning_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.apigeeregistry.v1.ApiDeployment
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: assuredworkloads-workload
+    local: resource-assuredworkloads-workload
+    remote: resource-assuredworkloads-workload
+    command: gcloud assured workloads
+    group: assuredworkloads
+    resource: workload
+    controller: Unknown
+    kind: AssuredWorkloadsWorkload
+    package: google.cloud.assuredworkloads.v1
+    proto: Workload
+    proto-path: google/cloud/assuredworkloads/v1/assuredworkloads.proto
+    proto-service: ""
+    proto-msg: google.cloud.assuredworkloads.v1.Workload
+    host-name: ""
+    notes: ["Real test requires a real user and we don't have a real test user."]
+    apis-enabled:
+      - assuredworkloads.googleapis.com
+  - name: baremetalsolution-instance
+    local: resource-baremetalsolution-instance
+    remote: resource-baremetalsolution-instance
+    command: gcloud bms instances
+    group: baremetalsolution
+    resource: instance
+    controller: Unknown
+    kind: BareMetalSolutionInstance
+    package: google.cloud.baremetalsolution.v2
+    proto: Instance
+    proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+    proto-service: ""
+    proto-msg: google.cloud.baremetalsolution.v2.Instance
+    host-name: ""
+    notes: ["Further research needed: Only supports update."]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: baremetalsolution-network
+    local: resource-baremetalsolution-network
+    remote: resource-baremetalsolution-network
+    command: gcloud bms networks
+    group: baremetalsolution
+    resource: network
+    controller: Unknown
+    kind: BareMetalSolutionNetwork
+    package: google.cloud.baremetalsolution.v2
+    proto: Network
+    proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+    proto-service: ""
+    proto-msg: google.cloud.baremetalsolution.v2.Network
+    host-name: ""
+    notes: ["Further research needed: Only supports update."]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: baremetalsolution-nfsshare
+    local: resource-baremetalsolution-nfsshare
+    remote: resource-baremetalsolution-nfsshare
+    command: gcloud bms nfs-shares
+    group: baremetalsolution
+    resource: nfsshare
+    controller: Unknown
+    kind: BareMetalSolutionNFSShare
+    package: google.cloud.baremetalsolution.v2
+    proto: NfsShare
+    proto-path: google/cloud/baremetalsolution/v2/nfs_share.proto
+    proto-service: google.cloud.baremetalsolution.v2.BareMetalSolution
+    proto-msg: google.cloud.baremetalsolution.v2.NfsShare
+    host-name: "baremetalsolution.googleapis.com"
+    notes: ["Creation error: generic::not_found: error getting vendor Account ID"]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: baremetalsolution-osimage
+    local: resource-baremetalsolution-osimage
+    remote: resource-baremetalsolution-osimage
+    command: gcloud bms os-images
+    group: baremetalsolution
+    resource: osimage
+    controller: Unknown
+    kind: BareMetalSolutionOSImage
+    package: google.cloud.baremetalsolution.v2
+    proto: OSImage
+    proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+    proto-service: ""
+    proto-msg: google.cloud.baremetalsolution.v2.OSImage
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: baremetalsolution-sshkey
+    local: resource-baremetalsolution-sshkey
+    remote: resource-baremetalsolution-sshkey
+    command: gcloud bms ssh-keys
+    group: baremetalsolution
+    resource: sshkey
+    controller: Unknown
+    kind: BareMetalSolutionSSHKey
+    package: google.cloud.baremetalsolution.v2
+    proto: SSHKey
+    proto-path: google/cloud/baremetalsolution/v2/ssh_key.proto
+    proto-service: google.cloud.baremetalsolution.v2.BareMetalSolution
+    proto-msg: google.cloud.baremetalsolution.v2.SSHKey
+    host-name: "baremetalsolution.googleapis.com"
+    notes: ["Creation error: unrecognized arguments: AAAAB3NzaC1yc2EAAAADAQABAAABAQCtestkey mock@example.com"]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: baremetalsolution-volume
+    local: resource-baremetalsolution-volume
+    remote: resource-baremetalsolution-volume
+    command: gcloud bms volumes
+    group: baremetalsolution
+    resource: volume
+    controller: Unknown
+    kind: BareMetalSolutionVolume
+    package: google.cloud.baremetalsolution.v2
+    proto: Volume
+    proto-path: google/cloud/baremetalsolution/v2/baremetalsolution.proto
+    proto-service: ""
+    proto-msg: google.cloud.baremetalsolution.v2.Volume
+    host-name: ""
+    notes: ["Further research needed: Only supports update."]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: dialogflow-entitytype
+    local: resource-dialogflow-entitytype
+    remote: resource-dialogflow-entitytype
+    command: gcloud alpha dialogflow entity-types
+    group: dialogflowcx
+    resource: entitytype
+    controller: Unknown
+    kind: DialogflowCXEntityType
+    package: google.cloud.dialogflow.cx.v3
+    proto: EntityType
+    proto-path: google/cloud/dialogflow/cx/v3/entity_type.proto
+    proto-service: google.cloud.dialogflow.cx.v3.EntityTypes
+    proto-msg: google.cloud.dialogflow.cx.v3.EntityType
+    host-name: "dialogflow.googleapis.com"
+    notes: ["DialogflowCXEntityType is already supported as a v1alpha1 KCC resource and is mapping to Dialogflow CX Entity Type", "Creation error: No DesignTimeAgent found for project '${projectId}'."]
+    apis-enabled:
+      - dialogflow.googleapis.com
+  - name: dialogflow-intent
+    local: resource-dialogflow-intent
+    remote: resource-dialogflow-intent
+    command: gcloud alpha dialogflow intents
+    group: dialogflowcx
+    resource: intent
+    controller: Unknown
+    kind: DialogflowCXIntent
+    package: google.cloud.dialogflow.cx.v3
+    proto: Intent
+    proto-path: google/cloud/dialogflow/cx/v3/intent.proto
+    proto-service: google.cloud.dialogflow.cx.v3.Intents
+    proto-msg: google.cloud.dialogflow.cx.v3.Intent
+    host-name: "dialogflow.googleapis.com"
+    notes: ["DialogflowCXIntent is already supported as a v1alpha1 KCC resource and is mapping to Dialogflow CX Intent", "Creation error: No DesignTimeAgent found for project"]
+    apis-enabled:
+      - dialogflow.googleapis.com
+  - name: dialogflow-agent
+    local: resource-dialogflow-agent
+    remote: resource-dialogflow-agent
+    command: gcloud alpha dialogflow agent
+    group: dialogflow
+    resource: agent
+    controller: Unknown
+    kind: DialogflowAgent
+    package: google.cloud.dialogflow.v2
+    proto: Agent
+    proto-path: google/cloud/dialogflow/v2/agent.proto
+    proto-service: ""
+    proto-msg: google.cloud.dialogflow.v2.Agent
+    host-name: ""
+    notes: ["DialogflowAgent is already supported as a v1alpha1 KCC resource and is mapping to Dialogflow ES Agent", "Further research needed: Supported methods don't fully map to create, update or delete." ]
+    apis-enabled:
+      - dialogflow.googleapis.com
+  - name: filestore-instance
+    local: resource-filestore-instance
+    remote: resource-filestore-instance
+    command: gcloud filestore instances
+    group: filestore
+    resource: instance
+    controller: Unknown
+    kind: FilestoreInstance
+    package: google.cloud.filestore.v1
+    proto: Instance
+    proto-path: google/cloud/filestore/v1/cloud_filestore_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.filestore.v1.Instance
+    host-name: ""
+    notes: ["FilestoreInstance is already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: filestore-backup
+    local: resource-filestore-backup
+    remote: resource-filestore-backup
+    command: gcloud filestore backups
+    group: filestore
+    resource: backup
+    controller: Unknown
+    kind: FilestoreBackup
+    package: google.cloud.filestore.v1
+    proto: Backup
+    proto-path: google/cloud/filestore/v1/cloud_filestore_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.filestore.v1.Backup
+    host-name: ""
+    notes: ["FilestoreBackup is already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: ids-endpoint
+    local: resource-ids-endpoint
+    remote: resource-ids-endpoint
+    command: gcloud ids endpoints
+    group: ids
+    resource: endpoint
+    controller: Unknown
+    kind: IDSEndpoint
+    package: google.cloud.ids.v1
+    proto: Endpoint
+    proto-path: google/cloud/ids/v1/ids.proto
+    proto-service: ""
+    proto-msg: google.cloud.ids.v1.Endpoint
+    host-name: ""
+    notes: ["IDSEndpoint is already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - ids.googleapis.com
+  - name: kms-ekmconnection
+    local: resource-kms-ekmconnection
+    remote: resource-kms-ekmconnection
+    command: gcloud kms ekm-connections
+    group: kms
+    resource: ekmconnection
+    controller: Unknown
+    kind: KMSEKMConnection
+    package: google.cloud.kms.v1
+    proto: EkmConnection
+    proto-path: google/cloud/kms/v1/ekm_service.proto
+    proto-service: google.cloud.kms.v1.EkmService
+    proto-msg: google.cloud.kms.v1.EkmConnection
+    host-name: "cloudkms.googleapis.com"
+    notes: ["Creation error: e2e_test.go:95: stderr: ERROR: (gcloud.kms.ekm-connections.create) Invalid value for [--server-certificates-files]: Error while attempting to read file cert.pem : Unable to read file [cert.pem]: [Errno 2] No such file or directory: 'cert.pem'"]
+    apis-enabled:
+      - cloudkms.googleapis.com
+  - name: kms-ekmconfig
+    local: resource-kms-ekmconfig
+    remote: resource-kms-ekmconfig
+    command: gcloud kms ekm-config
+    group: kms
+    resource: ekmconfig
+    controller: Unknown
+    kind: KMSEkmConfig
+    package: google.cloud.kms.v1
+    proto: EkmConfig
+    proto-path: google/cloud/kms/v1/autokey.proto
+    proto-service: ""
+    proto-msg: google.cloud.kms.v1.EkmConfig
+    host-name: ""
+    notes: ["Further research needed: Only supports update."]
+    apis-enabled:
+      - cloudkms.googleapis.com
+  - name: kms-importjob
+    local: resource-kms-importjob
+    remote: resource-kms-importjob
+    command: gcloud kms import-jobs
+    group: kms
+    resource: importjob
+    controller: Unknown
+    kind: KMSImportJob
+    package: google.cloud.kms.v1
+    proto: ImportJob
+    proto-path: google/cloud/kms/v1/resources.proto
+    proto-service: google.cloud.kms.v1.KeyManagementService
+    proto-msg: google.cloud.kms.v1.ImportJob
+    host-name: "cloudkms.googleapis.com"
+    notes: ["Done in v1alpha1."]
+    apis-enabled:
+      - cloudkms.googleapis.com
+  - name: networkmanagement-connectivitytest
+    local: resource-networkmanagement-connectivitytest
+    remote: resource-networkmanagement-connectivitytest
+    command: gcloud network-management connectivity-tests
+    group: networkmanagement
+    resource: connectivitytest
+    controller: Unknown
+    kind: NetworkManagementConnectivityTest
+    package: google.cloud.networkmanagement.v1
+    proto: ConnectivityTest
+    proto-path: google/cloud/networkmanagement/v1/connectivity_test.proto
+    proto-service: google.cloud.networkmanagement.v1.ReachabilityService
+    proto-msg: google.cloud.networkmanagement.v1.ConnectivityTest
+    host-name: "networkmanagement.googleapis.com"
+    notes: ["WIP"]
+    apis-enabled:
+      - networkmanagement.googleapis.com
+  - name: networkmanagement-vpcflowlogsconfig
+    local: resource-networkmanagement-vpcflowlogsconfig
+    remote: resource-networkmanagement-vpcflowlogsconfig
+    command: gcloud network-management vpc-flow-logs-configs
+    group: networkmanagement
+    resource: vpcflowlogsconfig
+    controller: Unknown
+    kind: NetworkManagementVPCFlowLogsConfig
+    package: google.cloud.networkmanagement.v1
+    proto: VpcFlowLogsConfig
+    proto-path: google/cloud/networkmanagement/v1/vpc_flow_logs_config.proto
+    proto-service: google.cloud.networkmanagement.v1.VpcFlowLogsService
+    proto-msg: google.cloud.networkmanagement.v1.VpcFlowLogsConfig
+    host-name: "networkmanagement.googleapis.com"
+    notes: ["Creation requires an interconnect, which can only be configured manually."]
+    apis-enabled:
+      - networkmanagement.googleapis.com
+  - name: orgpolicy-policy
+    local: resource-orgpolicy-policy
+    remote: resource-orgpolicy-policy
+    command: gcloud org-policies
+    group: orgpolicy
+    resource: policy
+    controller: Unknown
+    kind: OrgPolicyPolicy
+    package: google.cloud.orgpolicy.v2
+    proto: Policy
+    proto-path: google/cloud/orgpolicy/v2/orgpolicy.proto
+    proto-service: ""
+    proto-msg: google.cloud.orgpolicy.v2.Policy
+    host-name: ""
+    notes: ["Supported by contributor right now"]
+    apis-enabled:
+      - orgpolicy.googleapis.com
+  - name: parallelstore-instance
+    local: resource-parallelstore-instance
+    remote: resource-parallelstore-instance
+    command: gcloud parallelstore instances
+    group: parallelstore
+    resource: instance
+    controller: Unknown
+    kind: ParallelstoreInstance
+    package: google.cloud.parallelstore.v1
+    proto: Instance
+    proto-path: google/cloud/parallelstore/v1/parallelstore.proto
+    proto-service: google.cloud.parallelstore.v1.Parallelstore
+    proto-msg: google.cloud.parallelstore.v1.Instance
+    host-name: "parallelstore.googleapis.com"
+    notes: ["API is invitation only", "Creation error: INVALID_ARGUMENT: The request was invalid: Project is not allowlisted for Parallelstore APIs"]
+    apis-enabled:
+      - parallelstore.googleapis.com
+  - name: recaptchaenterprise-key
+    local: resource-recaptchaenterprise-key
+    remote: resource-recaptchaenterprise-key
+    command: gcloud recaptcha keys
+    group: recaptchaenterprise
+    resource: key
+    controller: Unknown
+    kind: ReCAPTCHAEnterpriseKey
+    package: google.cloud.recaptchaenterprise.v1
+    proto: Key
+    proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
+    proto-service: ""
+    proto-msg: google.cloud.recaptchaenterprise.v1.Key
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - recaptchaenterprise.googleapis.com
+  - name: recaptchaenterprise-firewallpolicy
+    local: resource-recaptchaenterprise-firewallpolicy
+    remote: resource-recaptchaenterprise-firewallpolicy
+    command: gcloud recaptcha firewall-policies
+    group: recaptchaenterprise
+    resource: firewallpolicy
+    controller: Unknown
+    kind: ReCAPTCHAEnterpriseFirewallPolicy
+    package: google.cloud.recaptchaenterprise.v1
+    proto: FirewallPolicy
+    proto-path: google/cloud/recaptchaenterprise/v1/recaptchaenterprise.proto
+    proto-service: google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService
+    proto-msg: google.cloud.recaptchaenterprise.v1.FirewallPolicy
+    host-name: "recaptchaenterprise.googleapis.com"
+    notes: ["Done in v1alpha1."]
+    apis-enabled:
+      - recaptchaenterprise.googleapis.com
+  - name: secrets-secret
+    local: resource-secrets-secret
+    remote: resource-secrets-secret
+    command: gcloud secrets
+    group: secrets
+    resource: secret
+    controller: Unknown
+    kind: SecretsSecret
+    package: google.cloud.secrets.v1beta1
+    proto: Secret
+    proto-path: google/cloud/secrets/v1beta1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.secrets.v1beta1.Secret
+    host-name: ""
+    notes: ["Replaced by SecretManager"]
+    apis-enabled:
+      - secretmanager.googleapis.com
+  - name: secrets-secretversion
+    local: resource-secrets-secretversion
+    remote: resource-secrets-secretversion
+    command: gcloud secrets versions
+    group: secrets
+    resource: secretversion
+    controller: Unknown
+    kind: SecretsSecretVersion
+    package: google.cloud.secrets.v1beta1
+    proto: SecretVersion
+    proto-path: google/cloud/secrets/v1beta1/service.proto
+    proto-service: ""
+    proto-msg: google.cloud.secrets.v1beta1.SecretVersion
+    host-name: ""
+    notes: ["Replaced by SecretManager"]
+    apis-enabled:
+      - secretmanager.googleapis.com
+  - name: servicedirectory-endpoint
+    local: resource-servicedirectory-endpoint
+    remote: resource-servicedirectory-endpoint
+    command: gcloud service-directory endpoints
+    group: servicedirectory
+    resource: endpoint
+    controller: Unknown
+    kind: ServiceDirectoryEndpoint
+    package: google.cloud.servicedirectory.v1
+    proto: Endpoint
+    proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.servicedirectory.v1.Endpoint
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - servicedirectory.googleapis.com
+  - name: servicedirectory-namespace
+    local: resource-servicedirectory-namespace
+    remote: resource-servicedirectory-namespace
+    command: gcloud service-directory namespaces
+    group: servicedirectory
+    resource: namespace
+    controller: Unknown
+    kind: ServiceDirectoryNamespace
+    package: google.cloud.servicedirectory.v1
+    proto: Namespace
+    proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.servicedirectory.v1.Namespace
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - servicedirectory.googleapis.com
+  - name: servicedirectory-service
+    local: resource-servicedirectory-service
+    remote: resource-servicedirectory-service
+    command: gcloud service-directory services
+    group: servicedirectory
+    resource: service
+    controller: Unknown
+    kind: ServiceDirectoryService
+    package: google.cloud.servicedirectory.v1
+    proto: Service
+    proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
+    proto-service: ""
+    proto-msg: google.cloud.servicedirectory.v1.Service
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - servicedirectory.googleapis.com
+  - name: firestore-backup
+    local: resource-firestore-backup
+    remote: resource-firestore-backup
+    command: gcloud firestore backups
+    group: firestore
+    resource: backup
+    controller: Unknown
+    kind: FirestoreBackup
+    package: google.firestore.admin.v1
+    proto: Backup
+    proto-path: google/firestore/admin/v1/firestore_admin.proto
+    proto-service: ""
+    proto-msg: google.firestore.admin.v1.Backup
+    host-name: ""
+    notes: ["Further research needed: Only supports delete."]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: firestore-field
+    local: resource-firestore-field
+    remote: resource-firestore-field
+    command: gcloud firestore fields
+    group: firestore
+    resource: field
+    controller: Unknown
+    kind: FirestoreField
+    package: google.firestore.admin.v1
+    proto: Field
+    proto-path: google/firestore/admin/v1/firestore_admin.proto
+    proto-service: ""
+    proto-msg: google.firestore.admin.v1.Field
+    host-name: ""
+    notes: ["Unclear how to create it", "Further research needed: No operation supported in gcloud but update supported in proto. Note it is different from index field."]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: firestore-index
+    local: resource-firestore-index
+    remote: resource-firestore-index
+    command: gcloud firestore indexes
+    group: firestore
+    resource: index
+    controller: Unknown
+    kind: FirestoreIndex
+    package: google.firestore.admin.v1
+    proto: Index
+    proto-path: google/firestore/admin/v1/firestore_admin.proto
+    proto-service: ""
+    proto-msg: google.firestore.admin.v1.Index
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: apigeeregistry-application
+    local: resource-apigeeregistry-application
+    remote: resource-apigeeregistry-application
+    command: gcloud apigee applications
+    group: apigeeregistry
+    resource: application
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: apigeeregistry-developer
+    local: resource-apigeeregistry-developer
+    remote: resource-apigeeregistry-developer
+    command: gcloud apigee developers
+    group: apigeeregistry
+    resource: developer
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: apigeeregistry-environment
+    local: resource-apigeeregistry-environment
+    remote: resource-apigeeregistry-environment
+    command: gcloud apigee environments
+    group: apigeeregistry
+    resource: environment
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: apigeeregistry-organization
+    local: resource-apigeeregistry-organization
+    remote: resource-apigeeregistry-organization
+    command: gcloud apigee organizations
+    group: apigeeregistry
+    resource: organization
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: apigeeregistry-product
+    local: resource-apigeeregistry-product
+    remote: resource-apigeeregistry-product
+    command: gcloud apigee products
+    group: apigeeregistry
+    resource: product
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["API no longer supported: https://cloud.google.com/apigee/docs/reference/apis/apigeeregistry/rest"]
+    apis-enabled:
+      - apigeeregistry.googleapis.com
+  - name: appengine-domainmapping
+    local: resource-appengine-domainmapping
+    remote: resource-appengine-domainmapping
+    command: gcloud app domain-mappings
+    group: appengine
+    resource: domainmapping
+    controller: Unknown
+    kind: "AppEngineDomainMapping"
+    package: google.appengine.v1
+    proto: DomainMapping
+    proto-path: google/appengine/v1/domain_mapping.proto
+    proto-service: google.appengine.v1.DomainMappings
+    proto-msg: google.appengine.v1.DomainMapping
+    host-name: "appengine.googleapis.com"
+    notes: ["LRO takes more than 5 minutes.", "already supported as a v1alpha1 resource", "Error: failed to find the proto message google.appengine.v1.DomainMapping: proto: not found"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-firewallrule
+    local: resource-appengine-firewallrule
+    remote: resource-appengine-firewallrule
+    command: gcloud app firewall-rules
+    group: appengine
+    resource: firewallrule
+    controller: Unknown
+    kind: "AppEngineFirewallRule"
+    package: google.appengine.v1
+    proto: FirewallRule
+    proto-path: google/appengine/v1/firewall.proto
+    proto-service: google.appengine.v1.Firewall
+    proto-msg: google.appengine.v1.FirewallRule
+    host-name: "appengine.googleapis.com"
+    notes: ["LRO takes more than 5 minutes.", "already supported as a v1alpha1 resource", "stat /usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/7-k8s-config-connector/pkg/controller/direct/appengine: no such file or directory"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-log
+    local: resource-appengine-log
+    remote: resource-appengine-log
+    command: gcloud app logs
+    group: appengine
+    resource: log
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-operation
+    local: resource-appengine-operation
+    remote: resource-appengine-operation
+    command: gcloud app operations
+    group: appengine
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-region
+    local: resource-appengine-region
+    remote: resource-appengine-region
+    command: gcloud app regions
+    group: appengine
+    resource: region
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-runtime
+    local: resource-appengine-runtime
+    remote: resource-appengine-runtime
+    command: gcloud app runtimes
+    group: appengine
+    resource: runtime
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-service
+    local: resource-appengine-service
+    remote: resource-appengine-service
+    command: gcloud app services
+    group: appengine
+    resource: service
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Further research needed: Only supports update and delete."]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-sslcertificate
+    local: resource-appengine-sslcertificate
+    remote: resource-appengine-sslcertificate
+    command: gcloud app ssl-certificates
+    group: appengine
+    resource: sslcertificate
+    controller: Unknown
+    kind: "AppEngineSSLCertificate"
+    package: google.appengine.v1
+    proto: AuthorizedCertificate
+    proto-path: google/appengine/v1/certificate.proto
+    proto-service: google.appengine.v1.AuthorizedCertificates
+    proto-msg: google.appengine.v1.AuthorizedCertificate
+    host-name: "appengine.googleapis.com"
+    notes: ["LRO takes more than 5 minutes.", "stat /usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/7-k8s-config-connector/pkg/controller/direct/appengine: no such file or directory"]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: appengine-version
+    local: resource-appengine-version
+    remote: resource-appengine-version
+    command: gcloud app versions
+    group: appengine
+    resource: version
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Further research needed: Only supports delete."]
+    apis-enabled:
+      - appengine.googleapis.com
+  - name: assuredworkloads-operation
+    local: resource-assuredworkloads-operation
+    remote: resource-assuredworkloads-operation
+    command: gcloud assured operations
+    group: assuredworkloads
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - assuredworkloads.googleapis.com
+  - name: baremetalsolution-operation
+    local: resource-baremetalsolution-operation
+    remote: resource-baremetalsolution-operation
+    command: gcloud bms operations
+    group: baremetalsolution
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - baremetalsolution.googleapis.com
+  - name: filestore-location
+    local: resource-filestore-location
+    remote: resource-filestore-location
+    command: gcloud filestore locations
+    group: filestore
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: filestore-operation
+    local: resource-filestore-operation
+    remote: resource-filestore-operation
+    command: gcloud filestore operations
+    group: filestore
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: filestore-region
+    local: resource-filestore-region
+    remote: resource-filestore-region
+    command: gcloud filestore regions
+    group: filestore
+    resource: region
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: filestore-zone
+    local: resource-filestore-zone
+    remote: resource-filestore-zone
+    command: gcloud filestore zones
+    group: filestore
+    resource: zone
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - file.googleapis.com
+  - name: firestore-database
+    local: resource-firestore-database
+    remote: resource-firestore-database
+    command: gcloud firestore databases
+    group: firestore
+    resource: database
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["already supported as a v1beta1 KCC resource"]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: firestore-location
+    local: resource-firestore-location
+    remote: resource-firestore-location
+    command: gcloud firestore locations
+    group: firestore
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: firestore-operation
+    local: resource-firestore-operation
+    remote: resource-firestore-operation
+    command: gcloud firestore operations
+    group: firestore
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Further research needed: Only supports delete."]
+    apis-enabled:
+      - firestore.googleapis.com
+  - name: kms-inventory
+    local: resource-kms-inventory
+    remote: resource-kms-inventory
+    command: gcloud kms inventory
+    group: kms
+    resource: inventory
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - kms.googleapis.com
+  - name: kms-location
+    local: resource-kms-location
+    remote: resource-kms-location
+    command: gcloud kms locations
+    group: kms
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - kms.googleapis.com
+  - name: networkmanagement-operation
+    local: resource-networkmanagement-operation
+    remote: resource-networkmanagement-operation
+    command: gcloud network-management operations
+    group: networkmanagement
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - networkmanagement.googleapis.com
+  - name: parallelstore-location
+    local: resource-parallelstore-location
+    remote: resource-parallelstore-location
+    command: gcloud parallelstore locations
+    group: parallelstore
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - parallelstore.googleapis.com
+  - name: parallelstore-operation
+    local: resource-parallelstore-operation
+    remote: resource-parallelstore-operation
+    command: gcloud parallelstore operations
+    group: parallelstore
+    resource: operation
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - parallelstore.googleapis.com
+  - name: secrets-location
+    local: resource-secrets-location
+    remote: resource-secrets-location
+    command: gcloud secrets locations
+    group: secrets
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Replaced by SecretManager"]
+    apis-enabled:
+      - secretmanager.googleapis.com
+  - name: secrets-replication
+    local: resource-secrets-replication
+    remote: resource-secrets-replication
+    command: gcloud secrets replication
+    group: secrets
+    resource: replication
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Replaced by SecretManager"]
+    apis-enabled:
+      - secretmanager.googleapis.com
+  - name: servicedirectory-location
+    local: resource-servicedirectory-location
+    remote: resource-servicedirectory-location
+    command: gcloud service-directory locations
+    group: servicedirectory
+    resource: location
+    controller: Unknown
+    kind: ""
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["no create, update or delete"]
+    apis-enabled:
+      - servicedirectory.googleapis.com
+  - name: immersivestream-xrcontent
+    local: resource-immersivestream-xrcontent
+    remote: resource-immersivestream-xrcontent
+    command: gcloud immersivestream xr contents
+    group: immersivestream
+    resource: immersivestream-xrcontent
+    controller: unknown
+    kind: "ImmersiveStreamXRContent"
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Creation returns an LRO which takes more than 10 minutes to complete.", "no proto"]
+    apis-enabled:
+      - stream.googleapis.com
+  - name: immersivestream-xrinstance
+    local: resource-immersivestream-xrinstance
+    remote: resource-immersivestream-xrinstance
+    command: gcloud immersivestream xr instances
+    group: immersivestream
+    resource: immersivestream-xrinstance
+    controller: unknown
+    kind: "ImmersiveStreamXRInstance"
+    package: ""
+    proto: ""
+    proto-path: ""
+    proto-service: ""
+    proto-msg: ""
+    host-name: ""
+    notes: ["Depend on the content resource, which takes more than 10 minutes to create.", "no proto"]
+    apis-enabled:
+      - stream.googleapis.com
+  - name: colab-execution
+    local: resource-colab-execution
+    remote: resource-colab-execution
+    command: gcloud colab executions
+    group: colab
+    resource: execution
+    controller: unknown
+    kind: "ColabExecution"
+    package: google.cloud.aiplatform.v1
+    proto: Execution
+    proto-path: google/cloud/aiplatform/v1/execution.proto
+    proto-service: google.cloud.aiplatform.v1.MetadataService
+    proto-msg: google.cloud.aiplatform.v1.Execution
+    host-name: aiplatform.googleapis.com
+    notes: ["LRO takes more than 5 minutes."]
+    apis-enabled:
+      - aiplatform.googleapis.com
+  - name: colab-runtimetemplate
+    local: resource-colab-runtimetemplate
+    remote: resource-colab-runtimetemplate
+    command: gcloud colab runtime-templates
+    group: colab
+    resource: runtimetemplate
+    controller: unknown
+    kind: "ColabRuntimeTemplate"
+    package: google.cloud.aiplatform.v1beta1
+    proto: NotebookRuntimeTemplate
+    proto-path: google/cloud/aiplatform/v1beta1/notebook_runtime.proto
+    proto-service: google.cloud.aiplatform.v1beta1.NotebookService
+    proto-msg: google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
+    host-name: aiplatform.googleapis.com
+    notes: []
+    apis-enabled:
+      - aiplatform.googleapis.com
+  - name: colab-runtime
+    local: resource-colab-runtime
+    remote: resource-colab-runtime
+    command: gcloud colab runtimes
+    group: colab
+    resource: runtime
+    controller: unknown
+    kind: "ColabRuntime"
+    package: google.cloud.aiplatform.v1beta1
+    proto: NotebookRuntime
+    proto-path: google/cloud/aiplatform/v1beta1/notebook_runtime.proto
+    proto-service: google.cloud.aiplatform.v1beta1.NotebookService
+    proto-msg: google.cloud.aiplatform.v1beta1.NotebookRuntime
+    host-name: aiplatform.googleapis.com
+    notes: ["WIP"]
+    apis-enabled:
+      - aiplatform.googleapis.com
+  - name: colab-schedule
+    local: resource-colab-schedule
+    remote: resource-colab-schedule
+    command: gcloud colab schedules
+    group: colab
+    resource: schedule
+    controller: unknown
+    kind: "ColabSchedule"
+    package: google.cloud.aiplatform.v1beta1
+    proto: Schedule
+    proto-path: google/cloud/aiplatform/v1beta1/schedule.proto
+    proto-service: google.cloud.aiplatform.v1beta1.ScheduleService
+    proto-msg: google.cloud.aiplatform.v1beta1.Schedule
+    host-name: aiplatform.googleapis.com
+    notes: ["WIP"]
+    apis-enabled:
+      - aiplatform.googleapis.com
