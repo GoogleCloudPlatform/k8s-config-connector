@@ -25,6 +25,5 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    customTargetTypeID: deploycustomtargettype-${uniqueId}
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

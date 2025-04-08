@@ -16,7 +16,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}' was not found",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "customTargetType \"projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "customTargetType \"projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -43,12 +50,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "create"
   },
@@ -79,7 +84,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "create"
   },
@@ -87,7 +91,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.CustomTargetType",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "customTargetTypeId": "deploycustomtargettype-${uniqueId}",
     "description": "Initial description",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
@@ -115,7 +118,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "customTargetTypeId": "deploycustomtargettype-${uniqueId}",
   "description": "Initial description",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
@@ -146,12 +148,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "update"
   },
@@ -182,7 +182,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "update"
   },
@@ -190,9 +189,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.CustomTargetType",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "customTargetTypeId": "deploycustomtargettype-${uniqueId}",
     "description": "Updated description",
-    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -218,9 +215,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "customTargetTypeId": "deploycustomtargettype-${uniqueId}",
   "description": "Updated description",
-  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -244,12 +239,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.deploy.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "delete"
   },
@@ -280,7 +273,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-west2/customTargetTypes/deploycustomtargettype-${uniqueId}",
     "verb": "delete"
   },
