@@ -32,7 +32,7 @@ type PhraseSetIdentity struct {
 }
 
 func (i *PhraseSetIdentity) String() string {
-	return i.parent.String() + "/phrasesets/" + i.id
+	return i.parent.String() + "/phraseSets/" + i.id
 }
 
 func (i *PhraseSetIdentity) ID() string {
@@ -105,8 +105,8 @@ func NewPhraseSetIdentity(ctx context.Context, reader client.Reader, obj *Speech
 
 func ParsePhraseSetExternal(external string) (parent *PhraseSetParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "phrasesets" {
-		return nil, "", fmt.Errorf("format of SpeechPhraseSet external=%q was not known (use projects/{{projectID}}/locations/{{location}}/phrasesets/{{phrasesetID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "phraseSets" {
+		return nil, "", fmt.Errorf("format of SpeechPhraseSet external=%q was not known (use projects/{{projectID}}/locations/{{location}}/phraseSets/{{phrasesetID}})", external)
 	}
 	parent = &PhraseSetParent{
 		ProjectID: tokens[1],
