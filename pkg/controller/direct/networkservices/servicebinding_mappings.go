@@ -12,31 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
-// krm.group: networkservices.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.cloud.networkservices.v1
-
 package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
+	serviceRefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesServiceBindingObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceBinding{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
 func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkServicesServiceBindingSpec{}
-	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.Service != "" {
-		out.ServiceRef = &v1alpha1.ServiceDirectoryServiceRef{
-			External: in.Service,
-		}
+	out.ServiceRef = &serviceRefs.ServiceDirectoryServiceRef{
+		External: in.GetService(),
 	}
 	out.Labels = in.Labels
 	return out
@@ -46,7 +56,6 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.ServiceBinding{}
-	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	if in.ServiceRef != nil {
 		out.Service = in.ServiceRef.External
