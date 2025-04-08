@@ -210,8 +210,8 @@ func gitAdd(ctx context.Context, workDir string, files ...string) error {
 }
 
 func gitCommit(ctx context.Context, workDir string, msg string) error {
-	log.Printf("COMMAND: git commit -m %q", fmt.Sprintf("conductor: %q", msg))
-	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", fmt.Sprintf("conductor: %q", msg))
+	log.Printf("COMMAND: git commit -m %q", msg)
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg)
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
