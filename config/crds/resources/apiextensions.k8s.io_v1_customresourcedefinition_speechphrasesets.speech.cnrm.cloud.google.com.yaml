@@ -1,0 +1,246 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: speechphrasesets.speech.cnrm.cloud.google.com
+spec:
+  group: speech.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SpeechPhraseSet
+    listKind: SpeechPhraseSetList
+    plural: speechphrasesets
+    shortNames:
+    - gcpspeechphraseset
+    - gcpspeechphrasesets
+    singular: speechphraseset
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SpeechPhraseSet is the Schema for the SpeechPhraseSet API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SpeechPhraseSetSpec defines the desired state of SpeechPhraseSet
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Allows users to store small amounts of arbitrary data.
+                  Both the key and the value must be 63 characters or less each. At
+                  most 100 annotations.
+                type: object
+              boost:
+                description: Hint Boost. Positive value will increase the probability
+                  that a specific phrase will be recognized over other similar sounding
+                  phrases. The higher the boost, the higher the chance of false positive
+                  recognition as well. Valid `boost` values are between 0 (exclusive)
+                  and 20. We recommend using a binary search approach to finding the
+                  optimal value for your use case as well as adding phrases both with
+                  and without boost to your requests.
+                type: number
+              displayName:
+                description: User-settable, human-readable name for the PhraseSet.
+                  Must be 63 characters or less.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              phrases:
+                description: A list of word and phrases.
+                items:
+                  properties:
+                    boost:
+                      description: Hint Boost. Overrides the boost set at the phrase
+                        set level. Positive value will increase the probability that
+                        a specific phrase will be recognized over other similar sounding
+                        phrases. The higher the boost, the higher the chance of false
+                        positive recognition as well. Negative boost values would
+                        correspond to anti-biasing. Anti-biasing is not enabled, so
+                        negative boost values will return an error. Boost values must
+                        be between 0 and 20. Any values outside that range will return
+                        an error. We recommend using a binary search approach to finding
+                        the optimal value for your use case as well as adding phrases
+                        both with and without boost to your requests.
+                      type: number
+                    value:
+                      description: The phrase itself.
+                      type: string
+                  type: object
+                type: array
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The SpeechPhraseSet name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: SpeechPhraseSetStatus defines the config connector machine
+              state of SpeechPhraseSet
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SpeechPhraseSet resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time.
+                    type: string
+                  deleteTime:
+                    description: Output only. The time at which this resource was
+                      requested for deletion.
+                    type: string
+                  etag:
+                    description: Output only. This checksum is computed by the server
+                      based on the value of other fields. This may be sent on update,
+                      undelete, and delete requests to ensure the client has an up-to-date
+                      value before proceeding.
+                    type: string
+                  expireTime:
+                    description: Output only. The time at which this resource will
+                      be purged.
+                    type: string
+                  kmsKeyName:
+                    description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                      with which the PhraseSet is encrypted. The expected format is
+                      `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                    type: string
+                  kmsKeyVersionName:
+                    description: Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                      with which the PhraseSet is encrypted. The expected format is
+                      `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                    type: string
+                  reconciling:
+                    description: Output only. Whether or not this PhraseSet is in
+                      the process of being updated.
+                    type: boolean
+                  state:
+                    description: Output only. The PhraseSet lifecycle state.
+                    type: string
+                  uid:
+                    description: Output only. System-assigned unique identifier for
+                      the PhraseSet.
+                    type: string
+                  updateTime:
+                    description: Output only. The most recent time this resource was
+                      modified.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
