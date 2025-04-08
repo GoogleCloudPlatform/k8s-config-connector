@@ -44,6 +44,7 @@ type Task_ExecutionSpec struct {
 	// Required. Service account to use to execute a task.
 	//  If not provided, the default Compute service account for the project is
 	//  used.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.service_account
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
@@ -146,6 +147,7 @@ type Task_NotebookTaskConfig struct {
 	//  the notebook file or the path to a Notebook Content. The execution args
 	//  are accessible as environment variables
 	//  (`TASK_key=value`).
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.notebook
 	Notebook *string `json:"notebook,omitempty"`
 
@@ -218,6 +220,7 @@ type Task_SparkTaskConfig struct {
 // +kcc:proto=google.cloud.dataplex.v1.Task.TriggerSpec
 type Task_TriggerSpec struct {
 	// Required. Immutable. Trigger type of the user-specified Task.
+	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.TriggerSpec.type
 	Type *string `json:"type,omitempty"`
 
