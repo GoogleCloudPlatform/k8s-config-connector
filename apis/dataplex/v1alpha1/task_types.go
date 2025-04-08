@@ -84,7 +84,7 @@ type DataplexTaskObservedState struct {
 	// Output only. System generated globally unique ID for the task. This ID will
 	// be different if the task is deleted and re-created with the same name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.uid
-	UID string `json:"uid,omitempty"`
+	UID *string `json:"uid,omitempty"`
 	// Output only. The time when the task was created.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.create_time
 	CreateTime *string `json:"createTime,omitempty"`
