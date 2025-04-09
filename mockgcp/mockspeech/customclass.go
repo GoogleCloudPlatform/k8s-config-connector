@@ -21,6 +21,7 @@ package mockspeech
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -32,10 +33,29 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/speech/v2"
+	"github.com/google/uuid"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *speechServer) CreateCustomClass(ctx context.Context, req *pb.CreateCustomClassRequest) (*longrunningpb.Operation, error) {
+func (s *SpeechV2) GetCustomClass(ctx context.Context, req *pb.GetCustomClassRequest) (*pb.CustomClass, error) {
+	name, err := s.parseCustomClassName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+
+	obj := &pb.CustomClass{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Unable to find CustomClass %s from project %d.", name.CustomClassID, name.Project.Number)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *SpeechV2) CreateCustomClass(ctx context.Context, req *pb.CreateCustomClassRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/customClasses/%s", req.GetParent(), req.GetCustomClassId())
 	name, err := s.parseCustomClassName(reqName)
 	if err != nil {
@@ -48,62 +68,35 @@ func (s *speechServer) CreateCustomClass(ctx context.Context, req *pb.CreateCust
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Uid = fields.NewUUIDString()
+	obj.Uid = uuid.New().String()
 	obj.State = pb.CustomClass_ACTIVE // Assume immediate activation for mock
 	obj.Etag = fields.ComputeWeakEtag(obj)
-
-	s.populateDefaultsForCustomClass(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		UpdateTime: timestamppb.New(now),
-		Resource:   obj.GetName(),
-		Method:     "google.cloud.speech.v2.Speech.CreateCustomClass",
+		CreateTime:      timestamppb.New(now),
+		UpdateTime:      timestamppb.New(now),
+		Method:          "google.cloud.speech.v2.Speech.CreateCustomClass",
+		ProgressPercent: 100,
 	}
 
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		// In a real scenario, this might update the state or check progress.
-		// For the mock, we assume creation completes relatively quickly.
-		metadata.ProgressPercent = 100
-		// Fetch the object again to return the latest state.
-		out := &pb.CustomClass{}
-		if err := s.storage.Get(ctx, fqn, out); err != nil {
-			return nil, err
-		}
-		return out, nil
-	})
+	// change project ID to project number
+	metadata.Resource = strings.Replace(obj.GetName(), "projects/"+name.Project.ID+"/locations/"+name.Location+"/customClasses/"+name.CustomClassID, "projects/"+strconv.FormatInt(name.Project.Number, 10)+"/locations/"+name.Location+"/customClasses/"+name.CustomClassID, 1)
+
+	req.Parent = strings.Replace(req.GetParent(), "projects/"+name.Project.ID+"/locations/"+name.Location, "projects/"+strconv.FormatInt(name.Project.Number, 10)+"/locations/"+name.Location, 1)
+	metadata.Request = &pb.OperationMetadata_CreateCustomClassRequest{
+		CreateCustomClassRequest: req,
+	}
+
+	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+
+	return s.operations.DoneLRO(ctx, prefix, metadata, obj)
 }
 
-func (s *speechServer) GetCustomClass(ctx context.Context, req *pb.GetCustomClassRequest) (*pb.CustomClass, error) {
-	name, err := s.parseCustomClassName(req.GetName())
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-
-	obj := &pb.CustomClass{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			// Check if it's marked as deleted (soft delete scenario)
-			deletedObj := &pb.CustomClass{}
-			if delErr := s.storage.Get(ctx, fqn+"@deleted", deletedObj); delErr == nil {
-				// Return the deleted object's state, as per Get behavior for deleted resources
-				return deletedObj, nil
-			}
-			// If not found even in deleted state, return original NotFound
-			return nil, status.Errorf(codes.NotFound, "customClass %q not found", fqn)
-		}
-		return nil, err
-	}
-
-	return obj, nil
-}
-
-func (s *speechServer) UpdateCustomClass(ctx context.Context, req *pb.UpdateCustomClassRequest) (*longrunningpb.Operation, error) {
+func (s *SpeechV2) UpdateCustomClass(ctx context.Context, req *pb.UpdateCustomClassRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseCustomClassName(req.GetCustomClass().GetName())
 	if err != nil {
 		return nil, err
@@ -116,22 +109,20 @@ func (s *speechServer) UpdateCustomClass(ctx context.Context, req *pb.UpdateCust
 		return nil, err
 	}
 
-	// Required. The list of fields to be updated.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// Validate Etag if provided
-	if req.GetEtag() != "" && req.GetEtag() != obj.Etag {
-		return nil, status.Errorf(codes.Aborted, "etag mismatch")
-	}
-
-	// Apply updates based on mask
-	for _, path := range paths {
+	for i, path := range paths {
 		switch path {
-		case "display_name":
+		case "displayName":
 			obj.DisplayName = req.GetCustomClass().GetDisplayName()
+
+			// HACK: to make the field mask valid when returning
+			// original error:
+			// proto: google.protobuf.FieldMask.paths contains irreversible value "displayName"
+			req.UpdateMask.Paths[i] = "display_name"
 		case "items":
 			obj.Items = req.GetCustomClass().GetItems()
 		case "annotations":
@@ -143,33 +134,42 @@ func (s *speechServer) UpdateCustomClass(ctx context.Context, req *pb.UpdateCust
 	}
 
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Etag = fields.ComputeWeakEtag(obj) // Recalculate etag after update
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		UpdateTime: timestamppb.New(now),
-		Resource:   obj.GetName(),
-		Method:     "google.cloud.speech.v2.Speech.UpdateCustomClass",
+		CreateTime:      timestamppb.New(now),
+		UpdateTime:      timestamppb.New(now),
+		Resource:        obj.GetName(),
+		Method:          "google.cloud.speech.v2.Speech.UpdateCustomClass",
+		ProgressPercent: 100,
 	}
 
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		metadata.ProgressPercent = 100
-		// Return the updated object
-		return obj, nil
-	})
+	// change project ID to project number
+	req.CustomClass.Name = strings.Replace(req.CustomClass.GetName(), "projects/"+name.Project.ID+"/locations/"+name.Location, "projects/"+strconv.FormatInt(name.Project.Number, 10)+"/locations/"+name.Location, 1)
+	metadata.Request = &pb.OperationMetadata_UpdateCustomClassRequest{
+		UpdateCustomClassRequest: req,
+	}
+
+	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+
+	return s.operations.DoneLRO(ctx, prefix, metadata, obj)
 }
 
-func (s *speechServer) DeleteCustomClass(ctx context.Context, req *pb.DeleteCustomClassRequest) (*longrunningpb.Operation, error) {
+func (s *SpeechV2) DeleteCustomClass(ctx context.Context, req *pb.DeleteCustomClassRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseCustomClassName(req.GetName())
 	if err != nil {
 		return nil, err
 	}
 	fqn := name.String()
 	now := time.Now()
+
+	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+
+	// change project ID to project number
+	req.Name = strings.Replace(req.GetName(), "projects/"+name.Project.ID+"/locations/"+name.Location, "projects/"+strconv.FormatInt(name.Project.Number, 10)+"/locations/"+name.Location, 1)
 
 	obj := &pb.CustomClass{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -178,10 +178,14 @@ func (s *speechServer) DeleteCustomClass(ctx context.Context, req *pb.DeleteCust
 			if req.GetAllowMissing() {
 				// Return a completed LRO indicating success (no-op)
 				metadata := &pb.OperationMetadata{
-					CreateTime: timestamppb.New(now),
-					UpdateTime: timestamppb.New(now),
-					Resource:   fqn,
-					Method:     "google.cloud.speech.v2.Speech.DeleteCustomClass",
+					CreateTime:      timestamppb.New(now),
+					UpdateTime:      timestamppb.New(now),
+					Resource:        fqn,
+					Method:          "google.cloud.speech.v2.Speech.DeleteCustomClass",
+					ProgressPercent: 100,
+					Request: &pb.OperationMetadata_DeleteCustomClassRequest{
+						DeleteCustomClassRequest: req,
+					},
 				}
 				// The response type for delete is CustomClass according to the LRO info,
 				// but typically delete returns the deleted resource or empty.
@@ -191,7 +195,7 @@ func (s *speechServer) DeleteCustomClass(ctx context.Context, req *pb.DeleteCust
 				// Since it doesn't exist, returning a placeholder might be best or erroring?
 				// Let's return a placeholder indicating deletion.
 				deletedPlaceholder := &pb.CustomClass{Name: fqn, State: pb.CustomClass_DELETED}
-				return s.operations.DoneLRO(ctx, name.String(), metadata, deletedPlaceholder)
+				return s.operations.DoneLRO(ctx, prefix, metadata, deletedPlaceholder)
 			}
 			return nil, status.Errorf(codes.NotFound, "customClass %q not found", fqn)
 		}
@@ -203,24 +207,10 @@ func (s *speechServer) DeleteCustomClass(ctx context.Context, req *pb.DeleteCust
 		return nil, status.Errorf(codes.Aborted, "etag mismatch")
 	}
 
-	// Soft delete: Move to a different key or mark as deleted
 	obj.State = pb.CustomClass_DELETED
 	obj.DeleteTime = timestamppb.New(now)
-	// Set expire time (e.g., 30 days later)
 	obj.ExpireTime = timestamppb.New(now.Add(30 * 24 * time.Hour))
-	obj.UpdateTime = timestamppb.New(now)
-	obj.Etag = fields.ComputeWeakEtag(obj)
 
-	// Move to a "deleted" state in storage instead of actually removing
-	if err := s.storage.Update(ctx, fqn+"@deleted", obj); err != nil {
-		// Attempt to undo state change if storage update fails
-		obj.State = pb.CustomClass_ACTIVE // Revert state
-		obj.DeleteTime = nil
-		obj.ExpireTime = nil
-		s.storage.Update(ctx, fqn, obj) // Best effort restore
-		return nil, status.Errorf(codes.Internal, "failed to mark customClass %q as deleted: %v", fqn, err)
-	}
-	// Remove the original object
 	if err := s.storage.Delete(ctx, fqn, &pb.CustomClass{}); err != nil {
 		// Log or handle the error if removing the original fails after marking deleted
 		// This indicates an inconsistent state.
@@ -228,20 +218,21 @@ func (s *speechServer) DeleteCustomClass(ctx context.Context, req *pb.DeleteCust
 	}
 
 	metadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		UpdateTime: timestamppb.New(now),
-		Resource:   obj.GetName(),
-		Method:     "google.cloud.speech.v2.Speech.DeleteCustomClass",
+		CreateTime:      timestamppb.New(now),
+		UpdateTime:      timestamppb.New(now),
+		Resource:        obj.GetName(),
+		Method:          "google.cloud.speech.v2.Speech.DeleteCustomClass",
+		ProgressPercent: 100,
+		Request: &pb.OperationMetadata_DeleteCustomClassRequest{
+			DeleteCustomClassRequest: req,
+		},
 	}
 
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
-		metadata.ProgressPercent = 100
-		// Return the object in its deleted state
-		return obj, nil
-	})
+	return s.operations.DoneLRO(ctx, prefix, metadata, obj)
 }
 
-func (s *speechServer) UndeleteCustomClass(ctx context.Context, req *pb.UndeleteCustomClassRequest) (*longrunningpb.Operation, error) {
+/*
+func (s *SpeechV2) UndeleteCustomClass(ctx context.Context, req *pb.UndeleteCustomClassRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseCustomClassName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -312,11 +303,7 @@ func (s *speechServer) UndeleteCustomClass(ctx context.Context, req *pb.Undelete
 		return obj, nil
 	})
 }
-
-func (s *speechServer) populateDefaultsForCustomClass(obj *pb.CustomClass) {
-	// Default values specific to CustomClass, if any, would go here.
-	// For example, if there were default items or annotations.
-}
+*/
 
 type customClassName struct {
 	Project       *projects.ProjectData
@@ -325,7 +312,7 @@ type customClassName struct {
 }
 
 func (n *customClassName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/customClasses/%s", n.Project.ID, n.Location, n.CustomClassID)
+	return fmt.Sprintf("projects/%d/locations/%s/customClasses/%s", n.Project.Number, n.Location, n.CustomClassID)
 }
 
 // parseCustomClassName parses a string into a customClassName.
