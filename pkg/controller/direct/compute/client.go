@@ -14,6 +14,7 @@
 
 // +tool:controller-client
 // proto.service: google.cloud.compute.v1.NetworkEdgeSecurityServices
+// proto.service: google.cloud.compute.v1.NetworkAttachments
 
 package compute
 
@@ -44,6 +45,19 @@ func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*
 	client, err := compute.NewNetworkEdgeSecurityServicesRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.NetworkAttachmentsClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
+
 	}
 	return client, err
 }
