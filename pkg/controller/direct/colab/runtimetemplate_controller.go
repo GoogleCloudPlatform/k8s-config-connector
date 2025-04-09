@@ -255,7 +255,18 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 	paths.Delete("name", "etag")
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		// Still update the status to cover the use case of acquisition.
+		if a.desired.Status.ExternalRef == nil {
+			observedState := ColabRuntimeTemplateObservedState_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
+
+			a.desired.Status.ExternalRef = direct.PtrTo(a.id.String())
+			a.desired.Status.ObservedState = observedState
+
+			return updateOp.UpdateStatus(ctx, a.desired.Status, nil)
+		}
 	}
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
