@@ -274,7 +274,7 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 
 	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
-		return fmt.Errorf("generating content with gemini: %w", err)
+		return fmt.Errorf("generating content with LLM: %w", err)
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
@@ -363,7 +363,7 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 		Prompt: prompt.String(),
 	})
 	if err != nil {
-		return fmt.Errorf("generating content with gemini: %w", err)
+		return fmt.Errorf("generating content with LLM: %w", err)
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
