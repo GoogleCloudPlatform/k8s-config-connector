@@ -51,7 +51,7 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 		return nil
 	}
 	out := &pb.AppProfile{}
-	// MISSING: Name
+	out.Name = direct.ValueOf(in.ResourceID)
 	// MISSING: Etag
 	out.Description = direct.ValueOf(in.Description)
 	if oneof := in.MultiClusterRoutingUseAny; oneof != nil && *oneof {
