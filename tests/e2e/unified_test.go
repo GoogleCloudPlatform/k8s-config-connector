@@ -594,6 +594,32 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to Compute
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("fingerprint", "abcdef0123A=")
+
+					// Specific to Dataplex
+					addReplacement("executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.latestJob.uid", "0123456789abcdef")
+					addReplacement("executionStatus.latestJob.uid", "0123456789abcdef")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						selfLinkWithId, _, _ := unstructured.NestedString(responseBody, "executionStatus", "latestJob", "name")
+						if selfLinkWithId != "" {
+							tokens := strings.Split(selfLinkWithId, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "jobs":
+									r.PathIDs[id] = "0123456789abcdef"
+								}
+							}
+						}
+					}
+
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
