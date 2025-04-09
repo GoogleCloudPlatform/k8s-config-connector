@@ -13,16 +13,11 @@
 # limitations under the License.
 
 apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
-kind: DataplexTask
+kind: DataplexLake
 metadata:
-  name: dataplextask-minimal-${uniqueId}
+  name: dataplexlake-${uniqueId}
 spec:
-  lakeRef:
-    name: dataplexlake-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  location: us-central1
   description: "Initial description"
-  triggerSpec:
-    type: "ON_DEMAND"
-  executionSpec:
-    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
-  spark:
-    pythonScriptFile: "gs://dataproc-examples/pyspark/hello-world/hello-world.py"

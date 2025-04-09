@@ -17,7 +17,12 @@ kind: DataplexTask
 metadata:
   name: dataplextask-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  lakeRef:
+    name: dataplexlake-${uniqueId}
   description: "Updated description"
+  triggerSpec:
+    type: "ON_DEMAND"
+  executionSpec:
+    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+  spark:
+    pythonScriptFile: "gs://dataproc-examples/pyspark/hello-world/hello-world.py"
