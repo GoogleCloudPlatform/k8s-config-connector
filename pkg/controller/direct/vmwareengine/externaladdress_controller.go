@@ -33,7 +33,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -119,10 +118,6 @@ func (a *externalAddressAdapter) Create(ctx context.Context, createOp *directbas
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine external address", "name", a.id)
 
-	if err := a.normalizeReferenceFields(ctx); err != nil { // Normalize refs before creating
-		return err
-	}
-
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineExternalAddressSpec_ToProto(mapCtx, &desired.Spec)
@@ -157,10 +152,6 @@ func (a *externalAddressAdapter) Create(ctx context.Context, createOp *directbas
 func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine external address", "name", a.id)
-
-	if err := a.normalizeReferenceFields(ctx); err != nil { // Normalize refs before updating
-		return err
-	}
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
@@ -221,7 +212,7 @@ func (a *externalAddressAdapter) Export(ctx context.Context) (*unstructured.Unst
 	}
 
 	// Add parent references from ID
-	obj.Spec.PrivateCloudRef = &refs.VMwareEnginePrivateCloudRef{External: a.id.Parent().String()} // Use the full parent string
+	obj.Spec.PrivateCloudRef = &krm.PrivateCloudRef{External: a.id.Parent().String()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -256,15 +247,4 @@ func (a *externalAddressAdapter) Delete(ctx context.Context, deleteOp *directbas
 		return false, fmt.Errorf("waiting delete ExternalAddress %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func (a *externalAddressAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.PrivateCloudRef != nil {
-		if _, err := obj.Spec.PrivateCloudRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
-			return err
-		}
-	}
-	// No other reference fields in ExternalAddress spec
-	return nil
 }
