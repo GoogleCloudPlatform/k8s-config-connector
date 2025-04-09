@@ -980,6 +980,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "apphub.cnrm.cloud.google.com", Kind: "AppHubApplication"}:
 
 			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocBatch"}:
+			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocCluster"}:
+			case schema.GroupKind{Group: "dataproc.cnrm.cloud.google.com", Kind: "DataprocNodeGroup"}:
 
 			case schema.GroupKind{Group: "recaptchaenterprise.cnrm.cloud.google.com", Kind: "ReCAPTCHAEnterpriseFirewallPolicy"}:
 
