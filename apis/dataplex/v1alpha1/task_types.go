@@ -101,6 +101,48 @@ type DataplexTaskObservedState struct {
 	ExecutionStatus *Task_ExecutionStatusObservedState `json:"executionStatus,omitempty"`
 }
 
+// Duplicate of Task_ExecutionSpec struct. As ServiceAccount and KMSKey cannot be a reference field when it's in status.
+// +kcc:proto=google.cloud.dataplex.v1.Task.ExecutionSpec
+type Task_ExecutionSpecObservedState struct {
+	// The arguments to pass to the task.
+	//  The args can use placeholders of the format ${placeholder} as
+	//  part of key/value string. These will be interpolated before passing the
+	//  args to the driver. Currently supported placeholders:
+	//  - ${task_id}
+	//  - ${job_time}
+	//  To pass positional args, set the key as TASK_ARGS. The value should be a
+	//  comma-separated string of all the positional arguments. To use a
+	//  delimiter other than comma, refer to
+	//  https://cloud.google.com/sdk/gcloud/reference/topic/escaping. In case of
+	//  other keys being present in the args, then TASK_ARGS will be passed as
+	//  the last argument.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.args
+	Args map[string]string `json:"args,omitempty"`
+
+	// Service account to use to execute a task.
+	//  If not provided, the default Compute service account for the project is
+	//  used.
+	// +required
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.service_account
+	ServiceAccount *string `json:"serviceAccount,omitempty"`
+
+	// The project in which jobs are run. By default, the project
+	//  containing the Lake is used. If a project is provided, the
+	//  [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
+	//  must belong to this project.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.project
+	Project *string `json:"project,omitempty"`
+
+	// The maximum duration after which the job execution is expired.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.max_job_execution_lifetime
+	MaxJobExecutionLifetime *string `json:"maxJobExecutionLifetime,omitempty"`
+
+	// The Cloud KMS key to use for encryption, of the form:
+	//  `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.kms_key
+	KMSKey *string `json:"kmsKey,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdataplextask;gcpdataplextasks

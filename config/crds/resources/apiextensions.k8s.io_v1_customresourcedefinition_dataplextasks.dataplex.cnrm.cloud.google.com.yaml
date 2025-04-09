@@ -121,13 +121,37 @@ spec:
                       the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
                       must belong to this project.
                     type: string
-                  serviceAccount:
+                  serviceAccountRef:
                     description: Required. Service account to use to execute a task.
                       If not provided, the default Compute service account for the
                       project is used.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `email` field of an `IAMServiceAccount` resource.
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 required:
-                - serviceAccount
+                - serviceAccountRef
                 type: object
               labels:
                 additionalProperties:
@@ -481,62 +505,36 @@ spec:
                               args:
                                 additionalProperties:
                                   type: string
-                                description: 'Optional. The arguments to pass to the
-                                  task. The args can use placeholders of the format
-                                  ${placeholder} as part of key/value string. These
-                                  will be interpolated before passing the args to
-                                  the driver. Currently supported placeholders: -
-                                  ${task_id} - ${job_time} To pass positional args,
-                                  set the key as TASK_ARGS. The value should be a
-                                  comma-separated string of all the positional arguments.
-                                  To use a delimiter other than comma, refer to https://cloud.google.com/sdk/gcloud/reference/topic/escaping.
+                                description: 'The arguments to pass to the task. The
+                                  args can use placeholders of the format ${placeholder}
+                                  as part of key/value string. These will be interpolated
+                                  before passing the args to the driver. Currently
+                                  supported placeholders: - ${task_id} - ${job_time}
+                                  To pass positional args, set the key as TASK_ARGS.
+                                  The value should be a comma-separated string of
+                                  all the positional arguments. To use a delimiter
+                                  other than comma, refer to https://cloud.google.com/sdk/gcloud/reference/topic/escaping.
                                   In case of other keys being present in the args,
                                   then TASK_ARGS will be passed as the last argument.'
                                 type: object
-                              kmsKeyRef:
-                                description: 'Optional. The Cloud KMS key to use for
-                                  encryption, of the form: `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.'
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: A reference to an externally managed
-                                      KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
-                                    type: string
-                                  name:
-                                    description: The `name` of a `KMSCryptoKey` resource.
-                                    type: string
-                                  namespace:
-                                    description: The `namespace` of a `KMSCryptoKey`
-                                      resource.
-                                    type: string
-                                type: object
+                              kmsKey:
+                                description: 'The Cloud KMS key to use for encryption,
+                                  of the form: `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.'
+                                type: string
                               maxJobExecutionLifetime:
-                                description: Optional. The maximum duration after
-                                  which the job execution is expired.
+                                description: The maximum duration after which the
+                                  job execution is expired.
                                 type: string
                               project:
-                                description: Optional. The project in which jobs are
-                                  run. By default, the project containing the Lake
-                                  is used. If a project is provided, the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
+                                description: The project in which jobs are run. By
+                                  default, the project containing the Lake is used.
+                                  If a project is provided, the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
                                   must belong to this project.
                                 type: string
                               serviceAccount:
-                                description: Required. Service account to use to execute
-                                  a task. If not provided, the default Compute service
-                                  account for the project is used.
+                                description: Service account to use to execute a task.
+                                  If not provided, the default Compute service account
+                                  for the project is used.
                                 type: string
                             required:
                             - serviceAccount

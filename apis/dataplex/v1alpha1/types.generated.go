@@ -638,7 +638,7 @@ type Task_ExecutionSpec struct {
 	//  used.
 	// +required
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.service_account
-	ServiceAccount *string `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Optional. The project in which jobs are run. By default, the project
 	//  containing the Lake is used. If a project is provided, the
@@ -891,7 +891,7 @@ type JobObservedState struct {
 
 	// Output only. Spec related to how a task is executed.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Job.execution_spec
-	ExecutionSpec *Task_ExecutionSpec `json:"executionSpec,omitempty"`
+	ExecutionSpec *Task_ExecutionSpecObservedState `json:"executionSpec,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.ExecutionStatus

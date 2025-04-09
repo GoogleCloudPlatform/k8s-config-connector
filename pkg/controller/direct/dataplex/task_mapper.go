@@ -112,7 +112,7 @@ func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krmv1alp
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.Labels = in.Labels
 	out.Trigger = direct.Enum_FromProto(mapCtx, in.GetTrigger())
-	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	out.ExecutionSpec = Task_ExecutionSpecObservedStatus_FromProto(mapCtx, in.GetExecutionSpec())
 	return out
 }
 func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.JobObservedState) *pb.Job {
@@ -131,7 +131,7 @@ func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.JobObse
 	out.Message = direct.ValueOf(in.Message)
 	out.Labels = in.Labels
 	out.Trigger = direct.Enum_ToProto[pb.Job_Trigger](mapCtx, in.Trigger)
-	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	out.ExecutionSpec = Task_ExecutionSpecObservedStatus_ToProto(mapCtx, in.ExecutionSpec)
 	return out
 }
 
@@ -141,7 +141,9 @@ func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_Executi
 	}
 	out := &krmv1alpha1.Task_ExecutionSpec{}
 	out.Args = in.Args
-	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	if in.ServiceAccount != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
 	out.Project = direct.LazyPtr(in.GetProject())
 	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
 	if in.GetKmsKey() != "" {
@@ -155,12 +157,42 @@ func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_
 	}
 	out := &pb.Task_ExecutionSpec{}
 	out.Args = in.Args
-	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
 	out.Project = direct.ValueOf(in.Project)
 	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
 	if in.KMSKeyRef != nil {
 		out.KmsKey = in.KMSKeyRef.External
 	}
+	return out
+}
+
+// Duplicate of Task_ExecutionSpec_FromProto, removing reference fields in observed status
+func Task_ExecutionSpecObservedStatus_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krmv1alpha1.Task_ExecutionSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Task_ExecutionSpecObservedState{}
+	out.Args = in.Args
+	out.ServiceAccount = direct.LazyPtr(in.ServiceAccount)
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+
+// Duplicate of Task_ExecutionSpec_ToProto, removing reference fields in observed status
+func Task_ExecutionSpecObservedStatus_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_ExecutionSpecObservedState) *pb.Task_ExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_ExecutionSpec{}
+	out.Args = in.Args
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Project = direct.ValueOf(in.Project)
+	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
+	out.KmsKey = direct.ValueOf(in.KMSKey)
 	return out
 }
 func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krmv1alpha1.Task_ExecutionStatusObservedState {
