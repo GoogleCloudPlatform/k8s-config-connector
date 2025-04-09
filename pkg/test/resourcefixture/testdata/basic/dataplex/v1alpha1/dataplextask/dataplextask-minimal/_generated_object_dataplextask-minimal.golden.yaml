@@ -32,10 +32,10 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     executionStatus:
       latestJob:
-        name: projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}/jobs/28691706-9e61-44b4-ac05-98aca0064170
+        name: projects/${projectNumber}/locations/us-central1/lakes/dataplexlake-${uniqueId}/tasks/dataplextask-minimal-${uniqueId}/jobs/0123456789abcdef
         trigger: TASK_CONFIG
-        uid: 28691706-9e61-44b4-ac05-98aca0064170
-      updateTime: "2025-04-09T00:15:37.278555Z"
+        uid: 0123456789abcdef
+      updateTime: "2024-04-01T12:34:56.123456Z"
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

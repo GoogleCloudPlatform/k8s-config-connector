@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-func (s *DataplexV1) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task, error) {
+func (s *DataplexService) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.Task, error) {
 	name, err := s.parseTaskName(req.Name)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (s *DataplexV1) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.T
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) (*longrunning.Operation, error) {
 	reqName := fmt.Sprintf("%s/tasks/%s", req.Parent, req.TaskId)
 	name, err := s.parseTaskName(reqName)
 	if err != nil {
@@ -68,14 +68,15 @@ func (s *DataplexV1) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) 
 	fqn := name.String()
 
 	now := timestamppb.New(time.Now())
-
+	uid := uuid.NewString()
 	obj := proto.Clone(req.Task).(*pb.Task)
 	obj.Name = fqn
 	obj.CreateTime = now
 	obj.UpdateTime = now
-	obj.Uid = uuid.NewString()
+	obj.Uid = uid
 	obj.State = pb.State_ACTIVE
 	obj.ExecutionStatus = &pb.Task_ExecutionStatus{
+		LatestJob:  &pb.Job{Name: fmt.Sprintf("projects/%d/locations/%s/lakes/%s/tasks/%s/jobs/%s", name.Project.Number, name.Location, name.LakeID, name.TaskID, uid), Uid: uid, Trigger: pb.Job_TASK_CONFIG},
 		UpdateTime: now,
 	}
 
@@ -100,17 +101,13 @@ func (s *DataplexV1) CreateTask(ctx context.Context, req *pb.CreateTaskRequest) 
 	return s.operations.StartLRO(ctx, name.lroPrefix(), lroMetadata, func() (proto.Message, error) {
 		// Simulate task becoming fully ready/active after creation
 		obj.State = pb.State_ACTIVE
-		if err := s.storage.Update(ctx, fqn, obj); err != nil {
-			// Log or handle potential storage error during LRO completion update
-			// For simplicity, we return the object state before this potential update error
-			return obj, nil
-		}
+		obj.ExecutionStatus = &pb.Task_ExecutionStatus{}
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
 }
 
-func (s *DataplexV1) UpdateTask(ctx context.Context, req *pb.UpdateTaskRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) UpdateTask(ctx context.Context, req *pb.UpdateTaskRequest) (*longrunning.Operation, error) {
 	name, err := s.parseTaskName(req.GetTask().GetName())
 	if err != nil {
 		return nil, err
@@ -178,13 +175,12 @@ func (s *DataplexV1) UpdateTask(ctx context.Context, req *pb.UpdateTaskRequest) 
 		CreateTime: timestamppb.New(time.Now()),
 	}
 	return s.operations.StartLRO(ctx, name.lroPrefix(), lroMetadata, func() (proto.Message, error) {
-		// Update the object state if necessary post-operation (e.g., state change)
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
 }
 
-func (s *DataplexV1) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
+func (s *DataplexService) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*pb.ListTasksResponse, error) {
 	// TODO: Handle parent parsing more robustly if needed (e.g., validating lake existence)
 	parentName, err := s.parseLakeName(req.Parent)
 	if err != nil {
@@ -212,7 +208,7 @@ func (s *DataplexV1) ListTasks(ctx context.Context, req *pb.ListTasksRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteTask(ctx context.Context, req *pb.DeleteTaskRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) DeleteTask(ctx context.Context, req *pb.DeleteTaskRequest) (*longrunning.Operation, error) {
 	name, err := s.parseTaskName(req.Name)
 	if err != nil {
 		return nil, err
@@ -234,62 +230,6 @@ func (s *DataplexV1) DeleteTask(ctx context.Context, req *pb.DeleteTaskRequest) 
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
-}
-
-func (s *DataplexV1) RunTask(ctx context.Context, req *pb.RunTaskRequest) (*pb.RunTaskResponse, error) {
-	taskName, err := s.parseTaskName(req.Name)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := taskName.String()
-
-	task := &pb.Task{}
-	if err := s.storage.Get(ctx, fqn, task); err != nil {
-		return nil, err
-	}
-
-	// Simulate creating and starting a job.
-	// In a real system, this would trigger asynchronous execution.
-	// Here, we'll just create a placeholder Job structure.
-	now := time.Now()
-	jobID := fmt.Sprintf("job-%s-%d", taskName.TaskID, now.UnixNano())
-	jobName := fmt.Sprintf("%s/jobs/%s", taskName.String(), jobID)
-
-	newJob := &pb.Job{
-		Name:       jobName,
-		Uid:        uuid.NewString(),
-		StartTime:  timestamppb.New(now),
-		EndTime:    nil, // Job hasn't finished yet
-		State:      pb.Job_RUNNING,
-		RetryCount: 0,                                    // Assuming first attempt
-		Service:    pb.Job_DATAPROC,                      // Assuming Dataproc for Spark/Notebook
-		ServiceJob: taskName.String() + "/jobs/" + jobID, // Example service job name
-		Message:    "Job initiated by RunTask",
-		// Labels might be inherited or specific to the run
-		Task: task.GetName(),
-	}
-
-	// Update the task's execution status to reflect this new job attempt.
-	task.ExecutionStatus = &pb.Task_ExecutionStatus{
-		UpdateTime: timestamppb.New(now),
-		LatestJob:  newJob,
-	}
-	// Persist the task update (important for GetTask calls)
-	if err := s.storage.Update(ctx, fqn, task); err != nil {
-		// If updating the task fails, the job run might be considered failed to start
-		return nil, status.Errorf(codes.Internal, "failed to update task status after starting job: %v", err)
-	}
-
-	// Optionally, store the Job itself if the mock needs to support GetJob/ListJobs
-	// jobFQN := newJob.Name
-	// if err := s.storage.Create(ctx, jobFQN, newJob); err != nil {
-	//    return nil, status.Errorf(codes.Internal, "failed to store created job: %v", err)
-	// }
-
-	return &pb.RunTaskResponse{
-		Job: newJob,
-	}, nil
 }
 
 type taskName struct {
@@ -325,12 +265,6 @@ func (s *MockService) parseTaskName(name string) (*taskName, error) {
 			LakeID:   tokens[5],
 			TaskID:   tokens[7],
 		}
-
-		// Basic validation for IDs - should not be empty
-		if n.Location == "" || n.LakeID == "" || n.TaskID == "" {
-			return nil, status.Errorf(codes.InvalidArgument, "name %q has empty components", name)
-		}
-
 		return n, nil
 	}
 

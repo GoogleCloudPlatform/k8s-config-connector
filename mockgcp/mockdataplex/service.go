@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockdataplex
-
 // +tool:mockgcp-service
 // http.host: dataplex.googleapis.com
 // proto.service: google.cloud.dataplex.v1.DataplexService
+
+package mockdataplex
 
 import (
 	"context"
@@ -42,7 +42,7 @@ type MockService struct {
 	operations *operations.Operations
 }
 
-type DataplexV1 struct {
+type DataplexService struct {
 	*MockService
 	pb.UnimplementedDataplexServiceServer
 }
@@ -62,7 +62,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDataplexServiceServer(grpcServer, &DataplexV1{MockService: s})
+	pb.RegisterDataplexServiceServer(grpcServer, &DataplexService{MockService: s})
 	//s.operations.RegisterGRPCServices(grpcServer)
 }
 
