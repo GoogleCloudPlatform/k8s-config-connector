@@ -310,9 +310,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
 
-	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
-	})
+	if uniqueID != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
+		})
+	}
 
 	// TODO: Only for some objects?
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -589,7 +591,8 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	case int64, float64, bool:
 		return o.visitPrimitive(v, path)
 	case string:
-		return o.visitString(v, path)
+		s := o.VisitString(v, path)
+		return s, nil
 	default:
 		return nil, fmt.Errorf("unhandled type at path %q: %T", path, v)
 	}
@@ -692,14 +695,14 @@ func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
 	return v, nil
 }
 
-func (o *objectWalker) visitString(s string, path string) (string, error) {
+func (o *objectWalker) VisitString(s string, path string) string {
 	for _, stringReplacement := range o.stringReplacements {
 		s = strings.ReplaceAll(s, stringReplacement.Find, stringReplacement.Replace)
 	}
 	for _, fn := range o.stringTransforms {
 		s = fn(path, s)
 	}
-	return s, nil
+	return s
 }
 
 func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
@@ -794,7 +797,7 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 }
 
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregistry.Normalizer, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
-	normalizer := NewNormalizer(uniqueID, project)
+	normalizer := NewNormalizer(project)
 
 	normalizer.Preprocess(events)
 
@@ -803,9 +806,6 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	}
 	if folderID != "" {
 		normalizer.Replacements.PathIDs[folderID] = "${folderID}"
-	}
-	if uniqueID != "" {
-		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
 	}
 
 	// Find any URLs
@@ -856,7 +856,34 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 		}
 	}
 
-	normalizeHTTPResponses(t, services, events)
+	// Run per-service replacers
+	{
+		replacements := newObjectWalker()
+
+		if uniqueID != "" {
+			replacements.ReplaceStringValue(uniqueID, "${uniqueId}")
+		}
+
+		for _, entry := range events {
+			services.ConfigureVisitor(entry.Request.URL, replacements)
+		}
+
+		for _, entry := range events {
+			services.Previsit(entry, replacements)
+		}
+
+		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+			if err := replacements.visitMap(obj, ""); err != nil {
+				t.Fatalf("error normalizing response: %v", err)
+			}
+		})
+
+		for _, event := range events {
+			event.Request.URL = replacements.VisitString(event.Request.URL, "<url>")
+		}
+	}
+
+	normalizeHTTPResponses(t, events)
 
 	// Normalize using the KRM normalization function
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
@@ -871,7 +898,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
 }
 
-func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
+func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor := newObjectWalker()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
@@ -1084,24 +1111,6 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		}
 	})
 
-	// Run per-service replaceres
-	{
-		replacements := newObjectWalker()
-
-		for _, entry := range events {
-			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
-		}
-
-		for _, entry := range events {
-			normalizer.Previsit(entry, replacements)
-		}
-
-		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
-			if err := replacements.visitMap(obj, ""); err != nil {
-				t.Fatalf("error normalizing response: %v", err)
-			}
-		})
-	}
 }
 
 // Compute URLs: Replace any compute beta URLs with v1 URLs
