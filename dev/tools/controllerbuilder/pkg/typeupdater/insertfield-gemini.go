@@ -17,29 +17,23 @@ package typeupdater
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
-func (u *FieldInserter) insertGoFieldGemini() error {
+func (u *FieldInserter) insertGoFieldGemini(llmClient gollm.Client, model string) error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 	ctx := context.Background()
-	client, err := llm.BuildVertexAIClient(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer client.Close()
 
 	// Start new chat session
 	systemPrompt := "" // TODO
-	chat := client.StartChat(systemPrompt)
+	chat := llmClient.StartChat(systemPrompt, model)
 
-	var userParts []string
+	var userParts []any
 
 	userParts = append(userParts, fmt.Sprintf(`
 						I have some Go structs written in Go files under a directory.
@@ -71,7 +65,7 @@ func (u *FieldInserter) insertGoFieldGemini() error {
 	userParts = append(userParts, "What is the content of the modified Go file")
 
 	// get response
-	resp, err := chat.SendMessage(ctx, userParts...)
+	resp, err := chat.Send(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -80,7 +74,7 @@ func (u *FieldInserter) insertGoFieldGemini() error {
 		return fmt.Errorf("error extracting modified content: %w", err)
 	}
 
-	resp, err = chat.SendMessage(ctx, "What is the filename that was modified")
+	resp, err = chat.Send(ctx, "What is the filename that was modified")
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -123,7 +117,7 @@ func writeFile(filePath, content string) error {
 }
 
 // extract the modified content of the file from the unstructured text response.
-func extractModifiedContent(resp llm.Response) (string, error) {
+func extractModifiedContent(resp gollm.ChatResponse) (string, error) {
 	candidates := resp.Candidates()
 	if len(candidates) == 0 {
 		return "", fmt.Errorf("no candidates found in response")
@@ -143,7 +137,7 @@ func extractModifiedContent(resp llm.Response) (string, error) {
 }
 
 // extract the name of the modified file from the unstructured text response.
-func extractModifiedFilename(resp llm.Response) (string, error) {
+func extractModifiedFilename(resp gollm.ChatResponse) (string, error) {
 	candidates := resp.Candidates()
 	if len(candidates) == 0 {
 		return "", fmt.Errorf("no candidates found in response")

@@ -24,7 +24,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -237,21 +237,16 @@ func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 }
 
 // InferOutput_WithChat tries to infer an output value, using the Chat LLM APIs.
-func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint, out io.Writer) error {
+// Deprecated: Use InferOutput_WithCompletion
+func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, llmClient gollm.Client, model string, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
 
-	client, err := llm.BuildVertexAIClient(ctx)
-	if err != nil {
-		return fmt.Errorf("building gemini client: %w", err)
-	}
-	defer client.Close()
-
 	systemPrompt := "" // TODO
-	chat := client.StartChat(systemPrompt)
+	chat := llmClient.StartChat(systemPrompt, model)
 
 	examples := x.pickExamples(input)
 
-	var userParts []string
+	var userParts []any
 
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range examples {
@@ -272,7 +267,7 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 		userParts = append(userParts, prompt)
 	}
 
-	resp, err := chat.SendMessage(ctx, userParts...)
+	resp, err := chat.Send(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("generating content with LLM: %w", err)
 	}
@@ -295,18 +290,8 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 }
 
 // InferOutput_WithCompletion tries to infer an output value, using the Completion LLM APIs.
-func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model string, input *DataPoint, out io.Writer) error {
+func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, llmClient gollm.Client, model string, input *DataPoint, out io.Writer) error {
 	log := klog.FromContext(ctx)
-
-	client, err := llm.BuildVertexAIClient(ctx)
-	if err != nil {
-		return fmt.Errorf("building gemini client: %w", err)
-	}
-	defer client.Close()
-
-	if model != "" {
-		client.WithModel(model)
-	}
 
 	var prompt strings.Builder
 
@@ -359,7 +344,8 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 
 	log.Info("sending completion request", "prompt", prompt.String())
 
-	resp, err := client.GenerateCompletion(ctx, &llm.CompletionRequest{
+	resp, err := llmClient.GenerateCompletion(ctx, &gollm.CompletionRequest{
+		Model:  model,
 		Prompt: prompt.String(),
 	})
 	if err != nil {

@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -62,19 +62,19 @@ func (t *ListFilesInWorkspace) Run(ctx context.Context, c *Chat, args map[string
 	return result, nil
 }
 
-func (t *ListFilesInWorkspace) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *ListFilesInWorkspace) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "ListFilesInWorkspace",
 		Description: `
 List all the files in the workspace.  The list can be filtered by providing a find_file_name to only return files with that name.
 Where possible, filter the list to reduce the amount of data returned.
 `,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"find_file_name": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 Find files in the workspace with the specified name or path.
 `,

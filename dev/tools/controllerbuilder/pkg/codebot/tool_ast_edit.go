@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -92,31 +92,31 @@ func (t *ASTEdit) Run(ctx context.Context, c *Chat, args map[string]any) (*ASTEd
 	return result, nil
 }
 
-func (t *ASTEdit) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *ASTEdit) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "ast_edit",
 		Description: `
 		Makes changes to an existing file in a way that understands the syntax of the file (the AST, or Abstract Syntax Tree).
 		`,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"filename", "action", "node"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"action": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 		The action to perform; must be one of ADD, REPLACE, DELETE.
 	
 		For example, to update a method, use REPLACE here and provided the updated method in node.`,
 				},
 				"node": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 		The AST node to ADD, REPLACE or DELETE.  This should be a top level node in the AST of the language you're using, for example a function declaration or a type declaration.
 		`,
 				},
 				"filename": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: "The path to the file you want to change",
 				},
 			},

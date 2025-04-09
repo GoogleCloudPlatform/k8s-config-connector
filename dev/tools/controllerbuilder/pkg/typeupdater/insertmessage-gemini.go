@@ -17,23 +17,17 @@ package typeupdater
 import (
 	"context"
 	"fmt"
-	"log"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 )
 
-func (u *FieldInserter) insertGoMessagesGemini() error {
+func (u *FieldInserter) insertGoMessagesGemini(llmClient gollm.Client, model string) error {
 	ctx := context.Background()
-	llmClient, err := llm.BuildVertexAIClient(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer llmClient.Close()
 
 	// Start new chat session
 	systemPrompt := "" // TODO
-	session := llmClient.StartChat(systemPrompt)
-	var userParts []string
+	session := llmClient.StartChat(systemPrompt, model)
+	var userParts []any
 	userParts = append(userParts, `
 						I have some Go structs written in Go files under a directory.
 						I will provide you the filename and content of each Go file under the directory.
@@ -67,7 +61,7 @@ func (u *FieldInserter) insertGoMessagesGemini() error {
 
 	userParts = append(userParts, "What is the content of the modified Go file")
 	// get response
-	resp, err := session.SendMessage(ctx, userParts...)
+	resp, err := session.Send(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}
@@ -76,7 +70,7 @@ func (u *FieldInserter) insertGoMessagesGemini() error {
 		return fmt.Errorf("error extracting modified content: %w", err)
 	}
 
-	resp, err = session.SendMessage(ctx, "What is the filename that was modified")
+	resp, err = session.Send(ctx, "What is the filename that was modified")
 	if err != nil {
 		return fmt.Errorf("error receiving message: %w", err)
 	}

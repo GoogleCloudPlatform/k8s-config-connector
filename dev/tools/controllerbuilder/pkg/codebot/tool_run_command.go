@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -81,16 +81,16 @@ func (t *RunShellCommand) Run(ctx context.Context, c *Chat, llmArgs map[string]a
 	return result, nil
 }
 
-func (t *RunShellCommand) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *RunShellCommand) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name:        "RunShellCommand",
 		Description: `Run a shell command in the workspace.  This returns the stdout, stderr and exit code from running the command.`,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"shell_command"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"shell_command": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: `The shell command to run in the workspace.`,
 				},
 			},
