@@ -4686,7 +4686,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.dataplex.v1.Environment
       host-name: ""
-      notes: []
+      notes:
+        - API deprecated(https://b.corp.google.com/issues/408235607#comment4)
     - name: dataplex-content
       local: resource-dataplex-content
       remote: resource-dataplex-content
@@ -4701,7 +4702,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.dataplex.v1.Content
       host-name: ""
-      notes: []
+      notes:
+        - API deprecated(https://b.corp.google.com/issues/408235607#comment4)
     - name: dataplex-session
       local: resource-dataplex-session
       remote: resource-dataplex-session
