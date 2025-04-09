@@ -26,7 +26,6 @@ import (
 
 	gcp "cloud.google.com/go/networkmanagement/apiv1"
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -48,38 +47,13 @@ func init() {
 }
 
 func NewConnectivityTestModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &connectivityTestModel{config: *config}, nil
+	return &connectivityTestModel{config: config}, nil
 }
 
 var _ directbase.Model = &connectivityTestModel{}
 
 type connectivityTestModel struct {
-	config config.ControllerConfig
-}
-
-func (m *connectivityTestModel) client(ctx context.Context, projectID string) (*gcp.ReachabilityClient, error) {
-	var opts []option.ClientOption
-
-	config := m.config
-
-	// Workaround for an unusual behaviour (bug?):
-	//  the service requires that a quota project be set
-	if !config.UserProjectOverride || config.BillingProject == "" {
-		config.UserProjectOverride = true
-		config.BillingProject = projectID
-	}
-
-	opts, err := config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	gcpClient, err := gcp.NewReachabilityRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building networkmanagement connectivitytest client: %w", err)
-	}
-
-	return gcpClient, err
+	config *config.ControllerConfig
 }
 
 func (m *connectivityTestModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -93,7 +67,7 @@ func (m *connectivityTestModel) AdapterForObject(ctx context.Context, reader cli
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	gcpClient, err := newReachabilityClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
@@ -205,19 +179,19 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	resource.Name = a.id.String() // Set the name for the update request
 
-	// Define mutable fields based on proto definition and documentation.
-	mutableFields := sets.NewString(
-		"description",
-		"source",
-		"destination",
-		"protocol",
-		"related_projects",
-		"labels",
-		"round_trip",
-		"bypass_firewall_checks",
-	)
+	//// Define mutable fields based on proto definition and documentation.
+	//mutableFields := sets.NewString(
+	//	"description",
+	//	"source",
+	//	"destination",
+	//	"protocol",
+	//	"related_projects",
+	//	"labels",
+	//	"round_trip",
+	//	"bypass_firewall_checks",
+	//)
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.FilterOutIgnoredPaths(mutableFields))
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("calculating diff for connectivity test %s: %w", a.id, err)
 	}
@@ -225,7 +199,8 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 	var updated *pb.ConnectivityTest
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		updated = a.actual // Use actual state for status if no update occurred
+		// Still update the status to cover the use case of acquisition.
+		updated = a.actual
 	} else {
 		updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
@@ -238,17 +213,12 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 		if err != nil {
 			return fmt.Errorf("updating networkmanagement connectivitytest %s: %w", a.id.String(), err)
 		}
-		updatedLRO, err := op.Wait(ctx)
+		updated, err = op.Wait(ctx)
 		if err != nil {
 			return fmt.Errorf("networkmanagement connectivitytest %s waiting for update: %w", a.id.String(), err)
 		}
-		updated = updatedLRO
 		log.V(2).Info("successfully updated networkmanagement connectivitytest", "name", a.id)
 
-		// Fetch the updated resource again to get the final state including output-only fields like reachability_details
-		if _, err = a.Find(ctx); err != nil {
-			return fmt.Errorf("fetching updated networkmanagement connectivitytest %s: %w", a.id, err)
-		}
 		updated = a.actual // Use the fetched resource for status update
 	}
 
@@ -257,6 +227,8 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	// Set externalRef here to cover the use case of acquisition.
+	status.ExternalRef = direct.PtrTo(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -313,27 +285,78 @@ func (a *connectivityTestAdapter) Delete(ctx context.Context, deleteOp *directba
 func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
 
-	if obj.Spec.Source.InstanceRef != nil {
-		if _, err := refs.ResolveComputeInstance(ctx, a.reader, obj, obj.Spec.Source.InstanceRef); err != nil {
-			return err
+	if obj.Spec.Source != nil {
+		if obj.Spec.Source.ComputeInstanceRef != nil {
+			if _, err := obj.Spec.Source.ComputeInstanceRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Source.ComputeNetworkRef != nil {
+			if err := obj.Spec.Source.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Source.ContainerClusterRef != nil {
+			if _, err := obj.Spec.Source.ContainerClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Source.SQLInstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, obj.Spec.Source.SQLInstanceRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.Source.SQLInstanceRef.External = instance.String()
+		}
+		if obj.Spec.Source.ProjectRef != nil {
+			projectRef, err := refs.ResolveProject(ctx, a.reader, obj.GetNamespace(), obj.Spec.Source.ProjectRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.Source.ProjectRef.External = projectRef.ProjectID
+		}
+		if obj.Spec.Source.CloudRunRevision != nil && obj.Spec.Source.CloudRunRevision.RunRevisionRef != nil {
+			if _, err := obj.Spec.Source.CloudRunRevision.RunRevisionRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
 		}
 	}
-	if obj.Spec.Source.NetworkRef != nil {
-		if err := obj.Spec.Source.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
-			return err
-		}
-	}
-	if obj.Spec.Destination.InstanceRef != nil {
-		if _, err := refs.ResolveComputeInstance(ctx, a.reader, obj, obj.Spec.Destination.InstanceRef); err != nil {
-			return err
-		}
-	}
-	if obj.Spec.Destination.NetworkRef != nil {
-		if err := obj.Spec.Destination.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
-			return err
-		}
-	}
-	// TODO: Normalize other potential reference fields if added (e.g., GkeMasterClusterRef, CloudSqlInstanceRef in Endpoint)
 
+	if obj.Spec.Destination != nil {
+		if obj.Spec.Destination.ComputeInstanceRef != nil {
+			if _, err := obj.Spec.Destination.ComputeInstanceRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Destination.ComputeNetworkRef != nil {
+			if err := obj.Spec.Destination.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Destination.ContainerClusterRef != nil {
+			if _, err := obj.Spec.Destination.ContainerClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+		if obj.Spec.Destination.SQLInstanceRef != nil {
+			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, obj.Spec.Destination.SQLInstanceRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.Destination.SQLInstanceRef.External = instance.String()
+		}
+		if obj.Spec.Destination.ProjectRef != nil {
+			projectRef, err := refs.ResolveProject(ctx, a.reader, obj.GetNamespace(), obj.Spec.Destination.ProjectRef)
+			if err != nil {
+				return err
+			}
+			obj.Spec.Destination.ProjectRef.External = projectRef.ProjectID
+		}
+		if obj.Spec.Destination.CloudRunRevision != nil && obj.Spec.Destination.CloudRunRevision.RunRevisionRef != nil {
+			if _, err := obj.Spec.Destination.CloudRunRevision.RunRevisionRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
+				return err
+			}
+		}
+	}
 	return nil
 }

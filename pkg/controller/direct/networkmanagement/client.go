@@ -25,19 +25,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
-type gcpClient struct {
-	config *config.ControllerConfig
-}
-
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
-	gcpClient := &gcpClient{
-		config: config,
-	}
-	return gcpClient, nil
-}
-
-func (m *gcpClient) newReachabilityClient(ctx context.Context) (*api.ReachabilityClient, error) {
-	opts, err := m.config.RESTClientOptions()
+func newReachabilityClient(ctx context.Context, config *config.ControllerConfig) (*api.ReachabilityClient, error) {
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
