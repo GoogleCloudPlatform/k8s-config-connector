@@ -1,3 +1,4 @@
+# Test for `gcloud colab schedules`
 - pre: gcloud iam service-accounts create test-${uniqueId}
 - pre: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
 - exec: gcloud colab schedules create --region=us-central1 --display-name="test-${uniqueId}" --cron-schedule="* * * * *" --gcs-output-uri="gs://test-${uniqueId}" --gcs-notebook-uri="gs://test-${uniqueId}/test.ipynb"  --execution-display-name="test-exec-${uniqueId}" --service-account="test-${uniqueId}@${projectId}.iam.gserviceaccount.com" --notebook-runtime-template="test-${uniqueId}"

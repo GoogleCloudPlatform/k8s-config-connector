@@ -1,3 +1,4 @@
+# Test for `gcloud colab runtimes`
 - pre: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
 - exec: gcloud colab runtimes create --region=us-central1 --runtime-template=test-${uniqueId} --runtime-id=test-${uniqueId} --display-name="Runtime ${uniqueId}" --runtime-user="\${user}"
 - exec: gcloud colab runtimes describe test-${uniqueId} --region=us-central1
