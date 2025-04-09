@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -58,8 +58,8 @@ func (t *EditFile) Run(ctx context.Context, c *Chat, args map[string]any) (any, 
 	return results, nil
 }
 
-func (t *EditFile) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *EditFile) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "EditFile",
 		Description: `
 Make a change to an existing file in the user's workspace, by replacing existing_text with new_text.  This tool only applies the first replacement.
@@ -93,20 +93,20 @@ func b() error {
   return nil
 </existing_text>
 `,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"new_text", "existing_text", "filename"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"existing_text": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: `The text to find, which will be replaced with the contents of the new_text argument.  Provide all the lines of the existing content you want to replace.`,
 				},
 				"new_text": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: `The new content of the file, with a few lines of context. Separate chunks of content with ... on its own line.`,
 				},
 				"filename": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: "The path to the file you want to change",
 				},
 			},

@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -59,18 +59,18 @@ func (t *ReadFile) Run(ctx context.Context, c *Chat, args map[string]any) (any, 
 	}, nil
 }
 
-func (t *ReadFile) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *ReadFile) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "ReadFile",
 		Description: `
 Reads the contents of a file in the workspace.  This returns the full contents of the given project file.
 `,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"filename"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"filename": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 The path to the file in the workspace you want to read.
 `,
