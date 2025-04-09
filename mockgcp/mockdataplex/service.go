@@ -42,6 +42,11 @@ type MockService struct {
 	operations *operations.Operations
 }
 
+type DataplexV1 struct {
+	*MockService
+	pb.UnimplementedDataplexServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
