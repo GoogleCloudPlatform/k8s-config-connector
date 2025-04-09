@@ -746,13 +746,13 @@ type Task_NotebookTaskConfig struct {
 	// Optional. Cloud Storage URIs of files to be placed in the working
 	//  directory of each executor.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.file_uris
-	FileUris []string `json:"fileUris,omitempty"`
+	FileURIs []string `json:"fileURIs,omitempty"`
 
 	// Optional. Cloud Storage URIs of archives to be extracted into the working
 	//  directory of each executor. Supported file types: .jar, .tar, .tar.gz,
 	//  .tgz, and .zip.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.archive_uris
-	ArchiveUris []string `json:"archiveUris,omitempty"`
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataplex.v1.Task.SparkTaskConfig
@@ -792,13 +792,13 @@ type Task_SparkTaskConfig struct {
 	// Optional. Cloud Storage URIs of files to be placed in the working
 	//  directory of each executor.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.file_uris
-	FileUris []string `json:"fileUris,omitempty"`
+	FileURIs []string `json:"fileURIs,omitempty"`
 
 	// Optional. Cloud Storage URIs of archives to be extracted into the working
 	//  directory of each executor. Supported file types: .jar, .tar, .tar.gz,
 	//  .tgz, and .zip.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.archive_uris
-	ArchiveUris []string `json:"archiveUris,omitempty"`
+	ArchiveURIs []string `json:"archiveURIs,omitempty"`
 
 	// Optional. Infrastructure specification for the execution.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.infrastructure_spec

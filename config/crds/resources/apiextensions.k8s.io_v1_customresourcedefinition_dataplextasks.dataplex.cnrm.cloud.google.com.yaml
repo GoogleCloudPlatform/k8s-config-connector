@@ -167,14 +167,14 @@ spec:
                 description: Config related to running scheduled Notebooks. Exactly
                   one of spark or notebook must be set.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. Cloud Storage URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. Cloud Storage URIs of files to be placed
                       in the working directory of each executor.
                     items:
@@ -268,14 +268,14 @@ spec:
                 description: Config related to running custom Spark tasks. Exactly
                   one of spark or notebook must be set.
                 properties:
-                  archiveUris:
+                  archiveURIs:
                     description: 'Optional. Cloud Storage URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
                     items:
                       type: string
                     type: array
-                  fileUris:
+                  fileURIs:
                     description: Optional. Cloud Storage URIs of files to be placed
                       in the working directory of each executor.
                     items:

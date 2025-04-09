@@ -278,8 +278,8 @@ func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_No
 	out := &krmv1alpha1.Task_NotebookTaskConfig{}
 	out.Notebook = direct.LazyPtr(in.GetNotebook())
 	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
+	out.FileURIs = in.FileUris
+	out.ArchiveURIs = in.ArchiveUris
 	return out
 }
 func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Task_NotebookTaskConfig) *pb.Task_NotebookTaskConfig {
@@ -289,8 +289,8 @@ func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	out := &pb.Task_NotebookTaskConfig{}
 	out.Notebook = direct.ValueOf(in.Notebook)
 	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
+	out.FileUris = in.FileURIs
+	out.ArchiveUris = in.ArchiveURIs
 	return out
 }
 func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_SparkTaskConfig) *krmv1alpha1.Task_SparkTaskConfig {
@@ -303,8 +303,8 @@ func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_Spark
 	out.PythonScriptFile = direct.LazyPtr(in.GetPythonScriptFile())
 	out.SQLScriptFile = direct.LazyPtr(in.GetSqlScriptFile())
 	out.SQLScript = direct.LazyPtr(in.GetSqlScript())
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
+	out.FileURIs = in.FileUris
+	out.ArchiveURIs = in.ArchiveUris
 	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
 	return out
 }
@@ -328,8 +328,8 @@ func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Tas
 	if oneof := in.SQLScript; oneof != nil {
 		out.Driver = &pb.Task_SparkTaskConfig_SqlScript{SqlScript: direct.ValueOf(oneof)}
 	}
-	out.FileUris = in.FileUris
-	out.ArchiveUris = in.ArchiveUris
+	out.FileUris = in.FileURIs
+	out.ArchiveUris = in.ArchiveURIs
 	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
 	return out
 }
