@@ -131,3 +131,15 @@ type CatalogObservedState struct {
 	// // +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.expire_time
 	// ExpireTime *string `json:"expireTime,omitempty"`
 }
+
+// +kcc:proto=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions
+type HiveDatabaseOptions struct {
+	// Cloud Storage folder URI where the database data is stored, starting with
+	//  "gs://".
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+
+	// Stores user supplied Hive database parameters.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+}
