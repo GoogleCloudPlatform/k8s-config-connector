@@ -218,7 +218,9 @@ func (p *Proxy) runRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	u := req.URL
-	u.Scheme = "https"
+	if u.Scheme == "" {
+		u.Scheme = "https"
+	}
 	if u.Host == "" {
 		// for CONNECT requests, the host appears here
 		u.Host = req.Host
@@ -273,7 +275,7 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	// Customize the api endpoint overrides for reCAPTCHA Enterprise.
 	// Gcloud commands for reCAPTCHA Enterprise works only when pointing
 	// to public-preview-recaptchaenterprise.googleapis.com.
-	config.AddConfig(fmt.Sprintf("api_endpoint_overrides/recaptchaenterprise"), "http://public-preview-recaptchaenterprise.googleapis.com/")
+	config.AddConfig(fmt.Sprintf("api_endpoint_overrides/recaptchaenterprise"), "https://public-preview-recaptchaenterprise.googleapis.com/")
 
 	return config
 }
