@@ -21,13 +21,13 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
 type Chat struct {
-	client  llm.Client
-	session llm.Chat
+	client  gollm.Client
+	session gollm.Chat
 	baseDir string
 	ui      ui.UI
 
@@ -39,7 +39,7 @@ type FileInfo struct {
 	Content string
 }
 
-func NewChat(ctx context.Context, llmClient llm.Client, baseDir string, contextFiles map[string]*FileInfo, toolbox *Toolbox, ui ui.UI) (*Chat, error) {
+func NewChat(ctx context.Context, llmClient gollm.Client, model string, baseDir string, contextFiles map[string]*FileInfo, toolbox *Toolbox, ui ui.UI) (*Chat, error) {
 	systemPrompt := `
 You are a helpful AI coding assistant, expert in the go programming language and in creating kubernetes controllers.
 
@@ -67,7 +67,7 @@ If you think the code should be changed, use the tools to apply those changes in
 		systemPrompt += sb.String()
 	}
 
-	session := llmClient.StartChat(systemPrompt)
+	session := llmClient.StartChat(systemPrompt, model)
 
 	session.SetFunctionDefinitions(functionDefinitions)
 
@@ -85,8 +85,8 @@ func (c *Chat) Close() error {
 	return c.client.Close()
 }
 
-func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
-	resp, err := c.session.SendMessage(ctx, userParts...)
+func (c *Chat) SendMessage(ctx context.Context, userParts ...any) error {
+	resp, err := c.session.Send(ctx, userParts...)
 	if err != nil {
 		return fmt.Errorf("sending message to LLM: %w", err)
 	}
@@ -106,7 +106,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 
 		klog.Infof("processing candidate %+v", candidate)
 
-		var functionResponses []llm.FunctionCallResult
+		var functionResponses []any
 
 		for _, part := range candidate.Parts() {
 			if text, ok := part.AsText(); ok {
@@ -140,7 +140,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 						}
 						response = m
 					}
-					functionResponses = append(functionResponses, llm.FunctionCallResult{
+					functionResponses = append(functionResponses, gollm.FunctionCallResult{
 						Name:   functionCall.Name,
 						Result: response,
 					})
@@ -156,7 +156,7 @@ func (c *Chat) SendMessage(ctx context.Context, userParts ...string) error {
 
 		// Go round again, but this time reply with the function responses
 		klog.Infof("functionResponses: %+v", functionResponses)
-		resp, err = c.session.SendFunctionResults(ctx, functionResponses)
+		resp, err = c.session.Send(ctx, functionResponses...)
 		if err != nil {
 			return fmt.Errorf("sending message to LLM: %w", err)
 		}

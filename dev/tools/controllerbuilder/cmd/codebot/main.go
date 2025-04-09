@@ -23,9 +23,9 @@ import (
 	"strings"
 
 	codebotui "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
 	"k8s.io/klog/v2"
 )
@@ -52,20 +52,14 @@ type Options struct {
 	UIType   string
 	Project  string
 	Location string
+
+	Model string
 }
 
 type CodeBot struct {
 	ctx           context.Context
 	protoEnhancer *toolbot.EnhanceWithProtoDefinition
 	chatSession   *codebot.Chat
-}
-
-func (o *Options) GetProject() string {
-	return o.Project
-}
-
-func (o *Options) GetLocation() string {
-	return o.Location
 }
 
 func (cb *CodeBot) run(ctx context.Context) error {
@@ -79,7 +73,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 	flag.StringVar(&o.UIType, "ui-type", o.UIType, "available value is terminal, tview, prompt or bash.")
 	flag.StringVar(&o.Project, "project", o.Project, "the GCP project that the LLM service files billing for, Default to gcloud config")
 	flag.StringVar(&o.Location, "location", o.Location, "the GCP location. Default to gcloud config")
-
+	flag.StringVar(&o.Model, "model", o.Model, "The LLM model to use")
 	flag.Parse()
 
 	if o.ProtoDir == "" {
@@ -122,7 +116,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 		}
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx, &o)
+	llmClient, err := gollm.NewVertexAIClient(ctx) // o.Project, o.Location)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
@@ -147,7 +141,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 
 	ui.SetCallback(cb.sendToLlm)
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, toolbox, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.Model, o.BaseDir, contextFiles, toolbox, ui)
 	if err != nil {
 		return err
 	}
@@ -162,7 +156,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 }
 
 func (cb *CodeBot) sendToLlm(text string) error {
-	var userParts []string
+	var userParts []any
 
 	var additionalContext strings.Builder
 
