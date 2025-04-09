@@ -1,3 +1,4 @@
+# Test for `gcloud backup-dr management-servers`
 - exec: gcloud compute networks create test-network-${uniqueId} --subnet-mode=custom
 - exec: gcloud compute addresses create google-managed-services-${uniqueId} --global --purpose=VPC_PEERING --addresses=192.168.0.0 --prefix-length=16 --network=test-network-${uniqueId}
 - exec: gcloud services vpc-peerings connect --service=servicenetworking.googleapis.com --ranges=google-managed-services-${uniqueId} --network=test-network-${uniqueId} --project=${projectId}

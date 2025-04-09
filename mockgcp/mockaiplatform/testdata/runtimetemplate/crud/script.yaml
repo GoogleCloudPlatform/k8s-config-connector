@@ -1,4 +1,5 @@
 
+# Test for `gcloud colab runtime-templates`
 - exec: gcloud colab runtime-templates create --display-name=test-${uniqueId} --runtime-template-id=test-${uniqueId} --region=us-central1
 - exec: gcloud colab runtime-templates describe test-${uniqueId} --region=us-central1
 - exec: gcloud colab runtime-templates delete test-${uniqueId} --region=us-central1

@@ -1,3 +1,4 @@
+# Test for `gcloud bigtable app-profiles`
 - exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-central1-a
 
 - exec: gcloud bigtable app-profiles create test-app-profile-${uniqueId} --instance=test-instance-${uniqueId} --route-any --description="Test App Profile"

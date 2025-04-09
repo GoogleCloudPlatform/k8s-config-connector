@@ -1,3 +1,4 @@
+# Test for `gcloud asset saved-queries`
 - exec: |
     rm -f /tmp/assetsavedquery.yaml
     echo "IamPolicyAnalysisQuery:" > /tmp/assetsavedquery.yaml
