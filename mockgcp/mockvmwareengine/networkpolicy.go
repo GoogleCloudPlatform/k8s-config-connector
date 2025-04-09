@@ -209,12 +209,26 @@ func (s *MockService) parseNetworkPolicyName(name string) (*networkPolicyName, e
 
 func setDefaultNetworkPolicyFields(obj *pb.NetworkPolicy) {
 	obj.Uid = "111111111111111111111"
-	obj.ExternalIp = &pb.NetworkPolicy_NetworkService{
-		Enabled: false,
-		State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
+	if obj.ExternalIp != nil && obj.ExternalIp.Enabled {
+		obj.ExternalIp = &pb.NetworkPolicy_NetworkService{
+			Enabled: true,
+			State:   pb.NetworkPolicy_NetworkService_ACTIVE,
+		}
+	} else {
+		obj.ExternalIp = &pb.NetworkPolicy_NetworkService{
+			Enabled: false,
+			State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
+		}
 	}
-	obj.InternetAccess = &pb.NetworkPolicy_NetworkService{
-		Enabled: false,
-		State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
+	if obj.InternetAccess != nil && obj.InternetAccess.Enabled {
+		obj.InternetAccess = &pb.NetworkPolicy_NetworkService{
+			Enabled: true,
+			State:   pb.NetworkPolicy_NetworkService_ACTIVE,
+		}
+	} else {
+		obj.InternetAccess = &pb.NetworkPolicy_NetworkService{
+			Enabled: false,
+			State:   pb.NetworkPolicy_NetworkService_UNPROVISIONED,
+		}
 	}
 }

@@ -72,7 +72,7 @@ func (s *VMwareEngineV1) CreateExternalAddress(ctx context.Context, req *pb.Crea
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.ExternalAddress_ACTIVE // Or CREATING, then update in LRO
 	obj.Uid = fmt.Sprintf("%d", rand.Int63())
-	obj.ExternalIp = fmt.Sprintf("10.%d.%d.%d", rand.Intn(256), rand.Intn(256), rand.Intn(256))
+	obj.ExternalIp = "34.118.248.97"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (s *VMwareEngineV1) UpdateExternalAddress(ctx context.Context, req *pb.Upda
 		switch path {
 		case "description":
 			obj.Description = req.GetExternalAddress().Description
-		case "internal_ip":
+		case "internal_ip", "internalIP":
 			obj.InternalIp = req.GetExternalAddress().InternalIp
 		// Add other updatable fields if any
 		default:
