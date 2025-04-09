@@ -21,3 +21,4 @@ spec:
     external: ${projectId}
   location: us-central1
   resourceID: datacatalogentrygroup-minimal-${uniqueId}
+  displayName: Initial Minimal Entry Group
