@@ -122,3 +122,96 @@ func HiveTableOptions_StorageDescriptor_ToProto(mapCtx *direct.MapContext, in *k
 	out.SerdeInfo = HiveTableOptions_SerDeInfo_ToProto(mapCtx, in.SerdeInfo)
 	return out
 }
+
+func BigLakeCatalogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.BigLakeCatalogObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigLakeCatalogObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func BigLakeCatalogObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigLakeCatalogObservedState) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func BigLakeCatalogSpec_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.BigLakeCatalogSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigLakeCatalogSpec{}
+	// MISSING: Name
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func BigLakeCatalogSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigLakeCatalogSpec) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func Catalog_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Catalog{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func Catalog_ToProto(mapCtx *direct.MapContext, in *krm.Catalog) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func CatalogObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Catalog) *krm.CatalogObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CatalogObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
+func CatalogObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CatalogObservedState) *pb.Catalog {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Catalog{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: DeleteTime
+	// MISSING: ExpireTime
+	return out
+}
