@@ -148,15 +148,16 @@ func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.ColabRuntimeTemplate) error {
+func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error {
+	obj := a.desired
 	if obj.Spec.NetworkSpec != nil {
 		if obj.Spec.NetworkSpec.NetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
 				return err
 			}
 		}
 		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
-			subnetworkRef, err := refs.ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.NetworkSpec.SubnetworkRef)
+			subnetworkRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, obj.Spec.NetworkSpec.SubnetworkRef)
 			if err != nil {
 				return err
 			}
@@ -164,12 +165,12 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Colab
 		}
 	}
 	if obj.Spec.ServiceAccountRef != nil {
-		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, a.reader, obj); err != nil {
 			return err
 		}
 	}
 	if obj.Spec.EncryptionSpec != nil && obj.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.EncryptionSpec.KMSKeyRef)
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionSpec.KMSKeyRef)
 		if err != nil {
 			return err
 		}
@@ -183,7 +184,7 @@ func (a *runtimeTemplateAdapter) Create(ctx context.Context, createOp *directbas
 	log.V(2).Info("creating colabruntimetemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+	if err := a.normalizeReferences(ctx); err != nil {
 		return fmt.Errorf("resolving references: %w", err)
 	}
 
@@ -221,7 +222,7 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 	log.V(2).Info("updating colabruntimetemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := resolveReferences(ctx, a.reader, a.desired); err != nil {
+	if err := a.normalizeReferences(ctx); err != nil {
 		return fmt.Errorf("resolving references: %w", err)
 	}
 
@@ -254,7 +255,18 @@ func (a *runtimeTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 	paths.Delete("name", "etag")
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		// Still update the status to cover the use case of acquisition.
+		if a.desired.Status.ExternalRef == nil {
+			observedState := ColabRuntimeTemplateObservedState_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
+
+			a.desired.Status.ExternalRef = direct.PtrTo(a.id.String())
+			a.desired.Status.ObservedState = observedState
+
+			return updateOp.UpdateStatus(ctx, a.desired.Status, nil)
+		}
 	}
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
