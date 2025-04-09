@@ -12,17 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: asset.cnrm.cloud.google.com/v1alpha1
-kind: AssetFeed
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
 metadata:
-  name: assetfeed-minimal-${uniqueId}
+  name: kcc-assetfeed-minimal-${uniqueId}
 spec:
   projectRef:
     external: "${projectNumber}"
-  # Either assetNames or assetTypes must be specified.
-  assetTypes:
-    - "storage.googleapis.com/Bucket"
-  feedOutputConfig:
-    pubsubDestination:
-      topicRef:
-        name: "kcc-assetfeed-minimal-${uniqueId}"

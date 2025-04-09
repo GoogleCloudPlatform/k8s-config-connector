@@ -26,6 +26,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/asset/v1"
@@ -33,12 +34,14 @@ import (
 
 func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb.Feed, error) {
 	obj := &pb.Feed{}
-	if err := s.storage.Get(ctx, req.Name, obj); err != nil {
+	name, err := s.parseFeedName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Get(ctx, name.String(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			parts := strings.Split(req.Name, "/")
-			feedID := parts[len(parts)-1]
-			parent := strings.Join(parts[:len(parts)-2], "/")
-			return nil, status.Errorf(codes.NotFound, "feed %q not found in %q", feedID, parent)
+			return nil, status.Errorf(codes.NotFound, "feed %q not found", name.String())
 		}
 		return nil, err
 	}
@@ -47,17 +50,16 @@ func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb
 }
 
 func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest) (*pb.Feed, error) {
-	_, projectNumber, err := s.parseParent(req.Parent)
+	name, err := s.parseFeedName(req.Parent + "/feeds/" + req.FeedId)
 	if err != nil {
 		return nil, err
 	}
+	fqn := name.String()
 
-	feedName := fmt.Sprintf("projects/%s/feeds/%s", projectNumber, req.FeedId)
+	feed := proto.Clone(req.Feed).(*pb.Feed)
+	feed.Name = fqn
 
-	feed := req.Feed
-	feed.Name = feedName
-
-	if err := s.storage.Create(ctx, feedName, feed); err != nil {
+	if err := s.storage.Create(ctx, fqn, feed); err != nil {
 		return nil, err
 	}
 
@@ -65,8 +67,14 @@ func (s *AssetService) CreateFeed(ctx context.Context, req *pb.CreateFeedRequest
 }
 
 func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest) (*pb.Feed, error) {
+	name, err := s.parseFeedName(req.Feed.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 	obj := &pb.Feed{}
-	if err := s.storage.Get(ctx, req.Feed.Name, obj); err != nil {
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -93,15 +101,20 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 		}
 	}
 
-	if err := s.storage.Update(ctx, req.Feed.Name, obj); err != nil {
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
 }
 
 func (s *AssetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest) (*emptypb.Empty, error) {
+	name, err := s.parseFeedName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
 	deletedObj := &pb.Feed{}
-	if err := s.storage.Delete(ctx, req.Name, deletedObj); err != nil {
+	if err := s.storage.Delete(ctx, name.String(), deletedObj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "feed %q not found", req.Name)
 		}
@@ -111,28 +124,47 @@ func (s *AssetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest
 }
 
 type feedName struct {
-	parent string
-	feedID string
+	projectID      string
+	folderID       string
+	organizationID string
+	feedID         string
 }
 
 func (n *feedName) String() string {
-	return fmt.Sprintf("%s/feeds/%s", n.parent, n.feedID)
+	if n.organizationID != "" {
+		return fmt.Sprintf("organizations/%s/feeds/%s", n.organizationID, n.feedID)
+	}
+	if n.folderID != "" {
+		return fmt.Sprintf("folders/%s/feeds/%s", n.folderID, n.feedID)
+	}
+	return fmt.Sprintf("projects/%s/feeds/%s", n.projectID, n.feedID)
 }
 
 // parseFeedName parses a string into an feedName.
 func (s *MockService) parseFeedName(name string) (*feedName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 4 && tokens[0] != "" && tokens[2] == "feeds" {
-		name := &feedName{
-			parent: strings.Join(tokens[0:2], "/"),
-			feedID: tokens[3],
-		}
-
-		return name, nil
+	if len(tokens) != 4 || tokens[2] != "feeds" {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	feedName := &feedName{}
+	feedName.feedID = tokens[3]
+	switch tokens[0] {
+	case "projects":
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		feedName.projectID = project.ID
+	case "folders":
+		feedName.folderID = tokens[1]
+	case "organizations":
+		feedName.organizationID = tokens[1]
+	default:
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+	return feedName, nil
 }
 
 var parentRegex = regexp.MustCompile(`^projects/([^/]+)$`)

@@ -40,7 +40,6 @@ type PubsubDestination struct {
 // AssetFeedSpec defines the desired state of AssetFeed
 // +kcc:proto=google.cloud.asset.v1.Feed
 type AssetFeedSpec struct {
-	// +required
 	Parent AssetFeedParent `json:",inline"`
 
 	// The AssetFeed name. If not given, the metadata.name will be used.

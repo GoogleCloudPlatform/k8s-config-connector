@@ -257,7 +257,6 @@ spec:
                   be used.
                 type: string
             required:
-            - ""
             - feedOutputConfig
             type: object
           status:

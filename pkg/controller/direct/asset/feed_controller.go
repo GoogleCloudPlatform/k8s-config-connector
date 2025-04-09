@@ -28,6 +28,7 @@ import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -57,10 +58,17 @@ type feedModel struct {
 	config config.ControllerConfig
 }
 
-func (m *feedModel) client(ctx context.Context) (*gcp.Client, error) {
+func (m *feedModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
 	var opts []option.ClientOption
 
-	opts, err := m.config.RESTClientOptions()
+	config := m.config
+	// Workaround for an unusual behaviour (bug?):
+	//  the service requires that a quota project be set
+	if !config.UserProjectOverride || config.BillingProject == "" {
+		config.UserProjectOverride = true
+		config.BillingProject = projectID
+	}
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +92,7 @@ func (m *feedModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -114,9 +122,13 @@ var _ directbase.Adapter = &feedAdapter{}
 
 func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting asset feed", "name", a.id)
+	log.Info("---------getting asset feed", "name", a.id)
 
-	req := &pb.GetFeedRequest{Name: a.id.String()}
+	name := a.id.String()
+	if a.actual != nil {
+		name = a.actual.Name
+	}
+	req := &pb.GetFeedRequest{Name: name}
 	actual, err := a.gcpClient.GetFeed(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -143,7 +155,7 @@ func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
 
 func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating asset feed", "name", a.id)
+	log.Info("---------creating asset feed", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	if err := a.normalizeReferences(ctx); err != nil {
@@ -163,25 +175,45 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 		FeedId: a.id.ID(),
 		Feed:   resource,
 	}
-	_, err := a.gcpClient.CreateFeed(ctx, req)
-	if err != nil {
+
+	// Attempt to create the feed
+	actual, err := a.gcpClient.CreateFeed(ctx, req)
+
+	// Regardless of CreateFeed result (success or AlreadyExists),
+	// we need to ensure a.actual is populated by calling Find.
+	found := false
+	var findErr error
+
+	if err == nil {
+		log.Info("---------successfully created asset feed in gcp, attempting to fetch it", "name", a.id)
+		a.actual = actual
+		found = true
+	} else if errors.IsAlreadyExists(err) {
+		// Resource already exists. Log and attempt to Find to populate a.actual.
+		log.Info("---------asset feed already exists during creation attempt, attempting to fetch it", "name", a.id.String(), "warning", err)
+		found, findErr = a.Find(ctx)
+		if findErr != nil {
+			return fmt.Errorf("fetching existing asset feed %q after CreateFeed returned AlreadyExists failed: %w", a.id.String(), findErr)
+		}
+		if !found {
+			// This is unexpected if CreateFeed returned AlreadyExists
+			return fmt.Errorf("asset feed %q not found even though CreateFeed returned AlreadyExists", a.id.String())
+		}
+	} else {
+		// Other error during creation
 		return fmt.Errorf("creating asset feed %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created asset feed in gcp", "name", a.id)
 
+	// Update status
 	status := &krm.AssetFeedStatus{}
-
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ExternalRef = direct.LazyPtr(a.actual.Name)
+	// Pass the fetched 'a.actual' to UpdateStatus for potential status mapping
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating asset feed", "name", a.id)
+	log.Info("---------updating asset feed", "name", a.id, "actual", a.actual.Name)
 	mapCtx := &direct.MapContext{}
 
 	if err := a.normalizeReferences(ctx); err != nil {
@@ -203,7 +235,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	paths.Delete("name")
 
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
+		log.Info("---------no field needs update", "name", a.id)
 		// Update status even if no fields changed in spec
 		status := &krm.AssetFeedStatus{}
 
@@ -213,7 +245,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	log.V(2).Info("updating asset feed fields", "paths", sets.List(paths))
+	log.Info("---------updating asset feed fields", "paths", sets.List(paths))
 
 	updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
 	req := &pb.UpdateFeedRequest{
@@ -224,7 +256,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	if err != nil {
 		return fmt.Errorf("updating asset feed %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully updated asset feed", "name", a.id)
+	log.Info("---------successfully updated asset feed", "name", a.id)
 
 	status := &krm.AssetFeedStatus{}
 
@@ -266,27 +298,30 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 		return nil, err
 	}
 
-	u.SetName(id)
+	// Initialize u with the converted object map
+	u = &unstructured.Unstructured{Object: uObj} // Assign to existing 'u'
+	// Set GVK and Name, which will modify u.Object directly
 	u.SetGroupVersionKind(krm.AssetFeedGVK)
-	u.Object = uObj
+	u.SetName(id)
+
 	return u, nil
 }
 
 func (a *feedAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting asset feed", "name", a.id)
+	log.Info("--------- deleting asset feed", "name", a.id)
 
 	req := &pb.DeleteFeedRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteFeed(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent asset feed, assuming it was already deleted", "name", a.id)
+			log.Info("--------- skipping delete for non-existent asset feed, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting asset feed %s: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully deleted asset feed", "name", a.id)
+	log.Info("--------- successfully deleted asset feed", "name", a.id)
 
 	return true, nil
 }

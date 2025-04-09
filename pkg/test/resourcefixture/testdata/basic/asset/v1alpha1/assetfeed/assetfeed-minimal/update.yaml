@@ -1,4 +1,4 @@
-# Copyright %!s(int=2025) Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ metadata:
   name: assetfeed-minimal-${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    external: "${projectNumber}"
   # Either assetNames or assetTypes must be specified.
   assetTypes:
     - "storage.googleapis.com/Bucket"
@@ -26,5 +26,4 @@ spec:
   feedOutputConfig:
     pubsubDestination:
       topicRef:
-        # Replace with a real topic or use a fixture with a PubSubTopic KRM resource.
-        external: "projects/${projectId}/topics/kcc-assetfeed-minimal"
+        name: "kcc-assetfeed-minimal-${uniqueId}"
