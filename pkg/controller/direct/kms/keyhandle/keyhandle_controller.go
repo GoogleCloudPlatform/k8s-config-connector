@@ -18,6 +18,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -106,9 +109,11 @@ var _ directbase.Adapter = &Adapter{}
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting KeyHandle", "name", a.id.String())
-	_, idIsSet := a.id.KeyHandleID()
 
-	if !idIsSet {
+	// Check whether Config Connector knows the resource identity.
+	// If not, Config Connector saves one GCP GET call, and starts the CREATE call directly.
+	// This is mostly for GCP services that do not allow user to specify ID, but assign an ID when creating the object.
+	if a.id.ID() == "" {
 		return false, nil
 	}
 
@@ -131,20 +136,22 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec, a.id)
+	resource := KMSKeyHandleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	parent := a.id.Parent()
-	id, idIsSet := a.id.KeyHandleID()
 
 	req := &kmspb.CreateKeyHandleRequest{
 		Parent:    parent.String(),
 		KeyHandle: resource,
 	}
-	if idIsSet {
-		req.KeyHandleId = id
+	if a.id.ID() != "" {
+		// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
+		// unique to the resource project and location. If not provided by the caller,
+		// a new UUID is used.
+		req.KeyHandleId = a.id.ID()
 	}
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
 	if err != nil {
@@ -168,9 +175,31 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 // Update operation not supported for KeyHandle.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("update operation not supported for KeyHandle resource")
-	return nil
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating Logging Link", "name", a.id)
+	mapCtx := &direct.MapContext{}
+
+	desiredPb := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id)
+		status := &krm.KMSKeyHandleStatus{}
+		status.ObservedState = KMSKeyHandleStatusObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		return fmt.Errorf("update operation not supported for resource %v %v",
+			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+	}
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

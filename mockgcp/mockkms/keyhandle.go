@@ -25,6 +25,7 @@ import (
 
 	lro "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/protobuf/proto"
+	"k8s.io/apimachinery/pkg/util/uuid"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/kms/v1"
 )
@@ -35,12 +36,12 @@ type autokeyServer struct {
 }
 
 func (r *autokeyServer) GetKeyHandle(ctx context.Context, req *pb.GetKeyHandleRequest) (*pb.KeyHandle, error) {
-	parent, resourceID, err := r.parseKeyHandleName(req.Name)
+	keyHandleName, err := r.parseKeyHandleName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := parent.String() + "/keyHandles/" + resourceID
+	fqn := keyHandleName.String()
 
 	obj := &pb.KeyHandle{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
@@ -52,19 +53,17 @@ func (r *autokeyServer) GetKeyHandle(ctx context.Context, req *pb.GetKeyHandleRe
 
 func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHandleRequest) (*lro.Operation, error) {
 	var reqName string
+	uuid := string(uuid.NewUUID())
 	if req.KeyHandleId != "" {
 		reqName = req.Parent + "/keyHandles/" + req.KeyHandleId
-	} else if req.KeyHandle.Name != "" {
-		reqName = req.KeyHandle.Name
 	} else {
-		reqName = req.Parent + "/keyHandles/" + "5fe9854c-4a75-4ec9-8c27-c235754b981d"
-
+		reqName = req.Parent + "/keyHandles/" + uuid
 	}
-	parent, resourceID, err := r.parseKeyHandleName(reqName)
+	keyHandleName, err := r.parseKeyHandleName(reqName)
 	if err != nil {
 		return nil, err
 	}
-	fqn := parent.String() + "/keyHandles/" + resourceID
+	fqn := keyHandleName.String()
 
 	obj := proto.Clone(req.GetKeyHandle()).(*pb.KeyHandle)
 	obj.Name = fqn
@@ -72,44 +71,33 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return r.operations.StartLRO(ctx, parent.String(), nil, func() (proto.Message, error) {
+	return r.operations.StartLRO(ctx, req.Parent, nil, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.KeyHandle)
 		return result, nil
 	})
 }
 
-type parentName struct {
-	projectID string
-	location  string
+type KeyHandleName struct {
+	projectID   string
+	location    string
+	keyHandleID string
 }
 
-func (a *parentName) String() string {
-	return "projects/" + a.projectID + "/locations/" + a.location
-}
-
-func (r *autokeyServer) parseParentName(name string) (*parentName, error) {
-	name = strings.TrimPrefix(name, "/")
-	tokens := strings.Split(name, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
-		return nil, fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/<projectId>/locations/<location>/keyHandles/<keyhandleID>)", name)
-	}
-	return &parentName{
-		projectID: tokens[1],
-		location:  tokens[3],
-	}, nil
+func (a *KeyHandleName) String() string {
+	return "projects/" + a.projectID + "/locations/" + a.location + "/keyHandles/" + a.keyHandleID
 }
 
 // parseKeyHandleName parses a string into an KeyHandle name.
 // The expected form is `projects/{projectId}/locations/<location>/keyHandles/<resourceId>`.
-func (r *autokeyServer) parseKeyHandleName(name string) (*parentName, string, error) {
+func (r *autokeyServer) parseKeyHandleName(name string) (*KeyHandleName, error) {
 	name = strings.TrimPrefix(name, "/")
 	tokens := strings.Split(name, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "keyHandles" {
-		return nil, "", fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/<projectId>/locations/<location>/keyHandles/<keyhandleID>)", name)
+		return nil, fmt.Errorf("format of KMSKeyHandle external=%q was not known (use projects/<projectId>/locations/<location>/keyHandles/<keyhandleID>)", name)
 	}
-	parent := &parentName{
-		projectID: tokens[1],
-		location:  tokens[3],
-	}
-	return parent, tokens[5], nil
+	return &KeyHandleName{
+		projectID:   tokens[1],
+		location:    tokens[3],
+		keyHandleID: tokens[5],
+	}, nil
 }

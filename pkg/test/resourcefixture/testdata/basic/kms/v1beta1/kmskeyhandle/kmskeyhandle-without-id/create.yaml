@@ -17,7 +17,9 @@ kind: KMSKeyHandle
 metadata:
   name: keyhandle-${uniqueId}
 spec:
-  resourceID: 5a4fa10e-995d-4ee0-a426-a220aa390320
+  # Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
+  #	unique to the resource project and location. If not provided by the caller,
+  #	a new UUID is used.
   projectRef:
     external: projects/${projectId}
   location: us-central1
