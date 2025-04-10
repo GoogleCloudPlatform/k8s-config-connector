@@ -31,7 +31,7 @@ type Parent struct {
 }
 
 // BigLakeCatalogSpec defines the desired state of BigLakeCatalog
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+// +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Catalog
 type BigLakeCatalogSpec struct {
 	// Required. Defines the parent path of the resource.
 	*Parent `json:",inline"`
@@ -57,7 +57,7 @@ type BigLakeCatalogStatus struct {
 }
 
 // BigLakeCatalogObservedState is the state of the BigLakeCatalog resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+// +kcc:observedstate:proto=google.cloud.bigquery.biglake.v1.Catalog
 type BigLakeCatalogObservedState struct {
 	// Output only. The creation time of the catalog.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.create_time

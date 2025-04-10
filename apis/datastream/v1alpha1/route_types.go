@@ -22,7 +22,7 @@ import (
 var DatastreamRouteGVK = GroupVersion.WithKind("DatastreamRoute")
 
 // DatastreamRouteSpec defines the desired state of DatastreamRoute
-// +kcc:proto=google.cloud.datastream.v1.Route
+// +kcc:spec:proto=google.cloud.datastream.v1.Route
 type DatastreamRouteSpec struct {
 	// The DatastreamRoute name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -65,7 +65,7 @@ type DatastreamRouteStatus struct {
 }
 
 // DatastreamRouteObservedState is the state of the DatastreamRoute resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datastream.v1.Route
+// +kcc:observedstate:proto=google.cloud.datastream.v1.Route
 type DatastreamRouteObservedState struct {
 	// Output only. The resource's name.
 	// +kcc:proto:field=google.cloud.datastream.v1.Route.name

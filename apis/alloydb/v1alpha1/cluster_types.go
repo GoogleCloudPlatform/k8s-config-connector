@@ -24,7 +24,7 @@ import (
 var AlloyDBClusterGVK = GroupVersion.WithKind("AlloyDBCluster")
 
 // AlloyDBClusterSpec defines the desired state of AlloyDBCluster
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
+// +kcc:spec:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterSpec struct {
 	// The AlloyDBCluster name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -303,7 +303,7 @@ type Cluster_SecondaryConfig struct {
 }
 
 // AlloyDBClusterStatus defines the config connector machine state of AlloyDBCluster
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
+// +kcc:status:proto=google.cloud.alloydb.v1beta.Cluster
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
@@ -355,7 +355,7 @@ type AlloyDBClusterStatus struct {
 	ObservedState *AlloyDBClusterObservedState `json:"observedState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.BackupSource
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.BackupSource
 type BackupSourceObservedState struct {
 	// The name of the backup resource.
 	BackupName *string `json:"backupName,omitempty"`
@@ -369,7 +369,7 @@ type BackupSourceObservedState struct {
 	*/
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.ContinuousBackupInfo
 type ContinuousBackupInfoObservedState struct {
 	// Output only. The encryption information for the WALs and backups required
 	//  for ContinuousBackup.
@@ -392,7 +392,7 @@ type ContinuousBackupInfoObservedState struct {
 	EarliestRestorableTime *string `json:"earliestRestorableTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.MigrationSource
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MigrationSource
 type MigrationSourceObservedState struct {
 	// Output only. The host and port of the on-premises instance in host:port
 	//  format
@@ -423,7 +423,7 @@ type AlloyDBClusterObservedState struct {
 }
 
 /* NOTYET
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster
 type ClusterObservedState struct {
 
 	// Output only. Cluster created from CloudSQL snapshot.

@@ -618,7 +618,7 @@ type TableEncryptionConfiguration struct {
 }
 
 // BigQueryTableSpec defines the desired state of BigQueryTable
-// +kcc:proto=google.cloud.bigquery.v2.Table
+// +kcc:spec:proto=google.cloud.bigquery.v2.Table
 type BigQueryTableSpec struct {
 	// Clustering specification for the table. Must be specified with time-based
 	//  partitioning, data in the table will be first partitioned and subsequently

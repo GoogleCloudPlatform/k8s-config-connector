@@ -23,7 +23,7 @@ import (
 var EdgeContainerMachineGVK = GroupVersion.WithKind("EdgeContainerMachine")
 
 // EdgeContainerMachineSpec defines the desired state of EdgeContainerMachine
-// +kcc:proto=google.cloud.edgecontainer.v1.Machine
+// +kcc:spec:proto=google.cloud.edgecontainer.v1.Machine
 type EdgeContainerMachineSpec struct {
 	// Labels associated with this resource.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Machine.labels
@@ -64,7 +64,7 @@ type EdgeContainerMachineStatus struct {
 }
 
 // EdgeContainerMachineObservedState is the state of the EdgeContainerMachine resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.edgecontainer.v1.Machine
+// +kcc:observedstate:proto=google.cloud.edgecontainer.v1.Machine
 type EdgeContainerMachineObservedState struct {
 	// Output only. The time when the node pool was created.
 	// +kcc:proto:field=google.cloud.edgecontainer.v1.Machine.create_time

@@ -31,7 +31,7 @@ type Parent struct {
 }
 
 // EventarcChannelSpec defines the desired state of EventarcChannel
-// +kcc:proto=google.cloud.eventarc.v1.Channel
+// +kcc:spec:proto=google.cloud.eventarc.v1.Channel
 type EventarcChannelSpec struct {
 	Parent `json:",inline"`
 	// The EventarcChannel name. If not given, the metadata.name will be used.
@@ -69,7 +69,7 @@ type EventarcChannelStatus struct {
 }
 
 // EventarcChannelObservedState is the state of the EventarcChannel resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.eventarc.v1.Channel
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.Channel
 type EventarcChannelObservedState struct {
 	// Output only. Server assigned unique identifier for the channel. The value
 	// is a UUID4 string and guaranteed to remain unchanged until the resource is

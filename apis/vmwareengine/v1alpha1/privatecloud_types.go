@@ -22,7 +22,7 @@ import (
 var VMwareEnginePrivateCloudGVK = GroupVersion.WithKind("VMwareEnginePrivateCloud")
 
 // VMwareEnginePrivateCloudSpec defines the desired state of VMwareEnginePrivateCloud
-// +kcc:proto=google.cloud.vmwareengine.v1.PrivateCloud
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.PrivateCloud
 type VMwareEnginePrivateCloudSpec struct {
 	// The VMwareEnginePrivateCloud name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -70,7 +70,7 @@ type VMwareEnginePrivateCloudStatus struct {
 }
 
 // VMwareEnginePrivateCloudObservedState is the state of the VMwareEnginePrivateCloud resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.PrivateCloud
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.PrivateCloud
 type VMwareEnginePrivateCloudObservedState struct {
 	// Output only. The resource name of this private cloud.
 	//  Resource names are schemeless URIs that follow the conventions in
@@ -272,7 +272,7 @@ type NetworkConfig struct {
 	VMwareEngineNetworkRef *VmwareEngineNetworkRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkConfig
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkConfig
 type NetworkConfigObservedState struct {
 	// Output only. The canonical name of the VMware Engine network in the form:
 	//  `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`

@@ -172,6 +172,12 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 			if annotation := s.GetAnnotation("+kcc:proto"); annotation != "" {
 				delete(targets, annotation)
 			}
+			if annotation := s.GetAnnotation("+kcc:spec:proto"); annotation != "" {
+				delete(targets, annotation)
+			}
+			if annotation := s.GetAnnotation("+kcc:observedstate:proto"); annotation != "" {
+				delete(targets, annotation)
+			}
 		}
 	}
 	return nil

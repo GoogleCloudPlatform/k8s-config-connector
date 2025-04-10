@@ -34,7 +34,7 @@ type Parent struct {
 }
 
 // VMwareEngineNetworkSpec defines the desired state of VMwareEngineNetwork
-// +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
 type VMwareEngineNetworkSpec struct {
 	// The VMwareEngineNetwork name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -75,7 +75,7 @@ type VMwareEngineNetworkStatus struct {
 }
 
 // VMwareEngineNetworkObservedState is the state of the VMwareEngineNetwork resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork
 type VMwareEngineNetworkObservedState struct {
 	// Output only. The resource name of the VMware Engine network.
 	//  Resource names are schemeless URIs that follow the conventions in

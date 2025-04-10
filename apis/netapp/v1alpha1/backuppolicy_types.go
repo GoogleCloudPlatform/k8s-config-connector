@@ -23,7 +23,7 @@ import (
 var NetAppBackupPolicyGVK = GroupVersion.WithKind("NetAppBackupPolicy")
 
 // NetAppBackupPolicySpec defines the desired state of NetAppBackupPolicy
-// +kcc:proto=google.cloud.netapp.v1.BackupPolicy
+// +kcc:spec:proto=google.cloud.netapp.v1.BackupPolicy
 type NetAppBackupPolicySpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 
@@ -78,7 +78,7 @@ type NetAppBackupPolicyStatus struct {
 }
 
 // NetAppBackupPolicyObservedState is the state of the NetAppBackupPolicy resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.netapp.v1.BackupPolicy
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupPolicy
 type NetAppBackupPolicyObservedState struct {
 	// Output only. The total number of volumes assigned by this backup policy.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.assigned_volume_count

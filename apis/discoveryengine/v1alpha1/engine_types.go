@@ -23,7 +23,7 @@ import (
 var DiscoveryEngineEngineGVK = GroupVersion.WithKind("DiscoveryEngineEngine")
 
 // DiscoveryEngineEngineSpec defines the desired state of DiscoveryEngineEngine
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine
+// +kcc:spec:proto=google.cloud.discoveryengine.v1.Engine
 type DiscoveryEngineEngineSpec struct {
 	// Required. The display name of the engine. Should be human readable. UTF-8
 	// encoded string with limit of 1024 characters.
@@ -103,7 +103,7 @@ type DiscoveryEngineEngineStatus struct {
 }
 
 // DiscoveryEngineEngineObservedState is the state of the DiscoveryEngineEngine resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Engine
 type DiscoveryEngineEngineObservedState struct {
 }
 

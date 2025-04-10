@@ -33,7 +33,7 @@ type Parent struct {
 }
 
 // DeployPolicySpec defines the desired state of DeployDeployPolicy
-// +kcc:proto=google.cloud.deploy.v1.DeployPolicy
+// +kcc:spec:proto=google.cloud.deploy.v1.DeployPolicy
 type DeployPolicySpec struct {
 	Parent `json:",inline"`
 
@@ -121,7 +121,7 @@ type DeployPolicyStatus struct {
 }
 
 // DeployPolicyObservedState is the state of the DeployDeployPolicy resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.deploy.v1.DeployPolicy
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeployPolicy
 type DeployPolicyObservedState struct {
 	// Output only. Name of the `DeployPolicy`. Format is
 	//  `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.

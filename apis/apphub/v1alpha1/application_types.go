@@ -23,7 +23,7 @@ import (
 var AppHubApplicationGVK = GroupVersion.WithKind("AppHubApplication")
 
 // AppHubApplicationSpec defines the desired state of AppHubApplication
-// +kcc:proto=google.cloud.apphub.v1.Application
+// +kcc:spec:proto=google.cloud.apphub.v1.Application
 type AppHubApplicationSpec struct {
 
 	// Optional. User-defined name for the Application.
@@ -77,7 +77,7 @@ type AppHubApplicationStatus struct {
 }
 
 // AppHubApplicationObservedState is the state of the AppHubApplication resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.apphub.v1.Application
+// +kcc:observedstate:proto=google.cloud.apphub.v1.Application
 type AppHubApplicationObservedState struct {
 	// Output only. Create time.
 	// +kcc:proto:field=google.cloud.apphub.v1.Application.create_time

@@ -23,7 +23,7 @@ import (
 var VertexAIMetadataStoreGVK = GroupVersion.WithKind("VertexAIMetadataStore")
 
 // VertexAIMetadataStoreSpec defines the desired state of VertexAIMetadataStore
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.MetadataStore
 type VertexAIMetadataStoreSpec struct {
 	// Customer-managed encryption key spec for a Metadata Store. If set, this
 	// Metadata Store and all sub-resources of this Metadata Store are secured
@@ -66,7 +66,7 @@ type VertexAIMetadataStoreStatus struct {
 }
 
 // VertexAIMetadataStoreObservedState is the state of the VertexAIMetadataStore resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.MetadataStore
 type VertexAIMetadataStoreObservedState struct {
 	// Output only. The resource name of the MetadataStore instance.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.name

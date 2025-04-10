@@ -29,14 +29,14 @@ type NetworkEndpoint struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tpu.v2.NetworkEndpoint
+// +kcc:observedstate:proto=google.cloud.tpu.v2.NetworkEndpoint
 type NetworkEndpointObservedState struct {
 	// The access config for the TPU worker.
 	// +kcc:proto:field=google.cloud.tpu.v2.NetworkEndpoint.access_config
 	AccessConfig *AccessConfigObservedState `json:"accessConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.tpu.v2.AccessConfig
+// +kcc:observedstate:proto=google.cloud.tpu.v2.AccessConfig
 type AccessConfigObservedState struct {
 
 	// Output only. An external IP address associated with the TPU worker.

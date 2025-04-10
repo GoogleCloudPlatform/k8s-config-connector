@@ -25,7 +25,7 @@ import (
 var DatastreamConnectionProfileGVK = GroupVersion.WithKind("DatastreamConnectionProfile")
 
 // DatastreamConnectionProfileSpec defines the desired state of DatastreamConnectionProfile
-// +kcc:proto=google.cloud.datastream.v1.ConnectionProfile
+// +kcc:spec:proto=google.cloud.datastream.v1.ConnectionProfile
 type DatastreamConnectionProfileSpec struct {
 	// The DatastreamConnectionProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -96,7 +96,7 @@ type DatastreamConnectionProfileStatus struct {
 }
 
 // DatastreamConnectionProfileObservedState is the state of the DatastreamConnectionProfile resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datastream.v1.ConnectionProfile
+// +kcc:observedstate:proto=google.cloud.datastream.v1.ConnectionProfile
 type DatastreamConnectionProfileObservedState struct {
 	// Output only. The resource's name.
 	// +kcc:proto:field=google.cloud.datastream.v1.ConnectionProfile.name
@@ -402,14 +402,14 @@ type PrivateConnectivity struct {
 	PrivateConnectionRef *PrivateConnectionRef `json:"privateConnectionRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datastream.v1.MysqlProfile
+// +kcc:observedstate:proto=google.cloud.datastream.v1.MysqlProfile
 type MysqlProfileObservedState struct {
 	// SSL configuration for the MySQL connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.MysqlProfile.ssl_config
 	SSLConfig *MysqlSSLConfigObservedState `json:"sslConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.datastream.v1.OracleProfile
+// +kcc:observedstate:proto=google.cloud.datastream.v1.OracleProfile
 type OracleProfileObservedState struct {
 	// Optional. SSL configuration for the Oracle connection.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleProfile.oracle_ssl_config

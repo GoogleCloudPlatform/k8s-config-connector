@@ -23,7 +23,7 @@ import (
 var TasksQueueGVK = GroupVersion.WithKind("TasksQueue")
 
 // TasksQueueSpec defines the desired state of TasksQueue
-// +kcc:proto=google.cloud.tasks.v2.Queue
+// +kcc:spec:proto=google.cloud.tasks.v2.Queue
 type TasksQueueSpec struct {
 
 	// Overrides for
@@ -121,7 +121,7 @@ type TasksQueueStatus struct {
 }
 
 // TasksQueueObservedState is the state of the TasksQueue resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.tasks.v2.Queue
+// +kcc:observedstate:proto=google.cloud.tasks.v2.Queue
 type TasksQueueObservedState struct {
 
 	// Output only. The last time this queue was purged.

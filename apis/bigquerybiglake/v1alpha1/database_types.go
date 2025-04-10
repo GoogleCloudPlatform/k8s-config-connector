@@ -22,7 +22,7 @@ import (
 var BigLakeDatabaseGVK = GroupVersion.WithKind("BigLakeDatabase")
 
 // BigLakeDatabaseSpec defines the desired state of BigLakeDatabase
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Database
+// +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseSpec struct {
 	// Required. Defines the parent path of the resource.
 	*Parent `json:",inline"`
@@ -56,7 +56,7 @@ type BigLakeDatabaseStatus struct {
 }
 
 // BigLakeDatabaseObservedState is the state of the BigLakeDatabase resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Database
+// +kcc:observedstate:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseObservedState struct {
 	// Output only. The creation time of the database.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.create_time

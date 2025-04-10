@@ -26,7 +26,7 @@ type DataplexTaskParent struct {
 }
 
 // DataplexTaskSpec defines the desired state of DataplexTask
-// +kcc:proto=google.cloud.dataplex.v1.Task
+// +kcc:spec:proto=google.cloud.dataplex.v1.Task
 type DataplexTaskSpec struct {
 	// The DataplexTask name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

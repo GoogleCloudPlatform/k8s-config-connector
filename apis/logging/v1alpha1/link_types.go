@@ -23,7 +23,7 @@ import (
 var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 
 // LoggingLinkSpec defines the desired state of LoggingLink
-// +kcc:proto=google.logging.v2.Link
+// +kcc:spec:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.

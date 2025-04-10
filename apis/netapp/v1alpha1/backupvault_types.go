@@ -23,7 +23,7 @@ import (
 var NetAppBackupVaultGVK = GroupVersion.WithKind("NetAppBackupVault")
 
 // BackupVaultSpec defines the desired state of NetAppBackupVault
-// +kcc:proto=google.cloud.netapp.v1.BackupVault
+// +kcc:spec:proto=google.cloud.netapp.v1.BackupVault
 type BackupVaultSpec struct {
 	// The NetAppBackupVault name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -62,7 +62,7 @@ type BackupVaultStatus struct {
 }
 
 // NetAppBackupVaultObservedState is the state of the NetAppBackupVault resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.netapp.v1.BackupVault// +kcc:proto=google.cloud.netapp.v1.BackupVault
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupVault
 type BackupVaultObservedState struct {
 	// Output only. The backup vault state.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupVault.state

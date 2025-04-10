@@ -22,7 +22,7 @@ import (
 var AppHubDiscoveredWorkloadGVK = GroupVersion.WithKind("AppHubDiscoveredWorkload")
 
 // AppHubDiscoveredWorkloadSpec defines the desired state of AppHubDiscoveredWorkload
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredWorkload
+// +kcc:spec:proto=google.cloud.apphub.v1.DiscoveredWorkload
 type AppHubDiscoveredWorkloadSpec struct {
 	// Required. The parent field of the Discovered Workload.
 	*Parent `json:",inline"`
@@ -48,7 +48,7 @@ type AppHubDiscoveredWorkloadStatus struct {
 }
 
 // AppHubDiscoveredWorkloadObservedState is the state of the AppHubDiscoveredWorkload resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredWorkload
+// +kcc:observedstate:proto=google.cloud.apphub.v1.DiscoveredWorkload
 type AppHubDiscoveredWorkloadObservedState struct {
 	// Output only. Reference of an underlying compute resource represented by the
 	//  Workload. These are immutable.
