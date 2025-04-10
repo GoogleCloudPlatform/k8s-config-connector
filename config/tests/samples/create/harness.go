@@ -837,7 +837,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetTCPProxy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeURLMap"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetworkAttachment"}:
-				// ok
 
 			case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
 			case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerNodePool"}:
@@ -924,7 +923,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteReservation"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteSubscription"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteTopic"}:
-				// ok
 
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:
