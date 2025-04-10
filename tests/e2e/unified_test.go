@@ -433,7 +433,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 						if id != "" {
-							r.OperationIDs[id] = true
+							// Avoid marking some well-known values that are not operation ids
+							switch id {
+							case "projects":
+							// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+							default:
+								r.OperationIDs[id] = true
+							}
 						}
 					}
 
@@ -722,11 +728,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
-
-					// Specific to BigTable
-					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to Firestore
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
