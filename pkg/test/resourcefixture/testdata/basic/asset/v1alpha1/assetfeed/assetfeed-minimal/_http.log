@@ -1,7 +1,6 @@
-GET https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -16,24 +15,99 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "feed \"projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "feed \"projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}\" not found",
+    "message": "Resource not found (resource=kcc-assetfeed-minimal-${uniqueId}).",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds?%24alt=json%3Benum-encoding%3Dint
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}
+X-Goog-User-Project: ${projectNumber}
 
 {
   "feed": {
@@ -42,13 +116,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
     ],
     "feedOutputConfig": {
       "pubsubDestination": {
-        "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+        "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
       }
     },
-    "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+    "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
   },
   "feedId": "assetfeed-minimal-${uniqueId}",
-  "parent": "projects/${projectId}"
+  "parent": "projects/${projectNumber}"
 }
 
 200 OK
@@ -67,18 +141,19 @@ X-Xss-Protection: 0
   ],
   "feedOutputConfig": {
     "pubsubDestination": {
-      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
 }
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -96,18 +171,19 @@ X-Xss-Protection: 0
   ],
   "feedOutputConfig": {
     "pubsubDestination": {
-      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
 }
 
 ---
 
-PATCH https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: feed.name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-Request-Params: feed.name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
 
 {
   "feed": {
@@ -117,10 +193,10 @@ X-Goog-Request-Params: feed.name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-min
     ],
     "feedOutputConfig": {
       "pubsubDestination": {
-        "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+        "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
       }
     },
-    "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+    "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
   },
   "updateMask": "assetTypes"
 }
@@ -142,18 +218,19 @@ X-Xss-Protection: 0
   ],
   "feedOutputConfig": {
     "pubsubDestination": {
-      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
 }
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -172,18 +249,61 @@ X-Xss-Protection: 0
   ],
   "feedOutputConfig": {
     "pubsubDestination": {
-      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal"
+      "topic": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}"
 }
 
 ---
 
-DELETE https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Ffeeds%2Fassetfeed-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/kcc-assetfeed-minimal-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

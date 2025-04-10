@@ -16,9 +16,9 @@ spec:
   feedOutputConfig:
     pubsubDestination:
       topicRef:
-        external: projects/${projectId}/topics/kcc-assetfeed-minimal
+        name: kcc-assetfeed-minimal-${uniqueId}
   projectRef:
-    external: ${projectId}
+    external: ${projectNumber}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/feeds/assetfeed-minimal-${uniqueId}
+  externalRef: projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}
   observedGeneration: 2
