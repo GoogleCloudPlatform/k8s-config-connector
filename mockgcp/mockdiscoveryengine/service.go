@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,8 +25,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/discoveryengine/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+// +tool:mockgcp-service
+// http.host: discoveryengine.googleapis.com
+// proto.service: google.cloud.discoveryengine.v1.DataStoreService
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked networkservices service.
 type MockService struct {
@@ -36,8 +45,13 @@ type MockService struct {
 	operations *operations.Operations
 }
 
+type dataStoreService struct {
+	*MockService
+	pb.UnimplementedDataStoreServiceServer
+}
+
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
