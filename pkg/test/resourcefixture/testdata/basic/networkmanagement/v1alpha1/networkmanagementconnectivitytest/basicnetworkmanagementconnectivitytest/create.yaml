@@ -15,9 +15,13 @@
 apiVersion: networkmanagement.cnrm.cloud.google.com/v1alpha1
 kind: NetworkManagementConnectivityTest
 metadata:
-  name: networkmanagementconnectivitytest-minimal-${uniqueId}
+  name: networkmanagementconnectivitytest-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
   description: "Initial description"
+  source:
+    ipAddress: 10.0.0.1
+  destination:
+    ipAddress: 10.0.0.2

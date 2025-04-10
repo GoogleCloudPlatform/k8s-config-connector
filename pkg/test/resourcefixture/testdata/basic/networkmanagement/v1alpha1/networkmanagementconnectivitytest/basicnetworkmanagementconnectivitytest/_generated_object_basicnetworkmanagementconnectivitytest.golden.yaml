@@ -1,0 +1,83 @@
+apiVersion: networkmanagement.cnrm.cloud.google.com/v1alpha1
+kind: NetworkManagementConnectivityTest
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: networkmanagementconnectivitytest-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  destination:
+    ipAddress: 10.0.0.2
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  source:
+    ipAddress: 10.0.0.1
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/connectivityTests/networkmanagementconnectivitytest-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    reachabilityDetails:
+      result: UNDETERMINED
+      traces:
+      - endpointInfo:
+          destinationIP: 10.0.0.2
+          destinationPort: 80
+          protocol: TCP
+          sourceIP: 10.0.0.1
+          sourceNetworkURI: projects/${projectId}/global/networks/default
+          sourcePort: "12345"
+        forwardTraceID: 1
+        steps:
+        - description: 'Initial state: packet originating from a VPC network default.'
+          network:
+            displayName: default
+            matchedIPRange: 10.0.0.0/20
+            matchedSubnetURI: projects/${projectId}/regions/us-east4/subnetworks/default
+            region: us-east4
+            uri: projects/${projectId}/global/networks/default
+          projectID: ${projectId}
+          state: START_FROM_PRIVATE_NETWORK
+        - description: 'Config checking state: verify EGRESS firewall rule.'
+          firewall:
+            action: ALLOW
+            direction: EGRESS
+            displayName: default-allow-egress
+            firewallRuleType: IMPLIED_VPC_FIREWALL_RULE
+            networkURI: projects/${projectId}/global/networks/default
+            priority: 65535
+          projectID: ${projectId}
+          state: APPLY_EGRESS_FIREWALL_RULE
+        - description: 'Config checking state: verify route.'
+          projectID: ${projectId}
+          route:
+            destIPRange: 10.0.0.0/20
+            displayName: default-route-f17b1d9b115a2c1e
+            networkURI: projects/${projectId}/global/networks/default
+            nextHopType: NEXT_HOP_NETWORK
+            routeType: SUBNET
+            uri: projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e
+          state: APPLY_ROUTE
+        - abort:
+            cause: UNKNOWN_IP
+            ipAddress: 10.0.0.2
+            resourceURI: projects/${projectId}/global/networks/default
+          description: 'Final state: analysis is aborted due to no endpoints with
+            destination IP address are found in network.'
+          projectID: ${projectId}
+          state: ABORT
+      verifyTime: "2025-01-01T12:34:56.123456Z"
+    source: {}
+    updateTime: "1970-01-01T00:00:00Z"

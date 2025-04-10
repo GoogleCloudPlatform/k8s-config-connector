@@ -32,7 +32,7 @@ type ConnectivityTestIdentity struct {
 }
 
 func (i *ConnectivityTestIdentity) String() string {
-	return i.parent.String() + "/connectivitytests/" + i.id
+	return i.parent.String() + "/connectivityTests/" + i.id
 }
 
 func (i *ConnectivityTestIdentity) ID() string {
@@ -106,8 +106,8 @@ func NewConnectivityTestIdentity(ctx context.Context, reader client.Reader, obj 
 
 func ParseConnectivityTestExternal(external string) (parent *ConnectivityTestParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectivitytests" {
-		return nil, "", fmt.Errorf("format of NetworkManagementConnectivityTest external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectivitytests/{{connectivitytestID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "connectivityTests" {
+		return nil, "", fmt.Errorf("format of NetworkManagementConnectivityTest external=%q was not known (use projects/{{projectID}}/locations/{{location}}/connectivityTests/{{connectivityTestID}})", external)
 	}
 	parent = &ConnectivityTestParent{
 		ProjectID: tokens[1],

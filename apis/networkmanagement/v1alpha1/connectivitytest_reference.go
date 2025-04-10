@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &ConnectivityTestRef{}
 // holds the GCP identifier for the KRM object.
 type ConnectivityTestRef struct {
 	// A reference to an externally managed NetworkManagementConnectivityTest resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectivitytests/{{connectivitytestID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/connectivityTests/{{connectivityTestID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a NetworkManagementConnectivityTest resource.

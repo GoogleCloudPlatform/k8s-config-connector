@@ -23,6 +23,7 @@ package networkmanagement
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/networkmanagement/apiv1"
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
@@ -147,12 +148,6 @@ func (a *connectivityTestAdapter) Create(ctx context.Context, createOp *directba
 	}
 	log.V(2).Info("successfully created networkmanagement connectivitytest in gcp", "name", a.id)
 
-	// Fetch the created resource again to get the final state including output-only fields like reachability_details
-	if _, err = a.Find(ctx); err != nil {
-		return fmt.Errorf("fetching created networkmanagement connectivitytest %s: %w", a.id, err)
-	}
-	created = a.actual // Use the fetched resource for status update
-
 	status := &krm.NetworkManagementConnectivityTestStatus{}
 	status.ObservedState = NetworkManagementConnectivityTestObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -179,30 +174,26 @@ func (a *connectivityTestAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	resource.Name = a.id.String() // Set the name for the update request
 
-	//// Define mutable fields based on proto definition and documentation.
-	//mutableFields := sets.NewString(
-	//	"description",
-	//	"source",
-	//	"destination",
-	//	"protocol",
-	//	"related_projects",
-	//	"labels",
-	//	"round_trip",
-	//	"bypass_firewall_checks",
-	//)
-
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("calculating diff for connectivity test %s: %w", a.id, err)
 	}
 
+	topLevelFieldPaths := sets.New[string]()
+	for path, _ := range paths {
+		tokens := strings.Split(path, ".")
+		topLevelFieldPaths.Insert(tokens[0])
+	}
+	// Remove output-only fields.
+	topLevelFieldPaths.Delete("reachability_details")
+
 	var updated *pb.ConnectivityTest
-	if len(paths) == 0 {
+	if len(topLevelFieldPaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		// Still update the status to cover the use case of acquisition.
 		updated = a.actual
 	} else {
-		updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
+		updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(topLevelFieldPaths)}
 		log.V(2).Info("updating fields", "name", a.id, "paths", updateMask.Paths)
 
 		req := &pb.UpdateConnectivityTestRequest{
