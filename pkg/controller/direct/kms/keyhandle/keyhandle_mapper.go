@@ -17,57 +17,24 @@ package keyhandle
 import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 func KMSKeyHandleSpec_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krm.KMSKeyHandleSpec {
-	if in == nil || in.Name == "" {
+	if in == nil {
 		return nil
 	}
 	out := &krm.KMSKeyHandleSpec{}
-	parent, resourceID, err := krm.ParseKMSKeyHandleExternal(in.Name)
-	if err != nil {
-		return nil
-	}
-	out.ResourceID = &resourceID
-	out.ProjectRef = &refs.ProjectRef{
-		External: "projects/" + parent.ProjectID,
-	}
-	out.Location = &parent.Location
 	out.ResourceTypeSelector = &in.ResourceTypeSelector
 	return out
 }
 
-func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpec, id *krm.KMSKeyHandleIdentity) *pb.KeyHandle {
+func KMSKeyHandleSpec_ToProto(mapCtx *direct.MapContext, in *krm.KMSKeyHandleSpec) *pb.KeyHandle {
 	if in == nil {
 		return nil
 	}
 	out := &pb.KeyHandle{}
-	out.Name = id.String()
 	out.ResourceTypeSelector = *in.ResourceTypeSelector
-	return out
-}
-func KeyHandle_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krm.KeyHandle {
-	if in == nil {
-		return nil
-	}
-	out := &krm.KeyHandle{}
-	out.Name = direct.LazyPtr(in.GetName())
-	if in.KmsKey != "" {
-		out.KmsKey = direct.LazyPtr(in.GetKmsKey())
-	}
-	out.ResourceTypeSelector = direct.LazyPtr(in.GetResourceTypeSelector())
-	return out
-}
-func KeyHandle_ToProto(mapCtx *direct.MapContext, in *krm.KeyHandle) *pb.KeyHandle {
-	if in == nil {
-		return nil
-	}
-	out := &pb.KeyHandle{}
-	out.Name = direct.ValueOf(in.Name)
-	out.KmsKey = direct.ValueOf(in.KmsKey)
-	out.ResourceTypeSelector = direct.ValueOf(in.ResourceTypeSelector)
 	return out
 }
 
