@@ -122,7 +122,7 @@ var _ directbase.Adapter = &feedAdapter{}
 
 func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("---------getting asset feed", "name", a.id)
+	log.V(2).Info("getting asset feed", "name", a.id)
 
 	name := a.id.String()
 	if a.actual != nil {
@@ -155,7 +155,7 @@ func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
 
 func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("---------creating asset feed", "name", a.id)
+	log.V(2).Info("creating asset feed", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	if err := a.normalizeReferences(ctx); err != nil {
@@ -185,12 +185,12 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	var findErr error
 
 	if err == nil {
-		log.Info("---------successfully created asset feed in gcp, attempting to fetch it", "name", a.id)
+		log.V(2).Info("successfully created asset feed in gcp, attempting to fetch it", "name", a.id)
 		a.actual = actual
 		found = true
 	} else if errors.IsAlreadyExists(err) {
 		// Resource already exists. Log and attempt to Find to populate a.actual.
-		log.Info("---------asset feed already exists during creation attempt, attempting to fetch it", "name", a.id.String(), "warning", err)
+		log.V(2).Info("asset feed already exists during creation attempt, attempting to fetch it", "name", a.id.String(), "warning", err)
 		found, findErr = a.Find(ctx)
 		if findErr != nil {
 			return fmt.Errorf("fetching existing asset feed %q after CreateFeed returned AlreadyExists failed: %w", a.id.String(), findErr)
@@ -213,7 +213,7 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 
 func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("---------updating asset feed", "name", a.id, "actual", a.actual.Name)
+	log.V(2).Info("updating asset feed", "name", a.id, "actual", a.actual.Name)
 	mapCtx := &direct.MapContext{}
 
 	if err := a.normalizeReferences(ctx); err != nil {
@@ -231,11 +231,9 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	if err != nil {
 		return fmt.Errorf("comparing proto messages: %w", err)
 	}
-	// Name is output only, but is required in the update request object.
-	paths.Delete("name")
 
 	if len(paths) == 0 {
-		log.Info("---------no field needs update", "name", a.id)
+		log.V(2).Info("no field needs update", "name", a.id)
 		// Update status even if no fields changed in spec
 		status := &krm.AssetFeedStatus{}
 
@@ -245,7 +243,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	log.Info("---------updating asset feed fields", "paths", sets.List(paths))
+	log.V(2).Info("updating asset feed fields", "paths", sets.List(paths))
 
 	updateMask := &fieldmaskpb.FieldMask{Paths: sets.List(paths)}
 	req := &pb.UpdateFeedRequest{
@@ -256,7 +254,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	if err != nil {
 		return fmt.Errorf("updating asset feed %s: %w", a.id.String(), err)
 	}
-	log.Info("---------successfully updated asset feed", "name", a.id)
+	log.V(2).Info("successfully updated asset feed", "name", a.id)
 
 	status := &krm.AssetFeedStatus{}
 
@@ -309,19 +307,19 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 
 func (a *feedAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("--------- deleting asset feed", "name", a.id)
+	log.V(2).Info(" deleting asset feed", "name", a.id)
 
 	req := &pb.DeleteFeedRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteFeed(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.Info("--------- skipping delete for non-existent asset feed, assuming it was already deleted", "name", a.id)
+			log.V(2).Info(" skipping delete for non-existent asset feed, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting asset feed %s: %w", a.id.String(), err)
 	}
-	log.Info("--------- successfully deleted asset feed", "name", a.id)
+	log.V(2).Info(" successfully deleted asset feed", "name", a.id)
 
 	return true, nil
 }

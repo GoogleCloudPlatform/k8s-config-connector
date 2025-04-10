@@ -43,7 +43,7 @@ X-Xss-Protection: 0
       "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/test-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
 }
 
 ---
@@ -99,7 +99,7 @@ X-Xss-Protection: 0
       "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/test-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
 }
 
 ---
@@ -155,7 +155,7 @@ X-Xss-Protection: 0
       "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/test-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
 }
 
 ---
@@ -199,7 +199,7 @@ X-Xss-Protection: 0
       "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
     }
   },
-  "name": "projects/${projectId}/feeds/test-${uniqueId}"
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
 }
 
 ---
