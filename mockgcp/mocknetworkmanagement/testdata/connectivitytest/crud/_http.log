@@ -86,7 +86,7 @@ X-Xss-Protection: 0
             "protocol": "TCP",
             "sourceIp": "10.0.0.1",
             "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-            "sourcePort": 55896
+            "sourcePort": "12345"
           },
           "forwardTraceId": 1,
           "steps": [
@@ -122,9 +122,7 @@ X-Xss-Protection: 0
                 "destIpRange": "10.0.0.0/20",
                 "displayName": "default-route-f17b1d9b115a2c1e",
                 "networkUri": "projects/${projectId}/global/networks/default",
-                "nextHop": "network gateway",
                 "nextHopType": "NEXT_HOP_NETWORK",
-                "routeScope": "NETWORK",
                 "routeType": "SUBNET",
                 "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
               },
@@ -188,7 +186,7 @@ X-Xss-Protection: 0
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 55896
+          "sourcePort": "12345"
         },
         "forwardTraceId": 1,
         "steps": [
@@ -224,9 +222,7 @@ X-Xss-Protection: 0
               "destIpRange": "10.0.0.0/20",
               "displayName": "default-route-f17b1d9b115a2c1e",
               "networkUri": "projects/${projectId}/global/networks/default",
-              "nextHop": "network gateway",
               "nextHopType": "NEXT_HOP_NETWORK",
-              "routeScope": "NETWORK",
               "routeType": "SUBNET",
               "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
             },
@@ -289,7 +285,7 @@ X-Xss-Protection: 0
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 55896
+          "sourcePort": "12345"
         },
         "forwardTraceId": 1,
         "steps": [
@@ -325,9 +321,7 @@ X-Xss-Protection: 0
               "destIpRange": "10.0.0.0/20",
               "displayName": "default-route-f17b1d9b115a2c1e",
               "networkUri": "projects/${projectId}/global/networks/default",
-              "nextHop": "network gateway",
               "nextHopType": "NEXT_HOP_NETWORK",
-              "routeScope": "NETWORK",
               "routeType": "SUBNET",
               "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
             },
@@ -390,7 +384,7 @@ X-Xss-Protection: 0
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 55896
+          "sourcePort": "12345"
         },
         "forwardTraceId": 1,
         "steps": [
@@ -426,9 +420,7 @@ X-Xss-Protection: 0
               "destIpRange": "10.0.0.0/20",
               "displayName": "default-route-f17b1d9b115a2c1e",
               "networkUri": "projects/${projectId}/global/networks/default",
-              "nextHop": "network gateway",
               "nextHopType": "NEXT_HOP_NETWORK",
-              "routeScope": "NETWORK",
               "routeType": "SUBNET",
               "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
             },
@@ -483,7 +475,7 @@ Content-Type: application/json
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 55896
+          "sourcePort": "12345"
         },
         "forwardTraceId": 1,
         "steps": [
@@ -519,9 +511,7 @@ Content-Type: application/json
               "destIpRange": "10.0.0.0/20",
               "displayName": "default-route-f17b1d9b115a2c1e",
               "networkUri": "projects/${projectId}/global/networks/default",
-              "nextHop": "network gateway",
               "nextHopType": "NEXT_HOP_NETWORK",
-              "routeScope": "NETWORK",
               "routeType": "SUBNET",
               "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
             },
@@ -618,7 +608,7 @@ X-Xss-Protection: 0
             "protocol": "TCP",
             "sourceIp": "10.0.0.1",
             "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-            "sourcePort": 55896
+            "sourcePort": "12345"
           },
           "forwardTraceId": 1,
           "steps": [
@@ -654,9 +644,7 @@ X-Xss-Protection: 0
                 "destIpRange": "10.0.0.0/20",
                 "displayName": "default-route-f17b1d9b115a2c1e",
                 "networkUri": "projects/${projectId}/global/networks/default",
-                "nextHop": "network gateway",
                 "nextHopType": "NEXT_HOP_NETWORK",
-                "routeScope": "NETWORK",
                 "routeType": "SUBNET",
                 "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
               },
@@ -720,7 +708,7 @@ X-Xss-Protection: 0
           "protocol": "TCP",
           "sourceIp": "10.0.0.1",
           "sourceNetworkUri": "projects/${projectId}/global/networks/default",
-          "sourcePort": 55896
+          "sourcePort": "12345"
         },
         "forwardTraceId": 1,
         "steps": [
@@ -756,9 +744,7 @@ X-Xss-Protection: 0
               "destIpRange": "10.0.0.0/20",
               "displayName": "default-route-f17b1d9b115a2c1e",
               "networkUri": "projects/${projectId}/global/networks/default",
-              "nextHop": "network gateway",
               "nextHopType": "NEXT_HOP_NETWORK",
-              "routeScope": "NETWORK",
               "routeType": "SUBNET",
               "uri": "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e"
             },

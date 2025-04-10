@@ -29,6 +29,7 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
+    destination: {}
     reachabilityDetails:
       result: UNDETERMINED
       traces:

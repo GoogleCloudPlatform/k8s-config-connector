@@ -145,6 +145,18 @@ func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	return &s
 }
 
+func ZeroBasedEnum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
+	descriptor := v.Descriptor()
+
+	val := descriptor.Values().ByNumber(protoreflect.EnumNumber(v))
+	if val == nil {
+		mapCtx.Errorf("unknown enum value %d", v)
+		return nil
+	}
+	s := string(val.Name())
+	return &s
+}
+
 func EnumSlice_FromProto[U ProtoEnum](mapCtx *MapContext, in []U) []string {
 	if in == nil {
 		return nil

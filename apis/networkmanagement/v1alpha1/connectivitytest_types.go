@@ -245,7 +245,7 @@ type NetworkManagementConnectivityTestStatus struct {
 // NetworkManagementConnectivityTestObservedState is the state of the NetworkManagementConnectivityTest resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.networkmanagement.v1.ConnectivityTest
 type NetworkManagementConnectivityTestObservedState struct {
-	// Required. Source specification of the Connectivity Test.
+	// Source specification of the Connectivity Test.
 	//
 	//  You can use a combination of source IP address, virtual machine
 	//  (VM) instance, or Compute Engine network to uniquely identify
@@ -269,6 +269,27 @@ type NetworkManagementConnectivityTestObservedState struct {
 	//  intend to test.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.source
 	Source *EndpointObservedState `json:"source,omitempty"`
+
+	// Destination specification of the Connectivity Test.
+	//
+	//  You can use a combination of destination IP address, Compute Engine
+	//  VM instance, or VPC network to uniquely identify the destination
+	//  location.
+	//
+	//  Even if the destination IP address is not unique, the source IP
+	//  location is unique. Usually, the analysis can infer the destination
+	//  endpoint from route information.
+	//
+	//  If the destination you specify is a VM instance and the instance has
+	//  multiple network interfaces, then you must also specify either
+	//  a destination IP address  or VPC network to identify the destination
+	//  interface.
+	//
+	//  A reachability analysis proceeds even if the destination location is
+	//  ambiguous. However, the result can include endpoints that you don't
+	//  intend to test.
+	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.destination
+	Destination *EndpointObservedState `json:"destination,omitempty"`
 
 	// Output only. The display name of a Connectivity Test.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.ConnectivityTest.display_name
