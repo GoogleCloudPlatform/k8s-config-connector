@@ -223,12 +223,10 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockclouddeploy.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockspanner.New(env, storage))
-	services = append(services, mockprivateca.New(env, storage))
 	services = append(services, mockpubsublite.New(env, storage))
 	services = append(services, mocknetworkconnectivity.New(env, storage))
 	services = append(services, mocknotebooks.New(env, storage))
 	services = append(services, mockprivilegedaccessmanager.New(env, storage))
-
 	services = append(services, mockredis.New(env, storage))
 	services = append(services, mocksecuresourcemanager.New(env, storage))
 	services = append(services, mockservicenetworking.New(env, storage))
