@@ -43,11 +43,12 @@ func (i *AppProfileIdentity) Parent() *AppProfileParent {
 }
 
 type AppProfileParent struct {
+	ProjectID        string
 	BigtableInstance string
 }
 
 func (p *AppProfileParent) String() string {
-	return p.BigtableInstance
+	return "projects/" + p.ProjectID + "/instances/" + p.BigtableInstance
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
@@ -57,6 +58,12 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	if err != nil {
 		return nil, err
 	}
+	tokens := strings.Split(instanceRef, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
+		return nil, fmt.Errorf("Invalid format of BigtableAppProfile external=%q was not known (expected projects/{{projectID}}/instances/{{instance}})", instanceRef)
+	}
+	parentProjectId := tokens[1]
+	parentBigtableInstance := tokens[3]
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -75,8 +82,11 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.BigtableInstance != instanceRef {
-			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.BigtableInstance, instanceRef)
+		if actualParent.ProjectID != parentProjectId {
+			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.ProjectID, parentProjectId)
+		}
+		if actualParent.BigtableInstance != parentBigtableInstance {
+			return nil, fmt.Errorf("BigtableInstance in spec.instanceRef changed, expect %s, got %s", actualParent.BigtableInstance, parentBigtableInstance)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -85,7 +95,8 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	}
 	return &AppProfileIdentity{
 		parent: &AppProfileParent{
-			BigtableInstance: instanceRef,
+			ProjectID:        parentProjectId,
+			BigtableInstance: parentBigtableInstance,
 		},
 		id: resourceID,
 	}, nil
