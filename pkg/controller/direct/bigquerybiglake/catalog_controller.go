@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 // crd.type: BigqueryCatalog
 // crd.version: v1alpha1
 
-package biglake
+package bigquerybiglake
 
 import (
 	"context"
@@ -34,7 +34,7 @@ import (
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/biglake/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -42,7 +42,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.BigqueryCatalogGVK, NewCatalogModel)
+	registry.RegisterModel(krm.BigLakeCatalogGVK, NewCatalogModel)
 }
 
 func NewCatalogModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -81,7 +81,7 @@ func (m *catalogModel) client(ctx context.Context, projectID string) (*gcp.Metas
 }
 
 func (m *catalogModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BigqueryCatalog{}
+	obj := &krm.BigLakeCatalog{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -111,7 +111,7 @@ func (m *catalogModel) AdapterForURL(ctx context.Context, url string) (directbas
 type catalogAdapter struct {
 	gcpClient *gcp.MetastoreClient
 	id        *krm.CatalogIdentity
-	desired   *krm.BigqueryCatalog
+	desired   *krm.BigLakeCatalog
 	actual    *pb.Catalog
 }
 
@@ -141,7 +141,7 @@ func (a *catalogAdapter) Create(ctx context.Context, createOp *directbase.Create
 	mapCtx := &direct.MapContext{}
 
 	// Catalog message is empty, we just need to pass the IDs.
-	resource := BigqueryCatalogSpec_ToProto(mapCtx, &a.desired.Spec)
+	resource := BigLakeCatalogSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -157,8 +157,8 @@ func (a *catalogAdapter) Create(ctx context.Context, createOp *directbase.Create
 	}
 	log.V(2).Info("successfully created biglake catalog in gcp", "name", a.id)
 
-	status := &krm.BigqueryCatalogStatus{}
-	status.ObservedState = BigqueryCatalogObservedState_FromProto(mapCtx, created)
+	status := &krm.BigLakeCatalogStatus{}
+	status.ObservedState = BigLakeCatalogObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -166,7 +166,7 @@ func (a *catalogAdapter) Create(ctx context.Context, createOp *directbase.Create
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// BigqueryCatalog does not support update.
+// BigLakeCatalog does not support update.
 func (a *catalogAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating biglake catalog - no-op", "name", a.id)
@@ -175,7 +175,7 @@ func (a *catalogAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	// Just update the status if we are acquiring.
 	mapCtx := &direct.MapContext{}
 	if a.desired.Status.ExternalRef == nil {
-		observedState := BigqueryCatalogObservedState_FromProto(mapCtx, a.actual)
+		observedState := BigLakeCatalogObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -195,9 +195,9 @@ func (a *catalogAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BigqueryCatalog{}
+	obj := &krm.BigLakeCatalog{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigqueryCatalogSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigLakeCatalogSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *catalogAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.BigqueryCatalogGVK)
+	u.SetGroupVersionKind(krm.BigLakeCatalogGVK)
 
 	u.Object = uObj
 	return u, nil
