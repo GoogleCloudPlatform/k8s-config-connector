@@ -15,8 +15,6 @@
 package register
 
 import (
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
-
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
@@ -39,6 +37,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudtasks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/colab"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/composer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/firewallpolicyrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/forwardingrule"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute/targettcpproxy"

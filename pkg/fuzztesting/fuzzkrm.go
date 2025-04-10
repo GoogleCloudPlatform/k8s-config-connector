@@ -153,7 +153,7 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	clearFields := &fuzz.ClearFields{
 		Paths: ignoreFields,
 	}
-	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+	fuzz.Visit( p1.ProtoReflect(), clearFields, fuzz.VisitOptions{VisitMapWithWildcard: true})
 
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
