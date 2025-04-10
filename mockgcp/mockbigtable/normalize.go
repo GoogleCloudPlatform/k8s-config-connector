@@ -20,8 +20,14 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
-func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+const PlaceholderTime = "2024-04-01T12:34:56.123456Z"
 
+func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
+
+	// Instances
+	replacements.ReplacePath(".instances[].createTime", PlaceholderTime)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
