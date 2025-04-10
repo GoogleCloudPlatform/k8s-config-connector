@@ -49,7 +49,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -296,7 +295,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -534,7 +532,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkmanagement.v1.OperationMetadata",
     "apiVersion": "v1",
