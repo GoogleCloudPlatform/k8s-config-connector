@@ -34,7 +34,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 )
 
 type scheduleService struct {
@@ -69,7 +68,7 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 	}, func(obj proto.Message) error {
 		schedule := obj.(*pb.Schedule)
 
-		scheduleCopy := deepcopy.DeepCopy(*schedule).(pb.Schedule)
+		scheduleCopy := ProtoClone(schedule)
 		scheduleCopy.UpdateTime = nil
 		name, err := s.parseScheduleName(scheduleCopy.Name)
 		if err != nil {
@@ -77,7 +76,7 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 		}
 		scheduleCopy.Name = strings.Replace(scheduleCopy.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number), -1)
 
-		response.Schedules = append(response.Schedules, &scheduleCopy)
+		response.Schedules = append(response.Schedules, scheduleCopy)
 		return nil
 	}); err != nil {
 		return nil, err
