@@ -37,7 +37,7 @@ func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint)
 	out.LoadBalancerID = in.LoadBalancerId
 	out.LoadBalancerType = direct.Enum_FromProto(mapCtx, in.GetLoadBalancerType())
 	// MISSING: GKEMasterCluster
-	// MISSING: Fqdn
+	// MISSING: FQDN
 	// MISSING: CloudSQLInstance
 	// MISSING: RedisInstance
 	// MISSING: RedisCluster
@@ -62,7 +62,7 @@ func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointOb
 	out.LoadBalancerId = in.LoadBalancerID
 	out.LoadBalancerType = direct.PtrTo(direct.Enum_ToProto[pb.LoadBalancerType](mapCtx, in.LoadBalancerType))
 	// MISSING: GKEMasterCluster
-	// MISSING: Fqdn
+	// MISSING: FQDN
 	// MISSING: CloudSQLInstance
 	// MISSING: RedisInstance
 	// MISSING: RedisCluster
@@ -170,7 +170,7 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	// MISSING: LoadBalancerID
 	// MISSING: LoadBalancerType
 	// MISSING: GKEMasterCluster
-	out.Fqdn = direct.LazyPtr(in.GetFqdn())
+	out.FQDN = direct.LazyPtr(in.GetFqdn())
 	if in.CloudSqlInstance != "" {
 		out.SQLInstanceRef = &refs.SQLInstanceRef{External: in.CloudSqlInstance}
 	}
@@ -203,7 +203,7 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	// MISSING: LoadBalancerID
 	// MISSING: LoadBalancerType
 	// MISSING: GKEMasterCluster
-	out.Fqdn = direct.ValueOf(in.Fqdn)
+	out.Fqdn = direct.ValueOf(in.FQDN)
 	if in.SQLInstanceRef != nil {
 		out.CloudSqlInstance = in.SQLInstanceRef.External
 	}

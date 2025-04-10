@@ -48,7 +48,7 @@ var Acronyms = []string{
 	"CA", "CDN", "CIDR", "CPU",
 	"DNS",
 	"EUC",
-	"FS",
+	"FS", "FQDN",
 	"GCE", "GB", "GCS", "GKE",
 	"HTML", "HTTP", "HTTPS",
 	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",

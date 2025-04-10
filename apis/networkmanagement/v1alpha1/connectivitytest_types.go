@@ -157,7 +157,7 @@ type Endpoint struct {
 	//  Requires gke_master_cluster to be set, can't be used simultaneoulsly with
 	//  ip_address or network. Applicable only to destination endpoint.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.fqdn
-	Fqdn *string `json:"fqdn,omitempty"`
+	FQDN *string `json:"fqdn,omitempty"`
 
 	// A [Cloud SQL](https://cloud.google.com/sql) instance URI.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_sql_instance

@@ -395,8 +395,8 @@ func (in *Endpoint) DeepCopyInto(out *Endpoint) {
 		*out = new(containerv1beta1.ContainerClusterRef)
 		**out = **in
 	}
-	if in.Fqdn != nil {
-		in, out := &in.Fqdn, &out.Fqdn
+	if in.FQDN != nil {
+		in, out := &in.FQDN, &out.FQDN
 		*out = new(string)
 		**out = **in
 	}
