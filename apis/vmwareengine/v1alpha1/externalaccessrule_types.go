@@ -39,7 +39,7 @@ type ExternalAccessRule_IPRange struct {
 }
 
 // VMwareEngineExternalAccessRuleSpec defines the desired state of VMwareEngineExternalAccessRule
-// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAccessRule
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.ExternalAccessRule
 type VMwareEngineExternalAccessRuleSpec struct {
 	// The VMwareEngineExternalAccessRule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -125,7 +125,7 @@ type VMwareEngineExternalAccessRuleStatus struct {
 }
 
 // VMwareEngineExternalAccessRuleObservedState is the state of the VMwareEngineExternalAccessRule resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAccessRule
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.ExternalAccessRule
 type VMwareEngineExternalAccessRuleObservedState struct {
 	// Output only. The resource name of this external access rule.
 	//  Resource names are schemeless URIs that follow the conventions in

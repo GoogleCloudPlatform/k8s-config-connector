@@ -19,7 +19,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// +kcc:proto=google.cloud.datacatalog.v1.DataSource
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.DataSource
 type DataSourceObservedState struct {
 	// Output only. Data Catalog entry name, if applicable.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.DataSource.source_entry
@@ -126,7 +126,7 @@ type ColumnSchema struct {
 }
 
 // DataCatalogEntrySpec defines the desired state of DataCatalogEntry
-// +kcc:proto=google.cloud.datacatalog.v1.Entry
+// +kcc:spec:proto=google.cloud.datacatalog.v1.Entry
 type DataCatalogEntrySpec struct {
 	DataCatalogEntryParent `json:",inline"`
 
@@ -297,7 +297,7 @@ type DataCatalogEntryStatus struct {
 }
 
 // DataCatalogEntryObservedState is the state of the DataCatalogEntry resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datacatalog.v1.Entry
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.Entry
 type DataCatalogEntryObservedState struct {
 	// TODO: Looks like externalRef is the same as name. Remove name?
 	// Output only. Identifier. The resource name of an entry in URL format.

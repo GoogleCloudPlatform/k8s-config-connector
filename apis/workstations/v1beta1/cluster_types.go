@@ -27,7 +27,7 @@ var WorkstationClusterGVK = GroupVersion.WithKind("WorkstationCluster")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // WorkstationClusterSpec defines the desired state of WorkstationCluster
-// +kcc:proto=google.cloud.workstations.v1.WorkstationCluster
+// +kcc:spec:proto=google.cloud.workstations.v1.WorkstationCluster
 type WorkstationClusterSpec struct {
 	// Immutable. The Project that this resource belongs to.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ResourceID field is immutable"
@@ -94,7 +94,7 @@ type WorkstationClusterStatus struct {
 }
 
 // WorkstationClusterSpec defines the desired state of WorkstationCluster
-// +kcc:proto=google.cloud.workstations.v1.WorkstationCluster
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationCluster
 type WorkstationClusterObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation
 	//  cluster.

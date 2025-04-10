@@ -28,7 +28,7 @@ type Parent struct {
 }
 
 // SpannerInstanceConfigSpec defines the desired state of SpannerInstanceConfig
-// +kcc:proto=google.spanner.admin.instance.v1.InstanceConfig
+// +kcc:spec:proto=google.spanner.admin.instance.v1.InstanceConfig
 type SpannerInstanceConfigSpec struct {
 	Parent `json:",inline"`
 	// The SpannerInstanceConfig name. If not given, the metadata.name will be used.
@@ -117,7 +117,7 @@ type SpannerInstanceConfigStatus struct {
 }
 
 // SpannerInstanceConfigObservedState is the state of the SpannerInstanceConfig resource as most recently observed in GCP.
-// +kcc:proto=google.spanner.admin.instance.v1.InstanceConfig
+// +kcc:observedstate:proto=google.spanner.admin.instance.v1.InstanceConfig
 type SpannerInstanceConfigObservedState struct {
 	// Output only. Whether this instance configuration is a Google-managed or
 	//  user-managed configuration.

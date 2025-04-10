@@ -24,7 +24,7 @@ import (
 var CustomTargetTypeGVK = GroupVersion.WithKind("DeployCustomTargetType")
 
 // CustomTargetTypeSpec defines the desired state of DeployCustomTargetType
-// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
+// +kcc:spec:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeSpec struct {
 	// The DeployCustomTargetType name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -93,7 +93,7 @@ type CustomTargetTypeStatus struct {
 }
 
 // CustomTargetTypeObservedState is the state of the DeployCustomTargetType resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.deploy.v1.CustomTargetType
+// +kcc:observedstate:proto=google.cloud.deploy.v1.CustomTargetType
 type CustomTargetTypeObservedState struct {
 	// Output only. Resource id of the `CustomTargetType`.
 	// +kcc:proto:field=google.cloud.deploy.v1.CustomTargetType.custom_target_type_id

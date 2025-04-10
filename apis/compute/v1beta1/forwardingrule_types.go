@@ -105,7 +105,7 @@ type ForwardingruleTarget struct {
 	TargetVPNGatewayRef *refs.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.ForwardingRule
+// +kcc:spec:proto=google.cloud.compute.v1.ForwardingRule
 type ComputeForwardingRuleSpec struct {
 	/* Immutable. This field can only be used:
 	* If 'IPProtocol' is one of TCP, UDP, or SCTP.
@@ -359,7 +359,7 @@ type ComputeForwardingRuleSpec struct {
 	Target *ForwardingruleTarget `json:"target,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.ForwardingRule
+// +kcc:status:proto=google.cloud.compute.v1.ForwardingRule
 type ComputeForwardingRuleStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 	/* [Output Only] The URL for the corresponding base Forwarding Rule. By base Forwarding Rule, we mean the Forwarding Rule that has the same IP address, protocol, and port settings with the current Forwarding Rule, but without sourceIPRanges specified. Always empty if the current Forwarding Rule does not have sourceIPRanges specified. */

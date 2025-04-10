@@ -24,7 +24,7 @@ import (
 var DataflowFlexTemplateJobGVK = GroupVersion.WithKind("DataflowFlexTemplateJob")
 
 // DataflowFlexTemplateJobSpec defines the desired state of DataflowFlexTemplateJob
-// +kcc:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
+// +kcc:spec:proto=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment
 type DataflowFlexTemplateJobSpec struct {
 
 	/* NOTYET

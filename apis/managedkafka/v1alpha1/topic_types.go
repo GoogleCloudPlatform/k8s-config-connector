@@ -23,7 +23,7 @@ import (
 var ManagedKafkaTopicGVK = GroupVersion.WithKind("ManagedKafkaTopic")
 
 // ManagedKafkaTopicSpec defines the desired state of ManagedKafkaTopic
-// +kcc:proto=google.cloud.managedkafka.v1.Topic
+// +kcc:spec:proto=google.cloud.managedkafka.v1.Topic
 type ManagedKafkaTopicSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 

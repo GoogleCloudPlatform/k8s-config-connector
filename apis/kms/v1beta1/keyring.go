@@ -28,7 +28,7 @@ var (
 	}
 )
 
-// +kcc:proto=google.cloud.kms.v1.KeyRing
+// +kcc:spec:proto=google.cloud.kms.v1.KeyRing
 type KMSKeyRingSpec struct {
 	// /* Immutable. The Project that this resource belongs to. */
 	// ProjectRef refs.ProjectRef `json:"projectRef"`
@@ -43,7 +43,7 @@ type KMSKeyRingSpec struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.cloud.kms.v1.KeyRing
+// +kcc:status:proto=google.cloud.kms.v1.KeyRing
 type KMSKeyRingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   KMSKeyRing's current state. */

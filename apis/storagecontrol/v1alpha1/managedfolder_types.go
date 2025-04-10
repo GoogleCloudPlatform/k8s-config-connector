@@ -22,7 +22,7 @@ import (
 var StorageManagedFolderGVK = GroupVersion.WithKind("StorageManagedFolder")
 
 // StorageManagedFolderSpec defines the desired state of StorageManagedFolder
-// +kcc:proto=google.storage.control.v2.ManagedFolder
+// +kcc:spec:proto=google.storage.control.v2.ManagedFolder
 type StorageManagedFolderSpec struct {
 	*StorageFolderParent `json:",inline"`
 
@@ -47,7 +47,7 @@ type StorageManagedFolderStatus struct {
 }
 
 // StorageManagedFolderObservedState is the state of the StorageManagedFolder resource as most recently observed in GCP.
-// +kcc:proto=google.storage.control.v2.ManagedFolder
+// +kcc:observedstate:proto=google.storage.control.v2.ManagedFolder
 type StorageManagedFolderObservedState struct {
 	// Output only. The metadata version of this managed folder. It increases
 	//  whenever the metadata is updated. Used for preconditions and for detecting

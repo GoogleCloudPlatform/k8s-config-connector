@@ -39,7 +39,7 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
-// +kcc:proto={{ .KindProtoTag }}
+// +kcc:spec:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
@@ -64,7 +64,7 @@ type {{ .Kind }}Status struct {
 
 // {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 {{- if .KindProtoTag }}
-// +kcc:proto={{ .KindProtoTag }}
+// +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}ObservedState struct {
 }
