@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
-// krm.group: bigtable.cnrm.cloud.google.com
-// krm.version: v1beta1
-// proto.service: google.bigtable.admin.v2
-
 package bigtable
 
 import (
@@ -40,7 +35,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 		out.MultiClusterRoutingClusterIds = clusterIds
 	}
 	out.MultiClusterRoutingUseAny = isMultiClusterRouting
-	out.SingleClusterRouting = AppProfile_SingleClusterRoutingClusterId_FromProto(mapCtx, in.GetSingleClusterRouting())
+	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
 	// MISSING: Priority
 	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
 	// MISSING: DataBoostIsolationReadOnly
@@ -63,7 +58,7 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 			},
 		}
 	}
-	if oneof := AppProfile_SingleClusterRoutingClusterId_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
+	if oneof := AppProfile_SingleClusterRouting_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
 		out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
 	}
 	// MISSING: Priority
