@@ -214,8 +214,12 @@ func gitAdd(ctx context.Context, workDir string, files ...string) error {
 }
 
 func gitCommit(ctx context.Context, workDir string, msg string) error {
-	log.Printf("COMMAND: git commit -m %q", msg)
-	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg)
+	authorName := "kcc-conductor-bot"
+	authorEmail := "kcc-conductor-bot@google.com"
+	authorFlag := fmt.Sprintf("%s <%s>", authorName, authorEmail)
+
+	log.Printf("COMMAND: git commit -m %q --author=%q", msg, authorFlag)
+	gitcommit := exec.CommandContext(ctx, "git", "commit", "-m", msg, "--author", authorFlag)
 	gitcommit.Dir = workDir
 
 	results, err := execCommand(gitcommit)
