@@ -246,6 +246,29 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 	})
 }
 
+func (s *instanceAdminServer) UpdateInstance(ctx context.Context, req *pb.Instance) (*pb.Instance, error) {
+	name, err := s.parseInstanceName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Instance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.DisplayName = req.GetDisplayName()
+	obj.Type = req.GetType()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
 func (s *instanceAdminServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*emptypb.Empty, error) {
 	name, err := s.parseInstanceName(req.Name)
 	if err != nil {
