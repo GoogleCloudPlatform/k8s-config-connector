@@ -21,13 +21,15 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-go run . generate-types     --service google.bigtable.admin.v2     --api-version bigtable.cnrm.cloud.google.com/v1beta1     --resource BigtableAppProfile:AppProfile
+go run . generate-types     --service google.bigtable.admin.v2     --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
+  --resource BigtableAppProfile:AppProfile \
+  --resource BigtableTable:Table
 
-# go run . generate-mapper     --service google.bigtable.admin.v2     --api-version bigtable.cnrm.cloud.google.com/v1beta1
+go run . generate-mapper     --service google.bigtable.admin.v2     --api-version bigtable.cnrm.cloud.google.com/v1beta1
 
 
-# cd ${REPO_ROOT}
-# dev/tasks/generate-crds
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
 
-# go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigtable/
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigtable/
 

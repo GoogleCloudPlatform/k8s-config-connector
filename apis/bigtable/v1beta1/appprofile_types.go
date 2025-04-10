@@ -106,7 +106,6 @@ type BigtableAppProfileList struct {
 	Items           []BigtableAppProfile `json:"items"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
 type AppProfile_SingleClusterRoutingClusterId struct {
 	// The cluster to which read/write requests should be routed.
 	ClusterId *string `json:"clusterId,omitempty"`
