@@ -41,7 +41,7 @@ func (s *AssetService) GetFeed(ctx context.Context, req *pb.GetFeedRequest) (*pb
 
 	if err := s.storage.Get(ctx, name.String(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "feed %q not found", name.String())
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
@@ -124,7 +124,7 @@ func (s *AssetService) DeleteFeed(ctx context.Context, req *pb.DeleteFeedRequest
 }
 
 type feedName struct {
-	projectID      string
+	projectNumber  int64
 	folderID       string
 	organizationID string
 	feedID         string
@@ -137,7 +137,7 @@ func (n *feedName) String() string {
 	if n.folderID != "" {
 		return fmt.Sprintf("folders/%s/feeds/%s", n.folderID, n.feedID)
 	}
-	return fmt.Sprintf("projects/%s/feeds/%s", n.projectID, n.feedID)
+	return fmt.Sprintf("projects/%d/feeds/%s", n.projectNumber, n.feedID)
 }
 
 // parseFeedName parses a string into an feedName.
@@ -156,7 +156,7 @@ func (s *MockService) parseFeedName(name string) (*feedName, error) {
 		if err != nil {
 			return nil, err
 		}
-		feedName.projectID = project.ID
+		feedName.projectNumber = project.Number
 	case "folders":
 		feedName.folderID = tokens[1]
 	case "organizations":
