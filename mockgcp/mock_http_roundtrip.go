@@ -96,7 +96,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
