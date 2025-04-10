@@ -16,7 +16,6 @@ package v1alpha1
 
 import (
 	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,12 +23,6 @@ import (
 var BigtableAuthorizedViewGVK = GroupVersion.WithKind("BigtableAuthorizedView")
 
 type BigtableAuthorizedViewParent struct {
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-
-	// +required
-	InstanceRef bigtablev1beta1.InstanceRef `json:"instanceRef"`
-
 	// +required
 	TableRef bigtablev1beta1.TableRef `json:"tableRef"`
 }

@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -26,29 +28,20 @@ import (
 // AppProfileIdentity defines the resource reference to BigtableAppProfile, which "External" field
 // holds the GCP identifier for the KRM object.
 type AppProfileIdentity struct {
-	parent *AppProfileParent
+	parent *InstanceIdentity
 	id     string
 }
 
 func (i *AppProfileIdentity) String() string {
-	return i.parent.String() + "/appProfiles/" + i.id
+	return i.ParentString() + "/appProfiles/" + i.id
 }
 
 func (i *AppProfileIdentity) ID() string {
 	return i.id
 }
 
-func (i *AppProfileIdentity) Parent() *AppProfileParent {
-	return i.parent
-}
-
-type AppProfileParent struct {
-	ProjectID        string
-	BigtableInstance string
-}
-
-func (p *AppProfileParent) String() string {
-	return "projects/" + p.ProjectID + "/instances/" + p.BigtableInstance
+func (i *AppProfileIdentity) ParentString() string {
+	return i.parent.String()
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
@@ -58,12 +51,10 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	if err != nil {
 		return nil, err
 	}
-	tokens := strings.Split(instanceRef, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
-		return nil, fmt.Errorf("Invalid format of BigtableAppProfile external=%q was not known (expected projects/{{projectID}}/instances/{{instance}})", instanceRef)
+	instanceParent, instanceID, err := ParseInstanceExternal(instanceRef)
+	if err != nil {
+		return nil, err
 	}
-	parentProjectId := tokens[1]
-	parentBigtableInstance := tokens[3]
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -82,11 +73,11 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != parentProjectId {
-			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.ProjectID, parentProjectId)
+		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
+			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
 		}
-		if actualParent.BigtableInstance != parentBigtableInstance {
-			return nil, fmt.Errorf("BigtableInstance in spec.instanceRef changed, expect %s, got %s", actualParent.BigtableInstance, parentBigtableInstance)
+		if actualParent.Id != instanceID {
+			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualParent.Id, instanceID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -94,22 +85,18 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		}
 	}
 	return &AppProfileIdentity{
-		parent: &AppProfileParent{
-			ProjectID:        parentProjectId,
-			BigtableInstance: parentBigtableInstance,
+		parent: &InstanceIdentity{
+			Parent: instanceParent,
+			Id:     instanceID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseAppProfileExternal(external string) (parent *AppProfileParent, resourceID string, err error) {
+func ParseAppProfileExternal(external string) (*InstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "appProfiles" {
 		return nil, "", fmt.Errorf("format of BigtableAppProfile external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/appProfiles/{{appprofileID}})", external)
 	}
-	parent = &AppProfileParent{
-		BigtableInstance: tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return &InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
 }

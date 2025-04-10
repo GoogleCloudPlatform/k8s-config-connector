@@ -19,51 +19,41 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // ClusterIdentity defines the resource reference to BigtableCluster, which "External" field
 // holds the GCP identifier for the KRM object.
 type ClusterIdentity struct {
-	parent *ClusterParent
+	parent *bigtablev1beta1.InstanceIdentity
 	id     string
 }
 
 func (i *ClusterIdentity) String() string {
-	return i.parent.String() + "/clusters/" + i.id
+	return i.ParentString() + "/clusters/" + i.id
 }
 
 func (i *ClusterIdentity) ID() string {
 	return i.id
 }
 
-func (i *ClusterIdentity) Parent() *ClusterParent {
-	return i.parent
-}
-
-type ClusterParent struct {
-	ProjectID   string
-	InstanceRef string
-}
-
-func (p *ClusterParent) String() string {
-	return "projects/" + p.ProjectID + "/instances/" + p.InstanceRef
+func (i *ClusterIdentity) ParentString() string {
+	return i.parent.String()
 }
 
 // New builds a ClusterIdentity from the Config Connector Cluster object.
 func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *BigtableCluster) (*ClusterIdentity, error) {
-	// Resolve the ClusterParent fields from the Parent fields.
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	// Resolve parent
+	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	instanceParent, instanceID, err := bigtablev1beta1.ParseInstanceExternal(instanceRef)
 	if err != nil {
 		return nil, err
 	}
@@ -85,11 +75,11 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
+			return nil, fmt.Errorf("spec.instanceRef ProjectID changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
 		}
-		if actualParent.InstanceRef != instanceRef {
-			return nil, fmt.Errorf("spec.instanceRef changed, expect %s, got %s", actualParent.InstanceRef, instanceRef)
+		if actualParent.Id != instanceID {
+			return nil, fmt.Errorf("spec.instanceRef ID changed, expect %s, got %s", actualParent.Id, instanceID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,23 +87,24 @@ func NewClusterIdentity(ctx context.Context, reader client.Reader, obj *Bigtable
 		}
 	}
 	return &ClusterIdentity{
-		parent: &ClusterParent{
-			ProjectID:   projectID,
-			InstanceRef: instanceRef,
+		parent: &bigtablev1beta1.InstanceIdentity{
+			Parent: &parent.ProjectParent{
+				ProjectID: instanceParent.ProjectID},
+			Id: instanceID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseClusterExternal(external string) (parent *ClusterParent, resourceID string, err error) {
+func ParseClusterExternal(external string) (*bigtablev1beta1.InstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "clusters" {
 		return nil, "", fmt.Errorf("format of BigtableCluster external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}})", external)
 	}
-	parent = &ClusterParent{
-		ProjectID:   tokens[1],
-		InstanceRef: tokens[3],
+	p := &bigtablev1beta1.InstanceIdentity{
+		Parent: &parent.ProjectParent{ProjectID: tokens[1]},
+		Id:     tokens[3],
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	resourceID := tokens[5]
+	return p, resourceID, nil
 }
