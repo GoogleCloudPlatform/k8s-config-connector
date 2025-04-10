@@ -15,6 +15,9 @@
 package v1beta1
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
@@ -26,9 +29,22 @@ type InstanceIdentity struct {
 }
 
 func (i *InstanceIdentity) String() string {
-	return i.Parent.String() + "/instances/" + i.Id
+	return i.ParentString() + "/instances/" + i.Id
 }
 
 func (i *InstanceIdentity) ID() string {
 	return i.Id
+}
+
+func (i *InstanceIdentity) ParentString() string {
+	return i.Parent.String()
+}
+
+func ParseInstanceExternal(external string) (*parent.ProjectParent, string, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
+		return nil, "", fmt.Errorf("format of BigtableInstance external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}})", external)
+	}
+
+	return &parent.ProjectParent{ProjectID: tokens[1]}, tokens[3], nil
 }

@@ -69,7 +69,20 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 		return "", fmt.Errorf("reading referenced %s %s: %w", BigtableInstanceGVK, key, err)
 	}
 
-	// todo: use externalRef for resource that managed by direct controller
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if externalRef != "" {
+		return externalRef, nil
+	}
+
+	// no status.externalRef
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
 	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
 	if err != nil {
 		return "", fmt.Errorf("reading spec.resourceID: %w", err)
@@ -81,9 +94,6 @@ func (r *InstanceRef) NormalizedExternal(ctx context.Context, reader client.Read
 		}
 		resourceID = metadataName
 	}
-	if resourceID == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = resourceID
+	r.External = fmt.Sprintf("projects/%s/instances/%s", projectID, resourceID)
 	return r.External, nil
 }

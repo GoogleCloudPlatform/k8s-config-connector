@@ -29,11 +29,15 @@ type TableIdentity struct {
 }
 
 func (i *TableIdentity) String() string {
-	return i.Parent.String() + "/tables/" + i.Id
+	return i.ParentString() + "/tables/" + i.Id
 }
 
 func (i *TableIdentity) ID() string {
 	return i.Id
+}
+
+func (i *TableIdentity) ParentString() string {
+	return i.Parent.String()
 }
 
 func ParseTableExternal(external string) (*InstanceIdentity, string, error) {

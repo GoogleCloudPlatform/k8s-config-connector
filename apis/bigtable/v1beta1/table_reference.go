@@ -72,7 +72,20 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 		return "", fmt.Errorf("reading referenced %s %s: %w", BigtableTableGVK, key, err)
 	}
 
-	// todo: use externalRef for resource that managed by direct controller
+	// Get external from status.externalRef. This is the most trustworthy place.
+	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if externalRef != "" {
+		return externalRef, nil
+	}
+
+	// no status.externalRef
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
 	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
 	if err != nil {
 		return "", fmt.Errorf("reading spec.resourceID: %w", err)
@@ -87,6 +100,22 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	if resourceID == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = resourceID
+	instanceName, _, err := unstructured.NestedString(u.Object, "spec", "instanceRef", "name")
+	if err != nil {
+		return "", err
+	}
+	if instanceName != "" {
+		r.External = fmt.Sprintf("projects/%s/instances/%s/tables/%s", projectID, instanceName, resourceID)
+	} else {
+		// The configured spec.instanceRef.external should match the format projects/{projectID}/instances/{instanceID}
+		// otherwise the creation of the resource might fail
+		instanceExternal, _, err := unstructured.NestedString(u.Object, "spec", "instanceRef", "external")
+		if err != nil {
+			return "", err
+		}
+		if instanceExternal != "" {
+			r.External = fmt.Sprintf("%s/tables/%s", instanceExternal, resourceID)
+		}
+	}
 	return r.External, nil
 }

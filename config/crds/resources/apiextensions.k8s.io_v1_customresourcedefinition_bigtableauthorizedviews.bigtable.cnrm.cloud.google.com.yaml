@@ -70,67 +70,6 @@ spec:
                   on update, it must match the server's etag. The server returns ABORTED
                   error on a mismatched etag.
                 type: string
-              instanceRef:
-                description: InstanceRef defines the resource reference to BigtableInstance,
-                  which "External" field holds the GCP identifier for the KRM object.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed BigtableInstance
-                      resource.
-                    type: string
-                  name:
-                    description: The name of a BigtableInstance resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a BigtableInstance resource.
-                    type: string
-                type: object
-              projectRef:
-                description: The Project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
-                  name:
-                    description: The `name` field of a `Project` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `Project` resource.
-                    type: string
-                type: object
               resourceID:
                 description: The BigtableAuthorizedView name. If not given, the metadata.name
                   will be used.
@@ -179,8 +118,6 @@ spec:
                 type: object
             required:
             - ""
-            - instanceRef
-            - projectRef
             - tableRef
             type: object
           status:

@@ -19,57 +19,41 @@ import (
 	"fmt"
 	"strings"
 
+	bigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // BackupIdentity defines the resource reference to BigtableBackup, which "External" field
 // holds the GCP identifier for the KRM object.
 type BackupIdentity struct {
-	parent *BackupParent
+	parent *ClusterIdentity
 	id     string
 }
 
 func (i *BackupIdentity) String() string {
-	return i.parent.String() + "/backups/" + i.id
+	return i.ParentString() + "/backups/" + i.id
 }
 
 func (i *BackupIdentity) ID() string {
 	return i.id
 }
 
-func (i *BackupIdentity) Parent() *BackupParent {
-	return i.parent
-}
-
-type BackupParent struct {
-	ProjectID string
-	Instance  string
-	Cluster   string
-}
-
-func (p *BackupParent) String() string {
-	return "projects/" + p.ProjectID + "/instances/" + p.Instance + "/clusters/" + p.Cluster
+func (i *BackupIdentity) ParentString() string {
+	return i.parent.String()
 }
 
 // New builds a BackupIdentity from the Config Connector Backup object.
 func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableBackup) (*BackupIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
-	}
 	clusterRef, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, err
+	}
+	clusterParent, clusterID, err := ParseClusterExternal(clusterRef)
 	if err != nil {
 		return nil, err
 	}
@@ -91,14 +75,14 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.parent.Parent.ProjectID != clusterParent.Parent.ProjectID {
+			return nil, fmt.Errorf("spec.clusterRef ProjectID changed, expect %s, got %s", actualParent.parent.Parent.ProjectID, clusterParent.Parent.ProjectID)
 		}
-		if actualParent.Instance != instanceRef {
-			return nil, fmt.Errorf("spec.instance changed, expect %s, got %s", actualParent.Instance, instanceRef)
+		if actualParent.parent.Id != clusterParent.Id {
+			return nil, fmt.Errorf("spec.clusterRef instanceID changed, expect %s, got %s", actualParent.parent.Id, clusterParent.Id)
 		}
-		if actualParent.Cluster != clusterRef {
-			return nil, fmt.Errorf("spec.cluster changed, expect %s, got %s", actualParent.Cluster, clusterRef)
+		if actualParent.id != clusterID {
+			return nil, fmt.Errorf("spec.clusterRef clusterID changed, expect %s, got %s", actualParent.id, clusterID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -106,25 +90,29 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *BigtableB
 		}
 	}
 	return &BackupIdentity{
-		parent: &BackupParent{
-			ProjectID: projectID,
-			Instance:  instanceRef,
-			Cluster:   clusterRef,
+		parent: &ClusterIdentity{
+			parent: &bigtablev1beta1.InstanceIdentity{
+				Parent: &parent.ProjectParent{ProjectID: clusterParent.Parent.ProjectID},
+				Id:     clusterParent.Id,
+			},
+			id: clusterID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseBackupExternal(external string) (parent *BackupParent, resourceID string, err error) {
+func ParseBackupExternal(external string) (*ClusterIdentity, string, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "clusters" || tokens[6] != "backups" {
 		return nil, "", fmt.Errorf("format of BigtableBackup external=%q was not known (use projects/{{projectID}}/instances/{{instanceID}}/clusters/{{clusterID}}/backups/{{backupID}})", external)
 	}
-	parent = &BackupParent{
-		ProjectID: tokens[1],
-		Instance:  tokens[3],
-		Cluster:   tokens[5],
+	p := &ClusterIdentity{
+		parent: &bigtablev1beta1.InstanceIdentity{
+			Parent: &parent.ProjectParent{ProjectID: tokens[1]},
+			Id:     tokens[3],
+		},
+		id: tokens[5],
 	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	resourceID := tokens[7]
+	return p, resourceID, nil
 }

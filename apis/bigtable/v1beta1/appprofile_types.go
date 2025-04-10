@@ -21,14 +21,18 @@ import (
 
 var BigtableAppProfileGVK = GroupVersion.WithKind("BigtableAppProfile")
 
+type BigtableAppProfileParent struct {
+	// +required
+	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
+}
+
 // BigtableAppProfileSpec defines the desired state of BigtableAppProfile
 // +kcc:proto=google.bigtable.admin.v2.AppProfile
 type BigtableAppProfileSpec struct {
 	// The BigtableAppProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// +required
-	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
+	BigtableAppProfileParent `json:",inline"`
 
 	// Long form description of the use case for this AppProfile.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.description

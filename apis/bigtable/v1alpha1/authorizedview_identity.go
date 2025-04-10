@@ -49,7 +49,7 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 	if err != nil {
 		return nil, err
 	}
-	instanceIdentity, tableID, err := bigtablev1beta1.ParseTableExternal(tableExternal)
+	tableParent, tableID, err := bigtablev1beta1.ParseTableExternal(tableExternal)
 	if err != nil {
 		return nil, err
 	}
@@ -71,8 +71,14 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 		if err != nil {
 			return nil, err
 		}
+		if actualParent.Parent.Parent.ProjectID != tableParent.Parent.ProjectID {
+			return nil, fmt.Errorf("spec.tableRef ProjectID changed, expect %s, got %s", actualParent.Parent.Parent.ProjectID, tableParent.Parent.ProjectID)
+		}
+		if actualParent.Parent.Id != tableParent.Id {
+			return nil, fmt.Errorf("spec.tableRef InstanceID changed, expect %s, got %s", actualParent.Parent.Id, tableParent.Id)
+		}
 		if actualParent.Id != tableID {
-			return nil, fmt.Errorf("spec.groupRef changed, expect %s, got %s", actualParent.Id, tableID)
+			return nil, fmt.Errorf("spec.tableRef tableID changed, expect %s, got %s", actualParent.Id, tableID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -81,7 +87,7 @@ func NewAuthorizedViewIdentity(ctx context.Context, reader client.Reader, obj *B
 	}
 	return &AuthorizedViewIdentity{
 		parent: &bigtablev1beta1.TableIdentity{
-			Parent: instanceIdentity,
+			Parent: tableParent,
 			Id:     tableID,
 		},
 		id: resourceID,
