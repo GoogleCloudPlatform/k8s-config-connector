@@ -1594,10 +1594,13 @@ branches:
       package: google.cloud.alloydb.v1
       proto: Cluster
       proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.alloydb.v1.Clusters
       proto-msg: google.cloud.alloydb.v1.Cluster
-      host-name: ""
-      notes: []
+      host-name: alloydb.googleapis.com
+      skip: true
+      notes:
+        - "Terraform based"
+        - "Mock already exists, skipping"
     - name: alloydb-instance
       local: resource-alloydb-instance
       remote: resource-alloydb-instance
@@ -1609,10 +1612,13 @@ branches:
       package: google.cloud.alloydb.v1
       proto: Instance
       proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.alloydb.v1.Instances
       proto-msg: google.cloud.alloydb.v1.Instance
-      host-name: ""
-      notes: []
+      host-name: alloydb.googleapis.com
+      skip: true
+      notes:
+        - "Terraform based"
+        - "Mock already exists, skipping"
     - name: alloydb-connectioninfo
       local: resource-alloydb-connectioninfo
       remote: resource-alloydb-connectioninfo
@@ -1640,10 +1646,12 @@ branches:
       package: google.cloud.alloydb.v1
       proto: Backup
       proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.alloydb.v1.Backups
       proto-msg: google.cloud.alloydb.v1.Backup
-      host-name: ""
-      notes: []
+      host-name: alloydb.googleapis.com
+      skip: true
+      notes:
+        - "Terraform based"
     - name: alloydb-supporteddatabaseflag
       local: resource-alloydb-supporteddatabaseflag
       remote: resource-alloydb-supporteddatabaseflag
@@ -1671,10 +1679,12 @@ branches:
       package: google.cloud.alloydb.v1
       proto: User
       proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.alloydb.v1.Users
       proto-msg: google.cloud.alloydb.v1.User
-      host-name: ""
-      notes: []
+      host-name: alloydb.googleapis.com
+      skip: true
+      notes:
+      - "Terraform based"
     - name: alloydb-database
       local: resource-alloydb-database
       remote: resource-alloydb-database
