@@ -26,11 +26,14 @@ import (
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 
 	"github.com/spf13/cobra"
 )
+
+const DefaultModel = "gemini-2.5-pro-exp-03-25"
 
 // PromptOptions are the options for the prompt command.
 type PromptOptions struct {
@@ -44,6 +47,8 @@ type PromptOptions struct {
 	// StrictInputColumnKeys ensures that all input datapoints have this shape.
 	// This helps detect typos in the examples.
 	StrictInputColumnKeys []string
+
+	Model string
 }
 
 func (o *PromptOptions) InitDefaults() error {
@@ -53,6 +58,13 @@ func (o *PromptOptions) InitDefaults() error {
 	}
 	o.SrcDir = root
 	o.ProtoDir = filepath.Join(root, ".build/third_party/googleapis/google")
+
+	model := os.Getenv("LLM_MODEL")
+	if model == "" {
+		model = DefaultModel
+	}
+	o.Model = model
+
 	return nil
 }
 
@@ -62,6 +74,7 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.ProtoDir, "proto-dir", o.ProtoDir, "base directory for checkout of proto API definitions")
 	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
 	cmd.Flags().StringVar(&o.InputFile, "input-file", o.InputFile, "the input file to get input from")
+	cmd.Flags().StringVar(&o.Model, "model", o.Model, "The LLM model to use")
 	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
 }
 
@@ -163,14 +176,14 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		}
 	}
 
-	model := os.Getenv("LLM_MODEL")
-	if model == "" {
-		model = "gemini-2.5-pro-exp-03-25"
+	llmClient, err := gollm.NewVertexAIClient(ctx)
+	if err != nil {
+		return fmt.Errorf("building LLM client: %w", err)
 	}
-	log.Info("using model", "model", model)
+	defer llmClient.Close()
 
 	out := &bytes.Buffer{}
-	if err := x.InferOutput_WithCompletion(ctx, model, dataPoint, out); err != nil {
+	if err := x.InferOutput_WithCompletion(ctx, llmClient, o.Model, dataPoint, out); err != nil {
 		return fmt.Errorf("running LLM inference: %w", err)
 	}
 
