@@ -19,3 +19,12 @@ resources:
 - cnrm_viewer_role_binding.yaml
 - role.yaml
 - manager_role_binding.yaml
+
+patches:
+# cnrm_viewer_patch.yaml is from config/installbundle/components/clusterroles/cnrm_viewer.yaml
+- path: cnrm_viewer_patch.yaml
+  target:
+    group: rbac.authorization.k8s.io
+    version: v1
+    kind: ClusterRole
+    name: viewer

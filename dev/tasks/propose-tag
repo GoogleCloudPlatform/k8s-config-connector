@@ -103,6 +103,10 @@ for channeldir in channels autopilot-channels; do
   find ${REPO_ROOT}/operator/${channeldir}/packages -type f -name "*.yaml" | xargs sed -i -e "s@gcr.io/cnrm-eap/@gcr.io/gke-release/@g"
 done
 
+# Update operator RBAC.  
+cp ${REPO_ROOT}/config/installbundle/components/clusterroles/cnrm_viewer.yaml ${REPO_ROOT}/operator/config/rbac/cnrm_viewer_patch.yaml
+
+
 # Generate operator/config/gke-addon/image_configmap.yaml
 make -C ${REPO_ROOT}/operator manifests
 
