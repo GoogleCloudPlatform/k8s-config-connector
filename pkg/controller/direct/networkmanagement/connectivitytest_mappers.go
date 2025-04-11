@@ -20,6 +20,7 @@ import (
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -231,6 +232,27 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	out.NetworkType = direct.Enum_ToProto[pb.Endpoint_NetworkType](mapCtx, in.NetworkType)
 	if in.ProjectRef != nil {
 		out.ProjectId = in.ProjectRef.External
+	}
+	return out
+}
+
+func Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudRunRevisionEndpoint) *krm.Endpoint_CloudRunRevisionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Endpoint_CloudRunRevisionEndpoint{}
+	if in.Uri != "" {
+		out.RunRevisionRef = &run.RevisionRef{External: in.GetUri()}
+	}
+	return out
+}
+func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_CloudRunRevisionEndpoint) *pb.Endpoint_CloudRunRevisionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint_CloudRunRevisionEndpoint{}
+	if in.RunRevisionRef != nil {
+		out.Uri = in.RunRevisionRef.External
 	}
 	return out
 }

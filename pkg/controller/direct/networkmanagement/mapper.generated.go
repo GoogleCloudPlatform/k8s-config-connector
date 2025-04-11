@@ -249,22 +249,6 @@ func Endpoint_CloudFunctionEndpoint_ToProto(mapCtx *direct.MapContext, in *krmv1
 	out.Uri = direct.ValueOf(in.URI)
 	return out
 }
-func Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudRunRevisionEndpoint) *krmv1alpha1.Endpoint_CloudRunRevisionEndpoint {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.Endpoint_CloudRunRevisionEndpoint{}
-	// MISSING: URI
-	return out
-}
-func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Endpoint_CloudRunRevisionEndpoint) *pb.Endpoint_CloudRunRevisionEndpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Endpoint_CloudRunRevisionEndpoint{}
-	// MISSING: URI
-	return out
-}
 func FirewallInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallInfo) *krmv1alpha1.FirewallInfoObservedState {
 	if in == nil {
 		return nil
