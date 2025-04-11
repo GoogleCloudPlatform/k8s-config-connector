@@ -302,7 +302,27 @@ func (v *ReplaceFields) VisitPrimitive(path string, val protoreflect.Value, sett
 
 var _ ProtoVisitor = &ClearFields{}
 
-func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.Value), visitor ProtoVisitor) {
+func Visit(msg protoreflect.Message, visitor ProtoVisitor, options VisitOptions) {
+	s := visitState{
+		VisitOptions: options,
+		visitor:      visitor,
+	}
+
+	s.Visit("", msg, nil)
+}
+
+type VisitOptions struct {
+	VisitMapWithWildcard bool
+}
+
+type visitState struct {
+	VisitOptions
+	visitor ProtoVisitor
+}
+
+func (opt visitState) Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.Value)) {
+	visitor := opt.visitor
+
 	visitor.VisitMessage(msgPath, msg, setter)
 	msg.Range(func(field protoreflect.FieldDescriptor, fieldVal protoreflect.Value) bool {
 		path := msgPath + "." + string(field.Name())
@@ -325,7 +345,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					setter := func(v protoreflect.Value) {
 						listVal.Set(j, v)
 					}
-					Visit(path+"[]", el.Message(), setter, visitor)
+					opt.Visit(path+"[]", el.Message(), setter)
 				}
 			case protoreflect.StringKind:
 				for j := 0; j < count; j++ {
@@ -398,13 +418,18 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 				// In case the value changes
 				mapVal = msg.Mutable(field).Map()
 				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
-					mapPath := path + "[" + k.String() + "]"
+
 					setter := func(v protoreflect.Value) {
 						mapVal.Set(k, v)
 					}
 
 					v := mapVal.Get(k)
-					Visit(mapPath, v.Message(), setter, visitor)
+
+					mapPath := path + "[" + k.String() + "]"
+					if opt.VisitMapWithWildcard {
+						mapPath = path + "[*]"
+					}
+					opt.Visit(mapPath, v.Message(), setter)
 
 					return true
 				})
@@ -449,7 +474,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					}
 
 					v := mapVal.Get(k)
-					Visit(mapPath, v.Message(), setter, visitor)
+					opt.Visit(mapPath, v.Message(), setter)
 
 					return true
 				})
@@ -469,7 +494,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					msg.Clear(field)
 				}
 			}
-			Visit(path, fieldVal.Message(), setter, visitor)
+			opt.Visit(path, fieldVal.Message(), setter)
 
 		case protoreflect.BoolKind,
 			protoreflect.DoubleKind,

@@ -15,6 +15,7 @@
 // +tool:fuzz-gen
 // proto.message: google.bigtable.admin.v2.Cluster
 // api.group: bigtable.cnrm.cloud.google.com
+// crd.kind: BigtableCluster
 
 package bigtable
 
