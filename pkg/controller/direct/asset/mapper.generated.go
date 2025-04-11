@@ -237,22 +237,6 @@ func IAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.MapContext, 
 	out.FullResourceName = direct.ValueOf(in.FullResourceName)
 	return out
 }
-func PubsubDestination_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestination {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PubsubDestination{}
-	out.Topic = direct.LazyPtr(in.GetTopic())
-	return out
-}
-func PubsubDestination_ToProto(mapCtx *direct.MapContext, in *krm.PubsubDestination) *pb.PubsubDestination {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PubsubDestination{}
-	out.Topic = direct.ValueOf(in.Topic)
-	return out
-}
 func SavedQuery_QueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
 	if in == nil {
 		return nil

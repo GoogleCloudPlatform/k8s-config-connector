@@ -15,7 +15,9 @@
 package asset
 
 import (
+	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	exprpb "google.golang.org/genproto/googleapis/type/expr"
 )
@@ -41,5 +43,22 @@ func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *exprpb.Expr {
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
 	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+
+func PubsubDestination_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestination {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubsubDestination{}
+	out.TopicRef = &refsv1beta1.PubSubTopicRef{External: in.GetTopic()}
+	return out
+}
+func PubsubDestination_ToProto(mapCtx *direct.MapContext, in *krm.PubsubDestination) *pb.PubsubDestination {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PubsubDestination{}
+	out.Topic = in.TopicRef.External
 	return out
 }

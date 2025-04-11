@@ -127,10 +127,36 @@ spec:
                   pubsubDestination:
                     description: Destination on Pub/Sub.
                     properties:
-                      topic:
+                      topicRef:
                         description: 'The name of the Pub/Sub topic to publish to.
                           Example: `projects/PROJECT_ID/topics/TOPIC_ID`.'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                            type: string
+                          name:
+                            description: The `metadata.name` field of a `PubSubTopic`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `metadata.namespace` field of a `PubSubTopic`
+                              resource.
+                            type: string
+                        type: object
                     type: object
                 type: object
               folderRef:
@@ -231,7 +257,6 @@ spec:
                   be used.
                 type: string
             required:
-            - ""
             - feedOutputConfig
             type: object
           status:

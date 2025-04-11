@@ -1,0 +1,30 @@
+apiVersion: asset.cnrm.cloud.google.com/v1alpha1
+kind: AssetFeed
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: assetfeed-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  assetTypes:
+  - storage.googleapis.com/Bucket
+  - cloudresourcemanager.googleapis.com/Project
+  feedOutputConfig:
+    pubsubDestination:
+      topicRef:
+        name: kcc-assetfeed-minimal-${uniqueId}
+  projectRef:
+    external: ${projectNumber}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/feeds/assetfeed-minimal-${uniqueId}
+  observedGeneration: 2

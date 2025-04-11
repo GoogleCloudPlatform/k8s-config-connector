@@ -162,14 +162,6 @@ type FeedOutputConfig struct {
 	PubsubDestination *PubsubDestination `json:"pubsubDestination,omitempty"`
 }
 
-// +kcc:proto=google.cloud.asset.v1.PubsubDestination
-type PubsubDestination struct {
-	// The name of the Pub/Sub topic to publish to.
-	//  Example: `projects/PROJECT_ID/topics/TOPIC_ID`.
-	// +kcc:proto:field=google.cloud.asset.v1.PubsubDestination.topic
-	Topic *string `json:"topic,omitempty"`
-}
-
 // +kcc:proto=google.type.Expr
 type Expr struct {
 	// Textual representation of an expression in Common Expression Language
