@@ -1,0 +1,9 @@
+apiVersion: netapp.cnrm.cloud.google.com/v1alpha1
+kind: NetAppBackupVault
+metadata:
+  name: netappbackupvault-basic-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west2
+  description: "Updated description"
