@@ -93,7 +93,7 @@ type VpcPeeringConfig struct {
 	// Required. Fully qualified name of the VPC that Database Migration Service
 	//  will peer to.
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.vpc_name
-	VpcName *refs.ComputeNetworkRef `json:"vpcName,omitempty"`
+	VpcNameRef *refs.ComputeNetworkRef `json:"vpcNameRef,omitempty"`
 
 	// Required. A free subnet for peering. (CIDR of /29)
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.subnet

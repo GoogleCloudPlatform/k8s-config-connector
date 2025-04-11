@@ -82,7 +82,7 @@ func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConf
 	}
 	out := &krm.VpcPeeringConfig{}
 	if in.GetVpcName() != "" {
-		out.VpcName = &refsv1beta1.ComputeNetworkRef{External: in.GetVpcName()}
+		out.VpcNameRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpcName()}
 	}
 	out.Subnet = direct.LazyPtr(in.GetSubnet())
 	return out
@@ -92,8 +92,8 @@ func VpcPeeringConfig_ToProto(mapCtx *direct.MapContext, in *krm.VpcPeeringConfi
 		return nil
 	}
 	out := &pb.VpcPeeringConfig{}
-	if in.VpcName != nil {
-		out.VpcName = in.VpcName.External
+	if in.VpcNameRef != nil {
+		out.VpcName = in.VpcNameRef.External
 	}
 	out.Subnet = direct.ValueOf(in.Subnet)
 	return out

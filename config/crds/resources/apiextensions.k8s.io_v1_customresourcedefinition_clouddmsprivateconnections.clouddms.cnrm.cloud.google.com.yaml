@@ -119,7 +119,7 @@ spec:
                   subnet:
                     description: Required. A free subnet for peering. (CIDR of /29)
                     type: string
-                  vpcName:
+                  vpcNameRef:
                     description: Required. Fully qualified name of the VPC that Database
                       Migration Service will peer to.
                     oneOf:
