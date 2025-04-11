@@ -755,14 +755,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
 
-					// Specific to monitoring
-					addSetStringReplacement(".creationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".creationRecord.mutatedBy", "user@example.com")
-					addSetStringReplacement(".mutationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
-					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
-
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
