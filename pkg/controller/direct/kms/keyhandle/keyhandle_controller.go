@@ -143,16 +143,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	parent := a.id.Parent()
 
-	req := &kmspb.CreateKeyHandleRequest{
-		Parent:    parent.String(),
-		KeyHandle: resource,
-	}
+	req := &kmspb.CreateKeyHandleRequest{}
 	if a.id.ID() != "" {
 		// Optional. Id of the [KeyHandle][google.cloud.kms.v1.KeyHandle]. Must be
 		// unique to the resource project and location. If not provided by the caller,
 		// a new UUID is used.
+		resource.Name = a.id.String()
 		req.KeyHandleId = a.id.ID()
 	}
+	req.Parent = parent.String()
+	req.KeyHandle = resource
+
 	op, err := a.gcpClient.CreateKeyHandle(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating KeyHandle %s: %w", a.id.String(), err)
@@ -179,12 +180,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating Logging Link", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	resource := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	resource.Name = a.id.String()
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -195,6 +197,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
+		externalRef := a.actual.Name
+		status.ExternalRef = &externalRef
 		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
 		return fmt.Errorf("update operation not supported for resource %v %v",
