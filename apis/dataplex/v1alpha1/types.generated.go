@@ -14,22 +14,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.dataplex.v1.AssetStatus
-type AssetStatus struct {
-	// Last update time of the status.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Number of active assets.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.active_assets
-	ActiveAssets *int32 `json:"activeAssets,omitempty"`
-
-	// Number of assets that are in process of updating the security policy on
-	//  attached resources.
-	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
-	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
-}
-
 // +kcc:proto=google.cloud.dataplex.v1.Lake
 type Lake struct {
 
@@ -330,4 +314,104 @@ type Environment_SessionStatusObservedState struct {
 	//  currently active or not
 	// +kcc:proto:field=google.cloud.dataplex.v1.Environment.SessionStatus.active
 	Active *bool `json:"active,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.AssetStatus
+type AssetStatus struct {
+	// Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Number of active assets.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.active_assets
+	ActiveAssets *int32 `json:"activeAssets,omitempty"`
+
+	// Number of assets that are in process of updating the security policy on
+	//  attached resources.
+	// +kcc:proto:field=google.cloud.dataplex.v1.AssetStatus.security_policy_applying_assets
+	SecurityPolicyApplyingAssets *int32 `json:"securityPolicyApplyingAssets,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec
+type Zone_DiscoverySpec struct {
+	// Required. Whether discovery is enabled.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to include
+	//  during discovery if only a subset of the data should considered. For
+	//  Cloud Storage bucket assets, these are interpreted as glob patterns used
+	//  to match object names. For BigQuery dataset assets, these are interpreted
+	//  as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.include_patterns
+	IncludePatterns []string `json:"includePatterns,omitempty"`
+
+	// Optional. The list of patterns to apply for selecting data to exclude
+	//  during discovery.  For Cloud Storage bucket assets, these are interpreted
+	//  as glob patterns used to match object names. For BigQuery dataset assets,
+	//  these are interpreted as patterns to match table names.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.exclude_patterns
+	ExcludePatterns []string `json:"excludePatterns,omitempty"`
+
+	// Optional. Configuration for CSV data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.csv_options
+	CsvOptions *Zone_DiscoverySpec_CsvOptions `json:"csvOptions,omitempty"`
+
+	// Optional. Configuration for Json data.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.json_options
+	JsonOptions *Zone_DiscoverySpec_JsonOptions `json:"jsonOptions,omitempty"`
+
+	// Optional. Cron schedule (https://en.wikipedia.org/wiki/Cron) for
+	//  running discovery periodically. Successive discovery runs must be
+	//  scheduled at least 60 minutes apart. The default value is to run
+	//  discovery every 60 minutes. To explicitly set a timezone to the cron
+	//  tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+	//  TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
+	//  from IANA time zone database. For example, `CRON_TZ=America/New_York 1
+	//  * * * *`, or `TZ=America/New_York 1 * * * *`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.schedule
+	Schedule *string `json:"schedule,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions
+type Zone_DiscoverySpec_CsvOptions struct {
+	// Optional. The number of rows to interpret as header rows that should be
+	//  skipped when reading data rows.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.header_rows
+	HeaderRows *int32 `json:"headerRows,omitempty"`
+
+	// Optional. The delimiter being used to separate values. This defaults to
+	//  ','.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.delimiter
+	Delimiter *string `json:"delimiter,omitempty"`
+
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for CSV data.
+	//  If true, all columns will be registered as strings.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.CsvOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions
+type Zone_DiscoverySpec_JsonOptions struct {
+	// Optional. The character encoding of the data. The default is UTF-8.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions.encoding
+	Encoding *string `json:"encoding,omitempty"`
+
+	// Optional. Whether to disable the inference of data type for Json data.
+	//  If true, all columns will be registered as their primitive types
+	//  (strings, number or boolean).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.DiscoverySpec.JsonOptions.disable_type_inference
+	DisableTypeInference *bool `json:"disableTypeInference,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Zone.ResourceSpec
+type Zone_ResourceSpec struct {
+	// Required. Immutable. The location type of the resources that are allowed
+	//  to be attached to the assets within this zone.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
+	LocationType *string `json:"locationType,omitempty"`
 }
