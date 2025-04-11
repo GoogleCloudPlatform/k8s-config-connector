@@ -26,46 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AppProfile_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.AppProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.AppProfile{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.MultiClusterRoutingUseAny = AppProfile_MultiClusterRoutingUseAny_FromProto(mapCtx, in.GetMultiClusterRoutingUseAny())
-	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
-	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
-	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
-	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
-	return out
-}
-func AppProfile_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile) *pb.AppProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppProfile{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Etag = direct.ValueOf(in.Etag)
-	out.Description = direct.ValueOf(in.Description)
-	if oneof := AppProfile_MultiClusterRoutingUseAny_ToProto(mapCtx, in.MultiClusterRoutingUseAny); oneof != nil {
-		out.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{MultiClusterRoutingUseAny: oneof}
-	}
-	if oneof := AppProfile_SingleClusterRouting_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
-		out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
-	}
-	if oneof := AppProfile_Priority_ToProto(mapCtx, in.Priority); oneof != nil {
-		out.Isolation = oneof
-	}
-	if oneof := AppProfile_StandardIsolation_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
-		out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
-	}
-	if oneof := AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
-		out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
-	}
-	return out
-}
 func AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmv1beta1.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
@@ -133,24 +93,6 @@ func AppProfile_SingleClusterRouting_ToProto(mapCtx *direct.MapContext, in *krmv
 	}
 	out := &pb.AppProfile_SingleClusterRouting{}
 	out.ClusterId = direct.ValueOf(in.ClusterID)
-	out.AllowTransactionalWrites = direct.ValueOf(in.AllowTransactionalWrites)
-	return out
-}
-func AppProfile_SingleClusterRoutingClusterId_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmv1beta1.AppProfile_SingleClusterRoutingClusterId {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.AppProfile_SingleClusterRoutingClusterId{}
-	out.ClusterId = direct.LazyPtr(in.GetClusterId())
-	out.AllowTransactionalWrites = direct.LazyPtr(in.GetAllowTransactionalWrites())
-	return out
-}
-func AppProfile_SingleClusterRoutingClusterId_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AppProfile_SingleClusterRoutingClusterId) *pb.AppProfile_SingleClusterRouting {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AppProfile_SingleClusterRouting{}
-	out.ClusterId = direct.ValueOf(in.ClusterId)
 	out.AllowTransactionalWrites = direct.ValueOf(in.AllowTransactionalWrites)
 	return out
 }
