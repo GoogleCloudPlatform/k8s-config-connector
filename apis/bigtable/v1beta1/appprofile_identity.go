@@ -40,8 +40,16 @@ func (i *AppProfileIdentity) ID() string {
 	return i.id
 }
 
+func (i *AppProfileIdentity) Parent() *InstanceIdentity {
+	return i.parent
+}
+
 func (i *AppProfileIdentity) ParentString() string {
 	return i.parent.String()
+}
+
+func (i *AppProfileIdentity) ParentInstanceIdString() string {
+	return i.parent.Id
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
