@@ -140,7 +140,21 @@ func BasedOnDCL(serviceMetaLoader metadata.ServiceMetadataLoader) []schema.Group
 	return gvkList
 }
 
+func isHandwrittenIAMGVK(gvk schema.GroupVersionKind) bool {
+	handwrittenIAMGVKs := make(map[schema.GroupVersionKind]bool)
+	for _, iamGVK := range BasedOnHandwrittenIAMTypes() {
+		handwrittenIAMGVKs[iamGVK] = true
+	}
+	_, ok := handwrittenIAMGVKs[gvk]
+	return ok
+}
+
 func IsDirectByGVK(gvk schema.GroupVersionKind) bool {
+	// Handwritten IAM types are not direct resources.
+	if isHandwrittenIAMGVK(gvk) {
+		return false
+	}
+
 	metadata, ok := SupportedGVKs[gvk]
 	if !ok {
 		return false
