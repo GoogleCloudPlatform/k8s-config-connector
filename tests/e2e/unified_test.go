@@ -545,6 +545,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					// specific to apigateway
+					addReplacement("managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
+					addReplacement("response.managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
 					// Specific to cloudbuild
 					addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
 

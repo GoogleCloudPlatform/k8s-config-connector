@@ -31,10 +31,10 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	)
 	f.UnimplementedFields.Insert(".name")
 
-	f.SpecFields.Insert(".displayName")
+	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".managedService")
+	f.SpecFields.Insert(".managed_service")
 
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".create_time")
