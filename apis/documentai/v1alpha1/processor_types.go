@@ -24,7 +24,7 @@ import (
 var DocumentAIProcessorGVK = GroupVersion.WithKind("DocumentAIProcessor")
 
 // DocumentAIProcessorSpec defines the desired state of DocumentAIProcessor
-// +kcc:proto=google.cloud.documentai.v1.Processor
+// +kcc:spec:proto=google.cloud.documentai.v1.Processor
 type DocumentAIProcessorSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 

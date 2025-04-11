@@ -23,7 +23,7 @@ import (
 var StorageFolderGVK = GroupVersion.WithKind("StorageFolder")
 
 // StorageFolderSpec defines the desired state of StorageFolder
-// +kcc:proto=google.storage.control.v2.Folder
+// +kcc:spec:proto=google.storage.control.v2.Folder
 type StorageFolderSpec struct {
 	*StorageFolderParent `json:",inline"`
 
@@ -56,7 +56,7 @@ type StorageFolderStatus struct {
 }
 
 // StorageFolderObservedState is the state of the StorageFolder resource as most recently observed in GCP.
-// +kcc:proto=google.storage.control.v2.Folder
+// +kcc:observedstate:proto=google.storage.control.v2.Folder
 type StorageFolderObservedState struct {
 	// Output only. The version of the metadata for this folder. Used for
 	//  preconditions and for detecting changes in metadata.
@@ -84,7 +84,7 @@ type StorageFolderObservedState struct {
 type PendingRenameInfo struct {
 }
 
-// +kcc:proto=google.storage.control.v2.PendingRenameInfo
+// +kcc:observedstate:proto=google.storage.control.v2.PendingRenameInfo
 type PendingRenameInfoObservedState struct {
 	// Output only. The name of the rename operation.
 	// +kcc:proto:field=google.storage.control.v2.PendingRenameInfo.operation

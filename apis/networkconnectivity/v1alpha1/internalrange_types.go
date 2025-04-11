@@ -31,7 +31,7 @@ type Parent struct {
 }
 
 // NetworkConnectivityInternalRangeSpec defines the desired state of NetworkConnectivityInternalRange
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
+// +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
 type NetworkConnectivityInternalRangeSpec struct {
 	// The NetworkConnectivityInternalRange name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -97,7 +97,7 @@ type NetworkConnectivityInternalRangeStatus struct {
 }
 
 // NetworkConnectivityInternalRangeObservedState is the state of the NetworkConnectivityInternalRange resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange
 type NetworkConnectivityInternalRangeObservedState struct {
 	// Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.users

@@ -59,7 +59,7 @@ type APIQuotaAdjusterSettingsStatus struct {
 }
 
 // APIQuotaAdjusterSettingsObservedState is the state of the APIQuotaAdjusterSettings resource as most recently observed in GCP.
-// +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
+// +kcc:observedstate:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsObservedState struct {
 	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.update_time

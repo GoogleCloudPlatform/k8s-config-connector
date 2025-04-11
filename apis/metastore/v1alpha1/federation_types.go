@@ -50,7 +50,7 @@ type BackendMetastore struct {
 }
 
 // MetastoreFederationSpec defines the desired state of MetastoreFederation
-// +kcc:proto=google.cloud.metastore.v1.Federation
+// +kcc:spec:proto=google.cloud.metastore.v1.Federation
 type MetastoreFederationSpec struct {
 	Parent Parent `json:",inline"`
 	// The MetastoreFederation name. If not given, the metadata.name will be used.
@@ -87,7 +87,7 @@ type MetastoreFederationStatus struct {
 }
 
 // MetastoreFederationObservedState is the state of the MetastoreFederation resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.metastore.v1.Federation
+// +kcc:observedstate:proto=google.cloud.metastore.v1.Federation
 type MetastoreFederationObservedState struct {
 	// Output only. The time when the metastore federation was created.
 	// +kcc:proto:field=google.cloud.metastore.v1.Federation.create_time

@@ -23,7 +23,7 @@ import (
 var APIGatewayAPIGVK = GroupVersion.WithKind("APIGatewayAPI")
 
 // APIGatewayAPISpec defines the desired state of APIGatewayAPI
-// +kcc:proto=google.cloud.apigateway.v1.Api
+// +kcc:spec:proto=google.cloud.apigateway.v1.Api
 type APIGatewayAPISpec struct {
 	// The APIGatewayAPI name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -66,7 +66,7 @@ type APIGatewayAPIStatus struct {
 }
 
 // APIGatewayAPIObservedState is the state of the APIGatewayAPI resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.apigateway.v1.Api
+// +kcc:observedstate:proto=google.cloud.apigateway.v1.Api
 type APIGatewayAPIObservedState struct {
 
 	// Resource name of the API.

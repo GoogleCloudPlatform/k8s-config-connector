@@ -82,7 +82,7 @@ type FirewallPolicyRuleMatch struct {
 	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRule
+// +kcc:spec:proto=google.cloud.compute.v1.FirewallPolicyRule
 type ComputeFirewallPolicyRuleSpec struct {
 	/* The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next". */
 	Action string `json:"action"`
@@ -118,7 +118,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`
 }
 
-// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRule
+// +kcc:status:proto=google.cloud.compute.v1.FirewallPolicyRule
 type ComputeFirewallPolicyRuleStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 	/* Type of the resource. Always `compute#firewallPolicyRule` for firewall policy rules */

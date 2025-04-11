@@ -34,7 +34,7 @@ type PeerNetwork struct {
 }
 
 // VMwareEngineNetworkPeeringSpec defines the desired state of VMwareEngineNetworkPeering
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPeering
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.NetworkPeering
 type VMwareEngineNetworkPeeringSpec struct {
 	// The VMwareEngineNetworkPeering name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -118,7 +118,7 @@ type VMwareEngineNetworkPeeringStatus struct {
 }
 
 // VMwareEngineNetworkPeeringObservedState is the state of the VMwareEngineNetworkPeering resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPeering
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPeering
 type VMwareEngineNetworkPeeringObservedState struct {
 	// Output only. The resource name of the network peering. NetworkPeering is a
 	//  global resource and location can only be global. Resource names are

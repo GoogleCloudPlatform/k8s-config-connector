@@ -269,7 +269,7 @@ type WorkstationConfig_ReadinessCheck struct {
 }
 
 // WorkstationConfigSpec defines the desired state of WorkstationConfig
-// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
+// +kcc:spec:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfigSpec struct {
 	// Parent is a reference to the parent WorkstationCluster for this WorkstationConfig.
 	Parent *WorkstationClusterRef `json:"parentRef"`
@@ -386,7 +386,7 @@ type WorkstationConfigStatus struct {
 }
 
 // WorkstationConfigObservedState is the state of the WorkstationConfig resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig
 type WorkstationConfigObservedState struct {
 	// Output only. A system-assigned unique identifier for this workstation
 	//  configuration.
@@ -422,14 +422,14 @@ type WorkstationConfigObservedState struct {
 }
 
 // WorkstationConfigObservedState is the state of the WorkstationConfig_Host resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host
 type WorkstationConfig_HostObservedState struct {
 	// Output only. Observed state of the Compute Engine runtime host for the workstation configuration.
 	GceInstance *WorkstationConfig_Host_GceInstanceObservedState `json:"gceInstance,omitempty"`
 }
 
 // WorkstationConfigObservedState is the state of the WorkstationConfig_Host_GceInstanceObservedState resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
+// +kcc:observedstate:proto=google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance
 type WorkstationConfig_Host_GceInstanceObservedState struct {
 	// Output only. Number of instances currently available in the pool for
 	//  faster workstation startup.

@@ -81,7 +81,7 @@ type EssentialContactsContactStatus struct {
 }
 
 // EssentialContactsContactObservedState is the state of the EssentialContactsContact resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.essentialcontacts.v1.Contact
+// +kcc:observedstate:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactObservedState struct {
 
 	// Output only. The validity of the contact. A contact is considered valid if

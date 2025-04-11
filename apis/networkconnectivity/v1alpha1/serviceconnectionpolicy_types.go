@@ -30,7 +30,7 @@ var (
 )
 
 // NetworkConnectivityServiceConnectionPolicySpec defines the desired state of NetworkConnectivityServiceConnectionPolicy
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+// +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
 type NetworkConnectivityServiceConnectionPolicySpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
@@ -98,7 +98,7 @@ type NetworkConnectivityServiceConnectionPolicyStatus struct {
 }
 
 // NetworkConnectivityServiceConnectionPolicySpec defines the desired state of NetworkConnectivityServiceConnectionPolicy
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
 type NetworkConnectivityServiceConnectionPolicyObservedState struct {
 	// Output only. Time when the ServiceConnectionMap was created.
 	CreateTime *string `json:"createTime,omitempty"`

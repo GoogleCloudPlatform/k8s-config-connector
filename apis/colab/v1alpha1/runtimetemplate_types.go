@@ -33,7 +33,7 @@ type RuntimeTemplate_Parent struct {
 }
 
 // ColabRuntimeTemplateSpec defines the desired state of ColabRuntimeTemplate
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
 type ColabRuntimeTemplateSpec struct {
 	RuntimeTemplate_Parent `json:",inline"`
 
@@ -113,7 +113,7 @@ type ColabRuntimeTemplateSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
 type EncryptionSpec struct {
 	// Required. The Cloud KMS resource identifier of the customer managed
 	//  encryption key used to protect a resource. Has the form:
@@ -124,7 +124,7 @@ type EncryptionSpec struct {
 	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NetworkSpec
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.NetworkSpec
 type NetworkSpec struct {
 	// Whether to enable public internet access. Default false.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NetworkSpec.enable_internet_access
@@ -159,7 +159,7 @@ type ColabRuntimeTemplateStatus struct {
 }
 
 // ColabRuntimeTemplateObservedState is the state of the ColabRuntimeTemplate resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookRuntimeTemplate
 type ColabRuntimeTemplateObservedState struct {
 	// Used to perform consistent read-modify-write updates. If not set, a blind
 	//  "overwrite" update happens.
