@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/preflight"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
+	corekcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"github.com/go-logr/logr"
 	appsv1 "k8s.io/api/apps/v1"
@@ -117,6 +118,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
+		mgr.GetClient(),
 		dynamic.NewForConfigOrDie(mgr.GetConfig()),
 		controllers.CustomizationWatcherOptions{
 			TriggerGVRs: controllers.NamespacedCustomizationCRsToWatch,
@@ -435,6 +437,16 @@ func (r *Reconciler) fetchAndApplyAllNamespacedControllerResources(ctx context.C
 	if !ok {
 		return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 	}
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr := corekcck8s.ToGVR(customizev1beta1.NamespacedControllerResourceGroupVersionKind)
+	exist, err := controllers.CheckCRDExists(ctx, r.client, gvr)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		r.log.Info("CRD not found, skipping namespace-scoped controller resource customization", "crd", gvr.String())
+		return nil
+	}
 	// List all the NamespacedControllerResource CRs in the same namespace as ConfigConnectorContext object.
 	crs, err := controllers.ListNamespacedControllerResources(ctx, r.client, ccc.Namespace)
 	if err != nil {
@@ -524,6 +536,16 @@ func (r *Reconciler) fetchAndApplyAllNamespacedControllerReconcilers(ctx context
 	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 	if !ok {
 		return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+	}
+	// Check if the CRD is installed in the cluster first to prevent misleading error messages.
+	gvr := corekcck8s.ToGVR(customizev1beta1.NamespacedControllerReconcilerGroupVersionKind)
+	exist, err := controllers.CheckCRDExists(ctx, r.client, gvr)
+	if err != nil {
+		return err
+	}
+	if !exist {
+		r.log.Info("CRD not found, skipping namespace-scoped controller reconciler customization", "crd", gvr.String())
+		return nil
 	}
 	// List all the NamespacedControllerReconciler CRs in the same namespace as ConfigConnectorContext object.
 	crs, err := controllers.ListNamespacedControllerReconcilers(ctx, r.client, ccc.Namespace)
