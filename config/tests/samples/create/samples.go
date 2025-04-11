@@ -209,7 +209,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			return true, nil
 		}
 		if u.Object["status"] == nil {
-			logger.Info("resource does not yet have status", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have status", "kind", u.GetKind(), "name", u.GetName(), "troubleshooting", "if you keep seeing this error message, check if you've imported the service in pkg/controller/direct/register/register.go")
 			return false, nil
 		}
 
