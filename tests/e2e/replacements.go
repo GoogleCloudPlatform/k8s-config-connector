@@ -162,6 +162,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${processorID}"
 	case "processorVersions":
 		return "${processorVersionID}"
+	case "taxonomies":
+		return "${taxonomiesID}"
 	default:
 		return ""
 	}
