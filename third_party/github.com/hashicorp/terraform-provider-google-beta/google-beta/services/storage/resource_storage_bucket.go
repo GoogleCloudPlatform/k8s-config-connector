@@ -96,7 +96,6 @@ func ResourceStorageBucket() *schema.Resource {
 			"location": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 				StateFunc: func(s interface{}) string {
 					return strings.ToUpper(s.(string))
 				},
@@ -751,6 +750,15 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 	if d.HasChange("soft_delete_policy") {
 		if v, ok := d.GetOk("soft_delete_policy"); ok {
 			sb.SoftDeletePolicy = expandBucketSoftDeletePolicy(v.([]interface{}))
+		}
+	}
+
+	// Bucket relocation is a LRO, can only be initiated from the API.
+	// No need to update the location. Eventually it becomes reconciled
+	//  once the relocation is finished.
+	if d.HasChange("location") {
+		if v, ok := d.GetOk("name"); ok {
+			log.Printf("[WARNING] Relocating bucket %v to the desitnation location %v \n\n", d.Get("name").(string), v.(string))
 		}
 	}
 
