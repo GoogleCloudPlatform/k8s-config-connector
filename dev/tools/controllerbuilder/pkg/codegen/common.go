@@ -48,8 +48,8 @@ var Acronyms = []string{
 	"CA", "CDN", "CIDR", "CPU",
 	"DNS",
 	"EUC",
-	"FS",
-	"GCE", "GB", "GCS",
+	"FS", "FQDN",
+	"GCE", "GB", "GCS", "GKE",
 	"HTML", "HTTP", "HTTPS",
 	"IAM", "IAP", "ID", "IP", "IPV4", "IPV6",
 	"KMS",
@@ -60,7 +60,7 @@ var Acronyms = []string{
 	"SQL", "SSH", "SSL", "SSO",
 	"TCP", "TLS", "TTL",
 	"UDP", "URI", "URL",
-	"VTPM", "VM",
+	"VTPM", "VM", "VPC", "VIP", "VPN",
 	"X509",
 }
 
