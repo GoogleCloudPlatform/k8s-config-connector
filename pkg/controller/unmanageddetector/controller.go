@@ -149,7 +149,7 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	}
 
 	// TODO: NamespaceScoped
-	// Perform two lookups, for namespaces "cnrm-system" and the CR namespace
+	// Perform two lookups, in namespace "cnrm-system" and then in all namespaces
 	//   Pros:
 	//     - No additional command line parameters required
 	//     - For non-MT clusters in most cases first lookup will return the result.
@@ -157,8 +157,9 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	//       This reduces impact of the change and help avoiding regression issues
 	//   Cons:
 	//     - Two round trips to apiserver will be required for MT and error cases
+	//     - Lookup across namespaces may be more expensive
 	// Alternatives:
-	// - Lookup across all namespaces: Namespace: ""
+	// - Always lookup across all namespaces: Namespace: ""
 	//   Pros:
 	//     - Minimal and simple code change
 	//   Cons:
@@ -171,7 +172,6 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	//     - Confusing command line parameter for users that are not aware of MT
 	if len(stsList.Items) == 0 {
 		stsOpts = &client.ListOptions{
-			Namespace:     namespace,
 			LabelSelector: stsLabelSelector,
 			Limit:         1,
 		}
