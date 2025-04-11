@@ -23,6 +23,9 @@ import (
 	"fmt"
 	"strings"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	lro "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -45,6 +48,9 @@ func (r *autokeyServer) GetKeyHandle(ctx context.Context, req *pb.GetKeyHandleRe
 
 	obj := &pb.KeyHandle{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "KeyHandle %s not found.", fqn)
+		}
 		return nil, err
 	}
 
@@ -66,14 +72,24 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 	fqn := keyHandleName.String()
 
 	obj := proto.Clone(req.GetKeyHandle()).(*pb.KeyHandle)
+	project, err := r.Projects.GetProjectByID(keyHandleName.projectID)
+	if err != nil {
+		return nil, err
+	}
 	obj.Name = fqn
+	// Autokey full relative name:
+	// projects/key-project/locations/us-central1/keyRings/autokey/cryptoKeys/${projectNumber}-compute-disk-ac103725a174885c
+	// key-project is a separate project that contains auto keys, see https://cloud.google.com/kms/docs/enable-autokey#set-up-key-project
+	// hard-code key-project and the generated key suffix for golden testing
+	obj.KmsKey = fmt.Sprintf("projects/${key_project}/locations/%s/keyRings/autokey/cryptoKeys/%d-compute-disk-${generated-id}", keyHandleName.location, project.Number)
 
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return r.operations.StartLRO(ctx, req.Parent, nil, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.KeyHandle)
-		return result, nil
+
+	metadata := &pb.CreateKeyHandleMetadata{}
+	return r.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
+		return obj, nil
 	})
 }
 
