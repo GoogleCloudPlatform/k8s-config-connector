@@ -17,8 +17,10 @@ package networkmanagement
 import (
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -33,9 +35,13 @@ func EndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint)
 	// MISSING: Port
 	// MISSING: Instance
 	// MISSING: ForwardingRule
-	out.ForwardingRuleTarget = direct.Enum_FromProto(mapCtx, in.GetForwardingRuleTarget())
+	if in.ForwardingRuleTarget != nil {
+		out.ForwardingRuleTarget = direct.ZeroBasedEnum_FromProto(mapCtx, in.GetForwardingRuleTarget())
+	}
 	out.LoadBalancerID = in.LoadBalancerId
-	out.LoadBalancerType = direct.Enum_FromProto(mapCtx, in.GetLoadBalancerType())
+	if in.LoadBalancerType != nil {
+		out.LoadBalancerType = direct.ZeroBasedEnum_FromProto(mapCtx, in.GetLoadBalancerType())
+	}
 	// MISSING: GKEMasterCluster
 	// MISSING: FQDN
 	// MISSING: CloudSQLInstance
@@ -58,9 +64,13 @@ func EndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EndpointOb
 	// MISSING: Port
 	// MISSING: Instance
 	// MISSING: ForwardingRule
-	out.ForwardingRuleTarget = direct.PtrTo(direct.Enum_ToProto[pb.Endpoint_ForwardingRuleTarget](mapCtx, in.ForwardingRuleTarget))
+	if in.ForwardingRuleTarget != nil {
+		out.ForwardingRuleTarget = direct.PtrTo(direct.Enum_ToProto[pb.Endpoint_ForwardingRuleTarget](mapCtx, in.ForwardingRuleTarget))
+	}
 	out.LoadBalancerId = in.LoadBalancerID
-	out.LoadBalancerType = direct.PtrTo(direct.Enum_ToProto[pb.LoadBalancerType](mapCtx, in.LoadBalancerType))
+	if in.LoadBalancerType != nil {
+		out.LoadBalancerType = direct.PtrTo(direct.Enum_ToProto[pb.LoadBalancerType](mapCtx, in.LoadBalancerType))
+	}
 	// MISSING: GKEMasterCluster
 	// MISSING: FQDN
 	// MISSING: CloudSQLInstance
@@ -162,29 +172,31 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	out := &krm.Endpoint{}
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	out.Port = direct.LazyPtr(in.GetPort())
-	if in.Instance != "" {
-		out.ComputeInstanceRef = &compute.InstanceRef{External: in.Instance}
+	if in.GetInstance() != "" {
+		out.ComputeInstanceRef = &compute.InstanceRef{External: in.GetInstance()}
 	}
-	out.ComputeForwardingRuleRef = direct.LazyPtr(in.ForwardingRule)
+	out.ComputeForwardingRuleRef = direct.LazyPtr(in.GetForwardingRule())
 	// MISSING: ForwardingRuleTarget
 	// MISSING: LoadBalancerID
 	// MISSING: LoadBalancerType
-	// MISSING: GKEMasterCluster
+	if in.GetGkeMasterCluster() != "" {
+		out.ContainerClusterRef = &container.ContainerClusterRef{External: in.GetGkeMasterCluster()}
+	}
 	out.FQDN = direct.LazyPtr(in.GetFqdn())
-	if in.CloudSqlInstance != "" {
-		out.SQLInstanceRef = &refs.SQLInstanceRef{External: in.CloudSqlInstance}
+	if in.GetCloudSqlInstance() != "" {
+		out.SQLInstanceRef = &refs.SQLInstanceRef{External: in.GetCloudSqlInstance()}
 	}
 	out.RedisInstance = direct.LazyPtr(in.GetRedisInstance())
 	out.RedisCluster = direct.LazyPtr(in.GetRedisCluster())
 	out.CloudFunction = Endpoint_CloudFunctionEndpoint_FromProto(mapCtx, in.GetCloudFunction())
 	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx, in.GetAppEngineVersion())
 	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx, in.GetCloudRunRevision())
-	if in.Network != "" {
-		out.ComputeNetworkRef = &refs.ComputeNetworkRef{External: in.Network}
+	if in.GetNetwork() != "" {
+		out.ComputeNetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
-	if in.ProjectId != "" {
-		out.ProjectRef = &refs.ProjectRef{External: in.ProjectId}
+	if in.GetProjectId() != "" {
+		out.ProjectRef = &refs.ProjectRef{External: in.GetProjectId()}
 	}
 	return out
 }
@@ -195,14 +207,16 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	out := &pb.Endpoint{}
 	out.IpAddress = direct.ValueOf(in.IPAddress)
 	out.Port = direct.ValueOf(in.Port)
-	if in.ComputeNetworkRef != nil {
-		out.Instance = in.ComputeNetworkRef.External
+	if in.ComputeInstanceRef != nil {
+		out.Instance = in.ComputeInstanceRef.External
 	}
 	out.ForwardingRule = direct.ValueOf(in.ComputeForwardingRuleRef)
 	// MISSING: ForwardingRuleTarget
 	// MISSING: LoadBalancerID
 	// MISSING: LoadBalancerType
-	// MISSING: GKEMasterCluster
+	if in.ContainerClusterRef != nil {
+		out.GkeMasterCluster = in.ContainerClusterRef.External
+	}
 	out.Fqdn = direct.ValueOf(in.FQDN)
 	if in.SQLInstanceRef != nil {
 		out.CloudSqlInstance = in.SQLInstanceRef.External
@@ -218,6 +232,27 @@ func Endpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint) *pb.Endpoint 
 	out.NetworkType = direct.Enum_ToProto[pb.Endpoint_NetworkType](mapCtx, in.NetworkType)
 	if in.ProjectRef != nil {
 		out.ProjectId = in.ProjectRef.External
+	}
+	return out
+}
+
+func Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint_CloudRunRevisionEndpoint) *krm.Endpoint_CloudRunRevisionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Endpoint_CloudRunRevisionEndpoint{}
+	if in.Uri != "" {
+		out.RunRevisionRef = &run.RevisionRef{External: in.GetUri()}
+	}
+	return out
+}
+func Endpoint_CloudRunRevisionEndpoint_ToProto(mapCtx *direct.MapContext, in *krm.Endpoint_CloudRunRevisionEndpoint) *pb.Endpoint_CloudRunRevisionEndpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Endpoint_CloudRunRevisionEndpoint{}
+	if in.RunRevisionRef != nil {
+		out.Uri = in.RunRevisionRef.External
 	}
 	return out
 }

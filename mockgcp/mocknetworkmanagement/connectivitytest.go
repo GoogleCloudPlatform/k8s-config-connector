@@ -50,6 +50,10 @@ func (s *reachabilityService) GetConnectivityTest(ctx context.Context, req *pb.G
 
 	obj := &pb.ConnectivityTest{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
+
 		return nil, err
 	}
 	// TODO: Remove these lines, or add default values, this is just a workaround for the test
@@ -127,9 +131,7 @@ func (s *reachabilityService) CreateConnectivityTest(ctx context.Context, req *p
 								DestIpRange: "10.0.0.0/20",
 								DisplayName: "default-route-f17b1d9b115a2c1e",
 								NetworkUri:  "projects/${projectId}/global/networks/default",
-								NextHop:     "network gateway",
 								NextHopType: pb.RouteInfo_NEXT_HOP_NETWORK,
-								RouteScope:  pb.RouteInfo_NETWORK,
 								RouteType:   pb.RouteInfo_SUBNET,
 								Uri:         "projects/${projectId}/global/routes/default-route-f17b1d9b115a2c1e",
 							},
@@ -200,6 +202,7 @@ func (s *reachabilityService) UpdateConnectivityTest(ctx context.Context, req *p
 		}
 	}
 	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.Protocol = "TCP"
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

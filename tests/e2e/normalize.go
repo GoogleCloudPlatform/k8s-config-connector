@@ -292,6 +292,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to NetworkManagement
+	visitor.replacePaths[".status.observedState.reachabilityDetails.verifyTime"] = "2025-01-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.reachabilityDetails.traces[].endpointInfo.sourcePort"] = "12345"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
@@ -1052,6 +1056,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.ReplacePath(".reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
 		visitor.ReplacePath(".response.reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
+
+		visitor.ReplacePath(".reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
+		visitor.ReplacePath(".response.reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
 	}
 
 	// Dataplex

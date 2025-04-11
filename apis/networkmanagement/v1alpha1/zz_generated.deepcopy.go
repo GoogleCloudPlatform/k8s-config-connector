@@ -1278,6 +1278,11 @@ func (in *NetworkManagementConnectivityTestObservedState) DeepCopyInto(out *Netw
 		*out = new(EndpointObservedState)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Destination != nil {
+		in, out := &in.Destination, &out.Destination
+		*out = new(EndpointObservedState)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.DisplayName != nil {
 		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
