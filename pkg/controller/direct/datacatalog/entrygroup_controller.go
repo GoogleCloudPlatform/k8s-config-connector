@@ -121,7 +121,7 @@ var _ directbase.Adapter = &entryGroupAdapter{}
 
 func (a *entryGroupAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("getting datacatalog entrygroup", "name", a.id)
+	log.V(2).Info("getting datacatalog entrygroup", "name", a.id)
 
 	req := &pb.GetEntryGroupRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetEntryGroup(ctx, req)
@@ -129,6 +129,11 @@ func (a *entryGroupAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
+		if direct.IsPermissionDenied(err) {
+			// Seeing DatacatalogEntryGroup returning 403 when the entrygroup is not found.
+			return false, nil
+		}
+
 		return false, fmt.Errorf("getting datacatalog entrygroup %q from gcp: %w", a.id.String(), err)
 	}
 
@@ -138,7 +143,7 @@ func (a *entryGroupAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("creating datacatalog entrygroup", "name", a.id)
+	log.V(2).Info("creating datacatalog entrygroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := DataCatalogEntryGroupSpec_ToProto(mapCtx, &a.desired.Spec)
@@ -155,7 +160,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if err != nil {
 		return fmt.Errorf("creating datacatalog entrygroup %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully created datacatalog entrygroup in gcp", "name", a.id)
+	log.V(2).Info("successfully created datacatalog entrygroup in gcp", "name", a.id)
 
 	status := &krm.DataCatalogEntryGroupStatus{}
 	status.ObservedState = DataCatalogEntryGroupObservedState_FromProto(mapCtx, created)
@@ -168,7 +173,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 
 func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.Info("updating datacatalog entrygroup", "name", a.id)
+	log.V(2).Info("updating datacatalog entrygroup", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := DataCatalogEntryGroupSpec_ToProto(mapCtx, &a.desired.Spec)
@@ -194,7 +199,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	var updated *pb.EntryGroup
 	if len(updateMask.Paths) == 0 {
-		log.Info("no field needs update", "name", a.id)
+		log.V(2).Info("no field needs update", "name", a.id)
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
@@ -206,7 +211,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		if err != nil {
 			return fmt.Errorf("updating datacatalog entrygroup %s: %w", a.id.String(), err)
 		}
-		log.Info("successfully updated datacatalog entrygroup in gcp", "name", a.id)
+		log.V(2).Info("successfully updated datacatalog entrygroup in gcp", "name", a.id)
 	}
 
 	status := &krm.DataCatalogEntryGroupStatus{}
@@ -245,19 +250,19 @@ func (a *entryGroupAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 func (a *entryGroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.Info("deleting datacatalog entrygroup", "name", a.id)
+	log.V(2).Info("deleting datacatalog entrygroup", "name", a.id)
 
 	req := &pb.DeleteEntryGroupRequest{Name: a.id.String()}
 	err := a.gcpClient.DeleteEntryGroup(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.Info("skipping delete for non-existent datacatalog entrygroup, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent datacatalog entrygroup, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting datacatalog entrygroup %s: %w", a.id.String(), err)
 	}
-	log.Info("successfully deleted datacatalog entrygroup", "name", a.id)
+	log.V(2).Info("successfully deleted datacatalog entrygroup", "name", a.id)
 
 	return true, nil
 }

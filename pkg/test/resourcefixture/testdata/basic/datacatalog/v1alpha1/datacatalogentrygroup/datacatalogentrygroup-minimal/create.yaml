@@ -15,10 +15,10 @@
 apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
 kind: DataCatalogEntryGroup
 metadata:
-  name: datacatalogentrygroup-minimal-${uniqueId}
+  name: datacatalogentrygroup-minimal${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  resourceID: datacatalogentrygroup-minimal-${uniqueId}
+  resourceID: datacatalogentrygroup_minimal_${uniqueId}
   displayName: Initial Minimal Entry Group

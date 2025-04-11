@@ -269,6 +269,11 @@ func ValueOf[T any](p *T) T {
 	return v
 }
 
+// IsPermissionDenied returns true if the given error is an HTTP 403.
+func IsPermissionDenied(err error) bool {
+	return HasHTTPCode(err, 403)
+}
+
 // IsNotFound returns true if the given error is an HTTP 404.
 func IsNotFound(err error) bool {
 	return HasHTTPCode(err, 404)

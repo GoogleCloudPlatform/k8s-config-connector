@@ -20,6 +20,6 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  resourceID: datacatalogentrygroup-minimal-${uniqueId}
+  resourceID: datacatalogentrygroup_minimal_${uniqueId}
   # Add a display name for the update scenario
   displayName: Updated Minimal Entry Group
