@@ -44,6 +44,7 @@ func main() {
 	var repoPath string
 	var enablePprof bool
 	var pprofPort int
+	var managerNamespaceSuffix string
 
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	profiler.AddFlag(flag.CommandLine)
@@ -53,6 +54,7 @@ func main() {
 		"Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+	flag.StringVar(&managerNamespaceSuffix, "manager-namespace-suffix", "", "Create controller manager pod/SA in a separate namespace, replacing suffix of watched namespace with the specified suffix.")
 
 	imagePrefix := os.Getenv("IMAGE_PREFIX")
 	flag.StringVar(&imagePrefix, "image-prefix", imagePrefix, "Remap container images to pull from the specified registry or mirror.")
@@ -111,8 +113,9 @@ func main() {
 	}
 
 	cccOptions := &configconnectorcontext.ReconcilerOptions{
-		RepoPath:       repoPath,
-		ImageTransform: imageTransform,
+		RepoPath:               repoPath,
+		ImageTransform:         imageTransform,
+		ManagerNamespaceSuffix: managerNamespaceSuffix,
 	}
 	if err = configconnectorcontext.Add(mgr, cccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnectorContext")

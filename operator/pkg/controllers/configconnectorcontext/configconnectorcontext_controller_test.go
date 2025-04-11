@@ -113,7 +113,7 @@ spec:
 	}
 
 	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
-	_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), ccc, m.Items)
+	_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), ccc, m.Items, "")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

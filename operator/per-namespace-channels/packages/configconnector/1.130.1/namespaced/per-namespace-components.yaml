@@ -22,7 +22,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -35,7 +35,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-admin-binding-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -43,7 +43,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -56,7 +56,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-ns-binding-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -64,7 +64,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -83,7 +83,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -101,7 +101,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 ---
 apiVersion: v1
 kind: Service
@@ -115,7 +115,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 spec:
   ports:
   - name: controller-manager
@@ -137,7 +137,7 @@ metadata:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
   name: cnrm-controller-manager-${NAMESPACE?}
-  namespace: ${NAMESPACE?}
+  namespace: ${MANAGER_NAMESPACE?}
 spec:
   selector:
     matchLabels:
