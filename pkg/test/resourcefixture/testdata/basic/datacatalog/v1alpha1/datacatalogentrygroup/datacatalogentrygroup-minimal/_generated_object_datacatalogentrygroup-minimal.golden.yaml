@@ -1,0 +1,30 @@
+apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
+kind: DataCatalogEntryGroup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: datacatalogentrygroup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Updated Minimal Entry Group
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  resourceID: datacatalogentrygroup-minimal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/entryGroups/datacatalogentrygroup-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    dataCatalogTimestamps:
+      createTime: "2025-04-09T06:27:24.0394821Z"
+      updateTime: "2025-04-09T06:27:24.886087419Z"
