@@ -251,7 +251,7 @@ spec:
                       description: Required. The VolumeDataRestorePolicy to apply
                         when restoring volumes in scope.
                       type: string
-                    selectedPvcs:
+                    selectedPVCs:
                       description: A list of PVCs to apply the policy override to.
                       properties:
                         namespacedNames:

@@ -452,23 +452,3 @@ func Restore_Filter_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Restore_F
 	out.ExclusionFilters = direct.Slice_ToProto(mapCtx, in.ExclusionFilters, ResourceSelector_ToProto)
 	return out
 }
-func VolumeDataRestorePolicyOverride_FromProto(mapCtx *direct.MapContext, in *pb.VolumeDataRestorePolicyOverride) *krmv1alpha1.VolumeDataRestorePolicyOverride {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.VolumeDataRestorePolicyOverride{}
-	out.Policy = direct.Enum_FromProto(mapCtx, in.GetPolicy())
-	out.SelectedPvcs = NamespacedNames_FromProto(mapCtx, in.GetSelectedPvcs())
-	return out
-}
-func VolumeDataRestorePolicyOverride_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VolumeDataRestorePolicyOverride) *pb.VolumeDataRestorePolicyOverride {
-	if in == nil {
-		return nil
-	}
-	out := &pb.VolumeDataRestorePolicyOverride{}
-	out.Policy = direct.Enum_ToProto[pb.RestoreConfig_VolumeDataRestorePolicy](mapCtx, in.Policy)
-	if oneof := NamespacedNames_ToProto(mapCtx, in.SelectedPvcs); oneof != nil {
-		out.Scope = &pb.VolumeDataRestorePolicyOverride_SelectedPvcs{SelectedPvcs: oneof}
-	}
-	return out
-}

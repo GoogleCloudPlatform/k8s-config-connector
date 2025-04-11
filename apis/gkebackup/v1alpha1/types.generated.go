@@ -326,18 +326,6 @@ type RestoreConfig_RestoreOrder struct {
 	GroupKindDependencies []RestoreConfig_RestoreOrder_GroupKindDependency `json:"groupKindDependencies,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride
-type VolumeDataRestorePolicyOverride struct {
-	// Required. The VolumeDataRestorePolicy to apply when restoring volumes in
-	//  scope.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.policy
-	Policy *string `json:"policy,omitempty"`
-
-	// A list of PVCs to apply the policy override to.
-	// +kcc:proto:field=google.cloud.gkebackup.v1.VolumeDataRestorePolicyOverride.selected_pvcs
-	SelectedPvcs *NamespacedNames `json:"selectedPvcs,omitempty"`
-}
-
 // +kcc:proto=google.type.Date
 type Date struct {
 	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without

@@ -2016,8 +2016,8 @@ func (in *VolumeDataRestorePolicyOverride) DeepCopyInto(out *VolumeDataRestorePo
 		*out = new(string)
 		**out = **in
 	}
-	if in.SelectedPvcs != nil {
-		in, out := &in.SelectedPvcs, &out.SelectedPvcs
+	if in.SelectedPVCs != nil {
+		in, out := &in.SelectedPVCs, &out.SelectedPVCs
 		*out = new(NamespacedNames)
 		(*in).DeepCopyInto(*out)
 	}
