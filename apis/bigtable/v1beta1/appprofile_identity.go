@@ -40,8 +40,22 @@ func (i *AppProfileIdentity) ID() string {
 	return i.id
 }
 
+<<<<<<< HEAD
 func (i *AppProfileIdentity) ParentString() string {
 	return i.parent.String()
+=======
+func (i *AppProfileIdentity) Parent() *AppProfileParent {
+	return i.parent
+}
+
+type AppProfileParent struct {
+	ProjectID        string
+	BigtableInstance string
+}
+
+func (p *AppProfileParent) String() string {
+	return "projects/" + p.ProjectID + "/instances/" + p.BigtableInstance
+>>>>>>> b1aac8820fed97c13e2b9c0bf52037772b60199f
 }
 
 // New builds a AppProfileIdentity from the Config Connector AppProfile object.
@@ -51,10 +65,19 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 	if err != nil {
 		return nil, err
 	}
+<<<<<<< HEAD
 	instanceParent, instanceID, err := ParseInstanceExternal(instanceRef)
 	if err != nil {
 		return nil, err
 	}
+=======
+	tokens := strings.Split(instanceRef, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "instances" {
+		return nil, fmt.Errorf("Invalid format of BigtableAppProfile external=%q was not known (expected projects/{{projectID}}/instances/{{instance}})", instanceRef)
+	}
+	parentProjectId := tokens[1]
+	parentBigtableInstance := tokens[3]
+>>>>>>> b1aac8820fed97c13e2b9c0bf52037772b60199f
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -73,11 +96,19 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		if err != nil {
 			return nil, err
 		}
+<<<<<<< HEAD
 		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
 			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
 		}
 		if actualParent.Id != instanceID {
 			return nil, fmt.Errorf("instanceID in spec.instanceRef changed, expect %s, got %s", actualParent.Id, instanceID)
+=======
+		if actualParent.ProjectID != parentProjectId {
+			return nil, fmt.Errorf("ProjectID in spec.instanceRef changed, expect %s, got %s", actualParent.ProjectID, parentProjectId)
+		}
+		if actualParent.BigtableInstance != parentBigtableInstance {
+			return nil, fmt.Errorf("BigtableInstance in spec.instanceRef changed, expect %s, got %s", actualParent.BigtableInstance, parentBigtableInstance)
+>>>>>>> b1aac8820fed97c13e2b9c0bf52037772b60199f
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -85,9 +116,15 @@ func NewAppProfileIdentity(ctx context.Context, reader client.Reader, obj *Bigta
 		}
 	}
 	return &AppProfileIdentity{
+<<<<<<< HEAD
 		parent: &InstanceIdentity{
 			Parent: instanceParent,
 			Id:     instanceID,
+=======
+		parent: &AppProfileParent{
+			ProjectID:        parentProjectId,
+			BigtableInstance: parentBigtableInstance,
+>>>>>>> b1aac8820fed97c13e2b9c0bf52037772b60199f
 		},
 		id: resourceID,
 	}, nil
