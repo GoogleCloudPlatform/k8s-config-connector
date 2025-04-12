@@ -4,13 +4,13 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: datacatalogentrygroup-minimal${uniqueId}
+  name: datacatalogentrygroup-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: Initial Minimal Entry Group
+  displayName: Updated Minimal Entry Group
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -23,7 +23,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/entryGroups/datacatalogentrygroup_minimal_${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     dataCatalogTimestamps:
       createTime: "2024-04-01T12:34:56.123456Z"
