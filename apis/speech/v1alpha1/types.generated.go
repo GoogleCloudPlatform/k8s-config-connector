@@ -50,7 +50,7 @@ type PhraseSet_Phrase struct {
 	//  for your use case as well as adding phrases both with and without boost
 	//  to your requests.
 	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.Phrase.boost
-	Boost *float32 `json:"boost,omitempty"`
+	Boost *string `json:"boost,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.RecognitionConfig

@@ -75,24 +75,6 @@ func ExplicitDecodingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.E
 	out.AudioChannelCount = direct.ValueOf(in.AudioChannelCount)
 	return out
 }
-func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krmv1alpha1.PhraseSet_Phrase {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.PhraseSet_Phrase{}
-	out.Value = direct.LazyPtr(in.GetValue())
-	out.Boost = direct.LazyPtr(in.GetBoost())
-	return out
-}
-func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PhraseSet_Phrase) *pb.PhraseSet_Phrase {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet_Phrase{}
-	out.Value = direct.ValueOf(in.Value)
-	out.Boost = direct.ValueOf(in.Boost)
-	return out
-}
 func RecognitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.RecognitionConfig) *krmv1alpha1.RecognitionConfig {
 	if in == nil {
 		return nil
@@ -228,32 +210,6 @@ func SpeechCustomClassSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Sp
 	// MISSING: Uid
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
-	out.Annotations = in.Annotations
-	return out
-}
-func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.SpeechPhraseSetSpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
-	out.Boost = direct.LazyPtr(in.GetBoost())
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = in.Annotations
-	return out
-}
-func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetSpec) *pb.PhraseSet {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PhraseSet{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
-	out.Boost = direct.ValueOf(in.Boost)
-	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Annotations = in.Annotations
 	return out
 }

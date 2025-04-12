@@ -255,7 +255,7 @@ func (in *InlinePhraseSet) DeepCopyInto(out *InlinePhraseSet) {
 	}
 	if in.Boost != nil {
 		in, out := &in.Boost, &out.Boost
-		*out = new(float32)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DisplayName != nil {
@@ -432,7 +432,7 @@ func (in *PhraseSet_Phrase) DeepCopyInto(out *PhraseSet_Phrase) {
 	}
 	if in.Boost != nil {
 		in, out := &in.Boost, &out.Boost
-		*out = new(float32)
+		*out = new(string)
 		**out = **in
 	}
 }
@@ -1101,7 +1101,7 @@ func (in *SpeechPhraseSetSpec) DeepCopyInto(out *SpeechPhraseSetSpec) {
 	}
 	if in.Boost != nil {
 		in, out := &in.Boost, &out.Boost
-		*out = new(float32)
+		*out = new(string)
 		**out = **in
 	}
 	if in.DisplayName != nil {

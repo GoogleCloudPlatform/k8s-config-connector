@@ -128,7 +128,7 @@ spec:
                                     using a binary search approach to finding the
                                     optimal value for your use case as well as adding
                                     phrases both with and without boost to your requests.
-                                  type: number
+                                  type: string
                                 displayName:
                                   description: User-settable, human-readable name
                                     for the PhraseSet. Must be 63 characters or less.
@@ -154,7 +154,7 @@ spec:
                                           the optimal value for your use case as well
                                           as adding phrases both with and without
                                           boost to your requests.
-                                        type: number
+                                        type: string
                                       value:
                                         description: The phrase itself.
                                         type: string
