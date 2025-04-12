@@ -4,17 +4,17 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-  name: datacatalogentrygroup-minimal-${uniqueId}
+  name: datacatalogentrygroup-minimal${uniqueId}
   namespace: ${uniqueId}
 spec:
-  displayName: Updated Minimal Entry Group
+  displayName: Initial Minimal Entry Group
   location: us-central1
   projectRef:
     external: ${projectId}
-  resourceID: datacatalogentrygroup-minimal-${uniqueId}
+  resourceID: datacatalogentrygroup_minimal_${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -22,9 +22,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/entryGroups/datacatalogentrygroup-minimal-${uniqueId}
-  observedGeneration: 2
+  externalRef: projects/${projectId}/locations/us-central1/entryGroups/datacatalogentrygroup_minimal_${uniqueId}
+  observedGeneration: 1
   observedState:
     dataCatalogTimestamps:
-      createTime: "2025-04-09T06:27:24.0394821Z"
-      updateTime: "2025-04-09T06:27:24.886087419Z"
+      createTime: "2024-04-01T12:34:56.123456Z"
+      updateTime: "2024-04-01T12:34:56.123456Z"
