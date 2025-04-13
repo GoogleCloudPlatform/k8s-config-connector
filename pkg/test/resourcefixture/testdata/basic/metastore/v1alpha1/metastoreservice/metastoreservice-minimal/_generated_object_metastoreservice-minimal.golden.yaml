@@ -24,9 +24,9 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}
   observedGeneration: 2
   observedState:
-    artifactGCSURI: gs://gcs-bucket-metastoreservice-minimal-${uniqueId}/hive-warehouse
+    artifactGCSURI: gs://gcs-bucket-metastoreservice-minimal-${uniqueId}-36e26a36-37
     createTime: "1970-01-01T00:00:00Z"
-    endpointURI: thrift://mock-endpoint:9083
+    endpointURI: thrift://10.34.64.33:9083
     metadataManagementActivity: {}
     networkConfig: {}
     state: ACTIVE
