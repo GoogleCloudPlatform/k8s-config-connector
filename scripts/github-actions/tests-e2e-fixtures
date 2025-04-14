@@ -24,17 +24,22 @@ SKIP_TEST_APIGROUPS=(
     "apigee.cnrm.cloud.google.com"
     "backupdr.cnrm.cloud.google.com"
     "bigquery.cnrm.cloud.google.com"
+    "bigtable.cnrm.cloud.google.com"
     "bigqueryanalyticshub.cnrm.cloud.google.com"
     "bigqueryconnection.cnrm.cloud.google.com"
     "bigquerydatatransfer.cnrm.cloud.google.com"
     "bigqueryreservation.cnrm.cloud.google.com"
+    "certificatemananger.cnrm.cloud.google.com"
     "compute.cnrm.cloud.google.com"
     "gkehub.cnrm.cloud.google.com"
     "monitoring.cnrm.cloud.google.com"
+    "resourcemanager.cnrm.cloud.google.com"
     "secretmanager.cnrm.cloud.google.com"
+    "spanner.cnrm.cloud.google.com"
     "sql.cnrm.cloud.google.com"
     "vertexai.cnrm.cloud.google.com"
     "vmwareengine.cnrm.cloud.google.com"
+    "workstations.cnrm.cloud.google.com"
 )
 
 export SKIP_TEST_APIGROUP=$(IFS=, ; echo "${SKIP_TEST_APIGROUPS[*]}")
