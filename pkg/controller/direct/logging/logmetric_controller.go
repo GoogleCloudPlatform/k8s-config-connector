@@ -338,9 +338,10 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 		return true
 	}
 
+	// if observed generation matches and status is initially empty after creation, no changes required yet.
 	if obj.Status.UpdateTime == nil {
 		log.V(2).Info("status.updateTime is not set")
-		return true
+		return false
 	}
 	if gcpUpdateTime != direct.ValueOf(obj.Status.UpdateTime) {
 		log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
