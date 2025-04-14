@@ -58,8 +58,10 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	lroRet := proto.Clone(obj).(*pb.DataStore)
 	lroRet.CreateTime = nil
 	// output-only
-	lroRet.LanguageInfo.NormalizedLanguageCode = obj.LanguageInfo.LanguageCode
-	lroRet.LanguageInfo.Language = obj.LanguageInfo.LanguageCode
+	if obj.LanguageInfo != nil {
+		lroRet.LanguageInfo.NormalizedLanguageCode = obj.LanguageInfo.LanguageCode
+		lroRet.LanguageInfo.Language = obj.LanguageInfo.LanguageCode
+	}
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 
@@ -144,7 +146,10 @@ func (s *MockService) parseDataStoreName(name string) (*dataStoreName, error) {
 
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
-			return nil, err
+			project, err = s.Projects.GetProjectByNumber(tokens[1])
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		return &dataStoreName{

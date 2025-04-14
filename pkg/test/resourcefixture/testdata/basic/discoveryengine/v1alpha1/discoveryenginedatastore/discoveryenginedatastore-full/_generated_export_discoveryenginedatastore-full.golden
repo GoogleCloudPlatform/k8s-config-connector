@@ -9,7 +9,7 @@ spec:
   displayName: My updated data store
   idpConfig:
     externalIdpConfig:
-      workforcePoolName: locations/local/workforcePools/yuwen-test
+      workforcePoolName: locations/local/workforcePools/${uniqueId}
     idpType: THIRD_PARTY
   industryVertical: GENERIC
   languageInfo:
@@ -18,6 +18,8 @@ spec:
   projectRef:
     external: ${projectId}
   solutionTypes:
+  - SOLUTION_TYPE_RECOMMENDATION
+  - SOLUTION_TYPE_SEARCH
   - SOLUTION_TYPE_RECOMMENDATION
   - SOLUTION_TYPE_SEARCH
   workspaceConfig:

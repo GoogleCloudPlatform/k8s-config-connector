@@ -19,7 +19,7 @@ spec:
       digitalParsingConfig: {}
   idpConfig:
     externalIdpConfig:
-      workforcePoolName: locations/local/workforcePools/yuwen-test
+      workforcePoolName: locations/local/workforcePools/${uniqueId}
     idpType: THIRD_PARTY
   industryVertical: GENERIC
   languageInfo:
@@ -45,6 +45,4 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     defaultSchemaID: default_schema
-    languageInfo:
-      language: fr
-      normalizedLanguageCode: fr
+    languageInfo: {}

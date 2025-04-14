@@ -39,7 +39,7 @@ spec:
   idpConfig:
     idpType: THIRD_PARTY
     externalIdpConfig:
-      workforcePoolName: locations/local/workforcePools/yuwen-test
+      workforcePoolName: locations/local/workforcePools/${uniqueId}
   languageInfo:
     languageCode: zh
   solutionTypes: 

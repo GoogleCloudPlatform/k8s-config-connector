@@ -27,5 +27,5 @@ spec:
   idpConfig:
     idpType: THIRD_PARTY
     externalIdpConfig:
-      workforcePoolName: locations/global/workforcePools/yuwen-test
+      workforcePoolName: locations/global/workforcePools/${uniqueId}
     

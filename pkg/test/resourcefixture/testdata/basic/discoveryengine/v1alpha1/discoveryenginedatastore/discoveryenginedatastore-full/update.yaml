@@ -39,18 +39,13 @@ spec:
   idpConfig:
     idpType: THIRD_PARTY
     externalIdpConfig:
-      workforcePoolName: locations/local/workforcePools/yuwen-test
+      workforcePoolName: locations/local/workforcePools/${uniqueId}
   languageInfo:
     languageCode: fr
   solutionTypes: 
   - SOLUTION_TYPE_RECOMMENDATION
   - SOLUTION_TYPE_SEARCH
   documentProcessingConfig:
-    # If content is publich website, the document processing config cannot be in chunking mode. 
-    # chunkingConfig:
-    #   layoutBasedChunkingConfig: 
-    #     chunkSize: 100
-    #     includeAncestorHeadings: true
     defaultParsingConfig:
       digitalParsingConfig: {}
   workspaceConfig:

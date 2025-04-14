@@ -42,7 +42,7 @@ X-Goog-User-Project: ${projectId}
   },
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
@@ -88,7 +88,7 @@ X-Xss-Protection: 0
     },
     "idpConfig": {
       "externalIdpConfig": {
-        "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+        "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
       },
       "idpType": 2
     },
@@ -99,7 +99,6 @@ X-Xss-Protection: 0
       "normalizedLanguageCode": "zh"
     },
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-    "servingConfigDataStore": {},
     "solutionTypes": [
       1,
       2
@@ -143,18 +142,15 @@ X-Xss-Protection: 0
   },
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
   "industryVertical": 1,
   "languageInfo": {
-    "language": "zh",
-    "languageCode": "zh",
-    "normalizedLanguageCode": "zh"
+    "languageCode": "zh"
   },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "servingConfigDataStore": {},
   "solutionTypes": [
     1,
     2
@@ -185,7 +181,7 @@ X-Goog-User-Project: ${projectId}
   },
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
@@ -228,20 +224,18 @@ X-Xss-Protection: 0
   },
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
   "industryVertical": 1,
   "languageInfo": {
-    "language": "fr",
-    "languageCode": "fr",
-    "normalizedLanguageCode": "fr"
+    "languageCode": "fr"
   },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "naturalLanguageQueryUnderstandingConfig": {},
-  "servingConfigDataStore": {},
   "solutionTypes": [
+    1,
+    2,
     1,
     2
   ],
@@ -283,20 +277,18 @@ X-Xss-Protection: 0
   },
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/local/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
   "industryVertical": 1,
   "languageInfo": {
-    "language": "fr",
-    "languageCode": "fr",
-    "normalizedLanguageCode": "fr"
+    "languageCode": "fr"
   },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "naturalLanguageQueryUnderstandingConfig": {},
-  "servingConfigDataStore": {},
   "solutionTypes": [
+    1,
+    2,
     1,
     2
   ],

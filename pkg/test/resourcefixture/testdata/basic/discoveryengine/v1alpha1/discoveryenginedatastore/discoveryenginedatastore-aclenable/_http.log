@@ -35,7 +35,7 @@ X-Goog-User-Project: ${projectId}
   "displayName": "My first data store",
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/global/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
@@ -63,7 +63,7 @@ X-Xss-Protection: 0
     "displayName": "My first data store",
     "idpConfig": {
       "externalIdpConfig": {
-        "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+        "workforcePoolName": "locations/global/workforcePools/${uniqueId}"
       },
       "idpType": 2
     },
@@ -97,7 +97,7 @@ X-Xss-Protection: 0
   "displayName": "My first data store",
   "idpConfig": {
     "externalIdpConfig": {
-      "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+      "workforcePoolName": "locations/global/workforcePools/${uniqueId}"
     },
     "idpType": 2
   },
