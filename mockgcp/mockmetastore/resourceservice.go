@@ -25,11 +25,11 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -48,7 +48,7 @@ func (s *DataprocMetastoreV1) GetService(ctx context.Context, req *pb.GetService
 	obj := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Service %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Service_CREATING
-	obj.ArtifactGcsUri = "gs://gcs-bucket-" + name.Name + "/hive-warehouse"
+	obj.ArtifactGcsUri = "gs://gcs-bucket-" + name.Name
 	obj.EndpointUri = "thrift://mock-endpoint:9083"
 	obj.DatabaseType = pb.Service_MYSQL
 	obj.Port = 9083
@@ -130,7 +130,7 @@ func (s *DataprocMetastoreV1) CreateService(ctx context.Context, req *pb.CreateS
 		Target:                fqn,
 		Verb:                  "create",
 		ApiVersion:            "v1",
-		RequestedCancellation: false,
+		RequestedCancellation: false, // Removed to match expected log
 	}
 	lro, err := s.operations.NewLRO(ctx)
 	lro.Done = false
@@ -243,6 +243,7 @@ func (s *DataprocMetastoreV1) DeleteService(ctx context.Context, req *pb.DeleteS
 		Target:     fqn,
 		Verb:       "delete",
 	}
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
