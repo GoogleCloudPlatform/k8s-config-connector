@@ -148,196 +148,6 @@ func (a *savedQueryAdapter) normalizeReferences(ctx context.Context) error {
 	return nil
 }
 
-// AssetSavedQuerySpec_FromProto converts the AssetSavedQuerySpec field from its Protobuf representation.
-func AssetSavedQuerySpec_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQuerySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssetSavedQuerySpec{}
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.GetLabels()
-	out.Content = AssetSavedQueryQueryContent_FromProto(mapCtx, in.GetContent())
-	return out
-}
-
-// AssetSavedQuerySpec_ToProto converts the AssetSavedQuerySpec field to its Protobuf representation.
-func AssetSavedQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQuerySpec) *pb.SavedQuery {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SavedQuery{}
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	out.Content = AssetSavedQueryQueryContent_ToProto(mapCtx, in.Content)
-	return out
-}
-
-// AssetSavedQueryQueryContent_FromProto converts the AssetSavedQuery_QueryContent field from its Protobuf representation.
-func AssetSavedQueryQueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQueryContent {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SavedQueryContent{}
-	out.IamPolicyAnalysisQuery = AssetSavedQueryIamPolicyAnalysisQuery_FromProto(mapCtx, in.GetIamPolicyAnalysisQuery())
-	return out
-}
-
-// AssetSavedQueryQueryContent_ToProto converts the AssetSavedQuery_QueryContent field to its Protobuf representation.
-func AssetSavedQueryQueryContent_ToProto(mapCtx *direct.MapContext, in *krm.SavedQueryContent) *pb.SavedQuery_QueryContent {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SavedQuery_QueryContent{}
-	out.QueryContent = &pb.SavedQuery_QueryContent_IamPolicyAnalysisQuery{
-		IamPolicyAnalysisQuery: AssetSavedQueryIamPolicyAnalysisQuery_ToProto(mapCtx, in.IamPolicyAnalysisQuery),
-	}
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQuery_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQuery_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IamPolicyAnalysisQuery {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQuery{}
-	out.Scope = direct.LazyPtr(in.GetScope())
-	out.ResourceSelector = AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_FromProto(mapCtx, in.GetResourceSelector())
-	out.IdentitySelector = AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_FromProto(mapCtx, in.GetIdentitySelector())
-	out.AccessSelector = AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_FromProto(mapCtx, in.GetAccessSelector())
-	out.Options = AssetSavedQueryIamPolicyAnalysisQueryOptions_FromProto(mapCtx, in.GetOptions())
-	out.ConditionContext = AssetSavedQueryIamPolicyAnalysisQueryConditionContext_FromProto(mapCtx, in.GetConditionContext())
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQuery_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQuery_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQuery) *pb.IamPolicyAnalysisQuery {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery{}
-	out.Scope = direct.ValueOf(in.Scope)
-	out.ResourceSelector = AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_ToProto(mapCtx, in.ResourceSelector)
-	out.IdentitySelector = AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_ToProto(mapCtx, in.IdentitySelector)
-	out.AccessSelector = AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_ToProto(mapCtx, in.AccessSelector)
-	out.Options = AssetSavedQueryIamPolicyAnalysisQueryOptions_ToProto(mapCtx, in.Options)
-	out.ConditionContext = AssetSavedQueryIamPolicyAnalysisQueryConditionContext_ToProto(mapCtx, in.ConditionContext)
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_ResourceSelector field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IamPolicyAnalysisQueryResourceSelector {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQueryResourceSelector{}
-	out.FullResourceName = direct.LazyPtr(in.GetFullResourceName())
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_ResourceSelector field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQueryResourceSelector) *pb.IamPolicyAnalysisQuery_ResourceSelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_ResourceSelector{}
-	out.FullResourceName = direct.ValueOf(in.FullResourceName)
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_IdentitySelector field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IamPolicyAnalysisQueryIdentitySelector {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQueryIdentitySelector{}
-	out.Identity = direct.LazyPtr(in.GetIdentity())
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_IdentitySelector field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryIdentitySelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQueryIdentitySelector) *pb.IamPolicyAnalysisQuery_IdentitySelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_IdentitySelector{}
-	out.Identity = direct.ValueOf(in.Identity)
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_AccessSelector field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IamPolicyAnalysisQueryAccessSelector {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQueryAccessSelector{}
-	out.Roles = in.GetRoles()
-	out.Permissions = in.GetPermissions()
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_AccessSelector field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryAccessSelector_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQueryAccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
-	out.Roles = in.Roles
-	out.Permissions = in.Permissions
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryOptions_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_Options field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryOptions_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IamPolicyAnalysisQueryOptions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQueryOptions{}
-	out.ExpandGroups = direct.LazyPtr(in.GetExpandGroups())
-	out.ExpandRoles = direct.LazyPtr(in.GetExpandRoles())
-	out.ExpandResources = direct.LazyPtr(in.GetExpandResources())
-	out.OutputResourceEdges = direct.LazyPtr(in.GetOutputResourceEdges())
-	out.OutputGroupEdges = direct.LazyPtr(in.GetOutputGroupEdges())
-	out.AnalyzeServiceAccountImpersonation = direct.LazyPtr(in.GetAnalyzeServiceAccountImpersonation())
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryOptions_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_Options field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryOptions_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQueryOptions) *pb.IamPolicyAnalysisQuery_Options {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_Options{}
-	out.ExpandGroups = direct.ValueOf(in.ExpandGroups)
-	out.ExpandRoles = direct.ValueOf(in.ExpandRoles)
-	out.ExpandResources = direct.ValueOf(in.ExpandResources)
-	out.OutputResourceEdges = direct.ValueOf(in.OutputResourceEdges)
-	out.OutputGroupEdges = direct.ValueOf(in.OutputGroupEdges)
-	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryConditionContext_FromProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_ConditionContext field from its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IamPolicyAnalysisQueryConditionContext {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IamPolicyAnalysisQueryConditionContext{}
-	out.AccessTime = direct.FromProtoTimestamp(mapCtx, in.GetAccessTime())
-	return out
-}
-
-// AssetSavedQueryIamPolicyAnalysisQueryConditionContext_ToProto converts the AssetSavedQuery_IamPolicyAnalysisQuery_ConditionContext field to its Protobuf representation.
-func AssetSavedQueryIamPolicyAnalysisQueryConditionContext_ToProto(mapCtx *direct.MapContext, in *krm.IamPolicyAnalysisQueryConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_ConditionContext{}
-	out.TimeContext = &pb.IamPolicyAnalysisQuery_ConditionContext_AccessTime{
-		AccessTime: direct.ToProtoTimestamp(mapCtx, in.AccessTime),
-	}
-	return out
-}
-
 // AssetSavedQueryStatus_FromProto converts the AssetSavedQueryStatus field from its Protobuf representation.
 func AssetSavedQueryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryStatus {
 	if in == nil {
@@ -345,9 +155,9 @@ func AssetSavedQueryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuer
 	}
 	out := &krm.AssetSavedQueryStatus{}
 	out.ObservedState = &krm.AssetSavedQueryObservedState{}
-	out.ObservedState.CreateTime = direct.FromProtoTimestamp(mapCtx, in.GetCreateTime())
+	out.ObservedState.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.ObservedState.Creator = direct.LazyPtr(in.GetCreator())
-	out.ObservedState.LastUpdateTime = direct.FromProtoTimestamp(mapCtx, in.GetLastUpdateTime())
+	out.ObservedState.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
 	out.ObservedState.LastUpdater = direct.LazyPtr(in.GetLastUpdater())
 	out.ExternalRef = direct.LazyPtr(in.GetName()) // Set the external ref from the 'name' field
 	return out
@@ -433,22 +243,21 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	updateProto := &pb.SavedQuery{Name: a.actual.Name}
 
 	// Create a proto diff and build the update mask
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	diffPathsSet, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("comparing proto messages: %w", err)
 	}
 
 	// Filter out output-only fields from paths
-	mutablePaths := sets.New[string]()
-	for _, p := range paths {
+	mutablePathsSet := sets.New[string]()
+	for _, p := range diffPathsSet.UnsortedList() { // Iterate over the set's elements
 		// SavedQuery only allows updating 'description', 'labels', 'content'
 		if p == "description" || p == "labels" || p == "content" {
-			mutablePaths.Insert(p)
+			mutablePathsSet.Insert(p) // Insert the string path
 		}
 	}
-	paths = sets.List(mutablePaths)
 
-	if len(paths) == 0 {
+	if mutablePathsSet.Len() == 0 { // Check the size of the set
 		log.V(2).Info("no mutable fields need update", "name", a.id)
 		// Update status even if no fields changed in spec
 		status := AssetSavedQueryStatus_FromProto(mapCtx, a.actual)
@@ -458,20 +267,21 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
-	log.V(2).Info("updating asset saved query fields", "paths", paths)
+	updateMaskPaths := mutablePathsSet.UnsortedList() // Get the slice for the field mask
+	log.V(2).Info("updating asset saved query fields", "paths", updateMaskPaths)
 
 	// Populate the updateProto with desired values for the paths being updated
-	if mutablePaths.Has("description") {
+	if mutablePathsSet.Has("description") { // Keep using the set for efficient checks
 		updateProto.Description = resource.Description
 	}
-	if mutablePaths.Has("labels") {
+	if mutablePathsSet.Has("labels") {
 		updateProto.Labels = resource.Labels
 	}
-	if mutablePaths.Has("content") {
+	if mutablePathsSet.Has("content") {
 		updateProto.Content = resource.Content
 	}
 
-	updateMask := &fieldmaskpb.FieldMask{Paths: paths}
+	updateMask := &fieldmaskpb.FieldMask{Paths: updateMaskPaths} // Use the slice here
 	req := &pb.UpdateSavedQueryRequest{
 		SavedQuery: updateProto,
 		UpdateMask: updateMask,
