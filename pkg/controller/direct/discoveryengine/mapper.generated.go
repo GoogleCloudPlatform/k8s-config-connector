@@ -42,7 +42,6 @@ func DataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStor
 	// MISSING: AclEnabled
 	// MISSING: WorkspaceConfig
 	// MISSING: DocumentProcessingConfig
-	out.StartingSchema = SchemaObservedState_FromProto(mapCtx, in.GetStartingSchema())
 	return out
 }
 func DataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataStoreObservedState) *pb.DataStore {
@@ -62,7 +61,6 @@ func DataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.D
 	// MISSING: AclEnabled
 	// MISSING: WorkspaceConfig
 	// MISSING: DocumentProcessingConfig
-	out.StartingSchema = SchemaObservedState_ToProto(mapCtx, in.StartingSchema)
 	return out
 }
 func DocumentProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig) *krmv1alpha1.DocumentProcessingConfig {
@@ -70,21 +68,8 @@ func DocumentProcessingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Docume
 		return nil
 	}
 	out := &krmv1alpha1.DocumentProcessingConfig{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.ChunkingConfig = DocumentProcessingConfig_ChunkingConfig_FromProto(mapCtx, in.GetChunkingConfig())
 	out.DefaultParsingConfig = DocumentProcessingConfig_ParsingConfig_FromProto(mapCtx, in.GetDefaultParsingConfig())
-	// MISSING: ParsingConfigOverrides
-	return out
-}
-func DocumentProcessingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DocumentProcessingConfig) *pb.DocumentProcessingConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DocumentProcessingConfig{}
-	out.Name = direct.ValueOf(in.Name)
-	out.ChunkingConfig = DocumentProcessingConfig_ChunkingConfig_ToProto(mapCtx, in.ChunkingConfig)
-	out.DefaultParsingConfig = DocumentProcessingConfig_ParsingConfig_ToProto(mapCtx, in.DefaultParsingConfig)
-	// MISSING: ParsingConfigOverrides
 	return out
 }
 func DocumentProcessingConfig_ChunkingConfig_FromProto(mapCtx *direct.MapContext, in *pb.DocumentProcessingConfig_ChunkingConfig) *krmv1alpha1.DocumentProcessingConfig_ChunkingConfig {

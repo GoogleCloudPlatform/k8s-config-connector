@@ -31,9 +31,34 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcol
 X-Goog-User-Project: ${projectId}
 
 {
-  "displayName": "My first data store",
+  "aclEnabled": true,
+  "contentConfig": 1,
+  "displayName": "My new data store",
+  "documentProcessingConfig": {
+    "defaultParsingConfig": {
+      "digitalParsingConfig": {}
+    },
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+  },
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "languageInfo": {
+    "languageCode": "zh"
+  },
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "solutionTypes": [
+    1,
+    2
+  ],
+  "workspaceConfig": {
+    "dasherCustomerId": "${unitId}",
+    "type": 2
+  }
 }
 
 200 OK
@@ -51,11 +76,38 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1alpha.DataStore",
+    "aclEnabled": true,
+    "contentConfig": 1,
     "defaultSchemaId": "default_schema",
-    "displayName": "My first data store",
+    "displayName": "My new data store",
+    "documentProcessingConfig": {
+      "defaultParsingConfig": {
+        "digitalParsingConfig": {}
+      },
+      "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+    },
+    "idpConfig": {
+      "externalIdpConfig": {
+        "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+      },
+      "idpType": 2
+    },
     "industryVertical": 1,
+    "languageInfo": {
+      "language": "zh",
+      "languageCode": "zh",
+      "normalizedLanguageCode": "zh"
+    },
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-    "servingConfigDataStore": {}
+    "servingConfigDataStore": {},
+    "solutionTypes": [
+      1,
+      2
+    ],
+    "workspaceConfig": {
+      "dasherCustomerId": "${unitId}",
+      "type": 2
+    }
   }
 }
 
@@ -78,26 +130,78 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aclEnabled": true,
+  "contentConfig": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
-  "displayName": "My first data store",
+  "displayName": "My new data store",
+  "documentProcessingConfig": {
+    "defaultParsingConfig": {
+      "digitalParsingConfig": {}
+    },
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+  },
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
+  "languageInfo": {
+    "language": "zh",
+    "languageCode": "zh",
+    "normalizedLanguageCode": "zh"
+  },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
-  "servingConfigDataStore": {}
+  "servingConfigDataStore": {},
+  "solutionTypes": [
+    1,
+    2
+  ],
+  "workspaceConfig": {
+    "dasherCustomerId": "${unitId}",
+    "type": 2
+  }
 }
 
 ---
 
-PATCH https://discoveryengine.googleapis.com/v1alpha/projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+PATCH https://discoveryengine.googleapis.com/v1alpha/projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2ClanguageInfo.languageCode
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: data_store.name=projects%2F${projectNumber}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
 {
-  "displayName": "Updated display name",
+  "aclEnabled": true,
+  "contentConfig": 1,
+  "displayName": "My updated data store",
+  "documentProcessingConfig": {
+    "defaultParsingConfig": {
+      "digitalParsingConfig": {}
+    },
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+  },
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "languageInfo": {
+    "languageCode": "fr"
+  },
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "solutionTypes": [
+    1,
+    2
+  ],
+  "workspaceConfig": {
+    "dasherCustomerId": "${unitId}",
+    "type": 2
+  }
 }
 
 200 OK
@@ -111,13 +215,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aclEnabled": true,
+  "contentConfig": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
+  "displayName": "My updated data store",
+  "documentProcessingConfig": {
+    "defaultParsingConfig": {
+      "digitalParsingConfig": {}
+    },
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+  },
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
+  "languageInfo": {
+    "language": "fr",
+    "languageCode": "fr",
+    "normalizedLanguageCode": "fr"
+  },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
   "naturalLanguageQueryUnderstandingConfig": {},
-  "servingConfigDataStore": {}
+  "servingConfigDataStore": {},
+  "solutionTypes": [
+    1,
+    2
+  ],
+  "workspaceConfig": {
+    "dasherCustomerId": "${unitId}",
+    "type": 2
+  }
 }
 
 ---
@@ -139,13 +270,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "aclEnabled": true,
+  "contentConfig": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
+  "displayName": "My updated data store",
+  "documentProcessingConfig": {
+    "defaultParsingConfig": {
+      "digitalParsingConfig": {}
+    },
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/documentProcessingConfig"
+  },
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/local/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
+  "languageInfo": {
+    "language": "fr",
+    "languageCode": "fr",
+    "normalizedLanguageCode": "fr"
+  },
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
   "naturalLanguageQueryUnderstandingConfig": {},
-  "servingConfigDataStore": {}
+  "servingConfigDataStore": {},
+  "solutionTypes": [
+    1,
+    2
+  ],
+  "workspaceConfig": {
+    "dasherCustomerId": "${unitId}",
+    "type": 2
+  }
 }
 
 ---

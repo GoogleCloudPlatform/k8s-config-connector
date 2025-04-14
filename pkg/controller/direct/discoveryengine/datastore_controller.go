@@ -23,7 +23,6 @@ package discoveryengine
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1alpha"
@@ -32,6 +31,7 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -39,6 +39,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -97,6 +98,10 @@ func (m *dataStoreModel) AdapterForObject(ctx context.Context, reader client.Rea
 	desired := DiscoveryEngineDataStoreSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	if desired.DocumentProcessingConfig != nil {
+		// Set the attribute `documentProcessingConfig` name. This is not configurable.
+		desired.DocumentProcessingConfig.Name = id.String() + "/documentProcessingConfig"
 	}
 
 	gcpClient, err := m.client(ctx, id.ProjectID)
@@ -194,20 +199,24 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine datastore", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
-
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
+	a.desired.Name = a.actual.Name
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-	if len(updateMask.Paths) == 0 {
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
+	}
+
 	req := &pb.UpdateDataStoreRequest{
 		UpdateMask: updateMask,
-		DataStore:  desired,
+		DataStore:  a.desired,
 	}
 	updated, err := a.gcpClient.UpdateDataStore(ctx, req)
 	if err != nil {

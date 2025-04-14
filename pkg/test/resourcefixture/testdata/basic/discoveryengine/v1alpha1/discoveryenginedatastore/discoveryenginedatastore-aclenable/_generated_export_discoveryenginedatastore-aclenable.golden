@@ -6,6 +6,10 @@ spec:
   aclEnabled: true
   collection: default_collection
   displayName: My first data store
+  idpConfig:
+    externalIdpConfig:
+      workforcePoolName: locations/global/workforcePools/yuwen-test
+    idpType: THIRD_PARTY
   industryVertical: GENERIC
   location: global
   projectRef:

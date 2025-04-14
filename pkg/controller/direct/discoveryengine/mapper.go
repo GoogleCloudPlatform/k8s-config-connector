@@ -112,7 +112,6 @@ func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Da
 	out.IdpConfig = IDPConfig_FromProto(mapCtx, in.GetIdpConfig())
 	out.WorkspaceConfig = WorkspaceConfig_FromProto(mapCtx, in.GetWorkspaceConfig())
 	// MISSING: DocumentProcessingConfig
-	out.StartingSchema = Schema_FromProto(mapCtx, in.GetStartingSchema())
 	return out
 }
 
@@ -150,8 +149,16 @@ func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1al
 	out.IdpConfig = IDPConfig_ToProto(mapCtx, in.IdpConfig)
 	out.AclEnabled = direct.ValueOf(in.AclEnabled)
 	out.WorkspaceConfig = WorkspaceConfig_ToProto(mapCtx, in.WorkspaceConfig)
-	// MISSING: DocumentProcessingConfig
-	out.StartingSchema = Schema_ToProto(mapCtx, in.StartingSchema)
+	out.DocumentProcessingConfig = DocumentProcessingConfig_ToProto(mapCtx, in.DocumentProcessingConfig)
+	return out
+}
+func DocumentProcessingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DocumentProcessingConfig) *pb.DocumentProcessingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DocumentProcessingConfig{}
+	out.ChunkingConfig = DocumentProcessingConfig_ChunkingConfig_ToProto(mapCtx, in.ChunkingConfig)
+	out.DefaultParsingConfig = DocumentProcessingConfig_ParsingConfig_ToProto(mapCtx, in.DefaultParsingConfig)
 	return out
 }
 func IDPConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IdpConfig) *pb.IdpConfig {

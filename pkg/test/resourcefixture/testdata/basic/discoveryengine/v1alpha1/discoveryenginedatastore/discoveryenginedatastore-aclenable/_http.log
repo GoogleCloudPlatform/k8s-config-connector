@@ -61,6 +61,12 @@ X-Xss-Protection: 0
     "aclEnabled": true,
     "defaultSchemaId": "default_schema",
     "displayName": "My first data store",
+    "idpConfig": {
+      "externalIdpConfig": {
+        "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+      },
+      "idpType": 2
+    },
     "industryVertical": 1,
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
   }
@@ -89,6 +95,12 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "My first data store",
+  "idpConfig": {
+    "externalIdpConfig": {
+      "workforcePoolName": "locations/global/workforcePools/yuwen-test"
+    },
+    "idpType": 2
+  },
   "industryVertical": 1,
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }

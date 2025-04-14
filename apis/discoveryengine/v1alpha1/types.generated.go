@@ -22,29 +22,6 @@
 
 package v1alpha1
 
-// +kcc:proto=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig
-type DocumentProcessingConfig struct {
-	// The full resource name of the Document Processing Config.
-	//  Format:
-	//  `projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// Whether chunking mode is enabled.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.chunking_config
-	ChunkingConfig *DocumentProcessingConfig_ChunkingConfig `json:"chunkingConfig,omitempty"`
-
-	// Configurations for default Document parser.
-	//  If not specified, we will configure it as default DigitalParsingConfig, and
-	//  the default parsing config will be applied to all file types for Document
-	//  parsing.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.default_parsing_config
-	DefaultParsingConfig *DocumentProcessingConfig_ParsingConfig `json:"defaultParsingConfig,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ChunkingConfig
 type DocumentProcessingConfig_ChunkingConfig struct {
 	// Configuration for the layout based chunking.
@@ -535,30 +512,12 @@ type FieldConfig struct {
 	SchemaOrgPaths []string `json:"schemaOrgPaths,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1alpha.IdpConfig
-type IdpConfig struct {
-	// Identity provider type configured.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.IdpConfig.idp_type
-	IdpType *string `json:"idpType,omitempty"`
-
-	// External Identity provider config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.IdpConfig.external_idp_config
-	ExternalIdpConfig *IdpConfig_ExternalIdpConfig `json:"externalIdpConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1alpha.IdpConfig.ExternalIdpConfig
 type IdpConfig_ExternalIdpConfig struct {
 	// Workforce pool name.
 	//  Example: "locations/global/workforcePools/pool_id"
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.IdpConfig.ExternalIdpConfig.workforce_pool_name
 	WorkforcePoolName *string `json:"workforcePoolName,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1alpha.LanguageInfo
-type LanguageInfo struct {
-	// The language code for the DataStore.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.LanguageInfo.language_code
-	LanguageCode *string `json:"languageCode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1alpha.Schema
@@ -627,17 +586,6 @@ type TargetSite_FailureReason_QuotaFailure struct {
 	//  to successfully complete indexing.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.TargetSite.FailureReason.QuotaFailure.total_required_quota
 	TotalRequiredQuota *int64 `json:"totalRequiredQuota,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1alpha.WorkspaceConfig
-type WorkspaceConfig struct {
-	// The Google Workspace data source.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.WorkspaceConfig.type
-	Type *string `json:"type,omitempty"`
-
-	// Obfuscated Dasher customer ID.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.WorkspaceConfig.dasher_customer_id
-	DasherCustomerID *string `json:"dasherCustomerID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1alpha.Engine
