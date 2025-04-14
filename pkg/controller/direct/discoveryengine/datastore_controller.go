@@ -26,8 +26,8 @@ import (
 	"reflect"
 	"strings"
 
-	gcp "cloud.google.com/go/discoveryengine/apiv1"
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	gcp "cloud.google.com/go/discoveryengine/apiv1alpha"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -181,7 +181,7 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataStoreObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -218,7 +218,7 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataStoreObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -238,9 +238,11 @@ func (a *dataStoreAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
-	obj.Spec.Collection = a.id.Collection
+	obj.Spec.DiscoveryEngineDataStoreParent = krm.DiscoveryEngineDataStoreParent{
+		ProjectRef: &refs.ProjectRef{External: a.id.ProjectID},
+		Location:   direct.LazyPtr(a.id.Location),
+		Collection: direct.LazyPtr(a.id.Collection),
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

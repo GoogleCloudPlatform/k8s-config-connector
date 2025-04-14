@@ -15,8 +15,9 @@
 package discoveryengine
 
 import (
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
 )
@@ -62,8 +63,6 @@ func DiscoveryEngineEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Engin
 	out.SolutionType = direct.Enum_FromProto(mapCtx, in.GetSolutionType())
 	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
 	out.CommonConfig = Engine_CommonConfig_FromProto(mapCtx, in.GetCommonConfig())
-	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
-
 	for _, dataStoreID := range in.DataStoreIds {
 		out.DataStoreRefs = append(out.DataStoreRefs, &krm.DiscoveryEngineDataStoreRef{External: dataStoreID})
 	}
@@ -88,11 +87,74 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	out.SolutionType = direct.Enum_ToProto[pb.SolutionType](mapCtx, in.SolutionType)
 	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
 	out.CommonConfig = Engine_CommonConfig_ToProto(mapCtx, in.CommonConfig)
-	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
 
 	for _, dataStoreRef := range in.DataStoreRefs {
 		out.DataStoreIds = append(out.DataStoreIds, dataStoreRef.External)
 	}
 
+	return out
+}
+
+func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krmv1alpha1.DiscoveryEngineDataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.DiscoveryEngineDataStoreSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
+	out.SolutionTypes = direct.EnumSlice_FromProto(mapCtx, in.SolutionTypes)
+	// MISSING: DefaultSchemaID
+	out.ContentConfig = direct.Enum_FromProto(mapCtx, in.GetContentConfig())
+	// MISSING: CreateTime
+	out.LanguageInfo = LanguageInfo_FromProto(mapCtx, in.GetLanguageInfo())
+	// MISSING: IdpConfig
+	out.AclEnabled = direct.LazyPtr(in.GetAclEnabled())
+	out.WorkspaceConfig = WorkspaceConfig_FromProto(mapCtx, in.GetWorkspaceConfig())
+	// MISSING: DocumentProcessingConfig
+	out.StartingSchema = Schema_FromProto(mapCtx, in.GetStartingSchema())
+	return out
+}
+func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DiscoveryEngineDataStoreSpec) *pb.DataStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataStore{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
+	out.SolutionTypes = direct.EnumSlice_ToProto[pb.SolutionType](mapCtx, in.SolutionTypes)
+	// MISSING: DefaultSchemaID
+	out.ContentConfig = direct.Enum_ToProto[pb.DataStore_ContentConfig](mapCtx, in.ContentConfig)
+	// MISSING: CreateTime
+	out.LanguageInfo = LanguageInfo_ToProto(mapCtx, in.LanguageInfo)
+	// MISSING: IdpConfig
+	out.AclEnabled = direct.ValueOf(in.AclEnabled)
+	out.WorkspaceConfig = WorkspaceConfig_ToProto(mapCtx, in.WorkspaceConfig)
+	// MISSING: DocumentProcessingConfig
+	out.StartingSchema = Schema_ToProto(mapCtx, in.StartingSchema)
+	return out
+}
+
+func DataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krm.DiscoveryEngineDataStoreTargetSiteSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineDataStoreTargetSiteSpec{}
+	// MISSING: Name
+	out.ProvidedURIPattern = direct.LazyPtr(in.GetProvidedUriPattern())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
+	return out
+}
+func DataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineDataStoreTargetSiteSpec) *pb.TargetSite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetSite{}
+	// MISSING: Name
+	out.ProvidedUriPattern = direct.ValueOf(in.ProvidedURIPattern)
+	out.Type = direct.Enum_ToProto[pb.TargetSite_Type](mapCtx, in.Type)
+	out.ExactMatch = direct.ValueOf(in.ExactMatch)
 	return out
 }

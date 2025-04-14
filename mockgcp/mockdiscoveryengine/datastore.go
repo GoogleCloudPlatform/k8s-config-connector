@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"

@@ -18,7 +18,7 @@
 package discoveryengine
 
 import (
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -28,8 +28,8 @@ func init() {
 
 func dataStoreTargetSiteFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TargetSite{},
-		DiscoveryEngineDataStoreTargetSiteSpec_FromProto, DiscoveryEngineDataStoreTargetSiteSpec_ToProto,
-		DiscoveryEngineDataStoreTargetSiteObservedState_FromProto, DiscoveryEngineDataStoreTargetSiteObservedState_ToProto,
+		DataStoreTargetSiteSpec_FromProto, DataStoreTargetSiteSpec_ToProto,
+		TargetSiteObservedState_FromProto, TargetSiteObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field
