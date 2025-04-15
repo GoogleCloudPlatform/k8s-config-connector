@@ -230,9 +230,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 // Delete implements the Adapter interface.
-// Delete operation not supported for KeyHandle, so this operation is a no-op.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Error(fmt.Errorf("delete operation not supported on KeyHandle, name: %s", a.id.String()), "delete operation on KeyHandle resource not supported,")
-	return false, nil
+	// Delete operation not supported for KeyHandle, so this operation is a no-op.
+	log := klog.FromContext(ctx)
+	log.Info("No-op Delete for KeyHandle", "name", a.id.String())
+	return true, nil
 }
