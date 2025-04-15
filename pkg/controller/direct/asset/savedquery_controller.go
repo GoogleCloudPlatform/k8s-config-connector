@@ -148,21 +148,6 @@ func (a *savedQueryAdapter) normalizeReferences(ctx context.Context) error {
 	return nil
 }
 
-// AssetSavedQueryStatus_FromProto converts the AssetSavedQueryStatus field from its Protobuf representation.
-func AssetSavedQueryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AssetSavedQueryStatus{}
-	out.ObservedState = &krm.AssetSavedQueryObservedState{}
-	out.ObservedState.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.ObservedState.Creator = direct.LazyPtr(in.GetCreator())
-	out.ObservedState.LastUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastUpdateTime())
-	out.ObservedState.LastUpdater = direct.LazyPtr(in.GetLastUpdater())
-	out.ExternalRef = direct.LazyPtr(in.GetName()) // Set the external ref from the 'name' field
-	return out
-}
-
 func (a *savedQueryAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating asset saved query", "name", a.id)
