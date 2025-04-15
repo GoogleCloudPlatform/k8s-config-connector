@@ -21466,36 +21466,6 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: managedkafka-managedkafkaclusters
-      local: resource-managedkafka-managedkafkaclusters
-      remote: resource-managedkafka-managedkafkaclusters
-      command: ""
-      group: managedkafka
-      resource: managedkafkaclusters
-      controller: direct
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: managedkafka-managedkafkatopics
-      local: resource-managedkafka-managedkafkatopics
-      remote: resource-managedkafka-managedkafkatopics
-      command: ""
-      group: managedkafka
-      resource: managedkafkatopics
-      controller: direct
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: memorystore-memorystoreinstances
       local: resource-memorystore-memorystoreinstances
       remote: resource-memorystore-memorystoreinstances
