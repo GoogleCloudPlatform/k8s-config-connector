@@ -19,8 +19,8 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -29,7 +29,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 }
@@ -216,7 +216,7 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1beta1.IAMServiceAccountRef)
+		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 	if in.SourceContents != nil {
@@ -226,7 +226,7 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.KMSCryptoKeyRef != nil {
 		in, out := &in.KMSCryptoKeyRef, &out.KMSCryptoKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
+		*out = new(refsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
 	if in.CallLogLevel != nil {
@@ -263,7 +263,7 @@ func (in *WorkflowsWorkflowStatus) DeepCopyInto(out *WorkflowsWorkflowStatus) {
 	*out = *in
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
-		*out = make([]k8sv1alpha1.Condition, len(*in))
+		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
 	if in.ObservedGeneration != nil {
