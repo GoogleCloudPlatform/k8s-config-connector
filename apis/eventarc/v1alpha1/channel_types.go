@@ -26,7 +26,7 @@ var EventarcChannelGVK = GroupVersion.WithKind("EventarcChannel")
 type Parent struct {
 	// +required
 	Location string `json:"location"`
-	// +optional
+	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 

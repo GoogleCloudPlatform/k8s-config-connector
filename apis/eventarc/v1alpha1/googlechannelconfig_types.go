@@ -31,7 +31,6 @@ var EventarcGoogleChannelConfigGVK = GroupVersion.WithKind("EventarcGoogleChanne
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
 // +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
-	// +required
 	Parent `json:",inline"`
 
 	// Optional. Resource name of a KMS crypto key (managed by the user) used to

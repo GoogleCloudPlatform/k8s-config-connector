@@ -162,6 +162,7 @@ spec:
                 type: string
             required:
             - location
+            - projectRef
             type: object
           status:
             description: EventarcChannelStatus defines the config connector machine
