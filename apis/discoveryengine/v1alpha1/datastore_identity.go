@@ -88,7 +88,7 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
 		if actualParent.Location != direct.ValueOf(location) {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
