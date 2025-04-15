@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -348,10 +349,10 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 			(*out)[key] = val
 		}
 	}
-	if in.KmsKeyRef != nil {
-		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+	if in.KMSKeyRef != nil {
+		in, out := &in.KMSKeyRef, &out.KMSKeyRef
+		*out = new(kmsv1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.PrivateConfig != nil {
 		in, out := &in.PrivateConfig, &out.PrivateConfig

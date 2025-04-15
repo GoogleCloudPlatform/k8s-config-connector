@@ -16,13 +16,13 @@ package gkebackup
 
 import (
 	pb "cloud.google.com/go/gkebackup/apiv1/gkebackuppb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	datepb "google.golang.org/genproto/googleapis/type/date"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkebackup/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -176,7 +176,7 @@ func EncryptionKey_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionKey) *k
 	}
 	out := &krm.EncryptionKey{}
 	if in.GetGcpKmsEncryptionKey() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{
 			External: in.GetGcpKmsEncryptionKey(),
 		}
 	}
