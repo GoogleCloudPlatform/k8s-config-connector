@@ -23,7 +23,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/contacts/7
+  externalRef: projects/${projectNumber}/contacts/${contactId}
   observedGeneration: 2
   observedState:
     validationState: VALID
