@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# runs the config-connector build across all desired systems and architectures and creates a release tarball
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+
+BUILD_DIR="${REPO_ROOT}/.build"
+mkdir -p "${BUILD_DIR}"
+
+
+MANUAL_DIR="${BUILD_DIR}/manual-release"
+mkdir -p "${MANUAL_DIR}/operator-system"
+
+# Find the version of the operator image
+FOLDER_PATH="${REPO_ROOT}/operator/channels/packages/configconnector"
+
+if [ ! -d "$FOLDER_PATH" ]; then
+    echo "Error: Directory $FOLDER_PATH does not exist"
+    exit 1
+fi
+
+# List all directories in the specified path and store them in an array
+VERSIONS=($(ls -d "$FOLDER_PATH"/*/ 2>/dev/null | xargs -n 1 basename | sort -V))
+
+if [ ${#VERSIONS[@]} -eq 0 ]; then
+    echo "Error: No version directories found in $FOLDER_PATH"
+    exit 1
+fi
+
+# Find the most recent release version
+NEWEST_VERSION=$(git log --oneline | 
+    grep "Release " | 
+    sed -n 's/.*Release \(.*\)/\1/p' | 
+    head -n 1)
+
+if [ -z "$NEWEST_VERSION" ]; then
+    echo "No release commit found"
+    exit 1
+fi
+
+echo "Building release bundle for version: $NEWEST_VERSION"
+OPERATOR_IMG=gcr.io/gke-release/cnrm/operator:${NEWEST_VERSION}
+
+echo "Updating kustomize image patch file for standard release manager."
+cp ${REPO_ROOT}/operator/config/manager/manager_image_patch_template.yaml ${REPO_ROOT}/operator/config/manager/manager_image_patch.yaml
+cd ${REPO_ROOT}/operator/config/manager
+kustomize edit set image IMAGE_URL=${OPERATOR_IMG}
+
+echo "Updating kustomize image patch file for autopilot release manager."
+cp -f ${REPO_ROOT}/operator/config/autopilot-manager/manager_image_patch_template.yaml ${REPO_ROOT}/operator/config/autopilot-manager/manager_image_patch.yaml
+cd ${REPO_ROOT}/operator/config/autopilot-manager
+kustomize edit set image IMAGE_URL=${OPERATOR_IMG}
+
+kustomize build ${REPO_ROOT}/config/installbundle/release-manifests/standard -o ${MANUAL_DIR}/operator-system/configconnector-operator.yaml
+echo "Added standard release manifest to ${MANUAL_DIR}/operator-system/configconnector-operator.yaml"
+
+kustomize build ${REPO_ROOT}/config/installbundle/release-manifests/autopilot -o ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml
+echo "Added autopilot release manifest to ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml"
+
+cd ${REPO_ROOT}
+cp -rf operator/config/samples ${MANUAL_DIR}/
+
+tar -czvf ${BUILD_DIR}/release-bundle.tar.gz -C ${MANUAL_DIR}/ .
+
+echo "Generated ${BUILD_DIR}/release-bundle.tar.gz for manual installation."
+
+# Leave this step out of the script for now.
+
+# gsutil cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/${LATEST_VERSION}/
+# gsutil cp ${REPO_ROOT}/.build/release-bundle.tar.gz gs://configconnector-operator/latest
+
+# echo "Pushed the latest release-bundle."
