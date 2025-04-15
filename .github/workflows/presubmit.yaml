@@ -131,7 +131,7 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - name: Free Up GitHub Actions Ubuntu Runner Disk Space
-        uses: jlumbroso/free-disk-space@main
+        uses: jlumbroso/free-disk-space@v1.3.1
         with:
           # This might remove tools that are actually needed, if set to "true" but frees about 6 GB
           tool-cache: false
