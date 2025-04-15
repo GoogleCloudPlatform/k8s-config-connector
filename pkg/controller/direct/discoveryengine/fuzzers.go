@@ -41,10 +41,13 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".solution_types")
 	f.SpecFields.Insert(".content_config")
 	f.SpecFields.Insert(".workspace_config")
+	f.SpecFields.Insert(".language_info")
+	f.SpecFields.Insert(".idp_config")
+	f.SpecFields.Insert(".acl_enabled")
 
 	f.StatusFields.Insert(".default_schema_id")
 	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".billing_estimation")
+	f.StatusFields.Insert(".language_info")
 
 	return f
 }

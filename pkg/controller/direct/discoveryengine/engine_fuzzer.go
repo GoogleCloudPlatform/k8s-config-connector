@@ -35,6 +35,9 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
 	f.UnimplementedFields.Insert(".create_time")          // Could be status
 	f.UnimplementedFields.Insert(".update_time")          // Could be status
+	f.UnimplementedFields.Insert(".recommendation_metadata")
+	f.UnimplementedFields.Insert(".media_recommendation_engine_config")
+	f.UnimplementedFields.Insert(".similar_documents_config")
 
 	f.UnimplementedFields.Insert(".name") // special field
 

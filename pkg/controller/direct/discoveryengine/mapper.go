@@ -176,7 +176,7 @@ func ExternalIdpConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IdpCon
 		return nil
 	}
 	out := &pb.IdpConfig_ExternalIdpConfig{}
-	out.WorkforcePoolName = *in.WorkforcePoolName
+	out.WorkforcePoolName = direct.ValueOf(in.WorkforcePoolName)
 	return out
 }
 
