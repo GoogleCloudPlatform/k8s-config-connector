@@ -21,4 +21,4 @@ spec:
   projectRef:
     external: ${projectId}
   # Added/Modified field for update test
-  tier: DEVELOPER
+  tier: ENTERPRISE
