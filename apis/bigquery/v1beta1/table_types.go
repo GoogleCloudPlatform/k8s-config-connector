@@ -704,6 +704,10 @@ type BigQueryTableSpec struct {
 	// +kcc:proto:field=google.cloud.bigquery.v2.Table.view
 	View *ViewDefinition `json:"view,omitempty"`
 
+	// When using `alpha.cnrm.cloud.google.com/reconciler:direct` annotion, use labels field
+	// to set the labels for this resource on GCP.
+	// Otherwise, use .metadata.labels.
+	// Please refer to https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4274 for context.
 	// The labels associated with this table. You can use these to organize and
 	//  group your tables. Label keys and values can be no longer than 63
 	//  characters, can only contain lowercase letters, numeric characters,
