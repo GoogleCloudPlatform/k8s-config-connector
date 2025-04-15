@@ -145,6 +145,8 @@ externalDataConfiguration:
   sourceUris:
   - string
 friendlyName: string
+labels:
+  string: string
 materializedView:
   allowNonIncrementalDefinition: boolean
   enableRefresh: boolean
@@ -197,7 +199,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Specifies column names to use for data clustering. Up to four top-level columns are allowed, and should be specified in descending priority order.{% endverbatim %}</p>
+            <p>{% verbatim %}Clustering specification for the table. Must be specified with time-based partitioning, data in the table will be first partitioned and subsequently clustered.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -217,7 +219,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}DatasetRef defines the resource reference to BigQueryDataset, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -227,7 +229,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `BigQueryDataset` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed BigQueryDataset resource. Should be in the format "projects/<projectID>/datasets/<datasetID>".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -237,7 +239,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a BigQueryDataset resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -247,7 +249,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a BigQueryDataset resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -257,7 +259,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The field description.{% endverbatim %}</p>
+            <p>{% verbatim %}A user-friendly description of this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -267,7 +269,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Specifies how the table should be encrypted. If left blank, the table will be encrypted with a Google-managed key; that process is transparent to the user.{% endverbatim %}</p>
+            <p>{% verbatim %}Custom encryption configuration (e.g., Cloud KMS keys).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -277,7 +279,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -287,7 +289,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -297,7 +299,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +309,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -317,7 +319,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The self link or full name of the kms key version used to encrypt this table.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. // The table will be encrypted with the primary version of Cloud KMS encryption key. // The self link or full name of the kms key version used to encrypt this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -327,7 +329,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed.{% endverbatim %}</p>
+            <p>{% verbatim %}The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed.  The defaultTableExpirationMs property of the encapsulating dataset can be used to set a default expirationTime on newly created tables.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -347,7 +349,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Let BigQuery try to autodetect the schema and format of the table.{% endverbatim %}</p>
+            <p>{% verbatim %}Try to detect schema and format options automatically. Any option specified explicitly will be honored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -357,7 +359,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional options if source_format is set to "AVRO".{% endverbatim %}</p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to AVRO.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +379,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The compression type of the data source. Valid values are "NONE" or "GZIP".{% endverbatim %}</p>
+            <p>{% verbatim %}The compression type of the data source. Possible values include GZIP and NONE. The default value is NONE. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats. An empty string is an invalid value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -387,7 +389,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connectionId can have the form "{{project}}.{{location}}.{{connection_id}}" or "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}".{% endverbatim %}</p>
+            <p>{% verbatim %}The connection specifying the credentials to be used to read external storage, such as Azure Blob, Cloud Storage, or S3. The connection_id can have the form `{project_id}.{location_id};{connection_id}` or `projects/{project_id}/locations/{location_id}/connections/{connection_id}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -397,7 +399,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional properties to set if source_format is set to "CSV".{% endverbatim %}</p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to CSV.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -407,7 +409,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Indicates if BigQuery should accept rows that are missing trailing optional columns.{% endverbatim %}</p>
+            <p>{% verbatim %}Indicates if BigQuery should accept rows that are missing trailing optional columns. If true, BigQuery treats missing trailing columns as null values. If false, records with missing trailing columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -427,7 +429,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The character encoding of the data. The supported values are UTF-8 or ISO-8859-1.{% endverbatim %}</p>
+            <p>{% verbatim %}The character encoding of the data. The supported values are UTF-8, ISO-8859-1, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -437,7 +439,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The separator for fields in a CSV file.{% endverbatim %}</p>
+            <p>{% verbatim %}The separator character for fields in a CSV file. The separator is interpreted as a single byte. For files encoded in ISO-8859-1, any single character can be used as a separator. For files encoded in UTF-8, characters represented in decimal range 1-127 (U+0001-U+007F) can be used without any modification. UTF-8 characters encoded with multiple bytes (i.e. U+0080 and above) will have only the first byte used for separating fields. The remaining bytes will be treated as a part of the field. BigQuery also supports the escape sequence "\t" (U+0009) to specify a tab separator. The default value is comma (",", U+002C).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -447,7 +449,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote ("). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true. To include the specific quote character within a quoted value, precede it with an additional matching quote character. For example, if you want to escape the default character  ' " ', use ' "" '.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -457,7 +459,19 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of rows at the top of a CSV file that BigQuery will skip when reading the data.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of rows at the top of a CSV file that BigQuery will
+ skip when reading the data. The default value is 0. This property is
+ useful if you have header rows in the file that should be skipped.
+ When autodetect is on, the behavior is the following:
+
+ * skipLeadingRows unspecified - Autodetect tries to detect headers in the
+   first row. If they are not detected, the row is read as data. Otherwise
+   data is read starting from the second row.
+ * skipLeadingRows is 0 - Instructs autodetect that there are no headers and
+   data should be read starting from the first row.
+ * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect
+   headers in row N. If headers are not detected, row N is just skipped.
+   Otherwise row N is used to extract column names for the detected schema.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -477,7 +491,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional options if source_format is set to "GOOGLE_SHEETS".{% endverbatim %}</p>
+            <p>{% verbatim %}Additional options if sourceFormat is set to GOOGLE_SHEETS.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -487,7 +501,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Range of a sheet to query from. Only used when non-empty. At least one of range or skip_leading_rows must be set. Typical format: "sheet_name!top_left_cell_id:bottom_right_cell_id" For example: "sheet1!A1:B20".{% endverbatim %}</p>
+            <p>{% verbatim %}Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -497,7 +511,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of rows at the top of the sheet that BigQuery will skip when reading the data. At least one of range or skip_leading_rows must be set.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -517,7 +531,19 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}When set, what mode of hive partitioning to use when reading data.{% endverbatim %}</p>
+            <p>{% verbatim %}When set, what mode of hive partitioning to use when reading
+ data.  The following modes are supported:
+
+ * AUTO: automatically infer partition key name(s) and type(s).
+
+ * STRINGS: automatically infer partition key name(s).  All types are
+ strings.
+
+ * CUSTOM: partition key schema is encoded in the source URI prefix.
+
+ Not all storage formats support hive partitioning. Requesting hive
+ partitioning on an unsupported format will lead to an error.
+ Currently supported formats are: JSON, CSV, ORC, Avro and Parquet.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -527,7 +553,14 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}If set to true, queries over this table require a partition
+ filter that can be used for partition elimination to be specified.
+
+ Note that this field should only be true when creating a permanent
+ external table or querying a temporary external table.
+
+ Hive-partitioned loads with require_partition_filter explicitly set to
+ true will fail.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -537,7 +570,29 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}When hive partition detection is requested, a common for all source uris must be required. The prefix must end immediately before the partition key encoding begins.{% endverbatim %}</p>
+            <p>{% verbatim %}When hive partition detection is requested, a common prefix for
+ all source uris must be required.  The prefix must end immediately before
+ the partition key encoding begins. For example, consider files following
+ this data layout:
+
+ gs://bucket/path_to_table/dt=2019-06-01/country=USA/id=7/file.avro
+
+ gs://bucket/path_to_table/dt=2019-05-31/country=CA/id=3/file.avro
+
+ When hive partitioning is requested with either AUTO or STRINGS detection,
+ the common prefix can be either of gs://bucket/path_to_table or
+ gs://bucket/path_to_table/.
+
+ CUSTOM detection requires encoding the partitioning schema immediately
+ after the common prefix.  For CUSTOM, any of
+
+ * gs://bucket/path_to_table/{dt:DATE}/{country:STRING}/{id:INTEGER}
+
+ * gs://bucket/path_to_table/{dt:STRING}/{country:STRING}/{id:INTEGER}
+
+ * gs://bucket/path_to_table/{dt:DATE}/{country:STRING}/{id:STRING}
+
+ would all be valid source URI prefixes.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -547,7 +602,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Indicates if BigQuery should allow extra values that are not represented in the table schema. If true, the extra values are ignored. If false, records with extra columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false.{% endverbatim %}</p>
+            <p>{% verbatim %}Indicates if BigQuery should allow extra values that are not represented in the table schema. If true, the extra values are ignored. If false, records with extra columns are treated as bad records, and if there are too many bad records, an invalid error is returned in the job result. The default value is false. The sourceFormat property determines what BigQuery treats as an extra value: CSV: Trailing columns JSON: Named values that don't match any column names Google Cloud Bigtable: This setting is ignored. Google Cloud Datastore backups: This setting is ignored. Avro: This setting is ignored. ORC: This setting is ignored. Parquet: This setting is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -557,7 +612,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional properties to set if sourceFormat is set to JSON.".{% endverbatim %}</p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to JSON.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -567,7 +622,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE. The default value is UTF-8.{% endverbatim %}</p>
+            <p>{% verbatim %}The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.  The default value is UTF-8.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -577,7 +632,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The maximum number of bad records that BigQuery can ignore when reading data.{% endverbatim %}</p>
+            <p>{% verbatim %}The maximum number of bad records that BigQuery can ignore when reading data. If the number of bad records exceeds this value, an invalid error is returned in the job result. The default value is 0, which requires that all records are valid. This setting is ignored for Google Cloud Bigtable, Google Cloud Datastore backups, Avro, ORC and Parquet formats.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -597,7 +652,11 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Object Metadata is used to create Object Tables. Object Tables contain a listing of objects (with their metadata) found at the sourceUris. If ObjectMetadata is set, sourceFormat should be omitted.{% endverbatim %}</p>
+            <p>{% verbatim %}ObjectMetadata is used to create Object Tables. Object Tables
+ contain a listing of objects (with their metadata) found at the
+ source_uris. If ObjectMetadata is set, source_format should be omitted.
+
+ Currently SIMPLE is the only supported Object Metadata type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -607,7 +666,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Additional properties to set if sourceFormat is set to PARQUET.".{% endverbatim %}</p>
+            <p>{% verbatim %}Additional properties to set if sourceFormat is set to PARQUET.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -647,7 +706,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A JSON schema for the external table. Schema is required for CSV and JSON formats and is disallowed for Google Cloud Bigtable, Cloud Datastore backups, and Avro formats when using external tables.{% endverbatim %}</p>
+            <p>{% verbatim %}The schema for the data. Schema is required for CSV and JSON formats if autodetect is not on. Schema is disallowed for Google Cloud Bigtable, Cloud Datastore backups, Avro, ORC and Parquet formats.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -657,7 +716,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".{% endverbatim %}</p>
+            <p>{% verbatim %}Please see sourceFormat under ExternalDataConfiguration in Bigquery's public API documentation (https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration) for supported formats. To use "GOOGLE_SHEETS" the scopes must include "googleapis.com/auth/drive.readonly".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -667,7 +726,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}A list of the fully-qualified URIs that point to your data in Google Cloud.{% endverbatim %}</p>
+            <p>{% verbatim %}A list of the fully-qualified URIs that point to	your data in Google Cloud.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -687,7 +746,17 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A descriptive name for the table.{% endverbatim %}</p>
+            <p>{% verbatim %}A descriptive name for this table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The labels associated with this table. You can use these to organize and group your tables. Label keys and values can be no longer than 63 characters, can only contain lowercase letters, numeric characters, underscores and dashes. International characters are allowed. Label values are optional. Label keys must start with a letter and each label in the list must have a different key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -697,7 +766,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}If specified, configures this table as a materialized view.{% endverbatim %}</p>
+            <p>{% verbatim %}The materialized view definition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -707,7 +776,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Allow non incremental materialized view definition. The default value is false.{% endverbatim %}</p>
+            <p>{% verbatim %}This option declares the intention to construct a materialized view that isn't refreshed incrementally.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -717,7 +786,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Specifies if BigQuery should automatically refresh materialized view when the base table is updated. The default is true.{% endverbatim %}</p>
+            <p>{% verbatim %}Enable automatic refresh of the materialized view when the base table is updated. The default value is "true".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -727,7 +796,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. A query whose result is persisted.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. A query whose results are persisted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -737,7 +806,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000.{% endverbatim %}</p>
+            <p>{% verbatim %}The maximum frequency at which this materialized view will be refreshed. The default value is "1800000" (30 minutes).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -757,7 +826,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}If specified, configures range-based partitioning for this table.{% endverbatim %}</p>
+            <p>{% verbatim %}If specified, configures range partitioning for this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -767,7 +836,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The field used to determine how to create a range-based partition.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The name of the column to partition the table on. It must be a top-level, INT64 column whose mode is NULLABLE or REQUIRED.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -777,7 +846,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Information required to partition based on ranges. Structure is documented below.{% endverbatim %}</p>
+            <p>{% verbatim %}Defines the ranges for range partitioning.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -787,7 +856,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}End of the range partitioning, exclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The end of range partitioning, exclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -797,7 +866,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The width of each range within the partition.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The width of each interval.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -807,7 +876,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Start of the range partitioning, inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The start of range partitioning, inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -827,7 +896,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The tableId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The BigQueryTable name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -837,7 +906,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A JSON schema for the table.{% endverbatim %}</p>
+            <p>{% verbatim %}Describes the schema of this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -847,7 +916,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Defines the primary key and foreign keys.{% endverbatim %}</p>
+            <p>{% verbatim %}Tables Primary Key and Foreign Key information{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -877,7 +946,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The pair of the foreign key column and primary key column.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The columns that compose the foreign key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -887,7 +956,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The column in the primary key that are referenced by the referencingColumn.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The column in the primary key that are referenced by the referencing_column.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -897,7 +966,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The column that composes the foreign key.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The column that composes the foreign key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -907,7 +976,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Set only if the foreign key constraint is named.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Set only if the foreign key constraint is named.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -917,7 +986,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The table that holds the primary key and is referenced by this foreign key.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The table that holds the primary key and is referenced by this foreign key.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -947,7 +1016,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters. Certain operations allow suffixing of the table ID with a partition decorator, such as sample_table$20190123.{% endverbatim %}</p>
+            <p>{% verbatim %}The Id of the table. The Id can contain Unicode characters in category L (letter), M (mark), N (number), Pc (connector, including underscore), Pd (dash), and Zs (space). For more information, see [General Category](https://wikipedia.org/wiki/Unicode_character_property#General_Category). The maximum length is 1,024 characters.  Certain operations allow suffixing of the table Id with a partition decorator, such as `sample_table$20190123`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -967,7 +1036,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The columns that are composed of the primary key constraint.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The columns that are composed of the primary key constraint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -997,7 +1066,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Number of milliseconds for which to keep the storage for a partition.{% endverbatim %}</p>
+            <p>{% verbatim %}Number of milliseconds for which to keep the storage for a partition. A wrapper is used here because 0 is an invalid value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1007,7 +1076,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The field used to determine how to create a time-based partition. If time-based partitioning is enabled without this value, the table is partitioned based on the load time.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Immutable. If not set, the table is partitioned by pseudo column '_PARTITIONTIME'; if set, the table is partitioned by this field. The field must be a top-level TIMESTAMP or DATE field. Its mode must be NULLABLE or REQUIRED. A wrapper is used here because an empty string is an invalid value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1027,7 +1096,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1037,7 +1106,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}If specified, configures this table as a view.{% endverbatim %}</p>
+            <p>{% verbatim %}The view definition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1047,7 +1116,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A query that BigQuery executes when the view is referenced.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. A query that BigQuery executes when the view is referenced.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1057,7 +1126,13 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Specifies whether to use BigQuery's legacy SQL for this view. The default value is true. If set to false, the view will use BigQuery's standard SQL.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies whether to use BigQuery's legacy SQL for this view.
+ The default value is true. If set to false, the view will use
+ BigQuery's GoogleSQL:
+ https://cloud.google.com/bigquery/sql-reference/
+
+ Queries and views that reference this view must use the same flag value.
+ A wrapper is used here because the default value is True.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1078,12 +1153,14 @@ conditions:
   type: string
 creationTime: integer
 etag: string
+externalRef: string
 lastModifiedTime: integer
 location: string
 numBytes: integer
 numLongTermBytes: integer
 numRows: integer
 observedGeneration: integer
+observedState: {}
 selfLink: string
 type: string
 ```
@@ -1099,7 +1176,7 @@ type: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1148,49 +1225,56 @@ type: string
         <td><code>creationTime</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The time when this table was created, in milliseconds since the epoch.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when this table was created, in milliseconds since the epoch.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A hash of the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A hash of this resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the BigQueryTable resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>lastModifiedTime</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The time when this table was last modified, in milliseconds since the epoch.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The time when this table was last modified, in milliseconds since the epoch.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>location</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The geographic location where the table resides. This value is inherited from the dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The geographic location where the table resides. This value is inherited from the dataset.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>numBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The geographic location where the table resides. This value is inherited from the dataset.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The size of this table in logical bytes, excluding any data in the streaming buffer.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>numLongTermBytes</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of bytes in the table that are considered "long-term storage".{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The number of logical bytes in the table that are considered "long-term storage".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>numRows</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of rows of data in this table, excluding any data in the streaming buffer.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. The number of rows of data in this table, excluding any data in the streaming buffer.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1201,17 +1285,36 @@ type: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The URI of the created resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. A URL that can be used to access this resource again.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Describes the table type.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Describes the table type. The following values are supported:
+
+ * `TABLE`: A normal BigQuery table.
+ * `VIEW`: A virtual table defined by a SQL query.
+ * `EXTERNAL`: A table that references data stored in an external storage
+   system, such as Google Cloud Storage.
+ * `MATERIALIZED_VIEW`: A precomputed view defined by a SQL query.
+ * `SNAPSHOT`: An immutable BigQuery table that preserves the contents of a
+   base table at a particular time. See additional information on
+   [table
+   snapshots](https://cloud.google.com/bigquery/docs/table-snapshots-intro).
+
+ The default value is `TABLE`.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
