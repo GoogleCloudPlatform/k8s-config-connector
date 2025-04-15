@@ -23,7 +23,6 @@ package eventarc
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/eventarc/apiv1"
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
@@ -119,7 +118,9 @@ func (a *googleChannelConfigAdapter) Find(ctx context.Context) (bool, error) {
 func (a *googleChannelConfigAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	// GoogleChannelConfig is a singleton resource that cannot be created.
 	// It can only be fetched and updated.
-	return fmt.Errorf("EventarcGoogleChannelConfig cannot be created")
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating eventarc googlechannelconfig is a no-op", "name", a.id)
+	return nil
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -139,9 +140,7 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 	}
 
 	paths := []string{}
-	if desired.Spec.CryptoKeyRef != nil && !reflect.DeepEqual(resource.CryptoKeyName, a.actual.CryptoKeyName) {
-		paths = append(paths, "crypto_key_name")
-	}
+	paths = append(paths, "crypto_key_name")
 
 	var updated *pb.GoogleChannelConfig
 	if len(paths) == 0 {
