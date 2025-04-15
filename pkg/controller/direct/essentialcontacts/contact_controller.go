@@ -216,11 +216,6 @@ func (a *contactAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	status.ExternalRef = direct.LazyPtr(updated.Name)
 
-	// Handle potential status-only updates if KCC resource was acquired.
-	if len(paths) == 0 && a.desired.Status.ExternalRef == nil {
-		status.ObservedState.ValidationState = a.desired.Status.ObservedState.ValidationState // email is immutable but needed for acquisition
-	}
-
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
