@@ -202,43 +202,44 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
-	}
 
 	updated := &computepb.FirewallPolicyRule{}
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.String())
 
-	tokens := strings.Split(a.id.String(), "/")
-	priority, err := strconv.ParseInt(tokens[5], 10, 32)
-	// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
-	if err != nil {
-		return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
-	}
-
-	updateReq := &computepb.PatchRuleFirewallPolicyRequest{
-		FirewallPolicyRuleResource: firewallPolicyRule,
-		FirewallPolicy:             a.id.Parent().FirewallPolicy,
-		Priority:                   direct.PtrTo(int32(priority)),
-	}
-	op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
-	if err != nil {
-		return fmt.Errorf("updating ComputeFirewallPolicyRule %s: %w", a.id, err)
-	}
-	if !op.Done() {
-		err = op.Wait(ctx)
+		// even though there is no update, we still want to update KRM status
+		updated = a.actual
+	} else {
+		tokens := strings.Split(a.id.String(), "/")
+		priority, err := strconv.ParseInt(tokens[5], 10, 32)
+		// Should not hit this error because we have verified priority in parseComputeFirewallPolicyRuleExternal`
 		if err != nil {
-			return fmt.Errorf("waiting ComputeFirewallPolicyRule %s update failed: %w", a.id, err)
+			return fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
+		}
+
+		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
+			FirewallPolicyRuleResource: firewallPolicyRule,
+			FirewallPolicy:             a.id.Parent().FirewallPolicy,
+			Priority:                   direct.PtrTo(int32(priority)),
+		}
+		op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
+		if err != nil {
+			return fmt.Errorf("updating ComputeFirewallPolicyRule %s: %w", a.id, err)
+		}
+		if !op.Done() {
+			err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("waiting ComputeFirewallPolicyRule %s update failed: %w", a.id, err)
+			}
+		}
+		log.V(2).Info("successfully updated ComputeFirewallPolicyRule", "name", a.id)
+
+		// Get the updated resource
+		updated, err = a.get(ctx)
+		if err != nil {
+			return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.id, err)
 		}
 	}
-	log.V(2).Info("successfully updated ComputeFirewallPolicyRule", "name", a.id)
-
-	// Get the updated resource
-	updated, err = a.get(ctx)
-	if err != nil {
-		return fmt.Errorf("getting ComputeFirewallPolicyRule %s: %w", a.id, err)
-	}
-
 	status := &krm.ComputeFirewallPolicyRuleStatus{}
 	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, updated)
 	return updateOp.UpdateStatus(ctx, status, nil)
