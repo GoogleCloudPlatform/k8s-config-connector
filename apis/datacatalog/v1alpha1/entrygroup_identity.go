@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -74,6 +75,21 @@ func NewEntryGroupIdentity(ctx context.Context, reader client.Reader, obj *DataC
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Validate resource ID format
+	if len(resourceID) > 64 {
+		return nil, fmt.Errorf("resource ID %q exceeds maximum length of 64 characters", resourceID)
+	}
+
+	if !strings.HasPrefix(resourceID, "_") && !unicode.IsLetter([]rune(resourceID)[0]) {
+		return nil, fmt.Errorf("resource ID %q must begin with a letter or underscore", resourceID)
+	}
+
+	for _, r := range resourceID {
+		if !unicode.IsLetter(r) && !unicode.IsNumber(r) && r != '_' {
+			return nil, fmt.Errorf("resource ID %q can only contain letters, numbers, and underscores", resourceID)
+		}
 	}
 
 	// Use approved External

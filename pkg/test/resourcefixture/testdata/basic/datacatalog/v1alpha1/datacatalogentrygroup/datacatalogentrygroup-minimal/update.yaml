@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,11 @@
 apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
 kind: DataCatalogEntryGroup
 metadata:
-  name: datacatalogentrygroup-${uniqueId}
+  name: datacatalogentrygroup-minimal-${uniqueId}
 spec:
-  entryGroupId: my_group
   projectRef:
     external: ${projectId}
+  location: us-central1
+  resourceID: datacatalogentrygroup_minimal_${uniqueId}
+  # Add a display name for the update scenario
+  displayName: Updated Minimal Entry Group
