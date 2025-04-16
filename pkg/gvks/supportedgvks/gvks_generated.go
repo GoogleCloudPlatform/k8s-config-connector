@@ -3471,6 +3471,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "iap.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAPSettings",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "identityplatform.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "IdentityPlatformConfig",

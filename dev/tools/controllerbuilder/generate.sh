@@ -181,12 +181,12 @@ go run . generate-mapper \
 # IAPSettings
 go run . generate-types \
     --service google.cloud.iap.v1 \
-    --api-version iap.cnrm.cloud.google.com/v1alpha1 \
+    --api-version iap.cnrm.cloud.google.com/v1beta1 \
     --resource IAPSettings:IapSettings
 
 go run . generate-mapper \
     --service google.cloud.iap.v1 \
-    --api-version iap.cnrm.cloud.google.com/v1alpha1
+    --api-version iap.cnrm.cloud.google.com/v1beta1
 
 # ManagedKafka
 go run . generate-types \

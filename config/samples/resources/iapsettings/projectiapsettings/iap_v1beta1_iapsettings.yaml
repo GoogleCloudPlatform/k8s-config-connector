@@ -15,21 +15,17 @@
 apiVersion: iap.cnrm.cloud.google.com/v1beta1
 kind: IAPSettings
 metadata:
-  name: iapsettings-${uniqueId}
+  name: iapsettings-sample-project
 spec:
-  computeServiceRef:
-    projectRef:
-      external: projects/${projectId}
-    region: us-central1
-    serviceRef:
-      name: computebackendservice-${uniqueId}
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: projects/${PROJECT_ID?}
   accessSettings:
     corsSettings:
-      allowHTTPOptions: false  # true -> false
+      allowHTTPOptions: true
     reauthSettings:
-      method: "LOGIN"  # SECURE_KEY -> LOGIN
-      maxAge: "600s"  # 305s -> 600s
-      policyType: "DEFAULT"  # MINIMUM -> DEFAULT
+      method: LOGIN
+      maxAge: 300s
+      policyType: DEFAULT
   applicationSettings:
-    cookieDomain: ".updated-example.com"  # test.abc.com -> .updated-example.com
-
+    cookieDomain: .example.com

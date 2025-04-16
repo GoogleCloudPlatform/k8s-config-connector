@@ -12,19 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iap.cnrm.cloud.google.com/v1beta1
-kind: IAPSettings
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
 metadata:
-  name: iapsettings-${uniqueId}
+  name: iapsettings-dep-backendservice
 spec:
-  projectRef:
-    external: projects/${projectId}
-  accessSettings:
-    corsSettings:
-      allowHTTPOptions: true
-    reauthSettings:
-      method: LOGIN
-      maxAge: 300s
-      policyType: DEFAULT
-  applicationSettings:
-    cookieDomain: .example.com
+  checkIntervalSec: 10
+  timeoutSec: 10
+  httpHealthCheck:
+    port: 80
+  location: us-central1

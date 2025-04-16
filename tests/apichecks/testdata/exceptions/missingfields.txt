@@ -2178,6 +2178,29 @@
 [missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=iamworkforcepoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.clientSecret.value.plainText.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.domains[]" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.enable" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.gcipSettings.loginPageURI" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.gcipSettings.tenantIDs[]" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.loginHint" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.programmaticClients[]" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.applicationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.versionRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.accessDeniedPageURI" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.generateTroubleshootingURI" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.remediationTokenGenerationEnabled" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.attributePropagationSettings.enable" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.attributePropagationSettings.expression" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.attributePropagationSettings.outputCredentials[]" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.csmSettings.rctokenAud" is not set in unstructured objects
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.computeServiceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatformconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.notification.sendEmail.smtp.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.clientSecret.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.responseType.code" is not set in unstructured objects

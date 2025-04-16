@@ -522,7 +522,6 @@
 [acronyms] crd=iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.aws.accountId" should be ".spec.aws.accountID"
 [acronyms] crd=iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.aws.stsUri" should be ".spec.aws.stsURI"
 [acronyms] crd=iamworkloadidentitypoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.issuerUri" should be ".spec.oidc.issuerURI"
-[acronyms] crd=iapsettings.iap.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessSettings.gcipSettings.tenantIds" should be ".spec.accessSettings.gcipSettings.tenantIDs"
 [acronyms] crd=identityplatformconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.notification.sendEmail.callbackUri" should be ".spec.notification.sendEmail.callbackURI"
 [acronyms] crd=identityplatformdefaultsupportedidpconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.clientId" should be ".spec.clientID"
 [acronyms] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpEntityId" should be ".spec.idpConfig.idpEntityID"

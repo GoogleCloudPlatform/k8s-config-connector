@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+// +generated:types
+// krm.group: iap.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.iap.v1
+// resource: IAPSettings:IapSettings
+
+package v1beta1
 
 // +kcc:proto=google.cloud.iap.v1.AccessDeniedPageSettings
 type AccessDeniedPageSettings struct {
