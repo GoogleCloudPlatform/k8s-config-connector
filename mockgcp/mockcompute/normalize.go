@@ -40,8 +40,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.SortSlice(".subnetworks")
 
-	// BackendBuckets
-
+	// Subnets
+	replacements.ReplacePath(".gatewayAddress", "10.0.0.1")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

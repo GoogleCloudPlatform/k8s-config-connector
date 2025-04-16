@@ -1,0 +1,5 @@
+# Test for `gcloud compute networks subnets`
+- exec: gcloud compute networks create test-nw-${uniqueId} --project=${projectId} --subnet-mode=custom --bgp-routing-mode=regional
+- exec: gcloud compute networks subnets create test-sn-${uniqueId} --project=${projectId} --network=test-nw-${uniqueId} --region=us-central1 --range=10.0.0.0/24
+- exec: gcloud compute networks subnets delete test-sn-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- exec: gcloud compute networks delete test-nw-${uniqueId} --project=${projectId} --quiet
