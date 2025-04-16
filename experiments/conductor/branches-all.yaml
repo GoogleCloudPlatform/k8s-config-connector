@@ -15016,21 +15016,6 @@ branches:
       proto-msg: ""
       host-name: ""
       notes: []
-    - name: logging-locations
-      local: resource-logging-locations
-      remote: resource-logging-locations
-      command: gcloud logging locations
-      group: logging
-      resource: locations
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
     - name: logging-logs
       local: resource-logging-logs
       remote: resource-logging-logs
@@ -15247,21 +15232,6 @@ branches:
       command: gcloud monitoring uptime
       group: monitoring
       resource: uptime
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: netapp-location
-      local: resource-netapp-location
-      remote: resource-netapp-location
-      command: gcloud netapp locations
-      group: netapp
-      resource: location
       controller: Unknown
       kind: ""
       package: ""
@@ -15892,21 +15862,6 @@ branches:
       command: gcloud run regions
       group: run
       resource: regions
-      controller: Unknown
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-    - name: scheduler-locations
-      local: resource-scheduler-locations
-      remote: resource-scheduler-locations
-      command: gcloud scheduler locations
-      group: scheduler
-      resource: locations
       controller: Unknown
       kind: ""
       package: ""
