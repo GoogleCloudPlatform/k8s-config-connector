@@ -137,6 +137,8 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		}
 		out := g.getOutputFile(k)
 
+		out.fileAnnotation = g.generatedFileAnnotation
+
 		goTypeName := GoNameForProtoMessage(msg)
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
