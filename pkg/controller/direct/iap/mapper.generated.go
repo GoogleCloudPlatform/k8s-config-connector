@@ -12,29 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: iap.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.iap.v1
+
 package iap
 
 import (
 	pb "cloud.google.com/go/iap/apiv1/iappb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AccessDeniedPageSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessDeniedPageSettings) *krm.AccessDeniedPageSettings {
+func AccessDeniedPageSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessDeniedPageSettings) *krmv1beta1.AccessDeniedPageSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessDeniedPageSettings{}
+	out := &krmv1beta1.AccessDeniedPageSettings{}
 	out.AccessDeniedPageURI = direct.StringValue_FromProto(mapCtx, in.GetAccessDeniedPageUri())
 	out.GenerateTroubleshootingURI = direct.BoolValue_FromProto(mapCtx, in.GetGenerateTroubleshootingUri())
 	out.RemediationTokenGenerationEnabled = direct.BoolValue_FromProto(mapCtx, in.GetRemediationTokenGenerationEnabled())
 	return out
 }
-func AccessSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) *krm.AccessSettings {
+func AccessSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) *krmv1beta1.AccessSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessSettings{}
+	out := &krmv1beta1.AccessSettings{}
 	out.GcipSettings = GcipSettings_FromProto(mapCtx, in.GetGcipSettings())
 	out.CorsSettings = CorsSettings_FromProto(mapCtx, in.GetCorsSettings())
 	out.OauthSettings = OAuthSettings_FromProto(mapCtx, in.GetOauthSettings())
@@ -42,7 +47,7 @@ func AccessSettings_FromProto(mapCtx *direct.MapContext, in *pb.AccessSettings) 
 	out.AllowedDomainsSettings = AllowedDomainsSettings_FromProto(mapCtx, in.GetAllowedDomainsSettings())
 	return out
 }
-func AccessSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessSettings) *pb.AccessSettings {
+func AccessSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AccessSettings) *pb.AccessSettings {
 	if in == nil {
 		return nil
 	}
@@ -54,16 +59,16 @@ func AccessSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessSettings) *
 	out.AllowedDomainsSettings = AllowedDomainsSettings_ToProto(mapCtx, in.AllowedDomainsSettings)
 	return out
 }
-func AllowedDomainsSettings_FromProto(mapCtx *direct.MapContext, in *pb.AllowedDomainsSettings) *krm.AllowedDomainsSettings {
+func AllowedDomainsSettings_FromProto(mapCtx *direct.MapContext, in *pb.AllowedDomainsSettings) *krmv1beta1.AllowedDomainsSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AllowedDomainsSettings{}
+	out := &krmv1beta1.AllowedDomainsSettings{}
 	out.Enable = in.Enable
 	out.Domains = in.Domains
 	return out
 }
-func AllowedDomainsSettings_ToProto(mapCtx *direct.MapContext, in *krm.AllowedDomainsSettings) *pb.AllowedDomainsSettings {
+func AllowedDomainsSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AllowedDomainsSettings) *pb.AllowedDomainsSettings {
 	if in == nil {
 		return nil
 	}
@@ -72,18 +77,18 @@ func AllowedDomainsSettings_ToProto(mapCtx *direct.MapContext, in *krm.AllowedDo
 	out.Domains = in.Domains
 	return out
 }
-func ApplicationSettings_FromProto(mapCtx *direct.MapContext, in *pb.ApplicationSettings) *krm.ApplicationSettings {
+func ApplicationSettings_FromProto(mapCtx *direct.MapContext, in *pb.ApplicationSettings) *krmv1beta1.ApplicationSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ApplicationSettings{}
+	out := &krmv1beta1.ApplicationSettings{}
 	out.CsmSettings = CsmSettings_FromProto(mapCtx, in.GetCsmSettings())
 	out.AccessDeniedPageSettings = AccessDeniedPageSettings_FromProto(mapCtx, in.GetAccessDeniedPageSettings())
 	out.CookieDomain = direct.StringValue_FromProto(mapCtx, in.GetCookieDomain())
 	out.AttributePropagationSettings = AttributePropagationSettings_FromProto(mapCtx, in.GetAttributePropagationSettings())
 	return out
 }
-func ApplicationSettings_ToProto(mapCtx *direct.MapContext, in *krm.ApplicationSettings) *pb.ApplicationSettings {
+func ApplicationSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ApplicationSettings) *pb.ApplicationSettings {
 	if in == nil {
 		return nil
 	}
@@ -94,17 +99,17 @@ func ApplicationSettings_ToProto(mapCtx *direct.MapContext, in *krm.ApplicationS
 	out.AttributePropagationSettings = AttributePropagationSettings_ToProto(mapCtx, in.AttributePropagationSettings)
 	return out
 }
-func AttributePropagationSettings_FromProto(mapCtx *direct.MapContext, in *pb.AttributePropagationSettings) *krm.AttributePropagationSettings {
+func AttributePropagationSettings_FromProto(mapCtx *direct.MapContext, in *pb.AttributePropagationSettings) *krmv1beta1.AttributePropagationSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AttributePropagationSettings{}
+	out := &krmv1beta1.AttributePropagationSettings{}
 	out.Expression = in.Expression
 	out.OutputCredentials = direct.EnumSlice_FromProto(mapCtx, in.OutputCredentials)
 	out.Enable = in.Enable
 	return out
 }
-func AttributePropagationSettings_ToProto(mapCtx *direct.MapContext, in *krm.AttributePropagationSettings) *pb.AttributePropagationSettings {
+func AttributePropagationSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AttributePropagationSettings) *pb.AttributePropagationSettings {
 	if in == nil {
 		return nil
 	}
@@ -114,15 +119,15 @@ func AttributePropagationSettings_ToProto(mapCtx *direct.MapContext, in *krm.Att
 	out.Enable = in.Enable
 	return out
 }
-func CorsSettings_FromProto(mapCtx *direct.MapContext, in *pb.CorsSettings) *krm.CorsSettings {
+func CorsSettings_FromProto(mapCtx *direct.MapContext, in *pb.CorsSettings) *krmv1beta1.CorsSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CorsSettings{}
+	out := &krmv1beta1.CorsSettings{}
 	out.AllowHTTPOptions = direct.BoolValue_FromProto(mapCtx, in.GetAllowHttpOptions())
 	return out
 }
-func CorsSettings_ToProto(mapCtx *direct.MapContext, in *krm.CorsSettings) *pb.CorsSettings {
+func CorsSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CorsSettings) *pb.CorsSettings {
 	if in == nil {
 		return nil
 	}
@@ -130,15 +135,15 @@ func CorsSettings_ToProto(mapCtx *direct.MapContext, in *krm.CorsSettings) *pb.C
 	out.AllowHttpOptions = direct.BoolValue_ToProto(mapCtx, in.AllowHTTPOptions)
 	return out
 }
-func CsmSettings_FromProto(mapCtx *direct.MapContext, in *pb.CsmSettings) *krm.CsmSettings {
+func CsmSettings_FromProto(mapCtx *direct.MapContext, in *pb.CsmSettings) *krmv1beta1.CsmSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CsmSettings{}
+	out := &krmv1beta1.CsmSettings{}
 	out.RctokenAud = direct.StringValue_FromProto(mapCtx, in.GetRctokenAud())
 	return out
 }
-func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krm.CsmSettings) *pb.CsmSettings {
+func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CsmSettings) *pb.CsmSettings {
 	if in == nil {
 		return nil
 	}
@@ -146,16 +151,16 @@ func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krm.CsmSettings) *pb.Csm
 	out.RctokenAud = direct.StringValue_ToProto(mapCtx, in.RctokenAud)
 	return out
 }
-func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm.GcipSettings {
+func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krmv1beta1.GcipSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GcipSettings{}
+	out := &krmv1beta1.GcipSettings{}
 	out.TenantIds = in.TenantIds
 	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
 	return out
 }
-func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.GcipSettings {
+func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.GcipSettings) *pb.GcipSettings {
 	if in == nil {
 		return nil
 	}
@@ -164,17 +169,17 @@ func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.G
 	out.LoginPageUri = direct.StringValue_ToProto(mapCtx, in.LoginPageURI)
 	return out
 }
-func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *krm.IAPSettingsSpec {
+func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *krmv1beta1.IAPSettingsSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IAPSettingsSpec{}
+	out := &krmv1beta1.IAPSettingsSpec{}
 	// MISSING: Name
 	out.AccessSettings = AccessSettings_FromProto(mapCtx, in.GetAccessSettings())
 	out.ApplicationSettings = ApplicationSettings_FromProto(mapCtx, in.GetApplicationSettings())
 	return out
 }
-func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAPSettingsSpec) *pb.IapSettings {
+func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.IAPSettingsSpec) *pb.IapSettings {
 	if in == nil {
 		return nil
 	}
@@ -184,16 +189,16 @@ func IAPSettingsSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAPSettingsSpec)
 	out.ApplicationSettings = ApplicationSettings_ToProto(mapCtx, in.ApplicationSettings)
 	return out
 }
-func OAuthSettings_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSettings) *krm.OAuthSettings {
+func OAuthSettings_FromProto(mapCtx *direct.MapContext, in *pb.OAuthSettings) *krmv1beta1.OAuthSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OAuthSettings{}
+	out := &krmv1beta1.OAuthSettings{}
 	out.LoginHint = direct.StringValue_FromProto(mapCtx, in.GetLoginHint())
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }
-func OAuthSettings_ToProto(mapCtx *direct.MapContext, in *krm.OAuthSettings) *pb.OAuthSettings {
+func OAuthSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.OAuthSettings) *pb.OAuthSettings {
 	if in == nil {
 		return nil
 	}
@@ -202,17 +207,17 @@ func OAuthSettings_ToProto(mapCtx *direct.MapContext, in *krm.OAuthSettings) *pb
 	out.ProgrammaticClients = in.ProgrammaticClients
 	return out
 }
-func ReauthSettings_FromProto(mapCtx *direct.MapContext, in *pb.ReauthSettings) *krm.ReauthSettings {
+func ReauthSettings_FromProto(mapCtx *direct.MapContext, in *pb.ReauthSettings) *krmv1beta1.ReauthSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ReauthSettings{}
+	out := &krmv1beta1.ReauthSettings{}
 	out.Method = direct.Enum_FromProto(mapCtx, in.GetMethod())
 	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
 	out.PolicyType = direct.Enum_FromProto(mapCtx, in.GetPolicyType())
 	return out
 }
-func ReauthSettings_ToProto(mapCtx *direct.MapContext, in *krm.ReauthSettings) *pb.ReauthSettings {
+func ReauthSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ReauthSettings) *pb.ReauthSettings {
 	if in == nil {
 		return nil
 	}
