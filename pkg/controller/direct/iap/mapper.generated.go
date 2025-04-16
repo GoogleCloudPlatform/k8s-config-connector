@@ -151,24 +151,6 @@ func CsmSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CsmSettings) 
 	out.RctokenAud = direct.StringValue_ToProto(mapCtx, in.RctokenAud)
 	return out
 }
-func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krmv1beta1.GcipSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.GcipSettings{}
-	out.TenantIds = in.TenantIds
-	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
-	return out
-}
-func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.GcipSettings) *pb.GcipSettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GcipSettings{}
-	out.TenantIds = in.TenantIds
-	out.LoginPageUri = direct.StringValue_ToProto(mapCtx, in.LoginPageURI)
-	return out
-}
 func IAPSettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.IapSettings) *krmv1beta1.IAPSettingsSpec {
 	if in == nil {
 		return nil

@@ -94,7 +94,7 @@ spec:
                           same login page, though it could be overridden at the sub
                           resource level.
                         type: string
-                      tenantIds:
+                      tenantIDs:
                         description: GCIP tenant ids that are linked to the IAP resource.
                           tenant_ids could be a string beginning with a number character
                           to indicate authenticating with GCIP tenant flow, or in
@@ -604,7 +604,7 @@ spec:
                           same login page, though it could be overridden at the sub
                           resource level.
                         type: string
-                      tenantIds:
+                      tenantIDs:
                         description: GCIP tenant ids that are linked to the IAP resource.
                           tenant_ids could be a string beginning with a number character
                           to indicate authenticating with GCIP tenant flow, or in

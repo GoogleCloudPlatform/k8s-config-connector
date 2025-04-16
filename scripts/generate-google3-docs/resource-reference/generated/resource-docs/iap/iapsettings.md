@@ -68,7 +68,7 @@ accessSettings:
     allowHTTPOptions: boolean
   gcipSettings:
     loginPageURI: string
-    tenantIds:
+    tenantIDs:
     - string
   oauthSettings:
     loginHint: string
@@ -233,7 +233,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>accessSettings.gcipSettings.tenantIds</code></p>
+            <p><code>accessSettings.gcipSettings.tenantIDs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -243,7 +243,7 @@ resourceID: string
     </tr>
     <tr>
         <td>
-            <p><code>accessSettings.gcipSettings.tenantIds[]</code></p>
+            <p><code>accessSettings.gcipSettings.tenantIDs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
