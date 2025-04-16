@@ -26,7 +26,6 @@ import (
 
 	gcp "cloud.google.com/go/eventarc/apiv1"
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -40,39 +39,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 )
 
 func init() {
 	registry.RegisterModel(krm.EventarcChannelGVK, NewChannelModel)
-}
-
-// TODO(user): Add client options for gRPC and http options
-func newGCPClient(ctx context.Context, cfg *config.ControllerConfig) (*gcpClient, error) {
-	var opts []option.ClientOption
-	if cfg.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(cfg.UserAgent))
-	}
-	if cfg.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(cfg.HTTPClient))
-	}
-	if cfg.CACertificatePath != "" {
-		// TODO: Requires https://github.com/googleapis/google-cloud-go/pull/10113
-		return nil, fmt.Errorf("setting custom CA certificate is not yet supported for eventarc")
-		// opts = append(opts, option.WithClientCertSource())
-	}
-	// TODO: Support endpoints override
-	return &gcpClient{cfg: *cfg, opts: opts}, nil
-}
-
-// gcpClient wraps the generated client & configuration
-type gcpClient struct {
-	cfg  config.ControllerConfig
-	opts []option.ClientOption
-}
-
-func (c *gcpClient) newEventarcClient(ctx context.Context) (*gcp.Client, error) {
-	return gcp.NewClient(ctx, c.opts...)
 }
 
 func NewChannelModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -114,27 +84,8 @@ func (m *channelModel) AdapterForObject(ctx context.Context, reader client.Reade
 }
 
 func (m *channelModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	id, err := krm.ParseChannelIdentity(url)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get eventarc GCP client
-	gcpClient, err := newGCPClient(ctx, &m.config)
-	if err != nil {
-		return nil, err
-	}
-	eventarcClient, err := gcpClient.newEventarcClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &channelAdapter{
-		gcpClient: eventarcClient,
-		id:        id,
-		// desired: TODO(acpana): Needs implementation if we want `adopt` to work
-		// reader:  TODO(acpana): Needs implementation if we want `adopt` to work
-	}, nil
+	// TODO: Support URLs
+	return nil, nil
 }
 
 type channelAdapter struct {
@@ -183,7 +134,7 @@ func (a *channelAdapter) Create(ctx context.Context, createOp *directbase.Create
 	req := &pb.CreateChannelRequest{
 		Parent:    a.id.Parent().String(),
 		Channel:   resource,
-		ChannelId: a.id.ChannelID,
+		ChannelId: a.id.ID(),
 	}
 
 	op, err := a.gcpClient.CreateChannel(ctx, req)
@@ -203,7 +154,6 @@ func (a *channelAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(created.Name)
-	status.ActivationToken = direct.LazyPtr(created.ActivationToken)
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -261,7 +211,6 @@ func (a *channelAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(updated.Name)
-	status.ActivationToken = direct.LazyPtr(updated.ActivationToken)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -279,20 +228,16 @@ func (a *channelAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, mapCtx.Err()
 	}
 
-	if err := a.denormalizeReferenceFields(ctx, obj); err != nil {
-		return nil, err
-	}
-
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
 	obj.Spec.Location = a.id.Parent().Location
-	obj.Spec.ResourceID = direct.LazyPtr(a.id.ChannelID)
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(krmtotf.GenerateResourceName(obj.Spec.ResourceID, obj.Name))
+	u.SetName(a.id.String())
 	u.SetNamespace(obj.Namespace) // This is required KCC controller code convention
 	u.SetGroupVersionKind(krm.EventarcChannelGVK)
 	u.Object = uObj
@@ -330,37 +275,19 @@ func (a *channelAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 
 func (a *channelAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.ProviderRef != nil {
-		providerRef, err := refs.ResolveEventarcProviderRef(ctx, a.reader, obj, obj.Spec.ProviderRef)
+	if obj.Spec.Provider != nil {
+		providerRef, err := obj.Spec.Provider.NormalizedExternal(ctx, a.reader, obj.Namespace)
 		if err != nil {
 			return err
 		}
-		obj.Spec.ProviderRef = providerRef
+		obj.Spec.Provider.External = providerRef
 	}
-	if obj.Spec.CryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.CryptoKeyRef)
+	if obj.Spec.KmsKeyRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KmsKeyRef)
 		if err != nil {
 			return err
 		}
-		obj.Spec.CryptoKeyRef = kmsKeyRef
-	}
-	return nil
-}
-
-func (a *channelAdapter) denormalizeReferenceFields(ctx context.Context, obj *krm.EventarcChannel) error {
-	if obj.Spec.ProviderRef != nil && obj.Spec.ProviderRef.External != "" {
-		providerRef, err := refs.ConstructEventarcProviderRef(ctx, a.reader, obj, obj.Spec.ProviderRef.External)
-		if err != nil {
-			return err
-		}
-		obj.Spec.ProviderRef = providerRef
-	}
-	if obj.Spec.CryptoKeyRef != nil && obj.Spec.CryptoKeyRef.External != "" {
-		kmsKeyRef, err := refs.ConstructKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.CryptoKeyRef.External)
-		if err != nil {
-			return err
-		}
-		obj.Spec.CryptoKeyRef = kmsKeyRef
+		obj.Spec.KmsKeyRef = kmsKeyRef
 	}
 	return nil
 }
