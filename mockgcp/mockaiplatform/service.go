@@ -25,7 +25,12 @@ import (
 	"google.golang.org/grpc"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked aiplatform service.
 type MockService struct {
@@ -37,7 +42,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
