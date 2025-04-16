@@ -141,7 +141,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "launchParameter": {
     "containerSpecGcsPath": "gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion",
-    "environment": {},
+    "environment": {
+      "autoscalingAlgorithm": "AUTOSCALING_ALGORITHM_NONE"
+    },
     "jobName": "dataflowflextemplatejob-${uniqueId}",
     "parameters": {
       "inputFileFormat": "csv",
