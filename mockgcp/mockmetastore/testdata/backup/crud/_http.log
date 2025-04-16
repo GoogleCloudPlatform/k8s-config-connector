@@ -61,7 +61,7 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
     "serviceRevision": {
-      "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+      "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "databaseType": "MYSQL",
       "encryptionConfig": {},
@@ -111,7 +111,7 @@ X-Xss-Protection: 0
   "endTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
   "serviceRevision": {
-    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseType": "MYSQL",
     "encryptionConfig": {},
@@ -160,7 +160,7 @@ X-Xss-Protection: 0
   "endTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}/backups/test-backup-${uniqueId}",
   "serviceRevision": {
-    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}/hive-warehouse",
+    "artifactGcsUri": "gs://gcs-bucket-test-service-${uniqueId}",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseType": "MYSQL",
     "encryptionConfig": {},

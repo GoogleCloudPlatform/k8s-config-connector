@@ -1,0 +1,363 @@
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services?%24alt=json%3Benum-encoding%3Dint&serviceId=metastoreservice-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
+    "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://mock-endpoint:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataManagementActivity": {},
+    "name": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "state": "ACTIVE",
+    "stateMessage": "The service is ready to use",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "DEVELOPER",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": 1,
+  "encryptionConfig": {},
+  "endpointUri": "thrift://mock-endpoint:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}/hive-warehouse"
+    },
+    "endpointProtocol": 1,
+    "version": "3.1.2"
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": 2,
+  "state": 2,
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": 2
+  },
+  "tier": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=tier
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: service.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
+
+{
+  "name": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+  "tier": 3
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
+    "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseType": "MYSQL",
+    "encryptionConfig": {},
+    "endpointUri": "thrift://mock-endpoint:9083",
+    "hiveMetastoreConfig": {
+      "configOverrides": {
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}/hive-warehouse"
+      },
+      "endpointProtocol": "THRIFT",
+      "version": "3.1.2"
+    },
+    "metadataManagementActivity": {},
+    "name": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "networkConfig": {},
+    "port": 9083,
+    "releaseChannel": "STABLE",
+    "state": "ACTIVE",
+    "stateMessage": "The service is ready to use",
+    "telemetryConfig": {
+      "logFormat": "JSON"
+    },
+    "tier": "ENTERPRISE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "artifactGcsUri": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseType": 1,
+  "encryptionConfig": {},
+  "endpointUri": "thrift://mock-endpoint:9083",
+  "hiveMetastoreConfig": {
+    "configOverrides": {
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-metastoreservice-minimal-${uniqueId}/hive-warehouse"
+    },
+    "endpointProtocol": 1,
+    "version": "3.1.2"
+  },
+  "metadataManagementActivity": {},
+  "name": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "networkConfig": {},
+  "port": 9083,
+  "releaseChannel": 2,
+  "state": 2,
+  "stateMessage": "The service is ready to use",
+  "telemetryConfig": {
+    "logFormat": 2
+  },
+  "tier": 3,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fservices%2Fmetastoreservice-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/services/metastoreservice-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
