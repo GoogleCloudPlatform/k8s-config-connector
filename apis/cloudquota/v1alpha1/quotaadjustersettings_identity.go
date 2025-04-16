@@ -28,15 +28,14 @@ import (
 // holds the GCP identifier for the KRM object.
 type QuotaAdjusterSettingsIdentity struct {
 	parent *QuotaAdjusterSettingsParent
-	id     string
 }
 
 func (i *QuotaAdjusterSettingsIdentity) String() string {
-	return i.parent.String() + "/quotaAdjusterSettings/" + i.id
+	return i.parent.String() + "/quotaAdjusterSettings"
 }
 
 func (i *QuotaAdjusterSettingsIdentity) ID() string {
-	return i.id
+	return "quotaAdjusterSettings"
 }
 
 func (i *QuotaAdjusterSettingsIdentity) Parent() *QuotaAdjusterSettingsParent {
@@ -46,11 +45,10 @@ func (i *QuotaAdjusterSettingsIdentity) Parent() *QuotaAdjusterSettingsParent {
 // QuotaAdjusterSettingsParent defines the GCP project, location for the given QuotaAdjusterSettings resource.
 type QuotaAdjusterSettingsParent struct {
 	ProjectID string
-	Location  string
 }
 
 func (p *QuotaAdjusterSettingsParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/locations/global"
 }
 
 // New builds a QuotaAdjusterSettingsIdentity from the Config Connector QuotaAdjusterSettings object.
@@ -65,7 +63,6 @@ func NewQuotaAdjusterSettingsIdentity(ctx context.Context, reader client.Reader,
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -74,6 +71,9 @@ func NewQuotaAdjusterSettingsIdentity(ctx context.Context, reader client.Reader,
 	}
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+	if resourceID != "quotaAdjusterSettings" {
+		return nil, fmt.Errorf("resourceID or .metadata.name can only be 'quotaAdjusterSettings'")
 	}
 
 	// Use approved External
@@ -87,9 +87,6 @@ func NewQuotaAdjusterSettingsIdentity(ctx context.Context, reader client.Reader,
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -98,21 +95,18 @@ func NewQuotaAdjusterSettingsIdentity(ctx context.Context, reader client.Reader,
 	return &QuotaAdjusterSettingsIdentity{
 		parent: &QuotaAdjusterSettingsParent{
 			ProjectID: projectID,
-			Location:  location,
 		},
-		id: resourceID,
 	}, nil
 }
 
 func ParseQuotaAdjusterSettingsExternal(external string) (parent *QuotaAdjusterSettingsParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "quotaAdjusterSettings" {
-		return nil, "", fmt.Errorf("format of APIQuotaAdjusterSettings external=%q was not known (use projects/{{projectID}}/locations/{{location}}/quotaAdjusterSettings/{{quotaAdjusterSettingsID}})", external)
+	if len(tokens) != 5 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[3] != "global" || tokens[4] != "quotaAdjusterSettings" {
+		return nil, "", fmt.Errorf("format of APIQuotaAdjusterSettings external=%q was not known (use projects/{{projectID}}/locations/global/quotaAdjusterSettings)", external)
 	}
 	parent = &QuotaAdjusterSettingsParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[4]
 	return parent, resourceID, nil
 }

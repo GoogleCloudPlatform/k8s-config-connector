@@ -17,7 +17,7 @@ kind: APIQuotaAdjusterSettings
 metadata:
   name: apiquotaadjustersettings-minimal-${uniqueId}
 spec:
-  location: us-central1
+  resourceID: quotaAdjusterSettings
   projectRef:
     external: ${projectId}
   enablement: DISABLED

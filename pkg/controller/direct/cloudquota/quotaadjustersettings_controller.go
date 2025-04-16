@@ -45,13 +45,13 @@ func init() {
 }
 
 func NewQuotaAdjusterSettingsModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &apiQuotaAdjusterSettingsModel{config: config}, nil
+	return &apiQuotaAdjusterSettingsModel{config: *config}, nil
 }
 
 var _ directbase.Model = &apiQuotaAdjusterSettingsModel{}
 
 type apiQuotaAdjusterSettingsModel struct {
-	config *config.ControllerConfig
+	config config.ControllerConfig
 }
 
 func (m *apiQuotaAdjusterSettingsModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -65,8 +65,14 @@ func (m *apiQuotaAdjusterSettingsModel) AdapterForObject(ctx context.Context, re
 		return nil, err
 	}
 
+	config := m.config
+	// the service requires that a quota project be set
+	if !config.UserProjectOverride || config.BillingProject == "" {
+		config.UserProjectOverride = true
+		config.BillingProject = id.Parent().ProjectID
+	}
 	// Get cloudquotas GCP client
-	gcpClient, err := newGCPClient(ctx, m.config)
+	gcpClient, err := newGCPClient(ctx, &config)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +154,7 @@ func (a *apiQuotaAdjusterSettingsAdapter) Update(ctx context.Context, updateOp *
 	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		// Set etag for optimistic concurrency control if provided
-		if a.desired.Status.ObservedState.Etag != nil {
+		if a.desired.Status.ObservedState != nil && a.desired.Status.ObservedState.Etag != nil {
 			resource.Etag = *a.desired.Status.ObservedState.Etag
 		} else {
 			// Use the etag from the last read if not specified in spec
@@ -189,7 +195,6 @@ func (a *apiQuotaAdjusterSettingsAdapter) Export(ctx context.Context) (*unstruct
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
