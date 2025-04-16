@@ -129,8 +129,8 @@ spec:
                   If not specified, the name of the KRM resource will be used.
                 type: string
             required:
-            - ""
             - location
+            - projectRef
             type: object
           status:
             description: EventarcGoogleChannelConfigStatus defines the config connector

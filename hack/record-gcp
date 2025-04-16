@@ -56,6 +56,13 @@ fi
 export KCC_USE_DIRECT_RECONCILERS
 echo "KCC_USE_DIRECT_RECONCILERS=$KCC_USE_DIRECT_RECONCILERS"
 
+# Set timeout from env var, default to 7200s if not set
+if [[ -z "${E2E_TEST_TIMEOUT:-}" ]]; then
+  E2E_TEST_TIMEOUT="7200s"
+fi
+echo "Using test timeout: ${E2E_TEST_TIMEOUT}"
+
+
 # Run e2e tests against real gcp, capturing output
 ARTIFACTS=$(pwd)/artifactz/realgcp \
 E2E_KUBE_TARGET=envtest \
@@ -65,4 +72,4 @@ GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
 RUN_E2E=1 \
 KCC_USE_DIRECT_RECONCILERS=$KCC_USE_DIRECT_RECONCILERS \
- go test ./tests/e2e -timeout 7200s -v -run $RUN_TESTS
+ go test ./tests/e2e -timeout ${E2E_TEST_TIMEOUT} -v -run $RUN_TESTS
