@@ -132,9 +132,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 		resourceAnnotations = append(resourceAnnotations, fmt.Sprintf("%s:%s", resource.Kind, resource.ProtoName))
 	}
-	if err := typeGenerator.WriteVisitedMessages(); err != nil {
-		return err
-	}
 
 	generatedFileAnnotation := &annotations.FileAnnotation{
 		Key: "+generated:types",
@@ -146,6 +143,11 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		},
 	}
 	typeGenerator = typeGenerator.WithGeneratedFileAnnotation(generatedFileAnnotation)
+
+	if err := typeGenerator.WriteVisitedMessages(); err != nil {
+		return err
+	}
+
 	if err := typeGenerator.WriteOutputMessages(); err != nil {
 		return err
 	}
