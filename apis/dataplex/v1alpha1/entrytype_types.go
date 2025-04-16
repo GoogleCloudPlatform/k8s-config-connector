@@ -47,12 +47,6 @@ type DataplexEntryTypeSpec struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// Optional. This checksum is computed by the service, and might be sent on
-	//  update and delete requests to ensure the client has an up-to-date value
-	//  before proceeding.
-	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.etag
-	Etag *string `json:"etag,omitempty"`
-
 	// Optional. Indicates the classes this Entry Type belongs to, for example,
 	//  TABLE, DATABASE, MODEL.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.type_aliases
@@ -108,6 +102,12 @@ type DataplexEntryTypeObservedState struct {
 	// Output only. The time when the EntryType was last updated.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Optional. This checksum is computed by the service, and might be sent on
+	//  update and delete requests to ensure the client has an up-to-date value
+	//  before proceeding.
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient

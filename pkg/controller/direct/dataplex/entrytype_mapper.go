@@ -37,7 +37,7 @@ func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
+
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.LazyPtr(in.GetPlatform())
 	out.System = direct.LazyPtr(in.GetSystem())
@@ -57,7 +57,6 @@ func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Da
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.ValueOf(in.Platform)
 	out.System = direct.ValueOf(in.System)
@@ -76,7 +75,7 @@ func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: Description
 	// MISSING: DisplayName
 	// MISSING: Labels
-	// MISSING: Etag
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: TypeAliases
 	// MISSING: Platform
 	// MISSING: System
@@ -95,7 +94,7 @@ func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 	// MISSING: Description
 	// MISSING: DisplayName
 	// MISSING: Labels
-	// MISSING: Etag
+	out.Etag = direct.ValueOf(in.Etag)
 	// MISSING: TypeAliases
 	// MISSING: Platform
 	// MISSING: System

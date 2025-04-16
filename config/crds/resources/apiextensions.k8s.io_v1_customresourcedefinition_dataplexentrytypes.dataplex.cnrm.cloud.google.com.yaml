@@ -75,11 +75,6 @@ spec:
               displayName:
                 description: Optional. User friendly display name.
                 type: string
-              etag:
-                description: Optional. This checksum is computed by the service, and
-                  might be sent on update and delete requests to ensure the client
-                  has an up-to-date value before proceeding.
-                type: string
               labels:
                 additionalProperties:
                   type: string
@@ -205,6 +200,11 @@ spec:
                 properties:
                   createTime:
                     description: Output only. The time when the EntryType was created.
+                    type: string
+                  etag:
+                    description: Optional. This checksum is computed by the service,
+                      and might be sent on update and delete requests to ensure the
+                      client has an up-to-date value before proceeding.
                     type: string
                   uid:
                     description: Output only. System generated globally unique ID

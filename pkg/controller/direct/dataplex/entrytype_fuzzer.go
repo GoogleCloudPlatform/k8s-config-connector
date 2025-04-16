@@ -35,7 +35,6 @@ func dataplexEntryTypeFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".type_aliases")
 	f.SpecFields.Insert(".platform")
@@ -49,6 +48,7 @@ func dataplexEntryTypeFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".required_aspects")
 	f.StatusFields.Insert(".authorization")
+	f.StatusFields.Insert(".etag")
 
 	f.UnimplementedFields.Insert(".name")
 
