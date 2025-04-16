@@ -206,6 +206,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to EssentialContactContact
+	visitor.replacePaths[".validateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
@@ -427,24 +430,30 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			if n >= 3 {
+			typeName := tokens[len(tokens)-2]
+
+			switch typeName {
+			case "contacts":
+				// "projects/${projectNumber}/contacts/${contactId}"
+				needle := "contacts/" + tokens[len(tokens)-1]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, needle, "contacts/${contactId}")
+				})
+			case "rules":
 				// Get firewall policy id from firewall policy rule's externalRef and replace it
 				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
-				typeName := tokens[len(tokens)-2]
-				firewallPolicyId := tokens[len(tokens)-3]
-				if typeName == "rules" {
+				if n >= 3 {
+					firewallPolicyId := tokens[len(tokens)-3]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
 					})
 				}
-			}
-			if n >= 3 {
+			case "processorVersions":
 				// Get processor id and version id from processor version's externalRef and replace it
 				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
-				typeName := tokens[len(tokens)-2]
-				processorId := tokens[len(tokens)-3]
-				processorVersionId := tokens[len(tokens)-1]
-				if typeName == "processorVersions" {
+				if n >= 3 {
+					processorId := tokens[len(tokens)-3]
+					processorVersionId := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, processorId, "${processorID}")
 					})
