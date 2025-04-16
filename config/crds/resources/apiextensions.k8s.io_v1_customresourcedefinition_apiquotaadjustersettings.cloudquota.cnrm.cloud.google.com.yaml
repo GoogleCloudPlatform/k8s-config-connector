@@ -65,8 +65,6 @@ spec:
                 description: Required. The configured value of the enablement at the
                   given resource.
                 type: string
-              location:
-                type: string
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -105,7 +103,6 @@ spec:
                 type: string
             required:
             - enablement
-            - location
             - projectRef
             type: object
           status:

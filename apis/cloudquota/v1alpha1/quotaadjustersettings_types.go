@@ -26,8 +26,6 @@ var APIQuotaAdjusterSettingsGVK = GroupVersion.WithKind("APIQuotaAdjusterSetting
 type AdjusterSettingsParent struct {
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	// +required
-	Location string `json:"location"`
 }
 
 // APIQuotaAdjusterSettingsSpec defines the desired state of APIQuotaAdjusterSettings
