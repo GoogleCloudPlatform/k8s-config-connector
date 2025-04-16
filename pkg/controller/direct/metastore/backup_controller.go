@@ -119,7 +119,7 @@ func (a *MetastoreBackupAdapter) Find(ctx context.Context) (bool, error) {
 func (a *MetastoreBackupAdapter) resolveReferences(ctx context.Context) error {
 	obj := a.desired
 
-	if err := obj.Spec.ServiceRef.Resolve(ctx, a.reader, obj); err != nil {
+	if _, err := obj.Spec.ServiceRef.NormalizedExternal(ctx, a.reader, obj.Namespace); err != nil {
 		return fmt.Errorf("resolving serviceRef: %w", err)
 	}
 	return nil
@@ -198,7 +198,7 @@ func (a *MetastoreBackupAdapter) Export(ctx context.Context) (*unstructured.Unst
 	}
 
 	// Populate required references from the ID
-	obj.Spec.ServiceRef = krm.MetastoreBackupServiceRef{
+	obj.Spec.ServiceRef = krm.ServiceRef{
 		External: a.id.Parent().String(), // Set external reference to the service name
 	}
 
