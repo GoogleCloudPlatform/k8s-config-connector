@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: iap.cnrm.cloud.google.com/v1alpha1
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
 kind: IAPSettings
 metadata:
   name: iapsettings-${uniqueId}
