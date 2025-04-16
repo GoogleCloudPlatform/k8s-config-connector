@@ -345,8 +345,6 @@ spec:
                 description: The AssetSavedQuery name. If not given, the metadata.name
                   will be used.
                 type: string
-            required:
-            - ""
             type: object
           status:
             description: AssetSavedQueryStatus defines the config connector machine

@@ -230,6 +230,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.cloudSQL.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
 	visitor.replacePaths[".status.observedState.spark.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
+	// Specific to AssetSavedQuery
+	visitor.replacePaths[".status.observedState.lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+	visitor.replacePaths[".lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+
 	// Specific to BigQueryDataTransferConfig
 	if u.GetKind() == "BigQueryDataTransferConfig" {
 		visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
