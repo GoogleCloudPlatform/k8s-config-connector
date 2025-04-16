@@ -140,7 +140,9 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 	}
 
 	paths := []string{}
-	paths = append(paths, "crypto_key_name")
+	if resource.CryptoKeyName != a.actual.CryptoKeyName {
+		paths = append(paths, "crypto_key_name")
+	}
 
 	var updated *pb.GoogleChannelConfig
 	if len(paths) == 0 {

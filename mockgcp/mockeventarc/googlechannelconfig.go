@@ -36,7 +36,7 @@ import (
 
 func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoogleChannelConfigRequest) (*pb.GoogleChannelConfig, error) {
 	reqName := req.GetName()
-	_, err := s.parseGoogleChannelConfigName(reqName)
+	id, err := s.parseGoogleChannelConfigName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -49,8 +49,9 @@ func (s *EventarcV1) GetGoogleChannelConfig(ctx context.Context, req *pb.GetGoog
 	}
 
 	minimalConfig := &pb.GoogleChannelConfig{
-		Name:       reqName,
-		UpdateTime: timestamppb.New(time.Now()),
+		Name:          reqName,
+		UpdateTime:    timestamppb.New(time.Now()),
+		CryptoKeyName: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", id.Project.ID, id.Location, "test-key-ring", "test-crypto-key"),
 	}
 
 	return minimalConfig, nil
