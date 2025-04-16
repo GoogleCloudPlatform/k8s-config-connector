@@ -112,15 +112,30 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// DeleteInOrder true means that we delete each object and wait for deletion to complete.
 	// This requires that objects be sorted in deletion order.
 	DeleteInOrder bool
+
+	// DoNotUseServerSideApplyForCreate uses a normal create for object creation
+	// Note: we should use server-side apply for both create and update.
+	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
+	DoNotUseServerSideApplyForCreate bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
 
+	// Note: we should use server-side apply for both create and update.
+	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
+
 	// Create and reconcile all resources & dependencies
 	for _, u := range opt.Create {
-		if err := t.GetClient().Create(ctx, u); err != nil {
-			t.Fatalf("error creating resource: %v", err)
+		if opt.DoNotUseServerSideApplyForCreate {
+			t.Log("using legacy create to create object (should ideally use server-side apply)")
+			if err := t.GetClient().Create(ctx, u); err != nil {
+				t.Fatalf("error creating resource: %v", err)
+			}
+		} else {
+			if err := t.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
+				t.Fatalf("error creating resource: %v", err)
+			}
 		}
 		if opt.CreateInOrder && !opt.SkipWaitForReady {
 			waitForReadySingleResource(t, u, DefaultWaitForReadyTimeout)
