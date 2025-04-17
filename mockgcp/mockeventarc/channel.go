@@ -45,7 +45,7 @@ func (s *EventarcV1) GetChannel(ctx context.Context, req *pb.GetChannelRequest) 
 	obj := &pb.Channel{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "channel %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}

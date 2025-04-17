@@ -127,6 +127,7 @@ func (a *channelAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	desired := a.desired.DeepCopy()
 	resource := EventarcChannelSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
