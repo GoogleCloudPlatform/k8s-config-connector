@@ -1,0 +1,30 @@
+apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
+kind: DataCatalogEntry
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: datacatalogentry-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  entryGroupRef:
+    external: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}
+  gcsFilesetSpec:
+    filePatterns:
+    - gs://bucket/file
+  resourceID: dce_${uniqueId}
+  type: FILESET
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
+  observedGeneration: 1
+  observedState:
+    gcsFilesetSpec: {}
