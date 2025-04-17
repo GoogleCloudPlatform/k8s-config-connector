@@ -18,7 +18,7 @@
 # ----------------- Build Container ---------------------------
 # Build the go app.
 # Explicitly set to latest vs golang:1.22
-FROM golang:1.23.4 AS build-stage
+FROM golang:1.24.2 AS build-stage
 
 # Set destination for COPY
 WORKDIR /go/src/app
@@ -32,7 +32,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o expander main.go
 
 
-FROM golang:1.23.4 as bins
+FROM golang:1.24.2 as bins
 
 WORKDIR /workspace
 
