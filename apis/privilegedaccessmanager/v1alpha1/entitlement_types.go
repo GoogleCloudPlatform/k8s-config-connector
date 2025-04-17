@@ -24,7 +24,7 @@ var PrivilegedAccessManagerEntitlementGVK = GroupVersion.WithKind("PrivilegedAcc
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
+// +kcc:spec:proto=google.cloud.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementSpec struct {
 	// Immutable. The Project that this resource belongs to.
 	// One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
@@ -107,7 +107,7 @@ type PrivilegedAccessManagerEntitlementStatus struct {
 
 // PrivilegedAccessManagerEntitlementSpec defines the desired state of
 // PrivilegedAccessManagerEntitlement.
-// +kcc:proto=google.privilegedaccessmanager.v1.Entitlement
+// +kcc:observedstate:proto=google.privilegedaccessmanager.v1.Entitlement
 type PrivilegedAccessManagerEntitlementObservedState struct {
 	// Output only. Create time stamp.
 	// +optional

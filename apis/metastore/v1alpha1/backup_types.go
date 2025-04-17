@@ -29,7 +29,7 @@ type MetastoreBackupParent struct {
 }
 
 // MetastoreBackupSpec defines the desired state of MetastoreBackup
-// +kcc:proto=google.cloud.metastore.v1.Backup
+// +kcc:spec:proto=google.cloud.metastore.v1.Backup
 type MetastoreBackupSpec struct {
 	MetastoreBackupParent `json:",inline"`
 	// The MetastoreBackup name. If not given, the metadata.name will be used.
@@ -57,7 +57,7 @@ type MetastoreBackupStatus struct {
 }
 
 // MetastoreBackupObservedState is the state of the MetastoreBackup resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.metastore.v1.Backup
+// +kcc:observedstate:proto=google.cloud.metastore.v1.Backup
 type MetastoreBackupObservedState struct {
 	// Output only. The time when the backup was started.
 	// +kcc:proto:field=google.cloud.metastore.v1.Backup.create_time

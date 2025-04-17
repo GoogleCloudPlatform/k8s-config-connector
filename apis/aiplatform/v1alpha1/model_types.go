@@ -23,7 +23,7 @@ import (
 var AIPlatformModelGVK = GroupVersion.WithKind("AIPlatformModel")
 
 // AIPlatformModelSpec defines the desired state of AIPlatformModel
-// +kcc:proto=google.cloud.aiplatform.v1.Model
+// +kcc:spec:proto=google.cloud.aiplatform.v1.Model
 type AIPlatformModelSpec struct {
 	// User provided version aliases so that a model version can be referenced via
 	//  alias (i.e.
@@ -245,7 +245,7 @@ type AIPlatformModelStatus struct {
 }
 
 // AIPlatformModelObservedState is the state of the AIPlatformModel resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.aiplatform.v1.Model
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1.Model
 type AIPlatformModelObservedState struct {
 	// Output only. Immutable. The version ID of the model.
 	//  A new version is committed when a new model version is uploaded or

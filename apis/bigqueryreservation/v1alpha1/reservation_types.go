@@ -35,7 +35,7 @@ type Parent struct {
 }
 
 // BigQueryReservationReservationSpec defines the desired state of BigQueryReservationReservation
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation
+// +kcc:spec:proto=google.cloud.bigquery.reservation.v1.Reservation
 type BigQueryReservationReservationSpec struct {
 	Parent `json:",inline"`
 
@@ -183,7 +183,7 @@ type FailoverObservedState struct {
 	OriginalPrimaryLocation *string `json:"originalPrimaryLocation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
+// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Reservation.Autoscale
 type AutoscaleObservedState struct {
 	// The slot capacity added to this reservation when autoscale
 	//  happens. Will be between [0, max_slots]. Note: after users reduce

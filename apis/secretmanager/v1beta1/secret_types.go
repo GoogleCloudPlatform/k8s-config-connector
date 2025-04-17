@@ -26,7 +26,7 @@ var SecretManagerSecretGVK = GroupVersion.WithKind("SecretManagerSecret")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
-// +kcc:proto=google.cloud.secretmanager.v1.Secret
+// +kcc:spec:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretSpec struct {
 	// The SecretManagerSecret name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -205,7 +205,7 @@ type SecretManagerSecretStatus struct {
 }
 
 // SecretManagerSecretSpec defines the desired state of SecretManagerSecret
-// +kcc:proto=google.cloud.secretmanager.v1.Secret
+// +kcc:observedstate:proto=google.cloud.secretmanager.v1.Secret
 type SecretManagerSecretObservedState struct {
 	VersionAliases map[string]string `json:"versionAliases,omitempty"`
 }

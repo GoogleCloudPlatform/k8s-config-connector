@@ -23,7 +23,7 @@ import (
 var AlloyDBInstanceGVK = GroupVersion.WithKind("AlloyDBInstance")
 
 // AlloyDBInstanceSpec defines the desired state of AlloyDBInstance
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance
+// +kcc:spec:proto=google.cloud.alloydb.v1beta.Instance
 type AlloyDBInstanceSpec struct {
 
 	// The AlloyDBInstance cluster that this resource belongs to.

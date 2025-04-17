@@ -110,7 +110,7 @@ type APIQuotaPreferenceStatus struct {
 }
 
 // APIQuotaPreferenceObservedState is the state of the APIQuotaPreference resource as most recently observed in GCP.
-// +kcc:proto=google.api.cloudquotas.v1beta.QuotaPreference
+// +kcc:observedstate:proto=google.api.cloudquotas.v1beta.QuotaPreference
 type APIQuotaPreferenceObservedState struct {
 	// Required. Preferred quota configuration.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaPreference.quota_config

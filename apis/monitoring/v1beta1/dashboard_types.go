@@ -659,7 +659,7 @@ type LogsPanel struct {
 	ResourceNames []v1alpha1.ResourceRef `json:"resourceNames,omitempty"`
 }
 
-// +kcc:proto=google.monitoring.dashboard.v1.Dashboard
+// +kcc:spec:proto=google.monitoring.dashboard.v1.Dashboard
 type MonitoringDashboardSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef refs.ProjectRef `json:"projectRef"`
@@ -698,7 +698,7 @@ type MonitoringDashboardSpec struct {
 	*/
 }
 
-// +kcc:proto=google.monitoring.dashboard.v1.Dashboard
+// +kcc:status:proto=google.monitoring.dashboard.v1.Dashboard
 type MonitoringDashboardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringDashboard's current state. */

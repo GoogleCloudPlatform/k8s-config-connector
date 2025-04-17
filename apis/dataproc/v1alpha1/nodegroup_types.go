@@ -22,7 +22,7 @@ import (
 var DataprocNodeGroupGVK = GroupVersion.WithKind("DataprocNodeGroup")
 
 // DataprocNodeGroupSpec defines the desired state of DataprocNodeGroup
-// +kcc:proto=google.cloud.dataproc.v1.NodeGroup
+// +kcc:spec:proto=google.cloud.dataproc.v1.NodeGroup
 type DataprocNodeGroupSpec struct {
 	// Required. Node group roles.
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.roles
@@ -114,7 +114,7 @@ type DataprocNodeGroupStatus struct {
 }
 
 // DataprocNodeGroupObservedState is the state of the DataprocNodeGroup resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataproc.v1.NodeGroup
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.NodeGroup
 type DataprocNodeGroupObservedState struct {
 	// Optional. The node group instance group configuration.
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.node_group_config

@@ -28,7 +28,7 @@ type Parent struct {
 }
 
 // ComputeInterconnectSpec defines the desired state of ComputeInterconnect
-// +kcc:proto=google.cloud.compute.v1.Interconnect
+// +kcc:spec:proto=google.cloud.compute.v1.Interconnect
 type ComputeInterconnectSpec struct {
 	Parent Parent `json:",inline"`
 	// The ComputeInterconnect name. If not given, the metadata.name will be used.
@@ -110,7 +110,7 @@ type ComputeInterconnectStatus struct {
 }
 
 // ComputeInterconnectObservedState is the state of the ComputeInterconnect resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.compute.v1.Interconnect
+// +kcc:observedstate:proto=google.cloud.compute.v1.Interconnect
 type ComputeInterconnectObservedState struct {
 	// [Output only] List of features available for this Interconnect connection, which can take one of the following values: - IF_MACSEC If present then the Interconnect connection is provisioned on MACsec capable hardware ports. If not present then the Interconnect connection is provisioned on non-MACsec capable ports and MACsec isn't supported and enabling MACsec fails.
 	//  Check the AvailableFeatures enum for the list of possible values.

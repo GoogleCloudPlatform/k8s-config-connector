@@ -76,7 +76,7 @@ type DataCatalogEntryGroupStatus struct {
 }
 
 // DataCatalogEntryGroupObservedState is the state of the DataCatalogEntryGroup resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datacatalog.v1.EntryGroup
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.EntryGroup
 type DataCatalogEntryGroupObservedState struct {
 	// Output only. Timestamps of the entry group. Default value is empty.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.EntryGroup.data_catalog_timestamps

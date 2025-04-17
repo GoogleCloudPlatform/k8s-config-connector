@@ -29,7 +29,7 @@ type BigtableClusterParent struct {
 }
 
 // BigtableClusterSpec defines the desired state of BigtableCluster
-// +kcc:proto=google.bigtable.admin.v2.Cluster
+// +kcc:spec:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterSpec struct {
 	BigtableClusterParent `json:",inline"`
 
@@ -83,7 +83,7 @@ type BigtableClusterStatus struct {
 }
 
 // BigtableClusterObservedState is the state of the BigtableCluster resource as most recently observed in GCP.
-// +kcc:proto=google.bigtable.admin.v2.Cluster
+// +kcc:observedstate:proto=google.bigtable.admin.v2.Cluster
 type BigtableClusterObservedState struct {
 	// Output only. The current state of the cluster.
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.state

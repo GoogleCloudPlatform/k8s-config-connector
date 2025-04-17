@@ -33,7 +33,7 @@ type Resource struct {
 }
 
 // BackupDRBackupPlanAssociationSpec defines the desired state of BackupDRBackupPlanAssociation
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
+// +kcc:spec:proto=google.cloud.backupdr.v1.BackupPlanAssociation
 type BackupDRBackupPlanAssociationSpec struct {
 	// The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -76,7 +76,7 @@ type BackupDRBackupPlanAssociationStatus struct {
 }
 
 // BackupDRBackupPlanAssociationObservedState is the state of the BackupDRBackupPlanAssociation resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlanAssociation
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.BackupPlanAssociation
 type BackupDRBackupPlanAssociationObservedState struct {
 	// Output only. Identifier. The resource name of BackupPlanAssociation in
 	//  below format Format :
