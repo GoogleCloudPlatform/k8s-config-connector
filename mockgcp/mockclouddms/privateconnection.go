@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.clouddms.v1.DataMigrationService
-// proto.message: google.cloud.clouddms.v1.ConnectionProfile
+// proto.message: google.cloud.clouddms.v1.PrivateConnection
 
 package mockclouddms
 
@@ -35,18 +35,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
-func (s *DataMigrationServiceV1) GetConnectionProfile(ctx context.Context, req *pb.GetConnectionProfileRequest) (*pb.ConnectionProfile, error) {
-	name, err := s.parseConnectionProfileName(req.Name)
+func (s *DataMigrationServiceV1) GetPrivateConnection(ctx context.Context, req *pb.GetPrivateConnectionRequest) (*pb.PrivateConnection, error) {
+	name, err := s.parsePrivateConnectionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.ConnectionProfile{}
+	obj := &pb.PrivateConnection{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "ConnectionProfile %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "PrivateConnection %q not found", fqn)
 		}
 		return nil, err
 	}
@@ -54,9 +54,9 @@ func (s *DataMigrationServiceV1) GetConnectionProfile(ctx context.Context, req *
 	return obj, nil
 }
 
-func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, req *pb.CreateConnectionProfileRequest) (*longrunningpb.Operation, error) {
-	reqName := req.Parent + "/connectionProfiles/" + req.ConnectionProfileId
-	name, err := s.parseConnectionProfileName(reqName)
+func (s *DataMigrationServiceV1) CreatePrivateConnection(ctx context.Context, req *pb.CreatePrivateConnectionRequest) (*longrunningpb.Operation, error) {
+	reqName := req.Parent + "/privateConnections/" + req.PrivateConnectionId
+	name, err := s.parsePrivateConnectionName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -65,18 +65,16 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 
 	now := time.Now()
 
-	obj := proto.Clone(req.GetConnectionProfile()).(*pb.ConnectionProfile)
+	obj := proto.Clone(req.GetPrivateConnection()).(*pb.PrivateConnection)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = pb.ConnectionProfile_READY
-	if obj.GetMysql().GetPassword() != "" {
-		obj.GetMysql().Password = ""
-		obj.GetMysql().PasswordSet = true
-	}
+	obj.State = pb.PrivateConnection_CREATED
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
@@ -85,57 +83,26 @@ func (s *DataMigrationServiceV1) CreateConnectionProfile(ctx context.Context, re
 		Verb:                  "create",
 		ApiVersion:            "v1",
 	}
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return obj, nil
 	})
 }
 
-func (s *DataMigrationServiceV1) UpdateConnectionProfile(ctx context.Context, req *pb.UpdateConnectionProfileRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseConnectionProfileName(req.GetConnectionProfile().GetName())
-	if err != nil {
-		return nil, err
-	}
-	fqn := name.String()
-
-	existing := &pb.ConnectionProfile{}
-	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-		return nil, err
-	}
-	now := time.Now()
-	updated := proto.Clone(existing).(*pb.ConnectionProfile)
-
-	updated.UpdateTime = timestamppb.New(now)
-	updated.DisplayName = req.GetConnectionProfile().GetDisplayName()
-
-	if err := s.storage.Update(ctx, fqn, updated); err != nil {
-		return nil, err
-	}
-
-	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	lroMetadata := &pb.OperationMetadata{
-		CreateTime:            timestamppb.New(now),
-		RequestedCancellation: false,
-		Target:                name.String(),
-		Verb:                  "update",
-		ApiVersion:            "v1",
-	}
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		lroMetadata.EndTime = timestamppb.Now()
-		return updated, nil
-	})
-}
-
-func (s *DataMigrationServiceV1) DeleteConnectionProfile(ctx context.Context, req *pb.DeleteConnectionProfileRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseConnectionProfileName(req.Name)
+func (s *DataMigrationServiceV1) DeletePrivateConnection(ctx context.Context, req *pb.DeletePrivateConnectionRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parsePrivateConnectionName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	deleted := &pb.ConnectionProfile{}
+	deleted := &pb.PrivateConnection{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "PrivateConnection %q not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -147,37 +114,38 @@ func (s *DataMigrationServiceV1) DeleteConnectionProfile(ctx context.Context, re
 		Verb:                  "delete",
 		ApiVersion:            "v1",
 	}
+
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return &emptypb.Empty{}, nil
 	})
 }
 
-type connectionProfileName struct {
+type privateConnectionName struct {
 	Project               *projects.ProjectData
 	Location              string
-	ConnectionProfileName string
+	PrivateConnectionName string
 }
 
-func (n *connectionProfileName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/connectionProfiles/%s", n.Project.ID, n.Location, n.ConnectionProfileName)
+func (n *privateConnectionName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/privateConnections/%s", n.Project.ID, n.Location, n.PrivateConnectionName)
 }
 
-// parseConnectionProfileName parses a string into an connectionProfileName.
-// The expected form is `projects/*/locations/*/connectionProfiles/*`.
-func (s *MockService) parseConnectionProfileName(name string) (*connectionProfileName, error) {
+// parsePrivateConnectionName parses a string into a privateConnectionName.
+// The expected form is `projects/*/locations/*/privateConnections/*`.
+func (s *MockService) parsePrivateConnectionName(name string) (*privateConnectionName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "connectionProfiles" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "privateConnections" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &connectionProfileName{
+		name := &privateConnectionName{
 			Project:               project,
 			Location:              tokens[3],
-			ConnectionProfileName: tokens[5],
+			PrivateConnectionName: tokens[5],
 		}
 
 		return name, nil
