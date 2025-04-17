@@ -33,7 +33,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
-	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -163,22 +162,27 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					klog.Infof("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
-					continue
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
-					continue
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
