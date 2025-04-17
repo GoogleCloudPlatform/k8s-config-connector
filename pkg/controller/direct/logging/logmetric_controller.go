@@ -264,6 +264,37 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			}
 		}
 
+		// MetricDescriptor contains mutable but unreadable fields so we populate those in the actual before comparing
+		if updateOp.HasOldObject() {
+			oldU := updateOp.GetOldUnstructured()
+			old := &krm.LoggingLogMetric{}
+			err := runtime.DefaultUnstructuredConverter.FromUnstructured(oldU.Object, old)
+			if err != nil {
+				return fmt.Errorf("error converting to %T: %w", old, err)
+			}
+
+			if old.Spec.MetricDescriptor != nil {
+				if a.actual.MetricDescriptor == nil {
+					a.actual.MetricDescriptor = &api.MetricDescriptor{}
+				}
+				if old.Spec.MetricDescriptor.LaunchStage != nil {
+					a.actual.MetricDescriptor.LaunchStage = direct.ValueOf(old.Spec.MetricDescriptor.LaunchStage)
+				}
+
+				if old.Spec.MetricDescriptor.Metadata != nil {
+					if a.actual.MetricDescriptor.Metadata == nil {
+						a.actual.MetricDescriptor.Metadata = &api.MetricDescriptorMetadata{}
+					}
+					if old.Spec.MetricDescriptor.Metadata.IngestDelay != nil {
+						a.actual.MetricDescriptor.Metadata.IngestDelay = direct.ValueOf(old.Spec.MetricDescriptor.Metadata.IngestDelay)
+					}
+					if old.Spec.MetricDescriptor.Metadata.SamplePeriod != nil {
+						a.actual.MetricDescriptor.Metadata.SamplePeriod = direct.ValueOf(old.Spec.MetricDescriptor.Metadata.SamplePeriod)
+					}
+				}
+			}
+		}
+
 		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
 			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
 				return fmt.Errorf("logMetric update failed: %w", err)
