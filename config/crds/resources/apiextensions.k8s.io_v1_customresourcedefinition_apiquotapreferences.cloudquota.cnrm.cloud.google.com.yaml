@@ -125,8 +125,6 @@ spec:
               justification:
                 description: The reason / justification for this quota preference.
                 type: string
-              location:
-                type: string
               organizationRef:
                 description: OrganizationRef represents the Organization that this
                   resource belongs to.
@@ -199,7 +197,6 @@ spec:
                   preference is applied.
                 type: string
             required:
-            - location
             - quotaConfig
             - quotaID
             - service

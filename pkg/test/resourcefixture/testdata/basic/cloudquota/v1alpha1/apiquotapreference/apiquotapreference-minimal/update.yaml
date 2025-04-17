@@ -15,12 +15,26 @@
 apiVersion: cloudquota.cnrm.cloud.google.com/v1alpha1
 kind: APIQuotaPreference
 metadata:
-  name: apiquotapreference-minimal-${uniqueId}
+  name: qpref-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  service: "serviceusage.googleapis.com" # Replace with a valid service if necessary
-  quotaID: "default_requests_per_minute_per_project" # Replace with a valid quota ID if necessary
+  service: "compute.googleapis.com"
+  # getting quotas using:
+  #   gcloud alpha quotas info list --project ${projectId} --service=compute.googleapis.com > ~/quotas.compute
+  # We can only create and not delete. So we need to find new quotas each time:
+  #   cat ~/quotas.compute| grep "locations/global"
+  # Seeing already created quota preferences:
+  #   gcloud alpha quotas preferences list --project cnrm-barni-1
+
+  #quotaID: "GLOBAL-INTERNAL-TRAFFIC-DIRECTOR-BACKEND-SERVICES-per-project"
+  #quotaConfig:
+  #  preferredValue: 740
+
+  #quotaID: "GetMacsecConfigRequestsPerMinutePerProject"
+  #quotaConfig:
+  #  preferredValue: 150
+
+  quotaID: "GlobalCacheInvalidationRequestsPerMinutePerProject"
   quotaConfig:
-    preferredValue: 2000 # Updated value for testing
+    preferredValue: 500

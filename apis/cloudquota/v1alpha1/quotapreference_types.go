@@ -26,8 +26,6 @@ var APIQuotaPreferenceGVK = GroupVersion.WithKind("APIQuotaPreference")
 
 // Parent holds the parent object reference
 type Parent struct {
-	// +required
-	Location string `json:"location"`
 	// +optional
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 	// +optional

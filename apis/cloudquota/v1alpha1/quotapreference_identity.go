@@ -43,12 +43,11 @@ func (i *QuotaPreferenceIdentity) Parent() *QuotaPreferenceParent {
 	return i.parent
 }
 
-// QuotaPreferenceParent defines the GCP project, folder or organization, and location.
+// QuotaPreferenceParent defines the GCP project, folder or organization.
 type QuotaPreferenceParent struct {
 	ProjectID      string
 	OrganizationID string
 	FolderID       string
-	Location       string
 }
 
 func (p *QuotaPreferenceParent) String() string {
@@ -62,7 +61,7 @@ func (p *QuotaPreferenceParent) String() string {
 	} else {
 		return ""
 	}
-	return prefix + "/locations/" + p.Location
+	return prefix + "/locations/global" // Location is always global
 }
 
 // ParseQuotaPreferenceExternal parses the external quota preference name.
@@ -74,12 +73,10 @@ func ParseQuotaPreferenceExternal(external string) (*QuotaPreferenceParent, stri
 	// projects/{project}/locations/{location}/quotaPreferences/{quotaPreference}
 	// organizations/{organization}/locations/{location}/quotaPreferences/{quotaPreference}
 	// folders/{folder}/locations/{location}/quotaPreferences/{quotaPreference}
-	if parts[2] != "locations" || parts[4] != "quotaPreferences" {
+	if parts[2] != "locations" || parts[3] != "global" || parts[4] != "quotaPreferences" {
 		return nil, "", fmt.Errorf("invalid external quota preference format: %s", external)
 	}
-	parent := &QuotaPreferenceParent{
-		Location: parts[3],
-	}
+	parent := &QuotaPreferenceParent{}
 	switch parts[0] {
 	case "projects":
 		parent.ProjectID = parts[1]
@@ -127,15 +124,10 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 	} else {
 		return nil, fmt.Errorf("one of spec.projectRef, spec.organizationRef, or spec.folderRef must be set")
 	}
-	location := obj.Spec.Parent.Location
 
-	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
 	// Use approved External
@@ -155,9 +147,6 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		if actualParent.FolderID != "" && actualParent.FolderID != folderID {
 			return nil, fmt.Errorf("spec.folderRef changed, expect %s, got %s", actualParent.FolderID, folderID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -168,7 +157,6 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 			ProjectID:      projectID,
 			OrganizationID: organizationID,
 			FolderID:       folderID,
-			Location:       location,
 		},
 		id: resourceID,
 	}, nil
