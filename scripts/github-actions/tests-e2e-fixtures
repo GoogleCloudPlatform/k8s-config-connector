@@ -21,6 +21,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
 SKIP_TEST_APIGROUPS=(
+    "alloydb.cnrm.cloud.google.com"
     "apigee.cnrm.cloud.google.com"
     "backupdr.cnrm.cloud.google.com"
     "bigquery.cnrm.cloud.google.com"
@@ -30,6 +31,7 @@ SKIP_TEST_APIGROUPS=(
     "bigquerydatatransfer.cnrm.cloud.google.com"
     "bigqueryreservation.cnrm.cloud.google.com"
     "certificatemananger.cnrm.cloud.google.com"
+    "cloudidentity.cnrm.cloud.google.com"
     "compute.cnrm.cloud.google.com"
     "gkehub.cnrm.cloud.google.com"
     "monitoring.cnrm.cloud.google.com"
