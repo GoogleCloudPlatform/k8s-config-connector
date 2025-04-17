@@ -38,6 +38,7 @@ import (
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -110,27 +111,41 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 	// we add an event handler to cache the most recent old object update
 	// TODO acpana: better GVK abstraction for registration
 	if r.gvk.Kind == "LoggingLogMetric" {
-		log.FromContext(context.Background()).Info("adding event handler for LoggingLogMetric")
+		log.FromContext(context.Background()).Info("adding update handler with full object fetch for LoggingLogMetric")
 
-		informer, err := mgr.GetCache().GetInformer(context.Background(), obj)
+		// Use PartialObjectMetadata in informer (because builder.OnlyMetadata is used)
+		metaObj := &metav1.PartialObjectMetadata{}
+		metaObj.SetGroupVersionKind(r.gvk)
+
+		informer, err := mgr.GetCache().GetInformer(context.Background(), metaObj)
 		if err != nil {
 			return fmt.Errorf("error getting informer for %s: %w", r.gvk, err)
 		}
 		_, err = informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-			UpdateFunc: func(oldObj, newObj interface{}) {
-				if oldObj == nil || newObj == nil {
+			UpdateFunc: func(oldObjMeta, newObjMeta interface{}) {
+				if oldObjMeta == nil || newObjMeta == nil {
 					return
 				}
-				oldUnstruct, ok := oldObj.(*unstructured.Unstructured)
+				oldMeta, ok := oldObjMeta.(*metav1.PartialObjectMetadata)
 				if !ok {
-					log.FromContext(context.Background()).Error(fmt.Errorf("expected oldObj to be of type *unstructured.Unstructured"), "error converting oldObj in UpdateEvent handler")
+					log.FromContext(context.Background()).Error(fmt.Errorf("expected oldObjMeta to be of type *metav1.PartialObjectMetadata)"), "error converting oldObjMeta in UpdateEvent handler")
+					return
 				}
 				key := types.NamespacedName{
-					Name:      oldUnstruct.GetName(),
-					Namespace: oldUnstruct.GetNamespace(),
+					Name:      oldMeta.GetName(),
+					Namespace: oldMeta.GetNamespace(),
 				}
 
-				r.oldObjectsCache.Store(key, oldUnstruct.DeepCopy())
+				// Fetch the full object manually using client.Client
+				fullObj := &unstructured.Unstructured{}
+				fullObj.SetGroupVersionKind(r.gvk)
+
+				if err := mgr.GetClient().Get(context.Background(), key, fullObj); err != nil {
+					log.FromContext(context.Background()).Error(err, "failed to fetch full object in UpdateFunc")
+					return
+				}
+
+				r.oldObjectsCache.Store(key, fullObj.DeepCopy())
 			},
 		})
 		if err != nil {
