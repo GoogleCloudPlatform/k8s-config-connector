@@ -85,6 +85,14 @@ if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
   go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 fi
 
+if [[ -n "${SKIP_TEST_APIGROUP:-}" ]]; then
+  echo "Running tests with SKIP_TEST_APIGROUP=${SKIP_TEST_APIGROUP:-}"
+fi
+
+if [[ -n "${ONLY_TEST_APIGROUPS:-}" ]]; then
+  echo "Running tests with ONLY_TEST_APIGROUPS=${ONLY_TEST_APIGROUPS:-}"
+fi
+
 # Run e2e tests
 cd tests/e2e
 GOLDEN_REQUEST_CHECKS=1 \
