@@ -278,6 +278,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "sku": "EXTRACT(jsonPayload.id)"
   },
   "metricDescriptor": {
+    "description": "A sample log metric",
     "displayName": "sample-descriptor",
     "labels": [
       {
@@ -297,6 +298,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "samplePeriod": "5s"
     },
     "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
