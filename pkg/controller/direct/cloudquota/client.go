@@ -47,3 +47,15 @@ func (m *gcpClient) newQuotaAdjusterSettingsManagerClient(ctx context.Context) (
 	}
 	return client, err
 }
+
+func (m *gcpClient) newQuotaClient(ctx context.Context) (*api.Client, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building cloudquotas client: %w", err)
+	}
+	return client, err
+}

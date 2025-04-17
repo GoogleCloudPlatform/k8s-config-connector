@@ -69,8 +69,8 @@ func (m *apiQuotaPreferenceModel) AdapterForObject(ctx context.Context, reader c
 	// the service requires that a quota project be set
 	if !config.UserProjectOverride || config.BillingProject == "" {
 		config.UserProjectOverride = true
-		if id.ParentProject != nil {
-			config.BillingProject = id.ParentProject.ProjectID
+		if id.Parent().ProjectID != "" {
+			config.BillingProject = id.Parent().ProjectID
 		}
 		// Folder and Organization parents are not billing projects
 	}
@@ -79,7 +79,7 @@ func (m *apiQuotaPreferenceModel) AdapterForObject(ctx context.Context, reader c
 	if err != nil {
 		return nil, err
 	}
-	client, err := gcpClient.newCloudQuotasClient(ctx)
+	client, err := gcpClient.newQuotaClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (m *apiQuotaPreferenceModel) AdapterForURL(ctx context.Context, url string)
 }
 
 type apiQuotaPreferenceAdapter struct {
-	gcpClient *gcp.CloudQuotasClient
+	gcpClient *gcp.Client
 	id        *krm.QuotaPreferenceIdentity
 	desired   *krm.APIQuotaPreference
 	actual    *pb.QuotaPreference
@@ -239,16 +239,16 @@ func (a *apiQuotaPreferenceAdapter) Export(ctx context.Context) (*unstructured.U
 	if err != nil {
 		return nil, fmt.Errorf("parsing parent from name %q: %w", a.actual.Name, err)
 	}
-	if parentIdentity.Project != nil {
-		obj.Spec.ProjectRef = &refs.ProjectRef{External: parentIdentity.Project.String()}
-	} else if parentIdentity.Folder != nil {
-		obj.Spec.FolderRef = &refs.FolderRef{External: parentIdentity.Folder.String()}
-	} else if parentIdentity.Organization != nil {
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: parentIdentity.Organization.String()}
+	if parentIdentity.ProjectID != "" {
+		obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: parentIdentity.ProjectID}
+	} else if parentIdentity.FolderID != "" {
+		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentIdentity.FolderID}
+	} else if parentIdentity.OrganizationID != "" {
+		obj.Spec.Parent.OrganizationRef = &refs.OrganizationRef{External: parentIdentity.OrganizationID}
 	} else {
 		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}
-	obj.Spec.Location = parentIdentity.Location // Location is always global
+	obj.Spec.Parent.Location = parentIdentity.Location // Location is always global
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
