@@ -96,7 +96,6 @@ func ResourceStorageBucket() *schema.Resource {
 			"location": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 				StateFunc: func(s interface{}) string {
 					return strings.ToUpper(s.(string))
 				},

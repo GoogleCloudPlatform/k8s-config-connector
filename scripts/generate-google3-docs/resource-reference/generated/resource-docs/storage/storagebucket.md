@@ -590,7 +590,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Google Cloud Storage location.{% endverbatim %}</p>
+            <p>{% verbatim %}The Google Cloud Storage location.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
