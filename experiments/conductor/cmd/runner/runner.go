@@ -38,6 +38,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 
 	// flag names.
 	branchConfigurationFlag = "branch-conf"
+	mergeConfigurationFlag  = "merge-conf"
 	branchRepoFlag          = "branch-repo"
 	commandFlag             = "command"
 	loggingDirFlag          = "logging-dir"
@@ -48,6 +49,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdHelp                         = 0
 	cmdCheckRepo                    = 1
 	cmdCreateGitBranch              = 2
+	cmdMergeMetadata                = 3
 	cmdEnableGCPAPIs                = 4
 	cmdReadFiles                    = 5
 	cmdWriteFiles                   = 6
@@ -98,6 +100,8 @@ func BuildRunnerCmd() *cobra.Command {
 
 	cmd.Flags().StringVarP(&opts.branchConfFile, branchConfigurationFlag,
 		"", "branches.yaml", "File containing the branch configurations.")
+	cmd.Flags().StringVarP(&opts.branchMergeFile, mergeConfigurationFlag,
+		"", "", "File containing the configurations to merge in.")
 	cmd.Flags().StringVarP(&opts.branchRepoDir, branchRepoFlag,
 		"", "", "Directory in which to do the work.")
 	cmd.Flags().StringVarP(&opts.readFileType, readFileTypeFlag,
@@ -132,6 +136,7 @@ func BuildRunnerCmd() *cobra.Command {
 
 type RunnerOptions struct {
 	branchConfFile    string
+	branchMergeFile   string // Secondary metadata file to merge into the primary
 	branchRepoDir     string
 	command           int64
 	loggingDir        string
@@ -302,6 +307,10 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			log.Printf("Create GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createGithubBranch(opts, branch)
 		}
+	case cmdMergeMetadata: // 3
+		if err := mergeMetadata(opts, branches); err != nil {
+			log.Fatalf("unnable to merge metadata: %d", err)
+		}
 	case cmdEnableGCPAPIs: // 4
 		for idx, branch := range branches.Branches {
 			log.Printf("Enable GCP APIs: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -431,7 +440,7 @@ func printHelp() {
 	log.Println("\t0 - Print help")
 	log.Println("\t1 - [Validate] Repo directory and metadata")
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
-	log.Println("\t3 - [Branch] Moved to -5. Delete the local github branches from the metadata")
+	log.Println("\t3 - [Branch] Merge updated metadata file into main metadata file")
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
@@ -624,22 +633,6 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	*/
 }
 
-const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-`
-
 func fixMetadata(opts *RunnerOptions, branches Branches, what string, modifier BranchModifier) {
 	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	var newBranches Branches
@@ -648,16 +641,7 @@ func fixMetadata(opts *RunnerOptions, branches Branches, what string, modifier B
 		newBranch := modifier(opts, branch, workDir)
 		newBranches.Branches = append(newBranches.Branches, newBranch)
 	}
-	data := []byte(COPYRIGHT_HEADER)
-	yamlData, err := yaml.Marshal(newBranches)
-	if err != nil {
-		log.Fatal(err)
-	}
-	data = append(data, yamlData...)
-	err = os.WriteFile("branches-new.yaml", data, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	writeBranchesStableOrder(newBranches, "branches-new.yaml")
 }
 
 func inferProtoPathModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
@@ -856,17 +840,48 @@ func splitMetadata(opts *RunnerOptions, branches Branches) {
 	}
 	// Hard coding splitting into 7 files
 	for cntr := 0; cntr < 7; cntr++ {
-		data := []byte(COPYRIGHT_HEADER)
-		yamlData, err := yaml.Marshal(newBranches[cntr])
+		writeBranchesStableOrder(newBranches[cntr], fmt.Sprintf("branches-%d.yaml", cntr))
+	}
+}
+
+func mergeMetadata(opts *RunnerOptions, branches Branches) error {
+	// Load the merge file
+	var newBranches Branches
+	{
+		b, err := os.ReadFile(opts.branchMergeFile) // For read access.
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("reading branch config file %q: %w", opts.branchMergeFile, err)
 		}
-		data = append(data, yamlData...)
-		err = os.WriteFile(fmt.Sprintf("branches-%d.yaml", cntr), data, 0644)
-		if err != nil {
-			log.Fatal(err)
+
+		if err := yaml.Unmarshal(b, &newBranches); err != nil {
+			return fmt.Errorf("parsing branch config file %q: %w", opts.branchMergeFile, err)
 		}
 	}
+	log.Printf("Existing branches is size %d, merging branches is size %d", len(branches.Branches), len(newBranches.Branches))
+
+	// Ensure skip is not set in the merged data
+	// Also build the lookup table
+	branchPresent := make(map[string]bool)
+	for idx, branch := range newBranches.Branches {
+		if branch.Skip == true {
+			branch.Skip = false
+			newBranches.Branches[idx] = branch
+		}
+		branchPresent[branch.Name] = true
+	}
+
+	// Merge the new data into the old.
+	// We do this by copying in old data when absent
+	for _, branch := range branches.Branches {
+		if branchPresent[branch.Name] {
+			continue
+		}
+		newBranches.Branches = append(newBranches.Branches, branch)
+	}
+
+	// Write out the finished data
+	writeBranchesStableOrder(newBranches, "branches-new.yaml")
+	return nil
 }
 
 func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
