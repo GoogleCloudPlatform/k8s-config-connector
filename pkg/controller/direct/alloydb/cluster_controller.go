@@ -35,10 +35,8 @@ import (
 	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
@@ -73,37 +71,25 @@ func (m *modelCluster) client(ctx context.Context) (*gcp.AlloyDBAdminClient, err
 	return gcpClient, err
 }
 
-func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.Reader, secret corev1.Secret, gvk schema.GroupVersionKind) ([]reconcile.Request, error) {
-	u := &unstructured.Unstructured{}
-	u.SetAPIVersion("alloydb.cnrm.cloud.google.com/v1beta1")
-	u.SetKind("AlloyDBCluster")
-	if err := reader.Get(ctx, types.NamespacedName{Name: "test2025041501", Namespace: "test"}, u); err != nil {
-		return nil, fmt.Errorf("getting AlloyDBCluster in unstructured: %w", err)
-	}
-	//cluster := &krm.AlloyDBCluster{}
-	//if err := reader.Get(ctx, types.NamespacedName{Name: "test2025041501", Namespace: "test"}, cluster); err != nil {
-	//	return nil, fmt.Errorf("getting AlloyDBCluster in AlloyDBCluster: %w", err)
-	//}
+func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.Reader, secret corev1.Secret) ([]reconcile.Request, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("mapping secret to AlloyDBClusters", "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
+
 	us := &unstructured.UnstructuredList{}
 	us.SetAPIVersion("alloydb.cnrm.cloud.google.com/v1beta1")
 	us.SetKind("AlloyDBCluster")
 	if err := reader.List(ctx, us, &client.ListOptions{Namespace: secret.GetNamespace()}); err != nil {
-		return nil, fmt.Errorf("listing AlloyDBCluster in unstructured: %w", err)
+		return nil, fmt.Errorf("listing AlloyDBCluster under namespace %v: %w", secret.GetNamespace(), err)
 	}
-	//clusters := &krm.AlloyDBClusterList{}
-	//if err := reader.List(ctx, clusters, &client.ListOptions{Namespace: secret.GetNamespace()}); err != nil {
-	//	return nil, fmt.Errorf("listing AlloyDBCluster in AlloyDBCluster: %w", err)
-	//}
 
 	requests := make([]reconcile.Request, 0)
 	for _, cluster := range us.Items {
-		fmt.Printf("maqiuyu... %v/%v\n", cluster.GetNamespace(), cluster.GetName())
 		secretName, _, err := unstructured.NestedString(cluster.Object, "spec", "initialUser", "password", "valueFrom", "secretKeyRef", "name")
 		if err != nil {
-			return nil, fmt.Errorf("getting 'spec.initialUser.password.valueFrom.secretKeyRef.name' in unstructured AlloyDBCluster: %w", err)
+			return nil, fmt.Errorf("getting 'spec.initialUser.password.valueFrom.secretKeyRef.name' in unstructured AlloyDBCluster %v/%v: %w", cluster.GetNamespace(), cluster.GetName(), err)
 		}
 		if secretName == secret.GetName() {
-			fmt.Printf("maqiuyu... found a match!!!\n")
+			log.Info("found AlloyDBCluster relying on secret ", "name", fmt.Sprintf("%v/%v", cluster.GetNamespace(), cluster.GetName()), "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
 			requests = append(requests, reconcile.Request{
 				NamespacedName: types.NamespacedName{
 					Name:      cluster.GetName(), // Reconcile the AlloyDBCluster which referenced the given K8s Secret.
@@ -299,95 +285,17 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 }
 
 // TODO: Scenario test case: Update initialUser.password from `value` to `valueFrom` and vise versa.
-func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) (shouldUpdateOwnerReferences bool, err error) {
+func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) error {
 	obj := a.desired
-	// Use case 1: spec.initialUser.password not set in creation
-	//              - can be detected, create only
-	// Use case 2: spec.initialUser.password stays unset in update
-	//              - CANNOT be detected unless tracking info under status.observedState, NO update needed
-	// Use case 3: spec.initialUser.password updated from being set by Secret to being unset
-	//	            - can be detected by existence of the owner reference entry, update needed
-	// Use case 4: spec.initialUser.password updated from being set by plaintext value to being unset
-	//  	        - CANNOT be detected unless tracking info under status.observedState, update needed
-	// -> Always trigger create or update before we can detect changes.
-	// TODO: Detect updates of the password.
 	if obj.Spec.InitialUser == nil || obj.Spec.InitialUser.Password == nil {
-		// Remove owner reference of APIVersion "v1" and Kind "Secret" if exists.
-		removed := removeSecretFromOwnerReferencesIfExists(obj)
-		return removed, nil
+		return nil
 	}
 
 	// Resolve sensitive field 'spec.initialUser.password' when it is set.
-	secret, err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader)
-	if err != nil {
-		return false, err
+	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
+		return err
 	}
-
-	// Use case 5: spec.initialUser.password set by plaintext value in creation
-	//		        - can be detected, create only
-	// Use case 6: spec.initialUser.password stays being set by plaintext value in update
-	//		        - CANNOT be detected unless tracking info under status.observedState, update needed when plaintext value updated
-	// Use case 7: spec.initialUser.password updated from being unset to being set by plaintext value
-	//		        - CANNOT be detected unless tracking info under status.observedState, update needed
-	// Use case 8: spec.initialUser.password updated from being set by Secret to being set by plaintext value
-	//		        - can be detected by existence of the owner reference entry, update needed
-	// -> Always trigger create or update before we can detect changes.
-	// TODO: Detect updates of the password.
-	if secret == nil {
-		// Remove owner reference of APIVersion "v1" and Kind "Secret" if exists.
-		removed := removeSecretFromOwnerReferencesIfExists(obj)
-		return removed, nil
-	}
-
-	// Use case 9: spec.initialUser.password set by Secret in creation
-	//		        - can be detected, create only
-	// Use case 10: spec.initialUser.password stays being set by Secret in update
-	//		        - can be detected by existence of the owner reference entry but the version change can't be detected unless tracking info under status.observedState, update needed when Secret config updated
-	// Use case 11: spec.initialUser.password updated from being unset to being set by Secret
-	//		        - CANNOT be detected unless tracking info under status.observedState, update needed
-	// Use case 12: spec.initialUser.password updated from being set by plaintext value to being set by Secret
-	//		        - CANNOT be detected unless tracking info under status.observedState, update needed
-	// -> Always trigger create or update before we can detect changes.
-	// TODO: Detect updates of the password.
-
-	// Remove owner reference of APIVersion "v1" and Kind "Secret" if it exists
-	// but is different from the desired one.
-	var exists bool
-	for i := len(obj.OwnerReferences) - 1; i >= 0; i-- {
-		or := obj.OwnerReferences[i]
-		if or.APIVersion == "v1" && or.Kind == "Secret" {
-			if or.Name == secret.GetName() && or.UID == secret.GetUID() {
-				exists = true
-				break
-			}
-			obj.OwnerReferences = append(obj.OwnerReferences[:i], obj.OwnerReferences[i+1:]...)
-		}
-	}
-	// Add the referenced secret into the owner reference list if it doesn't exist.
-	if !exists {
-		obj.OwnerReferences = append(
-			obj.OwnerReferences,
-			metav1.OwnerReference{
-				APIVersion: "v1",
-				Kind:       "Secret",
-				Name:       secret.GetName(),
-				UID:        secret.GetUID(),
-			},
-		)
-	}
-
-	return !exists, nil // ownerReferences should be updated when the Secret doesn't exist
-}
-
-func removeSecretFromOwnerReferencesIfExists(obj *krm.AlloyDBCluster) (removed bool) {
-	for i := len(obj.OwnerReferences) - 1; i >= 0; i-- {
-		or := obj.OwnerReferences[i]
-		if or.APIVersion == "v1" && or.Kind == "Secret" {
-			removed = true
-			obj.OwnerReferences = append(obj.OwnerReferences[:i], obj.OwnerReferences[i+1:]...)
-		}
-	}
-	return removed
+	return nil
 }
 
 // TODO: Test once backup is supported or using scenario: set restoreBackupSource and restoreContinuousBackupSource (either and both).
@@ -402,8 +310,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return fmt.Errorf("normalizing reference for creation: %w", err)
 	}
 	// 2. Resolve secret field.
-	shouldUpdateOwnerReferences, err := a.resolveInitialUserPasswordField(ctx)
-	if err != nil {
+	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
 		return err
 	}
 	// 3. Set default fields that were set by the Terraform library for compatibility.
@@ -528,9 +435,6 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		}
 		log.V(2).Info("successfully created Cluster", "name", a.id)
 	}
-	if shouldUpdateOwnerReferences {
-		createOp.UpdateOwnerReferences(ctx, a.desired.OwnerReferences)
-	}
 	return a.updateStatus(ctx, mapCtx, createOp, created)
 }
 
@@ -615,8 +519,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("normalizing reference for update: %w", err)
 	}
 	// 2. Resolve secret field.
-	shouldUpdateOwnerReferences, err := a.resolveInitialUserPasswordField(ctx)
-	if err != nil {
+	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
 		return err
 	}
 	// 3. Set default fields that were set in the actual state.
@@ -667,10 +570,6 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 
-		if shouldUpdateOwnerReferences {
-			updateOp.UpdateOwnerReferences(ctx, a.desired.OwnerReferences)
-		}
-
 		if *a.desired.Status.ExternalRef == "" {
 			// If it is the first reconciliation after switching to direct controller,
 			// then update Status to fill out the ExternalRef even if there is
@@ -709,10 +608,6 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err)
 	}
 	log.V(2).Info("successfully updated Cluster", "name", a.id)
-
-	if shouldUpdateOwnerReferences {
-		updateOp.UpdateOwnerReferences(ctx, a.desired.OwnerReferences)
-	}
 
 	status := AlloyDBClusterStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {

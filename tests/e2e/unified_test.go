@@ -1242,11 +1242,13 @@ func verifyKubeWatches(h *create.Harness) {
 	}
 
 	// Validate the full watches we do have.
-	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently).
+	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently)
+	// and K8s Secret.
 	allowedFullWatches := sets.NewString(
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectorcontexts",
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectors",
 		"/apis/apiextensions.k8s.io/v1/customresourcedefinitions",
+		"/api/v1/secrets",
 	)
 	for fullWatch := range fullWatches {
 		if !allowedFullWatches.Has(fullWatch) {

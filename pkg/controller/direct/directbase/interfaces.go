@@ -16,12 +16,11 @@ package directbase
 
 import (
 	"context"
-	corev1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 // Model is the entry-point for our per-object reconcilers
@@ -34,8 +33,9 @@ type Model interface {
 	AdapterForURL(ctx context.Context, url string) (Adapter, error)
 }
 
-// Model is the entry-point for our per-object reconcilers
-type SensitiveModel interface {
+// SensitiveFieldModel is the entry-point for our per-object reconciler that
+// handles CRD with sensitive fields.
+type SensitiveFieldModel interface {
 	// AdapterForObject builds an operation object for reconciling the object u.
 	// If there are references, AdapterForObject should dereference them before returning (using reader)
 	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
@@ -43,7 +43,7 @@ type SensitiveModel interface {
 	// AdapterForURL builds an operation object for exporting the object u.
 	AdapterForURL(ctx context.Context, url string) (Adapter, error)
 
-	MapSecretToResources(ctx context.Context, reader client.Reader, secret corev1.Secret, gvk schema.GroupVersionKind) ([]reconcile.Request, error)
+	MapSecretToResources(ctx context.Context, reader client.Reader, secret corev1.Secret) ([]reconcile.Request, error)
 }
 
 // Adapter performs a single reconciliation on a single object.

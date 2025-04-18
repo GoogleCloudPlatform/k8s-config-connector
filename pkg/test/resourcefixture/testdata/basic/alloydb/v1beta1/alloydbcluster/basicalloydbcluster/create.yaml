@@ -12,42 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: default
-  namespace: test
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-spec:
-  description: Default network for the project
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: test-1
-  namespace: test
-data:
-  password: dGVzdA==
----
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
     alpha.cnrm.cloud.google.com/reconciler: "direct"
-  name: test2025041501
-  namespace: test
+  name: alloydbcluster-${uniqueId}
 spec:
   location: southamerica-east1
   networkRef:
     name: default
   projectRef:
-    external: maqiuyu-kcc-test-2
+    external: ${projectId}
   initialUser:
     user: postgres
     password:
-      valueFrom:
-        secretKeyRef:
-          key: test-1
-          name: password
+      value: postgres
+  resourceID: alloydbcluster${uniqueId}
