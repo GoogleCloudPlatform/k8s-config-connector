@@ -94,7 +94,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 		return nil
 	}
 	out := &krm.EncryptionConfiguration{}
-	out.KmsKeyRef.Name = *in.KmsKeyName
+	out.KMSKeyRef.Name = *in.KmsKeyName
 	return out
 }
 func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfiguration) *pb.EncryptionConfiguration {
@@ -102,7 +102,7 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 		return nil
 	}
 	out := &pb.EncryptionConfiguration{}
-	out.KmsKeyName = &in.KmsKeyRef.Name
+	out.KmsKeyName = &in.KMSKeyRef.Name
 	return out
 }
 

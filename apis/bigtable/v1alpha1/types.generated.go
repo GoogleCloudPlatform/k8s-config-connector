@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 )
 
 // +kcc:proto=google.bigtable.admin.v2.AutoscalingLimits
@@ -79,7 +79,7 @@ type Cluster_EncryptionConfig struct {
 	//  Values are of the form
 	//  `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.EncryptionConfig.kms_key_name
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.AuthorizedView

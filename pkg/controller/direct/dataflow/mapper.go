@@ -17,6 +17,8 @@ package dataflow
 import (
 	"time"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -291,7 +293,7 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 		}
 	}
 	if in.KmsKeyName != "" {
-		out.KmsKeyNameRef = &refs.KMSCryptoKeyRef{
+		out.KMSKeyNameRef = &kmsv1beta1.KMSKeyRef_OneOf{
 			External: in.KmsKeyName,
 		}
 	}
@@ -336,8 +338,8 @@ func DataflowFlexTemplateJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.Data
 		out.Subnetwork = in.SubnetworkRef.External
 	}
 
-	if in.KmsKeyNameRef != nil {
-		out.KmsKeyName = in.KmsKeyNameRef.External
+	if in.KMSKeyNameRef != nil {
+		out.KmsKeyName = in.KMSKeyNameRef.External
 	}
 
 	if in.ServiceAccountEmailRef != nil {

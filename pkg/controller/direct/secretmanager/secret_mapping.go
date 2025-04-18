@@ -17,8 +17,9 @@ package secretmanager
 import (
 	"strconv"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -39,7 +40,7 @@ func CustomerManagedEncryption_FromProto(mapCtx *direct.MapContext, in *pb.Custo
 	}
 	out := &krm.CustomerManagedEncryption{}
 	if in.KmsKeyName != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{
 			External: in.KmsKeyName,
 		}
 	}
@@ -50,8 +51,8 @@ func CustomerManagedEncryption_ToProto(mapCtx *direct.MapContext, in *krm.Custom
 		return nil
 	}
 	out := &pb.CustomerManagedEncryption{}
-	if in.KmsKeyRef != nil {
-		out.KmsKeyName = in.KmsKeyRef.External
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
 	}
 	return out
 }

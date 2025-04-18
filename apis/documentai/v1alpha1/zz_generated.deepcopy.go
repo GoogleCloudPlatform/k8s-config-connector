@@ -20,7 +20,7 @@ package v1alpha1
 
 import (
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -150,10 +150,10 @@ func (in *DocumentAIProcessorSpec) DeepCopyInto(out *DocumentAIProcessorSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.KmsKeyRef != nil {
-		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+	if in.KMSKeyRef != nil {
+		in, out := &in.KMSKeyRef, &out.KMSKeyRef
+		*out = new(v1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -342,8 +342,8 @@ func (in *DocumentAIProcessorVersionSpec) DeepCopyInto(out *DocumentAIProcessorV
 	}
 	if in.KMSKeyNameRef != nil {
 		in, out := &in.KMSKeyNameRef, &out.KMSKeyNameRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+		*out = new(v1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.KMSKeyVersionNameRef != nil {
 		in, out := &in.KMSKeyVersionNameRef, &out.KMSKeyVersionNameRef
