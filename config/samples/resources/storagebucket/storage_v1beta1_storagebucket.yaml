@@ -38,3 +38,12 @@ spec:
   uniformBucketLevelAccess: true
   softDeletePolicy:
     retentionDurationSeconds: 604800
+  ipFilter:
+    mode: "Enabled"
+    publicNetworkSource:
+      allowedIpCidrRanges:
+        - 0.0.0.0/0
+    vpcNetworkSources:
+      - network: projects/PROJECT_ID/global/networks/NETWORK_NAME
+        allowedIpCidrRanges:
+          - 0.0.0.0/0
