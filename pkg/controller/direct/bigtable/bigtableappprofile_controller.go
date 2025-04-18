@@ -148,23 +148,39 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 		return mapCtx.Err()
 	}
 
-	var routingPolicy = "multi_cluster_routing_use_any"
-	var singleClusterRoutingClusterId = ""
-	var allowTransactionalWrites = false
-	if singleClusterRouting := resource.GetSingleClusterRouting(); singleClusterRouting != nil {
-		routingPolicy = "single_cluster_routing"
-		singleClusterRoutingClusterId = resource.GetSingleClusterRouting().ClusterId
-		allowTransactionalWrites = resource.GetSingleClusterRouting().AllowTransactionalWrites
+	// var routingPolicy = "multi_cluster_routing_use_any"
+	// var singleClusterRoutingClusterId = ""
+	// var allowTransactionalWrites = false
+	// if singleClusterRouting := resource.GetSingleClusterRouting(); singleClusterRouting != nil {
+	// 	routingPolicy = "single_cluster_routing"
+	// 	singleClusterRoutingClusterId = resource.GetSingleClusterRouting().ClusterId
+	// 	allowTransactionalWrites = resource.GetSingleClusterRouting().AllowTransactionalWrites
+	// }
+	var routingConfig gcp.RoutingPolicyConfig
+	if multiClusterRouting := resource.GetMultiClusterRoutingUseAny(); multiClusterRouting != nil {
+		routingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
+			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
+		}
+	} else {
+		routingConfig = &gcp.SingleClusterRoutingConfig{
+			ClusterID:                resource.GetSingleClusterRouting().GetClusterId(),
+			AllowTransactionalWrites: resource.GetSingleClusterRouting().AllowTransactionalWrites,
+		}
+	}
+	var isolation gcp.AppProfileIsolation
+	if standardIsolation := resource.GetStandardIsolation(); standardIsolation != nil {
+		isolation = &gcp.StandardIsolation{
+			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().GetPriority()),
+		}
 	}
 	profileConf := &gcp.ProfileConf{
-		Name:                     "", /*Name is not used in the RPC*/
-		ProfileID:                a.id.ID(),
-		InstanceID:               a.id.ParentInstanceIdString(),
-		Etag:                     resource.Etag,
-		Description:              resource.Description,
-		RoutingPolicy:            routingPolicy,
-		ClusterID:                singleClusterRoutingClusterId,
-		AllowTransactionalWrites: allowTransactionalWrites,
+		Name:          "", /*Name is not used in the RPC*/
+		ProfileID:     a.id.ID(),
+		InstanceID:    a.id.ParentInstanceIdString(),
+		Etag:          resource.Etag,
+		Description:   resource.Description,
+		RoutingConfig: routingConfig,
+		Isolation:     isolation,
 	}
 	// TODO: Make use of returned app profile in ObservedState below
 	_, err := a.gcpClient.CreateAppProfile(ctx, *profileConf)
@@ -204,19 +220,21 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		fieldsToUpdate.Description = resource.Description
 	}
 	if desired.Spec.MultiClusterRoutingUseAny != nil && !reflect.DeepEqual(resource.GetRoutingPolicy(), a.actual.GetRoutingPolicy()) {
-		fieldsToUpdate.RoutingPolicy = "multi_cluster_routing_use_any"
+		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
+			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
+		}
 	}
 	if desired.Spec.SingleClusterRouting != nil && !reflect.DeepEqual(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting()) {
-		fieldsToUpdate.RoutingPolicy = "single_cluster_routing"
-		fieldsToUpdate.ClusterID = resource.GetSingleClusterRouting().ClusterId
-		fieldsToUpdate.AllowTransactionalWrites = resource.GetSingleClusterRouting().AllowTransactionalWrites
+		fieldsToUpdate.RoutingConfig = &gcp.SingleClusterRoutingConfig{
+			ClusterID:                resource.GetSingleClusterRouting().GetClusterId(),
+			AllowTransactionalWrites: resource.GetSingleClusterRouting().AllowTransactionalWrites,
+		}
 	}
-	// TODO: Add when we have support for multi cluster routing cluster IDs in the GO client
-	// if desired.Spec.MultiClusterRoutingClusterIds != nil && !reflect.DeepEqual(resource.GetMultiClusterRoutingUseAny().ClusterIds, a.actual.GetMultiClusterRoutingUseAny().ClusterIds) {
-	// }
-	// TODO: Add when we have support for StandardIsolation in the GO client
-	// if desired.Spec.StandardIsolation != nil && !reflect.DeepEqual(resource.GetStandardIsolation(), a.actual.GetStandardIsolation()) {
-	// }
+	if desired.Spec.StandardIsolation != nil && !reflect.DeepEqual(resource.GetStandardIsolation(), a.actual.GetStandardIsolation()) {
+		fieldsToUpdate.Isolation = &gcp.StandardIsolation{
+			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().Priority),
+		}
+	}
 	err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
 	if err != nil {
 		return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
