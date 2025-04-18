@@ -295,6 +295,15 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			}
 		}
 
+		// populate output only fields in the proto
+		if a.desired.Status.MetricDescriptor != nil {
+			if a.actual.MetricDescriptor == nil {
+				a.actual.MetricDescriptor = &api.MetricDescriptor{}
+			}
+			a.actual.MetricDescriptor.Name = direct.ValueOf(a.desired.Status.MetricDescriptor.Name)
+			a.actual.MetricDescriptor.Type = direct.ValueOf(a.desired.Status.MetricDescriptor.Type)
+		}
+
 		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
 			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
 				return fmt.Errorf("logMetric update failed: %w", err)
