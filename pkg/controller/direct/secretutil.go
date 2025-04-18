@@ -28,7 +28,26 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func getSecret(ctx context.Context, secretKeyRef *v1alpha1.SecretKeyRef, secretNamespace string, reader client.Reader) (secretVal string, secretVersion string, err error) {
+//func getSecret(ctx context.Context, secretKeyRef *v1alpha1.SecretKeyRef, secretNamespace string, reader client.Reader) (secretVal string, secretVersion string, err error) {
+//	nn := types.NamespacedName{
+//		Name:      secretKeyRef.Name,
+//		Namespace: secretNamespace,
+//	}
+//	secret := v1.Secret{}
+//	if err := reader.Get(ctx, nn, &secret); err != nil {
+//		if errors.IsNotFound(err) {
+//			return "", "", k8s.NewSecretNotFoundError(nn)
+//		}
+//		return "", "", fmt.Errorf("error getting Secret %+v: %w", nn, err)
+//	}
+//	secretValBytes, ok := secret.Data[secretKeyRef.Key]
+//	if !ok {
+//		return "", "", k8s.NewKeyInSecretNotFoundError(secretKeyRef.Key, nn)
+//	}
+//	return string(secretValBytes), secret.GetResourceVersion(), nil
+//}
+
+func getSecret(ctx context.Context, secretKeyRef *v1alpha1.SecretKeyRef, secretNamespace string, reader client.Reader) (*v1.Secret, error) {
 	nn := types.NamespacedName{
 		Name:      secretKeyRef.Name,
 		Namespace: secretNamespace,
@@ -36,42 +55,43 @@ func getSecret(ctx context.Context, secretKeyRef *v1alpha1.SecretKeyRef, secretN
 	secret := v1.Secret{}
 	if err := reader.Get(ctx, nn, &secret); err != nil {
 		if errors.IsNotFound(err) {
-			return "", "", k8s.NewSecretNotFoundError(nn)
+			return nil, k8s.NewSecretNotFoundError(nn)
 		}
-		return "", "", fmt.Errorf("error getting Secret %+v: %w", nn, err)
+		return nil, fmt.Errorf("error getting Secret %+v: %w", nn, err)
 	}
-	secretValBytes, ok := secret.Data[secretKeyRef.Key]
-	if !ok {
-		return "", "", k8s.NewKeyInSecretNotFoundError(secretKeyRef.Key, nn)
-	}
-	return string(secretValBytes), secret.GetResourceVersion(), nil
+	return &secret, nil
 }
 
-func ResolveSensitiveField(ctx context.Context, field *refsv1beta1secret.Legacy, fieldPath, namespace string, reader client.Reader) error {
+func ResolveSensitiveField(ctx context.Context, field *refsv1beta1secret.Legacy, fieldPath, namespace string, reader client.Reader) (*v1.Secret, error) {
 	value := field.Value
 	valueFrom := field.ValueFrom
 	if value != nil && valueFrom != nil {
-		return fmt.Errorf("only one of '%s.value' and '%s.valueFrom' "+
+		return nil, fmt.Errorf("only one of '%s.value' and '%s.valueFrom' "+
 			"should be configured: both are configured", fieldPath, fieldPath)
 	}
 	if value != nil {
-		return nil
+		return nil, nil
 	}
 	if valueFrom != nil {
 		if valueFrom.SecretKeyRef == nil {
-			return fmt.Errorf("'%s.valueFrom.secretRef' "+
+			return nil, fmt.Errorf("'%s.valueFrom.secretRef' "+
 				"should be configured", fieldPath)
 		}
-		secretValue, _, err := getSecret(ctx, valueFrom.SecretKeyRef, namespace, reader)
+		secret, err := getSecret(ctx, valueFrom.SecretKeyRef, namespace, reader)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		field.Value = PtrTo(secretValue)
-		return nil
+		secretValBytes, ok := secret.Data[valueFrom.SecretKeyRef.Key]
+		if !ok {
+			return nil, k8s.NewKeyInSecretNotFoundError(valueFrom.SecretKeyRef.Key, types.NamespacedName{
+				Name:      valueFrom.SecretKeyRef.Name,
+				Namespace: namespace,
+			})
+		}
+		field.Value = PtrTo(string(secretValBytes))
+		// secretVersion = secret.GetResourceVersion()
+		return secret, nil
 	}
-	if field.Value == nil {
-		return fmt.Errorf("at least one of '%s.value' and '%s.valueFrom' "+
-			"should be configured: neither is configured", fieldPath, fieldPath)
-	}
-	return nil
+	return nil, fmt.Errorf("at least one of '%s.value' and '%s.valueFrom' "+
+		"should be configured: neither is configured", fieldPath, fieldPath)
 }
