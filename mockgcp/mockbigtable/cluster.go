@@ -114,8 +114,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 
 	if obj.ServeNodes != 0 && obj.GetClusterConfig().ClusterAutoscalingConfig != nil {
 		return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-			msg := "Operation successfully rolled back: Both manual scaling (serve_nodes) and autoscaling (cluster_autoscaling_config) enabled. Exactly one must be set for CreateInstance/CreateCluster"
-			return nil, status.Errorf(codes.Aborted, msg)
+			return nil, status.Errorf(codes.Aborted, "Operation successfully rolled back: Both manual scaling (serve_nodes) and autoscaling (cluster_autoscaling_config) enabled. Exactly one must be set for CreateInstance/CreateCluster")
 		})
 	}
 

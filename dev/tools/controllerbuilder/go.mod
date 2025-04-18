@@ -1,8 +1,8 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder
 
-go 1.22.0
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.2
 
 require (
 	cloud.google.com/go/vertexai v0.13.2
