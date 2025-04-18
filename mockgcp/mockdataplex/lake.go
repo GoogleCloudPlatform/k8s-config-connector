@@ -158,11 +158,11 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
 	response := &pb.ListLakesResponse{}
 
-	AutoscalingPolicyKind := (&pb.Lake{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, AutoscalingPolicyKind, storage.ListOptions{}, func(obj proto.Message) error {
-		autoScalingPolicy := obj.(*pb.Lake)
-		if strings.HasPrefix(autoScalingPolicy.GetName(), req.Parent) {
-			response.Lakes = append(response.Lakes, autoScalingPolicy)
+	lakeKind := (&pb.Lake{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, lakeKind, storage.ListOptions{}, func(obj proto.Message) error {
+		lake := obj.(*pb.Lake)
+		if strings.HasPrefix(lake.GetName(), req.Parent) {
+			response.Lakes = append(response.Lakes, lake)
 		}
 		return nil
 	}); err != nil {
