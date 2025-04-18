@@ -4,12 +4,13 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: datacatalogentry-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  displayName: New Display Name
   entryGroupRef:
     external: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}
   gcsFilesetSpec:
@@ -25,6 +26,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     gcsFilesetSpec: {}
+    linkedResource: //datacatalog.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}
