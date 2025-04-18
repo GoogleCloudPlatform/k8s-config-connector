@@ -24,6 +24,7 @@ resources:
 - bases/customize.core.cnrm.cloud.google.com_mutatingwebhookconfigurationcustomizations.yaml
 - bases/customize.core.cnrm.cloud.google.com_controllerreconcilers.yaml
 - bases/customize.core.cnrm.cloud.google.com_namespacedcontrollerreconcilers.yaml
+- bases/customize.core.cnrm.cloud.google.com_apigroupinstallations.yaml
 
 patchesJson6902:
 - target:
