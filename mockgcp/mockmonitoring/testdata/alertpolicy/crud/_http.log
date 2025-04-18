@@ -1,0 +1,528 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high"
+    }
+  ],
+  "displayName": "Test Policy ${uniqueId}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Policy ${uniqueId}",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alertPolicies": [
+    {
+      "combiner": "OR",
+      "conditions": [
+        {
+          "conditionThreshold": {
+            "aggregations": [
+              {
+                "alignmentPeriod": "60s",
+                "crossSeriesReducer": "REDUCE_MEAN",
+                "groupByFields": [
+                  "project"
+                ],
+                "perSeriesAligner": "ALIGN_MAX"
+              }
+            ],
+            "comparison": "COMPARISON_GT",
+            "duration": "900s",
+            "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+            "thresholdValue": 0.9,
+            "trigger": {
+              "count": 1
+            }
+          },
+          "displayName": "CPU usage is extremely high",
+          "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+        }
+      ],
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "displayName": "Test Policy ${uniqueId}",
+      "enabled": true,
+      "mutationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+      "userLabels": {
+        "kcctestid": "${uniqueId}"
+      }
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Policy ${uniqueId}",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alertPolicies": [
+    {
+      "combiner": "OR",
+      "conditions": [
+        {
+          "conditionThreshold": {
+            "aggregations": [
+              {
+                "alignmentPeriod": "60s",
+                "crossSeriesReducer": "REDUCE_MEAN",
+                "groupByFields": [
+                  "project"
+                ],
+                "perSeriesAligner": "ALIGN_MAX"
+              }
+            ],
+            "comparison": "COMPARISON_GT",
+            "duration": "900s",
+            "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+            "thresholdValue": 0.9,
+            "trigger": {
+              "count": 1
+            }
+          },
+          "displayName": "CPU usage is extremely high",
+          "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+        }
+      ],
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "displayName": "Test Policy ${uniqueId}",
+      "enabled": true,
+      "mutationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+      "userLabels": {
+        "kcctestid": "${uniqueId}"
+      }
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Policy ${uniqueId}",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=display_name
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Updated Test Policy ${uniqueId}",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "CPU usage is extremely high",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Updated Test Policy ${uniqueId}",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "kcctestid": "${uniqueId}"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "alertPolicies": [
+    {
+      "combiner": "OR",
+      "conditions": [
+        {
+          "conditionThreshold": {
+            "aggregations": [
+              {
+                "alignmentPeriod": "60s",
+                "crossSeriesReducer": "REDUCE_MEAN",
+                "groupByFields": [
+                  "project"
+                ],
+                "perSeriesAligner": "ALIGN_MAX"
+              }
+            ],
+            "comparison": "COMPARISON_GT",
+            "duration": "900s",
+            "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+            "thresholdValue": 0.9,
+            "trigger": {
+              "count": 1
+            }
+          },
+          "displayName": "CPU usage is extremely high",
+          "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+        }
+      ],
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "displayName": "Updated Test Policy ${uniqueId}",
+      "enabled": true,
+      "mutationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z",
+        "mutatedBy": "user@example.com"
+      },
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+      "userLabels": {
+        "kcctestid": "${uniqueId}"
+      }
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
