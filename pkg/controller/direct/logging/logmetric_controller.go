@@ -300,6 +300,12 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 				return fmt.Errorf("logMetric update failed: %w", err)
 			}
 			update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
+
+			// populate output only fields in the proto
+			if a.desired.Status.MetricDescriptor != nil {
+				update.MetricDescriptor.Name = direct.ValueOf(a.desired.Status.MetricDescriptor.Name)
+				update.MetricDescriptor.Type = direct.ValueOf(a.desired.Status.MetricDescriptor.Type)
+			}
 		}
 
 		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {
@@ -322,16 +328,20 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			// Don't return an error as we're only logging
 			log.Error(err, "computing changed field paths (for logging)")
 		}
-		log.Info("updating logMetric", "diffs", diffs)
+		if len(diffs) != 0 {
+			log.Info("updating logMetric", "diffs", diffs)
 
-		// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
-		// but this behavior is consistent with the DCL backed behavior we provide for this resource.
-		// todo acpana: look for / switch to a better method and/or use etags etc
-		updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("logMetric update failed: %w", err)
+			// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
+			// but this behavior is consistent with the DCL backed behavior we provide for this resource.
+			// todo acpana: look for / switch to a better method and/or use etags etc
+			updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("logMetric update failed: %w", err)
+			}
+			latest = updated
+		} else {
+			log.Info("no diffs found for logMetric", "logMetric", a.fullyQualifiedName())
 		}
-		latest = updated
 	}
 
 	status := &krm.LoggingLogMetricStatus{}
