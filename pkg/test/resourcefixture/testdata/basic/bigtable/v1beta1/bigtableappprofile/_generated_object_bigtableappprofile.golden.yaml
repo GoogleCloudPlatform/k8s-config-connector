@@ -15,8 +15,7 @@ metadata:
   name: bigtableappprofile-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Automatically routes requests to the nearest available cluster in an
-    instance.
+  description: Updated description.
   instanceRef:
     name: profiledep${uniqueId}
   multiClusterRoutingClusterIds:

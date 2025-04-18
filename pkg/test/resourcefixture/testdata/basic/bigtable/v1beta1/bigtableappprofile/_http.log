@@ -80,7 +80,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-west1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -88,7 +88,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-west1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 OK
@@ -124,7 +124,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-west1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
@@ -185,15 +185,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -247,15 +247,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -293,7 +293,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "Automagically routs requests to the neatest viable nest in an instance.",
+  "description": "Initial description.",
   "singleClusterRouting": {
     "allowTransactionalWrites": true,
     "clusterId": "cluster1-${uniqueId}"
@@ -314,7 +314,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Automagically routs requests to the neatest viable nest in an instance.",
+  "description": "Initial description.",
   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "singleClusterRouting": {
     "allowTransactionalWrites": true,
@@ -342,7 +342,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Automagically routs requests to the neatest viable nest in an instance.",
+  "description": "Initial description.",
   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "singleClusterRouting": {
     "allowTransactionalWrites": true,
@@ -360,7 +360,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "Automatically routes requests to the nearest available cluster in an instance.",
+  "description": "Updated description.",
   "multiClusterRoutingUseAny": {
     "clusterIds": [
       "cluster1-${uniqueId}",
@@ -386,7 +386,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-west1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -406,7 +406,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "description": "Automatically routes requests to the nearest available cluster in an instance.",
+  "description": "Updated description.",
   "multiClusterRoutingUseAny": {
     "clusterIds": [
       "cluster1-${uniqueId}",
@@ -484,15 +484,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
