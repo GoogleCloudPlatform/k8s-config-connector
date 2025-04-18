@@ -88,9 +88,9 @@ func (r *autokeyServer) CreateKeyHandle(ctx context.Context, req *pb.CreateKeyHa
 	}
 
 	metadata := &pb.CreateKeyHandleMetadata{}
-	return r.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
+	return r.operations.StartLROWithOptions(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		return obj, nil
-	})
+	}, false)
 }
 
 type KeyHandleName struct {
