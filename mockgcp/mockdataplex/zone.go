@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.dataplex.v1.DataplexService
-// proto.message: google.cloud.dataplex.v1.Lake
+// proto.message: google.cloud.dataplex.v1.Zone
 
 package mockdataplex
 
@@ -39,20 +39,15 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-type DataplexV1 struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
-func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
-	name, err := s.parseLakeName(req.Name)
+func (s *DataplexV1) GetZone(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, error) {
+	name, err := s.parseZoneName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Lake{}
+	obj := &pb.Zone{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
@@ -62,31 +57,31 @@ func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.L
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/lakes/" + req.LakeId
-	name, err := s.parseLakeName(reqName)
+func (s *DataplexV1) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/zones/" + req.ZoneId
+	name, err := s.parseZoneName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Lake).(*pb.Lake)
+	obj := proto.Clone(req.Zone).(*pb.Zone)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
-	obj.Uid = "lake-" + name.LakeID // TODO: maybe a proper random value?
+	obj.Uid = "zone-" + name.ZoneID // TODO: maybe a proper random value?
 	obj.State = pb.State_ACTIVE
 	if obj.AssetStatus == nil {
 		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
 	}
-	if obj.Metastore == nil {
-		obj.Metastore = &pb.Lake_Metastore{}
+	if obj.DiscoverySpec == nil {
+		obj.DiscoverySpec = &pb.Zone_DiscoverySpec{
+			CsvOptions:  &pb.Zone_DiscoverySpec_CsvOptions{},
+			JsonOptions: &pb.Zone_DiscoverySpec_JsonOptions{},
+			Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
+		}
 	}
-	if obj.MetastoreStatus == nil {
-		obj.MetastoreStatus = &pb.Lake_MetastoreStatus{State: pb.Lake_MetastoreStatus_NONE, UpdateTime: timestamppb.New(time.Now())}
-	}
-	obj.ServiceAccount = fmt.Sprintf("service-%d@gcp-sa-dataplex.iam.gserviceaccount.com", name.Project.Number)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -102,18 +97,19 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 		lroMetadata.RequestedCancellation = false
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		obj.AssetStatus = &pb.AssetStatus{}
+		// Update the object in storage after LRO completion simulation
 		return obj, nil
 	})
 }
 
-func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
-	name, err := s.parseLakeName(req.GetLake().GetName())
+func (s *DataplexV1) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) (*longrunning.Operation, error) {
+	name, err := s.parseZoneName(req.GetZone().GetName())
 	if err != nil {
 		return nil, err
 	}
 	fqn := name.String()
 
-	obj := &pb.Lake{}
+	obj := &pb.Zone{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -121,23 +117,33 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 
 	updateMask := req.GetUpdateMask()
 
+	// Field behavior immutable means we cannot update these fields.
+	// We only allow updates for mutable fields.
 	for _, path := range updateMask.GetPaths() {
 		switch path {
 		case "description":
-			obj.Description = req.GetLake().GetDescription()
-		case "metastore":
-			obj.Metastore = req.GetLake().GetMetastore()
+			obj.Description = req.GetZone().GetDescription()
 		case "display_name":
-			obj.DisplayName = req.GetLake().GetDisplayName()
+			obj.DisplayName = req.GetZone().GetDisplayName()
 		case "labels":
-			obj.Labels = req.GetLake().GetLabels()
+			obj.Labels = req.GetZone().GetLabels()
+		case "discovery_spec":
+			obj.DiscoverySpec = req.GetZone().GetDiscoverySpec()
+		// Immutable fields 'type' and 'resource_spec' are not updatable
+		// case "type":
+		// case "resource_spec":
 		default:
-			return nil, fmt.Errorf("mock does not implement update of %q", path)
+			// For other unhandled fields, return a generic error or log a warning.
+			return nil, status.Errorf(codes.InvalidArgument, "mock does not implement update of field %q for Zone", path)
+
 		}
 	}
-
-	if obj.Metastore == nil {
-		obj.Metastore = &pb.Lake_Metastore{}
+	if obj.DiscoverySpec == nil {
+		obj.DiscoverySpec = &pb.Zone_DiscoverySpec{
+			CsvOptions:  &pb.Zone_DiscoverySpec_CsvOptions{},
+			JsonOptions: &pb.Zone_DiscoverySpec_JsonOptions{},
+			Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
+		}
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -151,18 +157,26 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
+		obj.AssetStatus = &pb.AssetStatus{UpdateTime: timestamppb.New(time.Now())}
 		return obj, nil
 	})
 }
 
-func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
-	response := &pb.ListLakesResponse{}
+func (s *DataplexV1) ListZones(ctx context.Context, req *pb.ListZonesRequest) (*pb.ListZonesResponse, error) {
+	_, err := s.parseLakeName(req.Parent) // Validate parent format
+	if err != nil {
+		return nil, err
+	}
 
-	lakeKind := (&pb.Lake{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, lakeKind, storage.ListOptions{}, func(obj proto.Message) error {
-		lake := obj.(*pb.Lake)
-		if strings.HasPrefix(lake.GetName(), req.Parent) {
-			response.Lakes = append(response.Lakes, lake)
+	response := &pb.ListZonesResponse{}
+
+	zoneKind := (&pb.Zone{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, zoneKind, storage.ListOptions{}, func(obj proto.Message) error {
+		zone := obj.(*pb.Zone)
+		// Check if the zone's name starts with the correct parent prefix
+		// (e.g., projects/p/locations/l/lakes/lk)
+		if strings.HasPrefix(zone.GetName(), req.Parent+"/") {
+			response.Zones = append(response.Zones, zone)
 		}
 		return nil
 	}); err != nil {
@@ -171,17 +185,20 @@ func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
-	name, err := s.parseLakeName(req.Name)
+func (s *DataplexV1) DeleteZone(ctx context.Context, req *pb.DeleteZoneRequest) (*longrunning.Operation, error) {
+	name, err := s.parseZoneName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	deleted := &pb.Lake{}
+	deleted := &pb.Zone{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", name)
+		}
+		return nil, err // Return other storage errors
 	}
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
@@ -196,35 +213,37 @@ func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) 
 	})
 }
 
-type lakeName struct {
+type zoneName struct {
 	Project  *projects.ProjectData
 	Location string
 	LakeID   string
+	ZoneID   string
 }
 
-func (n *lakeName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/lakes/%s", n.Project.ID, n.Location, n.LakeID)
+func (n *zoneName) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s/lakes/%s/zones/%s", n.Project.ID, n.Location, n.LakeID, n.ZoneID)
 }
 
-// parseLakeName parses a string into a lakeName.
-// The expected form is `projects/*/locations/*/lakes/*`.
-func (s *MockService) parseLakeName(name string) (*lakeName, error) {
+// parseZoneName parses a string into a zoneName.
+// The expected form is `projects/*/locations/*/lakes/*/zones/*`.
+func (s *MockService) parseZoneName(name string) (*zoneName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lakes" {
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "lakes" && tokens[6] == "zones" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &lakeName{
+		name := &zoneName{
 			Project:  project,
 			Location: tokens[3],
 			LakeID:   tokens[5],
+			ZoneID:   tokens[7],
 		}
 
 		return name, nil
 	}
 
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (expected projects/*/locations/*/lakes/*/zones/*)", name)
 }
