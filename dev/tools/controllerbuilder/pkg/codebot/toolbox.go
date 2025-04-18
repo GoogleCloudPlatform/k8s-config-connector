@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 )
 
 type FunctionResult struct {
@@ -48,8 +48,8 @@ func NewToolbox(tools []Tool) *Toolbox {
 	}
 }
 
-func (t *Toolbox) GetFunctionDefinitions() []*llm.FunctionDefinition {
-	var functionDefinitions []*llm.FunctionDefinition
+func (t *Toolbox) GetFunctionDefinitions() []*gollm.FunctionDefinition {
+	var functionDefinitions []*gollm.FunctionDefinition
 	for _, toolInfo := range t.tools {
 		functionDefinitions = append(functionDefinitions, toolInfo.functionDefinition)
 	}
@@ -57,7 +57,7 @@ func (t *Toolbox) GetFunctionDefinitions() []*llm.FunctionDefinition {
 }
 
 type toolInfo struct {
-	functionDefinition *llm.FunctionDefinition
+	functionDefinition *gollm.FunctionDefinition
 	tool               Tool
 	toolType           reflect.Type
 }
@@ -67,7 +67,7 @@ func (t *toolInfo) newInstance() Tool {
 	return obj.(Tool)
 }
 
-func (t *Toolbox) CallFunction(ctx context.Context, c *Chat, functionCall llm.FunctionCall) (*FunctionResult, error) {
+func (t *Toolbox) CallFunction(ctx context.Context, c *Chat, functionCall gollm.FunctionCall) (*FunctionResult, error) {
 	toolInfo := t.tools[functionCall.Name]
 	if toolInfo == nil {
 		// TODO: Fatal or return an error?
