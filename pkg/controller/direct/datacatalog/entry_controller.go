@@ -60,8 +60,6 @@ type entryModel struct {
 func (m *entryModel) client(ctx context.Context, projectID string) (*api.Client, error) {
 	var opts []option.ClientOption
 
-	// projectID is now passed as argument
-
 	config := m.config
 
 	// the service requires that a quota project be set
@@ -132,7 +130,7 @@ func (a *entryAdapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		// PermissionDenied is also observed for non-existent entries
+		// PermissionDenied is observed for non-existent entries
 		if direct.IsPermissionDenied(err) {
 			return false, nil
 		}
@@ -186,7 +184,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// Removed redundant mapCtx check below
 	desired.Name = a.id.String() // Set the name field for update requests
 
-	diffs, err := common.CompareProtoMessage(desired, a.actual, nil)
+	diffs, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return fmt.Errorf("comparing desired and actual proto: %w", err)
 	}
@@ -196,7 +194,6 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	// These fields are specified as mutable in the API documentation or by convention
 	// FQN is immutable after creation. EntryType and System oneofs are generally immutable.
 	updatableFields := []string{
-		"linked_resource",
 		"display_name",
 		"description",
 		"schema",

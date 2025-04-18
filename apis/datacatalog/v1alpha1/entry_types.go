@@ -133,24 +133,6 @@ type DataCatalogEntrySpec struct {
 	// The DataCatalogEntry name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// The resource this metadata entry refers to.
-	//
-	//  For Google Cloud Platform resources, `linked_resource` is the
-	//  [Full Resource Name]
-	//  (https://cloud.google.com/apis/design/resource_names#full_resource_name).
-	//
-	//  Output only when the entry is one of the types in the `EntryType` enum.
-	//
-	//  For entries with a `user_specified_type`, this field is optional and
-	//  defaults to an empty string.
-	//
-	//  The resource string must contain only letters (a-z, A-Z), numbers (0-9),
-	//  underscores (_), periods (.), colons (:), slashes (/), dashes (-),
-	//  and hashes (#).
-	//  The maximum size is 200 bytes when encoded in UTF-8.
-	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.linked_resource
-	LinkedResource *string `json:"linkedResource,omitempty"`
-
 	// REMOVING this field because this is the same as status.externalRef
 	// [Fully Qualified Name
 	//  (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
@@ -324,6 +306,24 @@ type DataCatalogEntryObservedState struct {
 	//  stored in the location specified in its name.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.name
 	// Name *string `json:"name,omitempty"`
+
+	// The resource this metadata entry refers to.
+	//
+	//  For Google Cloud Platform resources, `linked_resource` is the
+	//  [Full Resource Name]
+	//  (https://cloud.google.com/apis/design/resource_names#full_resource_name).
+	//
+	//  Output only when the entry is one of the types in the `EntryType` enum.
+	//
+	//  For entries with a `user_specified_type`, this field is optional and
+	//  defaults to an empty string.
+	//
+	//  The resource string must contain only letters (a-z, A-Z), numbers (0-9),
+	//  underscores (_), periods (.), colons (:), slashes (/), dashes (-),
+	//  and hashes (#).
+	//  The maximum size is 200 bytes when encoded in UTF-8.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Entry.linked_resource
+	LinkedResource *string `json:"linkedResource,omitempty"`
 
 	// Output only. Indicates the entry's source system that Data Catalog
 	//  integrates with, such as BigQuery, Pub/Sub, or Dataproc Metastore.
