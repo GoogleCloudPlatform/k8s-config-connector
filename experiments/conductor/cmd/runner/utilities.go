@@ -972,7 +972,10 @@ func (v branchAscending) Less(i, j int) bool {
 	if v[i].Group != v[j].Group {
 		return v[i].Group < v[j].Group
 	}
-	return v[i].Kind < v[j].Kind
+	if v[i].Kind != v[j].Kind {
+		return v[i].Kind < v[j].Kind
+	}
+	return v[i].Name < v[j].Name
 }
 
 func writeBranchesStableOrder(branches Branches, fileName string) {
