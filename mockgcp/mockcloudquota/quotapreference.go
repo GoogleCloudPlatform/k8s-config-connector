@@ -44,6 +44,9 @@ func (s *CloudQuotasV1) GetQuotaPreference(ctx context.Context, req *pb.GetQuota
 
 	obj := &pb.QuotaPreference{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -99,10 +102,16 @@ func (s *CloudQuotasV1) UpdateQuotaPreference(ctx context.Context, req *pb.Updat
 	for _, path := range paths {
 		switch path {
 		case "quota_config.preferred_value":
+			fallthrough
+		case "quotaConfig.preferredValue":
 			obj.QuotaConfig.PreferredValue = req.GetQuotaPreference().GetQuotaConfig().GetPreferredValue()
 		case "quota_config":
+			fallthrough
+		case "quotaConfig":
 			obj.QuotaConfig = req.GetQuotaPreference().GetQuotaConfig()
 		case "quota_id":
+			fallthrough
+		case "quotaId":
 			obj.QuotaId = req.GetQuotaPreference().GetQuotaId()
 		case "service":
 			obj.Service = req.GetQuotaPreference().GetService()
