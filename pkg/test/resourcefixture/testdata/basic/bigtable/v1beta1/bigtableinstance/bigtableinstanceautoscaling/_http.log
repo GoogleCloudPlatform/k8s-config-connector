@@ -660,7 +660,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
 }
 
 ---
@@ -668,7 +668,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
 }
 
 OK
@@ -697,7 +697,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
@@ -749,9 +749,31 @@ OK
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateClusterMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateClusterMetadata",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 5,
+              "minServeNodes": 2
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 70,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "defaultStorageType": "SSD",
+        "encryptionConfig": {},
+        "location": "projects/${projectId}/locations/us-central1-b"
+      },
+      "clusterId": "cluster-2-${uniqueId}",
+      "parent": "projects/${projectId}/instances/btinstance-${uniqueId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 ---
@@ -759,7 +781,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 OK
@@ -767,9 +789,32 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateClusterMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateClusterMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 5,
+              "minServeNodes": 2
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 70,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "defaultStorageType": "SSD",
+        "encryptionConfig": {},
+        "location": "projects/${projectId}/locations/us-central1-b"
+      },
+      "clusterId": "cluster-2-${uniqueId}",
+      "parent": "projects/${projectId}/instances/btinstance-${uniqueId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {

@@ -749,7 +749,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 ---
@@ -757,7 +757,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 OK
@@ -787,7 +787,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-central1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
@@ -858,7 +858,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
 }
 
 ---
@@ -866,7 +866,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
 }
 
 OK
@@ -896,7 +896,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
@@ -967,7 +967,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-f/operations/${operationID}"
 }
 
 ---
@@ -975,7 +975,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-f/operations/${operationID}"
 }
 
 OK
@@ -1005,7 +1005,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}/locations/us-central1-f/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
