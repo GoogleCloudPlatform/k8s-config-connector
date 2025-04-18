@@ -68,11 +68,34 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "availableCpuPlatforms": [
+    "Ampere Altra",
+    "Intel Broadwell",
+    "Intel Cascade Lake",
+    "Intel Emerald Rapids",
+    "AMD Genoa",
+    "NVIDIA Grace",
+    "Intel Granite Rapids",
+    "Intel Haswell",
+    "Intel Ice Lake",
+    "Intel Ivy Bridge",
+    "Google Axion",
+    "AMD Milan",
+    "AMD Rome",
+    "Intel Sandy Bridge",
+    "Intel Sapphire Rapids",
+    "Intel Skylake",
+    "AMD Turin"
+  ],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "us-central1-a",
+  "id": "000000000000000000000",
   "kind": "compute#zone",
   "name": "us-central1-a",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a",
-  "status": "UP"
+  "status": "UP",
+  "supportsPzs": false
 }
 
 ---
