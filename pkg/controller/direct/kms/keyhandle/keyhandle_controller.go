@@ -201,8 +201,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		status.ExternalRef = &externalRef
 		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
-		return fmt.Errorf("update operation not supported for resource %v %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+		return fmt.Errorf("update operation not supported for resource %v %v, field(s) changed: %v",
+			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired), paths)
 	}
 }
 
