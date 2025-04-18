@@ -148,14 +148,6 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 		return mapCtx.Err()
 	}
 
-	// var routingPolicy = "multi_cluster_routing_use_any"
-	// var singleClusterRoutingClusterId = ""
-	// var allowTransactionalWrites = false
-	// if singleClusterRouting := resource.GetSingleClusterRouting(); singleClusterRouting != nil {
-	// 	routingPolicy = "single_cluster_routing"
-	// 	singleClusterRoutingClusterId = resource.GetSingleClusterRouting().ClusterId
-	// 	allowTransactionalWrites = resource.GetSingleClusterRouting().AllowTransactionalWrites
-	// }
 	var routingConfig gcp.RoutingPolicyConfig
 	if multiClusterRouting := resource.GetMultiClusterRoutingUseAny(); multiClusterRouting != nil {
 		routingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
