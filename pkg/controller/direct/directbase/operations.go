@@ -112,19 +112,6 @@ func (o *DeleteOperation) GetUnstructured() *unstructured.Unstructured {
 	return o.object
 }
 
-func (o *operationBase) UpdateOwnerReferences(ctx context.Context, ownerReferences []metav1.OwnerReference) error {
-	metadata, _, _ := unstructured.NestedMap(o.object.Object, "metadata")
-	metadata["ownerReferences"] = ownerReferences
-	u := o.object
-	u.Object["metadata"] = metadata
-
-	if err := o.client.Update(ctx, u); err != nil {
-		return fmt.Errorf("updating object metadata.ownerReferences: %w", err)
-	}
-
-	return nil
-}
-
 // UpdateStatus writes the status and ready condition to the object's status subresource.
 // We split out the readyCondition so that we will not write it from the reconcile loop if we wrote it here.
 func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, readyCondition *v1alpha1.Condition) error {
