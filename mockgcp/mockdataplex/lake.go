@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,6 +38,11 @@ import (
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
+
+type DataplexV1 struct {
+	*MockService
+	pb.UnimplementedDataplexServiceServer
+}
 
 func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)

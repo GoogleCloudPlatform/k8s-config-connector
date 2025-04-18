@@ -23,8 +23,9 @@ package dataplex
 import (
 	"context"
 	"fmt"
-	"github.com/go-test/deep"
 	"reflect"
+
+	"github.com/go-test/deep"
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
