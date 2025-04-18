@@ -17,6 +17,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/global/quotaPreferences/qpref-minimal-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/global/quotaPreferences/qpref-minimal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
