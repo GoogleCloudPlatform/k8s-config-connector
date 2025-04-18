@@ -27,9 +27,9 @@ import (
 	gcp "cloud.google.com/go/eventarc/apiv1"
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -37,6 +37,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -174,24 +175,27 @@ func (a *channelAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return mapCtx.Err()
 	}
 
-	paths := []string{}
-	if resource.Provider != a.actual.Provider {
-		paths = append(paths, "provider")
+	allowedPaths := make(sets.Set[string])
+	allowedPaths.Insert("crypto_key_name")
+	allowedPaths.Insert("provider")
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-	if resource.CryptoKeyName != a.actual.CryptoKeyName {
-		paths = append(paths, "crypto_key_name")
-	}
-
+	// Retain updateable fields only
+	paths = paths.Intersection(allowedPaths)
 	var updated *pb.Channel
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		// even though there is no update, we still want to update KRM status
-		updated = a.actual
+		return nil
 	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
 		req := &pb.UpdateChannelRequest{
 			Channel:    resource,
-			UpdateMask: &fieldmaskpb.FieldMask{Paths: paths},
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
 		}
 
 		op, err := a.gcpClient.UpdateChannel(ctx, req)
@@ -258,10 +262,6 @@ func (a *channelAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 			log.V(2).Info("eventarc channel not found", "name", a.id)
 			return false, nil // Resource is gone, consider the delete successful.
 		}
-		if apierrors.IsNotFound(err) { // Handle potential K8S not found errors if applicable
-			log.V(2).Info("eventarc channel resource not found in K8S", "name", a.id)
-			return false, nil
-		}
 		return false, fmt.Errorf("deleting eventarc channel %q: %w", a.id.String(), err)
 	}
 
@@ -276,12 +276,12 @@ func (a *channelAdapter) Delete(ctx context.Context, deleteOp *directbase.Delete
 
 func (a *channelAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.Provider != nil {
-		providerRef, err := obj.Spec.Provider.NormalizedExternal(ctx, a.reader, obj.Namespace)
+	if obj.Spec.ProviderRef != nil {
+		providerRef, err := obj.Spec.ProviderRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
 		if err != nil {
 			return err
 		}
-		obj.Spec.Provider.External = providerRef
+		obj.Spec.ProviderRef.External = providerRef
 	}
 	if obj.Spec.KmsKeyRef != nil {
 		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.KmsKeyRef)

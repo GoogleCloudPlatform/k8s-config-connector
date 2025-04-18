@@ -45,7 +45,7 @@ func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *k
 	// MISSING: Name
 	// Provider is a ProviderRef struct in the KRM type, not a string
 	if provider := in.GetProvider(); provider != "" {
-		out.Provider = &connectorv1.ProviderRef{
+		out.ProviderRef = &connectorv1.ProviderRef{
 			External: provider,
 		}
 	}
@@ -64,8 +64,8 @@ func EventarcChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.EventarcChan
 	out := &pb.Channel{}
 	// MISSING: Name
 	// Extract the string value from the ProviderRef
-	if in.Provider != nil {
-		out.Provider = in.Provider.External
+	if in.ProviderRef != nil {
+		out.Provider = in.ProviderRef.External
 	}
 	if in.KmsKeyRef != nil {
 		out.CryptoKeyName = in.KmsKeyRef.External

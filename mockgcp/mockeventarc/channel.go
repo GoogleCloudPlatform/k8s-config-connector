@@ -163,16 +163,18 @@ func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelReq
 	}
 
 	lroRet := proto.Clone(obj).(*pb.Channel)
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
-		Target:                fqn,
-		Verb:                  "update",
-		CreateTime:            timestamppb.New(time.Now()),
-		RequestedCancellation: false,
-		EndTime:               timestamppb.New(time.Now()),
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(time.Now()),
+		Target:     fqn,
+		Verb:       "update",
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		return lroRet, nil
+	})
 }
 
 func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelRequest) (*longrunningpb.Operation, error) {

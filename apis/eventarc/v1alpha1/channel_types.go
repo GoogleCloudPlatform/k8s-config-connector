@@ -41,7 +41,7 @@ type EventarcChannelSpec struct {
 	// with the channel. This provider will be granted permissions to publish
 	// events to the channel.
 	// +kcc:proto:field=google.cloud.eventarc.v1.Channel.provider
-	Provider *connectorsv1.ProviderRef `json:"provider,omitempty"`
+	ProviderRef *connectorsv1.ProviderRef `json:"providerRef,omitempty"`
 
 	// Resource name of a KMS crypto key (managed by the user) used to
 	// encrypt/decrypt their event data.
