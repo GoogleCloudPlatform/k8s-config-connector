@@ -69,9 +69,6 @@ func ResolveSensitiveField(ctx context.Context, field *refsv1beta1secret.Legacy,
 		field.Value = PtrTo(secretValue)
 		return nil
 	}
-	if field.Value == nil {
-		return fmt.Errorf("at least one of '%s.value' and '%s.valueFrom' "+
-			"should be configured: neither is configured", fieldPath, fieldPath)
-	}
-	return nil
+	return fmt.Errorf("at least one of '%s.value' and '%s.valueFrom' "+
+		"should be configured: neither is configured", fieldPath, fieldPath)
 }
