@@ -105,11 +105,21 @@ func (s *NotificationChannelService) CreateNotificationChannel(ctx context.Conte
 	obj.Name = fqn
 	obj.Enabled = wrapperspb.Bool(true)
 
+	redactPasswords(obj)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func redactPasswords(obj *pb.NotificationChannel) {
+	labels := obj.GetLabels()
+	if labels["password"] != "" {
+		labels["password"] = "*********"
+	}
+	obj.Labels = labels
 }
 
 func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Context, req *pb.UpdateNotificationChannelRequest) (*pb.NotificationChannel, error) {
@@ -125,11 +135,13 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 		return nil, err
 	}
 
+	now := time.Now()
+
 	updated := proto.Clone(existing).(*pb.NotificationChannel)
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
 		case "description":
-			updated.DisplayName = req.GetNotificationChannel().GetDescription()
+			updated.Description = req.GetNotificationChannel().GetDescription()
 		case "display_name":
 			updated.DisplayName = req.GetNotificationChannel().GetDisplayName()
 		case "enabled":
@@ -144,6 +156,12 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock (full update_mask=%v)", path, req.GetUpdateMask())
 		}
 	}
+
+	redactPasswords(updated)
+
+	updated.MutationRecords = append(updated.MutationRecords, &pb.MutationRecord{
+		MutateTime: timestamppb.New(now),
+	})
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
