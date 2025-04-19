@@ -23,15 +23,15 @@ package discoveryengine
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
-	gcp "cloud.google.com/go/discoveryengine/apiv1"
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	gcp "cloud.google.com/go/discoveryengine/apiv1alpha"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -39,6 +39,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -97,6 +98,10 @@ func (m *dataStoreModel) AdapterForObject(ctx context.Context, reader client.Rea
 	desired := DiscoveryEngineDataStoreSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+	if desired.DocumentProcessingConfig != nil {
+		// Set the attribute `documentProcessingConfig` name. This is not configurable.
+		desired.DocumentProcessingConfig.Name = id.String() + "/documentProcessingConfig"
 	}
 
 	gcpClient, err := m.client(ctx, id.ProjectID)
@@ -181,11 +186,12 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataStoreObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.PtrTo(a.id.String())
+
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -193,22 +199,24 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine datastore", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
-	desired.Name = a.id.String()
-
-	// TODO(user): Update the field if applicable.
-	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
-		updateMask.Paths = append(updateMask.Paths, "display_name")
+	a.desired.Name = a.actual.Name
+	paths := make(sets.Set[string])
+	var err error
+	paths, err = common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	if err != nil {
+		return err
 	}
-
-	if len(updateMask.Paths) == 0 {
+	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return nil
 	}
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
+	}
+
 	req := &pb.UpdateDataStoreRequest{
 		UpdateMask: updateMask,
-		DataStore:  desired,
+		DataStore:  a.desired,
 	}
 	updated, err := a.gcpClient.UpdateDataStore(ctx, req)
 	if err != nil {
@@ -218,7 +226,7 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataStoreObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -238,9 +246,11 @@ func (a *dataStoreAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.ProjectID}
-	obj.Spec.Location = a.id.Location
-	obj.Spec.Collection = a.id.Collection
+	obj.Spec.DiscoveryEngineDataStoreParent = krm.DiscoveryEngineDataStoreParent{
+		ProjectRef: &refs.ProjectRef{External: a.id.ProjectID},
+		Location:   direct.LazyPtr(a.id.Location),
+		Collection: direct.LazyPtr(a.id.Collection),
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

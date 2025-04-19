@@ -194,6 +194,8 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
+		./third_party/googleapis/google/cloud/discoveryengine/v1alpha/data_store_service.proto \
+		./third_party/googleapis/google/cloud/discoveryengine/v1alpha/engine_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
