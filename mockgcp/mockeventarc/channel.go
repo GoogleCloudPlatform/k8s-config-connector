@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -45,7 +46,7 @@ func (s *EventarcV1) GetChannel(ctx context.Context, req *pb.GetChannelRequest) 
 	obj := &pb.Channel{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "channel %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -79,19 +80,54 @@ func (s *EventarcV1) CreateChannel(ctx context.Context, req *pb.CreateChannelReq
 		return nil, err
 	}
 
-	// Returns the created object
-	lroRet := proto.Clone(obj).(*pb.Channel)
-
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
+	// Return an LRO that doesnt finish immediately
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
 		Target:                fqn,
 		Verb:                  "create",
-		CreateTime:            timestamppb.New(now),
+		ApiVersion:            "v1",
 		RequestedCancellation: false,
-		EndTime:               timestamppb.New(now),
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
+	lro, err := s.operations.NewLRO(ctx)
+	if err != nil {
+		return nil, err
+	}
+	lro.Done = false
+	lro.Metadata, err = anypb.New(lroMetadata)
+	if err != nil {
+		return nil, err
+	}
+	// Use the fully qualified type name to ensure compatibility with the expected output.
+	lro.Metadata.TypeUrl = "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata"
+	lro.Name = fmt.Sprintf("projects/%s/locations/%s/operations/%s", name.Project.ID, name.Location, strings.Split(lro.Name, "/")[len(strings.Split(lro.Name, "/"))-1])
+
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(now)
+		updated, err := s.updateChannel(ctx, fqn, func(obj *pb.Channel) {
+			obj.State = pb.Channel_ACTIVE
+		})
+		if err != nil {
+			return nil, err
+		}
+		return updated, err
+	})
+}
+
+// updateService will read-modify-write the object with optimistic locking
+func (s *EventarcV1) updateChannel(ctx context.Context, fqn string, update func(obj *pb.Channel)) (*pb.Channel, error) {
+	obj := &pb.Channel{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	update(obj)
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
 }
 
 func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelRequest) (*longrunningpb.Operation, error) {
@@ -127,16 +163,18 @@ func (s *EventarcV1) UpdateChannel(ctx context.Context, req *pb.UpdateChannelReq
 	}
 
 	lroRet := proto.Clone(obj).(*pb.Channel)
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
-		Target:                fqn,
-		Verb:                  "update",
-		CreateTime:            timestamppb.New(time.Now()),
-		RequestedCancellation: false,
-		EndTime:               timestamppb.New(time.Now()),
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(time.Now()),
+		Target:     fqn,
+		Verb:       "update",
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		return lroRet, nil
+	})
 }
 
 func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelRequest) (*longrunningpb.Operation, error) {
@@ -152,18 +190,21 @@ func (s *EventarcV1) DeleteChannel(ctx context.Context, req *pb.DeleteChannelReq
 	}
 	deletedObj.State = pb.Channel_INACTIVE
 	deletedObj.Transport = &pb.Channel_PubsubTopic{PubsubTopic: ""}
+	deletedObj.UpdateTime = nil
+	deletedObj.CreateTime = nil
+	deletedObj.Uid = ""
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	//return s.operations.DoneLRO(ctx, prefix, metadata, deletedObj)
-	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
-		Target:                fqn,
-		Verb:                  "delete",
-		CreateTime:            timestamppb.New(time.Now()),
-		RequestedCancellation: false,
-		EndTime:               timestamppb.New(time.Now()),
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     fqn,
+		Verb:       "delete",
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, deletedObj)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		return deletedObj, nil
+	})
 }
 
 func (s *EventarcV1) populateDefaultsForChannel(obj *pb.Channel) {
