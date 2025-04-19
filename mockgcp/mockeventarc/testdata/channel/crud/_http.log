@@ -144,26 +144,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/channels/test-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.eventarc.v1.Channel",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/test-${uniqueId}/cryptoKeys/test-${uniqueId}",
-    "name": "projects/${projectId}/locations/us-central1/channels/test-${uniqueId}",
-    "pubsubTopic": "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123",
-    "state": "ACTIVE",
-    "uid": "test-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
