@@ -21,7 +21,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var CustomTargetTypeGVK = GroupVersion.WithKind("DeployCustomTargetType")
+var CustomTargetTypeGVK = GroupVersion.WithKind("CloudDeployCustomTargetType")
 
 // CustomTargetTypeSpec defines the desired state of DeployCustomTargetType
 // +kcc:proto=google.cloud.deploy.v1.CustomTargetType
@@ -114,7 +114,7 @@ type CustomTargetTypeObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdeploycustomtargettype;gcpdeploycustomtargettypes
+// +kubebuilder:resource:categories=gcp,shortName=gcpclouddeploycustomtargettype;gcpclouddeploycustomtargettypes
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -122,9 +122,9 @@ type CustomTargetTypeObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DeployCustomTargetType is the Schema for the DeployCustomTargetType API
+// CloudDeployCustomTargetType is the Schema for the CloudDeployCustomTargetType API
 // +k8s:openapi-gen=true
-type DeployCustomTargetType struct {
+type CloudDeployCustomTargetType struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
@@ -138,11 +138,11 @@ type DeployCustomTargetType struct {
 type DeployCustomTargetTypeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DeployCustomTargetType `json:"items"`
+	Items           []CloudDeployCustomTargetType `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DeployCustomTargetType{}, &DeployCustomTargetTypeList{})
+	SchemeBuilder.Register(&CloudDeployCustomTargetType{}, &DeployCustomTargetTypeList{})
 }
 
 // +kcc:proto=google.cloud.deploy.v1.SkaffoldModules.SkaffoldGCBRepoSource
