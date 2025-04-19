@@ -1149,6 +1149,10 @@ func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 	if err := c.Create(ctx, cc); err != nil {
 		t.Fatalf("FAIL: error creating CC: %v", err)
 	}
+
+	// We pause for one second to allow the watch events to be delivered
+	// (our pause API is not guaranteed to be synchronous)
+	time.Sleep(time.Second)
 }
 
 // verifyUserAgent verifies that the user agent is set to the expected KCC user agent for all requests
