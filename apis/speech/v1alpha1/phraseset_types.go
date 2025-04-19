@@ -161,3 +161,23 @@ type SpeechPhraseSetList struct {
 func init() {
 	SchemeBuilder.Register(&SpeechPhraseSet{}, &SpeechPhraseSetList{})
 }
+
+// +kcc:proto=google.cloud.speech.v2.PhraseSet.Phrase
+type PhraseSet_Phrase struct {
+	// The phrase itself.
+	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.Phrase.value
+	Value *string `json:"value,omitempty"`
+
+	// Hint Boost. Overrides the boost set at the phrase set level.
+	//  Positive value will increase the probability that a specific phrase will
+	//  be recognized over other similar sounding phrases. The higher the boost,
+	//  the higher the chance of false positive recognition as well. Negative
+	//  boost values would correspond to anti-biasing. Anti-biasing is not
+	//  enabled, so negative boost values will return an error. Boost values must
+	//  be between 0 and 20. Any values outside that range will return an error.
+	//  We recommend using a binary search approach to finding the optimal value
+	//  for your use case as well as adding phrases both with and without boost
+	//  to your requests.
+	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.Phrase.boost
+	Boost *string `json:"boost,omitempty"`
+}
