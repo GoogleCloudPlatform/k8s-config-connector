@@ -15,7 +15,8 @@
 apiVersion: metastore.cnrm.cloud.google.com/v1alpha1
 kind: MetastoreBackup
 metadata:
-  name: metastorebackup-minimal-${uniqueId}
+  name: msbackup-${uniqueId}
 spec:
+  description: "A minimal metastore backup"
   serviceRef:
-    external: projects/${projectId}/locations/us-central1/services/${serviceId}
+    external: projects/${projectId}/locations/us-central1/services/mssvc-${uniqueId}

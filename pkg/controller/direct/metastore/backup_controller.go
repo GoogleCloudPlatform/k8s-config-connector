@@ -169,18 +169,8 @@ func (a *MetastoreBackupAdapter) Create(ctx context.Context, createOp *directbas
 // MetastoreBackup resource has no mutable fields as per the proto definition, so this function only updates the status.
 func (a *MetastoreBackupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("resource is immutable, skipping update", "name", a.id)
-
-	// No update API call as the resource is immutable or has no mutable fields exposed.
-	// We only need to update the status based on the last known state (a.actual).
-	mapCtx := &direct.MapContext{}
-	status := &krm.MetastoreBackupStatus{}
-	status.ObservedState = MetastoreBackupObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+	log.V(2).Info("resource has no mutable fields, skipping update", "name", a.id)
+	return nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

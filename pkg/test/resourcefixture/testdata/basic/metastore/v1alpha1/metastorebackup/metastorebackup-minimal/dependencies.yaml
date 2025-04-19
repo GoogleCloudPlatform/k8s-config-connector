@@ -13,10 +13,10 @@
 # limitations under the License.
 
 apiVersion: metastore.cnrm.cloud.google.com/v1alpha1
-kind: MetastoreBackup
+kind: MetastoreService
 metadata:
-  name: metastorebackup-minimal-${uniqueId}
+  name: mssvc-${uniqueId}
 spec:
-  description: "An updated description for the minimal metastore backup" # Added description field for update test
-  serviceRef:
-    external: projects/${projectId}/locations/us-central1/services/${serviceId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
