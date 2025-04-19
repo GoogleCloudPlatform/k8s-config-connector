@@ -4,12 +4,14 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: eventarcchannel-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  kmsKeyRef:
+    name: eac-key-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -21,7 +23,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/channels/eventarcchannel-minimal-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     pubsubTopic: projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123
