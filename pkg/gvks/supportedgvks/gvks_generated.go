@@ -4274,6 +4274,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	{
 		Group:   "notebooks.cnrm.cloud.google.com",
 		Version: "v1alpha1",
+		Kind:    "NotebookInstance",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "notebooks.cnrm.cloud.google.com",
+		Version: "v1alpha1",
 		Kind:    "NotebooksEnvironment",
 	}: {
 		Labels: map[string]string{
