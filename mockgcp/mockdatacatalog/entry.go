@@ -49,7 +49,7 @@ func (s *DataCatalogV1) GetEntry(ctx context.Context, req *pb.GetEntryRequest) (
 	obj := &pb.Entry{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Entry %s not found.", fqn)
+			return nil, status.Errorf(codes.PermissionDenied, "No permission to get Entry \"%s\" or it does not exist.", fqn)
 		}
 		return nil, err
 	}

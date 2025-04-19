@@ -33,7 +33,6 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 		DataCatalogEntryObservedState_FromProto, DataCatalogEntryObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".linked_resource")
 	f.SpecFields.Insert(".user_specified_type")
 	f.SpecFields.Insert(".user_specified_system")
 	f.SpecFields.Insert(".sql_database_system_spec")
@@ -56,6 +55,7 @@ func dataCatalogEntryFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".usage_signal")
 	f.SpecFields.Insert(".labels")
 
+	f.StatusFields.Insert(".linked_resource")
 	f.StatusFields.Insert(".gcs_fileset_spec")
 	f.StatusFields.Insert(".bigquery_table_spec")
 	f.StatusFields.Insert(".bigquery_date_sharded_spec")

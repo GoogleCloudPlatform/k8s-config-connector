@@ -31,6 +31,7 @@ func DataCatalogEntryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	}
 	out := &krmv1alpha1.DataCatalogEntryObservedState{}
 	// MISSING: Name
+	out.LinkedResource = direct.LazyPtr(in.GetLinkedResource())
 	out.IntegratedSystem = direct.Enum_FromProto(mapCtx, in.GetIntegratedSystem())
 	out.GCSFilesetSpec = GCSFilesetSpecObservedState_FromProto(mapCtx, in.GetGcsFilesetSpec())
 	out.BigqueryTableSpec = BigQueryTableSpecObservedState_FromProto(mapCtx, in.GetBigqueryTableSpec())
@@ -48,6 +49,7 @@ func DataCatalogEntryObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1a
 	}
 	out := &pb.Entry{}
 	// MISSING: Name
+	out.LinkedResource = direct.ValueOf(in.LinkedResource)
 	if val := direct.Enum_ToProto[pb.IntegratedSystem](mapCtx, in.IntegratedSystem); val != pb.IntegratedSystem_INTEGRATED_SYSTEM_UNSPECIFIED {
 		out.System = &pb.Entry_IntegratedSystem{IntegratedSystem: val}
 	}
@@ -77,7 +79,6 @@ func DataCatalogEntrySpec_FromProto(mapCtx *direct.MapContext, in *pb.Entry) *kr
 	}
 	out := &krmv1alpha1.DataCatalogEntrySpec{}
 	// MISSING: FullyQualifiedName - removed on purpose
-	out.LinkedResource = direct.LazyPtr(in.GetLinkedResource())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.UserSpecifiedType = direct.LazyPtr(in.GetUserSpecifiedType())
 	out.UserSpecifiedSystem = direct.LazyPtr(in.GetUserSpecifiedSystem())
@@ -108,7 +109,6 @@ func DataCatalogEntrySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Dat
 	}
 	out := &pb.Entry{}
 	// MISSING: FullyQualifiedName
-	out.LinkedResource = direct.ValueOf(in.LinkedResource)
 	if val := direct.Enum_ToProto[pb.EntryType](mapCtx, in.Type); val != pb.EntryType_ENTRY_TYPE_UNSPECIFIED {
 		out.EntryType = &pb.Entry_Type{Type: val}
 	}
