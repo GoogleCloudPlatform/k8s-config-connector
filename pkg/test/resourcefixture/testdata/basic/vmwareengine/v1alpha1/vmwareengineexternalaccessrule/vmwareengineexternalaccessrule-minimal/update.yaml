@@ -17,7 +17,18 @@ kind: VMwareEngineExternalAccessRule
 metadata:
   name: vmwareengineexternalaccessrule-minimal-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
   description: "Updated description"
+  networkPolicyRef:
+    name: vmwareenginenetworkpolicy-minimal-${uniqueId}
+  priority: 101
+  action: "DENY"
+  ipProtocol: "TCP"
+  sourceIPRanges:
+    - ipAddressRange: "0.0.0.0/0"
+  sourcePorts:
+    - "80"
+  destinationIPRanges:
+    - externalAddressRef:
+        name: vmwareengineexternaladdress-minimal-${uniqueId}
+  destinationPorts:
+    - "443"
