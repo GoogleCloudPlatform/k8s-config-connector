@@ -46,7 +46,7 @@ func (s *DataprocMetastoreV1) GetBackup(ctx context.Context, req *pb.GetBackupRe
 	obj := &pb.Backup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "backup %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
