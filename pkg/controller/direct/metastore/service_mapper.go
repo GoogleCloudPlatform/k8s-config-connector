@@ -254,6 +254,7 @@ func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.Restores = direct.Slice_ToProto(mapCtx, in.Restores, RestoreObservedState_ToProto)
 	return out
 }
+
 func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationObservedState {
 	if in == nil {
 		return nil
@@ -316,6 +317,7 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metastor
 
 	return out
 }
+
 func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceObservedState {
 	if in == nil {
 		return nil

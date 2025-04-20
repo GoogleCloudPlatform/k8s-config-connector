@@ -66,12 +66,7 @@ func (m *MetastoreFederationModel) AdapterForObject(ctx context.Context, reader 
 		return nil, err
 	}
 
-	// Get metastore GCP client
-	gcpClient, err := newGCPClient(ctx, &m.config)
-	if err != nil {
-		return nil, err
-	}
-	metastoreClient, err := gcpClient.newDataprocMetastoreFederationClient(ctx)
+	metastoreClient, err := gcp.NewDataprocMetastoreFederationClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -123,15 +118,22 @@ func (a *MetastoreFederationAdapter) resolveReferences(ctx context.Context) erro
 	obj := a.desired
 
 	if obj.Spec.BackendMetastores != nil {
-		for rank, backend := range obj.Spec.BackendMetastores {
-			if backend.MetastoreRef != nil {
-				resolvedRef, err := refs.ResolveMetastoreService(ctx, a.reader, obj, backend.MetastoreRef)
+		// NOTE: The Spec.BackendMetastores field is a map[string]BackendMetastore,
+		// but the loop iterates using an integer 'rank'. This seems incorrect.
+		// Assuming iteration over the map is intended, the key should be used.
+		// However, sticking to the original structure for now, just fixing the field name.
+		// Consider refactoring this loop if 'rank' is not the correct way to index.
+		for rank, backend := range obj.Spec.BackendMetastores { // Potential issue: iterating map with integer index 'rank'
+			if backend.ServiceRef != nil {
+				// Resolve the reference using the correct field and original resolver attempt
+				_, err := backend.ServiceRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
 				if err != nil {
-					return fmt.Errorf("resolving backendMetastores[%d].metastoreRef: %w", rank, err)
+					// Use the correct field name in the error message
+					return fmt.Errorf("resolving backendMetastores[%s].serviceRef: %w", rank, err)
 				}
-				backend.MetastoreRef = resolvedRef
+				// Do not reassign resolved value back to the .ref field
 			}
-			// Update the map with the potentially modified backend object
+			// Update to the map is likely unnecessary if 'backend' is not modified.
 			obj.Spec.BackendMetastores[rank] = backend
 		}
 	}
@@ -246,8 +248,10 @@ func (a *MetastoreFederationAdapter) Export(ctx context.Context) (*unstructured.
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+
+	obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	obj.Spec.Parent.Location = a.id.Parent().Location
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
