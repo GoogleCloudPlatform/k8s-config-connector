@@ -33,7 +33,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -66,27 +65,6 @@ func (m *externalAccessRuleModel) AdapterForObject(ctx context.Context, reader c
 		return nil, err
 	}
 
-	// normalize reference fields
-	for _, ipRange := range obj.Spec.DestinationIPRanges {
-		if ipRange.ExternalAddressRef != nil {
-			if _, err := ipRange.ExternalAddressRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-				return nil, err
-			}
-		}
-	}
-	for _, ipRange := range obj.Spec.SourceIPRanges {
-		if ipRange.ExternalAddressRef != nil {
-			if _, err := ipRange.ExternalAddressRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-				return nil, err
-			}
-		}
-	}
-	if obj.Spec.NetworkPolicyRef != nil {
-		if _, err := obj.Spec.NetworkPolicyRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
 	// Get VMwareEngine GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -100,6 +78,7 @@ func (m *externalAccessRuleModel) AdapterForObject(ctx context.Context, reader c
 		gcpClient: client,
 		id:        id,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -113,6 +92,7 @@ type externalAccessRuleAdapter struct {
 	id        *krm.ExternalAccessRuleIdentity
 	desired   *krm.VMwareEngineExternalAccessRule
 	actual    *pb.ExternalAccessRule
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &externalAccessRuleAdapter{}
@@ -137,8 +117,12 @@ func (a *externalAccessRuleAdapter) Find(ctx context.Context) (bool, error) {
 func (a *externalAccessRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating vmwareengine external access rule", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -172,8 +156,12 @@ func (a *externalAccessRuleAdapter) Create(ctx context.Context, createOp *direct
 func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating vmwareengine external access rule", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
+	if err := a.normalizeReferenceFields(ctx); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
 	resource := VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -193,38 +181,35 @@ func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *direct
 	if desired.Spec.IPProtocol != nil && !reflect.DeepEqual(resource.IpProtocol, a.actual.IpProtocol) {
 		paths = append(paths, "ip_protocol")
 	}
-	if len(desired.Spec.SourceIPRanges) != 0 && !reflect.DeepEqual(resource.SourceIpRanges, a.actual.SourceIpRanges) {
-		paths = append(paths, "source_ip_ranges")
-	}
 	if len(desired.Spec.SourcePorts) != 0 && !reflect.DeepEqual(resource.SourcePorts, a.actual.SourcePorts) {
 		paths = append(paths, "source_ports")
-	}
-	if len(desired.Spec.DestinationIPRanges) != 0 && !reflect.DeepEqual(resource.DestinationIpRanges, a.actual.DestinationIpRanges) {
-		paths = append(paths, "destination_ip_ranges")
 	}
 	if len(desired.Spec.DestinationPorts) != 0 && !reflect.DeepEqual(resource.DestinationPorts, a.actual.DestinationPorts) {
 		paths = append(paths, "destination_ports")
 	}
+	// TODO: handle source_ip_ranges and destination_ip_ranges which contain oneof fields which requires special handling
+	// e.g. https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/7e47fab0c19e7908b88ad1d5e1e6063d27e35fc4/pkg/controller/direct/gkebackup/backupplan_controller.go#L192
 
+	var updated *pb.ExternalAccessRule
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		updated = a.actual
+	} else {
+		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		req := &pb.UpdateExternalAccessRuleRequest{
+			ExternalAccessRule: resource,
+			UpdateMask:         &fieldmaskpb.FieldMask{Paths: paths},
+		}
+		op, err := a.gcpClient.UpdateExternalAccessRule(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating vmwareengine external access rule %s: %w", a.id.String(), err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("vmwareengine external access rule %s waiting for update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated vmwareengine external access rule", "name", a.id)
 	}
-
-	resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-	req := &pb.UpdateExternalAccessRuleRequest{
-		ExternalAccessRule: resource,
-		UpdateMask:         &fieldmaskpb.FieldMask{Paths: paths},
-	}
-	op, err := a.gcpClient.UpdateExternalAccessRule(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating vmwareengine external access rule %s: %w", a.id.String(), err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("vmwareengine external access rule %s waiting for update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated vmwareengine external access rule", "name", a.id)
 
 	status := &krm.VMwareEngineExternalAccessRuleStatus{}
 	status.ObservedState = VMwareEngineExternalAccessRuleObservedState_FromProto(mapCtx, updated)
@@ -246,7 +231,7 @@ func (a *externalAccessRuleAdapter) Export(ctx context.Context) (*unstructured.U
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.NetworkPolicyRef = &refs.StringRef{External: a.id.Parent().NetworkPolicyID}
+	obj.Spec.NetworkPolicyRef = &krm.NetworkPolicyRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -279,4 +264,27 @@ func (a *externalAccessRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 		return false, fmt.Errorf("waiting delete BackupVault %s: %w", a.id, err)
 	}
 	return true, nil
+}
+
+func (a *externalAccessRuleAdapter) normalizeReferenceFields(ctx context.Context) error {
+	obj := a.desired
+
+	for i := range obj.Spec.SourceIPRanges {
+		if obj.Spec.SourceIPRanges[i].ExternalAddressRef != nil {
+			_, err := obj.Spec.SourceIPRanges[i].ExternalAddressRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	for i := range obj.Spec.DestinationIPRanges {
+		if obj.Spec.DestinationIPRanges[i].ExternalAddressRef != nil {
+			_, err := obj.Spec.DestinationIPRanges[i].ExternalAddressRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
