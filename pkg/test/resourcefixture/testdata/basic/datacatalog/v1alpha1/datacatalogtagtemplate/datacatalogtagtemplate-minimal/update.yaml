@@ -20,8 +20,10 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
+  displayName: UpdatedTagTemplate
   fields:
-    minimal_field:
-      displayName: "Minimal Field Updated Display Name" # Added displayName for update test
+    testfield:
+      displayName: TestField
+      isRequired: true
       type:
-        primitiveType: STRING # Changed from BOOL back to STRING, or keep original if needed
+        primitiveType: STRING

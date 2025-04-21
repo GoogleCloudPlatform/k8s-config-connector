@@ -20,10 +20,11 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  # The CRD indicates 'fields' is required for resource creation in its description,
-  # but it's not marked as required in the openAPIV3Schema. Including a minimal 'fields'
-  # entry to make the resource functional, even if not strictly required by schema validation.
+  resourceID: dctt_${uniqueId}
+  displayName: TestTagTemplate
   fields:
-    minimal_field:
+    testfield:
+      displayName: TestField
+      isRequired: true
       type:
         primitiveType: STRING
