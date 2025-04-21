@@ -270,7 +270,7 @@ func (p *ProtoWriter) renderService(msg protoreflect.ServiceDescriptor) {
 
 func (p *ProtoWriter) WriteFile(file protoreflect.FileDescriptor) {
 	klog.Infof("file %v", file.Name())
-	p.printf(fmt.Sprintf("syntax = \"proto%d\";\n", p.protoVersion))
+	p.printf("syntax = \"proto%d\";\n", p.protoVersion)
 	p.printf("package %s;\n", file.Package())
 
 	importPaths := []string{

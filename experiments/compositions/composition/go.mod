@@ -1,8 +1,8 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition
 
-go 1.22.0
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.2
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
