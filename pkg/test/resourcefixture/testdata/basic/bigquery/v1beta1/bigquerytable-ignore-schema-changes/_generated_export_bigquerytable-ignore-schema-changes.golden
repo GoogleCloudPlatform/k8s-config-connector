@@ -17,6 +17,5 @@ spec:
     sourceUris:
     - gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt
   friendlyName: bigquerytable-sample-updated
-  requirePartitionFilter: true
   resourceID: bigquerytablesample${uniqueId}
-  schema: '[{"description":"Name","mode":"NULLABLE","name":"name","type":"STRING"},{"description":"Email","mode":"NULLABLE","name":"email","type":"STRING"}]'
+  schema: '[{"description":"Name","mode":"NULLABLE","name":"name","policyTags":{},"type":"STRING"},{"description":"Email","mode":"NULLABLE","name":"email","policyTags":{},"type":"STRING"}]'

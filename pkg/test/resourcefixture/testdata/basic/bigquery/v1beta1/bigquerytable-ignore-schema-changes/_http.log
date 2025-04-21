@@ -250,7 +250,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -264,12 +264,14 @@ X-Xss-Protection: 0
         "description": "Name",
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Email",
         "mode": "NULLABLE",
         "name": "email",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -317,7 +319,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -331,12 +333,14 @@ X-Xss-Protection: 0
         "description": "Name",
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Email",
         "mode": "NULLABLE",
         "name": "email",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -406,26 +410,28 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": true,
+  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
         "description": "Name",
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Email",
         "mode": "NULLABLE",
         "name": "email",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -473,26 +479,28 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": true,
+  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
         "description": "Name",
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Email",
         "mode": "NULLABLE",
         "name": "email",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -566,26 +574,28 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
-  "location": "us-central1",
+  "location": "US",
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": true,
+  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
         "description": "Name",
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Email",
         "mode": "NULLABLE",
         "name": "email",
+        "policyTags": {},
         "type": "STRING"
       }
     ]

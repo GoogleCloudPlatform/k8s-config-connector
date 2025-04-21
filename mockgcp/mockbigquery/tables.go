@@ -35,6 +35,38 @@ type tablesServer struct {
 	pb.UnimplementedTablesServerServer
 }
 
+func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest) (*pb.Table, error) {
+	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Table{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	updated := CloneProto(existing)
+	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
+
+	updated.FriendlyName = req.GetTable().FriendlyName
+	if updated.GetExternalDataConfiguration() != nil {
+		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+	}
+
+	updated.Etag = PtrTo(computeEtag(updated))
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	return updated, err
+}
+
 func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*pb.Table, error) {
 	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
 	if err != nil {
