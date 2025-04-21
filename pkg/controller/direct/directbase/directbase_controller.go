@@ -108,20 +108,22 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 		predicateList = append(predicateList, reconcilePredicate)
 	}
 
-	secretObj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       "Secret",
-			"apiVersion": "v1",
-		},
-	}
-
-	_, err := builder.
+	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...)).
-		Watches(
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
+
+	// The controller should watch K8s Secret if it supports sensitive fields.
+	if _, ok := r.model.(SensitiveFieldModel); ok {
+		secretObj := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"kind":       "Secret",
+				"apiVersion": "v1",
+			},
+		}
+		controllerBuilder = controllerBuilder.Watches(
 			secretObj, // Watch the K8s Secret CR
 			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
 				logger := log.FromContext(ctx)
@@ -134,8 +136,10 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 				}
 				return requests
 			}),
-		).
-		Build(r)
+		)
+	}
+
+	_, err := controllerBuilder.Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
 	}

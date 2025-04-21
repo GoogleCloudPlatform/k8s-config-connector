@@ -89,7 +89,7 @@ func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.R
 			return nil, fmt.Errorf("getting 'spec.initialUser.password.valueFrom.secretKeyRef.name' in unstructured AlloyDBCluster %v/%v: %w", cluster.GetNamespace(), cluster.GetName(), err)
 		}
 		if secretName == secret.GetName() {
-			log.Info("found AlloyDBCluster relying on secret ", "name", fmt.Sprintf("%v/%v", cluster.GetNamespace(), cluster.GetName()), "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
+			log.Info("found AlloyDBCluster relying on secret", "name", fmt.Sprintf("%v/%v", cluster.GetNamespace(), cluster.GetName()), "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
 			requests = append(requests, reconcile.Request{
 				NamespacedName: types.NamespacedName{
 					Name:      cluster.GetName(), // Reconcile the AlloyDBCluster which referenced the given K8s Secret.
