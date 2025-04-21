@@ -210,7 +210,7 @@ GRPC /google.cloud.dataplex.v1.DataplexService/UpdateTask
       "type": "ON_DEMAND"
     }
   },
-  "updateMask": "description,executionSpec,spark"
+  "updateMask": "description"
 }
 
 OK

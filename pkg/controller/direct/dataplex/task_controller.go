@@ -25,6 +25,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
@@ -208,15 +211,15 @@ func (a *taskAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		updateMask.Paths = append(updateMask.Paths, "trigger_spec.schedule")
 	}
 
-	if !reflect.DeepEqual(task.ExecutionSpec, a.actual.ExecutionSpec) {
+	if !cmp.Equal(task.ExecutionSpec, a.actual.ExecutionSpec, cmpopts.IgnoreUnexported(pb.Task_ExecutionSpec{})) {
 		updateMask.Paths = append(updateMask.Paths, "execution_spec")
 	}
 
 	// Compare task-specific config (spark or notebook)
-	if !reflect.DeepEqual(task.GetSpark(), a.actual.GetSpark()) {
+	if !cmp.Equal(task.GetSpark(), a.actual.GetSpark(), cmpopts.IgnoreUnexported(pb.Task_SparkTaskConfig{}, pb.Task_InfrastructureSpec{})) {
 		updateMask.Paths = append(updateMask.Paths, "spark")
 	}
-	if !reflect.DeepEqual(task.GetNotebook(), a.actual.GetNotebook()) {
+	if !cmp.Equal(task.GetNotebook(), a.actual.GetNotebook(), cmpopts.IgnoreUnexported(pb.Task_NotebookTaskConfig{}, pb.Task_InfrastructureSpec{})) {
 		updateMask.Paths = append(updateMask.Paths, "notebook")
 	}
 
