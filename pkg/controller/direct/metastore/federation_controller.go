@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strconv"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -66,12 +67,17 @@ func (m *MetastoreFederationModel) AdapterForObject(ctx context.Context, reader 
 		return nil, err
 	}
 
-	metastoreClient, err := gcp.NewDataprocMetastoreFederationClient(ctx)
+	// Get metastore GCP client
+	gcpClient, err := newGCPClient(ctx, &m.config)
+	if err != nil {
+		return nil, err
+	}
+	metastoreFederationClient, err := gcpClient.newDataprocMetastoreFederationClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &MetastoreFederationAdapter{
-		gcpClient: metastoreClient,
+		gcpClient: metastoreFederationClient,
 		id:        id,
 		desired:   obj,
 		reader:    reader,
@@ -152,6 +158,14 @@ func (a *MetastoreFederationAdapter) Create(ctx context.Context, createOp *direc
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
+
+	// Pre-validate map keys can be parsed as int32
+	for k := range desired.Spec.BackendMetastores {
+		if _, err := strconv.ParseInt(k, 10, 32); err != nil {
+			return fmt.Errorf("invalid backend metastore index %q: must be a valid int32", k)
+		}
+	}
+
 	resource := MetastoreFederationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -192,6 +206,14 @@ func (a *MetastoreFederationAdapter) Update(ctx context.Context, updateOp *direc
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
+
+	// Pre-validate map keys can be parsed as int32
+	for k := range desired.Spec.BackendMetastores {
+		if _, err := strconv.ParseInt(k, 10, 32); err != nil {
+			return fmt.Errorf("invalid backend metastore index %q: must be a valid int32", k)
+		}
+	}
+
 	resource := MetastoreFederationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

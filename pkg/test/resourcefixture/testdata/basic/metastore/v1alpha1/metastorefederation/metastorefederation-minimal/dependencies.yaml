@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,16 +13,13 @@
 # limitations under the License.
 
 apiVersion: metastore.cnrm.cloud.google.com/v1alpha1
-kind: MetastoreFederation
+kind: MetastoreService
 metadata:
   name: msfed-${uniqueId}
 spec:
   location: us-central1
   projectRef:
     external: ${projectId}
-  version: 3.1.2
-  backendMetastores:
-    "1":
-      serviceRef:
-        name: msfed-${uniqueId}
-      metastoreType:  DATAPROC_METASTORE
+  hiveMetastoreConfig:
+    version: 3.1.2
+    endpointProtocol: GRPC

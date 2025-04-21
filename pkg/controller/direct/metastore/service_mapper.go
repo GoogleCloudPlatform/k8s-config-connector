@@ -30,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
 	"google.golang.org/protobuf/types/known/wrapperspb"
-	"k8s.io/klog"
 )
 
 func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krm.AuxiliaryVersionConfig {
@@ -310,7 +309,9 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metastor
 	for k, v := range in.BackendMetastores {
 		ik, err := strconv.ParseInt(k, 10, 32)
 		if err != nil {
-			klog.Fatalf("error parsing int32 key %q: %v", k, err)
+			// we prevalidate in create and update.
+			// so we can safely ignore this error
+			continue
 		}
 		out.BackendMetastores[int32(ik)] = BackendMetastore_ToProto(mapCtx, &v)
 	}

@@ -47,3 +47,15 @@ func (m *gcpClient) newDataprocMetastoreClient(ctx context.Context) (*api.Datapr
 	}
 	return client, err
 }
+
+func (m *gcpClient) newDataprocMetastoreFederationClient(ctx context.Context) (*api.DataprocMetastoreFederationClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewDataprocMetastoreFederationRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building metastore federation client: %w", err)
+	}
+	return client, err
+}
