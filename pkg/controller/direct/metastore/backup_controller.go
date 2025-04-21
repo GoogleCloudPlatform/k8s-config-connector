@@ -170,7 +170,15 @@ func (a *MetastoreBackupAdapter) Create(ctx context.Context, createOp *directbas
 func (a *MetastoreBackupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("resource has no mutable fields, skipping update", "name", a.id)
-	return nil
+
+	mapCtx := &direct.MapContext{}
+	status := &krm.MetastoreBackupStatus{}
+	status.ObservedState = MetastoreBackupObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
