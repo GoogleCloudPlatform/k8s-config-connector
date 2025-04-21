@@ -1,0 +1,36 @@
+apiVersion: metastore.cnrm.cloud.google.com/v1alpha1
+kind: MetastoreFederation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: msfed-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backendMetastores:
+    "1":
+      metastoreType: DATAPROC_METASTORE
+      serviceRef:
+        name: msfed-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  version: 3.1.2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    endpointURI: https://standalone-federation-msfed-${uniqueId}-71767-tvskqxt2aa-uc.a.run.app:443
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
