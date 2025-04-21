@@ -6,17 +6,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 OK
 
-{
-  "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    }
-  ]
-}
+{}
 
 ---
 
@@ -152,13 +142,6 @@ OK
   "instances": [
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
@@ -212,13 +195,6 @@ OK
 
 {
   "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
@@ -383,10 +359,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Updated description.",
+    "multiClusterRoutingUseAny": {
+      "clusterIds": [
+        "cluster1-${uniqueId}",
+        "cluster2-${uniqueId}"
+      ]
+    },
+    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+    "standardIsolation": {
+      "priority": "PRIORITY_LOW"
+    }
+  }
 }
 
 ---
@@ -449,13 +440,6 @@ OK
 
 {
   "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
