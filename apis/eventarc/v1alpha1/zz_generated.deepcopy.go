@@ -193,8 +193,8 @@ func (in *EventarcChannelSpec) DeepCopyInto(out *EventarcChannelSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Provider != nil {
-		in, out := &in.Provider, &out.Provider
+	if in.ProviderRef != nil {
+		in, out := &in.ProviderRef, &out.ProviderRef
 		*out = new(v1.ProviderRef)
 		**out = **in
 	}
