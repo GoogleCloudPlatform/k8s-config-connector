@@ -101,15 +101,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: accesscontextmanager-accesscontextmanagerserviceperimeterresources
-      local: resource-accesscontextmanager-accesscontextmanagerserviceperimeterresources
-      remote: resource-accesscontextmanager-accesscontextmanagerserviceperimeterresources
+    - name: accesscontextmanager-accesscontextmanagerserviceperimeterresource
+      local: resource-accesscontextmanager-accesscontextmanagerserviceperimeterresource
+      remote: resource-accesscontextmanager-accesscontextmanagerserviceperimeterresource
       command: ""
       group: accesscontextmanager
-      resource: accesscontextmanagerserviceperimeterresources
-      controller: terraform
+      resource: accesscontextmanagerserviceperimeterresource
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: AccessContextManagerServicePerimeterResource
       package: ""
       proto: ""
       proto-path: ""
@@ -135,15 +135,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: accesscontextmanager-accesscontextmanageraccesslevels
-      local: resource-accesscontextmanager-accesscontextmanageraccesslevels
-      remote: resource-accesscontextmanager-accesscontextmanageraccesslevels
+    - name: accesscontextmanager-accesscontextmanageraccesslevel
+      local: resource-accesscontextmanager-accesscontextmanageraccesslevel
+      remote: resource-accesscontextmanager-accesscontextmanageraccesslevel
       command: gcloud access-context-manager levels
       group: accesscontextmanager
-      resource: accesscontextmanageraccesslevels
-      controller: terraform
+      resource: accesscontextmanageraccesslevel
+      controller: terraform-v1beta1
       skip: false
-      kind: IdentityAccessLevel
+      kind: AccessContextManagerAccessLevel
       package: google.identity.accesscontextmanager.v1
       proto: AccessLevel
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
@@ -152,15 +152,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: accesscontextmanager-accesscontextmanageraccesspolicies
-      local: resource-accesscontextmanager-accesscontextmanageraccesspolicies
-      remote: resource-accesscontextmanager-accesscontextmanageraccesspolicies
+    - name: accesscontextmanager-accesscontextmanageraccesspolicy
+      local: resource-accesscontextmanager-accesscontextmanageraccesspolicy
+      remote: resource-accesscontextmanager-accesscontextmanageraccesspolicy
       command: gcloud access-context-manager policies
       group: accesscontextmanager
-      resource: accesscontextmanageraccesspolicies
-      controller: terraform
+      resource: accesscontextmanageraccesspolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: IdentityAccessPolicy
+      kind: AccessContextManagerAccessPolicy
       package: google.identity.accesscontextmanager.v1
       proto: AccessPolicy
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
@@ -186,15 +186,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: accesscontextmanager-accesscontextmanagerserviceperimeters
-      local: resource-accesscontextmanager-accesscontextmanagerserviceperimeters
-      remote: resource-accesscontextmanager-accesscontextmanagerserviceperimeters
+    - name: accesscontextmanager-accesscontextmanagerserviceperimeter
+      local: resource-accesscontextmanager-accesscontextmanagerserviceperimeter
+      remote: resource-accesscontextmanager-accesscontextmanagerserviceperimeter
       command: gcloud access-context-manager perimeters
       group: accesscontextmanager
-      resource: accesscontextmanagerserviceperimeters
-      controller: terraform
+      resource: accesscontextmanagerserviceperimeter
+      controller: terraform-v1beta1
       skip: false
-      kind: IdentityServicePerimeter
+      kind: AccessContextManagerServicePerimeter
       package: google.identity.accesscontextmanager.v1
       proto: ServicePerimeter
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
@@ -1661,15 +1661,15 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: alloydb-alloydbbackups
-      local: resource-alloydb-alloydbbackups
-      remote: resource-alloydb-alloydbbackups
+    - name: alloydb-alloydbbackup
+      local: resource-alloydb-alloydbbackup
+      remote: resource-alloydb-alloydbbackup
       command: ""
       group: alloydb
-      resource: alloydbbackups
-      controller: terraform
+      resource: alloydbbackup
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: AlloyDBBackup
       package: ""
       proto: ""
       proto-path: ""
@@ -1678,15 +1678,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: alloydb-alloydbclusters
-      local: resource-alloydb-alloydbclusters
-      remote: resource-alloydb-alloydbclusters
+    - name: alloydb-alloydbcluster
+      local: resource-alloydb-alloydbcluster
+      remote: resource-alloydb-alloydbcluster
       command: ""
       group: alloydb
-      resource: alloydbclusters
-      controller: terraform
+      resource: alloydbcluster
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: AlloyDBCluster
       package: ""
       proto: ""
       proto-path: ""
@@ -1695,12 +1695,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: alloydb-alloydbinstances
-      local: resource-alloydb-alloydbinstances
-      remote: resource-alloydb-alloydbinstances
+    - name: alloydb-alloydbinstance
+      local: resource-alloydb-alloydbinstance
+      remote: resource-alloydb-alloydbinstance
       command: ""
       group: alloydb
-      resource: alloydbinstances
+      resource: alloydbinstance
       controller: direct
       skip: false
       kind: ""
@@ -1712,15 +1712,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: alloydb-alloydbusers
-      local: resource-alloydb-alloydbusers
-      remote: resource-alloydb-alloydbusers
+    - name: alloydb-alloydbuser
+      local: resource-alloydb-alloydbuser
+      remote: resource-alloydb-alloydbuser
       command: ""
       group: alloydb
-      resource: alloydbusers
-      controller: terraform
+      resource: alloydbuser
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: AlloyDBUser
       package: ""
       proto: ""
       proto-path: ""
@@ -3592,7 +3592,7 @@ branches:
       command: ""
       group: artifactregistry
       resource: artifactregistryrepository
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: ArtifactRegistryRepository
       package: google.devtools.artifactregistry.v1
@@ -4617,15 +4617,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: bigquery-bigquerydatasets
-      local: resource-bigquery-bigquerydatasets
-      remote: resource-bigquery-bigquerydatasets
+    - name: bigquery-bigquerydataset
+      local: resource-bigquery-bigquerydataset
+      remote: resource-bigquery-bigquerydataset
       command: ""
       group: bigquery
-      resource: bigquerydatasets
-      controller: terraform
+      resource: bigquerydataset
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: BigQueryDataset
       package: ""
       proto: ""
       proto-path: ""
@@ -4634,15 +4634,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: bigquery-bigqueryjobs
-      local: resource-bigquery-bigqueryjobs
-      remote: resource-bigquery-bigqueryjobs
+    - name: bigquery-bigqueryjob
+      local: resource-bigquery-bigqueryjob
+      remote: resource-bigquery-bigqueryjob
       command: ""
       group: bigquery
-      resource: bigqueryjobs
-      controller: terraform
+      resource: bigqueryjob
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: BigQueryJob
       package: ""
       proto: ""
       proto-path: ""
@@ -4651,15 +4651,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: bigquery-bigqueryroutines
-      local: resource-bigquery-bigqueryroutines
-      remote: resource-bigquery-bigqueryroutines
+    - name: bigquery-bigqueryroutine
+      local: resource-bigquery-bigqueryroutine
+      remote: resource-bigquery-bigqueryroutine
       command: ""
       group: bigquery
-      resource: bigqueryroutines
-      controller: terraform
+      resource: bigqueryroutine
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: BigQueryRoutine
       package: ""
       proto: ""
       proto-path: ""
@@ -4668,15 +4668,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: bigquery-bigquerytables
-      local: resource-bigquery-bigquerytables
-      remote: resource-bigquery-bigquerytables
+    - name: bigquery-bigquerytable
+      local: resource-bigquery-bigquerytable
+      remote: resource-bigquery-bigquerytable
       command: ""
       group: bigquery
-      resource: bigquerytables
-      controller: terraform
+      resource: bigquerytable
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: BigQueryTable
       package: ""
       proto: ""
       proto-path: ""
@@ -5216,81 +5216,13 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: bigtable-bigtableappprofiles
-      local: resource-bigtable-bigtableappprofiles
-      remote: resource-bigtable-bigtableappprofiles
-      command: ""
-      group: bigtable
-      resource: bigtableappprofiles
-      controller: terraform
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: bigtable-bigtablegcpolicies
-      local: resource-bigtable-bigtablegcpolicies
-      remote: resource-bigtable-bigtablegcpolicies
-      command: ""
-      group: bigtable
-      resource: bigtablegcpolicies
-      controller: terraform
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: bigtable-bigtableinstances
-      local: resource-bigtable-bigtableinstances
-      remote: resource-bigtable-bigtableinstances
-      command: ""
-      group: bigtable
-      resource: bigtableinstances
-      controller: terraform
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: bigtable-bigtabletables
-      local: resource-bigtable-bigtabletables
-      remote: resource-bigtable-bigtabletables
-      command: ""
-      group: bigtable
-      resource: bigtabletables
-      controller: terraform
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: bigtable-appprofile
       local: resource-bigtable-appprofile
       remote: resource-bigtable-appprofile
       command: gcloud bigtable app-profiles
       group: bigtable
-      resource: appprofile
-      controller: Unknown
+      resource: bigtableappprofile
+      controller: terraform-v1beta1
       skip: false
       kind: BigtableAppProfile
       package: google.bigtable.admin.v2
@@ -5301,6 +5233,57 @@ branches:
       host-name: bigtableadmin.googleapis.com
       notes:
         - TF beta
+      apis-enabled: []
+    - name: bigtable-bigtablegcpolicy
+      local: resource-bigtable-bigtablegcpolicy
+      remote: resource-bigtable-bigtablegcpolicy
+      command: ""
+      group: bigtable
+      resource: bigtablegcpolicy
+      controller: terraform-v1beta1
+      skip: false
+      kind: BigtableGCPolicy
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+      apis-enabled: []
+    - name: bigtable-bigtableinstance
+      local: resource-bigtable-bigtableinstance
+      remote: resource-bigtable-bigtableinstance
+      command: ""
+      group: bigtable
+      resource: bigtableinstance
+      controller: terraform-v1beta1
+      skip: false
+      kind: BigtableInstance
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
+      apis-enabled: []
+    - name: bigtable-bigtable
+      local: resource-bigtable-bigtable
+      remote: resource-bigtable-bigtable
+      command: ""
+      group: bigtable
+      resource: bigtable
+      controller: terraform-v1beta1
+      skip: false
+      kind: BigtableTable
+      package: ""
+      proto: ""
+      proto-path: ""
+      proto-service: ""
+      proto-msg: ""
+      host-name: ""
+      notes: []
       apis-enabled: []
     - name: bigtable-authorizedview
       local: resource-bigtable-authorizedview
@@ -5637,15 +5620,15 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: certificatemanager-certificatemanagercertificatemapentries
-      local: resource-certificatemanager-certificatemanagercertificatemapentries
-      remote: resource-certificatemanager-certificatemanagercertificatemapentries
+    - name: certificatemanager-certificatemanagercertificatemap
+      local: resource-certificatemanager-certificatemanagercertificatemap
+      remote: resource-certificatemanager-certificatemanagercertificatemap
       command: ""
       group: certificatemanager
-      resource: certificatemanagercertificatemapentries
-      controller: terraform
+      resource: certificatemanagercertificatemap
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: CertificateManagerCertificateMap
       package: ""
       proto: ""
       proto-path: ""
@@ -5654,32 +5637,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: certificatemanager-certificatemanagercertificatemaps
-      local: resource-certificatemanager-certificatemanagercertificatemaps
-      remote: resource-certificatemanager-certificatemanagercertificatemaps
+    - name: certificatemanager-certificatemanagercertificate
+      local: resource-certificatemanager-certificatemanagercertificate
+      remote: resource-certificatemanager-certificatemanagercertificate
       command: ""
       group: certificatemanager
-      resource: certificatemanagercertificatemaps
-      controller: terraform
+      resource: certificatemanagercertificate
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: certificatemanager-certificatemanagercertificates
-      local: resource-certificatemanager-certificatemanagercertificates
-      remote: resource-certificatemanager-certificatemanagercertificates
-      command: ""
-      group: certificatemanager
-      resource: certificatemanagercertificates
-      controller: terraform
-      skip: false
-      kind: ""
+      kind: CertificateManagerCertificate
       package: ""
       proto: ""
       proto-path: ""
@@ -5780,7 +5746,7 @@ branches:
       command: ""
       group: certificatemanager
       resource: certificatemapentry
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
       kind: CertificateManagerCertificateMapEntry
       package: google.cloud.certificatemanager.v1
@@ -6093,15 +6059,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: cloudbuild-triggers
-      local: resource-cloudbuild-triggers
-      remote: resource-cloudbuild-triggers
+    - name: cloudbuild-trigger
+      local: resource-cloudbuild-trigger
+      remote: resource-cloudbuild-trigger
       command: ""
       group: cloudbuild
-      resource: cloudbuildtriggers
-      controller: terraform
+      resource: cloudbuildtrigger
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: CloudBuildTrigger
       package: ""
       proto: ""
       proto-path: ""
@@ -6541,9 +6507,9 @@ branches:
       command: ""
       group: cloudidentity
       resource: cloudidentitygroup
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: CloudIdentityGroup
       package: ""
       proto: ""
       proto-path: ""
@@ -6569,15 +6535,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: cloudids-cloudidsendpoints
-      local: resource-cloudids-cloudidsendpoints
-      remote: resource-cloudids-cloudidsendpoints
+    - name: cloudids-cloudidsendpoint
+      local: resource-cloudids-cloudidsendpoint
+      remote: resource-cloudids-cloudidsendpoint
       command: ""
       group: cloudids
-      resource: cloudidsendpoints
-      controller: terraform
+      resource: cloudidsendpoint
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: CloudIDSEndpoint
       package: ""
       proto: ""
       proto-path: ""
@@ -6853,15 +6819,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeaddresses
-      local: resource-compute-computeaddresses
-      remote: resource-compute-computeaddresses
+    - name: compute-computeaddress
+      local: resource-compute-computeaddress
+      remote: resource-compute-computeaddress
       command: gcloud compute addresses
       group: compute
-      resource: computeaddresses
-      controller: terraform
+      resource: computeaddress
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeAddress
       package: ""
       proto: ""
       proto-path: ""
@@ -6887,15 +6853,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computebackendbuckets
-      local: resource-compute-computebackendbuckets
-      remote: resource-compute-computebackendbuckets
+    - name: compute-computebackendbucket
+      local: resource-compute-computebackendbucket
+      remote: resource-compute-computebackendbucket
       command: gcloud compute backend-buckets
       group: compute
-      resource: computebackendbuckets
-      controller: terraform
+      resource: computebackendbucket
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeBackendBucket
       package: ""
       proto: ""
       proto-path: ""
@@ -6927,9 +6893,9 @@ branches:
       command: gcloud compute backend-services
       group: compute
       resource: computebackendservice
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeBackendService
       package: ""
       proto: BackendService
       proto-path: google/cloud/compute/v1/compute.proto
@@ -6955,12 +6921,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computediskresourcepolicyattachments
-      local: resource-compute-computediskresourcepolicyattachments
-      remote: resource-compute-computediskresourcepolicyattachments
+    - name: compute-computediskresourcepolicyattachment
+      local: resource-compute-computediskresourcepolicyattachment
+      remote: resource-compute-computediskresourcepolicyattachment
       command: ""
       group: compute
-      resource: computediskresourcepolicyattachments
+      resource: computediskresourcepolicyattachment
       controller: terraform
       skip: false
       kind: ""
@@ -6972,22 +6938,24 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computedisks
-      local: resource-compute-computedisks
-      remote: resource-compute-computedisks
+    - name: compute-computedisk
+      local: resource-compute-computedisk
+      remote: resource-compute-computedisk
       command: gcloud compute disks
       group: compute
-      resource: computedisks
-      controller: terraform
+      resource: computedisk
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      kind: ComputeDisk
+      package: google.cloud.compute.v1
+      proto: Disk
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Disks
+      proto-msg: google.cloud.compute.v1.Disk
+      host-name: compute.googleapis.com
+      notes:
+        - mock exists
+        - TF beta
       apis-enabled: []
     - name: compute-computedisksbulk
       local: resource-compute-computedisksbulk
@@ -7006,15 +6974,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeexternalvpngateways
-      local: resource-compute-computeexternalvpngateways
-      remote: resource-compute-computeexternalvpngateways
+    - name: compute-computeexternalvpngateway
+      local: resource-compute-computeexternalvpngateway
+      remote: resource-compute-computeexternalvpngateway
       command: gcloud compute external-vpn-gateways
       group: compute
-      resource: computeexternalvpngateways
-      controller: terraform
+      resource: computeexternalvpngateway
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeExternalVPNGateway
       package: ""
       proto: ""
       proto-path: ""
@@ -7023,12 +6991,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computefirewallpolicies
-      local: resource-compute-computefirewallpolicies
-      remote: resource-compute-computefirewallpolicies
+    - name: compute-computefirewallpolicy
+      local: resource-compute-computefirewallpolicy
+      remote: resource-compute-computefirewallpolicy
       command: gcloud compute firewall-policies
       group: compute
-      resource: computefirewallpolicies
+      resource: computefirewallpolicy
       controller: dcl
       skip: false
       kind: ""
@@ -7040,12 +7008,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computefirewallpolicyassociations
-      local: resource-compute-computefirewallpolicyassociations
-      remote: resource-compute-computefirewallpolicyassociations
+    - name: compute-computefirewallpolicyassociation
+      local: resource-compute-computefirewallpolicyassociation
+      remote: resource-compute-computefirewallpolicyassociation
       command: ""
       group: compute
-      resource: computefirewallpolicyassociations
+      resource: computefirewallpolicyassociation
       controller: dcl
       skip: false
       kind: ""
@@ -7057,12 +7025,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computefirewallpolicyrules
-      local: resource-compute-computefirewallpolicyrules
-      remote: resource-compute-computefirewallpolicyrules
+    - name: compute-computefirewallpolicyrule
+      local: resource-compute-computefirewallpolicyrule
+      remote: resource-compute-computefirewallpolicyrule
       command: gcloud compute firewall-rules
       group: compute
-      resource: computefirewallpolicyrules
+      resource: computefirewallpolicyrule
       controller: direct
       skip: false
       kind: ""
@@ -7074,15 +7042,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computefirewalls
-      local: resource-compute-computefirewalls
-      remote: resource-compute-computefirewalls
+    - name: compute-computefirewall
+      local: resource-compute-computefirewall
+      remote: resource-compute-computefirewall
       command: ""
       group: compute
-      resource: computefirewalls
-      controller: terraform
+      resource: computefirewall
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeFirewall
       package: ""
       proto: ""
       proto-path: ""
@@ -7091,15 +7059,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeforwardingrules
-      local: resource-compute-computeforwardingrules
-      remote: resource-compute-computeforwardingrules
+    - name: compute-computeforwardingrule
+      local: resource-compute-computeforwardingrule
+      remote: resource-compute-computeforwardingrule
       command: gcloud compute forwarding-rules
       group: compute
-      resource: computeforwardingrules
-      controller: terraform
+      resource: computeforwardingrule
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeForwardingRule
       package: ""
       proto: ""
       proto-path: ""
@@ -7142,15 +7110,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computehealthchecks
-      local: resource-compute-computehealthchecks
-      remote: resource-compute-computehealthchecks
+    - name: compute-computehealthcheck
+      local: resource-compute-computehealthcheck
+      remote: resource-compute-computehealthcheck
       command: gcloud compute health-checks
       group: compute
-      resource: computehealthchecks
-      controller: terraform
+      resource: computehealthcheck
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeHealthCheck
       package: ""
       proto: ""
       proto-path: ""
@@ -7159,15 +7127,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computehttphealthchecks
-      local: resource-compute-computehttphealthchecks
-      remote: resource-compute-computehttphealthchecks
+    - name: compute-computehttphealthcheck
+      local: resource-compute-computehttphealthcheck
+      remote: resource-compute-computehttphealthcheck
       command: gcloud compute http-health-checks
       group: compute
-      resource: computehttphealthchecks
-      controller: terraform
+      resource: computehttphealthcheck
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeHTTPHealthCheck
       package: ""
       proto: ""
       proto-path: ""
@@ -7176,15 +7144,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computehttpshealthchecks
-      local: resource-compute-computehttpshealthchecks
-      remote: resource-compute-computehttpshealthchecks
+    - name: compute-computehttpshealthcheck
+      local: resource-compute-computehttpshealthcheck
+      remote: resource-compute-computehttpshealthcheck
       command: gcloud compute https-health-checks
       group: compute
-      resource: computehttpshealthchecks
-      controller: terraform
+      resource: computehttpshealthcheck
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeHTTPSHealthCheck
       package: ""
       proto: ""
       proto-path: ""
@@ -7193,15 +7161,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeimages
-      local: resource-compute-computeimages
-      remote: resource-compute-computeimages
+    - name: compute-computeimage
+      local: resource-compute-computeimage
+      remote: resource-compute-computeimage
       command: gcloud compute images
       group: compute
-      resource: computeimages
-      controller: terraform
+      resource: computeimage
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeImage
       package: ""
       proto: ""
       proto-path: ""
@@ -7210,12 +7178,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinstancegroupmanagers
-      local: resource-compute-computeinstancegroupmanagers
-      remote: resource-compute-computeinstancegroupmanagers
+    - name: compute-computeinstancegroupmanager
+      local: resource-compute-computeinstancegroupmanager
+      remote: resource-compute-computeinstancegroupmanager
       command: ""
       group: compute
-      resource: computeinstancegroupmanagers
+      resource: computeinstancegroupmanager
       controller: dcl
       skip: false
       kind: ""
@@ -7227,12 +7195,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinstancegroupnamedports
-      local: resource-compute-computeinstancegroupnamedports
-      remote: resource-compute-computeinstancegroupnamedports
+    - name: compute-computeinstancegroupnamedport
+      local: resource-compute-computeinstancegroupnamedport
+      remote: resource-compute-computeinstancegroupnamedport
       command: ""
       group: compute
-      resource: computeinstancegroupnamedports
+      resource: computeinstancegroupnamedport
       controller: terraform
       skip: false
       kind: ""
@@ -7244,15 +7212,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinstancegroups
-      local: resource-compute-computeinstancegroups
-      remote: resource-compute-computeinstancegroups
+    - name: compute-computeinstancegroup
+      local: resource-compute-computeinstancegroup
+      remote: resource-compute-computeinstancegroup
       command: gcloud compute instance-groups
       group: compute
-      resource: computeinstancegroups
-      controller: terraform
+      resource: computeinstancegroup
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeInstanceGroup
       package: ""
       proto: ""
       proto-path: ""
@@ -7261,15 +7229,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinstances
-      local: resource-compute-computeinstances
-      remote: resource-compute-computeinstances
+    - name: compute-computeinstance
+      local: resource-compute-computeinstance
+      remote: resource-compute-computeinstance
       command: gcloud compute instances
       group: compute
-      resource: computeinstances
-      controller: terraform
+      resource: computeinstance
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeInstance
       package: ""
       proto: ""
       proto-path: ""
@@ -7278,15 +7246,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinstancetemplates
-      local: resource-compute-computeinstancetemplates
-      remote: resource-compute-computeinstancetemplates
+    - name: compute-computeinstancetemplate
+      local: resource-compute-computeinstancetemplate
+      remote: resource-compute-computeinstancetemplate
       command: gcloud compute instance-templates
       group: compute
-      resource: computeinstancetemplates
-      controller: terraform
+      resource: computeinstancetemplate
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeInstanceTemplate
       package: ""
       proto: ""
       proto-path: ""
@@ -7329,15 +7297,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeinterconnectattachments
-      local: resource-compute-computeinterconnectattachments
-      remote: resource-compute-computeinterconnectattachments
+    - name: compute-computeinterconnectattachment
+      local: resource-compute-computeinterconnectattachment
+      remote: resource-compute-computeinterconnectattachment
       command: gcloud compute interconnects attachments
       group: compute
-      resource: computeinterconnectattachments
-      controller: terraform
+      resource: computeinterconnectattachment
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeInterconnectAttachment
       package: ""
       proto: ""
       proto-path: ""
@@ -7363,15 +7331,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computemanagedsslcertificates
-      local: resource-compute-computemanagedsslcertificates
-      remote: resource-compute-computemanagedsslcertificates
+    - name: compute-computemanagedsslcertificate
+      local: resource-compute-computemanagedsslcertificate
+      remote: resource-compute-computemanagedsslcertificate
       command: ""
       group: compute
-      resource: computemanagedsslcertificates
-      controller: terraform
+      resource: computemanagedsslcertificate
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeManagedSSLCertificate
       package: ""
       proto: ""
       proto-path: ""
@@ -7414,15 +7382,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkendpointgroups
-      local: resource-compute-computenetworkendpointgroups
-      remote: resource-compute-computenetworkendpointgroups
+    - name: compute-computenetworkendpointgroup
+      local: resource-compute-computenetworkendpointgroup
+      remote: resource-compute-computenetworkendpointgroup
       command: gcloud compute network-endpoint-groups
       group: compute
-      resource: computenetworkendpointgroups
-      controller: terraform
+      resource: computenetworkendpointgroup
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNetworkEndpointGroup
       package: ""
       proto: ""
       proto-path: ""
@@ -7448,15 +7416,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkfirewallpolicies
-      local: resource-compute-computenetworkfirewallpolicies
-      remote: resource-compute-computenetworkfirewallpolicies
+    - name: compute-computenetworkfirewallpolicy
+      local: resource-compute-computenetworkfirewallpolicy
+      remote: resource-compute-computenetworkfirewallpolicy
       command: gcloud compute network-firewall-policies
       group: compute
-      resource: computenetworkfirewallpolicies
-      controller: terraform
+      resource: computenetworkfirewallpolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNetworkFirewallPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -7465,15 +7433,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkfirewallpolicyassociations
-      local: resource-compute-computenetworkfirewallpolicyassociations
-      remote: resource-compute-computenetworkfirewallpolicyassociations
+    - name: compute-computenetworkfirewallpolicyassociation
+      local: resource-compute-computenetworkfirewallpolicyassociation
+      remote: resource-compute-computenetworkfirewallpolicyassociation
       command: ""
       group: compute
-      resource: computenetworkfirewallpolicyassociations
-      controller: terraform
+      resource: computenetworkfirewallpolicyassociation
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNetworkFirewallPolicyAssociation
       package: ""
       proto: ""
       proto-path: ""
@@ -7499,12 +7467,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkpeeringroutesconfigs
-      local: resource-compute-computenetworkpeeringroutesconfigs
-      remote: resource-compute-computenetworkpeeringroutesconfigs
+    - name: compute-computenetworkpeeringroutesconfig
+      local: resource-compute-computenetworkpeeringroutesconfig
+      remote: resource-compute-computenetworkpeeringroutesconfig
       command: ""
       group: compute
-      resource: computenetworkpeeringroutesconfigs
+      resource: computenetworkpeeringroutesconfig
       controller: terraform
       skip: false
       kind: ""
@@ -7516,15 +7484,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkpeerings
-      local: resource-compute-computenetworkpeerings
-      remote: resource-compute-computenetworkpeerings
+    - name: compute-computenetworkpeering
+      local: resource-compute-computenetworkpeering
+      remote: resource-compute-computenetworkpeering
       command: ""
       group: compute
-      resource: computenetworkpeerings
-      controller: terraform
+      resource: computenetworkpeering
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNetworkPeering
       package: ""
       proto: ""
       proto-path: ""
@@ -7533,15 +7501,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworks
-      local: resource-compute-computenetworks
-      remote: resource-compute-computenetworks
+    - name: compute-computenetwork
+      local: resource-compute-computenetwork
+      remote: resource-compute-computenetwork
       command: gcloud compute networks
       group: compute
-      resource: computenetworks
-      controller: terraform
+      resource: computenetwork
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNetwork
       package: ""
       proto: ""
       proto-path: ""
@@ -7550,12 +7518,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenetworkspeerings
-      local: resource-compute-computenetworkspeerings
-      remote: resource-compute-computenetworkspeerings
+    - name: compute-computenetworkspeering
+      local: resource-compute-computenetworkspeering
+      remote: resource-compute-computenetworkspeering
       command: gcloud compute networks peerings
       group: compute
-      resource: computenetworkspeerings
+      resource: computenetworkspeering
       controller: unknown
       skip: false
       kind: ""
@@ -7618,15 +7586,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenodegroups
-      local: resource-compute-computenodegroups
-      remote: resource-compute-computenodegroups
+    - name: compute-computenodegroup
+      local: resource-compute-computenodegroup
+      remote: resource-compute-computenodegroup
       command: ""
       group: compute
-      resource: computenodegroups
-      controller: terraform
+      resource: computenodegroup
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNodeGroup
       package: ""
       proto: ""
       proto-path: ""
@@ -7635,15 +7603,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computenodetemplates
-      local: resource-compute-computenodetemplates
-      remote: resource-compute-computenodetemplates
+    - name: compute-computenodetemplate
+      local: resource-compute-computenodetemplate
+      remote: resource-compute-computenodetemplate
       command: ""
       group: compute
-      resource: computenodetemplates
-      controller: terraform
+      resource: computenodetemplate
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeNodeTemplate
       package: ""
       proto: ""
       proto-path: ""
@@ -7652,12 +7620,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeorganizationsecuritypolicies
-      local: resource-compute-computeorganizationsecuritypolicies
-      remote: resource-compute-computeorganizationsecuritypolicies
+    - name: compute-computeorganizationsecuritypolicy
+      local: resource-compute-computeorganizationsecuritypolicy
+      remote: resource-compute-computeorganizationsecuritypolicy
       command: ""
       group: compute
-      resource: computeorganizationsecuritypolicies
+      resource: computeorganizationsecuritypolicy
       controller: terraform
       skip: false
       kind: ""
@@ -7737,22 +7705,24 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeprojectmetadatas
-      local: resource-compute-computeprojectmetadatas
-      remote: resource-compute-computeprojectmetadatas
+    - name: compute-computeprojectmetadata
+      local: resource-compute-computeprojectmetadata
+      remote: resource-compute-computeprojectmetadata
       command: gcloud compute project-zonal-metadata
       group: compute
-      resource: computeprojectmetadatas
-      controller: terraform
+      resource: computeprojectmetadata
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
-      package: ""
+      kind: ComputeProjectMetadata
+      package: google.cloud.compute.v1
       proto: ""
-      proto-path: ""
+      proto-path: google/cloud/compute/v1/compute.proto
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: compute.googleapis.com
+      notes:
+        - TF beta
+        - no proto found
       apis-enabled: []
     - name: compute-computepublicadvertisedprefixes
       local: resource-compute-computepublicadvertisedprefixes
@@ -7822,15 +7792,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeregionnetworkendpointgroups
-      local: resource-compute-computeregionnetworkendpointgroups
-      remote: resource-compute-computeregionnetworkendpointgroups
+    - name: compute-computeregionnetworkendpointgroup
+      local: resource-compute-computeregionnetworkendpointgroup
+      remote: resource-compute-computeregionnetworkendpointgroup
       command: ""
       group: compute
-      resource: computeregionnetworkendpointgroups
-      controller: terraform
+      resource: computeregionnetworkendpointgroup
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRegionNetworkEndpointGroup
       package: ""
       proto: ""
       proto-path: ""
@@ -7856,9 +7826,9 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeregionsslpolicies
-      local: resource-compute-computeregionsslpolicies
-      remote: resource-compute-computeregionsslpolicies
+    - name: compute-computeregionsslpolicy
+      local: resource-compute-computeregionsslpolicy
+      remote: resource-compute-computeregionsslpolicy
       command: ""
       group: compute
       resource: computeregionsslpolicies
@@ -7873,15 +7843,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computereservations
-      local: resource-compute-computereservations
-      remote: resource-compute-computereservations
+    - name: compute-computereservation
+      local: resource-compute-computereservation
+      remote: resource-compute-computereservation
       command: gcloud compute reservations
       group: compute
-      resource: computereservations
-      controller: terraform
+      resource: computereservation
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeReservation
       package: ""
       proto: ""
       proto-path: ""
@@ -7890,15 +7860,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeresourcepolicies
-      local: resource-compute-computeresourcepolicies
-      remote: resource-compute-computeresourcepolicies
+    - name: compute-computeresourcepolicy
+      local: resource-compute-computeresourcepolicy
+      remote: resource-compute-computeresourcepolicy
       command: gcloud compute resource-policies
       group: compute
-      resource: computeresourcepolicies
-      controller: terraform
+      resource: computeresourcepolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeResourcePolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -7907,15 +7877,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computerouterinterfaces
-      local: resource-compute-computerouterinterfaces
-      remote: resource-compute-computerouterinterfaces
+    - name: compute-computerouterinterface
+      local: resource-compute-computerouterinterface
+      remote: resource-compute-computerouterinterface
       command: ""
       group: compute
-      resource: computerouterinterfaces
-      controller: terraform
+      resource: computerouterinterface
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRouterInterface
       package: ""
       proto: ""
       proto-path: ""
@@ -7924,15 +7894,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computerouternats
-      local: resource-compute-computerouternats
-      remote: resource-compute-computerouternats
+    - name: compute-computerouternat
+      local: resource-compute-computerouternat
+      remote: resource-compute-computerouternat
       command: gcloud compute routers nats
       group: compute
-      resource: computerouternats
-      controller: terraform
+      resource: computerouternat
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRouterNAT
       package: ""
       proto: ""
       proto-path: ""
@@ -7941,15 +7911,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computerouterpeers
-      local: resource-compute-computerouterpeers
-      remote: resource-compute-computerouterpeers
+    - name: compute-computerouterpeer
+      local: resource-compute-computerouterpeer
+      remote: resource-compute-computerouterpeer
       command: ""
       group: compute
-      resource: computerouterpeers
-      controller: terraform
+      resource: computerouterpeer
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRouterPeer
       package: ""
       proto: ""
       proto-path: ""
@@ -7958,15 +7928,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computerouters
-      local: resource-compute-computerouters
-      remote: resource-compute-computerouters
+    - name: compute-computerouter
+      local: resource-compute-computerouter
+      remote: resource-compute-computerouter
       command: gcloud compute routers
       group: compute
-      resource: computerouters
-      controller: terraform
+      resource: computerouter
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRouter
       package: ""
       proto: ""
       proto-path: ""
@@ -7975,15 +7945,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computeroutes
-      local: resource-compute-computeroutes
-      remote: resource-compute-computeroutes
+    - name: compute-computeroute
+      local: resource-compute-computeroute
+      remote: resource-compute-computeroute
       command: gcloud compute routes
       group: compute
-      resource: computeroutes
-      controller: terraform
+      resource: computeroute
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeRoute
       package: ""
       proto: ""
       proto-path: ""
@@ -7992,15 +7962,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesecuritypolicies
-      local: resource-compute-computesecuritypolicies
-      remote: resource-compute-computesecuritypolicies
+    - name: compute-computesecuritypolicy
+      local: resource-compute-computesecuritypolicy
+      remote: resource-compute-computesecuritypolicy
       command: gcloud compute security-policies
       group: compute
-      resource: computesecuritypolicies
-      controller: terraform
+      resource: computesecuritypolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSecurityPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -8026,15 +7996,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesharedvpchostprojects
-      local: resource-compute-computesharedvpchostprojects
-      remote: resource-compute-computesharedvpchostprojects
+    - name: compute-computesharedvpchostproject
+      local: resource-compute-computesharedvpchostproject
+      remote: resource-compute-computesharedvpchostproject
       command: gcloud compute shared-vpc
       group: compute
-      resource: computesharedvpchostprojects
-      controller: terraform
+      resource: computesharedvpchostproject
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSharedVPCHostProject
       package: ""
       proto: ""
       proto-path: ""
@@ -8043,15 +8013,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesharedvpcserviceprojects
-      local: resource-compute-computesharedvpcserviceprojects
-      remote: resource-compute-computesharedvpcserviceprojects
+    - name: compute-computesharedvpcserviceproject
+      local: resource-compute-computesharedvpcserviceproject
+      remote: resource-compute-computesharedvpcserviceproject
       command: gcloud compute shared-vpc associated-projects
       group: compute
-      resource: computesharedvpcserviceprojects
-      controller: terraform
+      resource: computesharedvpcserviceproject
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSharedVPCServiceProject
       package: ""
       proto: ""
       proto-path: ""
@@ -8060,15 +8030,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesnapshots
-      local: resource-compute-computesnapshots
-      remote: resource-compute-computesnapshots
+    - name: compute-computesnapshot
+      local: resource-compute-computesnapshot
+      remote: resource-compute-computesnapshot
       command: gcloud compute snapshots
       group: compute
-      resource: computesnapshots
-      controller: terraform
+      resource: computesnapshot
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSnapshot
       package: ""
       proto: ""
       proto-path: ""
@@ -8077,12 +8047,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesnapshotsettings
-      local: resource-compute-computesnapshotsettings
-      remote: resource-compute-computesnapshotsettings
+    - name: compute-computesnapshotsetting
+      local: resource-compute-computesnapshotsetting
+      remote: resource-compute-computesnapshotsetting
       command: gcloud compute snapshot-settings
       group: compute
-      resource: computesnapshotsettings
+      resource: computesnapshotsetting
       controller: unknown
       skip: false
       kind: ""
@@ -8094,15 +8064,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesslcertificates
-      local: resource-compute-computesslcertificates
-      remote: resource-compute-computesslcertificates
+    - name: compute-computesslcertificate
+      local: resource-compute-computesslcertificate
+      remote: resource-compute-computesslcertificate
       command: gcloud compute ssl-certificates
       group: compute
-      resource: computesslcertificates
-      controller: terraform
+      resource: computesslcertificate
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSSLCertificate
       package: ""
       proto: ""
       proto-path: ""
@@ -8111,15 +8081,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesslpolicies
-      local: resource-compute-computesslpolicies
-      remote: resource-compute-computesslpolicies
+    - name: compute-computesslpolicy
+      local: resource-compute-computesslpolicy
+      remote: resource-compute-computesslpolicy
       command: gcloud compute ssl-policies
       group: compute
-      resource: computesslpolicies
-      controller: terraform
+      resource: computesslpolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSSLPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -8145,15 +8115,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: compute-computesubnetworks
-      local: resource-compute-computesubnetworks
-      remote: resource-compute-computesubnetworks
+    - name: compute-computesubnetwork
+      local: resource-compute-computesubnetwork
+      remote: resource-compute-computesubnetwork
       command: ""
       group: compute
-      resource: computesubnetworks
-      controller: terraform
+      resource: computesubnetwork
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ComputeSubnetwork
       package: ""
       proto: ""
       proto-path: ""
@@ -8530,25 +8500,6 @@ branches:
       proto-msg: google.cloud.compute.v1.Commitment
       host-name: compute.googleapis.com
       notes: []
-      apis-enabled: []
-    - name: compute-disk
-      local: resource-compute-disk
-      remote: resource-compute-disk
-      command: gcloud compute disks
-      group: compute
-      resource: computedisk
-      controller: terraform
-      skip: false
-      kind: ComputeDisk
-      package: google.cloud.compute.v1
-      proto: Disk
-      proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: google.cloud.compute.v1.Disks
-      proto-msg: google.cloud.compute.v1.Disk
-      host-name: compute.googleapis.com
-      notes:
-        - mock exists
-        - TF beta
       apis-enabled: []
     - name: compute-disksbulk
       local: resource-compute-disksbulk
@@ -8971,25 +8922,6 @@ branches:
       notes:
         - DCL Beta
       apis-enabled: []
-    - name: compute-computeprojectmetadata
-      local: resource-compute-projectmetadata
-      remote: resource-compute-projectmetadata
-      command: gcloud compute project-zonal-metadata
-      group: compute
-      resource: projectmetadata
-      controller: terraform
-      skip: false
-      kind: ComputeProjectMetadata
-      package: google.cloud.compute.v1
-      proto: ""
-      proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
-      proto-msg: ""
-      host-name: compute.googleapis.com
-      notes:
-        - TF beta
-        - no proto found
-      apis-enabled: []
     - name: compute-publicadvertisedprefix
       local: resource-compute-publicadvertisedprefix
       remote: resource-compute-publicadvertisedprefix
@@ -9104,7 +9036,7 @@ branches:
       resource: routernat
       controller: terraform
       skip: false
-      kind: ComputeRouterNat
+      kind: ComputeRouterNAT
       package: google.cloud.compute.v1
       proto: ""
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9193,7 +9125,7 @@ branches:
       resource: sslcertificate
       controller: terraform
       skip: false
-      kind: ComputeSslCertificate
+      kind: ComputeSSLCertificate
       package: google.cloud.compute.v1
       proto: SslCertificate
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9212,7 +9144,7 @@ branches:
       resource: sslpolicy
       controller: terraform
       skip: false
-      kind: ComputeSslPolicy
+      kind: ComputeSSLPolicy
       package: google.cloud.compute.v1
       proto: SslPolicy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9264,9 +9196,9 @@ branches:
       command: gcloud compute target-grpc-proxies
       group: compute
       resource: targetgrpcproxy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetGrpcProxy
+      kind: ComputeTargetGRPCProxy
       package: google.cloud.compute.v1
       proto: TargetGrpcProxy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9283,9 +9215,9 @@ branches:
       command: gcloud compute target-http-proxies
       group: compute
       resource: targethttpproxy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetHttpProxy
+      kind: ComputeTargetHTTPProxy
       package: google.cloud.compute.v1
       proto: TargetHttpProxy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9302,9 +9234,9 @@ branches:
       command: gcloud compute target-https-proxies
       group: compute
       resource: targethttpsproxy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetHttpsProxy
+      kind: ComputeTargetHTTPSProxy
       package: google.cloud.compute.v1
       proto: TargetHttpsProxy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9321,7 +9253,7 @@ branches:
       command: gcloud compute target-instances
       group: compute
       resource: targetinstance
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: ComputeTargetInstance
       package: google.cloud.compute.v1
@@ -9339,7 +9271,7 @@ branches:
       command: gcloud compute target-pools
       group: compute
       resource: targetpool
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: ComputeTargetPool
       package: google.cloud.compute.v1
@@ -9357,9 +9289,9 @@ branches:
       command: gcloud compute target-ssl-proxies
       group: compute
       resource: targetsslproxy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetSslProxy
+      kind: ComputeTargetSSLProxy
       package: google.cloud.compute.v1
       proto: TargetSslProxy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9375,9 +9307,9 @@ branches:
       command: gcloud compute target-tcp-proxies
       group: compute
       resource: targettcpproxy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetTcpProxy
+      kind: ComputeTargetTCPProxy
       package: google.cloud.compute.v1
       proto: TargetTcpProxy
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9394,9 +9326,9 @@ branches:
       command: gcloud compute target-vpn-gateways
       group: compute
       resource: targetvpngateway
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeTargetVpnGateway
+      kind: ComputeTargetVPNGateway
       package: google.cloud.compute.v1
       proto: TargetVpnGateway
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9412,9 +9344,9 @@ branches:
       command: gcloud compute url-maps
       group: compute
       resource: urlmap
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeUrlMap
+      kind: ComputeURLMap
       package: google.cloud.compute.v1
       proto: UrlMap
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9431,9 +9363,9 @@ branches:
       command: gcloud compute vpn-gateways
       group: compute
       resource: vpngateway
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeVpnGateway
+      kind: ComputeVPNGateway
       package: google.cloud.compute.v1
       proto: VpnGateway
       proto-path: google/cloud/compute/v1/compute.proto
@@ -9450,9 +9382,9 @@ branches:
       command: gcloud compute vpn-tunnels
       group: compute
       resource: vpntunnel
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ComputeVpnTunnel
+      kind: ComputeVPNTunnel
       package: google.cloud.compute.v1
       proto: VpnTunnel
       proto-path: google/cloud/compute/v1/compute.proto
@@ -10016,15 +9948,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: container-containerclusters
-      local: resource-container-containerclusters
-      remote: resource-container-containerclusters
+    - name: container-containercluster
+      local: resource-container-containercluster
+      remote: resource-container-containercluster
       command: gcloud container clusters
       group: container
-      resource: containerclusters
-      controller: terraform
+      resource: containercluster
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ContainerCluster
       package: ""
       proto: ""
       proto-path: ""
@@ -10050,15 +9982,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: container-containernodepools
-      local: resource-container-containernodepools
-      remote: resource-container-containernodepools
+    - name: container-containernodepool
+      local: resource-container-containernodepool
+      remote: resource-container-containernodepool
       command: gcloud container node-pools
       group: container
-      resource: containernodepools
-      controller: terraform
+      resource: containernodepool
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ContainerNodePool
       package: ""
       proto: ""
       proto-path: ""
@@ -10101,15 +10033,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: containerattached-containerattachedclusters
-      local: resource-containerattached-containerattachedclusters
-      remote: resource-containerattached-containerattachedclusters
+    - name: containerattached-containerattachedcluster
+      local: resource-containerattached-containerattachedcluster
+      remote: resource-containerattached-containerattachedcluster
       command: ""
       group: containerattached
       resource: containerattachedclusters
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ContainerAttachedCluster
       package: ""
       proto: ""
       proto-path: ""
@@ -10242,15 +10174,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: datacatalog-datacatalogpolicytags
-      local: resource-datacatalog-datacatalogpolicytags
-      remote: resource-datacatalog-datacatalogpolicytags
+    - name: datacatalog-datacatalogpolicytag
+      local: resource-datacatalog-datacatalogpolicytag
+      remote: resource-datacatalog-datacatalogpolicytag
       command: ""
       group: datacatalog
-      resource: datacatalogpolicytags
-      controller: terraform
+      resource: datacatalogpolicytag
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DataCatalogPolicyTag
       package: ""
       proto: ""
       proto-path: ""
@@ -10474,7 +10406,7 @@ branches:
       command: gcloud data-catalog taxonomies
       group: datacatalog
       resource: taxonomy
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
       kind: DataCatalogTaxonomy
       package: google.cloud.datacatalog.v1
@@ -10485,15 +10417,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: dataflow-dataflowflextemplatejobs
-      local: resource-dataflow-dataflowflextemplatejobs
-      remote: resource-dataflow-dataflowflextemplatejobs
+    - name: dataflow-dataflowflextemplatejob
+      local: resource-dataflow-dataflowflextemplatejob
+      remote: resource-dataflow-dataflowflextemplatejob
       command: gcloud dataflow flex-template
       group: dataflow
-      resource: dataflowflextemplatejobs
-      controller: terraform
+      resource: dataflowflextemplatejob
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DataflowFlexTemplateJob
       package: ""
       proto: ""
       proto-path: ""
@@ -10502,15 +10434,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: dataflow-dataflowjobs
-      local: resource-dataflow-dataflowjobs
-      remote: resource-dataflow-dataflowjobs
+    - name: dataflow-dataflowjob
+      local: resource-dataflow-dataflowjob
+      remote: resource-dataflow-dataflowjob
       command: gcloud dataflow jobs
       group: dataflow
-      resource: dataflowjobs
-      controller: terraform
+      resource: dataflowjob
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DataflowJob
       package: ""
       proto: ""
       proto-path: ""
@@ -13216,15 +13148,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: dns-dnsmanagedzones
-      local: resource-dns-dnsmanagedzones
-      remote: resource-dns-dnsmanagedzones
+    - name: dns-dnsmanagedzone
+      local: resource-dns-dnsmanagedzone
+      remote: resource-dns-dnsmanagedzone
       command: gcloud dns managed-zones
       group: dns
-      resource: dnsmanagedzones
-      controller: terraform
+      resource: dnsmanagedzone
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DNSManagedZone
       package: ""
       proto: ""
       proto-path: ""
@@ -13233,15 +13165,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: dns-dnspolicies
-      local: resource-dns-dnspolicies
-      remote: resource-dns-dnspolicies
+    - name: dns-dnspolicy
+      local: resource-dns-dnspolicy
+      remote: resource-dns-dnspolicy
       command: gcloud dns policies
       group: dns
-      resource: dnspolicies
-      controller: terraform
+      resource: dnspolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DNSPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -13250,15 +13182,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: dns-dnsrecordsets
-      local: resource-dns-dnsrecordsets
-      remote: resource-dns-dnsrecordsets
+    - name: dns-dnsrecordset
+      local: resource-dns-dnsrecordset
+      remote: resource-dns-dnsrecordset
       command: gcloud dns record-sets
       group: dns
-      resource: dnsrecordsets
-      controller: terraform
+      resource: dnsrecordset
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: DNSRecordSet
       package: ""
       proto: ""
       proto-path: ""
@@ -13511,15 +13443,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: edgecontainer-edgecontainerclusters
-      local: resource-edgecontainer-edgecontainerclusters
-      remote: resource-edgecontainer-edgecontainerclusters
+    - name: edgecontainer-edgecontainercluster
+      local: resource-edgecontainer-edgecontainercluster
+      remote: resource-edgecontainer-edgecontainercluster
       command: ""
       group: edgecontainer
-      resource: edgecontainerclusters
-      controller: terraform
+      resource: edgecontainercluster
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: EdgeContainerCluster
       package: ""
       proto: ""
       proto-path: ""
@@ -13528,15 +13460,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: edgecontainer-edgecontainernodepools
-      local: resource-edgecontainer-edgecontainernodepools
-      remote: resource-edgecontainer-edgecontainernodepools
+    - name: edgecontainer-edgecontainernodepool
+      local: resource-edgecontainer-edgecontainernodepool
+      remote: resource-edgecontainer-edgecontainernodepool
       command: ""
       group: edgecontainer
-      resource: edgecontainernodepools
-      controller: terraform
+      resource: edgecontainernodepool
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: EdgeContainerNodePool
       package: ""
       proto: ""
       proto-path: ""
@@ -13545,15 +13477,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: edgecontainer-edgecontainervpnconnections
-      local: resource-edgecontainer-edgecontainervpnconnections
-      remote: resource-edgecontainer-edgecontainervpnconnections
+    - name: edgecontainer-edgecontainervpnconnection
+      local: resource-edgecontainer-edgecontainervpnconnection
+      remote: resource-edgecontainer-edgecontainervpnconnection
       command: ""
       group: edgecontainer
-      resource: edgecontainervpnconnections
-      controller: terraform
+      resource: edgecontainervpnconnection
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: EdgeContainerVpnConnection
       package: ""
       proto: ""
       proto-path: ""
@@ -13682,15 +13614,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: edgenetwork-edgenetworknetworks
-      local: resource-edgenetwork-edgenetworknetworks
-      remote: resource-edgenetwork-edgenetworknetworks
+    - name: edgenetwork-edgenetworknetwork
+      local: resource-edgenetwork-edgenetworknetwork
+      remote: resource-edgenetwork-edgenetworknetwork
       command: ""
       group: edgenetwork
-      resource: edgenetworknetworks
-      controller: terraform
+      resource: edgenetworknetwork
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: EdgeNetworkNetwork
       package: ""
       proto: ""
       proto-path: ""
@@ -13699,15 +13631,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: edgenetwork-edgenetworksubnets
-      local: resource-edgenetwork-edgenetworksubnets
-      remote: resource-edgenetwork-edgenetworksubnets
+    - name: edgenetwork-edgenetworksubnet
+      local: resource-edgenetwork-edgenetworksubnet
+      remote: resource-edgenetwork-edgenetworksubnet
       command: ""
       group: edgenetwork
-      resource: edgenetworksubnets
-      controller: terraform
+      resource: edgenetworksubnet
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: EdgeNetworkSubnet
       package: ""
       proto: ""
       proto-path: ""
@@ -14469,15 +14401,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: firestore-firestoreindexes
-      local: resource-firestore-firestoreindexes
-      remote: resource-firestore-firestoreindexes
+    - name: firestore-firestoreindex
+      local: resource-firestore-firestoreindex
+      remote: resource-firestore-firestoreindex
       command: ""
       group: firestore
-      resource: firestoreindexes
-      controller: terraform
+      resource: firestoreindex
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: FirestoreIndex
       package: ""
       proto: ""
       proto-path: ""
@@ -15323,9 +15255,9 @@ branches:
       command: ""
       group: iam
       resource: iamaccessboundarypolicy
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: IAMAccessBoundaryPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -15357,9 +15289,9 @@ branches:
       command: ""
       group: iam
       resource: iamcustomrole
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: IAMCustomRole
       package: ""
       proto: ""
       proto-path: ""
@@ -15544,7 +15476,7 @@ branches:
       command: ""
       group: iam
       resource: iamserviceaccount
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: IAMServiceAccount
       package: google.iam.admin.v1
@@ -15561,7 +15493,7 @@ branches:
       command: ""
       group: iam
       resource: iamserviceaccountkey
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: IAMServiceAccountKey
       package: google.iam.admin.v1
@@ -16154,7 +16086,7 @@ branches:
       command: ""
       group: kms
       resource: kmscryptokey
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: KMSCryptoKey
       package: google.cloud.kms.v1
@@ -16262,7 +16194,7 @@ branches:
       command: ""
       group: kms
       resource: kmskeyring
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: KMSKeyRing
       package: google.cloud.kms.v1
@@ -16557,7 +16489,7 @@ branches:
       command: ""
       group: logging
       resource: logginglogsink
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: LoggingLogSink
       package: google.logging.v2
@@ -16689,15 +16621,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: memcache-memcacheinstances
-      local: resource-memcache-memcacheinstances
-      remote: resource-memcache-memcacheinstances
+    - name: memcache-memcacheinstance
+      local: resource-memcache-memcacheinstance
+      remote: resource-memcache-memcacheinstance
       command: ""
       group: memcache
-      resource: memcacheinstances
-      controller: terraform
+      resource: memcacheinstance
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: MemcacheInstance
       package: ""
       proto: ""
       proto-path: ""
@@ -17323,7 +17255,7 @@ branches:
       command: ""
       group: monitoring
       resource: alertpolicy
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
       kind: MonitoringAlertPolicy
       package: google.monitoring.v3
@@ -17410,7 +17342,7 @@ branches:
       command: ""
       group: monitoring
       resource: monitoringnotificationchannel
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: MonitoringNotificationChannel
       package: google.monitoring.v3
@@ -20199,7 +20131,7 @@ branches:
       command: ""
       group: pubsub
       resource: pubsubsubscription
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: PubSubSubscription
       package: google.pubsub.v1
@@ -20216,7 +20148,7 @@ branches:
       command: ""
       group: pubsub
       resource: pubsubtopic
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: PubSubTopic
       package: google.pubsub.v1
@@ -20233,9 +20165,9 @@ branches:
       command: gcloud pubsub schemas
       group: pubsub
       resource: schema
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
-      kind: PubsubSchema
+      kind: PubSubSchema
       package: google.pubsub.v1
       proto: Schema
       proto-path: google/pubsub/v1/schema.proto
@@ -20250,9 +20182,9 @@ branches:
       command: gcloud pubsub lite-reservations
       group: pubsublite
       resource: reservation
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
-      kind: PubsubLiteReservation
+      kind: PubSubLiteReservation
       package: google.cloud.pubsublite.v1
       proto: Reservation
       proto-path: google/cloud/pubsublite/v1/common.proto
@@ -20696,7 +20628,7 @@ branches:
       command: ""
       group: redis
       resource: instance
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: RedisInstance
       package: google.cloud.redis.v1
@@ -20742,15 +20674,33 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: resourcemanager-projects
-      local: resource-resourcemanager-projects
-      remote: resource-resourcemanager-projects
+    - name: resourcemanager-project
+      local: resource-resourcemanager-project
+      remote: resource-resourcemanager-project
       command: ""
       group: resourcemanager
-      resource: projects
-      controller: terraform
+      resource: project
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: Project
+      package: google.cloud.resourcemanager.v3
+      proto: Project
+      proto-path: google/cloud/resourcemanager/v3/projects.proto
+      proto-service: ""
+      proto-msg: google.cloud.resourcemanager.v3.Project
+      host-name: ""
+      notes:
+        - No gcloud command found
+      apis-enabled: []
+    - name: resourcemanager-resourcemanagerlien
+      local: resource-resourcemanager-resourcemanagerlien
+      remote: resource-resourcemanager-resourcemanagerlien
+      command: ""
+      group: resourcemanager
+      resource: resourcemanagerlien
+      controller: terraform-v1beta1
+      skip: false
+      kind: ResourceManagerLien
       package: ""
       proto: ""
       proto-path: ""
@@ -20759,32 +20709,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: resourcemanager-resourcemanagerliens
-      local: resource-resourcemanager-resourcemanagerliens
-      remote: resource-resourcemanager-resourcemanagerliens
+    - name: resourcemanager-resourcemanagerpolicy
+      local: resource-resourcemanager-resourcemanagerpolicy
+      remote: resource-resourcemanager-resourcemanagerpolicy
       command: ""
       group: resourcemanager
-      resource: resourcemanagerliens
-      controller: terraform
+      resource: resourcemanagerpolicy
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: resourcemanager-resourcemanagerpolicies
-      local: resource-resourcemanager-resourcemanagerpolicies
-      remote: resource-resourcemanager-resourcemanagerpolicies
-      command: ""
-      group: resourcemanager
-      resource: resourcemanagerpolicies
-      controller: terraform
-      skip: false
-      kind: ""
+      kind: ResourceManagerPolicy
       package: ""
       proto: ""
       proto-path: ""
@@ -20816,9 +20749,9 @@ branches:
       command: gcloud resource-manager folders
       group: resourcemanager
       resource: folders
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ResourceManagerFolder
+      kind: Folder
       package: google.cloud.resourcemanager.v3
       proto: Folder
       proto-path: google/cloud/resourcemanager/v3/folders.proto
@@ -20841,24 +20774,6 @@ branches:
       proto-path: google/cloud/resourcemanager/v3/organizations.proto
       proto-service: ""
       proto-msg: google.cloud.resourcemanager.v3.Organization
-      host-name: ""
-      notes:
-        - No gcloud command found
-      apis-enabled: []
-    - name: resourcemanager-project
-      local: resource-resourcemanager-project
-      remote: resource-resourcemanager-project
-      command: ""
-      group: resourcemanager
-      resource: project
-      controller: Unknown
-      skip: false
-      kind: ResourceManagerProject
-      package: google.cloud.resourcemanager.v3
-      proto: Project
-      proto-path: google/cloud/resourcemanager/v3/projects.proto
-      proto-service: ""
-      proto-msg: google.cloud.resourcemanager.v3.Project
       host-name: ""
       notes:
         - No gcloud command found
@@ -21275,15 +21190,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: run-runjobs
-      local: resource-run-runjobs
-      remote: resource-run-runjobs
+    - name: run-runjob
+      local: resource-run-runjob
+      remote: resource-run-runjob
       command: ""
       group: run
-      resource: runjobs
-      controller: terraform
+      resource: runjob
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: RunJob
       package: ""
       proto: ""
       proto-path: ""
@@ -21292,15 +21207,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: run-runservices
-      local: resource-run-runservices
-      remote: resource-run-runservices
+    - name: run-runservice
+      local: resource-run-runservice
+      remote: resource-run-runservice
       command: ""
       group: run
-      resource: runservices
-      controller: terraform
+      resource: runservice
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: RunService
       package: ""
       proto: ""
       proto-path: ""
@@ -21418,8 +21333,8 @@ branches:
       remote: resource-secretmanager-secret
       command: ""
       group: secretmanager
-      resource: secretmanagersecrets
-      controller: terraform
+      resource: secretmanagersecret
+      controller: terraform-v1beta1
       skip: false
       kind: SecretManagerSecret
       package: google.cloud.secretmanager.v1
@@ -21435,8 +21350,8 @@ branches:
       remote: resource-secretmanager-secretversion
       command: ""
       group: secretmanager
-      resource: secretmanagersecretversions
-      controller: terraform
+      resource: secretmanagersecretversion
+      controller: terraform-v1beta1
       skip: false
       kind: SecretManagerSecretVersion
       package: google.cloud.secretmanager.v1
@@ -22427,15 +22342,15 @@ branches:
         - no create, update or delete
       apis-enabled:
         - servicedirectory.googleapis.com
-    - name: servicedirectory-servicedirectoryendpoints
-      local: resource-servicedirectory-servicedirectoryendpoints
-      remote: resource-servicedirectory-servicedirectoryendpoints
+    - name: servicedirectory-servicedirectoryendpoint
+      local: resource-servicedirectory-servicedirectoryendpoint
+      remote: resource-servicedirectory-servicedirectoryendpoint
       command: ""
       group: servicedirectory
-      resource: servicedirectoryendpoints
-      controller: terraform
+      resource: servicedirectoryendpoint
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ServiceDirectoryEndpoint
       package: ""
       proto: ""
       proto-path: ""
@@ -22444,15 +22359,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: servicedirectory-servicedirectorynamespaces
-      local: resource-servicedirectory-servicedirectorynamespaces
-      remote: resource-servicedirectory-servicedirectorynamespaces
+    - name: servicedirectory-servicedirectorynamespace
+      local: resource-servicedirectory-servicedirectorynamespace
+      remote: resource-servicedirectory-servicedirectorynamespace
       command: ""
       group: servicedirectory
-      resource: servicedirectorynamespaces
-      controller: terraform
+      resource: servicedirectorynamespace
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ServiceDirectoryNamespace
       package: ""
       proto: ""
       proto-path: ""
@@ -22461,15 +22376,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: servicedirectory-servicedirectoryservices
-      local: resource-servicedirectory-servicedirectoryservices
-      remote: resource-servicedirectory-servicedirectoryservices
+    - name: servicedirectory-servicedirectoryservice
+      local: resource-servicedirectory-servicedirectoryservice
+      remote: resource-servicedirectory-servicedirectoryservice
       command: ""
       group: servicedirectory
-      resource: servicedirectoryservices
-      controller: terraform
+      resource: servicedirectoryservice
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ServiceDirectoryService
       package: ""
       proto: ""
       proto-path: ""
@@ -22589,15 +22504,15 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: servicenetworking-servicenetworkingconnections
-      local: resource-servicenetworking-servicenetworkingconnections
-      remote: resource-servicenetworking-servicenetworkingconnections
+    - name: servicenetworking-servicenetworkingconnection
+      local: resource-servicenetworking-servicenetworkingconnection
+      remote: resource-servicenetworking-servicenetworkingconnection
       command: ""
       group: servicenetworking
-      resource: servicenetworkingconnections
-      controller: terraform
+      resource: servicenetworkingconnection
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ServiceNetworkingConnection
       package: ""
       proto: ""
       proto-path: ""
@@ -22624,15 +22539,15 @@ branches:
       notes:
         - No matching generated proto
       apis-enabled: []
-    - name: serviceusage-serviceidentities
-      local: resource-serviceusage-serviceidentities
-      remote: resource-serviceusage-serviceidentities
+    - name: serviceusage-serviceidentity
+      local: resource-serviceusage-serviceidentity
+      remote: resource-serviceusage-serviceidentity
       command: ""
       group: serviceusage
-      resource: serviceidentities
-      controller: terraform
+      resource: serviceidentity
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: ServiceIdentity
       package: ""
       proto: ""
       proto-path: ""
@@ -22641,15 +22556,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: serviceusage-services
-      local: resource-serviceusage-services
-      remote: resource-serviceusage-services
+    - name: serviceusage-service
+      local: resource-serviceusage-service
+      remote: resource-serviceusage-service
       command: ""
       group: serviceusage
-      resource: services
-      controller: terraform
+      resource: service
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: Service
       package: ""
       proto: ""
       proto-path: ""
@@ -22693,15 +22608,15 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: sourcerepo-sourcereporepositories
-      local: resource-sourcerepo-sourcereporepositories
-      remote: resource-sourcerepo-sourcereporepositories
+    - name: sourcerepo-sourcereporepository
+      local: resource-sourcerepo-sourcereporepository
+      remote: resource-sourcerepo-sourcereporepository
       command: ""
       group: sourcerepo
-      resource: sourcereporepositories
-      controller: terraform
+      resource: sourcereporepository
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: SourceRepoRepository
       package: ""
       proto: ""
       proto-path: ""
@@ -22788,7 +22703,7 @@ branches:
       command: ""
       group: spanner
       resource: spannerdatabase
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: SpannerDatabase
       package: google.spanner.admin.database.v1
@@ -22823,7 +22738,7 @@ branches:
       command: ""
       group: spanner
       resource: spannerinstance
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: SpannerInstance
       package: google.spanner.admin.instance.v1
@@ -22975,15 +22890,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: sql-sqldatabases
-      local: resource-sql-sqldatabases
-      remote: resource-sql-sqldatabases
+    - name: sql-sqldatabase
+      local: resource-sql-sqldatabase
+      remote: resource-sql-sqldatabase
       command: ""
       group: sql
-      resource: sqldatabases
-      controller: terraform
+      resource: sqldatabase
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: SQLDatabase
       package: ""
       proto: ""
       proto-path: ""
@@ -23009,15 +22924,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: sql-sqlsslcerts
-      local: resource-sql-sqlsslcerts
-      remote: resource-sql-sqlsslcerts
+    - name: sql-sqlsslcert
+      local: resource-sql-sqlsslcert
+      remote: resource-sql-sqlsslcert
       command: ""
       group: sql
-      resource: sqlsslcerts
-      controller: terraform
+      resource: sqlsslcert
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: SQLSSLCert
       package: ""
       proto: ""
       proto-path: ""
@@ -23026,15 +22941,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: sql-sqlusers
-      local: resource-sql-sqlusers
-      remote: resource-sql-sqlusers
+    - name: sql-sqluser
+      local: resource-sql-sqluser
+      remote: resource-sql-sqluser
       command: ""
       group: sql
-      resource: sqlusers
-      controller: terraform
+      resource: sqluser
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: SQLUser
       package: ""
       proto: ""
       proto-path: ""
@@ -23049,9 +22964,9 @@ branches:
       command: ""
       group: storage
       resource: storagebucketaccesscontrol
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: StorageBucketAccessControl
       package: ""
       proto: ""
       proto-path: ""
@@ -23066,9 +22981,9 @@ branches:
       command: ""
       group: storage
       resource: storagedefaultobjectaccesscontrol
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: StorageDefaultObjectAccessControl
       package: ""
       proto: ""
       proto-path: ""
@@ -23134,9 +23049,9 @@ branches:
       command: ""
       group: storage
       resource: storagenotification
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: StorageNotification
       package: ""
       proto: ""
       proto-path: ""
@@ -23185,7 +23100,7 @@ branches:
       command: ""
       group: storage
       resource: storagebucket
-      controller: terraform
+      controller: terraform-v1beta1
       skip: false
       kind: StorageBucket
       package: google.storage.v2
@@ -23301,15 +23216,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: storagetransfer-jobs
-      local: resource-storagetransfer-jobs
-      remote: resource-storagetransfer-jobs
+    - name: storagetransfer-job
+      local: resource-storagetransfer-job
+      remote: resource-storagetransfer-job
       command: gcloud transfer jobs
       group: storagetransfer
-      resource: jobs
-      controller: Unknown
+      resource: storagetransferjob
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: StorageTransferJob
       package: ""
       proto: ""
       proto-path: ""
@@ -23440,15 +23355,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: tags-tagstagbindings
-      local: resource-tags-tagstagbindings
-      remote: resource-tags-tagstagbindings
+    - name: tags-tagstagbinding
+      local: resource-tags-tagstagbinding
+      remote: resource-tags-tagstagbinding
       command: ""
       group: tags
-      resource: tagstagbindings
-      controller: terraform
+      resource: tagstagbinding
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: TagsTagBinding
       package: ""
       proto: ""
       proto-path: ""
@@ -23457,15 +23372,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: tags-tagstagkeys
-      local: resource-tags-tagstagkeys
-      remote: resource-tags-tagstagkeys
+    - name: tags-tagstagkey
+      local: resource-tags-tagstagkey
+      remote: resource-tags-tagstagkey
       command: ""
       group: tags
-      resource: tagstagkeys
-      controller: terraform
+      resource: tagstagkey
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: TagsTagKey
       package: ""
       proto: ""
       proto-path: ""
@@ -23474,15 +23389,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: tags-tagstagvalues
-      local: resource-tags-tagstagvalues
-      remote: resource-tags-tagstagvalues
+    - name: tags-tagstagvalue
+      local: resource-tags-tagstagvalue
+      remote: resource-tags-tagstagvalue
       command: ""
       group: tags
-      resource: tagstagvalues
-      controller: terraform
+      resource: tagstagvalue
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: TagsTagValue
       package: ""
       proto: ""
       proto-path: ""
@@ -24089,15 +24004,15 @@ branches:
         - No gcloud command found
         - No matching generated proto
       apis-enabled: []
-    - name: vertexai-vertexaidatasets
-      local: resource-vertexai-vertexaidatasets
-      remote: resource-vertexai-vertexaidatasets
+    - name: vertexai-vertexaidataset
+      local: resource-vertexai-vertexaidataset
+      remote: resource-vertexai-vertexaidataset
       command: ""
       group: vertexai
-      resource: vertexaidatasets
-      controller: terraform
+      resource: vertexaidataset
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: VertexAIDataset
       package: ""
       proto: ""
       proto-path: ""
@@ -24106,15 +24021,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: vertexai-vertexaiendpoints
-      local: resource-vertexai-vertexaiendpoints
-      remote: resource-vertexai-vertexaiendpoints
+    - name: vertexai-vertexaiendpoint
+      local: resource-vertexai-vertexaiendpoint
+      remote: resource-vertexai-vertexaiendpoint
       command: ""
       group: vertexai
-      resource: vertexaiendpoints
-      controller: terraform
+      resource: vertexaiendpoint
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: VertexAIEndpoint
       package: ""
       proto: ""
       proto-path: ""
@@ -24174,12 +24089,12 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: vertexai-vertexaiindexendpoints
-      local: resource-vertexai-vertexaiindexendpoints
-      remote: resource-vertexai-vertexaiindexendpoints
+    - name: vertexai-vertexaiindexendpoint
+      local: resource-vertexai-vertexaiindexendpoint
+      remote: resource-vertexai-vertexaiindexendpoint
       command: ""
       group: vertexai
-      resource: vertexaiindexendpoints
+      resource: vertexaiindexendpoint
       controller: terraform
       skip: false
       kind: ""
@@ -24191,15 +24106,15 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: vertexai-vertexaiindexes
-      local: resource-vertexai-vertexaiindexes
-      remote: resource-vertexai-vertexaiindexes
+    - name: vertexai-vertexaiindex
+      local: resource-vertexai-vertexaiindex
+      remote: resource-vertexai-vertexaiindex
       command: ""
       group: vertexai
-      resource: vertexaiindexes
-      controller: terraform
+      resource: vertexaiindex
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: VertexAIIndex
       package: ""
       proto: ""
       proto-path: ""
@@ -25473,15 +25388,15 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: vpcaccess-vpcaccessconnectors
-      local: resource-vpcaccess-vpcaccessconnectors
-      remote: resource-vpcaccess-vpcaccessconnectors
+    - name: vpcaccess-vpcaccessconnector
+      local: resource-vpcaccess-vpcaccessconnector
+      remote: resource-vpcaccess-vpcaccessconnector
       command: ""
       group: vpcaccess
-      resource: vpcaccessconnectors
-      controller: terraform
+      resource: vpcaccessconnector
+      controller: terraform-v1beta1
       skip: false
-      kind: ""
+      kind: VPCAccessConnector
       package: ""
       proto: ""
       proto-path: ""
