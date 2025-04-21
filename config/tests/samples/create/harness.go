@@ -903,6 +903,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
 			//case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:
 
+			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreFederation"}:
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreBackup"}:
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreService"}:
 
