@@ -23,6 +23,7 @@ spec:
   triggerSpec:
     type: "ON_DEMAND"
   executionSpec:
-    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+    serviceAccountRef:
+      external: ${projectNumber}-compute@developer.gserviceaccount.com
   spark:
     pythonScriptFile: "gs://dataproc-examples/pyspark/hello-world/hello-world.py"

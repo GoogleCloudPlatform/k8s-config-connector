@@ -12,7 +12,8 @@ metadata:
 spec:
   description: Updated description
   executionSpec:
-    serviceAccount: ${projectNumber}-compute@developer.gserviceaccount.com
+    serviceAccountRef:
+      external: ${projectNumber}-compute@developer.gserviceaccount.com
   lakeRef:
     name: dataplexlake-${uniqueId}
   spark:
