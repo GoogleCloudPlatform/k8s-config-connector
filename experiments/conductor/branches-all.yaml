@@ -11671,57 +11671,63 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: deploy-customtargettype
+    - name: clouddeploy-customtargettype
       local: resource-deploy-customtargettype
       remote: resource-deploy-customtargettype
       command: gcloud deploy custom-target-types
-      group: deploy
+      group: clouddeploy
       resource: customtargettype
       controller: Unknown
-      skip: false
-      kind: DeployCustomTargetType
+      kind: CloudDeployCustomTargetType
       package: google.cloud.deploy.v1
       proto: CustomTargetType
       proto-path: google/cloud/deploy/v1/cloud_deploy.proto
-      proto-service: ""
+      proto-service: google.cloud.deploy.v1.CloudDeploy
       proto-msg: google.cloud.deploy.v1.CustomTargetType
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: deploy-deliverypipeline
-      local: resource-deploy-deliverypipeline
+      host-name: clouddeploy.googleapis.com
+      notes:
+        - "mockgcp: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4194"
+        - "CRDs, types: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4145"
+        - "controller: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4189"
+    - name: clouddeploy-deliverypipeline
+      local: resource-deploy-deliverypipelinef
       remote: resource-deploy-deliverypipeline
       command: gcloud deploy delivery-pipelines
-      group: deploy
+      group: clouddeploy
       resource: deliverypipeline
       controller: Unknown
-      skip: false
-      kind: DeployDeliveryPipeline
+      kind: CloudDeployDeliveryPipeline
       package: google.cloud.deploy.v1
       proto: DeliveryPipeline
       proto-path: google/cloud/deploy/v1/cloud_deploy.proto
-      proto-service: ""
+      proto-service: google.cloud.deploy.v1.CloudDeploy
       proto-msg: google.cloud.deploy.v1.DeliveryPipeline
-      host-name: ""
-      notes: []
+      host-name: clouddeploy.googleapis.com
+      notes:
+        - renamed group to CloudDeploy
+        - "mockgcp: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4083"
+        - "crds: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3970"
+        - "controller: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4107"
       apis-enabled: []
-    - name: deploy-deploypolicy
+    - name: clouddeploy-deploypolicy
       local: resource-deploy-deploypolicy
       remote: resource-deploy-deploypolicy
       command: gcloud deploy deploy-policies
-      group: deploy
+      group: clouddeploy
       resource: deploypolicy
       controller: Unknown
-      skip: false
-      kind: DeployDeployPolicy
+      kind: CloudDeployDeployPolicy
       package: google.cloud.deploy.v1
       proto: DeployPolicy
       proto-path: google/cloud/deploy/v1/cloud_deploy.proto
-      proto-service: ""
+      proto-service: google.cloud.deploy.v1.CloudDeploy
       proto-msg: google.cloud.deploy.v1.DeployPolicy
-      host-name: ""
-      notes: []
-      apis-enabled: []
+      host-name: clouddeploy.googleapis.com
+      notes:
+        - "mockgcp: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4179"
+        - "types: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4180"
+        - "controller: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4241"
+        - "needs implemenations of .Release.Rollouts; .Rollouts seems not declaritve friendly"
     - name: deploy-jobrun
       local: resource-deploy-jobrun
       remote: resource-deploy-jobrun
@@ -16479,7 +16485,8 @@ branches:
       proto-service: ""
       proto-msg: google.logging.v2.Link
       host-name: ""
-      notes: []
+      notes:
+        - "implemented by contributor"
       apis-enabled: []
     - name: logging-logbucket
       local: resource-logging-logbucket
@@ -17541,23 +17548,24 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: netapp-backup
-      local: resource-netapp-backup
-      remote: resource-netapp-backup
-      command: ""
+    - name: netapp-backuppolicy
+      local: resource-netapp-backuppolicy-controller-mock
+      remote: resource-netapp-backuppolicy
+      command: gcloud netapp backup-policies
       group: netapp
-      resource: backup
+      resource: backuppolicy
       controller: Unknown
-      skip: false
-      kind: NetAppBackup
+      kind: NetAppBackupPolicy
       package: google.cloud.netapp.v1
-      proto: Backup
+      proto: BackupPolicy
       proto-path: google/cloud/netapp/v1/cloud_netapp_service.proto
-      proto-service: ""
-      proto-msg: google.cloud.netapp.v1.Backup
-      host-name: ""
+      proto-service: google.cloud.netapp.v1.NetApp
+      proto-msg: google.cloud.netapp.v1.BackupPolicy
+      host-name: netapp.googleapis.com
       notes:
-        - No gcloud command found
+        - "CRD, mappers, fuzzers: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3995"
+        - "controller: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4076"
+        - "mockgcp: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4127"
       apis-enabled: []
     - name: netapp-backuppolicy
       local: resource-netapp-backuppolicy
@@ -17583,16 +17591,17 @@ branches:
       group: netapp
       resource: backupvault
       controller: Unknown
-      skip: false
       kind: NetAppBackupVault
       package: google.cloud.netapp.v1
       proto: BackupVault
       proto-path: google/cloud/netapp/v1/cloud_netapp_service.proto
-      proto-service: ""
+      proto-service: google.cloud.netapp.v1.NetApp
       proto-msg: google.cloud.netapp.v1.BackupVault
-      host-name: ""
-      notes: []
-      apis-enabled: []
+      host-name: netapp.googleapis.com
+      notes:
+        - "mockgcp: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4065"
+        - "CRD: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4061"
+        - "controller: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4141"
     - name: netapp-kmsconfig
       local: resource-netapp-kmsconfig
       remote: resource-netapp-kmsconfig
