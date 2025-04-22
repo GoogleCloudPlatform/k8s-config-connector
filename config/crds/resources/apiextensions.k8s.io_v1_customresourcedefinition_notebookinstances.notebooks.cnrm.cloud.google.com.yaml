@@ -171,10 +171,6 @@ spec:
                 description: Labels to apply to this instance. These can be later
                   modified by the setLabels method.
                 type: object
-              location:
-                description: Immutable. The location where the alloydb cluster should
-                  reside.
-                type: string
               machineType:
                 description: Required. The [Compute Engine machine type](https://cloud.google.com/compute/docs/machine-types)
                   of this instance.
@@ -451,9 +447,13 @@ spec:
                       this VM image belongs to. Format: `{project_id}`'
                     type: string
                 type: object
+              zone:
+                description: Immutable. The location where the notebook instance should
+                  reside.
+                type: string
             required:
-            - location
             - projectRef
+            - zone
             type: object
           status:
             description: NotebookInstanceStatus defines the config connector machine

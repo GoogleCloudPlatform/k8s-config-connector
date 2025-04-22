@@ -199,9 +199,9 @@ type NotebookInstanceSpec struct {
 }
 
 type Parent struct {
-	// Immutable. The location where the alloydb cluster should reside.
+	// Immutable. The location where the notebook instance should reside.
 	// +required
-	Location string `json:"location,omitempty"`
+	Zone string `json:"zone,omitempty"`
 
 	// The project that this resource belongs to.
 	// +required

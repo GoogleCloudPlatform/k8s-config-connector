@@ -126,6 +126,7 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	}
 	obj.MachineType = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/machineTypes/n1-standard-1", name.Project.ID)
 	obj.Metadata = map[string]string{
+		"container":                  "gcr.io/deeplearning-platform-release/base-cpu",
 		"disable-swap-binaries":      "true",
 		"enable-guest-attributes":    "TRUE",
 		"notebooks-api":              "PROD",
@@ -159,7 +160,6 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
 	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
 		Target:                name.String(),
