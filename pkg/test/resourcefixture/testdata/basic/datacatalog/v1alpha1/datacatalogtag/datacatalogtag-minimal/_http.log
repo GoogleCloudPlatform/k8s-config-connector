@@ -10,6 +10,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -39,6 +40,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -65,6 +67,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -99,6 +102,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -131,6 +135,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -169,6 +174,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -200,6 +206,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -228,6 +235,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -238,7 +246,7 @@ X-Xss-Protection: 0
       "stringValue": "test value"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
   "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}",
   "templateDisplayName": "TestTagTemplate"
 }
@@ -256,6 +264,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -264,23 +273,21 @@ X-Xss-Protection: 0
     {
       "fields": {
         "testfield": {
-          "displayName": "TestField",
           "stringValue": "test value"
         }
       },
-      "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O",
-      "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}",
-      "templateDisplayName": "TestTagTemplate"
+      "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
+      "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
     }
   ]
 }
 
 ---
 
-PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O?updateMask=fields
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid?updateMask=fields
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: tag.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2FCSosIz_L2bs0O
+X-Goog-Request-Params: tag.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2Fmocktagid
 X-Goog-User-Project: ${projectId}
 
 {
@@ -289,7 +296,7 @@ X-Goog-User-Project: ${projectId}
       "stringValue": "test value updated"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
   "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
 }
 
@@ -299,6 +306,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -309,7 +317,7 @@ X-Xss-Protection: 0
       "stringValue": "test value updated"
     }
   },
-  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O",
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
   "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}",
   "templateDisplayName": "TestTagTemplate"
 }
@@ -327,6 +335,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -335,23 +344,21 @@ X-Xss-Protection: 0
     {
       "fields": {
         "testfield": {
-          "displayName": "TestField",
           "stringValue": "test value updated"
         }
       },
-      "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O",
-      "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}",
-      "templateDisplayName": "TestTagTemplate"
+      "name": "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid",
+      "template": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
     }
   ]
 }
 
 ---
 
-DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2FCSosIz_L2bs0O
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FentryGroups%2Fdceg_${uniqueId}%2Fentries%2Fdce_${uniqueId}%2Ftags%2Fmocktagid
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -360,6 +367,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -379,6 +387,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -411,6 +420,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -430,6 +440,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -462,6 +473,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -481,6 +493,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -507,6 +520,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
