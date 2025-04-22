@@ -43,6 +43,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	commandFlag             = "command"
 	loggingDirFlag          = "logging-dir"
 	readFileTypeFlag        = "file-type"
+	controllerFilterFlag    = "controller-filter"
 
 	// Command values
 	cmdDeleteGitBranch              = -5
@@ -130,6 +131,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", false, "Skip the make ready-pr step when pushing branches")
 	cmd.Flags().StringVarP(&opts.processors, "processors",
 		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
+	cmd.Flags().StringVarP(&opts.controllerFilter, controllerFilterFlag,
+		"", "", "Type of controller to filter for. (Eg terraform-v1beta1)")
 
 	return cmd
 }
@@ -151,6 +154,7 @@ type RunnerOptions struct {
 	branchSuffix      string // Suffix to append to remote branch names when pushing
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 	processors        string // Comma-separated list of processor function names to run
+	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -279,6 +283,10 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -6:
+		if err := filterMetadata(opts, branches); err != nil {
+			log.Fatalf("unnable to filter metadata: %v", err)
+		}
 	case cmdDeleteGitBranch: // -5
 		for idx, branch := range branches.Branches {
 			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -309,7 +317,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case cmdMergeMetadata: // 3
 		if err := mergeMetadata(opts, branches); err != nil {
-			log.Fatalf("unnable to merge metadata: %d", err)
+			log.Fatalf("unnable to merge metadata: %v", err)
 		}
 	case cmdEnableGCPAPIs: // 4
 		for idx, branch := range branches.Branches {
@@ -488,6 +496,7 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	nameMap := make(map[string]Branch)
 	gitMap := make(map[string]string)
 	grMap := make(map[string]Branch)
+	kindMap := make(map[string]string)
 	for idx, branch := range branches.Branches {
 		if branch.Command != "" {
 			if existing, ok := gcloudMap[branch.Command]; ok {
@@ -514,6 +523,12 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 				existing.Name, idx, branch.Name)
 		}
 		grMap[gr] = branch
+
+		if existing, ok := kindMap[branch.Kind]; ok {
+			log.Printf("Kind uniqueness constraint between %s and (%d)%s\r",
+				existing, idx, branch.Name)
+		}
+		gitMap[branch.Kind] = branch.Name
 	}
 
 	// Fix the data and write back
@@ -842,6 +857,23 @@ func splitMetadata(opts *RunnerOptions, branches Branches) {
 	for cntr := 0; cntr < 7; cntr++ {
 		writeBranchesStableOrder(newBranches[cntr], fmt.Sprintf("branches-%d.yaml", cntr))
 	}
+}
+
+// Filter metadata for a particular controller type.
+func filterMetadata(opts *RunnerOptions, branches Branches) error {
+	if opts.controllerFilter == "" {
+		return fmt.Errorf("filterMetadata requires that controller fitler be set")
+	}
+
+	var filteredBranch Branches
+	for _, branch := range branches.Branches {
+		if branch.Controller != opts.controllerFilter {
+			continue
+		}
+		filteredBranch.Branches = append(filteredBranch.Branches, branch)
+	}
+	writeBranchesStableOrder(filteredBranch, fmt.Sprintf("branches-%s.yaml", opts.controllerFilter))
+	return nil
 }
 
 func mergeMetadata(opts *RunnerOptions, branches Branches) error {
