@@ -215,23 +215,6 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// TODO: After successful update, reconcile TagTemplateFields if managed inline.
 	}
 
-	// Regardless of whether an update call was made, reconcile status.
-	// Need the latest state which might include output-only fields not present in `desired`.
-	// Re-fetch if no update was performed or if the update response might be incomplete.
-	if len(updateMask.Paths) == 0 {
-		refetched, findErr := a.gcpClient.GetTagTemplate(ctx, &pb.GetTagTemplateRequest{Name: a.id.String()})
-		if findErr != nil {
-			// Log the error but continue with the potentially stale 'actual' for status update
-			log.Error(findErr, "failed to re-fetch tagtemplate after no-op update", "name", a.id)
-		} else {
-			updated = refetched
-			a.actual = refetched // Update internal 'actual' state
-		}
-	} else {
-		// If an update was made, the 'updated' response should be sufficient.
-		a.actual = updated // Update internal 'actual' state
-	}
-
 	status := &krm.DataCatalogTagTemplateStatus{}
 	status.ObservedState = DataCatalogTagTemplateObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -263,12 +246,6 @@ func (a *tagTemplateAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	u.SetName(a.id.ID())
 	u.SetNamespace(a.desired.GetNamespace()) // Preserve namespace
 	u.SetGroupVersionKind(krm.DataCatalogTagTemplateGVK)
-
-	// Clear output-only fields from spec before setting object
-	// 'dataplex_transfer_status' is marked Optional but behaves like output-only in practice for export.
-	unstructured.RemoveNestedField(uObj, "spec", "dataplexTransferStatus")
-	// Fields within TagTemplateField might have output-only subfields, ensure mapper handles this.
-
 	u.Object = uObj
 
 	// Clear status fields from the exported object
