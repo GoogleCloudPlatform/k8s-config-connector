@@ -25,7 +25,9 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/go-test/deep"
+	"github.com/google/go-cmp/cmp/cmpopts"
+
+	"github.com/google/go-cmp/cmp"
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
@@ -194,11 +196,11 @@ func (a *zoneAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		Trigger:     &pb.Zone_DiscoverySpec_Schedule{Schedule: ""},
 	}
 	if zone.DiscoverySpec != nil {
-		if path := deep.Equal(zone.DiscoverySpec, a.actual.DiscoverySpec); len(path) != 0 {
+		if !cmp.Equal(zone.DiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	} else {
-		if path := deep.Equal(emptyDiscoverySpec, a.actual.DiscoverySpec); len(path) != 0 {
+		if !cmp.Equal(emptyDiscoverySpec, a.actual.DiscoverySpec, cmpopts.IgnoreUnexported(pb.Zone_DiscoverySpec{}, pb.Zone_DiscoverySpec_CsvOptions{}, pb.Zone_DiscoverySpec_JsonOptions{})) {
 			updateMask.Paths = append(updateMask.Paths, "discovery_spec")
 		}
 	}
