@@ -47,12 +47,26 @@ type BigtableAppProfileSpec struct {
 
 	// Use a single-cluster routing policy.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
-	SingleClusterRouting *AppProfile_SingleClusterRoutingClusterId `json:"singleClusterRouting,omitempty"`
+	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
 
 	// The standard options used for isolating this app profile's traffic from
 	//  other use cases.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
 	StandardIsolation *AppProfile_StandardIsolation `json:"standardIsolation,omitempty"`
+}
+
+// We have to manually override AppProfile_SingleClusterRouting because of clusterId vs clusterID
+// +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
+type AppProfile_SingleClusterRouting struct {
+	// The cluster to which read/write requests should be routed.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.SingleClusterRouting.cluster_id
+	ClusterID *string `json:"clusterId,omitempty"`
+
+	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
+	//  allowed by this app profile. It is unsafe to send these requests to
+	//  the same table/row/column in multiple clusters.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.SingleClusterRouting.allow_transactional_writes
+	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 }
 
 // BigtableAppProfileStatus defines the config connector machine state of BigtableAppProfile
@@ -110,16 +124,15 @@ type BigtableAppProfileList struct {
 	Items           []BigtableAppProfile `json:"items"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
-type AppProfile_SingleClusterRoutingClusterId struct {
-	// The cluster to which read/write requests should be routed.
-	ClusterId *string `json:"clusterId,omitempty"`
+// type AppProfile_SingleClusterRoutingClusterId struct {
+// 	// The cluster to which read/write requests should be routed.
+// 	ClusterId *string `json:"clusterId,omitempty"`
 
-	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
-	//  allowed by this app profile. It is unsafe to send these requests to
-	//  the same table/row/column in multiple clusters.
-	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
-}
+// 	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
+// 	//  allowed by this app profile. It is unsafe to send these requests to
+// 	//  the same table/row/column in multiple clusters.
+// 	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
+// }
 
 func init() {
 	SchemeBuilder.Register(&BigtableAppProfile{}, &BigtableAppProfileList{})
