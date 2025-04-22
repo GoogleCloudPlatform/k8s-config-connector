@@ -31,8 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/clouddms/v1"
 )
 
 func (s *DataMigrationServiceV1) GetConnectionProfile(ctx context.Context, req *pb.GetConnectionProfileRequest) (*pb.ConnectionProfile, error) {
