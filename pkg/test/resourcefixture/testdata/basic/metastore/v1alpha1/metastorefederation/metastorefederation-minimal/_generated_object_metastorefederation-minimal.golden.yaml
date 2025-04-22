@@ -30,7 +30,7 @@ status:
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    endpointURI: https://standalone-federation-msfed-${uniqueId}-71767-tvskqxt2aa-uc.a.run.app:443
+    endpointURI: federation-endpoint-msfed-${uniqueId}
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
