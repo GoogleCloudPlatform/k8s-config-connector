@@ -1,0 +1,30 @@
+apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
+kind: DataCatalogTag
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: datacatalogtag-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  entryRef:
+    name: datacatalogentry-minimal-${uniqueId}
+  fields:
+    testfield:
+      stringValue: test value updated
+  templateRef:
+    name: datacatalogtagtemplate-minimal-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/CSosIz_L2bs0O
+  observedGeneration: 2
+  observedState:
+    templateDisplayName: TestTagTemplate
