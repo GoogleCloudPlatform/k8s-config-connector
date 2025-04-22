@@ -75,6 +75,7 @@ type NotebookInstanceSpec struct {
 	// Required. The [Compute Engine machine
 	//  type](https://cloud.google.com/compute/docs/machine-types) of this
 	//  instance.
+	// +required.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.machine_type
 	MachineType *string `json:"machineType,omitempty"`
 
@@ -129,9 +130,6 @@ type NotebookInstanceSpec struct {
 
 	// Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
 	//  is CMEK.
-	//  Format:
-	//  `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
-	//
 	//  Learn more about [using your own encryption keys](/kms/docs/quickstart).
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.kms_key
 	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
@@ -151,14 +149,10 @@ type NotebookInstanceSpec struct {
 	NoProxyAccess *bool `json:"noProxyAccess,omitempty"`
 
 	// The name of the VPC that this instance is in.
-	//  Format:
-	//  `projects/{project_id}/global/networks/{network_id}`
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.network
 	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The name of the subnet that this instance is in.
-	//  Format:
-	//  `projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}`
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.subnet
 	SubnetRef *v1beta1.ComputeSubnetworkRef `json:"subnetRef,omitempty"`
 

@@ -136,13 +136,9 @@ spec:
                   type: string
                 type: array
               kmsKeyRef:
-                description: |-
-                  Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
-                   is CMEK.
-                   Format:
-                   `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
-
-                   Learn more about [using your own encryption keys](/kms/docs/quickstart).
+                description: Input only. The KMS key used to encrypt the disks, only
+                  applicable if disk_encryption is CMEK. Learn more about [using your
+                  own encryption keys](/kms/docs/quickstart).
                 oneOf:
                 - not:
                     required:
@@ -189,8 +185,7 @@ spec:
                 description: Custom metadata to apply to this instance.
                 type: object
               networkRef:
-                description: 'The name of the VPC that this instance is in. Format:
-                  `projects/{project_id}/global/networks/{network_id}`'
+                description: The name of the VPC that this instance is in.
                 oneOf:
                 - not:
                     required:
@@ -369,8 +364,7 @@ spec:
                     type: boolean
                 type: object
               subnetRef:
-                description: 'The name of the subnet that this instance is in. Format:
-                  `projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}`'
+                description: The name of the subnet that this instance is in.
                 oneOf:
                 - not:
                     required:
