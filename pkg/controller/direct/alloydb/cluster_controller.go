@@ -34,11 +34,14 @@ import (
 	"google.golang.org/genproto/googleapis/type/dayofweek"
 	"google.golang.org/genproto/googleapis/type/timeofday"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 func init() {
@@ -66,6 +69,36 @@ func (m *modelCluster) client(ctx context.Context) (*gcp.AlloyDBAdminClient, err
 		return nil, fmt.Errorf("building Cluster client: %w", err)
 	}
 	return gcpClient, err
+}
+
+func (m *modelCluster) MapSecretToResources(ctx context.Context, reader client.Reader, secret corev1.Secret) ([]reconcile.Request, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("mapping secret to AlloyDBClusters", "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
+
+	us := &unstructured.UnstructuredList{}
+	us.SetAPIVersion("alloydb.cnrm.cloud.google.com/v1beta1")
+	us.SetKind("AlloyDBCluster")
+	if err := reader.List(ctx, us, &client.ListOptions{Namespace: secret.GetNamespace()}); err != nil {
+		return nil, fmt.Errorf("listing AlloyDBCluster under namespace %v: %w", secret.GetNamespace(), err)
+	}
+
+	requests := make([]reconcile.Request, 0)
+	for _, cluster := range us.Items {
+		secretName, _, err := unstructured.NestedString(cluster.Object, "spec", "initialUser", "password", "valueFrom", "secretKeyRef", "name")
+		if err != nil {
+			return nil, fmt.Errorf("getting 'spec.initialUser.password.valueFrom.secretKeyRef.name' in unstructured AlloyDBCluster %v/%v: %w", cluster.GetNamespace(), cluster.GetName(), err)
+		}
+		if secretName == secret.GetName() {
+			log.Info("found AlloyDBCluster relying on secret", "name", fmt.Sprintf("%v/%v", cluster.GetNamespace(), cluster.GetName()), "secret", fmt.Sprintf("%v/%v", secret.GetNamespace(), secret.GetName()))
+			requests = append(requests, reconcile.Request{
+				NamespacedName: types.NamespacedName{
+					Name:      cluster.GetName(), // Reconcile the AlloyDBCluster which referenced the given K8s Secret.
+					Namespace: cluster.GetNamespace(),
+				},
+			})
+		}
+	}
+	return requests, nil
 }
 
 func (m *modelCluster) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -252,7 +285,7 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 }
 
 // TODO: Scenario test case: Update initialUser.password from `value` to `valueFrom` and vise versa.
-func (a *ClusterAdapter) resolveInitialUserField(ctx context.Context) error {
+func (a *ClusterAdapter) resolveInitialUserPasswordField(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.InitialUser == nil || obj.Spec.InitialUser.Password == nil {
 		return nil
@@ -262,7 +295,6 @@ func (a *ClusterAdapter) resolveInitialUserField(ctx context.Context) error {
 	if err := direct.ResolveSensitiveField(ctx, obj.Spec.InitialUser.Password, "spec.initialUser.password", obj.Namespace, a.reader); err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -278,7 +310,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return fmt.Errorf("normalizing reference for creation: %w", err)
 	}
 	// 2. Resolve secret field.
-	if err := a.resolveInitialUserField(ctx); err != nil {
+	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
 		return err
 	}
 	// 3. Set default fields that were set by the Terraform library for compatibility.
@@ -487,7 +519,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 		return fmt.Errorf("normalizing reference for update: %w", err)
 	}
 	// 2. Resolve secret field.
-	if err := a.resolveInitialUserField(ctx); err != nil {
+	if err := a.resolveInitialUserPasswordField(ctx); err != nil {
 		return err
 	}
 	// 3. Set default fields that were set in the actual state.
@@ -537,6 +569,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
+
 		if *a.desired.Status.ExternalRef == "" {
 			// If it is the first reconciliation after switching to direct controller,
 			// then update Status to fill out the ExternalRef even if there is

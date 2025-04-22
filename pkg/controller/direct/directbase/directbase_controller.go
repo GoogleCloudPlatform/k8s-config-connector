@@ -35,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -107,13 +108,38 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 		predicateList = append(predicateList, reconcilePredicate)
 	}
 
-	_, err := builder.
+	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...)).
-		Build(r)
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
+
+	// The controller should watch K8s Secret if it supports sensitive fields.
+	if _, ok := r.model.(SensitiveFieldModel); ok {
+		secretObj := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"kind":       "Secret",
+				"apiVersion": "v1",
+			},
+		}
+		controllerBuilder = controllerBuilder.Watches(
+			secretObj, // Watch the K8s Secret CR
+			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
+				logger := log.FromContext(ctx)
+				// Identify resources of the current kind that referencing the
+				// updated K8s Secret and enqueue them for reconciliation.
+				requests, err := r.mapSecretToResources(ctx, obj)
+				if err != nil {
+					logger.Error(err, "Failed identifying resources relying secret", "secret", fmt.Sprintf("%v/%v", obj.GetNamespace(), obj.GetName()))
+					return nil
+				}
+				return requests
+			}),
+		)
+	}
+
+	_, err := controllerBuilder.Build(r)
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
@@ -148,6 +174,17 @@ type reconcileContext struct {
 	gvk            schema.GroupVersionKind
 	Reconciler     *DirectReconciler
 	NamespacedName types.NamespacedName
+}
+
+func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.Object) ([]reconcile.Request, error) {
+	if model, ok := r.model.(SensitiveFieldModel); ok {
+		secret := &corev1.Secret{}
+		if err := util.Marshal(obj, secret); err != nil {
+			return nil, fmt.Errorf("error parsing %v/%v: %w", obj.GetNamespace(), obj.GetName(), err)
+		}
+		return model.MapSecretToResources(ctx, r.Client, *secret)
+	}
+	return nil, nil
 }
 
 // Reconcile checks k8s for the current state of the resource.

@@ -157,7 +157,6 @@ func (a *runtimeAdapter) Create(ctx context.Context, createOp *directbase.Create
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	fmt.Printf("maqiuyu... create desiredPb: %+v\n", desiredPb)
 
 	req := &pb.AssignNotebookRuntimeRequest{
 		Parent:                  a.id.Parent().String(),
