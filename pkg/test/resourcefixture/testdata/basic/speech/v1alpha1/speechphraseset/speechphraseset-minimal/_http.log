@@ -5,15 +5,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fphras
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Grpc-Status-Details-Bin: CAUSW1VuYWJsZSB0byBmaW5kIFBocmFzZVNldCBzcGVlY2hwaHJhc2VzZXQtbWluaW1hbC16ZHVqeTV0dmFubXJ0eGkgZnJvbSBwcm9qZWN0IDYwMDEzOTU2NjExNi4a+QEKJHR5cGUuZ29vZ2xlYXBpcy5jb20vdXRpbC5TdGF0dXNQcm90bxLQAQgFEgdnZW5lcmljGltVbmFibGUgdG8gZmluZCBQaHJhc2VTZXQgc3BlZWNocGhyYXNlc2V0LW1pbmltYWwtemR1ank1dHZhbm1ydHhpIGZyb20gcHJvamVjdCA2MDAxMzk1NjYxMTYuKmYLEIbWjScaXRJbVW5hYmxlIHRvIGZpbmQgUGhyYXNlU2V0IHNwZWVjaHBocmFzZXNldC1taW5pbWFsLXpkdWp5NXR2YW5tcnR4aSBmcm9tIHByb2plY3QgNjAwMTM5NTY2MTE2Lgw=
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DVKA8j0VmpmJQA==
-X-Goog-Ext-9650773-Bin: DUB0PUE=
 X-Xss-Protection: 0
 
 {
@@ -43,14 +40,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DTXM8z0VAABgQA==
-X-Goog-Ext-9650773-Bin: DYl3PkE=
 X-Xss-Protection: 0
 
 {
@@ -104,14 +99,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fphras
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DR5Rzj0VMzNTQA==
-X-Goog-Ext-9650773-Bin: DWAvIUE=
 X-Xss-Protection: 0
 
 {
@@ -150,14 +143,12 @@ X-Goog-Request-Params: phrase_set.name=projects%2F${projectId}%2Flocations%2Fglo
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DQp0wT0VMzODQA==
-X-Goog-Ext-9650773-Bin: DagiF0E=
 X-Xss-Protection: 0
 
 {
@@ -211,14 +202,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fphras
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DQKpzz0VzcxsQA==
-X-Goog-Ext-9650773-Bin: DQk8IkE=
 X-Xss-Protection: 0
 
 {
@@ -246,14 +235,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fphras
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DVIaAj4Vmpl5QA==
-X-Goog-Ext-9650773-Bin: DSBJS0E=
 X-Xss-Protection: 0
 
 {
