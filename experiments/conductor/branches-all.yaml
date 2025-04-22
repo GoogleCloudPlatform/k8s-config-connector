@@ -13,24 +13,6 @@
 # limitations under the License.
 
 branches:
-    - name: accessapproval-accessapprovalserviceaccount
-      local: resource-accessapproval-accessapprovalserviceaccount
-      remote: resource-accessapproval-accessapprovalserviceaccount
-      command: gcloud access-approval service-account
-      group: accessapproval
-      resource: accessapprovalserviceaccount
-      controller: Unknown
-      skip: false
-      kind: AccessApprovalAccessApprovalServiceAccount
-      package: google.cloud.accessapproval.v1
-      proto: AccessApprovalServiceAccount
-      proto-path: google/cloud/accessapproval/v1/accessapproval.proto
-      proto-service: ""
-      proto-msg: google.cloud.accessapproval.v1.AccessApprovalServiceAccount
-      host-name: ""
-      notes:
-        - No gcloud command found
-      apis-enabled: []
     - name: accessapproval-accessapprovalsettings
       local: resource-accessapproval-accessapprovalsettings
       remote: resource-accessapproval-accessapprovalsettings
@@ -48,24 +30,7 @@ branches:
       host-name: ""
       notes:
         - No gcloud command found
-      apis-enabled: []
-    - name: accessapproval-approvalrequest
-      local: resource-accessapproval-approvalrequest
-      remote: resource-accessapproval-approvalrequest
-      command: gcloud access-approval requests
-      group: accessapproval
-      resource: approvalrequest
-      controller: Unknown
-      skip: false
-      kind: AccessApprovalApprovalRequest
-      package: google.cloud.accessapproval.v1
-      proto: ApprovalRequest
-      proto-path: google/cloud/accessapproval/v1/accessapproval.proto
-      proto-service: ""
-      proto-msg: google.cloud.accessapproval.v1.ApprovalRequest
-      host-name: ""
-      notes:
-        - No gcloud command found
+        - No CREATE
       apis-enabled: []
     - name: accesscontextmanager-accesscontextmanageraccesslevelconditions
       local: resource-accesscontextmanager-accesscontextmanageraccesslevelconditions
@@ -3960,40 +3925,6 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: backupdr-locations
-      local: resource-backupdr-locations
-      remote: resource-backupdr-locations
-      command: gcloud backup-dr locations
-      group: backupdr
-      resource: locations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: backupdr-operations
-      local: resource-backupdr-operations
-      remote: resource-backupdr-operations
-      command: gcloud backup-dr operations
-      group: backupdr
-      resource: operations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: backupdr-backup
       local: resource-backupdr-backup
       remote: resource-backupdr-backup
@@ -4006,11 +3937,12 @@ branches:
       package: google.cloud.backupdr.v1
       proto: Backup
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.Backup
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - No CREATE
+        - subresource of datasource
     - name: backupdr-backupplan
       local: resource-backupdr-backupplan
       remote: resource-backupdr-backupplan
@@ -4023,11 +3955,13 @@ branches:
       package: google.cloud.backupdr.v1
       proto: BackupPlan
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.BackupPlan
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "backupdr.googleapis.com"
+      notes:
+        - long running operation
     - name: backupdr-backupplanassociation
       local: resource-backupdr-backupplanassociation
       remote: resource-backupdr-backupplanassociation
@@ -4040,11 +3974,13 @@ branches:
       package: google.cloud.backupdr.v1
       proto: BackupPlanAssociation
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.BackupPlanAssociation
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "backupdr.googleapis.com"
+      notes:
+        - long running operation
     - name: backupdr-backupvault
       local: resource-backupdr-backupvault
       remote: resource-backupdr-backupvault
@@ -4057,11 +3993,13 @@ branches:
       package: google.cloud.backupdr.v1
       proto: BackupVault
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.BackupVault
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "backupdr.googleapis.com"
+      notes:
+        - long running operation
     - name: backupdr-datasource
       local: resource-backupdr-datasource
       remote: resource-backupdr-datasource
@@ -4074,11 +4012,12 @@ branches:
       package: google.cloud.backupdr.v1
       proto: DataSource
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.DataSource
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - No CREATE
+        - subresource of backupvault
     - name: backupdr-managementserver
       local: resource-backupdr-managementserver
       remote: resource-backupdr-managementserver
@@ -4091,11 +4030,14 @@ branches:
       package: google.cloud.backupdr.v1
       proto: ManagementServer
       proto-path: google/cloud/backupdr/v1/backupdr.proto
-      proto-service: ""
+      proto-service: "google.cloud.backupdr.v1.BackupDR"
       proto-msg: google.cloud.backupdr.v1.ManagementServer
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "backupdr.googleapis.com"
+      notes:
+        - gcloud command defaults "--async", need to explicity set "--no-async"
+        - long running operation
     - name: baremetalsolution-operation
       local: resource-baremetalsolution-operation
       remote: resource-baremetalsolution-operation
@@ -11431,40 +11373,6 @@ branches:
       host-name: ""
       notes: []
       apis-enabled: []
-    - name: datastream-objects
-      local: resource-datastream-objects
-      remote: resource-datastream-objects
-      command: gcloud datastream objects
-      group: datastream
-      resource: objects
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: datastream-operations
-      local: resource-datastream-operations
-      remote: resource-datastream-operations
-      command: gcloud datastream operations
-      group: datastream
-      resource: operations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: datastream-connectionprofile
       local: resource-datastream-connectionprofile
       remote: resource-datastream-connectionprofile
@@ -11477,11 +11385,13 @@ branches:
       package: google.cloud.datastream.v1
       proto: ConnectionProfile
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.ConnectionProfile
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "datastream.googleapis.com"
+      notes:
+        - long running operation
     - name: datastream-privateconnection
       local: resource-datastream-privateconnection
       remote: resource-datastream-privateconnection
@@ -11494,11 +11404,13 @@ branches:
       package: google.cloud.datastream.v1
       proto: PrivateConnection
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.PrivateConnection
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "datastream.googleapis.com"
+      notes:
+        - long running operation
     - name: datastream-route
       local: resource-datastream-route
       remote: resource-datastream-route
@@ -11511,11 +11423,14 @@ branches:
       package: google.cloud.datastream.v1
       proto: Route
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.Route
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "datastream.googleapis.com"
+      notes:
+        - long running operation
+        - subresource of privateconnection
     - name: datastream-stream
       local: resource-datastream-stream
       remote: resource-datastream-stream
@@ -11528,29 +11443,13 @@ branches:
       package: google.cloud.datastream.v1
       proto: Stream
       proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
+      proto-service: "google.cloud.datastream.v1.Datastream"
       proto-msg: google.cloud.datastream.v1.Stream
       host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: datastream-streamobject
-      local: resource-datastream-streamobject
-      remote: resource-datastream-streamobject
-      command: ""
-      group: datastream
-      resource: streamobject
-      controller: Unknown
-      skip: false
-      kind: DatastreamStreamObject
-      package: google.cloud.datastream.v1
-      proto: StreamObject
-      proto-path: google/cloud/datastream/v1/datastream.proto
-      proto-service: ""
-      proto-msg: google.cloud.datastream.v1.StreamObject
-      host-name: ""
+      apis-enabled:
+        - "datastream.googleapis.com"
       notes:
-        - No gcloud command found
-      apis-enabled: []
+        - long running operation
     - name: deploy-automation
       local: resource-deploy-automation
       remote: resource-deploy-automation
@@ -14708,41 +14607,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: gkebackup-locations
-      local: resource-gkebackup-locations
-      remote: resource-gkebackup-locations
-      command: gcloud beta container backup-restore locations
-      group: gkebackup
-      resource: locations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: gkebackup-operations
-      local: resource-gkebackup-operations
-      remote: resource-gkebackup-operations
-      command: gcloud beta container backup-restore operations
-      group: gkebackup
-      resource: operations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      notes:
+        - Duplicate with gkebackup-backupplan
       apis-enabled: []
     - name: gkebackup-backup
       local: resource-gkebackup-backup
@@ -14751,16 +14617,19 @@ branches:
       group: gkebackup
       resource: backup
       controller: Unknown
-      skip: false
       kind: GKEBackupBackup
       package: google.cloud.gkebackup.v1
       proto: Backup
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.Backup
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
+      notes:
+        - long running operation
+        - subresource of backupplan
     - name: gkebackup-backupplan
       local: resource-gkebackup-backupplan
       remote: resource-gkebackup-backupplan
@@ -14773,11 +14642,14 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: BackupPlan
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.BackupPlan
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
+      notes:
+        - long running operation
     - name: gkebackup-restore
       local: resource-gkebackup-restore
       remote: resource-gkebackup-restore
@@ -14790,11 +14662,15 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: Restore
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.Restore
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
+      notes:
+        - long running operation
+        - subresource of restoreplan
     - name: gkebackup-restoreplan
       local: resource-gkebackup-restoreplan
       remote: resource-gkebackup-restoreplan
@@ -14807,45 +14683,14 @@ branches:
       package: google.cloud.gkebackup.v1
       proto: RestorePlan
       proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
+      proto-service: "google.cloud.gkebackup.v1.BackupForGKE"
       proto-msg: google.cloud.gkebackup.v1.RestorePlan
       host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: gkebackup-volumebackup
-      local: resource-gkebackup-volumebackup
-      remote: resource-gkebackup-volumebackup
-      command: gcloud beta container backup-restore volume-backups
-      group: gkebackup
-      resource: volumebackup
-      controller: Unknown
-      skip: false
-      kind: GKEBackupVolumeBackup
-      package: google.cloud.gkebackup.v1
-      proto: VolumeBackup
-      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
-      proto-msg: google.cloud.gkebackup.v1.VolumeBackup
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: gkebackup-volumerestore
-      local: resource-gkebackup-volumerestore
-      remote: resource-gkebackup-volumerestore
-      command: gcloud beta container backup-restore volume-restores
-      group: gkebackup
-      resource: volumerestore
-      controller: Unknown
-      skip: false
-      kind: GKEBackupVolumeRestore
-      package: google.cloud.gkebackup.v1
-      proto: VolumeRestore
-      proto-path: google/cloud/gkebackup/v1/gkebackup.proto
-      proto-service: ""
-      proto-msg: google.cloud.gkebackup.v1.VolumeRestore
-      host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "gkebackup.googleapis.com"
+        - "container.googleapis.com"
+      notes:
+        - long running operation
     - name: gkehub-gkehubfeaturememberships
       local: resource-gkehub-gkehubfeaturememberships
       remote: resource-gkehub-gkehubfeaturememberships
@@ -15936,7 +15781,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: inframanager-previews
       local: resource-inframanager-previews
@@ -15953,7 +15799,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: iot-device
       local: resource-iot-device
@@ -17943,7 +17790,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-firewallendpointassociations
       local: resource-networksecurity-firewallendpointassociations
@@ -17960,7 +17808,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-firewallendpoints
       local: resource-networksecurity-firewallendpoints
@@ -17977,7 +17826,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-gatewaysecuritypolicies
       local: resource-networksecurity-gatewaysecuritypolicies
@@ -17994,7 +17844,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-mirroringdeploymentgroups
       local: resource-networksecurity-mirroringdeploymentgroups
@@ -18011,7 +17862,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-mirroringdeployments
       local: resource-networksecurity-mirroringdeployments
@@ -18028,7 +17880,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-mirroringendpointgroupassociations
       local: resource-networksecurity-mirroringendpointgroupassociations
@@ -18045,7 +17898,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-mirroringendpointgroups
       local: resource-networksecurity-mirroringendpointgroups
@@ -18062,7 +17916,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-networksecurityauthorizationpolicies
       local: resource-networksecurity-networksecurityauthorizationpolicies
@@ -18130,7 +17985,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-securityprofilegroups
       local: resource-networksecurity-securityprofilegroups
@@ -18147,7 +18003,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-securityprofiles
       local: resource-networksecurity-securityprofiles
@@ -18164,7 +18021,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-tlsinspectionpolicies
       local: resource-networksecurity-tlsinspectionpolicies
@@ -18181,7 +18039,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-urllists
       local: resource-networksecurity-urllists
@@ -18198,7 +18057,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: networksecurity-authorizationpolicy
       local: resource-networksecurity-authorizationpolicy
@@ -18206,7 +18066,7 @@ branches:
       command: gcloud network-security authorization-policies
       group: networksecurity
       resource: authorizationpolicy
-      controller: Unknown
+      controller: DCL
       skip: false
       kind: NetworkSecurityAuthorizationPolicy
       package: google.cloud.networksecurity.v1
@@ -18215,42 +18075,51 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.AuthorizationPolicy
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "networksecurity.googleapis.com"
+      notes:
+        - long running operation
+        - DCL beta
     - name: networksecurity-clienttlspolicy
       local: resource-networksecurity-clienttlspolicy
       remote: resource-networksecurity-clienttlspolicy
       command: gcloud network-security client-tls-policies
       group: networksecurity
       resource: clienttlspolicy
-      controller: Unknown
+      controller: DCL
       skip: false
-      kind: NetworkSecurityClientTlsPolicy
+      kind: NetworkSecurityClientTLSPolicy
       package: google.cloud.networksecurity.v1
       proto: ClientTlsPolicy
       proto-path: google/cloud/networksecurity/v1/network_security.proto
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.ClientTlsPolicy
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "networksecurity.googleapis.com"
+      notes:
+        - long running operation
+        - DCL beta
     - name: networksecurity-servertlspolicy
       local: resource-networksecurity-servertlspolicy
       remote: resource-networksecurity-servertlspolicy
       command: gcloud network-security server-tls-policies
       group: networksecurity
       resource: servertlspolicy
-      controller: Unknown
+      controller: DCL
       skip: false
-      kind: NetworkSecurityServerTlsPolicy
+      kind: NetworkSecurityServerTLSPolicy
       package: google.cloud.networksecurity.v1
       proto: ServerTlsPolicy
       proto-path: google/cloud/networksecurity/v1/network_security.proto
       proto-service: ""
       proto-msg: google.cloud.networksecurity.v1.ServerTlsPolicy
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "networksecurity.googleapis.com"
+      notes:
+        - long running operation
+        - DCL beta
     - name: networkservices-networkservicesedgecachekeysets
       local: resource-networkservices-networkservicesedgecachekeysets
       remote: resource-networkservices-networkservicesedgecachekeysets
@@ -19965,13 +19834,13 @@ branches:
       skip: false
       kind: ""
       package: ""
-      proto: ""
+      proto: "google/cloud/privilegedaccessmanager/v1/privilegedaccessmanager.proto"
       proto-path: ""
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - long running operation
     - name: privilegedaccessmanager-operations
       local: resource-privilegedaccessmanager-operations
       remote: resource-privilegedaccessmanager-operations
@@ -20021,8 +19890,10 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.privilegedaccessmanager.v1.Grant
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "privilegedaccessmanager.googleapis.com"
+      notes:
+        - subresource of entitlement
     - name: pubsub-liteoperations
       local: resource-pubsub-liteoperations
       remote: resource-pubsub-liteoperations
@@ -20672,7 +20543,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: resourcemanager-project
       local: resource-resourcemanager-project
@@ -20741,7 +20613,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: resourcemanager-folder
       local: resource-resourcemanager-folder
@@ -20758,8 +20631,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.resourcemanager.v3.Folder
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - Terraform BETA
     - name: resourcemanager-organization
       local: resource-resourcemanager-organization
       remote: resource-resourcemanager-organization
@@ -21171,7 +21044,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes: 
+        - Did not find proto
       apis-enabled: []
     - name: run-regions
       local: resource-run-regions
@@ -21248,7 +21122,7 @@ branches:
       command: gcloud run jobs
       group: run
       resource: job
-      controller: Unknown
+      controller: terraform
       skip: false
       kind: RunJob
       package: google.cloud.run.v2
@@ -21257,8 +21131,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.run.v2.Job
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - Terraform BETA
     - name: run-revision
       local: resource-run-revision
       remote: resource-run-revision
@@ -21266,7 +21140,6 @@ branches:
       group: run
       resource: revision
       controller: Unknown
-      skip: false
       kind: RunRevision
       package: google.cloud.run.v2
       proto: Revision
@@ -21274,15 +21147,18 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.run.v2.Revision
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "run.googleapis.com"
+      notes:
+        - No CREATE
+        - subresource of service
     - name: run-service
       local: resource-run-service
       remote: resource-run-service
       command: gcloud run services
       group: run
       resource: service
-      controller: Unknown
+      controller: terraform
       skip: false
       kind: RunService
       package: google.cloud.run.v2
@@ -21291,8 +21167,8 @@ branches:
       proto-service: ""
       proto-msg: google.cloud.run.v2.Service
       host-name: ""
-      notes: []
-      apis-enabled: []
+      notes:
+        - Terraform BETA
     - name: run-task
       local: resource-run-task
       remote: resource-run-task
@@ -22802,23 +22678,6 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: speech-operations
-      local: resource-speech-operations
-      remote: resource-speech-operations
-      command: gcloud ml speech operations
-      group: speech
-      resource: operations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: speech-config
       local: resource-speech-config
       remote: resource-speech-config
@@ -22840,7 +22699,7 @@ branches:
     - name: speech-customclass
       local: resource-speech-customclass
       remote: resource-speech-customclass
-      command: ""
+      command: 
       group: speech
       resource: customclass
       controller: Unknown
@@ -22849,16 +22708,17 @@ branches:
       package: google.cloud.speech.v2
       proto: CustomClass
       proto-path: google/cloud/speech/v2/cloud_speech.proto
-      proto-service: ""
+      proto-service: "google.cloud.speech.v2.Speech"
       proto-msg: google.cloud.speech.v2.CustomClass
       host-name: ""
+      apis-enabled:
+        - "speech.googleapis.com"
       notes:
-        - No gcloud command found
-      apis-enabled: []
+        - long running operation
     - name: speech-phraseset
       local: resource-speech-phraseset
       remote: resource-speech-phraseset
-      command: ""
+      command: 
       group: speech
       resource: phraseset
       controller: Unknown
@@ -22867,16 +22727,17 @@ branches:
       package: google.cloud.speech.v2
       proto: PhraseSet
       proto-path: google/cloud/speech/v2/cloud_speech.proto
-      proto-service: ""
+      proto-service: "google.cloud.speech.v2.Speech"
       proto-msg: google.cloud.speech.v2.PhraseSet
       host-name: ""
+      apis-enabled:
+        - "speech.googleapis.com"
       notes:
-        - No gcloud command found
-      apis-enabled: []
+        - long running operation
     - name: speech-recognizer
       local: resource-speech-recognizer
       remote: resource-speech-recognizer
-      command: gcloud ml speech recognizers
+      command: gcloud alpha ml speech recognizers
       group: speech
       resource: recognizer
       controller: Unknown
@@ -22885,11 +22746,13 @@ branches:
       package: google.cloud.speech.v2
       proto: Recognizer
       proto-path: google/cloud/speech/v2/cloud_speech.proto
-      proto-service: ""
+      proto-service: "google.cloud.speech.v2.Speech"
       proto-msg: google.cloud.speech.v2.Recognizer
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "speech.googleapis.com"
+      notes:
+        - long running operation
     - name: sql-sqldatabase
       local: resource-sql-sqldatabase
       remote: resource-sql-sqldatabase
@@ -25055,57 +24918,25 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: vmwareengine-locations
-      local: resource-vmwareengine-locations
-      remote: resource-vmwareengine-locations
-      command: gcloud vmware locations
-      group: vmwareengine
-      resource: locations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: vmwareengine-networks
-      local: resource-vmwareengine-networks
-      remote: resource-vmwareengine-networks
+    - name: vmwareengine-network
+      local: resource-vmwareengine-network
+      remote: resource-vmwareengine-network
       command: gcloud vmware networks
       group: vmwareengine
-      resource: networks
+      resource: vmwareenginenetwork
       controller: Unknown
       skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
+      kind: VMwareEngineNetwork
+      package: google.cloud.vmwareengine.v1
+      proto: VmwareEngineNetwork
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
+      proto-msg: google.cloud.vmwareengine.v1.VmwareEngineNetwork
       host-name: ""
-      notes: []
-      apis-enabled: []
-    - name: vmwareengine-operations
-      local: resource-vmwareengine-operations
-      remote: resource-vmwareengine-operations
-      command: gcloud vmware operations
-      group: vmwareengine
-      resource: operations
-      controller: Unknown
-      skip: false
-      kind: ""
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
     - name: vmwareengine-cluster
       local: resource-vmwareengine-cluster
       remote: resource-vmwareengine-cluster
@@ -25142,27 +24973,10 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: vmwareengine-dnsbindpermission
-      local: resource-vmwareengine-dnsbindpermission
-      remote: resource-vmwareengine-dnsbindpermission
-      command: gcloud vmware dns-bind-permission
-      group: vmwareengine
-      resource: dnsbindpermission
-      controller: Unknown
-      skip: false
-      kind: VMwareEngineDnsBindPermission
-      package: google.cloud.vmwareengine.v1
-      proto: DnsBindPermission
-      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
-      proto-msg: google.cloud.vmwareengine.v1.DnsBindPermission
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: vmwareengine-externalaccessrule
       local: resource-vmwareengine-externalaccessrule
       remote: resource-vmwareengine-externalaccessrule
-      command: ""
+      command: gcloud vmware network-policies external-access-rules
       group: vmwareengine
       resource: externalaccessrule
       controller: Unknown
@@ -25170,17 +24984,19 @@ branches:
       kind: VMwareEngineExternalAccessRule
       package: google.cloud.vmwareengine.v1
       proto: ExternalAccessRule
-      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-path: google/cloud/vmwareengine/v1/vmwareengine_resources.proto
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.ExternalAccessRule
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
-        - No gcloud command found
-      apis-enabled: []
+        - long running operation
+        - subresource of networkpolicy
     - name: vmwareengine-externaladdress
       local: resource-vmwareengine-externaladdress
       remote: resource-vmwareengine-externaladdress
-      command: ""
+      command: gcloud vmware private-clouds external-addresses
       group: vmwareengine
       resource: externaladdress
       controller: Unknown
@@ -25189,12 +25005,14 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: ExternalAddress
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.ExternalAddress
       host-name: ""
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
       notes:
-        - No gcloud command found
-      apis-enabled: []
+        - long running operation
+        - subresource of privatecloud
     - name: vmwareengine-hcxactivationkey
       local: resource-vmwareengine-hcxactivationkey
       remote: resource-vmwareengine-hcxactivationkey
@@ -25261,11 +25079,13 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: NetworkPeering
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.NetworkPeering
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
     - name: vmwareengine-networkpolicy
       local: resource-vmwareengine-networkpolicy
       remote: resource-vmwareengine-networkpolicy
@@ -25278,11 +25098,13 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: NetworkPolicy
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.NetworkPolicy
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
     - name: vmwareengine-node
       local: resource-vmwareengine-node
       remote: resource-vmwareengine-node
@@ -25301,23 +25123,6 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: vmwareengine-nodetype
-      local: resource-vmwareengine-nodetype
-      remote: resource-vmwareengine-nodetype
-      command: gcloud vmware node-types
-      group: vmwareengine
-      resource: nodetype
-      controller: Unknown
-      skip: false
-      kind: VMwareEngineNodeType
-      package: google.cloud.vmwareengine.v1
-      proto: NodeType
-      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
-      proto-msg: google.cloud.vmwareengine.v1.NodeType
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: vmwareengine-privatecloud
       local: resource-vmwareengine-privatecloud
       remote: resource-vmwareengine-privatecloud
@@ -25330,11 +25135,14 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: PrivateCloud
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.PrivateCloud
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
+        - create takes a few hours to finish, delete takes a week
     - name: vmwareengine-privateconnection
       local: resource-vmwareengine-privateconnection
       remote: resource-vmwareengine-privateconnection
@@ -25347,11 +25155,13 @@ branches:
       package: google.cloud.vmwareengine.v1
       proto: PrivateConnection
       proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
+      proto-service: "google.cloud.vmwareengine.v1.VmwareEngine"
       proto-msg: google.cloud.vmwareengine.v1.PrivateConnection
       host-name: ""
-      notes: []
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
+      notes:
+        - long running operation
     - name: vmwareengine-subnet
       local: resource-vmwareengine-subnet
       remote: resource-vmwareengine-subnet
@@ -25369,25 +25179,8 @@ branches:
       host-name: ""
       notes:
         - No gcloud command found
-      apis-enabled: []
-    - name: vmwareengine-vmwareenginenetwork
-      local: resource-vmwareengine-vmwareenginenetwork
-      remote: resource-vmwareengine-vmwareenginenetwork
-      command: ""
-      group: vmwareengine
-      resource: vmwareenginenetwork
-      controller: Unknown
-      skip: false
-      kind: VMwareEngineVmwareEngineNetwork
-      package: google.cloud.vmwareengine.v1
-      proto: VmwareEngineNetwork
-      proto-path: google/cloud/vmwareengine/v1/vmwareengine.proto
-      proto-service: ""
-      proto-msg: google.cloud.vmwareengine.v1.VmwareEngineNetwork
-      host-name: ""
-      notes:
-        - No gcloud command found
-      apis-enabled: []
+      apis-enabled:
+        - "vmwareengine.googleapis.com"
     - name: vpcaccess-vpcaccessconnector
       local: resource-vpcaccess-vpcaccessconnector
       remote: resource-vpcaccess-vpcaccessconnector
