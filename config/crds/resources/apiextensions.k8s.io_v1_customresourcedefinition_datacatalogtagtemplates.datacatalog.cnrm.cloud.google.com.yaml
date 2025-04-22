@@ -198,8 +198,8 @@ spec:
                   will be used.
                 type: string
             required:
-            - ""
             - location
+            - projectRef
             type: object
           status:
             description: DataCatalogTagTemplateStatus defines the config connector
