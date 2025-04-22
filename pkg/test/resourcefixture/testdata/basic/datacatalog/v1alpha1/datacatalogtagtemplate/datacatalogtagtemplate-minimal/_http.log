@@ -10,6 +10,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -48,6 +49,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -80,6 +82,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -126,6 +129,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -158,6 +162,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
@@ -190,6 +195,7 @@ Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
+X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
