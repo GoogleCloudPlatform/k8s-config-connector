@@ -154,7 +154,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 			return lroRet, nil
 		})
 	} else {
-		return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
+		return s.operations.DoneLRO(ctx, prefix, metadata, nil)
 	}
 }
 
