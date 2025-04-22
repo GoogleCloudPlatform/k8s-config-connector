@@ -46,10 +46,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
     "verb": "create"
   },
@@ -80,27 +82,27 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.Service",
-    "artifactGcsUri": "gs://gcs-bucket-msfed-${uniqueId}",
+    "artifactGcsUri": "gs://gcs-bucket-msfed-${uniqueId}-eefa703f-3328-4d05-a866-0b8973",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseType": "MYSQL",
     "encryptionConfig": {},
-    "endpointUri": "https://msfed-${uniqueId}-random-suffix.a.run.app:443",
+    "endpointUri": "https://msfed-${uniqueId}-eefa703f-tvskqxt2aa-uc.a.run.app:443",
     "hiveMetastoreConfig": {
       "configOverrides": {
-        "hive.metastore.warehouse.dir": "gs://gcs-bucket-msfed-${uniqueId}/hive-warehouse"
+        "hive.metastore.warehouse.dir": "gs://gcs-bucket-msfed-${uniqueId}-eefa703f-3328-4d05-a866-0b8973/hive-warehouse"
       },
       "endpointProtocol": "GRPC",
       "version": "3.1.2"
     },
     "metadataManagementActivity": {},
     "name": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/default",
     "networkConfig": {},
     "port": 443,
     "releaseChannel": "STABLE",
@@ -168,10 +170,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
     "verb": "create"
   },
@@ -202,6 +206,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
     "verb": "create"
   },
@@ -215,7 +220,7 @@ X-Xss-Protection: 0
       }
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpointUri": "federation-endpoint-msfed-${uniqueId}",
+    "endpointUri": "https://standalone-federation-msfed-${uniqueId}-bb0c3-tvskqxt2aa-uc.a.run.app:443",
     "name": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
     "state": "ACTIVE",
     "uid": "111111111111111111111",
@@ -249,7 +254,137 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "endpointUri": "federation-endpoint-msfed-${uniqueId}",
+  "endpointUri": "https://standalone-federation-msfed-${uniqueId}-bb0c3-tvskqxt2aa-uc.a.run.app:443",
+  "name": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "version": "3.1.2"
+}
+
+---
+
+PATCH https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels%2CbackendMetastores
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: federation.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
+
+{
+  "backendMetastores": {
+    "1": {
+      "metastoreType": 3,
+      "name": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}"
+    }
+  },
+  "labels": {
+    "label1": "value1"
+  },
+  "name": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
+  "version": "3.1.2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.metastore.v1.Federation",
+    "backendMetastores": {
+      "1": {
+        "metastoreType": "DATAPROC_METASTORE",
+        "name": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpointUri": "https://standalone-federation-msfed-${uniqueId}-bb0c3-tvskqxt2aa-uc.a.run.app:443",
+    "labels": {
+      "label1": "value1"
+    },
+    "name": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "version": "3.1.2"
+  }
+}
+
+---
+
+GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ffederations%2Fmsfed-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendMetastores": {
+    "1": {
+      "metastoreType": 3,
+      "name": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endpointUri": "https://standalone-federation-msfed-${uniqueId}-bb0c3-tvskqxt2aa-uc.a.run.app:443",
+  "labels": {
+    "label1": "value1"
+  },
   "name": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
   "state": 2,
   "uid": "111111111111111111111",
@@ -275,10 +410,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
     "verb": "delete"
   },
@@ -309,6 +446,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/federations/msfed-${uniqueId}",
     "verb": "delete"
   },
@@ -336,21 +474,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "artifactGcsUri": "gs://gcs-bucket-msfed-${uniqueId}",
+  "artifactGcsUri": "gs://gcs-bucket-msfed-${uniqueId}-eefa703f-3328-4d05-a866-0b8973",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseType": 1,
   "encryptionConfig": {},
-  "endpointUri": "https://msfed-${uniqueId}-random-suffix.a.run.app:443",
+  "endpointUri": "https://msfed-${uniqueId}-eefa703f-tvskqxt2aa-uc.a.run.app:443",
   "hiveMetastoreConfig": {
     "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-msfed-${uniqueId}/hive-warehouse"
+      "hive.metastore.warehouse.dir": "gs://gcs-bucket-msfed-${uniqueId}-eefa703f-3328-4d05-a866-0b8973/hive-warehouse"
     },
     "endpointProtocol": 2,
     "version": "3.1.2"
   },
   "metadataManagementActivity": {},
   "name": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/default",
   "networkConfig": {},
   "port": 443,
   "releaseChannel": 2,
@@ -382,10 +519,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.metastore.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
     "verb": "delete"
   },
@@ -416,6 +555,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/services/msfed-${uniqueId}",
     "verb": "delete"
   },
