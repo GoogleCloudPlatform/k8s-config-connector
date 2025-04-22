@@ -30,11 +30,11 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 )
 
-func (s *configService) GetSink(ctx context.Context, req *pb.GetSinkRequest) (*pb.LogSink, error) {
+func (s *configServiceV2) GetSink(ctx context.Context, req *pb.GetSinkRequest) (*pb.LogSink, error) {
 	name, err := s.parseLogSinkName(req.SinkName)
 	if err != nil {
 		return nil, err
@@ -52,7 +52,7 @@ func (s *configService) GetSink(ctx context.Context, req *pb.GetSinkRequest) (*p
 	return obj, nil
 }
 
-func (s *configService) CreateSink(ctx context.Context, req *pb.CreateSinkRequest) (*pb.LogSink, error) {
+func (s *configServiceV2) CreateSink(ctx context.Context, req *pb.CreateSinkRequest) (*pb.LogSink, error) {
 	reqName := fmt.Sprintf("%s/sinks/%s", req.Parent, req.GetSink().GetName())
 	name, err := s.parseLogSinkName(reqName)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *configService) CreateSink(ctx context.Context, req *pb.CreateSinkReques
 	return obj, nil
 }
 
-func (s *configService) UpdateSink(ctx context.Context, req *pb.UpdateSinkRequest) (*pb.LogSink, error) {
+func (s *configServiceV2) UpdateSink(ctx context.Context, req *pb.UpdateSinkRequest) (*pb.LogSink, error) {
 	reqName := req.SinkName
 	name, err := s.parseLogSinkName(reqName)
 	if err != nil {
@@ -122,7 +122,7 @@ func (s *configService) UpdateSink(ctx context.Context, req *pb.UpdateSinkReques
 	return updated, nil
 }
 
-func (s *configService) DeleteSink(ctx context.Context, req *pb.DeleteSinkRequest) (*empty.Empty, error) {
+func (s *configServiceV2) DeleteSink(ctx context.Context, req *pb.DeleteSinkRequest) (*empty.Empty, error) {
 	name, err := s.parseLogSinkName(req.SinkName)
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ type FolderOrgOrProject struct {
 	Project      *projects.ProjectData
 }
 
-func (s *configService) PopFolderOrgOrProject(tokens []string) (*FolderOrgOrProject, []string, error) {
+func (s *configServiceV2) PopFolderOrgOrProject(tokens []string) (*FolderOrgOrProject, []string, error) {
 	if len(tokens) >= 2 && tokens[0] == "projects" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
@@ -196,7 +196,7 @@ func (n *logSinkName) String() string {
 
 // parseLogSinkName parses a string into a logSinkName.
 // The expected form is `projects/*/sinks/*`
-func (s *configService) parseLogSinkName(name string) (*logSinkName, error) {
+func (s *configServiceV2) parseLogSinkName(name string) (*logSinkName, error) {
 	tokens := strings.Split(name, "/")
 
 	parent, remainder, err := s.PopFolderOrgOrProject(tokens)
