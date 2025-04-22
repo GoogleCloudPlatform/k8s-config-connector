@@ -40,7 +40,6 @@ import (
 	// refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1" // Not directly used here but identity might need it
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -90,7 +89,7 @@ func (m *tagModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 	}
 
 	// Resolve the tag template reference first to get the full template name.
-	tagTemplateName, err := common.ResolveResourceReference(ctx, reader, obj, &obj.Spec.TemplateRef)
+	tagTemplateName, err := obj.Spec.TemplateRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, fmt.Errorf("resolving template reference: %w", err)
 	}
@@ -104,10 +103,7 @@ func (m *tagModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 
-	projectID, err := id.ParentProjectID(ctx, reader)
-	if err != nil {
-		return nil, err
-	}
+	projectID := id.Parent().ProjectID
 
 	gcpClient, err := m.client(ctx, projectID)
 	if err != nil {
@@ -145,10 +141,7 @@ func (a *tagAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	mapCtx := &direct.MapContext{}
 
-	parentName, err := a.id.ParentName(ctx, a.reader)
-	if err != nil {
-		return false, fmt.Errorf("getting parent name: %w", err)
-	}
+	parentName := a.id.Parent().String()
 	log.V(2).Info("listing datacatalog tags", "parent", parentName)
 
 	// Get desired scope for matching
@@ -200,10 +193,7 @@ func (a *tagAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	log := klog.FromContext(ctx)
 	mapCtx := &direct.MapContext{}
 
-	parentName, err := a.id.ParentName(ctx, a.reader)
-	if err != nil {
-		return fmt.Errorf("getting parent name: %w", err)
-	}
+	parentName := a.id.Parent().String()
 	log.V(2).Info("creating datacatalog tag", "parent", parentName)
 
 	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
@@ -312,20 +302,13 @@ func (a *tagAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 		return nil, mapCtx.Err()
 	}
 
+	// Populate the reference from the identity
+	// Assuming krm.EntryParent has an EntryGroupRef field holding the KRM reference.
+	if parent := a.id.Parent(); parent != nil { // Check parent and nested ref
+		spec.EntryRef.External = parent.String()
+	}
 	// Populate references
-	spec.TemplateRef = krm.DataCatalogTagTemplateRef{External: a.actual.Template}
-	parentRef, err := a.id.ParentRef(ctx, a.reader)
-	if err != nil {
-		return nil, fmt.Errorf("building parent ref for export: %w", err)
-	}
-	switch r := parentRef.(type) {
-	case *krm.DataCatalogEntryRef:
-		spec.ParentEntryRef = r
-	case *krm.DataCatalogEntryGroupRef:
-		spec.ParentEntryGroupRef = r
-	default:
-		return nil, fmt.Errorf("unexpected parent reference type: %T", parentRef)
-	}
+	spec.TemplateRef = &krm.TagTemplateRef{External: a.actual.Template}
 
 	// Build unstructured object
 	obj := &krm.DataCatalogTag{}
