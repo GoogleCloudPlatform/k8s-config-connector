@@ -43,7 +43,7 @@ func (s *DataCatalogV1) GetTagTemplate(ctx context.Context, req *pb.GetTagTempla
 	obj := &pb.TagTemplate{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "TagTemplate %q not found", fqn)
+			return nil, status.Errorf(codes.PermissionDenied, "Permission denied for %s.%s, or resource doesn't exist. ", name.Project.ID, name.Id)
 		}
 		return nil, err
 	}
