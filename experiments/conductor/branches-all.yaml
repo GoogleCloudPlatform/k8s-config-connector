@@ -21073,11 +21073,11 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: RunJob
-      package: ""
-      proto: ""
-      proto-path: ""
+      package: google.cloud.run.v2
+      proto: Job
+      proto-path: google/cloud/run/v2/job.proto
       proto-service: ""
-      proto-msg: ""
+      proto-msg: google.cloud.run.v2.Job
       host-name: ""
       notes: []
       apis-enabled: []
@@ -21090,11 +21090,11 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: RunService
-      package: ""
-      proto: ""
-      proto-path: ""
+      package: google.cloud.run.v2
+      proto: Service
+      proto-path: google/cloud/run/v2/service.proto
       proto-service: ""
-      proto-msg: ""
+      proto-msg: google.cloud.run.v2.Service
       host-name: ""
       notes: []
       apis-enabled: []
@@ -21116,23 +21116,6 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: run-job
-      local: resource-run-job
-      remote: resource-run-job
-      command: gcloud run jobs
-      group: run
-      resource: job
-      controller: terraform
-      skip: false
-      kind: RunJob
-      package: google.cloud.run.v2
-      proto: Job
-      proto-path: google/cloud/run/v2/job.proto
-      proto-service: ""
-      proto-msg: google.cloud.run.v2.Job
-      host-name: ""
-      notes:
-        - Terraform BETA
     - name: run-revision
       local: resource-run-revision
       remote: resource-run-revision
@@ -21152,23 +21135,6 @@ branches:
       notes:
         - No CREATE
         - subresource of service
-    - name: run-service
-      local: resource-run-service
-      remote: resource-run-service
-      command: gcloud run services
-      group: run
-      resource: service
-      controller: terraform
-      skip: false
-      kind: RunService
-      package: google.cloud.run.v2
-      proto: Service
-      proto-path: google/cloud/run/v2/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.run.v2.Service
-      host-name: ""
-      notes:
-        - Terraform BETA
     - name: run-task
       local: resource-run-task
       remote: resource-run-task
