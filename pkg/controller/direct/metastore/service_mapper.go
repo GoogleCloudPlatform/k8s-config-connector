@@ -30,7 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
 	"google.golang.org/protobuf/types/known/wrapperspb"
-	"k8s.io/klog"
 )
 
 func AuxiliaryVersionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AuxiliaryVersionConfig) *krm.AuxiliaryVersionConfig {
@@ -254,6 +253,7 @@ func MetadataManagementActivityObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.Restores = direct.Slice_ToProto(mapCtx, in.Restores, RestoreObservedState_ToProto)
 	return out
 }
+
 func MetastoreFederationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Federation) *krm.MetastoreFederationObservedState {
 	if in == nil {
 		return nil
@@ -309,13 +309,16 @@ func MetastoreFederationSpec_ToProto(mapCtx *direct.MapContext, in *krm.Metastor
 	for k, v := range in.BackendMetastores {
 		ik, err := strconv.ParseInt(k, 10, 32)
 		if err != nil {
-			klog.Fatalf("error parsing int32 key %q: %v", k, err)
+			// we prevalidate in create and update.
+			// so we can safely ignore this error
+			continue
 		}
 		out.BackendMetastores[int32(ik)] = BackendMetastore_ToProto(mapCtx, &v)
 	}
 
 	return out
 }
+
 func MetastoreServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Service) *krm.MetastoreServiceObservedState {
 	if in == nil {
 		return nil

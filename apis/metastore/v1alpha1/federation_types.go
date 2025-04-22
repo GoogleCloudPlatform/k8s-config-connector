@@ -45,7 +45,7 @@ type BackendMetastore struct {
 
 	// The type of the backend metastore.
 	// +kcc:proto:field=google.cloud.metastore.v1.BackendMetastore.metastore_type
-	// +kubebuilder:validation:Enum=metastore;bigquery
+	// +kubebuilder:validation:Enum=BIGQUERY;DATAPROC_METASTORE
 	MetastoreType *string `json:"metastoreType,omitempty"`
 }
 
@@ -65,7 +65,7 @@ type MetastoreFederationSpec struct {
 	// +kcc:proto:field=google.cloud.metastore.v1.Federation.version
 	Version *string `json:"version,omitempty"`
 
-	// TODO: unsupported map type with key int32 and value message
+	// map type with key int32 as string and value as BackendMetastore
 	// +kcc:proto:field=google.cloud.metastore.v1.Federation.backend_metastores
 	BackendMetastores map[string]BackendMetastore `json:"backendMetastores,omitempty"`
 }
