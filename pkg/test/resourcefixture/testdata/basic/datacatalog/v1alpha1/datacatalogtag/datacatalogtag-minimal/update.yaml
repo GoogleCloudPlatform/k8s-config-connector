@@ -1,0 +1,33 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: datacatalog.cnrm.cloud.google.com/v1alpha1
+kind: DataCatalogTag
+metadata:
+  name: datacatalogtag-minimal-${uniqueId}
+spec:
+  entryRef:
+    # Using a placeholder entry external format as minimal requires a valid reference
+    # Replace with an actual DataCatalogEntry reference if needed for real tests
+    external: "projects/${projectId}/locations/us-central1/entryGroups/@default/entries/placeholder-entry-${uniqueId}"
+  templateRef:
+    # Using a placeholder template external format as minimal requires a valid reference
+    # Replace with an actual DataCatalogTagTemplate reference if needed for real tests
+    external: "projects/${projectId}/locations/us-central1/tagTemplates/placeholder-template-${uniqueId}"
+  # Modify fields for update scenario
+  fields:
+    exampleField:
+      stringValue: "updated minimal value"
+    anotherField:
+      boolValue: true
