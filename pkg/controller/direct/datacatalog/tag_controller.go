@@ -22,6 +22,7 @@ package datacatalog
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -158,7 +159,7 @@ func (a *tagAdapter) Find(ctx context.Context) (bool, error) {
 	it := a.gcpClient.ListTags(ctx, req)
 	for {
 		tag, err := it.Next()
-		if err == iterator.Done {
+		if errors.Is(err, iterator.Done) {
 			break
 		}
 		if err != nil {
