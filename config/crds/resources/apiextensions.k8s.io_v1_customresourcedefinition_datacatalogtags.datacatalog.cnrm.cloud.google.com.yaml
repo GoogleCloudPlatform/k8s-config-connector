@@ -171,7 +171,6 @@ spec:
                     type: string
                 type: object
             required:
-            - ""
             - entryRef
             - templateRef
             type: object

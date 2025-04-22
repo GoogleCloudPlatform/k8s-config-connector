@@ -18,15 +18,11 @@ metadata:
   name: datacatalogtag-minimal-${uniqueId}
 spec:
   entryRef:
-    # Using a placeholder entry external format as minimal requires a valid reference
-    # Replace with an actual DataCatalogEntry reference if needed for real tests
-    external: "projects/${projectId}/locations/us-central1/entryGroups/@default/entries/placeholder-entry-${uniqueId}"
+    name: datacatalogentry-minimal-${uniqueId}
+    #external: "projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}"
   templateRef:
-    # Using a placeholder template external format as minimal requires a valid reference
-    # Replace with an actual DataCatalogTagTemplate reference if needed for real tests
-    external: "projects/${projectId}/locations/us-central1/tagTemplates/placeholder-template-${uniqueId}"
-  # Although 'fields' is often the core data, it's not strictly required by the CRD base schema.
-  # Add fields as needed for specific test cases.
-  # fields:
-  #   exampleField:
-  #     stringValue: "minimal value"
+    name: datacatalogtagtemplate-minimal-${uniqueId}
+    #external: "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+  fields:
+    testfield:
+      stringValue: "test value"

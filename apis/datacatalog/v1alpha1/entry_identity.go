@@ -61,10 +61,21 @@ func (p *EntryParent) String() string {
 // NewEntryIdentity builds a EntryIdentity from the Config Connector DataCatalogEntry object.
 func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogEntry) (*EntryIdentity, error) {
 	// --- Determine Parent ---
-	if obj.Spec.EntryGroupRef == nil || obj.Spec.EntryGroupRef.External == "" {
+	if obj.Spec.EntryGroupRef == nil || (obj.Spec.EntryGroupRef.External == "" && obj.Spec.EntryGroupRef.Name == "") {
 		// Based on the API structure (CreateEntry requires entry group parent),
 		// EntryGroupRef is implicitly required.
-		return nil, fmt.Errorf("spec.entryGroupRef.external is required to identify the parent EntryGroup")
+		return nil, fmt.Errorf("spec.entryGroupRef.external or spec.entryGroupRef.name is required to identify the parent EntryGroup")
+	}
+	if obj.Spec.EntryGroupRef.External != "" && obj.Spec.EntryGroupRef.Name != "" {
+		return nil, fmt.Errorf("spec.entryGroupRef.external and spec.entryGroupRef.name cannot both be set")
+	}
+
+	if obj.Spec.EntryGroupRef.External == "" {
+		entryGroupRef, err := obj.Spec.EntryGroupRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return nil, fmt.Errorf("resolving entry group reference: %w", err)
+		}
+		obj.Spec.EntryGroupRef.External = entryGroupRef
 	}
 
 	// Parse parent info from the EntryGroup reference

@@ -34,7 +34,6 @@ type DataCatalogTagParent struct {
 // +kcc:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
 	// Specifies the parent resource where this DataCatalogTag resides.
-	// +required
 	DataCatalogTagParent `json:",inline"`
 
 	// The DataCatalogTag name. If not given, the metadata.name will be used.

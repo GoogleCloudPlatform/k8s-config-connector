@@ -66,10 +66,21 @@ func (p *TagParent) String() string {
 // NewTagIdentity builds a TagIdentity from the Config Connector Tag object.
 func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogTag) (*TagIdentity, error) {
 	// --- Determine Parent ---
-	if obj.Spec.EntryRef == nil || obj.Spec.EntryRef.External == "" {
-		// Based on the API structure (CreateTag requires entry parent),
-		// EntryRef is implicitly required.
-		return nil, fmt.Errorf("spec.entryRef.external is required to identify the parent Entry")
+	if obj.Spec.EntryRef == nil || (obj.Spec.EntryRef.External == "" && obj.Spec.EntryRef.Name == "") {
+		// Based on the API structure (CreateEntry requires entry group parent),
+		// EntryGroupRef is implicitly required.
+		return nil, fmt.Errorf("spec.entryRef.external or spec.entryRef.name is required to identify the parent Entry")
+	}
+	if obj.Spec.EntryRef.External != "" && obj.Spec.EntryRef.Name != "" {
+		return nil, fmt.Errorf("spec.entryRef.external and spec.entryRef.name cannot both be set")
+	}
+
+	if obj.Spec.EntryRef.External == "" {
+		entryRef, err := obj.Spec.EntryRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return nil, fmt.Errorf("resolving entry reference: %w", err)
+		}
+		obj.Spec.EntryRef.External = entryRef
 	}
 
 	// Parse parent info from the Entry reference
@@ -78,15 +89,19 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 		return nil, fmt.Errorf("cannot parse spec.entryRef.external %q: %w", obj.Spec.EntryRef.External, err)
 	}
 
-	// --- Determine Resource ID ---
-	// Get desired Tag ID
-	// If spec.resourceID is provided, it's used as the tag ID.
-	// Otherwise, metadata.name is used.
-
+	// Get desired ID
+	// This resource has a server-generated ID. This means user should not know
+	// the ID before the resource is created, and 'metadata.name' won't be used
+	// as the default resource ID. So empty value for 'spec.resourceID' should
+	// also be valid:
+	// 1. When 'spec.resourceID' is not set or set to an empty value, the
+	//    intention is to create the resource.
+	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
+	//    resource.
+	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//         is not found, then it is a real error.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
+
 	parent := &TagParent{
 		ProjectID:    entryParent.ProjectID,
 		LocationID:   entryParent.Location,
@@ -115,13 +130,14 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 		}
 
 		// Check if the resourceID derived from spec/metadata matches the resourceID from status
-		if actualResourceID != resourceID {
+		if resourceID != "" && actualResourceID != resourceID {
 			// This indicates an attempt to change the tag's ID after it has been established in GCP.
 			// The `spec.resourceID` or `metadata.name` determines the *desired* ID.
 			// The `status.externalRef` reflects the *actual* ID in GCP. Changing this is not allowed.
 			return nil, fmt.Errorf("cannot change tag ID from %q (derived from status.externalRef) to %q (derived from spec.resourceID/metadata.name)",
 				actualResourceID, resourceID)
 		}
+		resourceID = actualResourceID
 	}
 
 	// If validation passes or status.externalRef is empty, return the identity based on spec.
