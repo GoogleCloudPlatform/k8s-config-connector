@@ -89,12 +89,6 @@ func (m *tagModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Resolve the tag template reference first to get the full template name.
-	tagTemplateName, err := obj.Spec.TemplateRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, fmt.Errorf("resolving template reference: %w", err)
-	}
-
 	// DataCatalogTagIdentity requires the parent KRM object (Entry or EntryGroup)
 	// and the TagTemplate name to construct the potential tag name.
 	// However, the actual Tag ID is server-generated. We'll use the identity mostly
@@ -112,11 +106,10 @@ func (m *tagModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 	}
 
 	return &tagAdapter{
-		gcpClient:       gcpClient,
-		id:              id, // Primarily used for parent resolution
-		desired:         obj,
-		reader:          reader,
-		tagTemplateName: tagTemplateName, // Store resolved template name
+		gcpClient: gcpClient,
+		id:        id, // Primarily used for parent resolution
+		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -126,12 +119,11 @@ func (m *tagModel) AdapterForURL(ctx context.Context, url string) (directbase.Ad
 }
 
 type tagAdapter struct {
-	gcpClient       *api.Client
-	id              *krm.TagIdentity // Primarily for parent resolution
-	desired         *krm.DataCatalogTag
-	actual          *pb.Tag
-	reader          client.Reader
-	tagTemplateName string // Resolved TagTemplate resource name
+	gcpClient *api.Client
+	id        *krm.TagIdentity // Primarily for parent resolution
+	desired   *krm.DataCatalogTag
+	actual    *pb.Tag
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &tagAdapter{}
@@ -140,20 +132,24 @@ var _ directbase.Adapter = &tagAdapter{}
 // Data Catalog Tags don't have a Get RPC. We list tags on the parent and filter.
 func (a *tagAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	mapCtx := &direct.MapContext{}
+
+	// This resource has a server-generated ID. This means user should not know
+	// the ID before the resource is created, and 'metadata.name' won't be used
+	// as the default resource ID. So empty value for 'spec.resourceID' should
+	// also be valid:
+	// 1. When 'spec.resourceID' is not set or set to an empty value, the
+	//    intention is to create the resource.
+	// 2. When 'spec.resourceID' is set, the intention is to acquire an existing
+	//    resource.
+	//    2.1. When 'spec.resourceID' is set but the corresponding GCP resource
+	//         is not found, then it is a real error.
+	if a.id.ID() == "" {
+		log.V(2).Info("no resource ID in get indicates the create intention", "name", a.id)
+		return false, nil
+	}
 
 	parentName := a.id.Parent().String()
 	log.V(2).Info("listing datacatalog tags", "parent", parentName)
-
-	// Get desired scope for matching
-	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
-	if mapCtx.Err() != nil {
-		return false, mapCtx.Err()
-	}
-	desiredColumn := desiredProto.GetColumn() // Works even if nil
-
-	// Use the fully resolved template name for matching
-	desiredTemplate := a.tagTemplateName
 
 	req := &pb.ListTagsRequest{Parent: parentName}
 	it := a.gcpClient.ListTags(ctx, req)
@@ -172,20 +168,13 @@ func (a *tagAdapter) Find(ctx context.Context) (bool, error) {
 		}
 
 		// Match based on template and scope (column)
-		if tag.Template == desiredTemplate {
-			actualColumn := tag.GetColumn() // Works even if nil
-			if actualColumn == desiredColumn {
-				// Found a match based on template and scope. Assume this is our tag.
-				// In rare cases of multiple identical tags (same template, same scope),
-				// this might pick the wrong one, but the API doesn't provide better filtering.
-				log.V(2).Info("found matching datacatalog tag", "name", tag.Name)
-				a.actual = tag
-				return true, nil
-			}
+		if a.id.String() == tag.Name {
+			a.actual = tag
+			return true, nil
 		}
 	}
 
-	log.V(2).Info("no matching datacatalog tag found", "parent", parentName, "template", desiredTemplate, "column", desiredColumn)
+	log.V(2).Info("no matching datacatalog tag found", "parent", parentName, "id", a.id.ID())
 	return false, nil
 }
 
@@ -197,13 +186,19 @@ func (a *tagAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	parentName := a.id.Parent().String()
 	log.V(2).Info("creating datacatalog tag", "parent", parentName)
 
+	// Resolve the tag template reference first to get the full template name.
+	tagTemplateName, err := a.desired.Spec.TemplateRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
+	if err != nil {
+		return fmt.Errorf("resolving template reference: %w", err)
+	}
+
 	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
 	// Set the fully resolved template name
-	desiredProto.Template = a.tagTemplateName
+	desiredProto.Template = tagTemplateName
 
 	req := &pb.CreateTagRequest{
 		Parent: parentName,
@@ -240,6 +235,12 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	tagName := a.actual.Name
 	log.V(2).Info("updating datacatalog tag", "name", tagName)
 
+	// Resolve the tag template reference first to get the full template name.
+	_, err := a.desired.Spec.TemplateRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
+	if err != nil {
+		return fmt.Errorf("resolving template reference: %w", err)
+	}
+
 	desiredProto := DataCatalogTagSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -261,7 +262,6 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	// No need to check 'template' as we force it to the actual value above.
 
 	var updated *pb.Tag
-	var err error
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no mutable field needs update", "name", tagName)
 		updated = a.actual // Use current actual state for status update
@@ -282,10 +282,6 @@ func (a *tagAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	status.ObservedState = DataCatalogTagObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
-	}
-	// Ensure ExternalRef is preserved/updated if somehow missing
-	if status.ExternalRef == nil {
-		status.ExternalRef = direct.LazyPtr(tagName)
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }

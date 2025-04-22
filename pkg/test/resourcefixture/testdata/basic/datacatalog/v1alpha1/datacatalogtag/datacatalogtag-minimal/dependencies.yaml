@@ -33,7 +33,7 @@ spec:
   entryGroupRef:
     # Replace with a valid reference to your DataCatalogEntryGroup.
     # The EntryGroup must exist in the same project and location (us-central1).
-    external: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}
+    name: datacatalogentrygroup-minimal-${uniqueId}
   resourceID: dce_${uniqueId}
   type: FILESET
   gcsFilesetSpec:

@@ -71,9 +71,6 @@ func NewTagIdentity(ctx context.Context, reader client.Reader, obj *DataCatalogT
 		// EntryGroupRef is implicitly required.
 		return nil, fmt.Errorf("spec.entryRef.external or spec.entryRef.name is required to identify the parent Entry")
 	}
-	if obj.Spec.EntryRef.External != "" && obj.Spec.EntryRef.Name != "" {
-		return nil, fmt.Errorf("spec.entryRef.external and spec.entryRef.name cannot both be set")
-	}
 
 	if obj.Spec.EntryRef.External == "" {
 		entryRef, err := obj.Spec.EntryRef.NormalizedExternal(ctx, reader, obj.GetNamespace())

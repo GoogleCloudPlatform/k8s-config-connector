@@ -66,9 +66,6 @@ func NewEntryIdentity(ctx context.Context, reader client.Reader, obj *DataCatalo
 		// EntryGroupRef is implicitly required.
 		return nil, fmt.Errorf("spec.entryGroupRef.external or spec.entryGroupRef.name is required to identify the parent EntryGroup")
 	}
-	if obj.Spec.EntryGroupRef.External != "" && obj.Spec.EntryGroupRef.Name != "" {
-		return nil, fmt.Errorf("spec.entryGroupRef.external and spec.entryGroupRef.name cannot both be set")
-	}
 
 	if obj.Spec.EntryGroupRef.External == "" {
 		entryGroupRef, err := obj.Spec.EntryGroupRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
