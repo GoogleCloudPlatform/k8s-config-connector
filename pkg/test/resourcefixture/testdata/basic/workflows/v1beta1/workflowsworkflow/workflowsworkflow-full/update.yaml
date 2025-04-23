@@ -31,3 +31,5 @@ spec:
   callLogLevel: "LOG_ALL_CALLS"
   userEnvVars:
     username: "person2"
+  projectRef:
+    external: ${projectId}

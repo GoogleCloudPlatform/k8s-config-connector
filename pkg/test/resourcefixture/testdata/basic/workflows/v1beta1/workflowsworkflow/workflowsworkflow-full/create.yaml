@@ -31,3 +31,5 @@ spec:
   callLogLevel: "LOG_ERRORS_ONLY"
   userEnvVars:
     username: "person1"
+  projectRef:
+    external: ${projectId}
