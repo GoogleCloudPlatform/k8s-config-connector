@@ -144,7 +144,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
@@ -205,7 +204,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto
+		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
+		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto	
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
