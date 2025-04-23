@@ -751,7 +751,6 @@
 [missing_field] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipsecInternalAddresses[].namespace" is not set in unstructured objects
 [missing_field] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mtu" is not set in unstructured objects
 [missing_field] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
-[missing_field] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vlanTag8021q" is not set in unstructured objects
 [missing_field] crd=computemanagedsslcertificates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computemanagedsslcertificates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=computenetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
