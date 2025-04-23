@@ -6,6 +6,8 @@
 
 ## New Alpha Resources (Direct Reconciler):
 
+* `BigQueryReservationReservation` (available in 1.130+)
+* `BigQueryReservationAssignment` (available in 1.130+)
 * `ComputeNetworkAttachment`
 * `ComputeNetworkEdgeSecurityService`
 * `DataplexEntryGroup`
