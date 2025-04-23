@@ -63,7 +63,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdAddServiceRoundTrip          = 13
 	cmdAddProtoMakefile             = 14
 	cmdBuildProto                   = 15
-	cmdRunMockTests                 = 16
+	cmdCaptureMockOutput            = 16
+	cmdRunAndFixMockTests           = 17
 	cmdGenerateTypes                = 20
 	cmdAdjustTypes                  = 21
 	cmdGenerateCRD                  = 22
@@ -384,7 +385,9 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: "{{group}}: Add proto generation to makefile", AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
 		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: "chore: Build and add generated proto files"}})
-	case cmdRunMockTests: // 16
+	case cmdCaptureMockOutput: // 16
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: runMockgcpTests, CommitMsgTemplate: "{{kind}}: Capture mock golden output"}})
+	case cmdRunAndFixMockTests: // 17
 		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 10, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
 		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "{{kind}}: Add generated types"}})
@@ -429,11 +432,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
 		})
 	case cmdCaptureGoldenRealGCPOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests"}})
+		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests", AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenRealGCPOutput: // 46
 		processBranches(ctx, opts, branches.Branches, "Fix Real GCP Tests", []BranchProcessor{{Fn: fixGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix real GCP tests", VerifyFn: runGoldenRealGCPTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdCaptureGoldenMockOutput: // 47
-		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests"}})
+		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests", AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenMockOutput: // 48
 		processBranches(ctx, opts, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix mock GCP tests", VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	default:
@@ -461,7 +464,8 @@ func printHelp() {
 	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
-	log.Println("\t16 - [Mock] Run and Fix mockgcp tests in each github branch")
+	log.Println("\t16 - [Mock] Capture mock golden output for each branch")
+	log.Println("\t17 - [Mock] Run and Fix mockgcp tests in each github branch")
 	log.Println("\t20 - [CRD] Generate Types for each branch")
 	log.Println("\t21 - [CRD] Adjust the types for each branch")
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
