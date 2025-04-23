@@ -39,12 +39,7 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-type DataplexV1 struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
-func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
+func (s *DataplexService) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -62,7 +57,7 @@ func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.L
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/lakes/" + req.LakeId
 	name, err := s.parseLakeName(reqName)
 	if err != nil {
@@ -106,7 +101,7 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	})
 }
 
-func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.GetLake().GetName())
 	if err != nil {
 		return nil, err
@@ -155,7 +150,7 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 	})
 }
 
-func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
+func (s *DataplexService) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
 	response := &pb.ListLakesResponse{}
 
 	lakeKind := (&pb.Lake{}).ProtoReflect().Descriptor()
@@ -171,7 +166,7 @@ func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err

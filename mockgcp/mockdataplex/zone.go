@@ -39,7 +39,7 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-func (s *DataplexV1) GetZone(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, error) {
+func (s *DataplexService) GetZone(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, error) {
 	name, err := s.parseZoneName(req.Name)
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (s *DataplexV1) GetZone(ctx context.Context, req *pb.GetZoneRequest) (*pb.Z
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/zones/" + req.ZoneId
 	name, err := s.parseZoneName(reqName)
 	if err != nil {
@@ -102,7 +102,7 @@ func (s *DataplexV1) CreateZone(ctx context.Context, req *pb.CreateZoneRequest) 
 	})
 }
 
-func (s *DataplexV1) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) (*longrunning.Operation, error) {
 	name, err := s.parseZoneName(req.GetZone().GetName())
 	if err != nil {
 		return nil, err
@@ -162,7 +162,7 @@ func (s *DataplexV1) UpdateZone(ctx context.Context, req *pb.UpdateZoneRequest) 
 	})
 }
 
-func (s *DataplexV1) ListZones(ctx context.Context, req *pb.ListZonesRequest) (*pb.ListZonesResponse, error) {
+func (s *DataplexService) ListZones(ctx context.Context, req *pb.ListZonesRequest) (*pb.ListZonesResponse, error) {
 	_, err := s.parseLakeName(req.Parent) // Validate parent format
 	if err != nil {
 		return nil, err
@@ -185,7 +185,7 @@ func (s *DataplexV1) ListZones(ctx context.Context, req *pb.ListZonesRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteZone(ctx context.Context, req *pb.DeleteZoneRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) DeleteZone(ctx context.Context, req *pb.DeleteZoneRequest) (*longrunning.Operation, error) {
 	name, err := s.parseZoneName(req.Name)
 	if err != nil {
 		return nil, err
