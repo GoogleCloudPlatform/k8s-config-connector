@@ -10,6 +10,7 @@
 * `ComputeNetworkEdgeSecurityService`
 * `DataplexEntryGroup`
 * `DataplexEntryType`
+* `DataplexTask`
 * `DataplexZone`
 * `DatastreamRoute`
 * `DocumentAIVersion`
