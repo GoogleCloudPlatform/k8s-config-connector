@@ -21,8 +21,6 @@ metadata:
 spec:
   filter: "resource.type=gae_app AND severity<=ERROR"
   metricDescriptor:
-    #type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
-    #name: "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}"
     displayName: "a concise name"
     launchStage: "EARLY_ACCESS"
     metadata:
@@ -50,3 +48,34 @@ apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
   name: logginglogmetric-${uniqueId}
+---
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
+spec:
+  filter: "resource.type=gae_app AND severity<=ERROR"
+  metricDescriptor:
+    displayName: "a concise name"
+    launchStage: "ALPHA"
+    metadata:
+      ingestDelay: "1s"
+      samplePeriod: "1s"
+    labels:
+    - description: "a label description"
+      key: "testkey"
+      valueType: "STRING"
+    metricKind: "DELTA"
+    valueType: "DISTRIBUTION"
+  valueExtractor: "EXTRACT(jsonPayload.response)"
+  labelExtractors:
+    testkey: "EXTRACT(jsonPayload.request)"
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+      - 1.5
+      - 4.5
+  projectRef:
+    external: "projects/${projectId}"

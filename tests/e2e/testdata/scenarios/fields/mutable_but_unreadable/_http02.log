@@ -72,12 +72,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "valueType": "STRING"
       }
     ],
-    "launchStage": "EARLY_ACCESS",
+    "launchStage": "ALPHA",
     "metadata": {
       "ingestDelay": "1s",
       "samplePeriod": "1s"
     },
     "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",

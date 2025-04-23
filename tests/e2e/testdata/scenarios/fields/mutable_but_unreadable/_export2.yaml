@@ -1,0 +1,28 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-${uniqueId}
+spec:
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+      - 1.5
+      - 4.5
+  description: ""
+  disabled: false
+  filter: resource.type=gae_app AND severity<=ERROR
+  labelExtractors:
+    testkey: EXTRACT(jsonPayload.request)
+  metricDescriptor:
+    displayName: a concise name
+    labels:
+    - description: a label description
+      key: testkey
+      valueType: STRING
+    launchStage: ""
+    metricKind: DELTA
+    unit: ""
+    valueType: DISTRIBUTION
+  projectRef:
+    external: ${projectId}
+  valueExtractor: EXTRACT(jsonPayload.response)
