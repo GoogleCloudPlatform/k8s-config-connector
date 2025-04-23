@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# the CNRM viewer role allows the operator-manager to list CNRM resources which is useful when deciding to delete the
-# KCC manager pods that are managing a namespace.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
