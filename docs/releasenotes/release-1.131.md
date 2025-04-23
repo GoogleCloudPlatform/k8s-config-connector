@@ -6,9 +6,21 @@
 
 ## New Alpha Resources (Direct Reconciler):
 
+* `ComputeNetworkAttachment`
+* `ComputeNetworkEdgeSecurityService`
+* `DataplexEntryGroup`
+* `DataplexEntryType`
+* `DataplexZone`
+* `DatastreamRoute`
+* `DocumentAIVersion`
 * `GKEBackupBackup`
 * `GKEBackupRestore`
-* `DatastreamRoute`
+* `PubSubSnapshot`
 * `SpeechCustomClass`
 * `VMwareEngineExternalAddress`
+
+## Bug Fixes:
+
+* [Fixed](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4199) excessive compute.firewallPolicies.patchRule Logs triggered by Config Connector direct reconciliation.
+
 
