@@ -24,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/mocktagid
+  externalRef: projects/${projectId}/locations/us-central1/entryGroups/dceg_${uniqueId}/entries/dce_${uniqueId}/tags/Cah7B4rI9CUV
   observedGeneration: 2
   observedState:
     templateDisplayName: TestTagTemplate
