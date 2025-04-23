@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.24
+go 1.24.0
 
 toolchain go1.24.2
 
