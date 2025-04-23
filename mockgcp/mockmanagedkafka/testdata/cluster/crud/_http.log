@@ -1,0 +1,477 @@
+POST https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?alt=json&clusterId=test-kafka-cluster-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "capacityConfig": {
+    "memoryBytes": "4294967296",
+    "vcpuCount": "3"
+  },
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+        }
+      ]
+    }
+  },
+  "rebalanceConfig": {
+    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.Cluster",
+    "capacityConfig": {
+      "memoryBytes": "4294967296",
+      "vcpuCount": "3"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcpConfig": {
+      "accessConfig": {
+        "networkConfigs": [
+          {
+            "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+          }
+        ]
+      }
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "rebalanceConfig": {
+      "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+    },
+    "satisfiesPzi": false,
+    "satisfiesPzs": false,
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityConfig": {
+    "memoryBytes": "4294967296",
+    "vcpuCount": "3"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+  "rebalanceConfig": {
+    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+  },
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clusters": [
+    {
+      "capacityConfig": {
+        "memoryBytes": "4294967296",
+        "vcpuCount": "3"
+      },
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "gcpConfig": {
+        "accessConfig": {
+          "networkConfigs": [
+            {
+              "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+            }
+          ]
+        }
+      },
+      "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+      "rebalanceConfig": {
+        "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+      },
+      "satisfiesPzi": false,
+      "satisfiesPzs": false,
+      "state": "ACTIVE",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityConfig": {
+    "memoryBytes": "4294967296",
+    "vcpuCount": "3"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+  "rebalanceConfig": {
+    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+  },
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json&updateMask=capacityConfig.vcpuCount%2Clabels
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "capacityConfig": {
+    "vcpuCount": "4"
+  },
+  "labels": {
+    "test": "label"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.Cluster",
+    "capacityConfig": {
+      "memoryBytes": "4294967296",
+      "vcpuCount": "4"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "gcpConfig": {
+      "accessConfig": {
+        "networkConfigs": [
+          {
+            "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+          }
+        ]
+      }
+    },
+    "labels": {
+      "test": "label"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "rebalanceConfig": {
+      "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+    },
+    "satisfiesPzi": false,
+    "satisfiesPzs": false,
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityConfig": {
+    "memoryBytes": "4294967296",
+    "vcpuCount": "4"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+        }
+      ]
+    }
+  },
+  "labels": {
+    "test": "label"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+  "rebalanceConfig": {
+    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+  },
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacityConfig": {
+    "memoryBytes": "4294967296",
+    "vcpuCount": "4"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "gcpConfig": {
+    "accessConfig": {
+      "networkConfigs": [
+        {
+          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
+        }
+      ]
+    }
+  },
+  "labels": {
+    "test": "label"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+  "rebalanceConfig": {
+    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
+  },
+  "satisfiesPzi": false,
+  "satisfiesPzs": false,
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.managedkafka.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

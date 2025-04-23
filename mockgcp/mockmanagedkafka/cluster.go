@@ -33,6 +33,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/managedkafka/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type managedKafka struct {
@@ -102,6 +103,30 @@ func (s *managedKafka) GetCluster(ctx context.Context, req *pb.GetClusterRequest
 	return obj, nil
 }
 
+func (s *managedKafka) ListClusters(ctx context.Context, req *pb.ListClustersRequest) (*pb.ListClustersResponse, error) {
+	name, err := s.parseClusterName(req.GetParent() + "/clusters/dummy")
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListClustersResponse{}
+
+	findPrefix := strings.TrimSuffix(name.String(), "dummy")
+
+	listKind := (&pb.Cluster{}).ProtoReflect().Descriptor()
+
+	if err := s.storage.List(ctx, listKind, storage.ListOptions{}, func(obj proto.Message) error {
+		cluster := obj.(*pb.Cluster)
+		if strings.HasPrefix(cluster.GetName(), findPrefix) {
+			response.Clusters = append(response.Clusters, cluster)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
 func (s *managedKafka) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {
 	name, err := s.parseClusterName(req.GetCluster().GetName())
 	if err != nil {
@@ -119,6 +144,8 @@ func (s *managedKafka) UpdateCluster(ctx context.Context, req *pb.UpdateClusterR
 	// updateMask=capacityConfig.memoryBytes%2CcapacityConfig.vcpuCount%2CgcpConfig.accessConfig.networkConfigs%2Cname%2CrebalanceConfig.mode
 	for _, path := range paths {
 		switch path {
+		case "labels":
+			obj.Labels = req.GetCluster().GetLabels()
 		case "capacityConfig.memoryBytes":
 			obj.CapacityConfig.MemoryBytes = req.GetCluster().GetCapacityConfig().GetMemoryBytes()
 		case "capacityConfig.vcpuCount":
@@ -176,12 +203,14 @@ func (s *managedKafka) DeleteCluster(ctx context.Context, req *pb.DeleteClusterR
 	metadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            timestamppb.Now(),
-		EndTime:               timestamppb.Now(),
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "delete",
 	}
-	return s.operations.DoneLRO(ctx, prefix, metadata, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type clusterName struct {
