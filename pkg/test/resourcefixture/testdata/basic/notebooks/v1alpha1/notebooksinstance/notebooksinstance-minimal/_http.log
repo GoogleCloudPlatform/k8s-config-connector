@@ -1,0 +1,379 @@
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/CreateInstance
+
+{
+  "instance": {
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "machineType": "n1-standard-1"
+  },
+  "instanceId": "notebookinstance-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "xiaoweim@google.com",
+    "diskEncryption": "GMEK",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "boot",
+        "diskSizeGb": "150",
+        "guestOsFeatures": [
+          {
+            "type": "VIRTIO_SCSI_MULTIQUEUE"
+          },
+          {
+            "type": "UEFI_COMPATIBLE"
+          },
+          {
+            "type": "GVNIC"
+          }
+        ],
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+        ],
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-boot",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "data",
+        "diskSizeGb": "100",
+        "index": "1",
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-data",
+        "type": "PERSISTENT"
+      }
+    ],
+    "labels": {
+      "goog-caip-notebook": ""
+    },
+    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-mode": "service_account",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "warmup-libraries": "matplotlib.pyplot"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "state": "PROVISIONING",
+    "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "diskEncryption": "GMEK",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "150",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-boot",
+      "type": "PERSISTENT"
+    },
+    {
+      "autoDelete": true,
+      "deviceName": "data",
+      "diskSizeGb": "100",
+      "index": "1",
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-data",
+      "type": "PERSISTENT"
+    }
+  ],
+  "labels": {
+    "goog-caip-notebook": ""
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
+    "disable-swap-binaries": "true",
+    "enable-guest-attributes": "TRUE",
+    "notebooks-api": "PROD",
+    "notebooks-api-version": "v1",
+    "proxy-mode": "service_account",
+    "serial-port-logging-enable": "true",
+    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+    "warmup-libraries": "matplotlib.pyplot"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccountScopes": [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableVtpm": true
+  },
+  "state": "PROVISIONING",
+  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+  "tags": [
+    "deeplearning-vm",
+    "notebook-instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "diskEncryption": "GMEK",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "150",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-boot",
+      "type": "PERSISTENT"
+    },
+    {
+      "autoDelete": true,
+      "deviceName": "data",
+      "diskSizeGb": "100",
+      "index": "1",
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-data",
+      "type": "PERSISTENT"
+    }
+  ],
+  "labels": {
+    "goog-caip-notebook": ""
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
+    "disable-swap-binaries": "true",
+    "enable-guest-attributes": "TRUE",
+    "notebooks-api": "PROD",
+    "notebooks-api-version": "v1",
+    "proxy-mode": "service_account",
+    "serial-port-logging-enable": "true",
+    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+    "warmup-libraries": "matplotlib.pyplot"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccountScopes": [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableVtpm": true
+  },
+  "state": "PROVISIONING",
+  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+  "tags": [
+    "deeplearning-vm",
+    "notebook-instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/DeleteInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
