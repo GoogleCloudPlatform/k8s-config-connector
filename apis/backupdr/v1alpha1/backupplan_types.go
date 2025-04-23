@@ -22,7 +22,7 @@ import (
 var BackupDRBackupPlanGVK = GroupVersion.WithKind("BackupDRBackupPlan")
 
 // BackupDRBackupPlanSpec defines the desired state of BackupDRBackupPlan
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlan
+// +kcc:spec:proto=google.cloud.backupdr.v1.BackupPlan
 type BackupDRBackupPlanSpec struct {
 	// The BackupDRBackupPlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -84,7 +84,7 @@ type BackupDRBackupPlanStatus struct {
 }
 
 // BackupDRBackupPlanObservedState is the state of the BackupDRBackupPlan resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.backupdr.v1.BackupPlan
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.BackupPlan
 type BackupDRBackupPlanObservedState struct {
 	// Output only. Identifier. The resource name of the `BackupPlan`.
 	//

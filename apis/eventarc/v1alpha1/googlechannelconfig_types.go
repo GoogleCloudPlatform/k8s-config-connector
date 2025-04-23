@@ -29,7 +29,7 @@ import (
 var EventarcGoogleChannelConfigGVK = GroupVersion.WithKind("EventarcGoogleChannelConfig")
 
 // EventarcGoogleChannelConfigSpec defines the desired state of EventarcGoogleChannelConfig
-// +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
+// +kcc:spec:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigSpec struct {
 	Parent `json:",inline"`
 
@@ -60,7 +60,7 @@ type EventarcGoogleChannelConfigStatus struct {
 }
 
 // EventarcGoogleChannelConfigObservedState is the state of the EventarcGoogleChannelConfig resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.eventarc.v1.GoogleChannelConfig
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.GoogleChannelConfig
 type EventarcGoogleChannelConfigObservedState struct {
 	// Output only. The last-modified time.
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.update_time

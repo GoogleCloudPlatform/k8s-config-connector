@@ -21,7 +21,6 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
@@ -179,12 +178,10 @@ func protoNameFromComment(cg *ast.CommentGroup) (string, error) {
 		return "", fmt.Errorf("empty comment group")
 	}
 	for _, c := range cg.List {
-		trimmed := strings.TrimPrefix(c.Text, "//")
-		trimmed = strings.TrimSpace(trimmed)
-		if !strings.HasPrefix(trimmed, codegen.KCCProtoMessageAnnotation+"=") {
-			continue
+		proto, ok := codegen.GetProtoMessageFromAnnotation(c.Text)
+		if ok {
+			return proto, nil // found the comment with proto name
 		}
-		return strings.TrimSpace(strings.TrimPrefix(trimmed, codegen.KCCProtoMessageAnnotation+"=")), nil // found the comment with proto name
 	}
 	return "", fmt.Errorf("not found")
 }

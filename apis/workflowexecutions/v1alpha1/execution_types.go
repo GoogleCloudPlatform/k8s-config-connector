@@ -24,7 +24,7 @@ import (
 var WorkflowsExecutionGVK = GroupVersion.WithKind("WorkflowsExecution")
 
 // WorkflowsExecutionSpec defines the desired state of WorkflowsExecution
-// +kcc:proto=google.cloud.workflows.executions.v1.Execution
+// +kcc:spec:proto=google.cloud.workflows.executions.v1.Execution
 type WorkflowsExecutionSpec struct {
 
 	// Input parameters of the execution represented as a JSON string.
@@ -87,7 +87,7 @@ type WorkflowsExecutionStatus struct {
 }
 
 // WorkflowsExecutionObservedState is the state of the WorkflowsExecution resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.workflows.executions.v1.Execution
+// +kcc:observedstate:proto=google.cloud.workflows.executions.v1.Execution
 type WorkflowsExecutionObservedState struct {
 
 	// Output only. Marks the beginning of execution.

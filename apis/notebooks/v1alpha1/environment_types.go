@@ -24,7 +24,7 @@ import (
 var NotebooksEnvironmentGVK = GroupVersion.WithKind("NotebooksEnvironment")
 
 // NotebooksEnvironmentSpec defines the desired state of NotebooksEnvironment
-// +kcc:proto=google.cloud.notebooks.v1.Environment
+// +kcc:spec:proto=google.cloud.notebooks.v1.Environment
 type NotebooksEnvironmentSpec struct {
 	// The Project that this resource belongs to.
 	// +required
@@ -77,7 +77,7 @@ type NotebooksEnvironmentStatus struct {
 }
 
 // NotebooksEnvironmentObservedState is the state of the NotebooksEnvironment resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.notebooks.v1.Environment
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Environment
 type NotebooksEnvironmentObservedState struct {
 	// Output only. Name of this environment.
 	//  Format:

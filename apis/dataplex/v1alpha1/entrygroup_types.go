@@ -32,7 +32,7 @@ type DataplexEntryGroupParent struct {
 }
 
 // DataplexEntryGroupSpec defines the desired state of DataplexEntryGroup
-// +kcc:proto=google.cloud.dataplex.v1.EntryGroup
+// +kcc:spec:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupSpec struct {
 	DataplexEntryGroupParent `json:",inline"`
 	// The DataplexEntryGroup name. If not given, the metadata.name will be used.

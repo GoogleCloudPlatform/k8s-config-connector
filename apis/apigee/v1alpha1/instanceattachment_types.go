@@ -23,7 +23,7 @@ import (
 var ApigeeInstanceAttachmentGVK = GroupVersion.WithKind("ApigeeInstanceAttachment")
 
 // ApigeeInstanceAttachmentSpec defines the desired state of ApigeeInstanceAttachment
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1InstanceAttachment
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1InstanceAttachment
 type ApigeeInstanceAttachmentSpec struct {
 	// Reference to parent Apigee Instance.
 	// +required

@@ -23,7 +23,7 @@ import (
 var NotebookInstanceGVK = GroupVersion.WithKind("NotebookInstance")
 
 // NotebookInstanceSpec defines the desired state of NotebookInstance
-// +kcc:proto=google.cloud.notebooks.v1.Instance
+// +kcc:spec:proto=google.cloud.notebooks.v1.Instance
 type NotebookInstanceSpec struct {
 
 	// Use a Compute Engine VM image to start the notebook instance.
@@ -225,7 +225,7 @@ type NotebookInstanceStatus struct {
 }
 
 // NotebookInstanceObservedState is the state of the NotebookInstance resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.notebooks.v1.Instance
+// +kcc:observedstate:proto=google.cloud.notebooks.v1.Instance
 type NotebookInstanceObservedState struct {
 	// Output only. The name of this notebook instance. Format:
 	//  `projects/{project_id}/locations/{location}/instances/{instance_id}`

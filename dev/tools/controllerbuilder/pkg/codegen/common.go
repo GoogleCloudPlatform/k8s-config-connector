@@ -17,8 +17,12 @@ package codegen
 import "strings"
 
 const (
-	// KCCProtoMessageAnnotation is used for go structs that map to proto messages
-	KCCProtoMessageAnnotation = "+kcc:proto"
+	// KCCProtoMessageAnnotationMisc is used for go structs that map to proto messages, but are not top-level Spec structs
+	KCCProtoMessageAnnotationMisc = "+kcc:proto"
+	// KCCProtoMessageAnnotationSpec is used for top-level Spec structs that map to proto messages
+	KCCProtoMessageAnnotationSpec = "+kcc:spec:proto"
+	// KCCProtoMessageAnnotationObservedState is used for top-level ObservedState structs that map to proto messages
+	KCCProtoMessageAnnotationObservedState = "+kcc:observedstate:proto"
 
 	// KCCProtoFieldAnnotation is used for go struct fields that map to proto fields
 	KCCProtoFieldAnnotation = "+kcc:proto:field"
@@ -26,6 +30,22 @@ const (
 	// KCCProtoIgnoreAnnotation is used for go struct fields that are ignored
 	KCCProtoIgnoreAnnotation = "+kcc:proto:ignore"
 )
+
+// GetProtoMessageFromAnnotation will extract a proto message annotation, including the spec and observedstate "subclasses"
+func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
+	trimmed := strings.TrimPrefix(commentLine, "//")
+	trimmed = strings.TrimSpace(trimmed)
+	for _, annotation := range []string{
+		KCCProtoMessageAnnotationMisc,
+		KCCProtoMessageAnnotationSpec,
+		KCCProtoMessageAnnotationObservedState,
+	} {
+		if strings.HasPrefix(trimmed, annotation+"=") {
+			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
+		}
+	}
+	return "", false
+}
 
 // special-case proto messages that are currently not mapped to KRM Go structs
 var protoMessagesNotMappedToGoStruct = map[string]string{

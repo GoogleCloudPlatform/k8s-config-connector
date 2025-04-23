@@ -31,7 +31,7 @@ type ComputeNetworkAttachmentParent struct {
 }
 
 // ComputeNetworkAttachmentSpec defines the desired state of ComputeNetworkAttachment
-// +kcc:proto=google.cloud.compute.v1.NetworkAttachment
+// +kcc:spec:proto=google.cloud.compute.v1.NetworkAttachment
 type ComputeNetworkAttachmentSpec struct {
 	// Parent reference.
 	ComputeNetworkAttachmentParent `json:",inline"`
@@ -81,7 +81,7 @@ type ComputeNetworkAttachmentStatus struct {
 }
 
 // ComputeNetworkAttachmentObservedState is the state of the ComputeNetworkAttachment resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.compute.v1.NetworkAttachment
+// +kcc:observedstate:proto=google.cloud.compute.v1.NetworkAttachment
 type ComputeNetworkAttachmentObservedState struct {
 	// [Output Only] An array of connections for all the producers connected to this network attachment.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkAttachment.connection_endpoints

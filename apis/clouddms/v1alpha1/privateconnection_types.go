@@ -117,7 +117,7 @@ type CloudDMSPrivateConnectionStatus struct {
 }
 
 // CloudDMSPrivateConnectionSpec defines the desired state of CloudDMSPrivateConnection
-// +kcc:proto=google.cloud.clouddms.v1.PrivateConnection
+// +kcc:spec:proto=google.cloud.clouddms.v1.PrivateConnection
 type CloudDMSPrivateConnectionSpec struct {
 	// The CloudDMSPrivateConnection name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -143,7 +143,7 @@ type CloudDMSPrivateConnectionSpec struct {
 }
 
 // CloudDMSPrivateConnectionObservedState is the state of the CloudDMSPrivateConnection resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.clouddms.v1.PrivateConnection
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.PrivateConnection
 type CloudDMSPrivateConnectionObservedState struct {
 	// Output only. The create time of the resource.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateConnection.create_time

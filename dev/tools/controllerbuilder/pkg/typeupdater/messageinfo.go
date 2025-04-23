@@ -117,10 +117,16 @@ func (info *messageInfo) parseComments(ts *ast.TypeSpec, docMap map[ast.Node]*as
 			info.Comments = append(info.Comments, text)
 
 			// check for proto annotation
-			if strings.HasPrefix(text, codegen.KCCProtoMessageAnnotation+"=") {
-				protoName := strings.TrimSpace(strings.TrimPrefix(text, codegen.KCCProtoMessageAnnotation+"="))
-				info.ProtoName = protoName
-				info.IsVirtual = false
+			for _, annotation := range []string{
+				codegen.KCCProtoMessageAnnotationMisc,
+				codegen.KCCProtoMessageAnnotationSpec,
+				codegen.KCCProtoMessageAnnotationObservedState,
+			} {
+				if strings.HasPrefix(text, annotation+"=") {
+					protoName := strings.TrimSpace(strings.TrimPrefix(text, annotation+"="))
+					info.ProtoName = protoName
+					info.IsVirtual = false
+				}
 			}
 		}
 	}

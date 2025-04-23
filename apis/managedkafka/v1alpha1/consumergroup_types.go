@@ -23,7 +23,7 @@ import (
 var ManagedKafkaConsumerGroupGVK = GroupVersion.WithKind("ManagedKafkaConsumerGroup")
 
 // ManagedKafkaConsumerGroupSpec defines the desired state of ManagedKafkaConsumerGroup
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
+// +kcc:spec:proto=google.cloud.managedkafka.v1.ConsumerGroup
 type ManagedKafkaConsumerGroupSpec struct {
 	*Parent `json:",inline"`
 
@@ -82,7 +82,7 @@ type ManagedKafkaConsumerGroupStatus struct {
 }
 
 // ManagedKafkaConsumerGroupObservedState is the state of the ManagedKafkaConsumerGroup resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.managedkafka.v1.ConsumerGroup
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.ConsumerGroup
 type ManagedKafkaConsumerGroupObservedState struct {
 	// Optional. Metadata for this consumer group for all topics it has metadata for.
 	// The key of the map is a topic name, structured like: projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}

@@ -29,7 +29,7 @@ type DataplexZoneParent struct {
 }
 
 // DataplexZoneSpec defines the desired state of DataplexZone
-// +kcc:proto=google.cloud.dataplex.v1.Zone
+// +kcc:spec:proto=google.cloud.dataplex.v1.Zone
 type DataplexZoneSpec struct {
 	DataplexZoneParent `json:",inline"`
 
@@ -82,7 +82,7 @@ type DataplexZoneStatus struct {
 }
 
 // DataplexZoneObservedState is the state of the DataplexZone resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataplex.v1.Zone
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Zone
 type DataplexZoneObservedState struct {
 	// Output only. System generated globally unique ID for the zone. This ID will
 	//  be different if the zone is deleted and re-created with the same name.

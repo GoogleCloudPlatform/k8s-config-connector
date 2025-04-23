@@ -22,7 +22,7 @@ import (
 var GKEBackupRestoreGVK = GroupVersion.WithKind("GKEBackupRestore")
 
 // GKEBackupRestoreSpec defines the desired state of GKEBackupRestore
-// +kcc:proto=google.cloud.gkebackup.v1.Restore
+// +kcc:spec:proto=google.cloud.gkebackup.v1.Restore
 type GKEBackupRestoreSpec struct {
 	// The GKEBackupRestore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -81,7 +81,7 @@ type GKEBackupRestoreStatus struct {
 }
 
 // GKEBackupRestoreObservedState is the state of the GKEBackupRestore resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.gkebackup.v1.Restore
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.Restore
 type GKEBackupRestoreObservedState struct {
 	// Output only. The full name of the Restore resource.
 	//  Format: `projects/*/locations/*/restorePlans/*/restores/*`

@@ -23,7 +23,7 @@ import (
 var SecretManagerSecretVersionGVK = GroupVersion.WithKind("SecretManagerSecretVersion")
 
 // SecretManagerSecretVersionSpec defines the desired state of SecretManagerSecretVersion
-// +kcc:proto=google.cloud.secretmanager.v1.SecretVersion
+// +kcc:spec:proto=google.cloud.secretmanager.v1.SecretVersion
 type SecretManagerSecretVersionSpec struct {
 	// The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for.
 	SecretRef *SecretRef `json:"secretRef,omitempty"`
@@ -88,7 +88,7 @@ type SecretManagerSecretVersionStatus struct {
 }
 
 // SecretManagerSecretVersionObserved is the state of the SecretManagerSecretVersion resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.secretmanager.v1.SecretVersion
+// +kcc:observedstate:proto=google.cloud.secretmanager.v1.SecretVersion
 type SecretManagerSecretVersionObservedState struct {
 	// Output only. The time at which the
 	// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.
