@@ -11,4 +11,19 @@
 * `DatastreamRoute`
 * `SpeechCustomClass`
 * `VMwareEngineExternalAddress`
+* `MetastoreService`
+* `MetastoreFederation`
+* `MetastoreBackup`
+* `APIQuotaPreference`
+* `APIQuotaAdjusterSettings`
+* `EventarcGoogleChannelConfig`
+* `EventarcChannel`
+* `AssetSavedQuery`
+* `AssetFeed`
+* `EssentialContactsContact`
+* `DataCatalogEntryGroup`
+* `DataCatalogEntry`
+* `DataCatalogTagTemplate`
+* `DataCatalogTag`
+
 
