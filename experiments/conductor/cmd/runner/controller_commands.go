@@ -612,7 +612,6 @@ func runGoldenMockTests(ctx context.Context, opts *RunnerOptions, branch Branch,
 		Env: map[string]string{
 			"E2E_GCP_TARGET":  "mock",
 			"E2E_KUBE_TARGET": "envtest",
-			"ARTIFACTS":       "artifactz/mock",
 		},
 	}
 
@@ -640,9 +639,16 @@ func fixGoldenTests(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	}
 
 	// Fix YAML files in fixtures directory
+	artifactzLogFile := filepath.Join("artifactz", "realgcp", "http-logs", "unknown", "requests.log")
+	// Read the http log file for detailed transaction analysis
+	reqLogContent, err := os.ReadFile(filepath.Join(opts.branchRepoDir, artifactzLogFile))
+	if err != nil {
+		log.Printf("Warning: Could not read http log file %s: %v", artifactzLogFile, err)
+	}
 	fixtureDir := filepath.Join("pkg", "test", "resourcefixture", "testdata", "basic", branch.Group, "v1alpha1", strings.ToLower(branch.Kind), strings.ToLower(branch.Kind)+"-minimal")
 	createYaml := filepath.Join(fixtureDir, "create.yaml")
 	updateYaml := filepath.Join(fixtureDir, "update.yaml")
+	normalizeFile := filepath.Join("tests", "e2e", "normalize.go")
 	// Fix controller file if needed
 	controllerFileName := strings.ToLower(branch.Proto) + "_controller.go"
 	controllerPath := filepath.Join("pkg", "controller", "direct", branch.Group, controllerFileName)
@@ -666,6 +672,12 @@ func fixGoldenTests(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 
 %s
 
+The http transactions captured in the log file are:
+
+%s
+
+--------------------------------
+
 These errors are for the %s kind in group %s.
 
 Please identify specific issues that need to be fixed:
@@ -673,11 +685,13 @@ Please identify specific issues that need to be fixed:
 2. Are there issues with the controller implementation?
 3. Are there any schema validation errors?
 4. Are there any missing fields or incorrect field types?
+5. Test diff due to time differences can be fixed by normalizing the timestamps in normalize.go
 
 We expect the fixes to be in these files:
 1. %s
 2. %s
 3. %s
+4. %s
 
 Provide come up with recommendations along with the file names for fixing these issues.
 
@@ -685,7 +699,7 @@ Based on the recommendations please fix the issues in the files.
 
 Use ReadFile, EditFile to make the changes.
 `,
-		testErrors, branch.Kind, branch.Group, createYaml, controllerPath, updateYaml)
+		testErrors, reqLogContent, branch.Kind, branch.Group, createYaml, controllerPath, updateYaml, normalizeFile)
 
 	cfg := CommandConfig{
 		Name:         "Fix Golden Tests",
@@ -717,17 +731,21 @@ func runGoldenRealGCPTests(ctx context.Context, opts *RunnerOptions, branch Bran
 	// Run the compare-mock script
 	fixtureArg := fmt.Sprintf("fixtures/%s-minimal", strings.ToLower(branch.Kind))
 
+	env := map[string]string{
+		"E2E_GCP_TARGET":  "real",
+		"E2E_KUBE_TARGET": "envtest",
+		"ARTIFACTS":       "artifactz/real",
+	}
+	if opts.timeout > 0 {
+		env["E2E_TEST_TIMEOUT"] = opts.timeout.String()
+	}
 	cfg := CommandConfig{
 		Name:        "Record GCP Output",
 		Cmd:         "hack/record-gcp",
 		Args:        []string{fixtureArg},
 		WorkDir:     opts.branchRepoDir,
 		MaxAttempts: 2, // First attempt is to generate the golden output and the second attempt is to verify the golden output
-		Env: map[string]string{
-			"E2E_GCP_TARGET":  "real",
-			"E2E_KUBE_TARGET": "envtest",
-			"ARTIFACTS":       "artifactz/real",
-		},
+		Env:         env,
 	}
 
 	// We don't care about the error here, as the script might return non-zero
