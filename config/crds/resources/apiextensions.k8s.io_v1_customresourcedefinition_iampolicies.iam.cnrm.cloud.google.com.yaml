@@ -150,6 +150,16 @@ spec:
                       - namespace
                   required:
                   - external
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                    - required:
+                      - apiVersion
+                    - required:
+                      - external
                 properties:
                   apiVersion:
                     description: APIVersion of the referenced resource
