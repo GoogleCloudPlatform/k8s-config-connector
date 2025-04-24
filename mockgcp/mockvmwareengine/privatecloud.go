@@ -211,20 +211,22 @@ func (s *MockService) parsePrivateCloudName(name string) (*privateCloudName, err
 }
 
 func setGeneratedFields(obj *pb.PrivateCloud, name *privateCloudName) {
+	zone := name.Location
+	region := strings.Join(strings.SplitN(zone, "-", 3)[0:2], "-") // e.g. us-west2-a -> us-west2
 	obj.Hcx = &pb.Hcx{
-		Fqdn:       "hcx-414861.c8819727.us-west2.gve.goog",
+		Fqdn:       fmt.Sprintf("hcx-414861.c8819727.%s.gve.goog", region),
 		InternalIp: "192.168.30.3",
 		State:      pb.Hcx_ACTIVE,
 		Version:    "4.10.3.24447633",
 	}
 	obj.Nsx = &pb.Nsx{
-		Fqdn:       "nsx-414860.c8819727.us-west2.gve.goog",
+		Fqdn:       fmt.Sprintf("nsx-414860.c8819727.%s.gve.goog", region),
 		InternalIp: "192.168.30.18",
 		State:      pb.Nsx_ACTIVE,
 		Version:    "3.2.3.1",
 	}
 	obj.Vcenter = &pb.Vcenter{
-		Fqdn:       "vcsa-359395.c8819727.us-west2.gve.goog",
+		Fqdn:       fmt.Sprintf("vcsa-359395.c8819727.%s.gve.goog", region),
 		InternalIp: "192.168.30.2",
 		State:      pb.Vcenter_ACTIVE,
 		Version:    "7.0.3.23085514",
