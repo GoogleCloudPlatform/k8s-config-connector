@@ -88,6 +88,9 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
+    <tr>
+        <td><code>cnrm.cloud.google.com/unmanaged</code></td>
+    </tr>
 </tbody>
 </table>
 
