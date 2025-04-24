@@ -210,24 +210,15 @@ go run . generate-types \
     --api-version apigee.cnrm.cloud.google.com/v1alpha1 \
     --resource ApigeeInstance:GoogleCloudApigeeV1Instance
 
-# CloudIdentity : Group
+# CloudIdentity
 go run . generate-types \
      --service google.apps.cloudidentity.groups.v1beta1 \
-     --resource CloudIdentityGroup:Group\
-     --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1"
-
-go run . generate-mapper \
-     --service google.apps.cloudidentity.groups.v1beta1 \
-     --api-version cloudidentity.cnrm.cloud.google.com/v1beta1
-
-# CloudIdentity : Membership
-go run . generate-types \
-     --service mockgcp.cloud.cloudidentity.groups.v1beta1 \
+     --resource CloudIdentityGroup:Group \
      --resource CloudIdentityMembership:Membership \
      --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
-     --service mockgcp.cloud.cloudidentity.groups.v1beta1 \
+     --service google.apps.cloudidentity.groups.v1beta1 \
      --api-version cloudidentity.cnrm.cloud.google.com/v1beta1
 
 # Workflow : Workflow
