@@ -38,7 +38,6 @@ import (
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -107,52 +106,6 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 
-	// For GVKs that model resources with mutable but unreadable fields (including sensitive fields),
-	// we add an event handler to cache the most recent old object update
-	// TODO acpana: better GVK abstraction for registration
-	if r.gvk.Kind == "LoggingLogMetric" {
-		log.FromContext(context.Background()).Info("adding update handler with full object fetch for LoggingLogMetric")
-
-		// Use PartialObjectMetadata in informer (because builder.OnlyMetadata is used)
-		metaObj := &metav1.PartialObjectMetadata{}
-		metaObj.SetGroupVersionKind(r.gvk)
-
-		informer, err := mgr.GetCache().GetInformer(context.Background(), metaObj)
-		if err != nil {
-			return fmt.Errorf("error getting informer for %s: %w", r.gvk, err)
-		}
-		_, err = informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-			UpdateFunc: func(oldObjMeta, newObjMeta interface{}) {
-				if oldObjMeta == nil || newObjMeta == nil {
-					return
-				}
-				oldMeta, ok := oldObjMeta.(*metav1.PartialObjectMetadata)
-				if !ok {
-					log.FromContext(context.Background()).Error(fmt.Errorf("expected oldObjMeta to be of type *metav1.PartialObjectMetadata)"), "error converting oldObjMeta in UpdateEvent handler")
-					return
-				}
-				key := types.NamespacedName{
-					Name:      oldMeta.GetName(),
-					Namespace: oldMeta.GetNamespace(),
-				}
-
-				// Fetch the full object manually using client.Client
-				fullObj := &unstructured.Unstructured{}
-				fullObj.SetGroupVersionKind(r.gvk)
-
-				if err := mgr.GetClient().Get(context.Background(), key, fullObj); err != nil {
-					log.FromContext(context.Background()).Error(err, "failed to fetch full object in UpdateFunc")
-					return
-				}
-
-				r.oldObjectsCache.Store(key, fullObj.DeepCopy())
-			},
-		})
-		if err != nil {
-			return fmt.Errorf("error adding event handler for %s: %w", r.gvk, err)
-		}
-	}
-
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	if reconcilePredicate != nil {
 		predicateList = append(predicateList, reconcilePredicate)
@@ -162,8 +115,7 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
+		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{})
 
 	// The controller should watch K8s Secret if it supports sensitive fields.
 	if _, ok := r.model.(SensitiveFieldModel); ok {
@@ -187,6 +139,41 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 				return requests
 			}),
 		)
+	}
+
+	// For GVKs that model resources with mutable but unreadable fields (including sensitive fields),
+	// we add an event handler to cache the most recent old object update
+	// TODO acpana: better GVK abstraction for registration
+	if r.gvk.Kind == "LoggingLogMetric" {
+		log.FromContext(context.Background()).Info("adding event handler for LoggingLogMetric")
+
+		informer, err := mgr.GetCache().GetInformer(context.Background(), obj)
+		if err != nil {
+			return fmt.Errorf("error getting informer for %s: %w", r.gvk, err)
+		}
+		_, err = informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
+			UpdateFunc: func(oldObj, newObj interface{}) {
+				if oldObj == nil || newObj == nil {
+					return
+				}
+				oldUnstruct, ok := oldObj.(*unstructured.Unstructured)
+				if !ok {
+					log.FromContext(context.Background()).Error(fmt.Errorf("expected oldObj to be of type *unstructured.Unstructured"), "error converting oldObj in UpdateEvent handler")
+				}
+				key := types.NamespacedName{
+					Name:      oldUnstruct.GetName(),
+					Namespace: oldUnstruct.GetNamespace(),
+				}
+
+				r.oldObjectsCache.Store(key, oldUnstruct.DeepCopy())
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("error adding event handler for %s: %w", r.gvk, err)
+		}
+		controllerBuilder = controllerBuilder.For(obj, builder.WithPredicates(predicateList...))
+	} else {
+		controllerBuilder = controllerBuilder.For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
 	}
 
 	_, err := controllerBuilder.Build(r)
