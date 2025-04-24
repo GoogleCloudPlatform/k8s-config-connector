@@ -216,6 +216,7 @@ func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *direct
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
