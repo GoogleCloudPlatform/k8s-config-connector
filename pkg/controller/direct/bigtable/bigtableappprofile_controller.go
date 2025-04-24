@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/bigtable"
 
@@ -51,7 +52,9 @@ type modelBigtableAppProfile struct {
 }
 
 func (m *modelBigtableAppProfile) client(ctx context.Context, parentProject string) (*gcp.InstanceAdminClient, error) {
-	gcpClient, err := gcp.NewInstanceAdminClient(ctx, parentProject)
+	var opts []option.ClientOption
+	opts, err := m.config.GRPCClientOptions()
+	gcpClient, err := gcp.NewInstanceAdminClient(ctx, parentProject, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableAppProfile client: %w", err)
 	}
@@ -205,7 +208,7 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
 		fieldsToUpdate.Description = resource.Description
 	}
-	if desired.Spec.MultiClusterRoutingUseAny != nil && !reflect.DeepEqual(resource.GetRoutingPolicy(), a.actual.GetRoutingPolicy()) {
+	if desired.Spec.MultiClusterRoutingUseAny != nil && !reflect.DeepEqual(resource.GetMultiClusterRoutingUseAny(), a.actual.GetMultiClusterRoutingUseAny()) {
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
 		}
