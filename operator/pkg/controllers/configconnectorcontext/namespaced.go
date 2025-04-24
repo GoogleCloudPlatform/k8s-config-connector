@@ -44,25 +44,44 @@ func removeNamespacedComponents(ctx context.Context, c client.Client, objects []
 	return nil
 }
 
-func transformNamespacedComponentTemplates(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object, managerNamespaceSuffix string) ([]*manifest.Object, error) {
+func transformNamespacedComponentTemplates(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object) ([]*manifest.Object, error) {
+	cc, err := controllers.GetConfigConnector(ctx, c, controllers.ValidConfigConnectorNamespacedName)
+	if err != nil {
+		return nil, err
+	}
+	managerNamespace := k8s.CNRMSystemNamespace
+	managerNamespaceSuffix, namespacedManager := cc.Labels[k8s.ManagerNamespaceSuffixLabel]
+	if namespacedManager {
+		managerNamespace = replaceNamespaceSuffix(ccc.Namespace, managerNamespaceSuffix)
+	}
 	transformedObjs := make([]*manifest.Object, 0, len(namespacedTemplates))
 	for _, obj := range namespacedTemplates {
 		processed := obj
 		if controllers.IsControllerManagerService(processed) {
 			var err error
-			processed, err = handleControllerManagerService(ctx, c, ccc, processed, managerNamespaceSuffix)
+			processed, err = handleControllerManagerService(ctx, c, ccc, processed, managerNamespace)
 			if err != nil {
 				return nil, err
 			}
 		}
 		if controllers.IsControllerManagerStatefulSet(processed) {
 			var err error
-			processed, err = handleControllerManagerStatefulSet(ctx, c, ccc, processed, managerNamespaceSuffix)
+			processed, err = handleControllerManagerStatefulSet(ctx, c, ccc, processed, managerNamespace)
 			if err != nil {
 				return nil, err
 			}
+			if namespacedManager {
+				// When controller manager runs in a separate namespace
+				// (not in cnrm-system), it needs finalizer, so when manager
+				// namespace is deleted the manager stays running until
+				// all CNRM resources are removed
+				processed, err = ensureOperatorFinalizer(processed)
+				if err != nil {
+					return nil, err
+				}
+			}
 		}
-		processed, err := replaceNamespacePattern(processed, ccc.Namespace, managerNamespaceSuffix)
+		processed, err := replaceNamespacePattern(processed, ccc.Namespace)
 		if err != nil {
 			return nil, err
 		}
@@ -72,23 +91,71 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
 			}
 		}
+		if namespacedManager {
+			if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
+				processed, err = handleControllerManagerServiceAccount(processed, managerNamespace)
+				if err != nil {
+					return nil, err
+				}
+			}
+			if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
+				processed, err = handleControllerManagerRoleBinding(processed, managerNamespace)
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
 		transformedObjs = append(transformedObjs, processed)
 	}
 	return transformedObjs, nil
 }
 
-func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object, managerNamespaceSuffix string) (*manifest.Object, error) {
+func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object, serviceNamespace string) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
-	serviceNamespace := strings.ReplaceAll(u.GetNamespace(), "${NAMESPACE?}", ccc.Namespace)
-	serviceNamespace = strings.ReplaceAll(serviceNamespace, "${MANAGER_NAMESPACE?}", replaceNamespaceSuffix(ccc.Namespace, managerNamespaceSuffix))
+	u.SetNamespace(serviceNamespace)
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), serviceNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerServiceAccount(obj *manifest.Object, managerNamespace string) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(managerNamespace)
+	controllers.EnsureOperatorFinalizer(u)
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerRoleBinding(obj *manifest.Object, managerNamespace string) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	subjects, found, err := unstructured.NestedSlice(u.Object, "subjects")
+	if err != nil {
+		return nil, err
+	}
+	if found {
+		for _, subjectIntf := range subjects {
+			if subject, ok := subjectIntf.(map[string]interface{}); ok {
+				var kind, name string
+				if kind, ok = subject["kind"].(string); !ok || kind != rbacv1.ServiceAccountKind {
+					continue
+				}
+				if name, ok = subject["name"].(string); !ok || !strings.HasPrefix(name, k8s.ServiceAccountNamePrefix) {
+					continue
+				}
+				subject["namespace"] = managerNamespace
+			}
+		}
+		err = unstructured.SetNestedSlice(u.Object, subjects, "subjects")
+		if err != nil {
+			return nil, err
+		}
+	}
+	controllers.EnsureOperatorFinalizer(u)
 	return manifest.NewObject(u)
 }
 
@@ -110,7 +177,7 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 	return nil
 }
 
-func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object, managerNamespaceSuffix string) (*manifest.Object, error) {
+func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object, statefulsetNamespace string) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 
 	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
@@ -143,12 +210,17 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		}
 	}
 
-	statefulsetNamespace := strings.ReplaceAll(u.GetNamespace(), "${NAMESPACE?}", ccc.Namespace)
-	statefulsetNamespace = strings.ReplaceAll(statefulsetNamespace, "${MANAGER_NAMESPACE?}", replaceNamespaceSuffix(ccc.Namespace, managerNamespaceSuffix))
+	u.SetNamespace(statefulsetNamespace)
 	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName(), statefulsetNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
+	return manifest.NewObject(u)
+}
+
+func ensureOperatorFinalizer(obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	controllers.EnsureOperatorFinalizer(u)
 	return manifest.NewObject(u)
 }
 
@@ -269,14 +341,13 @@ func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Clien
 	return nil
 }
 
-func replaceNamespacePattern(obj *manifest.Object, ns string, managerNamespaceSuffix string) (*manifest.Object, error) {
+func replaceNamespacePattern(obj *manifest.Object, ns string) (*manifest.Object, error) {
 	bytes, err := obj.JSON()
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("error marshalling object %v", obj.UnstructuredObject()))
 	}
 	str := string(bytes)
 	str = strings.ReplaceAll(str, "${NAMESPACE?}", ns)
-	str = strings.ReplaceAll(str, "${MANAGER_NAMESPACE?}", replaceNamespaceSuffix(ns, managerNamespaceSuffix))
 	newObj, err := manifest.ParseJSONToObject([]byte(str))
 	if err != nil {
 		return nil, errors.Wrap(err, fmt.Sprintf("error unmarshalling object %v", obj.UnstructuredObject()))
@@ -284,14 +355,14 @@ func replaceNamespacePattern(obj *manifest.Object, ns string, managerNamespaceSu
 	return newObj, nil
 }
 
+const delimiter = "-"
+
 func replaceNamespaceSuffix(namespace, suffix string) string {
 	if suffix == "" {
 		return namespace
 	}
 
-	// First character of suffix is used as a delimiter.
-	delimiter := suffix[0]
-	lastDelimiterIndex := strings.LastIndexByte(namespace, delimiter)
+	lastDelimiterIndex := strings.LastIndexAny(namespace, delimiter)
 
 	// If no delimiter is found, there's no suffix to replace.
 	// Return the original string.
@@ -299,5 +370,5 @@ func replaceNamespaceSuffix(namespace, suffix string) string {
 		return namespace
 	}
 
-	return namespace[0:lastDelimiterIndex] + suffix
+	return namespace[0:lastDelimiterIndex+1] + suffix
 }

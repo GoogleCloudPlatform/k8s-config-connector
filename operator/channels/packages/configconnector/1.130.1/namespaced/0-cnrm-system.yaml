@@ -1725,6 +1725,12 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - core.cnrm.cloud.google.com
+  resources:
+  - configconnectors
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

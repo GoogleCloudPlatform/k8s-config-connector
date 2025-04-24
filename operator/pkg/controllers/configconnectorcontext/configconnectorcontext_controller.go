@@ -55,9 +55,8 @@ const controllerName = "configconnectorcontext-controller"
 
 // ReconcilerOptions holds configuration options for the reconciler
 type ReconcilerOptions struct {
-	RepoPath               string
-	ImageTransform         *controllers.ImageTransform
-	ManagerNamespaceSuffix string
+	RepoPath       string
+	ImageTransform *controllers.ImageTransform
 }
 
 // Reconciler reconciles a ConfigConnectorContext object.
@@ -127,7 +126,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	options := []declarative.ReconcilerOption{
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
-		declarative.WithObjectTransform(r.transformNamespacedComponents(opt.ManagerNamespaceSuffix)),
+		declarative.WithObjectTransform(r.transformNamespacedComponents()),
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
@@ -226,13 +225,13 @@ func (r *Reconciler) updateConfigConnectorContextStatus(ctx context.Context, ccc
 	return nil
 }
 
-func (r *Reconciler) transformNamespacedComponents(managerNamespaceSuffix string) declarative.ObjectTransform {
+func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 		}
-		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, managerNamespaceSuffix)
+		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
 		}

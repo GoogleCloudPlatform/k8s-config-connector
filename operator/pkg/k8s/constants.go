@@ -57,6 +57,7 @@ const (
 	UserProjectOverrideFlag              = "--user-project-override"
 	BillingProjectFlag                   = "--billing-project"
 	CNRMManagerContainerName             = "manager"
+	ManagerNamespaceSuffixLabel          = "cnrm.cloud.google.com/manager-namespace-suffix"
 )
 
 var (
