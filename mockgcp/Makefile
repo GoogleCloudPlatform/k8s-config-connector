@@ -244,7 +244,7 @@ generate-protos-from-openapi:
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
 
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
-	mkdir -p apis/google/apps/cloudidentity/groups/v1beta1/
-	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.groups.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/groups/v1beta1//service.proto
+	mkdir -p apis/google/apps/cloudidentity/v1beta1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto
 
 	rm -r temp
