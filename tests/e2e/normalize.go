@@ -238,9 +238,20 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.create_time"] = "1970-01-01T00:00:00Z"
 	}
 
-	// Specific to WorflowsWorkflow
-	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
+	// Specific to WorkflowsWorkflow
+	visitor.replacePaths[".status.observedState.revisionId"] = "workflows-revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"
+	// Specific to WorkflowsExecution
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.externalRef") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+				tokens[len(tokens)-1] = "${executionId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
 
 	// Specific to DocumentAIProcessor
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -1023,8 +1034,22 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.ReplacePath(".revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".response.revisionCreateTime", "2024-04-01T12:34:56.123456Z")
-		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
-		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".revisionId", "workflows-revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "workflows-revision-id-placeholder")
+		// WorkflowsExecution
+		visitor.ReplacePath(".workflowRevisionId", "workflows-revision-id-placeholder")
+		visitor.ReplacePath(".duration", "0.100000000s")
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			switch path {
+			case ".name":
+				tokens := strings.Split(s, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+					tokens[len(tokens)-1] = "${executionId}"
+					s = strings.Join(tokens, "/")
+				}
+			}
+			return s
+		})
 	}
 
 	// DocumentAI
