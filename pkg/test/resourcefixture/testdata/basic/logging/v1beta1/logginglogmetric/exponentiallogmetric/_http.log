@@ -118,98 +118,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "bucketOptions": {
     "exponentialBuckets": {
-      "growthFactor": 2.5,
-      "numFiniteBuckets": 4,
-      "scale": 0.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "exponentialBuckets": {
-      "growthFactor": 2.5,
-      "numFiniteBuckets": 4,
-      "scale": 0.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "exponentialBuckets": {
-      "growthFactor": 2.5,
-      "numFiniteBuckets": 4,
-      "scale": 0.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "bucketOptions": {
-    "exponentialBuckets": {
       "growthFactor": 3.5,
       "numFiniteBuckets": 5,
       "scale": 0.7
@@ -219,6 +127,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
   "metricDescriptor": {
     "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",

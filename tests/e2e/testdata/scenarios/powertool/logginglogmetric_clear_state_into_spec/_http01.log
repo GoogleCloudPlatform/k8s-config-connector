@@ -53,6 +53,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
   "metricDescriptor": {
     "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "unit": "1",
     "valueType": "DISTRIBUTION"
   },

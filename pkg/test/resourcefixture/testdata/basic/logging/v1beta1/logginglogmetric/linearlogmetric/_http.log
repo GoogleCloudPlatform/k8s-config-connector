@@ -219,6 +219,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "samplePeriod": "3.5s"
     },
     "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "s",
     "valueType": "DISTRIBUTION"
   },
