@@ -504,10 +504,10 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	for idx, branch := range branches.Branches {
 		if branch.Command != "" {
 			if existing, ok := gcloudMap[branch.Command]; ok {
-				log.Printf("Command uniqueness constraint between %s and (%d)%s\r",
-					existing, idx, branch.Name)
+				log.Printf("Command (%s) uniqueness constraint between %s and (%d)%s\r",
+					branch.Command, existing, idx, branch.Name)
 			}
-			gitMap[branch.Command] = branch.Name
+			gcloudMap[branch.Command] = branch.Name
 		}
 		if existing, ok := nameMap[branch.Name]; ok {
 			log.Printf("Name uniqueness constraint between %s at and %s\r",
@@ -528,11 +528,13 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 		}
 		grMap[gr] = branch
 
-		if existing, ok := kindMap[branch.Kind]; ok {
-			log.Printf("Kind uniqueness constraint between %s and (%d)%s\r",
-				existing, idx, branch.Name)
+		if branch.Kind != "" {
+			if existing, ok := kindMap[branch.Kind]; ok {
+				log.Printf("Kind uniqueness (%s) constraint between names: %s and (%d)%s\r",
+					branch.Kind, existing, idx, branch.Name)
+			}
 		}
-		gitMap[branch.Kind] = branch.Name
+		kindMap[branch.Kind] = branch.Name
 	}
 
 	// Fix the data and write back
