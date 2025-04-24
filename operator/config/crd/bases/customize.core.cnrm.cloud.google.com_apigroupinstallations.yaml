@@ -1,0 +1,70 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: apigroupinstallations.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: APIGroupInstallation
+    listKind: APIGroupInstallationList
+    plural: apigroupinstallations
+    shortNames:
+    - apigroupinstallation
+    - apigroupinstallations
+    singular: apigroupinstallation
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          APIGroupInstallation enables a specific API group of CRDs in Config Connector.
+          The name of the resource must match the API group to enable.
+          If any APIGroupInstallation resources exist, only the API groups specified by these resources will be installed.
+          If no APIGroupInstallation resources exist, all API groups will be installed (default behavior).
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              Spec could be empty as the presence of the resource indicates
+              that the API group should be installed.
+            type: object
+          status:
+            description: APIGroupInstallationStatus defines the observed state of
+              APIGroupInstallation.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
