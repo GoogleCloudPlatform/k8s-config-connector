@@ -195,6 +195,7 @@ func (a *networkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

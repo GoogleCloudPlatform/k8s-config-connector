@@ -213,6 +213,7 @@ func (a *networkPolicyAdapter) Update(ctx context.Context, updateOp *directbase.
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
