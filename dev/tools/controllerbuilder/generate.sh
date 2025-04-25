@@ -212,13 +212,13 @@ go run . generate-types \
 
 # CloudIdentity
 go run . generate-types \
-     --service google.apps.cloudidentity.groups.v1beta1 \
+     --service google.apps.cloudidentity.v1beta1 \
      --resource CloudIdentityGroup:Group \
      --resource CloudIdentityMembership:Membership \
      --api-version "cloudidentity.cnrm.cloud.google.com/v1beta1"
 
 go run . generate-mapper \
-     --service google.apps.cloudidentity.groups.v1beta1 \
+     --service google.apps.cloudidentity.v1beta1 \
      --api-version cloudidentity.cnrm.cloud.google.com/v1beta1
 
 # Workflow : Workflow
