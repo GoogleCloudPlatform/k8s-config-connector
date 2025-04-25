@@ -203,6 +203,7 @@ func (a *privateCloudAdapter) Update(ctx context.Context, updateOp *directbase.U
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
