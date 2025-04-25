@@ -205,7 +205,7 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 			return nil, err
 		}
 
-		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator, Defaulters: r.defaulters}); err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
 		return schemaUpdater, nil
@@ -266,6 +266,7 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 				return nil, err
 			}
 			deps := directbase.Deps{
+				Defaulters:         r.defaulters,
 				JitterGenerator:    r.jitterGenerator,
 				ReconcilePredicate: useDirectReconcilerPredicate,
 			}
