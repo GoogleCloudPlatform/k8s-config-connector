@@ -68,25 +68,3 @@ spec:
     locationEnvVar: "over-the-rainbow"
   projectRef:
     external: ${projectId}
-# # Reusing workflow from workflowsworkflow-full
-# apiVersion: workflows.cnrm.cloud.google.com/v1beta1
-# kind: WorkflowsWorkflow
-# metadata:
-#   annotations:
-#     cnrm.cloud.google.com/project-id: ${projectId}
-#   name: workflow-${uniqueId}
-# spec:
-#   location: us-central1
-#   description: "Example workflow"
-#   labels:
-#     env: "test"
-#   sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'"
-#   serviceAccountRef:
-#     name: gsa-${uniqueId}
-#   kmsCryptoKeyRef:
-#     name: kmscryptokey-${uniqueId}
-#   callLogLevel: "LOG_ALL_CALLS"
-#   userEnvVars:
-#     locationEnvVar: "over-the-rainbow"
-#   projectRef:
-#     external: ${projectId}
