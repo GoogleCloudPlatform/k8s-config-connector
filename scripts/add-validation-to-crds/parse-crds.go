@@ -223,6 +223,33 @@ oneOf:
   - external
 `
 
+const headlessIAMRuleRefRuleWithOnlylKind = `
+oneOf:
+  - not:
+      required:
+        - external
+    required:
+      - name
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+    required:
+      - external
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+        - required:
+            - apiVersion
+        - required:
+            - external
+`
+
 func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps) error {
 	// Is this a ref?
 	if props.Type != "object" {
@@ -237,7 +264,12 @@ func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps)
 
 	var ruleYAML string
 	if signature == "apiVersion,external,kind,name,namespace" {
-		ruleYAML = refRuleWithKind
+		// hack for IAMPolicy.spec.resourceRef for backwards compat
+		if fieldPath == ".spec.resourceRef" {
+			ruleYAML = headlessIAMRuleRefRuleWithOnlylKind
+		} else {
+			ruleYAML = refRuleWithKind
+		}
 	} else if signature == "external,kind,name,namespace" {
 		ruleYAML = refRuleWithKind
 		// kind is optional for projectRef (and maybe in future other well-known ref types)
