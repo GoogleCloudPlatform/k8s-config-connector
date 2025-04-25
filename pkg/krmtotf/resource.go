@@ -22,6 +22,7 @@ import (
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -109,7 +110,7 @@ func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfsche
 
 func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
 	statusOrObservedState := status
-	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk) {
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(gvk) {
 		statusOrObservedState = getObservedStateFromStatus(status)
 	}
 	splitPath := text.SnakeCaseStrsToLowerCamelCaseStrs(
@@ -347,7 +348,7 @@ func getObservedStateFromStatus(status map[string]interface{}) map[string]interf
 }
 
 func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
-	if k8s.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
 		return getObservedStateFromStatus(r.Status)
 	}
 	return r.Status

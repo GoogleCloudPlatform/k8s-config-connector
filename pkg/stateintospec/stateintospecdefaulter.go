@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package k8s
+package stateintospec
 
 import (
 	"context"
@@ -25,7 +25,22 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
+
+const (
+	// State into spec annotation values
+	StateIntoSpecAnnotation = k8s.StateIntoSpecAnnotation
+	StateMergeIntoSpec      = k8s.StateMergeIntoSpec
+	StateAbsentInSpec       = k8s.StateAbsentInSpec
+)
+
+var StateIntoSpecAnnotationValues = []string{
+	StateMergeIntoSpec,
+	StateAbsentInSpec,
+}
+
+const StateIntoSpecDefaultValueV1Beta1 = k8s.StateAbsentInSpec
 
 // StateIntoSpecDefaulter contains the required 'defaultValue' field and the
 // optional 'userOverride' field.
@@ -33,14 +48,14 @@ type StateIntoSpecDefaulter struct {
 	client client.Client
 }
 
-func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
+func NewStateIntoSpecDefaulter(client client.Client) k8s.Defaulter {
 	return &StateIntoSpecDefaulter{
 		client: client,
 	}
 }
 
 func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
-	val, found := GetAnnotation(StateIntoSpecAnnotation, resource)
+	val, found := resource.GetAnnotations()[k8s.StateIntoSpecAnnotation]
 	if found {
 		if !isAcceptedStateIntoSpecValue(val, resource.GetObjectKind().GroupVersionKind()) {
 			return false, fmt.Errorf("invalid value %q for %q annotation in kind %v", val, StateIntoSpecAnnotation, resource.GetObjectKind().GroupVersionKind().Kind)
@@ -89,11 +104,11 @@ func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Objec
 		klog.Infof("%v doesn't support %q so the %q annotation is always defaulted to %q",
 			obj.GetObjectKind().GroupVersionKind().Kind, StateMergeIntoSpec,
 			StateIntoSpecAnnotation, StateAbsentInSpec)
-		SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
+		k8s.SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
 		return
 
 	}
-	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
+	k8s.SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 }
 
 func isAcceptedStateIntoSpecValue(value string, gvk schema.GroupVersionKind) bool {

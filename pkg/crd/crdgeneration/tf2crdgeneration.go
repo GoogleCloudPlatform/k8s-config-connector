@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
@@ -64,7 +65,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	handleHierarchicalReferences(resourceConfig, specJSONSchema)
 
 	var err error
-	if k8s.OutputOnlyFieldsAreUnderObservedState(kubeschema.GroupVersionKind{
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(kubeschema.GroupVersionKind{
 		Kind:    resourceConfig.Kind,
 		Version: sm.GetVersionFor(resourceConfig),
 		Group:   sm.Name,

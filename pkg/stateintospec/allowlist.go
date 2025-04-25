@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package k8s
+package stateintospec
 
 import (
 	"slices"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -247,7 +248,7 @@ var (
 )
 
 func SupportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 {
+	if gvk.Version != k8s.KCCAPIVersionV1Beta1 {
 		return false
 	}
 
@@ -255,7 +256,7 @@ func SupportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
 }
 
 func OutputOnlyFieldsAreUnderObservedState(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 {
+	if gvk.Version != k8s.KCCAPIVersionV1Beta1 {
 		return false
 	}
 
