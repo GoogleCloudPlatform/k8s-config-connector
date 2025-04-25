@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -82,7 +83,7 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		}
 		target := &spec
 		if !fieldSchema.Required && !fieldSchema.Optional {
-			if k8s.OutputOnlyFieldsAreUnderObservedState(resource.GroupVersionKind()) {
+			if stateintospec.OutputOnlyFieldsAreUnderObservedState(resource.GroupVersionKind()) {
 				observedState, ok := status[k8s.ObservedStateFieldName]
 				if !ok {
 					// Always add the 'observedState' subfield if the resource
