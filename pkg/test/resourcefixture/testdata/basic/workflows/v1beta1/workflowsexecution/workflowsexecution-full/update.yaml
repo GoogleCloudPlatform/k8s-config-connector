@@ -29,4 +29,6 @@ spec:
     external: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
   argument: "{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"
   callLogLevel: "LOG_ERRORS_ONLY"
-  resourceID: execution-full${uniqueId}
+# Part of spec but does not work
+# resourceID for execution is set by GCP, completely ignoring what users set it to
+#  resourceID: execution-full${uniqueId}

@@ -51,7 +51,6 @@ spec:
     name: kmskeyring-${uniqueId}
   purpose: ENCRYPT_DECRYPT
 ---
-# Kept simple as it is also used for update operation, which does not support things like userEnvVars
 apiVersion: workflows.cnrm.cloud.google.com/v1beta1
 kind: WorkflowsWorkflow
 metadata:
@@ -63,7 +62,7 @@ spec:
   description: "Example workflow"
   labels:
     env: "test"
-  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${location}'"
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${\"Hello \" + input.firstName + \" \" + input.lastName + \" from \" + location}'"
   userEnvVars:
     locationEnvVar: "over-the-rainbow"
   projectRef:
