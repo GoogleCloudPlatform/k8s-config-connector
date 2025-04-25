@@ -112,7 +112,7 @@ func main() {
 		RepoPath:       repoPath,
 		ImageTransform: imageTransform,
 	}
-	if err := configconnector.Add(mgr, ccOptions); err != nil {
+	if _, err := configconnector.Add(mgr, ccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
 		os.Exit(1)
 	}
