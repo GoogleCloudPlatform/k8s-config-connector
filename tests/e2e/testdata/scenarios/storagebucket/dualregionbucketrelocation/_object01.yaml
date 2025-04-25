@@ -1,0 +1,43 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    label-one: value-one
+  name: storagebucket-sample-${uniqueId}
+  namespace: ${projectId}
+spec:
+  customPlacementConfig:
+    dataLocations:
+    - US-EAST1
+    - US-WEST2
+  lifecycleRule:
+  - action:
+      type: Delete
+    condition:
+      age: 7
+  location: US
+  resourceID: storagebucket-sample-${uniqueId}
+  versioning:
+    enabled: false
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3
+  observedState:
+    softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
+      retentionDurationSeconds: 604800
+  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
+  url: gs://storagebucket-sample-${uniqueId}
