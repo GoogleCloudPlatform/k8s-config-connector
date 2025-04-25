@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package k8s_test
+package stateintospec
 
 import (
 	"context"
@@ -313,7 +313,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 					t.Fatalf("error creating %+v: %v", tc.ccc.GroupVersionKind(), err)
 				}
 			}
-			defaulter := k8s.NewStateIntoSpecDefaulter(client)
+			defaulter := NewStateIntoSpecDefaulter(client)
 			changed, err := defaulter.ApplyDefaults(ctx, tc.resource)
 			if tc.expectError {
 				if err == nil {
