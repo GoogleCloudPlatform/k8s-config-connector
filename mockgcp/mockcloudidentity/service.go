@@ -66,6 +66,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 && strings.Contains(error.Message, "Membership") {
+			error.Errors = nil
+		}
+	}
+
 	// DCL sends a trailing slash, but that is not technically correct
 	// and it trips up grpc-gateway (https://github.com/grpc-ecosystem/grpc-gateway/issues/472)
 	// e.g. POST https://cloudidentity.googleapis.com/v1beta1/groups/1946c1f7c26/memberships/?alt=json

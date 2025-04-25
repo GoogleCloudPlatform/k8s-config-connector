@@ -398,30 +398,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "message": "Error(2028): Permission denied for resource groups/${groupID} (or it may not exist).",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-403 Forbidden
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
     "message": "Error(2017): Permission denied for group resource 'groups/${groupID}' (or it may not exist).",
     "status": "PERMISSION_DENIED"
   }
