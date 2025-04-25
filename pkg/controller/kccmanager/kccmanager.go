@@ -149,6 +149,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
 		BillingProject:             cfg.BillingProject,
@@ -171,7 +172,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		TfLoader:     smLoader,
 		DclConfig:    dclConfig,
 		DclConverter: dclConverter,
-		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+		Defaulters: []k8s.Defaulter{
+			stateIntoSpecDefaulter,
+		},
 	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
