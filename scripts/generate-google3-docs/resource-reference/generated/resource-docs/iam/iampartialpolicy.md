@@ -64,7 +64,7 @@ Note: Updating <code>spec.resourceRef</code> is not allowed.
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpiampartialpolicy<br>gcpiampartialpolicies<br>iampartialpolicy</td>
+<td>iampartialpolicy<br>iampartialpolicies<br>iampartialpolicy</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -826,7 +826,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -836,7 +836,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}APIVersion of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -846,7 +846,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -856,7 +856,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Kind of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
