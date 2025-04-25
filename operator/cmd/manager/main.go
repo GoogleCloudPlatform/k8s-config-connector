@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -81,10 +82,11 @@ func main() {
 	scheme := controllers.BuildScheme()
 
 	opts := ctrl.Options{
-		Scheme:             scheme,
-		MetricsBindAddress: metricsAddr,
-		LeaderElection:     enableLeaderElection,
-		Port:               9443,
+		Scheme: scheme,
+		Metrics: metricsserver.Options{
+			BindAddress: metricsAddr,
+		},
+		LeaderElection: enableLeaderElection,
 	}
 	// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
 	// The operator mostly only cares about resources in cnrm-system namespace.

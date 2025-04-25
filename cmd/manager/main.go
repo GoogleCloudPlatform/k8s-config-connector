@@ -36,6 +36,7 @@ import (
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -146,9 +147,16 @@ func main() {
 func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
-		ManagerOptions: manager.Options{
-			Namespace: scopedNamespace,
-		},
+		ManagerOptions: manager.Options{},
+	}
+
+	if scopedNamespace != "" {
+		enableWatchBookmarks := true
+		controllersCfg.ManagerOptions.Cache.DefaultNamespaces = map[string]cache.Config{
+			scopedNamespace: {
+				EnableWatchBookmarks: &enableWatchBookmarks,
+			},
+		}
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride

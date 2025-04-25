@@ -98,10 +98,10 @@ func main() {
 
 	// Create a new Manager to provide shared dependencies and start components
 	mgr, err := manager.New(cfg, manager.Options{
-		// Although this Port value will specify the port of any webhooks
-		// spawned by the manager, those used by this manager are generated
-		// by the RegisterCommonWebhooks call below, and will not honor this value.
-		Port: webhook.ServicePort,
+		// // Although this Port value will specify the port of any webhooks
+		// // spawned by the manager, those used by this manager are generated
+		// // by the RegisterCommonWebhooks call below, and will not honor this value.
+		// Port: webhook.ServicePort,
 		NewCache: func(config *rest.Config, opts cache.Options) (cache.Cache, error) {
 			opts.ByObject = map[client.Object]cache.ByObject{
 				crdKind: {
