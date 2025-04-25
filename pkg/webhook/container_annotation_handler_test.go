@@ -19,7 +19,6 @@ import (
 
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	testutil "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testdclschemaloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/dclschemaloader"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	testservicemetadataloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemetadataloader"
@@ -1053,19 +1052,18 @@ func TestHandleContainerAnnotationsForDCLBasedResources(t *testing.T) {
 				"cloudresourcemanager_ga_folder":  {},
 			}
 			dclSchemaLoader := testdclschemaloader.New(dclSchemaMap)
-			response := handleContainerAnnotationsForDCLBasedResources(tc.obj, tc.ns, dclSchemaLoader, smLoader)
+			_, err := handleContainerAnnotationsForDCLBasedResources(tc.obj, tc.ns, dclSchemaLoader, smLoader)
 			if tc.denied {
-				if response.Allowed {
-					t.Fatalf("expected request to be denied, but was allowed. Response:\n%v", response)
+				if err == nil {
+					t.Fatalf("expected request to be denied, but was allowed. Response:\n%v", err)
 				}
 				return
 			}
-			if !response.Allowed {
-				t.Fatalf("request was unexpectedly denied. Response:\n%v", response)
+			if err != nil {
+				t.Fatalf("request was unexpectedly denied. Response:\n%v", err)
 			}
-			expectedResponse := constructPatchResponse(tc.obj, tc.newObj)
-			if !testutil.Equals(t, expectedResponse, response) {
-				diff := cmp.Diff(expectedResponse, response)
+			diff := cmp.Diff(tc.newObj, tc.obj)
+			if diff != "" {
 				t.Fatalf("unexpected diff in the response (-want +got):\n%v", diff)
 			}
 		})
@@ -1871,19 +1869,18 @@ func TestHandleContainerAnnotationsForTFBasedResources(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			response := handleContainerAnnotationsForTFBasedResources(tc.obj, tc.ns, smLoader)
+			_, err := handleContainerAnnotationsForTFBasedResources(tc.obj, tc.ns, smLoader)
 			if tc.denied {
-				if response.Allowed {
-					t.Fatalf("expected request to be denied, but was allowed. Response:\n%v", response)
+				if err == nil {
+					t.Fatalf("expected request to be denied, but was allowed. Response:\n%v", err)
 				}
 				return
 			}
-			if !response.Allowed {
-				t.Fatalf("request was unexpectedly denied. Response:\n%v", response)
+			if err != nil {
+				t.Fatalf("request was unexpectedly denied. Response:\n%v", err)
 			}
-			expectedResponse := constructPatchResponse(tc.obj, tc.newObj)
-			if !testutil.Equals(t, expectedResponse, response) {
-				diff := cmp.Diff(expectedResponse, response)
+			diff := cmp.Diff(tc.newObj, tc.obj)
+			if diff != "" {
 				t.Fatalf("unexpected diff in the response (-want +got):\n%v", diff)
 			}
 		})

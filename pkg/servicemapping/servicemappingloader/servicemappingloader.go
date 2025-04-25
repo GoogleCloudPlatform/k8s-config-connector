@@ -55,12 +55,24 @@ func NewFromServiceMappings(serviceMappings []v1alpha1.ServiceMapping) *ServiceM
 	return &loader
 }
 
-func (s *ServiceMappingLoader) GetServiceMapping(name string) (*v1alpha1.ServiceMapping, error) {
-	sm, ok := s.groupToSM[name]
+func (s *ServiceMappingLoader) GetServiceMapping(group string) (*v1alpha1.ServiceMapping, error) {
+	sm, ok := s.groupToSM[group]
 	if !ok {
-		return nil, fmt.Errorf("unable to get service mapping: no mapping with name '%v' found", name)
+		return nil, fmt.Errorf("unable to get service mapping: no mapping with group '%v' found", group)
 	}
 	return &sm, nil
+}
+
+// HasServiceMapping checks if there is a ResourceConfig for object
+// It returns (ResourceConfig, true) or (nil, false)
+func (s *ServiceMappingLoader) HasResourceConfig(u *unstructured.Unstructured) (*v1alpha1.ResourceConfig, bool) {
+	gvk := u.GroupVersionKind()
+	sm, ok := s.groupToSM[gvk.Group]
+	if !ok {
+		return nil, false
+	}
+	rc, err := GetResourceConfig(&sm, u)
+	return rc, err == nil
 }
 
 func (s *ServiceMappingLoader) GetServiceMappingForServiceHostName(hostName string) (*v1alpha1.ServiceMapping, error) {
@@ -117,6 +129,8 @@ func (s *ServiceMappingLoader) GetAutoGenOnlyGroups() map[string]bool {
 	return autoGenOnlyServices
 }
 
+// GetResourceConfig returns the ResourceConfig for the specified resource,
+// or an error if one cannot be (uniquely) determined.
 func GetResourceConfig(sm *v1alpha1.ServiceMapping, u *unstructured.Unstructured) (*v1alpha1.ResourceConfig, error) {
 	rcs := GetResourceConfigsForKind(sm, u.GetKind())
 	if len(rcs) == 0 {
