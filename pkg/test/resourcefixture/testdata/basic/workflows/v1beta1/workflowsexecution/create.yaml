@@ -17,17 +17,16 @@ kind: WorkflowsExecution
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-  name: execution-full-${uniqueId}
+  name: execution-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
   labels:
     env: "test"
-    updated: "true"
   workflowRef:
     external: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
-  argument: "{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"
+  argument: "{\"firstName\":\"initial\",\"lastName\":\"value\"}"
   callLogLevel: "LOG_ERRORS_ONLY"
 # Part of spec but does not work
 # resourceID for execution is set by GCP, completely ignoring what users set it to

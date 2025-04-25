@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: workflowexecutions.cnrm.cloud.google.com/v1beta1
-kind: WorkflowsExecution
+apiVersion: workflows.cnrm.cloud.google.com/v1beta1
+kind: WorkflowsWorkflow
 metadata:
-  name: execution-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: workflow-${uniqueId}
 spec:
+  location: us-central1
+  description: "Example workflow"
+  labels:
+    env: "test"
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${\"Hello \" + input.firstName + \" \" + input.lastName}'"
   projectRef:
     external: ${projectId}
-  location: us-central1
-  workflowRef:
-    external: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
-  argument: "{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"
