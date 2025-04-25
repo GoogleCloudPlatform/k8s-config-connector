@@ -664,6 +664,54 @@ func TestCRDShortNamePluralization(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
 }
 
+// TestCRDArraysAndMapsHaveSizeLimits checks that all arrays, maps, and strings in spec have bounded sizes
+// which will make CEL validation work much better.
+func TestCRDArraysAndMapsHaveSizeLimits(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only check spec
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				switch field.props.Type {
+				case "array":
+					if field.props.MaxItems == nil {
+						errs = append(errs, fmt.Sprintf("[array_no_maxitems] crd=%s version=%v: field %q is an array but missing maxItems", crd.Name, version.Name, fieldPath))
+					}
+				case "object":
+					if field.props.AdditionalProperties != nil {
+						// This is a map
+						if field.props.MaxProperties == nil {
+							errs = append(errs, fmt.Sprintf("[map_no_maxproperties] crd=%s version=%v: field %q is a map but missing maxProperties", crd.Name, version.Name, fieldPath))
+						}
+					}
+					// NOT YET: I think this is a tad too aggressive!
+					// case "string":
+					// 	if field.props.MaxLength == nil {
+					// 		errs = append(errs, fmt.Sprintf("[string_no_maxlength] crd=%s version=%v: field %q is a string but missing maxLength", crd.Name, version.Name, fieldPath))
+					// 	}
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/arraysandmaps.txt", want)
+}
+
 // isValidPlural checks if a string is a valid pluralization of another string
 func isValidPlural(singular, plural string) bool {
 	// Special cases for words that are already plural or don't follow standard rules
