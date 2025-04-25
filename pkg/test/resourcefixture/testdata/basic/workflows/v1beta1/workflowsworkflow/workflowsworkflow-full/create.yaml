@@ -29,6 +29,6 @@ spec:
   kmsCryptoKeyRef:
     name: kmscryptokey-${uniqueId}
   callLogLevel: "LOG_ERRORS_ONLY"
-  resourceId: workflow${uniqueId}
+  resourceID: workflow${uniqueId}
   projectRef:
     external: ${projectId}

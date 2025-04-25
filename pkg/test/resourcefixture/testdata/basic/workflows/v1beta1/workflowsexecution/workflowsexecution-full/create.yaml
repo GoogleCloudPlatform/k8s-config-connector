@@ -27,4 +27,4 @@ spec:
   workflowRef:
     external: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
   callLogLevel: "LOG_ERRORS_ONLY"
-  resourceId: execution-full${uniqueId}
+  resourceID: execution-full${uniqueId}

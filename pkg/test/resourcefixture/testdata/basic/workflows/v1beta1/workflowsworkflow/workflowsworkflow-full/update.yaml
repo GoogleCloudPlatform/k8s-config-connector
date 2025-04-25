@@ -30,7 +30,7 @@ spec:
   kmsCryptoKeyRef:
     name: kmscryptokey-${uniqueId}-updated
   callLogLevel: "LOG_ALL_CALLS"
-  resourceId: workflow${uniqueId}
+  resourceID: workflow${uniqueId}
   userEnvVars:
     locationEnvVar: "over-the-rainbow"
   projectRef:
