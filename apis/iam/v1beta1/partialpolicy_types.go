@@ -30,7 +30,7 @@ type MemberReference struct {
 }
 
 // MemberSource represents a source for an IAM identity
-// +kubebuilder:validation:XValidation:rule="size([has(self.bigQueryConnectionConnectionRef), has(self.logSinkRef), has(self.serviceAccountRef), has(self.serviceIdentityRef), has(self.sqlInstanceRef)].filter(x, x == true)) == 1",message="exactly one ref must be specified among bigQueryConnectionConnectionRef, logSinkRef, serviceAccountRef, serviceIdentityRef, sqlInstanceRef"
+// +kubebuilder:validation:XValidation:rule="(has(self.bigQueryConnectionConnectionRef) ? 1 : 0) + (has(self.logSinkRef) ? 1 : 0) + (has(self.serviceAccountRef) ? 1 : 0) + (has(self.serviceIdentityRef) ? 1 : 0) + (has(self.sqlInstanceRef) ? 1 : 0) == 1",message="exactly one of bigQueryConnectionConnectionRef, logSinkRef, serviceAccountRef, serviceIdentityRef, or sqlInstanceRef must be specified"
 type MemberSource struct {
 	// The IAMServiceAccount to be bound to the role.
 	ServiceAccountRef *MemberReference `json:"serviceAccountRef,omitempty"`
@@ -55,7 +55,6 @@ type MemberSource struct {
 	BigQueryConnectionConnectionRef *bigqueryconnection.BigQueryConnectionServiceAccountRef `json:"bigQueryConnectionConnectionRef,omitempty"`
 }
 
-// +kubebuilder:validation:XValidation:rule="has(self.member) != has(self.memberFrom)",message="exactly one of member or memberFrom must be set"
 type IAMPartialPolicyMember struct {
 	// The IAM identity to be bound to the role. Exactly one of
 	// 'member' or 'memberFrom' must be used.
