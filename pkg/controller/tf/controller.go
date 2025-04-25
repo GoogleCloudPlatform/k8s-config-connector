@@ -202,12 +202,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
+
+	if err := r.handleDefaults(ctx, u); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(u), err)
+	}
+
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
-	}
-	if err := r.handleDefaults(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -484,9 +486,9 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
-func (r *Reconciler) handleDefaults(ctx context.Context, resource *krmtotf.Resource) error {
+func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, u); err != nil {
 			return err
 		}
 	}

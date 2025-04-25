@@ -341,7 +341,11 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		if !found {
 			r.t.Fatalf("no preferred GVK for %v", gk)
 		}
-		reconciler, err := directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, jg)
+		deps := directbase.Deps{
+			Defaulters:      defaulters,
+			JitterGenerator: jg,
+		}
+		reconciler, err := directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
