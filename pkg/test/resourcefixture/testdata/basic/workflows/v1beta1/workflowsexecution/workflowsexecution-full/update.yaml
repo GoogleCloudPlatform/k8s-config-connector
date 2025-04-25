@@ -24,7 +24,9 @@ spec:
   location: us-central1
   labels:
     env: "test"
+    updated: "true"
   workflowRef:
     external: projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}
   argument: "{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"
   callLogLevel: "LOG_ERRORS_ONLY"
+  resourceId: execution-full${uniqueId}

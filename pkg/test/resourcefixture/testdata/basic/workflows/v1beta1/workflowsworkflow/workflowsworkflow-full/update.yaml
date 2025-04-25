@@ -23,12 +23,14 @@ spec:
   description: "Updated Example workflow"
   labels:
     env: "test"
+    updated: "true"
   sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'"
   serviceAccountRef:
     name: gsa-${uniqueId}-updated
   kmsCryptoKeyRef:
     name: kmscryptokey-${uniqueId}-updated
   callLogLevel: "LOG_ALL_CALLS"
+  resourceId: workflow${uniqueId}
   userEnvVars:
     locationEnvVar: "over-the-rainbow"
   projectRef:
