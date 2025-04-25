@@ -63,7 +63,7 @@ spec:
   description: "Example workflow"
   labels:
     env: "test"
-  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${location}'"
   userEnvVars:
     locationEnvVar: "over-the-rainbow"
   projectRef:
