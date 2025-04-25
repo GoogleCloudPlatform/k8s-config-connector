@@ -94,7 +94,7 @@ func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) err
 	if err != nil {
 		return err
 	}
-	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{}), &handler.EnqueueRequestForObject{}, ManagedByKCCPredicate{})
+	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{}, &handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate[*apiextensions.CustomResourceDefinition]{}))
 }
 
 var _ reconcile.Reconciler = &ReconcileRegistration{}

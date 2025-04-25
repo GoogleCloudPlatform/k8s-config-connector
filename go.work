@@ -2,6 +2,7 @@ go 1.24.0
 
 use (
 	.
+	../kubebuilder-declarative-pattern
 	./dev/tools/controllerbuilder
 	./experiments/kompanion
 	./experiments/kubectl-plan
