@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
@@ -475,7 +476,7 @@ func resolveTargetFieldValue(refResource *k8s.Resource, typeConfig *corekccv1alp
 func ResolveSpecAndStatus(state *unstructured.Unstructured, resource *dcl.Resource,
 	smLoader dclmetadata.ServiceMetadataLoader) (spec map[string]interface{}, status map[string]interface{}, err error) {
 	val, found := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, resource)
-	if !found || val == k8s.StateMergeIntoSpec {
+	if !found || val == apis.StateMergeIntoSpec {
 		spec, status, err = resolveMixedSpecAndLegacyStatus(state, resource, smLoader)
 	} else {
 		spec, status, err = resolveDesiredStateInSpecAndObservedStateInStatus(state, resource, smLoader)

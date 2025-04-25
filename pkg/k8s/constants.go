@@ -26,6 +26,7 @@ type ManagementConflictPreventionPolicy string
 // TODO: clean up old conditions used in handcrafted controllers
 const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
+	CoreCNRMGroup                        = "core.cnrm.cloud.google.com"
 	CNRMTestGroup                        = "test.cnrm.cloud.google.com"
 	APIDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
@@ -76,11 +77,6 @@ const (
 	// Management conflict prevention policies
 	ManagementConflictPreventionPolicyNone     = "none"
 	ManagementConflictPreventionPolicyResource = "resource"
-
-	// State into spec annotation values
-	StateMergeIntoSpec               = "merge"
-	StateAbsentInSpec                = "absent"
-	StateIntoSpecDefaultValueV1Beta1 = StateAbsentInSpec
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
@@ -140,10 +136,7 @@ var (
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
 
 	StateIntoSpecAnnotation       = FormatAnnotation("state-into-spec")
-	StateIntoSpecAnnotationValues = []string{
-		StateMergeIntoSpec,
-		StateAbsentInSpec,
-	}
+	
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)
 

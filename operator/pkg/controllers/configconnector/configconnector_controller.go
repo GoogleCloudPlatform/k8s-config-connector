@@ -253,7 +253,7 @@ func (r *Reconciler) handleConfigConnectorLifecycle() declarative.ObjectTransfor
 			}
 		}
 
-		if cc.GetMode() == k8s.ClusterMode {
+		if cc.GetMode() == corev1beta1.ClusterMode {
 			if err := r.removeNamespacedModeOnlySharedComponents(ctx, r.client); err != nil {
 				return err
 			}
@@ -278,7 +278,7 @@ func (r *Reconciler) transformForClusterMode() declarative.ObjectTransform {
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnector, but it was not. Object: %v", o)
 		}
-		if cc.GetMode() == k8s.ClusterMode {
+		if cc.GetMode() == corev1beta1.ClusterMode {
 			if cc.Spec.GoogleServiceAccount != "" {
 				// workload identity version
 				if err := r.objectTransformForWorkloadIdentity(cc, m); err != nil {

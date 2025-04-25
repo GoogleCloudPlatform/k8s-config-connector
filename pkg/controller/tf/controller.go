@@ -21,8 +21,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -33,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
@@ -204,16 +203,16 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
 	}
 
-	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.mgr.GetClient(), req.NamespacedName)
+	config, err := kccconfig.FetchLiveKCCState(ctx, r.mgr.GetClient(), req.NamespacedName)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
 
-	am := resourceactuation.DecideActuationMode(cc, ccc)
+	am := config.ActuationMode()
 	switch am {
-	case v1beta1.Reconciling:
+	case kccconfig.ActuationModeReconciling:
 		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
-	case v1beta1.Paused:
+	case kccconfig.ActuationModePaused:
 		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
 		if err != nil {
 			return reconcile.Result{}, err

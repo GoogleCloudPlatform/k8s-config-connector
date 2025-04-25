@@ -279,7 +279,7 @@ func (r *Reconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 		if isCCObjectNotFound || !cc.GetDeletionTimestamp().IsZero() {
 			return r.finalizeSystemComponentsDeletion(ctx, ccc, m)
 		}
-		if cc.GetMode() == k8s.ClusterMode {
+		if cc.GetMode() == corev1beta1.ClusterMode {
 			return r.handleCCContextLifecycleForClusterMode(ctx, ccc, m)
 		}
 		return r.handleCCContextLifecycleForNamespacedMode(ctx, ccc, m)

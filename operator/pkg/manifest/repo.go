@@ -23,7 +23,6 @@ import (
 	"strings"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
@@ -82,7 +81,7 @@ func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, 
 	var sb strings.Builder
 	sb.Write(b)
 	sb.WriteString("---\n")
-	if mode == k8s.ClusterMode {
+	if mode == corev1beta1.ClusterMode {
 		var authIdentity string
 		if cc.Spec.GoogleServiceAccount != "" {
 			authIdentity = "workload-identity"

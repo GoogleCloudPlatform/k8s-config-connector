@@ -15,9 +15,13 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
+)
+
+const (
+	ClusterMode    = "cluster"
+	NamespacedMode = "namespaced"
 )
 
 // ConfigConnectorSpec defines the desired state of ConfigConnector
@@ -120,7 +124,7 @@ func (c *ConfigConnector) SetCommonStatus(s addonv1alpha1.CommonStatus) {
 
 func (c *ConfigConnector) GetMode() string {
 	if c.Spec.Mode == "" {
-		return k8s.NamespacedMode
+		return NamespacedMode
 	}
 	return c.Spec.Mode
 }
