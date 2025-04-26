@@ -30,7 +30,6 @@ type MemberReference struct {
 }
 
 // MemberSource represents a source for an IAM identity
-// +kubebuilder:validation:XValidation:rule="(has(self.bigQueryConnectionConnectionRef) ? 1 : 0) + (has(self.logSinkRef) ? 1 : 0) + (has(self.serviceAccountRef) ? 1 : 0) + (has(self.serviceIdentityRef) ? 1 : 0) + (has(self.sqlInstanceRef) ? 1 : 0) == 1",message="exactly one of bigQueryConnectionConnectionRef, logSinkRef, serviceAccountRef, serviceIdentityRef, or sqlInstanceRef must be specified"
 type MemberSource struct {
 	// The IAMServiceAccount to be bound to the role.
 	ServiceAccountRef *MemberReference `json:"serviceAccountRef,omitempty"`
