@@ -20,7 +20,6 @@ import (
 	"strings"
 	"time"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -132,7 +131,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithOwner(declarative.SourceAsOwner),
 		declarative.WithObjectTransform(r.transformForClusterMode()),
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
-		declarative.WithObjectTransform(r.selectCRDs()),
+		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
@@ -558,13 +557,10 @@ func (r *Reconciler) recordEvent(cc *corev1beta1.ConfigConnector, eventtype, rea
 	r.recorder.Event(cc, eventtype, reason, message)
 }
 
-func (r *Reconciler) selectCRDs() declarative.ObjectTransform {
+func (r *Reconciler) installV1Beta1CRDsOnly() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
 		if err := r.selectCRDsByVersion(m, "v1beta1"); err != nil {
 			return fmt.Errorf("error installing v1beta1 CRDs only: error selecting CRDs by version v1beta1: %w", err)
-		}
-		if err := r.selectCRDsByAPIGroups(ctx, m); err != nil {
-			return fmt.Errorf("error selecting CRDs by API groups: %w", err)
 		}
 		return nil
 	}
@@ -590,48 +586,6 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 		}
 	}
 	m.Items = transformed
-	return nil
-}
-
-// selectCRDsByAPIGroups selects CRDs based on APIGroupInstallation CRs.
-// If no APIGroupInstallation CRs exist, all resource CRDs are selected (default behavior).
-// If any APIGroupInstallation CRs exist, only resource CRDs from the specified API groups are kept.
-func (r *Reconciler) selectCRDsByAPIGroups(ctx context.Context, m *manifest.Objects) error {
-	crList := &customizev1alpha1.APIGroupInstallationList{}
-	if err := r.client.List(ctx, crList); err != nil {
-		return fmt.Errorf("error listing APIGroupInstallation resources: %w", err)
-	}
-
-	if len(crList.Items) == 0 {
-		r.log.Info("no APIGroupInstallation resources found, selecting all resource CRDs")
-		return nil
-	}
-
-	enabledAPIGroups := make(map[string]bool)
-	for _, cr := range crList.Items {
-		enabledAPIGroups[cr.Name] = true
-	}
-
-	selectedCRDs := make([]*manifest.Object, 0, len(m.Items))
-	for _, obj := range m.Items {
-		if obj.Kind == "CustomResourceDefinition" {
-			if !isKCCCRD(obj) {
-				return fmt.Errorf("installation manifests contain non-KCC CRDs %v", obj.UnstructuredObject().GetName())
-			}
-
-			u := obj.UnstructuredObject()
-			apiGroup, found, err := unstructured.NestedString(u.Object, "spec", "group")
-			if err != nil || !found {
-				return fmt.Errorf("error getting API group from CRD %v: %w", u.GetName(), err)
-			}
-			if enabledAPIGroups[apiGroup] {
-				selectedCRDs = append(selectedCRDs, obj)
-			}
-		} else {
-			selectedCRDs = append(selectedCRDs, obj)
-		}
-	}
-	m.Items = selectedCRDs
 	return nil
 }
 
@@ -994,12 +948,4 @@ func checkForDuplicateWebhooks(webhooks []customizev1beta1.WebhookCustomizationS
 		return fmt.Errorf("the following webhooks are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
 	}
 	return nil
-}
-
-func extractAPIGroupFromCRDName(crdName string) string {
-	parts := strings.SplitN(crdName, ".", 2)
-	if len(parts) != 2 {
-		return ""
-	}
-	return parts[1]
 }

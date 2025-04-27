@@ -133,7 +133,6 @@ rules:
     - mutatingwebhookconfigurationcustomizations
     - namespacedcontrollerreconcilers
     - controllerreconcilers
-    - apigroupinstallations
   verbs:
     - create
     - delete
@@ -151,7 +150,6 @@ rules:
     - mutatingwebhookconfigurationcustomizations/status
     - namespacedcontrollerreconcilers/status
     - controllerreconcilers/status
-    - apigroupinstallations/status
   verbs:
     - get
     - patch
