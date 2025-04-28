@@ -44,15 +44,10 @@ func removeNamespacedComponents(ctx context.Context, c client.Client, objects []
 	return nil
 }
 
-func transformNamespacedComponentTemplates(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object) ([]*manifest.Object, error) {
-	cc, err := controllers.GetConfigConnector(ctx, c, controllers.ValidConfigConnectorNamespacedName)
-	if err != nil {
-		return nil, err
-	}
+func transformNamespacedComponentTemplates(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object, managerNamespaceSuffix string) ([]*manifest.Object, error) {
 	managerNamespace := k8s.CNRMSystemNamespace
-	managerNamespaceSuffix, namespacedManager := cc.Labels[k8s.ManagerNamespaceSuffixLabel]
-	if namespacedManager {
-		managerNamespace = replaceNamespaceSuffix(ccc.Namespace, managerNamespaceSuffix)
+	if managerNamespaceSuffix != "" {
+		managerNamespace = controllers.ReplaceNamespaceSuffix(ccc.Namespace, managerNamespaceSuffix)
 	}
 	transformedObjs := make([]*manifest.Object, 0, len(namespacedTemplates))
 	for _, obj := range namespacedTemplates {
@@ -70,7 +65,7 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 			if err != nil {
 				return nil, err
 			}
-			if namespacedManager {
+			if managerNamespace != k8s.CNRMSystemNamespace {
 				// When controller manager runs in a separate namespace
 				// (not in cnrm-system), it needs finalizer, so when manager
 				// namespace is deleted the manager stays running until
@@ -91,7 +86,7 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
 			}
 		}
-		if namespacedManager {
+		if managerNamespace != k8s.CNRMSystemNamespace {
 			if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
 				processed, err = handleControllerManagerServiceAccount(processed, managerNamespace)
 				if err != nil {
@@ -353,22 +348,4 @@ func replaceNamespacePattern(obj *manifest.Object, ns string) (*manifest.Object,
 		return nil, errors.Wrap(err, fmt.Sprintf("error unmarshalling object %v", obj.UnstructuredObject()))
 	}
 	return newObj, nil
-}
-
-const delimiter = "-"
-
-func replaceNamespaceSuffix(namespace, suffix string) string {
-	if suffix == "" {
-		return namespace
-	}
-
-	lastDelimiterIndex := strings.LastIndexAny(namespace, delimiter)
-
-	// If no delimiter is found, there's no suffix to replace.
-	// Return the original string.
-	if lastDelimiterIndex == -1 {
-		return namespace
-	}
-
-	return namespace[0:lastDelimiterIndex+1] + suffix
 }

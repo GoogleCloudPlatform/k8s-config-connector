@@ -309,6 +309,20 @@ spec:
     image: test-image
 `
 
+var NamespacedControllerManagerPod = `apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager-12345-0
+  namespace: t1234-tenant0-supervisor
+spec:
+  containers:
+  - name: manager
+    image: test-image
+`
+
 func GetSharedComponentsManifest() []string {
 	res := make([]string, 0)
 	res = append(res, FooCRD, SystemNs)

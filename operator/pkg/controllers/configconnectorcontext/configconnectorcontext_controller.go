@@ -67,13 +67,14 @@ type ReconcilerOptions struct {
 // Reconciler also watches "NamespacedControllerResource" kind and apply
 // customizations specified in "NamespacedControllerResource" CRs to per-namespace KCC components.
 type Reconciler struct {
-	reconciler           *declarative.Reconciler
-	client               client.Client
-	recorder             record.EventRecorder
-	labelMaker           declarative.LabelMaker
-	log                  logr.Logger
-	customizationWatcher *controllers.CustomizationWatcher
-	jitterGen            jitter.Generator
+	reconciler             *declarative.Reconciler
+	client                 client.Client
+	recorder               record.EventRecorder
+	labelMaker             declarative.LabelMaker
+	log                    logr.Logger
+	customizationWatcher   *controllers.CustomizationWatcher
+	jitterGen              jitter.Generator
+	managerNamespaceSuffix string
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
@@ -231,7 +232,7 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 		}
-		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
+		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, r.managerNamespaceSuffix)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
 		}
@@ -281,6 +282,12 @@ func (r *Reconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 		}
 		if cc.GetMode() == k8s.ClusterMode {
 			return r.handleCCContextLifecycleForClusterMode(ctx, ccc, m)
+		}
+		managerNamespaceSuffix, namespacedManager := cc.Labels[k8s.ManagerNamespaceSuffixLabel]
+		if namespacedManager {
+			r.managerNamespaceSuffix = managerNamespaceSuffix
+		} else {
+			r.managerNamespaceSuffix = ""
 		}
 		return r.handleCCContextLifecycleForNamespacedMode(ctx, ccc, m)
 	}
