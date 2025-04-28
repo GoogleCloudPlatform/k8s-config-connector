@@ -16,12 +16,12 @@
 // proto.service: google.cloud.workflows.executions.v1.Executions
 // proto.message: google.cloud.workflows.executions.v1.Execution
 
-package mockworkflowexecution
+package mockworkflows
 
 import (
 	"context"
-	"fmt"
-	"strings"
+	// "fmt"
+	// "strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -29,10 +29,15 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	// "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/executions/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+type WorkflowExecutionsV1 struct {
+	*MockService
+	pb.UnimplementedExecutionsServer
+}
 
 func (s *WorkflowExecutionsV1) CreateExecution(ctx context.Context, req *pb.CreateExecutionRequest) (*pb.Execution, error) {
 	fqn := req.GetParent() + "/executions/123456789"
@@ -103,37 +108,4 @@ func (s *WorkflowExecutionsV1) CancelExecution(ctx context.Context, req *pb.Canc
 		return nil, err
 	}
 	return obj, nil
-}
-
-type executionName struct {
-	Project   *projects.ProjectData
-	Location  string
-	Workflow  string
-	Execution string
-}
-
-func (n *executionName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/workflows/%s/executions/%s", n.Project.ID, n.Location, n.Workflow, n.Execution)
-}
-
-func (s *MockService) parseExecutionName(name string) (*executionName, error) {
-	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workflows" && tokens[6] == "executions" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		name := &executionName{
-			Project:   project,
-			Location:  tokens[3],
-			Workflow:  tokens[5],
-			Execution: tokens[7],
-		}
-
-		return name, nil
-	}
-
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }

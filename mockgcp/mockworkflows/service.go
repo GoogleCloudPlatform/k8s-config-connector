@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/v1"
+	executionspb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/executions/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -41,11 +42,7 @@ type MockService struct {
 	operations *operations.Operations
 
 	v1 *WorkflowsV1
-}
-
-type WorkflowsV1 struct {
-	*MockService
-	pb.UnimplementedWorkflowsServer
+	executionsV1 *WorkflowExecutionsV1
 }
 
 // New creates a MockService.
@@ -56,20 +53,23 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &WorkflowsV1{MockService: s}
+	s.executionsV1 = &WorkflowExecutionsV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"workflows.googleapis.com"}
+	return []string{"workflows.googleapis.com", "workflowexecutions.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterWorkflowsServer(grpcServer, s.v1)
+	executionspb.RegisterExecutionsServer(grpcServer, s.executionsV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterWorkflowsHandler,
+		executionspb.RegisterExecutionsHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {

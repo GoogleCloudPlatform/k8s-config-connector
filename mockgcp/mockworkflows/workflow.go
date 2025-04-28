@@ -21,7 +21,7 @@ package mockworkflows
 import (
 	"context"
 	"fmt"
-	"strings"
+	// "strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -30,10 +30,15 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	// "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/v1"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
+
+type WorkflowsV1 struct {
+	*MockService
+	pb.UnimplementedWorkflowsServer
+}
 
 func (s *WorkflowsV1) GetWorkflow(ctx context.Context, req *pb.GetWorkflowRequest) (*pb.Workflow, error) {
 	name, err := s.parseWorkflowName(req.Name)
@@ -191,32 +196,4 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 		lroMetadata.EndTime = timestamppb.Now()
 		return updated, nil
 	})
-}
-
-type workflowName struct {
-	Project  *projects.ProjectData
-	Location string
-	Workflow string
-}
-
-func (n *workflowName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/workflows/%s", n.Project.ID, n.Location, n.Workflow)
-}
-
-func (s *MockService) parseWorkflowName(name string) (*workflowName, error) {
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workflows" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
-		if err != nil {
-			return nil, err
-		}
-
-		n := &workflowName{
-			Project:  project,
-			Location: tokens[3],
-			Workflow: tokens[5],
-		}
-		return n, nil
-	}
-	return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
 }
