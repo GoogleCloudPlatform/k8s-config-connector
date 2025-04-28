@@ -5308,7 +5308,7 @@ branches:
       command: gcloud bigtable tables
       group: bigtable
       resource: bigtable
-      controller: Unknown
+      controller: terraform-v1beta1
       skip: false
       kind: BigtableTable
       package: google.bigtable.admin.v2
