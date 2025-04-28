@@ -34,12 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-type workflowExecutionService struct {
-	*MockService
-	pb.UnimplementedExecutionsServer
-}
-
-func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *pb.CreateExecutionRequest) (*pb.Execution, error) {
+func (s *WorkflowExecutionsV1) CreateExecution(ctx context.Context, req *pb.CreateExecutionRequest) (*pb.Execution, error) {
 	fqn := req.GetParent() + "/executions/123456789"
 	now := time.Now()
 	obj := proto.Clone(req.GetExecution()).(*pb.Execution)
@@ -57,7 +52,7 @@ func (s *workflowExecutionService) CreateExecution(ctx context.Context, req *pb.
 	return obj, nil
 }
 
-func (s *workflowExecutionService) GetExecution(ctx context.Context, req *pb.GetExecutionRequest) (*pb.Execution, error) {
+func (s *WorkflowExecutionsV1) GetExecution(ctx context.Context, req *pb.GetExecutionRequest) (*pb.Execution, error) {
 	name, err := s.parseExecutionName(req.GetName())
 	if err != nil {
 		return nil, err
@@ -76,7 +71,7 @@ func (s *workflowExecutionService) GetExecution(ctx context.Context, req *pb.Get
 	return obj, nil
 }
 
-func (s *workflowExecutionService) ListExecutions(ctx context.Context, req *pb.ListExecutionsRequest) (*pb.ListExecutionsResponse, error) {
+func (s *WorkflowExecutionsV1) ListExecutions(ctx context.Context, req *pb.ListExecutionsRequest) (*pb.ListExecutionsResponse, error) {
 	findPrefix := req.GetParent()
 
 	response := &pb.ListExecutionsResponse{}
@@ -92,7 +87,7 @@ func (s *workflowExecutionService) ListExecutions(ctx context.Context, req *pb.L
 	return response, nil
 }
 
-func (s *workflowExecutionService) CancelExecution(ctx context.Context, req *pb.CancelExecutionRequest) (*pb.Execution, error) {
+func (s *WorkflowExecutionsV1) CancelExecution(ctx context.Context, req *pb.CancelExecutionRequest) (*pb.Execution, error) {
 	name, err := s.parseExecutionName(req.Name)
 	if err != nil {
 		return nil, err
