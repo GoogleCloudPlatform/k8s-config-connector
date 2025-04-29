@@ -223,7 +223,7 @@ oneOf:
   - external
 `
 
-const headlessIAMRuleRefRuleWithOnlylKind = `
+const resourceRefRuleWithOnlyKind = `
 oneOf:
   - not:
       required:
@@ -256,37 +256,60 @@ func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps)
 		return nil
 	}
 
-	fields := sets.New[string]()
-	for k := range props.Properties {
-		fields.Insert(k)
-	}
-	signature := strings.Join(sets.List(fields), ",")
-
 	var ruleYAML string
-	if signature == "apiVersion,external,kind,name,namespace" {
-		// hack for IAMPolicy.spec.resourceRef for backwards compat
-		if fieldPath == ".spec.resourceRef" {
-			ruleYAML = headlessIAMRuleRefRuleWithOnlylKind
-		} else {
-			ruleYAML = refRuleWithKind
-		}
-	} else if signature == "external,kind,name,namespace" {
-		ruleYAML = refRuleWithKind
-		// kind is optional for projectRef (and maybe in future other well-known ref types)
-		// fieldPath is the best mechanism we have today (?)
-		if fieldPath == ".spec.projectRef" {
-			ruleYAML = refRuleWithOptionalKind
-		}
-	} else if signature == "external,name,namespace" {
-		ruleYAML = refRuleWithoutKind
+	if fieldPath == ".spec.bindings[].members[]" {
+		ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+	} else if fieldPath == ".spec.bindings[].members[].memberFrom" {
+		ruleYAML = `
+oneOf:
+  - required:
+      - bigQueryConnectionConnectionRef
+  - required:
+      - logSinkRef
+  - required:
+      - serviceAccountRef
+  - required:
+      - serviceIdentityRef
+  - required:
+      - sqlInstanceRef
+`
 	} else {
-		if strings.HasPrefix(signature, "external,") {
-			klog.Warningf("unknown signature %q", signature)
+		fields := sets.New[string]()
+		for k := range props.Properties {
+			fields.Insert(k)
 		}
-		if strings.HasPrefix(signature, "apiVersion,external,") {
-			klog.Warningf("unknown signature %q", signature)
+		signature := strings.Join(sets.List(fields), ",")
+		if signature == "apiVersion,external,kind,name,namespace" {
+			// hack for IAMPolicy.spec.resourceRef for backwards compat
+			if fieldPath == ".spec.resourceRef" {
+				ruleYAML = resourceRefRuleWithOnlyKind
+			} else {
+				ruleYAML = refRuleWithKind
+			}
+		} else if signature == "external,kind,name,namespace" {
+			ruleYAML = refRuleWithKind
+			// kind is optional for projectRef (and maybe in future other well-known ref types)
+			// fieldPath is the best mechanism we have today (?)
+			if fieldPath == ".spec.projectRef" {
+				ruleYAML = refRuleWithOptionalKind
+			}
+		} else if signature == "external,name,namespace" {
+			ruleYAML = refRuleWithoutKind
+		} else {
+			if strings.HasPrefix(signature, "external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			if strings.HasPrefix(signature, "apiVersion,external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			return nil
 		}
-		return nil
 	}
 
 	rule := &apiextensions.JSONSchemaProps{}
