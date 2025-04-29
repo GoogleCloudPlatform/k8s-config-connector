@@ -1017,6 +1017,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "recaptchaenterprise.cnrm.cloud.google.com", Kind: "ReCAPTCHAEnterpriseFirewallPolicy"}:
 
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechCustomClass"}:
+			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechPhraseSet"}:
 
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
