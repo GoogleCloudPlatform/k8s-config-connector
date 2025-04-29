@@ -31,4 +31,5 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
+  name: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
   observedGeneration: 2

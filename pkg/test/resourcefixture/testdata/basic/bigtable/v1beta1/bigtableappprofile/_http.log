@@ -6,17 +6,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 OK
 
-{
-  "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    }
-  ]
-}
+{}
 
 ---
 
@@ -152,13 +142,6 @@ OK
   "instances": [
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
@@ -212,13 +195,6 @@ OK
 
 {
   "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
@@ -354,28 +330,11 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-west1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-west1-a/operations/${operationID}"
-}
-
-OK
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-west1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
     "description": "Updated description.",
@@ -465,13 +424,6 @@ OK
 
 {
   "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "data-boost-tf-test",
-      "name": "projects/${projectId}/instances/derekyau-tf-instance",
-      "state": "READY",
-      "type": "PRODUCTION"
-    },
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",

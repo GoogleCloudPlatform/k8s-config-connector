@@ -109,19 +109,19 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 		switch path {
 		case "description":
 			updated.Description = req.GetAppProfile().GetDescription()
-		case "multi_cluster_routing_use_any":
+		case "multiClusterRoutingUseAny", "multi_cluster_routing_use_any":
 			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
 			}
-		case "multi_cluster_routing_use_any.cluster_ids":
+		case "multiClusterRoutingUseAny.clusterIds", "multi_cluster_routing_use_any.cluster_ids":
 			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
 			}
-		case "single_cluster_routing":
+		case "singleClusterRouting", "single_cluster_routing":
 			updated.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{
 				SingleClusterRouting: req.GetAppProfile().GetSingleClusterRouting(),
 			}
-		case "single_cluster_routing.cluster_id":
+		case "singleClusterRouting.clusterId", "single_cluster_routing.cluster_id":
 			isAsync = true
 			if updated.GetSingleClusterRouting() == nil {
 				updated.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{
@@ -129,7 +129,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 				}
 			}
 			updated.GetSingleClusterRouting().ClusterId = req.GetAppProfile().GetSingleClusterRouting().GetClusterId()
-		case "standard_isolation":
+		case "standardIsolation", "standard_isolation":
 			updated.Isolation = &pb.AppProfile_StandardIsolation_{
 				StandardIsolation: req.GetAppProfile().GetStandardIsolation(),
 			}
@@ -149,7 +149,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	// Don't return isolation in LRO, unless we updated standardIsolation
 	lroRet := ProtoClone(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
-	if !updatePaths.Has("standard_isolation") {
+	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") {
 		lroRet.Isolation = nil
 	}
 
@@ -158,7 +158,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 			return lroRet, nil
 		})
 	} else {
-		return s.operations.DoneLRO(ctx, prefix, metadata, nil)
+		return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
 	}
 }
 

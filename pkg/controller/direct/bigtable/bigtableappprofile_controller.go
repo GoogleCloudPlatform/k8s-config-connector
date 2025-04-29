@@ -185,6 +185,7 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 	// 	return mapCtx.Err()
 	// }
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.Name = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -233,6 +234,7 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 
 	status := &krm.BigtableAppProfileStatus{}
+	status.Name = direct.LazyPtr(a.id.String())
 	// TODO: Add ObservedState
 	// status.ObservedState = AppProfileObservedState_FromProto(mapCtx, updated)
 	// if mapCtx.Err() != nil {
