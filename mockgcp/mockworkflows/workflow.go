@@ -21,6 +21,7 @@ package mockworkflows
 import (
 	"context"
 	"fmt"
+
 	// "strings"
 	"time"
 
@@ -31,7 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	// "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/v1"
+	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
