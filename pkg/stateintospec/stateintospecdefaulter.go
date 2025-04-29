@@ -55,11 +55,18 @@ func NewStateIntoSpecDefaulter(client client.Client) k8s.Defaulter {
 }
 
 func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
+	gvk := resource.GetObjectKind().GroupVersionKind()
+
 	val, found := resource.GetAnnotations()[k8s.StateIntoSpecAnnotation]
 	if found {
-		if !isAcceptedStateIntoSpecValue(val, resource.GetObjectKind().GroupVersionKind()) {
-			return false, fmt.Errorf("invalid value %q for %q annotation in kind %v", val, StateIntoSpecAnnotation, resource.GetObjectKind().GroupVersionKind().Kind)
+		if !isAcceptedStateIntoSpecValue(val, gvk) {
+			return false, fmt.Errorf("invalid value %q for %q annotation in kind %v", val, StateIntoSpecAnnotation, gvk.Kind)
 		}
+		return false, nil
+	}
+
+	// Don't write the annotation if we only support state-into-spec: absent
+	if !SupportsStateIntoSpecMerge(gvk) {
 		return false, nil
 	}
 
