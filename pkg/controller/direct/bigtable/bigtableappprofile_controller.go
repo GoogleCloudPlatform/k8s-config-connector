@@ -212,6 +212,8 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
 		}
+		// Need to ignore warnings if switching from single cluster to multi cluster routing
+		fieldsToUpdate.IgnoreWarnings = true
 	}
 	if desired.Spec.SingleClusterRouting != nil && !reflect.DeepEqual(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting()) {
 		fieldsToUpdate.RoutingConfig = &gcp.SingleClusterRoutingConfig{
