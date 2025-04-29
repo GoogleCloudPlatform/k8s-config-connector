@@ -92,7 +92,7 @@ type SecretManagerSecretSpec struct {
 	// regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
 	//
 	// No more than 64 labels can be assigned to a given resource.
-	// +kubebuilder:validation:XValidation:rule="self == null || (size(self) <= 64 && self.keys().all(k, k.matches('^[\\p{Ll}\\p{Lo}][\\p{Ll}\\p{Lo}\\p{N}_-]{0,62}$')) && self.values().all(v, v.matches('^[\\p{Ll}\\p{Lo}\\p{N}_-]{0,63}$')))"
+	// +kubebuilder:validation:XValidation:rule="self == null || (size(self) <= 64 && self.keys().all(k, k.matches('^[a-zA-Z][a-zA-Z0-9_-]{0,62}$')) && self.values().all(v, v.matches('^[a-zA-Z0-9_-]{0,63}$')))"
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/*NOTYET
