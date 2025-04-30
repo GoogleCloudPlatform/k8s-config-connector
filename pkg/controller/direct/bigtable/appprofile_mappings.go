@@ -27,8 +27,6 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	out := &krmv1beta1.BigtableAppProfileSpec{}
 
 	// MISSING: Name
-	out.ResourceID = direct.LazyPtr(in.GetName())
-
 	// MISSING: Etag
 	out.Description = direct.LazyPtr(in.GetDescription())
 	var isMultiClusterRouting = new(bool)

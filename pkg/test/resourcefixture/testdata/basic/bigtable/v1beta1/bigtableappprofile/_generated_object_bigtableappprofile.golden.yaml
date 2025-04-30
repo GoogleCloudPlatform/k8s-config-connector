@@ -3,12 +3,11 @@ kind: BigtableAppProfile
 metadata:
   annotations:
     cnrm.cloud.google.com/ignore-warnings: "true"
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: bigtableappprofile-${uniqueId}
@@ -21,6 +20,7 @@ spec:
   - cluster1-${uniqueId}
   - cluster2-${uniqueId}
   multiClusterRoutingUseAny: true
+  resourceID: bigtableappprofile-${uniqueId}
   standardIsolation:
     priority: PRIORITY_LOW
 status:
@@ -32,4 +32,4 @@ status:
     type: Ready
   externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
   name: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
