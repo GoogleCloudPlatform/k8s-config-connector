@@ -131,6 +131,10 @@ func processFile(ctx context.Context, p string) error {
 }
 
 func addRefsToCRD(crd *apiextensions.CustomResourceDefinition) error {
+	if crd.Spec.Names.Kind == "IAMAuditConfig" {
+		// no refs here
+		return nil
+	}
 	for _, v := range crd.Spec.Versions {
 		if err := addRefsToProps("", v.Schema.OpenAPIV3Schema); err != nil {
 			return err
