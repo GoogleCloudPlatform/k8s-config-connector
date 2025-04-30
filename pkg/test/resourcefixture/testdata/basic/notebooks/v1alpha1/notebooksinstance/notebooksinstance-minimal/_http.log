@@ -4,7 +4,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
   "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}' was not found
 
 {}
 
@@ -63,7 +63,7 @@ OK
       "repository": "gcr.io/deeplearning-platform-release/base-cpu"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "someone@somewhere.com",
+    "creator": "xiaoweim@google.com",
     "diskEncryption": "GMEK",
     "disks": [
       {
@@ -87,7 +87,7 @@ OK
         "licenses": [
           "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
           "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
-          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
           "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
           "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
         ],
@@ -182,7 +182,7 @@ OK
       "licenses": [
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
       ],
@@ -239,6 +239,18 @@ OK
 
 ---
 
+GRPC /google.cloud.notebooks.v1.NotebookService/UpdateInstanceMetadataItems
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
 GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 
 {
@@ -276,7 +288,7 @@ OK
       "licenses": [
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
         "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
       ],
@@ -344,7 +356,6 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",
     "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}",
@@ -367,7 +378,6 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",
