@@ -82,30 +82,6 @@ spec:
               resourceRef:
                 description: Immutable. Required. The GCP resource to set the IAMAuditConfig
                   on (e.g. project).
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                    - required:
-                      - apiVersion
-                    - required:
-                      - external
                 properties:
                   apiVersion:
                     description: APIVersion of the referenced resource
