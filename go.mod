@@ -1,8 +1,8 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.24.0
+go 1.23.0
 
-toolchain go1.24.2
+toolchain go1.23.4
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
@@ -96,8 +96,8 @@ require (
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
-	github.com/tmccombs/hcl2json v0.6.7
-	github.com/zclconf/go-cty v1.16.2
+	github.com/tmccombs/hcl2json v0.6.5
+	github.com/zclconf/go-cty v1.15.1
 	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/oauth2 v0.29.0
@@ -115,6 +115,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.27.9
 	k8s.io/apimachinery v0.27.11
 	k8s.io/client-go v0.27.11
+	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
@@ -196,7 +197,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -275,12 +276,12 @@ require (
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/mod v0.24.0 // indirect
+	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/term v0.31.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	golang.org/x/tools v0.31.0 // indirect
+	golang.org/x/tools v0.29.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
