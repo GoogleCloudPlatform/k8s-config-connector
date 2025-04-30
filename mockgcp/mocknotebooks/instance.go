@@ -172,6 +172,51 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	})
 }
 
+func (s *NotebookServiceV1) UpdateInstanceMetadataItems(ctx context.Context, req *pb.UpdateInstanceMetadataItemsRequest) (*pb.UpdateInstanceMetadataItemsResponse, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	updated := &pb.Instance{}
+	updated.Metadata = req.GetItems()
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	obj := &pb.UpdateInstanceMetadataItemsResponse{}
+	obj.Items = req.Items
+	return obj, nil
+}
+
+func (s *NotebookServiceV1) UpdateShieldedInstanceConfig(ctx context.Context, req *pb.UpdateShieldedInstanceConfigRequest) (*longrunning.Operation, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	updated := &pb.Instance{}
+	updated.ShieldedInstanceConfig = req.GetShieldedInstanceConfig()
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		Endpoint:              "UpdateShieldedInstanceConfig",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return updated, nil
+	})
+}
+
 func (s *NotebookServiceV1) setDefaultServiceAccount(obj *pb.Instance, name *instanceName) {
 	if obj.ServiceAccount == "" {
 		obj.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
