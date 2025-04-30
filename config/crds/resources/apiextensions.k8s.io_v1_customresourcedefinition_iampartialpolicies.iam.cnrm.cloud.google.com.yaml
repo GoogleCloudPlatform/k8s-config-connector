@@ -17,8 +17,8 @@ spec:
     listKind: IAMPartialPolicyList
     plural: iampartialpolicies
     shortNames:
-    - iampartialpolicy
-    - iampartialpolicies
+    - gcpiampartialpolicy
+    - gcpiampartialpolicies
     singular: iampartialpolicy
   preserveUnknownFields: false
   scope: Namespaced
