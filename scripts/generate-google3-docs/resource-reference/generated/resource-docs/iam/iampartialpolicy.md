@@ -64,7 +64,7 @@ Note: Updating <code>spec.resourceRef</code> is not allowed.
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>iampartialpolicy<br>iampartialpolicies<br>iampartialpolicy</td>
+<td>gcpiampartialpolicy<br>gcpiampartialpolicies<br>iampartialpolicy</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>

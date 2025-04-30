@@ -110,7 +110,7 @@ type IAMPartialPolicyStatus struct {
 // +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime"
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
-// +kubebuilder:resource:categories=gcp,shortName=iampartialpolicy;iampartialpolicies
+// +kubebuilder:resource:categories=gcp,shortName=gcpiampartialpolicy;gcpiampartialpolicies
 // +k8s:openapi-gen=true
 type IAMPartialPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
