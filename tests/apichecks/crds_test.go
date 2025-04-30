@@ -432,6 +432,11 @@ func TestCRDShortNames(t *testing.T) {
 		if len(crd.Spec.Names.ShortNames) == 0 {
 			errs = append(errs, fmt.Sprintf("[shortnames] crd=%s: missing shortnames", crd.Name))
 		}
+		for _, sn := range crd.Spec.Names.ShortNames {
+			if !strings.HasPrefix(sn, "gcp") {
+				errs = append(errs, fmt.Sprintf("[shortnames] crd=%s: shortname %q does not start with gcp", crd.Name, sn))
+			}
+		}
 	}
 
 	sort.Strings(errs)
