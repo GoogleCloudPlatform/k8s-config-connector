@@ -153,9 +153,7 @@ func (s *groupsServer) PatchGroup(ctx context.Context, req *pb.PatchGroupRequest
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range strings.Split(req.GetUpdateMask(), ",") {
 		switch path {
-		case "displayName": // TF controller uses displayName while direct controller uses display_name
-			obj.DisplayName = req.GetGroup().DisplayName // TF
-		case "display_name":
+		case "displayName", "display_name": // TF controller uses displayName while direct controller uses display_name
 			obj.DisplayName = req.GetGroup().DisplayName
 		case "labels":
 			obj.Labels = req.GetGroup().Labels

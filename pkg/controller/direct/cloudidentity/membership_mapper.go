@@ -153,3 +153,21 @@ func MembershipRoles_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Membershi
 	out.RestrictionEvaluations = MembershipRestrictionEvaluations_ToProto(mapCtx, in.RestrictionEvaluations)
 	return out
 }
+func EntityKey_FromProto(mapCtx *direct.MapContext, in *pb.EntityKey) *krmv1beta1.EntityKey {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.EntityKey{}
+	out.ID = direct.ValueOf(in.Id)
+	out.Namespace = in.Namespace
+	return out
+}
+func EntityKey_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EntityKey) *pb.EntityKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntityKey{}
+	out.Id = direct.LazyPtr(in.ID)
+	out.Namespace = in.Namespace
+	return out
+}

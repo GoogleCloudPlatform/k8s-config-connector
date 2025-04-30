@@ -17,90 +17,90 @@ package cloudidentity
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	api "google.golang.org/api/cloudidentity/v1beta1"
 )
 
-func CloudIdentityGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.CloudIdentityGroupObservedState {
+func CloudIdentityGroupObservedState_FromAPI(mapCtx *direct.MapContext, in *api.Group) *krm.CloudIdentityGroupObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.CloudIdentityGroupObservedState{}
-	out.AdditionalGroupKeys = direct.Slice_FromProto(mapCtx, in.AdditionalGroupKeys, EntityKey_FromProto)
+	out.AdditionalGroupKeys = direct.Slice_FromProto(mapCtx, in.AdditionalGroupKeys, EntityKey_FromAPI)
 	return out
 }
-func CloudIdentityGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupObservedState) *pb.Group {
+func CloudIdentityGroupObservedState_ToAPI(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupObservedState) *api.Group {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Group{}
-	out.AdditionalGroupKeys = direct.Slice_ToProto(mapCtx, in.AdditionalGroupKeys, EntityKey_ToProto)
+	out := &api.Group{}
+	out.AdditionalGroupKeys = direct.Slice_ToProto(mapCtx, in.AdditionalGroupKeys, EntityKey_ToAPI)
 	return out
 }
-func CloudIdentityGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.CloudIdentityGroupSpec {
+func CloudIdentityGroupSpec_FromAPI(mapCtx *direct.MapContext, in *api.Group) *krm.CloudIdentityGroupSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.CloudIdentityGroupSpec{}
-	out.Description = in.Description
-	out.DisplayName = in.DisplayName
-	out.GroupKey = EntityKey_FromProto(mapCtx, in.GetGroupKey())
+	out.Description = direct.LazyPtr(in.Description)
+	out.DisplayName = direct.LazyPtr(in.DisplayName)
+	out.GroupKey = EntityKey_FromAPI(mapCtx, in.GroupKey)
 	out.Labels = in.Labels
-	out.Parent = in.Parent
+	out.Parent = direct.LazyPtr(in.Parent)
 	return out
 }
-func CloudIdentityGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupSpec) *pb.Group {
+func CloudIdentityGroupSpec_ToAPI(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupSpec) *api.Group {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Group{}
-	out.Description = in.Description
-	out.DisplayName = in.DisplayName
-	out.GroupKey = EntityKey_ToProto(mapCtx, in.GroupKey)
+	out := &api.Group{}
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.GroupKey = EntityKey_ToAPI(mapCtx, in.GroupKey)
 	out.Labels = in.Labels
-	out.Parent = in.Parent
+	out.Parent = direct.ValueOf(in.Parent)
 	return out
 }
-func CloudIdentityGroupStatus_FromProto(mapCtx *direct.MapContext, in *pb.Group) *krm.CloudIdentityGroupStatus {
+func CloudIdentityGroupStatus_FromAPI(mapCtx *direct.MapContext, in *api.Group) *krm.CloudIdentityGroupStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.CloudIdentityGroupStatus{}
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.Name = in.Name
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.ObservedState = CloudIdentityGroupObservedState_FromProto(mapCtx, in)
+	out.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.Name = direct.LazyPtr(in.Name)
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
+	out.ObservedState = CloudIdentityGroupObservedState_FromAPI(mapCtx, in)
 	return out
 }
-func CloudIdentityGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupStatus) *pb.Group {
+func CloudIdentityGroupStatus_ToAPI(mapCtx *direct.MapContext, in *krm.CloudIdentityGroupStatus) *api.Group {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Group{}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.Name = in.Name
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	observedState := CloudIdentityGroupObservedState_ToProto(mapCtx, in.ObservedState)
+	out := &api.Group{}
+	out.CreateTime = direct.ValueOf(in.CreateTime)
+	out.Name = direct.ValueOf(in.Name)
+	out.UpdateTime = direct.ValueOf(in.UpdateTime)
+	observedState := CloudIdentityGroupObservedState_ToAPI(mapCtx, in.ObservedState)
 	if observedState != nil {
 		out.AdditionalGroupKeys = observedState.AdditionalGroupKeys
 	}
 	return out
 }
-func EntityKey_FromProto(mapCtx *direct.MapContext, in *pb.EntityKey) *krm.EntityKey {
+func EntityKey_FromAPI(mapCtx *direct.MapContext, in *api.EntityKey) *krm.EntityKey {
 	if in == nil {
 		return nil
 	}
 	out := &krm.EntityKey{}
-	out.ID = direct.ValueOf(in.Id)
-	out.Namespace = in.Namespace
+	out.ID = in.Id
+	out.Namespace = direct.LazyPtr(in.Namespace)
 	return out
 }
-func EntityKey_ToProto(mapCtx *direct.MapContext, in *krm.EntityKey) *pb.EntityKey {
+func EntityKey_ToAPI(mapCtx *direct.MapContext, in *krm.EntityKey) *api.EntityKey {
 	if in == nil {
 		return nil
 	}
-	out := &pb.EntityKey{}
-	out.Id = direct.LazyPtr(in.ID)
-	out.Namespace = in.Namespace
+	out := &api.EntityKey{}
+	out.Id = in.ID
+	out.Namespace = direct.ValueOf(in.Namespace)
 	return out
 }

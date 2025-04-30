@@ -23,12 +23,11 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
-	cloudidentitygrouppb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	gcp "google.golang.org/api/cloudidentity/v1beta1"
+	api "google.golang.org/api/cloudidentity/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -70,7 +69,7 @@ func (m *modelGroup) AdapterForObject(ctx context.Context, reader client.Reader,
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewService(ctx, opts...)
+	gcpClient, err := api.NewService(ctx, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,9 +87,9 @@ func (m *modelGroup) AdapterForURL(ctx context.Context, url string) (directbase.
 
 type GroupAdapter struct {
 	id        *krm.GroupIdentity
-	gcpClient *gcp.Service
+	gcpClient *api.Service
 	desired   *krm.CloudIdentityGroup
-	actual    *cloudidentitygrouppb.Group
+	actual    *api.Group
 }
 
 var _ directbase.Adapter = &GroupAdapter{}
@@ -115,7 +114,7 @@ func (a *GroupAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting Group %q: %w", a.id, err)
 	}
 
-	a.actual = convertAPIToProto(resource)
+	a.actual = resource
 	return true, nil
 }
 
@@ -126,15 +125,13 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := CloudIdentityGroupSpec_ToProto(mapCtx, &desired.Spec)
+	resource := CloudIdentityGroupSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	req := convertProtoToAPI(resource)
-
 	initialGroupConfig := direct.ValueOf(desired.Spec.InitialGroupConfig)
-	op, err := a.gcpClient.Groups.Create(req).InitialGroupConfig(initialGroupConfig).Context(ctx).Do()
+	op, err := a.gcpClient.Groups.Create(resource).InitialGroupConfig(initialGroupConfig).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating Group %s: %w", a.id, err)
 	}
@@ -149,16 +146,10 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 		return fmt.Errorf("getting created Group %q: %w", a.id, err)
 	}
 
-	createdPB := convertAPIToProto(created)
-
 	log.V(2).Info("successfully created Group", "name", a.id)
 
-	status := &krm.CloudIdentityGroupStatus{
-		Name:       direct.LazyPtr(created.Name),
-		CreateTime: direct.LazyPtr(created.CreateTime),
-		UpdateTime: direct.LazyPtr(created.UpdateTime),
-	}
-	status.ObservedState = CloudIdentityGroupObservedState_FromProto(mapCtx, createdPB)
+	status := &krm.CloudIdentityGroupStatus{}
+	status = CloudIdentityGroupStatus_FromAPI(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -175,7 +166,7 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := CloudIdentityGroupSpec_ToProto(mapCtx, &desired.Spec)
+	resource := CloudIdentityGroupSpec_ToAPI(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -194,7 +185,7 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.CloudIdentityGroupStatus{}
-		status.ObservedState = CloudIdentityGroupObservedState_FromProto(mapCtx, a.actual)
+		status = CloudIdentityGroupStatus_FromAPI(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -205,9 +196,7 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	sort.Strings(paths)
 	updateMask := strings.Join(paths, ",")
 
-	req := convertProtoToAPI(resource)
-
-	_, err := a.gcpClient.Groups.Patch(a.id.String(), req).UpdateMask(updateMask).Context(ctx).Do()
+	_, err := a.gcpClient.Groups.Patch(a.id.String(), resource).UpdateMask(updateMask).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("updating Group %s: %w", a.id, err)
 	}
@@ -216,15 +205,10 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	if err != nil {
 		return fmt.Errorf("getting updated Group %q: %w", a.id, err)
 	}
-	updatedPB := convertAPIToProto(updated)
 	log.V(2).Info("successfully updated Group", "name", a.id)
 
-	status := &krm.CloudIdentityGroupStatus{
-		Name:       direct.LazyPtr(updated.Name),
-		CreateTime: direct.LazyPtr(updated.CreateTime),
-		UpdateTime: direct.LazyPtr(updated.UpdateTime),
-	}
-	status.ObservedState = CloudIdentityGroupObservedState_FromProto(mapCtx, updatedPB)
+	status := &krm.CloudIdentityGroupStatus{}
+	status = CloudIdentityGroupStatus_FromAPI(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -240,7 +224,7 @@ func (a *GroupAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	obj := &krm.CloudIdentityGroup{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(CloudIdentityGroupSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(CloudIdentityGroupSpec_FromAPI(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -249,7 +233,7 @@ func (a *GroupAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 		return nil, err
 	}
 
-	u.SetName(a.actual.GetName())
+	u.SetName(a.actual.Name)
 	u.SetGroupVersionKind(krm.CloudIdentityGroupGVK)
 
 	u.Object = uObj
