@@ -176,7 +176,6 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
 	}
 	var updated *notebookspb.Instance
 	if paths.Has("metadata") {
@@ -209,6 +208,11 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	status := &krm.NotebookInstanceStatus{}
 	if updated != nil {
 		status.ObservedState = NotebookInstanceObservedState_FromProto(mapCtx, updated)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+	} else {
+		status.ObservedState = NotebookInstanceObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
