@@ -53,21 +53,25 @@ type WorkflowsExecutionSpec struct {
 	// Required. Name of the workflow for which an execution should be created.
 	// Format: projects/{project}/locations/{location}/workflows/{workflow}.
 	// The latest revision of the workflow will be used.
-	*WorkflowExecutionParent `json:",inline"`
+	// +required
+	Parent `json:",inline"`
 
 	// The WorkflowsExecution name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type WorkflowExecutionParent struct {
-	// Required. The location of the application.
-	Location string `json:"location,omitempty"`
+type Parent struct {
+	// location of the application.
+	// +required
+	Location string `json:"location"`
 
-	// Required. The host project of the application.
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+	// host project of the application.
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
 
-	// Required.
-	WorkflowRef *workflow.WorkflowsWorkflowRef `json:"workflowRef,omitempty"`
+	// Workflow used for execution.
+	// +required
+	WorkflowRef *workflow.WorkflowsWorkflowRef `json:"workflowRef"`
 }
 
 // WorkflowsExecutionStatus defines the config connector machine state of WorkflowsExecution
@@ -89,6 +93,11 @@ type WorkflowsExecutionStatus struct {
 // WorkflowsExecutionObservedState is the state of the WorkflowsExecution resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.workflows.executions.v1.Execution
 type WorkflowsExecutionObservedState struct {
+
+	// Output only. The resource name of the execution.
+	// Format:
+	// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+	Name string `json:"name,omitempty"`
 
 	// Output only. Marks the beginning of execution.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.start_time

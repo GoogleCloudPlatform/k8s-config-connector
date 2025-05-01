@@ -43,6 +43,7 @@ type Parent struct {
 // WorkflowsWorkflowSpec defines the desired state of Workflow
 // +kcc:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
+	// +required
 	Parent `json:",inline"`
 
 	// Description of the workflow provided by the user.
@@ -88,6 +89,8 @@ type WorkflowsWorkflowSpec struct {
 	// “WORKFLOWS".
 	// +optional
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
+
+	// ExecutionHistoryLevel not included in googleapis for now
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
