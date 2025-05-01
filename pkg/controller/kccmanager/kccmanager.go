@@ -33,7 +33,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 
@@ -141,7 +143,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
+	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+	containerDefaulter := webhook.NewContainerAnnotationDefaulter(mgr.GetClient(), smLoader, dclSchemaLoader, serviceMetadataLoader)
+
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
 		BillingProject:             cfg.BillingProject,
@@ -164,7 +168,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		TfLoader:     smLoader,
 		DclConfig:    dclConfig,
 		DclConverter: dclConverter,
-		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+		Defaulters: []k8s.Defaulter{
+			stateIntoSpecDefaulter,
+			containerDefaulter,
+		},
 	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.

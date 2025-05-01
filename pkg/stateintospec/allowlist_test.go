@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package k8s_test
+package stateintospec
 
 import (
 	"fmt"
@@ -57,7 +57,7 @@ func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualResult := k8s.SupportsStateIntoSpecMerge(tc.gvk)
+			actualResult := SupportsStateIntoSpecMerge(tc.gvk)
 			if actualResult != tc.expectedResult {
 				t.Fatalf("got %v, want %v", actualResult, tc.expectedResult)
 			}
@@ -100,7 +100,7 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 				// (1) don't have any output-only fields, or
 				// (2) have all the output-only fields under 'status' but don't
 				//     have observedFields configured.
-				mayHaveObservedState := k8s.OutputOnlyFieldsAreUnderObservedState(gvk)
+				mayHaveObservedState := OutputOnlyFieldsAreUnderObservedState(gvk)
 
 				rcs, err := smLoader.GetResourceConfigs(gvk)
 				// Ignore not found error because there are handwritten and
