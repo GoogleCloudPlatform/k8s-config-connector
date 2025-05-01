@@ -29,7 +29,7 @@ func WorkflowsExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.WorkflowsExecutionObservedState{}
-	out.Name = direct.StringValue_FromProto(mapCtx, in.GetName())
+	// MISSING: Name
 	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
 	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
@@ -46,7 +46,7 @@ func WorkflowsExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.Execution{}
-	out.Name = direct.StringValue_FromProto(mapCtx, in.GetName())
+	// MISSING: Name
 	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
 	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
@@ -63,6 +63,7 @@ func WorkflowsExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Executio
 		return nil
 	}
 	out := &krm.WorkflowsExecutionSpec{}
+	// MISSING: Name
 	out.Argument = direct.LazyPtr(in.GetArgument())
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.Labels = in.Labels
@@ -73,8 +74,7 @@ func WorkflowsExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Workflows
 		return nil
 	}
 	out := &pb.Execution{}
-	// in.Parent
-	// TODO Use in.Parent to get Name
+	// MISSING: Name
 	out.Argument = direct.ValueOf(in.Argument)
 	out.CallLogLevel = direct.Enum_ToProto[pb.Execution_CallLogLevel](mapCtx, in.CallLogLevel)
 	out.Labels = in.Labels
