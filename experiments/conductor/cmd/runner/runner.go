@@ -44,6 +44,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	loggingDirFlag          = "logging-dir"
 	readFileTypeFlag        = "file-type"
 	controllerFilterFlag    = "controller-filter"
+	testDirSuffixFlag       = "test-suffix"
 
 	// Command values
 	cmdDeleteGitBranch              = -5
@@ -81,6 +82,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdRunAndFixGoldenRealGCPOutput = 46
 	cmdCaptureGoldenMockOutput      = 47
 	cmdRunAndFixGoldenMockOutput    = 48
+	cmdMoveExistingTest             = 50
+	cmdCreateFullTest               = 51
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -134,6 +137,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
 	cmd.Flags().StringVarP(&opts.controllerFilter, controllerFilterFlag,
 		"", "", "Type of controller to filter for. (Eg terraform-v1beta1)")
+	cmd.Flags().StringVarP(&opts.testDirSuffix, testDirSuffixFlag,
+		"", "minimal", "Suffix of the test to generate/run/fix for each branch")
 
 	return cmd
 }
@@ -156,6 +161,7 @@ type RunnerOptions struct {
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 	processors        string // Comma-separated list of processor function names to run
 	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
+	testDirSuffix     string // Suffix for test directory
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -439,6 +445,18 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests", AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenMockOutput: // 48
 		processBranches(ctx, opts, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix mock GCP tests", VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+	case cmdMoveExistingTest: // 50
+		opts.testDirSuffix = "full"
+		processBranches(ctx, opts, branches.Branches, "Move", []BranchProcessor{
+			{Fn: moveTestToSubDir, CommitMsgTemplate: "{{kind}}: Move existing test to subdirectory"},
+		})
+	case cmdCreateFullTest: // 51
+		opts.testDirSuffix = "full"
+		processBranches(ctx, opts, branches.Branches, "Create Full Test", []BranchProcessor{
+			{Fn: moveTestToSubDir, CommitMsgTemplate: "{{kind}}: Move existing test to subdirectory"},
+			{Fn: createFullCoverageTest, CommitMsgTemplate: "{{kind}}: Create full test"},
+			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
+		})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -482,6 +500,8 @@ func printHelp() {
 	log.Println("\t46 - [Controller] Run and Fix real GCP tests for each branch")
 	log.Println("\t47 - [Controller] Capture golden logs for mock GCP tests for each branch")
 	log.Println("\t48 - [Controller] Run and Fix mock GCP tests for each branch")
+	log.Println("\t50 - [Test] Move test data to subdirectory if the test files are directly under <version>/<kind> directory for each branch")
+	log.Println("\t51 - [Test] Create a maximal test for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
