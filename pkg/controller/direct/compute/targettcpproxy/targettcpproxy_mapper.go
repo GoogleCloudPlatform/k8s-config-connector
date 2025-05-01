@@ -29,7 +29,9 @@ func ComputeTargetTCPProxySpec_FromProto(mapCtx *direct.MapContext, in *pb.Targe
 	out.ProxyBind = in.ProxyBind
 	out.ProxyHeader = in.ProxyHeader
 	out.Location = in.Region
-	out.BackendServiceRef = ComputeTargetTCPProxySpec_BackendServiceRef_FromProto(mapCtx, direct.ValueOf(in.Service))
+	if in.Service != nil {
+		out.BackendServiceRef = &krm.ComputeBackendServiceRef{External: direct.ValueOf(in.Service)}
+	}
 	return out
 }
 func ComputeTargetTCPProxySpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeTargetTCPProxySpec) *pb.TargetTcpProxy {
@@ -41,7 +43,9 @@ func ComputeTargetTCPProxySpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.ProxyBind = in.ProxyBind
 	out.ProxyHeader = in.ProxyHeader
 	out.Region = in.Location
-	out.Service = ComputeTargetTCPProxySpec_BackendServiceRef_ToProto(mapCtx, in.BackendServiceRef)
+	if in.BackendServiceRef != nil {
+		out.Service = direct.LazyPtr(in.BackendServiceRef.External)
+	}
 	return out
 }
 func ComputeTargetTCPProxyStatus_FromProto(mapCtx *direct.MapContext, in *pb.TargetTcpProxy) *krm.ComputeTargetTCPProxyStatus {
