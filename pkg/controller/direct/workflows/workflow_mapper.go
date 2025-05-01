@@ -17,7 +17,7 @@ package workflows
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
