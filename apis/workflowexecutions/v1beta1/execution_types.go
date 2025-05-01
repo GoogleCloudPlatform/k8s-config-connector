@@ -97,7 +97,7 @@ type WorkflowsExecutionObservedState struct {
 	// Output only. The resource name of the execution.
 	// Format:
 	// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	// Output only. Marks the beginning of execution.
 	// +kcc:proto:field=google.cloud.workflows.executions.v1.Execution.start_time
