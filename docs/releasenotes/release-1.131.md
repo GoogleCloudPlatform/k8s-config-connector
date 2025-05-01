@@ -1,3 +1,5 @@
+* Special shout-outs to iq@, 600lyy@, acpana@, anhdle-sso@, cheftako@, gemmahou@, jingyih@, justinsb@, maqiuyujoyce@, xiaoweim@ for their contributions to this release.
+
 ## Announcement    
 
 ## New Beta Resources (Direct Reconciler):
