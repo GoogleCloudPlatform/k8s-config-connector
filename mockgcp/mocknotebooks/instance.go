@@ -126,6 +126,7 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	}
 	obj.MachineType = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/machineTypes/n1-standard-1", name.Project.ID)
 	obj.Metadata = map[string]string{
+		"container":                  "gcr.io/deeplearning-platform-release/base-cpu",
 		"disable-swap-binaries":      "true",
 		"enable-guest-attributes":    "TRUE",
 		"notebooks-api":              "PROD",
@@ -159,7 +160,6 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
 	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
 		Target:                name.String(),
@@ -169,6 +169,51 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
+	})
+}
+
+func (s *NotebookServiceV1) UpdateInstanceMetadataItems(ctx context.Context, req *pb.UpdateInstanceMetadataItemsRequest) (*pb.UpdateInstanceMetadataItemsResponse, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	updated := &pb.Instance{}
+	updated.Metadata = req.GetItems()
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	obj := &pb.UpdateInstanceMetadataItemsResponse{}
+	obj.Items = req.Items
+	return obj, nil
+}
+
+func (s *NotebookServiceV1) UpdateShieldedInstanceConfig(ctx context.Context, req *pb.UpdateShieldedInstanceConfigRequest) (*longrunning.Operation, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	updated := &pb.Instance{}
+	updated.ShieldedInstanceConfig = req.GetShieldedInstanceConfig()
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		Endpoint:              "UpdateShieldedInstanceConfig",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return updated, nil
 	})
 }
 
