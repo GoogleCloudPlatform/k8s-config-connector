@@ -81,6 +81,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdRunAndFixGoldenRealGCPOutput = 46
 	cmdCaptureGoldenMockOutput      = 47
 	cmdRunAndFixGoldenMockOutput    = 48
+	cmdMoveExistingTest             = 50
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -440,6 +441,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, REGEX_MSG_47, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: COMMIT_MSG_47, AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenMockOutput: // 48
 		processBranches(ctx, opts, REGEX_MSG_48, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: COMMIT_MSG_48, VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+	case cmdMoveExistingTest: // 50
+		processBranches(ctx, opts, REGEX_MSG_50, branches.Branches, "Move existing test", []BranchProcessor{{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_50, AttemptsOnNoChange: 0}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -483,6 +486,7 @@ func printHelp() {
 	log.Println("\t46 - [Controller] Run and Fix real GCP tests for each branch")
 	log.Println("\t47 - [Controller] Capture golden logs for mock GCP tests for each branch")
 	log.Println("\t48 - [Controller] Run and Fix mock GCP tests for each branch")
+	log.Println("\t50 - [Test] Move test data to subdirectory if the test files are directly under <version>/<kind> directory for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
@@ -1084,6 +1088,9 @@ func determineCommandByCommit(opts *RunnerOptions, branch Branch) {
 	case REGEX_MSG_48.MatchString(message):
 		log.Printf("%s: command 48\n", branch.Name)
 		fmt.Printf("%s: command 48\n", branch.Name)
+	case REGEX_MSG_50.MatchString(message):
+		log.Printf("%s: command 50\n", branch.Name)
+		fmt.Printf("%s: command 50\n", branch.Name)
 	default:
 		log.Printf("%s: unrecognized command for message %s\n", branch.Name, message)
 		fmt.Printf("%s: unrecognized command for message %s\n", branch.Name, message)

@@ -387,6 +387,73 @@ Respond only with the YAML content, no explanations.`,
 	}, nil, nil
 }
 
+func moveTestToSubDir(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Moving test to sub directory for %s", branch.Name)
+
+	// Check if we have the required fields
+	if branch.Group == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+	}
+
+	if branch.Kind == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+	}
+
+	// Default CRD version and group
+	crdVersion := "v1alpha1"
+
+	if branch.Controller == "terraform-v1beta1" {
+		crdVersion = "v1beta1"
+		log.Printf("This is a TF-based v1beta1 resource")
+	}
+
+	// Move the existing test data to subdirectory if exists.
+	relativeParentDir := filepath.Join(
+		"pkg", "test", "resourcefixture", "testdata", "basic",
+		branch.Group, strings.ToLower(crdVersion),
+		strings.ToLower(branch.Kind),
+	)
+
+	parentDir := filepath.Join(opts.branchRepoDir, relativeParentDir)
+	createFilePath := filepath.Join(parentDir, "create.yaml")
+	_, err := os.Stat(createFilePath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, nil, nil
+		}
+		return nil, nil, fmt.Errorf("error checking whether test data %s exists: %w", createFilePath, err)
+	}
+	subDir := filepath.Join(parentDir, strings.ToLower(branch.Kind))
+	if err := os.MkdirAll(subDir, 0755); err != nil {
+		return nil, nil, fmt.Errorf("failed to create sub directory %s: %w", subDir, err)
+	}
+
+	files, err := os.ReadDir(parentDir)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error reading directory %s: %w", parentDir, err)
+	}
+	// Iterate through the files and move them to the subdirectory
+	changedPaths := make([]string, 0)
+	for _, file := range files {
+		if file.Name() == "_vcr_cassettes" || !file.IsDir() { // Check if it's a file (not a directory)
+			oldPath := filepath.Join(parentDir, file.Name())
+			newPath := filepath.Join(subDir, file.Name())
+			err := os.Rename(oldPath, newPath) // Moves the file
+			if err != nil {
+				return nil, nil, fmt.Errorf("error moving file %s: %w", oldPath, err)
+			}
+			changedPaths = append(changedPaths, newPath)
+		}
+	}
+	if len(changedPaths) > 0 {
+		changedPaths = []string{parentDir}
+	} else {
+		changedPaths = nil
+	}
+
+	return changedPaths, nil, nil
+}
+
 // updateTestHarness updates the test harness to support the new resource
 // This implements the second part of 04-create-test.sh
 func updateTestHarness(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {

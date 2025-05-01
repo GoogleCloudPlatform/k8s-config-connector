@@ -64,6 +64,7 @@ var commandMap = map[int64]string{
 	cmdRunAndFixGoldenRealGCPOutput: "runandfixgoldenrealgcpoutput",
 	cmdCaptureGoldenMockOutput:      "capturegoldenmockoutput",
 	cmdRunAndFixGoldenMockOutput:    "runandfixgoldenmockoutput",
+	cmdMoveExistingTest:             "moveexistingtest",
 }
 
 type exitBash func()
