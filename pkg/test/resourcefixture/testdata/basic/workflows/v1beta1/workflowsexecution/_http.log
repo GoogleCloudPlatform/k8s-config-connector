@@ -48,7 +48,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -128,10 +127,9 @@ OK
   "callLogLevel": "LOG_ERRORS_ONLY",
   "labels": {
     "cnrm-test": "true",
-    "env": "test",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "status": {},
@@ -155,10 +153,9 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "env": "test",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
   "result": "\"Hello initial value\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
@@ -190,10 +187,9 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "env": "test",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
   "result": "\"Hello initial value\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
@@ -225,10 +221,9 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "env": "test",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
   "result": "\"Hello initial value\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
@@ -260,10 +255,9 @@ OK
   "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
-    "env": "test",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
+  "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}/executions/${executionId}",
   "result": "\"Hello initial value\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
@@ -328,7 +322,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
