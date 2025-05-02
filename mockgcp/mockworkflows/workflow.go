@@ -73,7 +73,11 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.RevisionCreateTime = timestamppb.New(now)
-	obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
+	gsaUniqueId := "gsa1234567"
+	obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/gsa-%s@%s.iam.gserviceaccount.com", name.Project.ID, gsaUniqueId, name.Project.ID)
+	obj.AllKmsKeys = []string{ obj.CryptoKeyName }
+	obj.CryptoKeyVersion = obj.CryptoKeyName + "/cryptoKeyVersions/1"
+	obj.AllKmsKeysVersions = []string{ obj.CryptoKeyVersion }
 	obj.RevisionId = "000001-a4d" // TODO: increment
 	obj.State = pb.Workflow_ACTIVE
 	s.populateDefaultsForWorkflow(obj)
@@ -165,9 +169,12 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 				SourceContents: req.GetWorkflow().GetSourceContents(),
 			}
 		case "serviceAccount":
-			updated.ServiceAccount = req.GetWorkflow().GetServiceAccount()
+			updated.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%s", name.Project.ID, req.GetWorkflow().GetServiceAccount())
 		case "cryptoKeyName":
 			updated.CryptoKeyName = req.GetWorkflow().GetCryptoKeyName()
+			updated.AllKmsKeys = append(updated.AllKmsKeys, updated.CryptoKeyName)
+			updated.CryptoKeyVersion = updated.CryptoKeyName + "/cryptoKeyVersions/1"
+			updated.AllKmsKeysVersions = append(updated.AllKmsKeysVersions, updated.CryptoKeyVersion)
 		case "callLogLevel":
 			updated.CallLogLevel = req.GetWorkflow().GetCallLogLevel()
 		case "userEnvVars":

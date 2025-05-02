@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	// "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -45,10 +46,10 @@ func (s *WorkflowExecutionsV1) CreateExecution(ctx context.Context, req *pb.Crea
 	obj := proto.Clone(req.GetExecution()).(*pb.Execution)
 	obj.Name = fqn
 	obj.StartTime = timestamppb.New(now)
-	obj.EndTime = timestamppb.New(now.Add(2 * time.Minute))
-	obj.State = pb.Execution_SUCCEEDED
+	// EndTime not to be returned on Create
+	obj.State = pb.Execution_ACTIVE
 	obj.WorkflowRevisionId = "000001-609"
-	obj.Result = "us-central1"
+	// Result not to be returned on Create
 	obj.Status = &pb.Execution_Status{}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -71,6 +72,19 @@ func (s *WorkflowExecutionsV1) GetExecution(ctx context.Context, req *pb.GetExec
 			return nil, status.Errorf(codes.NotFound, "Execution %q not found.", fqn)
 		}
 		return nil, err
+	}
+
+	// Pretend execution finished
+	obj.Duration = durationpb.New(100 * time.Millisecond)
+	obj.Result = "\"Hello initial value\""
+	obj.State = pb.Execution_SUCCEEDED
+	obj.Status = &pb.Execution_Status{
+		CurrentSteps: []*pb.Execution_Status_Step{
+			&pb.Execution_Status_Step{
+				Routine: "main",
+				Step: "returnOutput",
+			},
+		},
 	}
 
 	return obj, nil
