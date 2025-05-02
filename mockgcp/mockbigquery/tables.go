@@ -108,8 +108,13 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 	obj.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	obj.Id = PtrTo(obj.GetTableReference().GetProjectId() + ":" + obj.GetTableReference().GetTableId())
 	obj.Kind = PtrTo("bigquery#table")
+
+	if obj.TimePartitioning != nil {
+		col := pb.PartitionedColumn{Field: obj.TimePartitioning.Field}
+		obj.PartitionDefinition = &pb.PartitioningDefinition{PartitionedColumn: []*pb.PartitionedColumn{&col}}
+	}
 	if obj.Location == nil {
-		obj.Location = PtrTo("US")
+		obj.Location = PtrTo("us-central1")
 	}
 
 	if obj.GetExternalDataConfiguration() != nil {
@@ -256,7 +261,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	updated := CloneProto(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
-
+	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())

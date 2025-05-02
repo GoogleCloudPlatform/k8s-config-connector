@@ -37,7 +37,7 @@ status:
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
   lastModifiedTime: "1970-01-01T00:00:00Z"
-  location: US
+  location: us-central1
   observedGeneration: 3
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
   type: EXTERNAL
