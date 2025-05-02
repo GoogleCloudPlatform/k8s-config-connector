@@ -24,7 +24,7 @@ spec:
   labels:
     env: "test"
     updated: "true"
-  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'"
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'\n    - returnOutput:\n        return: '${searchTerm}'"
   serviceAccountRef:
     name: gsa-${uniqueId}-updated
   kmsCryptoKeyRef:
