@@ -75,7 +75,9 @@ func (s *WorkflowExecutionsV1) GetExecution(ctx context.Context, req *pb.GetExec
 	}
 
 	// Pretend execution finished
+	now := time.Now()
 	obj.Duration = durationpb.New(100 * time.Millisecond)
+	obj.EndTime = timestamppb.New(now)
 	obj.Result = "\"Hello initial value\""
 	obj.State = pb.Execution_SUCCEEDED
 	obj.Status = &pb.Execution_Status{
