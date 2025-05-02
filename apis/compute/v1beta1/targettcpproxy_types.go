@@ -35,6 +35,7 @@ type ComputeTargetTCPProxySpec struct {
 	// +required
 	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef"`
 
+	// +kubebuilder:validation:Optional
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Description is immutable"
 	// Immutable. An optional description of this resource.
 	Description *string `json:"description,omitempty"`
@@ -43,6 +44,7 @@ type ComputeTargetTCPProxySpec struct {
 	// Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	Location *string `json:"location,omitempty"`
 
+	// +kubebuilder:validation:Optional
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProxyBind is immutable"
 	// Immutable. This field only applies when the forwarding rule that references
 	// this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.

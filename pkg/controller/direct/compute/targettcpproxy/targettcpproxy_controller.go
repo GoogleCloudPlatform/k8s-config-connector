@@ -265,23 +265,20 @@ func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase
 	tokens := strings.Split(a.id.String(), "/")
 	updated := &computepb.TargetTcpProxy{}
 
-	// Assign API output-only values
 	// todo: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4455
-	targetTCPProxy.CreationTimestamp = a.actual.CreationTimestamp
-	targetTCPProxy.Id = a.actual.Id
-	targetTCPProxy.SelfLink = a.actual.SelfLink
-	targetTCPProxy.Kind = a.actual.Kind
-	// Convert region `europe-west4` to proto region format `https://www.googleapis.com/compute/v1/projects/projectId/regions/europe-west4`
-	// Prevent diff when comparing with proto message
-	targetTCPProxy.Region = direct.LazyPtr(fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", parent))
-	targetTCPProxy.Name = direct.LazyPtr(a.id.ID())
 	paths, err := common.CompareProtoMessage(targetTCPProxy, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+	// todo: can we merge below logic into common.CompareProtoMessage?
+	var outputOnlyFields []string
+	outputOnlyFields = append(outputOnlyFields, "creation_timestamp", "id", "kind", "name", "self_link")
+	if paths.HasAny(outputOnlyFields...) {
+		paths.Delete(outputOnlyFields...)
+	}
+
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-
 		// Even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {

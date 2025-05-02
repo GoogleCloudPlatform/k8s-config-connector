@@ -74,10 +74,14 @@ If the resource proto supports field_behavior, you need to make sure
 
 ### Option 2
 
-Use CEL rule to validate field immutability in the CRD level. This field needs to be *required*. If the field is optional, you should **not** use this approach, because the CRD validation disallows assigning a previous unset field if adding the immutable CEL rule. For example, setting the optional `spec.preferredLocation` from "" to "us-central1" violates this CEL rule.
+Use CEL rule `+kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"` 
+to validate field immutability in the CRD level. This field needs to be *required*.
 
+If the field is *optional*, add another CEL rule`//+kubebuilder:validation:Optional` to make sure field must be allowed to be initially unset,
+and immutable once it has been first set.
 ```
 type PrivatePoolV1Config_NetworkConfigSpec struct {
+        // +kubebuilder:validation:Optional
         // +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
         // Immutable. The network definition that the workers are peered
         //  to. If this section is left empty, the workers will be peered to
