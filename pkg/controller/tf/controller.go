@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -53,6 +54,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
@@ -176,6 +178,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+
+	structuredreporting.ReportReconcileStart(ctx, u)
+
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -363,6 +368,29 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		r.logger.Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
 		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)
 	}
+
+	// Report diff to structured-reporting subsystem
+	{
+		report := &structuredreporting.Diff{}
+		u, err := krmResource.MarshalAsUnstructured()
+		if err != nil {
+			log := log.FromContext(ctx)
+			log.Error(err, "error reporting diff")
+		}
+		report.Object = u
+		if diff != nil {
+			for k, attr := range diff.Attributes {
+				report.Fields = append(report.Fields, structuredreporting.DiffField{
+					ID:  k,
+					Old: attr.Old,
+					New: attr.New,
+				})
+			}
+		}
+		report.IsNewObject = liveState.Empty()
+		structuredreporting.ReportDiff(ctx, report)
+	}
+
 	r.logger.Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
 	if err := r.HandleUpdating(ctx, &krmResource.Resource); err != nil {
 		return false, err

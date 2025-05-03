@@ -29,7 +29,7 @@ COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
 COPY version/ version/
-COPY config/servicemappings/ config/servicemappings/
+COPY config/ config/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY go.mod  go.mod
