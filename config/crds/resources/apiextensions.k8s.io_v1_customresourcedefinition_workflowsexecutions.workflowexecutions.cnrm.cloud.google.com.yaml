@@ -373,10 +373,10 @@ spec:
                   but are overridden by any labels associated with the execution.
                 type: object
               location:
-                description: location of the application.
+                description: Required. Location of the application.
                 type: string
               projectRef:
-                description: host project of the application.
+                description: Required. Host project of the application.
                 oneOf:
                 - not:
                     required:
@@ -412,7 +412,7 @@ spec:
                   will be used.
                 type: string
               workflowRef:
-                description: Workflow used for execution.
+                description: Required. Workflow application used for execution.
                 oneOf:
                 - not:
                     required:

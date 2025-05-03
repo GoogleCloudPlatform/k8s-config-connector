@@ -61,15 +61,15 @@ type WorkflowsExecutionSpec struct {
 }
 
 type Parent struct {
-	// location of the application.
+	// Required. Location of the application.
 	// +required
 	Location string `json:"location"`
 
-	// host project of the application.
+	// Required. Host project of the application.
 	// +required
 	ProjectRef *v1beta1.ProjectRef `json:"projectRef"`
 
-	// Workflow used for execution.
+	// Required. Workflow application used for execution.
 	// +required
 	WorkflowRef *workflow.WorkflowsWorkflowRef `json:"workflowRef"`
 }
