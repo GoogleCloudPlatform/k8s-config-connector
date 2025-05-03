@@ -125,10 +125,19 @@ spec:
 
 	timeoutAt := time.Now().Add(2 * time.Minute)
 	for {
+		// Wait for the object to be reconciled
 		if len(recorder.objects) > 0 {
-			// Object has reconciled
-			// TODO: I guess we _might_ catch the reconcileStart event but not the kubeAction/gcpAction ... so maybe we need a reconcileEnd event?
-			break
+			hasReconciled := make(map[GKNN]bool)
+			for gknn, obj := range recorder.objects {
+				for _, event := range obj.events {
+					if event.eventType == EventTypeReconcileEnd {
+						hasReconciled[gknn] = true
+					}
+				}
+			}
+			if len(hasReconciled) > 0 {
+				break
+			}
 		}
 		if time.Now().After(timeoutAt) {
 			t.Fatalf("did not see captured object in recorder")

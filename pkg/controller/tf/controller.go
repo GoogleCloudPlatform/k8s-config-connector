@@ -180,6 +180,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	}
 
 	structuredreporting.ReportReconcileStart(ctx, u)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
 
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
