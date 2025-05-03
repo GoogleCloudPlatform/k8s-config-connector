@@ -456,6 +456,7 @@ spec:
                   cannot start with “GOOGLE” or “WORKFLOWS".
                 type: object
             required:
+            - ""
             - location
             - projectRef
             - sourceContents

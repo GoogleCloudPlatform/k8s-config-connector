@@ -373,10 +373,10 @@ spec:
                   but are overridden by any labels associated with the execution.
                 type: object
               location:
-                description: Required. The location of the application.
+                description: location of the application.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: host project of the application.
                 oneOf:
                 - not:
                     required:
@@ -412,7 +412,7 @@ spec:
                   will be used.
                 type: string
               workflowRef:
-                description: Required.
+                description: Workflow used for execution.
                 oneOf:
                 - not:
                     required:
@@ -439,6 +439,11 @@ spec:
                     description: The namespace of a WorkflowsWorkflow resource.
                     type: string
                 type: object
+            required:
+            - ""
+            - location
+            - projectRef
+            - workflowRef
             type: object
           status:
             description: WorkflowsExecutionStatus defines the config connector machine
@@ -544,6 +549,10 @@ spec:
                             type: array
                         type: object
                     type: object
+                  name:
+                    description: 'Output only. The resource name of the execution.
+                      Format: projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}'
+                    type: string
                   result:
                     description: Output only. Output of the execution represented
                       as a JSON string. The value can only be present if the execution's
