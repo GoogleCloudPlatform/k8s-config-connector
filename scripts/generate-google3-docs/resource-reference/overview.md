@@ -710,6 +710,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityspoke.md">NetworkConnectivitySpoke</a></td>
 </tr>
 <tr>
+  <td><a href="/notebooks/docs/">Notebooks</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/notebooks/notebooksinstance.md">NotebooksInstance</a></td>
+</tr>
+<tr>
   <td><a href="/compute/docs/osconfig/rest/">OS Config</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/osconfig/osconfigguestpolicy.md">OSConfigGuestPolicy</a></td>
 </tr>

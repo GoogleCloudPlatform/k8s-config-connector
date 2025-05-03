@@ -499,6 +499,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/networkservices/networkservicestcproute.md
   - title: "NetworkServicesTLSRoute"
     path: /config-connector/docs/reference/resource-docs/networkservices/networkservicestlsroute.md
+- title: "Notebooks"
+  section:
+  - title: "NotebooksInstance"
+    path: "/config-connector/docs/reference/resource-docs/notebooks/notebooksinstance.md"
 - title: "Private CA"
   section:
   - title: "PrivateCACAPool"
