@@ -68,7 +68,7 @@ func TestScripts(t *testing.T) {
 
 			uniqueID := fmt.Sprintf("%x", time.Now().UnixNano())
 
-			h := NewHarness(t)
+			h := NewHarness(ctx, t)
 			h.Init()
 
 			project := h.Project
