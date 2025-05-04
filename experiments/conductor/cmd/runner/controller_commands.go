@@ -304,7 +304,7 @@ func createControllerTest(ctx context.Context, opts *RunnerOptions, branch Branc
 		"pkg", "test", "resourcefixture", "testdata", "basic",
 		branch.Group, strings.ToLower(crdVersion),
 		strings.ToLower(branch.Kind),
-		fmt.Sprintf("%s-minimal", strings.ToLower(branch.Kind)),
+		fmt.Sprintf("%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix),
 	)
 
 	fullTestDir := filepath.Join(opts.branchRepoDir, testDir)
@@ -324,7 +324,7 @@ The file should follow these requirements:
 - Add an Apache 2.0 license header with Copyright %d Google LLC
 - Use apiVersion: %s/%s 
 - Use kind: %s
-- Include metadata.name: %s-minimal-${uniqueId}
+- Include metadata.name: %s-%s-${uniqueId}
 - If the CRD has a projectRef field, use projectRef.external: ${projectId}
 - If the CRD has a location field, use location: us-central1
 - Keep the YAML simple but valid for initial creation
@@ -334,7 +334,7 @@ The file should follow these requirements:
 Use ReadFile to read the CRD file.
 Use CreateFile to write the YAML content to the %s/create.yaml file.
 Respond only with the YAML content, no explanations.`,
-		testDir, branch.Group, branch.Kind, currentYear, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind), testDir)
+		testDir, branch.Group, branch.Kind, currentYear, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind), opts.testDirSuffix, testDir)
 
 	cfg := CommandConfig{
 		Name:         "Generate Create YAML",
@@ -384,6 +384,232 @@ Respond only with the YAML content, no explanations.`,
 	return []string{
 		filepath.Join(testDir, "create.yaml"),
 		filepath.Join(testDir, "update.yaml"),
+	}, nil, nil
+}
+
+func moveTestToSubDir(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Moving test to sub directory for %s", branch.Name)
+
+	// Check if we have the required fields
+	if branch.Group == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+	}
+
+	if branch.Kind == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+	}
+
+	// Default CRD version and group
+	crdVersion := "v1alpha1"
+
+	if branch.Controller == "terraform-v1beta1" {
+		crdVersion = "v1beta1"
+		log.Printf("This is a TF-based v1beta1 resource")
+	}
+
+	// Move the existing test data to subdirectory if exists.
+	relativeParentDir := filepath.Join(
+		"pkg", "test", "resourcefixture", "testdata", "basic",
+		branch.Group, strings.ToLower(crdVersion),
+		strings.ToLower(branch.Kind),
+	)
+
+	parentDir := filepath.Join(opts.branchRepoDir, relativeParentDir)
+	createFilePath := filepath.Join(parentDir, "create.yaml")
+	_, err := os.Stat(createFilePath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil, nil, nil
+		}
+		return nil, nil, fmt.Errorf("error checking whether test data %s exists: %w", createFilePath, err)
+	}
+	subDir := filepath.Join(parentDir, strings.ToLower(branch.Kind))
+	if err := os.MkdirAll(subDir, 0755); err != nil {
+		return nil, nil, fmt.Errorf("failed to create sub directory %s: %w", subDir, err)
+	}
+
+	files, err := os.ReadDir(parentDir)
+	if err != nil {
+		return nil, nil, fmt.Errorf("error reading directory %s: %w", parentDir, err)
+	}
+	// Iterate through the files and move them to the subdirectory
+	changedPaths := make([]string, 0)
+	for _, file := range files {
+		if file.Name() == "_vcr_cassettes" || !file.IsDir() { // Check if it's a file (not a directory)
+			oldPath := filepath.Join(parentDir, file.Name())
+			newPath := filepath.Join(subDir, file.Name())
+			err := os.Rename(oldPath, newPath) // Moves the file
+			if err != nil {
+				return nil, nil, fmt.Errorf("error moving file %s: %w", oldPath, err)
+			}
+			changedPaths = append(changedPaths, newPath)
+		}
+	}
+	if len(changedPaths) > 0 {
+		changedPaths = []string{parentDir}
+	} else {
+		changedPaths = nil
+	}
+
+	return changedPaths, nil, nil
+}
+
+// createFullCoverageTest creates test files aiming for full coverage for the branch.
+func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Creating test cases for branch %s", branch.Name)
+
+	// Check if we have the required fields
+	if branch.Group == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+	}
+
+	if branch.Kind == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+	}
+
+	// Default CRD version and group
+	crdVersion := "v1alpha1"
+	crdGroup := fmt.Sprintf("%s.cnrm.cloud.google.com", branch.Group)
+
+	if branch.Controller == "terraform-v1beta1" {
+		crdVersion = "v1beta1"
+		log.Printf("This is a TF-based v1beta1 resource")
+	}
+
+	// Create the test directory
+	testDir := filepath.Join(
+		"pkg", "test", "resourcefixture", "testdata", "basic",
+		branch.Group, strings.ToLower(crdVersion),
+		strings.ToLower(branch.Kind),
+		fmt.Sprintf("%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix),
+	)
+
+	fullTestDir := filepath.Join(opts.branchRepoDir, testDir)
+	if err := os.MkdirAll(fullTestDir, 0755); err != nil {
+		return nil, nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
+	}
+
+	currentYear := time.Now().Year()
+
+	// Use codebot to generate the initial create.yaml content
+	createPrompt := fmt.Sprintf(`Generate a %s/create.yaml file for testing a Kubernetes controller.
+
+First, read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the schema.
+Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename.
+
+The file should follow these requirements:
+- Add an Apache 2.0 license header with Copyright %d Google LLC
+- Use apiVersion: %s/%s
+- Use kind: %s
+- Include metadata.name: %s-${uniqueId}
+- If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}
+- If the CRD has a "spec.location" field, use location: us-central1
+- If the CRD has any field name end with "Ref", it's a reference field. Use its subfield ".name" and set value to be <kind>-${uniqueId}. Replace <kind> with the kind of the reference field. The kind is indicated in the description of the reference field's subfield, "external" field.
+- Follow the schema defined in the CRD file
+- Use as many fields under spec as possible to try to reach full coverage
+- Do not use any field not defined in the CRD
+
+Use ReadFile to read the CRD file.
+Use CreateFile to write the YAML content to the %s/create.yaml file.
+Respond only with the YAML content, no explanations.`,
+		testDir, branch.Group, branch.Kind, currentYear, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind), testDir)
+
+	cfg := CommandConfig{
+		Name:         "Generate Create YAML",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(createPrompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	_, err := executeCommand(opts, cfg)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to generate create.yaml: %w", err)
+	}
+
+	dependenciesPrompt := fmt.Sprintf(`If %s/create.yaml contains any field name end with "Ref", generate a %s/dependencies.yaml file.
+	
+First, read the %s/create.yaml file that was just generated.
+If any field name in %s/create.yaml ends with "Ref", then read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the schema.
+Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename. If not, do nothing and leave.
+Identify all the field names that end with "Ref" in %s/create.yaml. These fields are reference fields.
+Identify the kinds of the reference fields. The kind is indicated in the description of the reference field's subfield, "external" field in the CRD file.
+For each identified kind, read the CRD files with names ending with "<kind>.yaml" under crds/ folder. 
+	
+The file should follow these requirements:
+- Add an Apache 2.0 license header with Copyright %d Google LLC
+- Create one resource for each reference field that specifies subfield "name".
+- Split each resource with "---" and a new line.
+- For each resource,
+  - The <kind> should be the kind of the reference field.
+  - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file, whose name ends with "<kind>.yaml"
+  - Use kind: <kind>
+  - Include metadata.name: <kind>-${uniqueId}
+  - If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}
+  - If the CRD has a "spec.location" field, use location: us-central1
+  - Only include required fields from the CRD
+  - Follow the schema defined in the CRD file
+  - Do not add any field not defined in the CRD file
+
+Use ReadFile to read the %s/create.yaml file.
+If there is no field name in %s/create.yaml other than "spec.projectRef" ending with "Ref", do nothing and leave.
+Use ReadFile to read all the CRD files.
+Use CreateFile to write the YAML content to the %s/dependencies.yaml file.
+Respond only with the YAML content, no explanations.`,
+		testDir, testDir, testDir, testDir, branch.Group, branch.Kind, testDir, currentYear, testDir, testDir, testDir)
+
+	cfg = CommandConfig{
+		Name:         "Generate Dependencies YAML",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(dependenciesPrompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	_, err = executeCommand(opts, cfg)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to generate dependencies.yaml: %w", err)
+	}
+
+	// Use codebot to generate the update.yaml content by modifying create.yaml
+	updatePrompt := fmt.Sprintf(`Generate an %s/update.yaml file for testing a Kubernetes controller by modifying the create.yaml file.
+	
+First, read the %s/create.yaml file that was just generated.
+Then modify all the mutable fields to create a valid update scenario.
+Read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the what fields are mutable.
+Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename.
+	
+The file should follow these requirements:
+- Keep the same license header, apiVersion, kind and metadata.name
+- Modify as many fields as possibleb in the spec section to test updates
+- Ensure the changes are valid according to the CRD schema
+- Keep other fields unchanged from create.yaml
+	
+Use ReadFile to read the %s/create.yaml file.
+Use ReadFile to read the CRD file.
+Use CreateFile to write the YAML content to the %s/update.yaml file.
+Respond only with the YAML content, no explanations.`,
+		testDir, testDir, branch.Group, branch.Kind, testDir, testDir)
+
+	cfg = CommandConfig{
+		Name:         "Generate Update YAML",
+		Cmd:          "codebot",
+		Args:         []string{"--prompt=/dev/stdin"},
+		Stdin:        strings.NewReader(updatePrompt),
+		WorkDir:      opts.branchRepoDir,
+		RetryBackoff: GenerativeCommandRetryBackoff,
+	}
+
+	_, err = executeCommand(opts, cfg)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to generate update.yaml: %w", err)
+	}
+
+	return []string{
+		testDir,
+		//filepath.Join(testDir, "update.yaml"),
 	}, nil, nil
 }
 
@@ -600,7 +826,7 @@ func runGoldenMockTests(ctx context.Context, opts *RunnerOptions, branch Branch,
 	}
 
 	// Create the fixture name based on the kind
-	fixtureArg := fmt.Sprintf("fixtures/%s-minimal", strings.ToLower(branch.Kind))
+	fixtureArg := fmt.Sprintf("fixtures/%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix)
 
 	// Run the compare-mock command
 	cfg := CommandConfig{
@@ -645,7 +871,7 @@ func fixGoldenTests(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	if err != nil {
 		log.Printf("Warning: Could not read http log file %s: %v", artifactzLogFile, err)
 	}
-	fixtureDir := filepath.Join("pkg", "test", "resourcefixture", "testdata", "basic", branch.Group, "v1alpha1", strings.ToLower(branch.Kind), strings.ToLower(branch.Kind)+"-minimal")
+	fixtureDir := filepath.Join("pkg", "test", "resourcefixture", "testdata", "basic", branch.Group, "v1alpha1", strings.ToLower(branch.Kind), fmt.Sprintf("%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix))
 	createYaml := filepath.Join(fixtureDir, "create.yaml")
 	updateYaml := filepath.Join(fixtureDir, "update.yaml")
 	normalizeFile := filepath.Join("tests", "e2e", "normalize.go")
@@ -729,7 +955,7 @@ func runGoldenRealGCPTests(ctx context.Context, opts *RunnerOptions, branch Bran
 	}
 
 	// Run the compare-mock script
-	fixtureArg := fmt.Sprintf("fixtures/%s-minimal", strings.ToLower(branch.Kind))
+	fixtureArg := fmt.Sprintf("fixtures/%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix)
 
 	env := map[string]string{
 		"E2E_GCP_TARGET":  "real",
@@ -781,7 +1007,7 @@ Once the changes are applied, use the RunShellCommand command to run the mock te
 Use the output of the command to determine if the code changes are valid.
 
 RunShellCommand:
-hack/record-gcp fixtures/${KIND_LOWER}-minimal
+hack/record-gcp fixtures/${KIND_LOWER}-${TEST_DIR_SUFFIX}
 
 Hints:
 
@@ -851,7 +1077,7 @@ func fixMockGcpForGoldenTests(ctx context.Context, opts *RunnerOptions, branch B
 	}
 
 	// pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetfeed/assetfeed-minimal/_http.log
-	fixtureDir := filepath.Join("pkg", "test", "resourcefixture", "testdata", "basic", branch.Group, "v1alpha1", strings.ToLower(branch.Kind), strings.ToLower(branch.Kind)+"-minimal")
+	fixtureDir := filepath.Join("pkg", "test", "resourcefixture", "testdata", "basic", branch.Group, "v1alpha1", strings.ToLower(branch.Kind), fmt.Sprintf("%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix))
 	logFileRelativePath := filepath.Join(fixtureDir, "_http.log")
 	logFilePath := filepath.Join(opts.branchRepoDir, logFileRelativePath)
 	// Create prompt with file contents
@@ -864,6 +1090,7 @@ func fixMockGcpForGoldenTests(ctx context.Context, opts *RunnerOptions, branch B
 	prompt = strings.ReplaceAll(prompt, "${PROTO_FILE_CONTENTS}", protoContents.String())
 	prompt = strings.ReplaceAll(prompt, "${ORIGINAL_HTTP_LOG_FILE}", logFilePath)
 	prompt = strings.ReplaceAll(prompt, "${KIND_LOWER}", strings.ToLower(branch.Kind))
+	prompt = strings.ReplaceAll(prompt, "${TEST_DIR_SUFFIX}", opts.testDirSuffix)
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Fix mockgcp for golden failures",
