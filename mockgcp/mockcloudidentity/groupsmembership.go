@@ -22,7 +22,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -90,10 +90,10 @@ func (s *groupsMembershipsServer) CreateGroupsMembership(ctx context.Context, re
 	return buildLRO(retObj)
 }
 
-// No patch in mockgcp/generated/google/apps/cloudidentity/groups/v1beta1/service_grpc.pb.go
+// No patch in mockgcp/generated/google/apps/cloudidentity/v1beta1/service_grpc.pb.go
 // func (s *groupsMembershipsServer) PatchGroupsMembership(ctx context.Context, req *pb.PatchGroupsMembershipRequest) (*longrunning.Operation, error) {}
 
-// TODO: implement these from mockgcp/generated/google/apps/cloudidentity/groups/v1beta1/service_grpc.pb.go ?
+// TODO: implement these from mockgcp/generated/google/apps/cloudidentity/v1beta1/service_grpc.pb.go ?
 // Modifies the `MembershipRole`s of a `Membership`.
 // ModifyMembershipRolesGroupsMembership(ctx context.Context, in *ModifyMembershipRolesGroupsMembershipRequest, opts ...grpc.CallOption) (*ModifyMembershipRolesResponse, error)
 // Searches direct groups of a member.
