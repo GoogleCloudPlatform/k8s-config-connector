@@ -15,7 +15,7 @@
 package contexts
 
 func init() {
-	resourceContextMap["datastreamprivateconnection"] = ResourceContext{
+	resourceContextMap["datastreamprivateconnection-minimal"] = ResourceContext{
 		ResourceKind: "DatastreamPrivateConnection",
 		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/datastream/docs/reference/rest/v1/projects.locations.privateConnections
 	}
