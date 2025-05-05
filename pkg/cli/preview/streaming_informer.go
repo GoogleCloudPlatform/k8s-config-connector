@@ -16,7 +16,6 @@ package preview
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -33,9 +32,9 @@ import (
 // streamingInformer is an informer that streams events from the Kubernetes API server.
 // It implements cache.Informer, but allows us to intercept / mutate operations.
 type streamingInformer struct {
-	streamingClient *StreamingClient
-	typeInfo        *typeInfo
-	mutex           sync.Mutex
+	kubeClient KubeClient
+	typeInfo   *typeInfo
+	mutex      sync.Mutex
 
 	eventHandlerRegistrations []*eventHandlerRegistration
 
@@ -82,10 +81,10 @@ func (o *objects) OnWatchAdd(obj Object, eventHandlerRegistrations []*eventHandl
 var _ cache.Informer = &streamingInformer{}
 
 // newStreamingInformer creates a new streaming informer.
-func newStreamingInformer(streamingClient *StreamingClient, typeInfo *typeInfo) (*streamingInformer, error) {
+func newStreamingInformer(streamingClient KubeClient, typeInfo *typeInfo) (*streamingInformer, error) {
 	s := &streamingInformer{
-		streamingClient: streamingClient,
-		typeInfo:        typeInfo,
+		kubeClient: streamingClient,
+		typeInfo:   typeInfo,
 	}
 	s.objects = objects{
 		store: make(map[types.NamespacedName]Object),
@@ -131,7 +130,7 @@ func (i *streamingInformer) runOnce(ctx context.Context) error {
 		ResourceVersion:     listMetadata.ResourceVersion,
 		AllowWatchBookmarks: true,
 	}
-	if err := i.streamingClient.Watch(ctx, i.typeInfo, watchOptions, watchListener); err != nil {
+	if err := i.kubeClient.Watch(ctx, i.typeInfo, watchOptions, watchListener); err != nil {
 		return err
 	}
 
@@ -145,7 +144,7 @@ func (i *streamingInformer) doList(ctx context.Context) (*ListMetadata, error) {
 
 	isInInitialList := !i.hasSynced.Load()
 	listListener := &listListener{objects: &i.objects, isInInitialList: isInInitialList, eventHandlerRegistrations: i.eventHandlerRegistrations}
-	if err := i.streamingClient.List(ctx, i.typeInfo, listListener); err != nil {
+	if err := i.kubeClient.List(ctx, i.typeInfo, listListener); err != nil {
 		return nil, err
 	}
 	return &listListener.metadata, nil
@@ -292,13 +291,5 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 		return apierrors.NewNotFound(i.typeInfo.GroupResource(), key.String())
 	}
 
-	// TODO: How do we want to copy objects?
-	b, err := json.Marshal(existing)
-	if err != nil {
-		return fmt.Errorf("error copying %T: %w", obj, err)
-	}
-	if err := json.Unmarshal(b, obj); err != nil {
-		return fmt.Errorf("error copying %T: %w", obj, err)
-	}
-	return nil
+	return i.typeInfo.CopyObjectInto(existing, obj)
 }

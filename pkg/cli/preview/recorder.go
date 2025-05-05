@@ -36,6 +36,10 @@ type GKNN struct {
 	Name      string
 }
 
+func (gknn GKNN) GroupKind() GroupKind {
+	return GroupKind{Group: gknn.Group, Kind: gknn.Kind}
+}
+
 // Recorder holds the information from reconciling the objects
 type Recorder struct {
 	mutex   sync.Mutex
@@ -183,8 +187,6 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 	info.events = append(info.events, event{
 		eventType: EventTypeReconcileEnd,
 		object:    u.DeepCopy(),
-		result:    result,
-		err:       err,
 	})
 }
 
@@ -224,6 +226,19 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 
 		case []client.UpdateOption:
 			// ignore
+
+		case []client.PatchOption:
+			// ignore
+			for _, patchOption := range arg {
+				switch patchOption := patchOption.(type) {
+				// case *client.RawPatchOption:
+				// 	// ignore
+				case client.FieldOwner:
+					// ignore
+				default:
+					klog.Fatalf("unhandled patch option type %T", patchOption)
+				}
+			}
 
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)

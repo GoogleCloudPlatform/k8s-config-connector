@@ -51,6 +51,18 @@ type GroupVersionResource struct {
 	Resource string
 }
 
+// GroupKind is a group and kind.
+type GroupKind struct {
+	Group string
+	Kind  string
+}
+
+type KubeClient interface {
+	Get(ctx context.Context, typeInfo *typeInfo, namespace, name string, dest Object) error
+	List(ctx context.Context, typeInfo *typeInfo, listener ListListener) error
+	Watch(ctx context.Context, typeInfo *typeInfo, watchOptions WatchOptions, listener WatchListener) error
+}
+
 // NewStreamingClient creates a new StreamingClient.
 func NewStreamingClient(opt ClientOptions) *StreamingClient {
 	return &StreamingClient{
