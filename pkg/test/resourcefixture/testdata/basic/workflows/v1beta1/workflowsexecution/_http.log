@@ -95,7 +95,7 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
-    "revisionId": "workflows-revision-id-placeholder",
+    "revisionId": "revision-id-placeholder",
     "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
     "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${\"Hello \" + input.firstName + \" \" + input.lastName}'",
     "state": "ACTIVE",
@@ -133,7 +133,7 @@ OK
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "ACTIVE",
   "status": {},
-  "workflowRevisionId": "workflows-revision-id-placeholder"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -167,7 +167,7 @@ OK
       }
     ]
   },
-  "workflowRevisionId": "workflows-revision-id-placeholder"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -201,7 +201,7 @@ OK
       }
     ]
   },
-  "workflowRevisionId": "workflows-revision-id-placeholder"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -235,7 +235,7 @@ OK
       }
     ]
   },
-  "workflowRevisionId": "workflows-revision-id-placeholder"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -269,7 +269,7 @@ OK
       }
     ]
   },
-  "workflowRevisionId": "workflows-revision-id-placeholder"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -297,7 +297,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
-  "revisionId": "workflows-revision-id-placeholder",
+  "revisionId": "revision-id-placeholder",
   "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${\"Hello \" + input.firstName + \" \" + input.lastName}'",
   "state": 1,

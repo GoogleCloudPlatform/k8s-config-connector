@@ -44,6 +44,6 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
-    revisionId: workflows-revision-id-placeholder
+    revisionId: revision-id-placeholder
     state: ACTIVE
     updateTime: "1970-01-01T00:00:00Z"
