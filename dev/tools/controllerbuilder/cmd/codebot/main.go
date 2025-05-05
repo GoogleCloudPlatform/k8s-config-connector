@@ -23,9 +23,9 @@ import (
 	"strings"
 
 	codebotui "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot/ui"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codebot"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/toolbot"
 	"k8s.io/klog/v2"
 )
@@ -42,6 +42,8 @@ func main() {
 }
 
 type Options struct {
+	llm.Options
+
 	// ProtoDir is the base directory for the checkout of the proto API definitions
 	ProtoDir string
 	// BaseDir is the base directory for the project code
@@ -49,9 +51,7 @@ type Options struct {
 	// Prompt is the prompt to be passed in non-interactive mode
 	Prompt string
 
-	UIType   string
-	Project  string
-	Location string
+	UIType string
 }
 
 type CodeBot struct {
@@ -60,16 +60,9 @@ type CodeBot struct {
 	chatSession   *codebot.Chat
 }
 
-func (o *Options) GetProject() string {
-	return o.Project
-}
-
-func (o *Options) GetLocation() string {
-	return o.Location
-}
-
 func (cb *CodeBot) run(ctx context.Context) error {
 	var o Options
+	o.InitDefaults()
 
 	klog.InitFlags(nil)
 
@@ -77,9 +70,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 	flag.StringVar(&o.BaseDir, "base-dir", o.BaseDir, "base directory for the project code")
 	flag.StringVar(&o.Prompt, "prompt", o.Prompt, "prompt to be passed in non-interactive mode")
 	flag.StringVar(&o.UIType, "ui-type", o.UIType, "available value is terminal, tview, prompt or bash.")
-	flag.StringVar(&o.Project, "project", o.Project, "the GCP project that the LLM service files billing for, Default to gcloud config")
-	flag.StringVar(&o.Location, "location", o.Location, "the GCP location. Default to gcloud config")
-
+	o.AddFlags(flag.CommandLine)
 	flag.Parse()
 
 	if o.ProtoDir == "" {
@@ -122,7 +113,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 		}
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx, &o)
+	llmClient, err := o.NewLLMClient(ctx)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
@@ -147,7 +138,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 
 	ui.SetCallback(cb.sendToLlm)
 
-	session, err := codebot.NewChat(ctx, llmClient, o.BaseDir, contextFiles, toolbox, ui)
+	session, err := codebot.NewChat(ctx, llmClient, o.Model, o.BaseDir, contextFiles, toolbox, ui)
 	if err != nil {
 		return err
 	}
@@ -162,7 +153,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 }
 
 func (cb *CodeBot) sendToLlm(text string) error {
-	var userParts []string
+	var userParts []any
 
 	var additionalContext strings.Builder
 

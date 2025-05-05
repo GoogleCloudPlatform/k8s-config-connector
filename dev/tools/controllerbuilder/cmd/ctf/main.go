@@ -40,8 +40,13 @@ func main() {
 }
 
 func run(ctx context.Context) error {
+
+	var options llm.Options
+	options.InitDefaults()
+
 	scenario := ""
 	flag.StringVar(&scenario, "scenario", scenario, "scenario to run")
+	options.AddFlags(flag.CommandLine)
 
 	klog.InitFlags(nil)
 	flag.Parse()
@@ -116,7 +121,7 @@ func run(ctx context.Context) error {
 		return fmt.Errorf("expected build error from scenario, but got no error")
 	}
 
-	llmClient, err := llm.BuildVertexAIClient(ctx)
+	llmClient, err := options.NewLLMClient(ctx)
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}
@@ -126,7 +131,7 @@ func run(ctx context.Context) error {
 
 	toolbox := codebot.NewToolbox(codebot.GetAllTools())
 
-	chat, err := codebot.NewChat(ctx, llmClient, tmpDir, contextFiles, toolbox, u)
+	chat, err := codebot.NewChat(ctx, llmClient, options.Model, tmpDir, contextFiles, toolbox, u)
 	if err != nil {
 		return err
 	}
@@ -144,7 +149,7 @@ Use function calling to fix the problems; do not ask me follow-on questions.
 
 	msg = strings.ReplaceAll(msg, "{{stdout}}", buildResults.Stdout)
 	msg = strings.ReplaceAll(msg, "{{stderr}}", buildResults.Stderr)
-	var userParts []string
+	var userParts []any
 	userParts = append(userParts, msg)
 	if err := chat.SendMessage(ctx, userParts...); err != nil {
 		return err

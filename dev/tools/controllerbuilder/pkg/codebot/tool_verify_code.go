@@ -22,7 +22,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -93,15 +93,15 @@ func (t *VerifyCode) Run(ctx context.Context, c *Chat, args map[string]any) (any
 	return results, nil
 }
 
-func (t *VerifyCode) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *VerifyCode) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "VerifyCode",
 		Description: `
 Verifies the result of changes by trying to build, lint and vet the code.
 `,
-		Parameters: &llm.Schema{
-			Type:       llm.TypeObject,
-			Properties: map[string]*llm.Schema{},
+		Parameters: &gollm.Schema{
+			Type:       gollm.TypeObject,
+			Properties: map[string]*gollm.Schema{},
 		},
 	}
 	// TODO: Response?

@@ -17,7 +17,7 @@ package codebot
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 )
 
 func RegisterTool(tool Tool) {
@@ -27,7 +27,7 @@ func RegisterTool(tool Tool) {
 var tools []Tool
 
 type Tool interface {
-	BuildFunctionDefinition() *llm.FunctionDefinition
+	BuildFunctionDefinition() *gollm.FunctionDefinition
 
 	Run(ctx context.Context, c *Chat, args map[string]any) (any, error)
 }
