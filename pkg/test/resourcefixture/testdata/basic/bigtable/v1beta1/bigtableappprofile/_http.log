@@ -168,15 +168,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -223,15 +223,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -307,45 +307,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
-
-{
-  "appProfile": {
-    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-    "singleClusterRouting": {
-      "allowTransactionalWrites": true,
-      "clusterId": "cluster1-${uniqueId}"
-    },
-    "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
-    }
-  },
-  "updateMask": "singleClusterRouting,standardIsolation"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
-    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-    "singleClusterRouting": {
-      "allowTransactionalWrites": true,
-      "clusterId": "cluster1-${uniqueId}"
-    },
-    "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
-    }
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
 
 {
@@ -386,23 +347,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
   },
   "ignoreWarnings": true,
   "updateMask": "description,multiClusterRoutingUseAny,standardIsolation"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 OK
@@ -530,15 +474,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }

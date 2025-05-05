@@ -17,7 +17,6 @@ package bigtable
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
@@ -25,12 +24,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/bigtable"
-
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -213,33 +212,43 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	// var updated *bigtablepb.AppProfile
 	// updated = a.actual
 	var fieldsToUpdate gcp.ProfileAttrsToUpdate
+	hasChanges := false
 
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+	if desired.Spec.Description != nil && !cmp.Equal(resource.Description, a.actual.Description) {
 		fieldsToUpdate.Description = resource.Description
+		hasChanges = true
 	}
-	if desired.Spec.MultiClusterRoutingUseAny != nil && !reflect.DeepEqual(resource.GetMultiClusterRoutingUseAny(), a.actual.GetMultiClusterRoutingUseAny()) {
+	if desired.Spec.MultiClusterRoutingUseAny != nil && !cmp.Equal(resource.GetMultiClusterRoutingUseAny(), a.actual.GetMultiClusterRoutingUseAny(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_MultiClusterRoutingUseAny{})) {
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
 		}
 		// Need to ignore warnings if switching from single cluster to multi cluster routing
 		fieldsToUpdate.IgnoreWarnings = true
+		hasChanges = true
 	}
-	if desired.Spec.SingleClusterRouting != nil && !reflect.DeepEqual(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting()) {
+	if desired.Spec.SingleClusterRouting != nil && !cmp.Equal(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_SingleClusterRouting{})) {
 		fieldsToUpdate.RoutingConfig = &gcp.SingleClusterRoutingConfig{
 			ClusterID:                resource.GetSingleClusterRouting().GetClusterId(),
 			AllowTransactionalWrites: resource.GetSingleClusterRouting().AllowTransactionalWrites,
 		}
+		hasChanges = true
 	}
-	if desired.Spec.StandardIsolation != nil && !reflect.DeepEqual(resource.GetStandardIsolation(), a.actual.GetStandardIsolation()) {
+	if desired.Spec.StandardIsolation != nil && !cmp.Equal(resource.GetStandardIsolation(), a.actual.GetStandardIsolation(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_StandardIsolation{})) {
 		fieldsToUpdate.Isolation = &gcp.StandardIsolation{
 			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().Priority),
 		}
+		hasChanges = true
 	}
-	err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
-	if err != nil {
-		return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
+
+	if !hasChanges {
+		log.V(2).Info("no changes to update", "name", a.id)
+	} else {
+		err := a.gcpClient.UpdateAppProfile(ctx, a.id.ParentInstanceIdString(), a.id.ID(), fieldsToUpdate)
+		if err != nil {
+			return fmt.Errorf("updating BigtableAppProfile %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 	}
-	log.V(2).Info("successfully updated BigtableAppProfile", "name", a.id)
 
 	status := &krm.BigtableAppProfileStatus{}
 	status.Name = direct.LazyPtr(a.id.String())
