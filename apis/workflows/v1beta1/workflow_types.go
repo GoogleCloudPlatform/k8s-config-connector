@@ -89,7 +89,11 @@ type WorkflowsWorkflowSpec struct {
 	// +optional
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
 
-	// ExecutionHistoryLevel not included in googleapis for now
+	// Optional. Describes the execution history level to apply to this workflow.
+	ExecutionHistoryLevel *WorkflowsExecutionHistoryLevel `json:"executionHistoryLevel,omitempty"`
+
+	// Optional. Input only. Immutable. Tags associated with this workflow.
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -141,7 +145,21 @@ type WorkflowsWorkflowObservedState struct {
 	// field will have error details if the execution data is unavailable due to
 	// revoked KMS key permissions.
 	StateError *WorkflowsWorkflow_StateError `json:"stateError,omitempty"`
+
+	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
+	// data associated with the workflow.
+	AllKmsKeys []refs.KMSCryptoKeyRef `json:"allKmsKeys,omitempty"`
+
+	// Output only. A list of all KMS crypto key versions used to encrypt or
+	// decrypt the data associated with the workflow.
+	AllKmsKeysVersions []string `json:"allKmsKeysVersions,omitempty"`
+
+	// Output only. The resource name of a KMS crypto key version used to encrypt
+	// or decrypt the data associated with the workflow.
+	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty"`
 }
+
+type WorkflowsExecutionHistoryLevel int32
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
