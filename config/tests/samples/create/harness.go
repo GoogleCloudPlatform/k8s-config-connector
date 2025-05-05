@@ -1140,7 +1140,11 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		objectStatus := dynamic.GetObjectStatus(h.T, u)
+		objectStatus, err := dynamic.GetObjectStatus(u)
+		if err != nil {
+			logger.Info("Error getting object status", "kind", kind, "id", id, "error", err)
+			return false, err
+		}
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {

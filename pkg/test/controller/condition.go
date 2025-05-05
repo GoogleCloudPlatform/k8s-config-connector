@@ -35,7 +35,10 @@ func AssertReadyCondition(t *testing.T, object runtime.Object, minObservedGenera
 	}
 	objectID := gvk.Kind + ":" + accessor.GetName()
 
-	objectStatus := dynamic.GetObjectStatus(t, object)
+	objectStatus, err := dynamic.GetObjectStatus(object)
+	if err != nil {
+		t.Fatalf("error getting object status: %v", err)
+	}
 	if objectStatus.ObservedGeneration == nil {
 		t.Fatalf("resource %v does not yet have status.observedGeneration", objectID)
 	}
