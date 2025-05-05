@@ -96,6 +96,10 @@ func GetBasicIntegrationTestDataPath() string {
 	return filepath.Join(GetRootOrLogFatal(), "pkg", "test", "resourcefixture", "testdata", "basic")
 }
 
+func GetIntegrationTestDataPath() string {
+	return filepath.Join(GetRootOrLogFatal(), "pkg", "test", "resourcefixture", "testdata")
+}
+
 func GetTypesTemplatePath() string {
 	return filepath.Join(GetRootOrLogFatal(), "scripts", "generate-go-crd-clients")
 }

@@ -37,13 +37,13 @@ require (
 	cloud.google.com/go/firestore v1.18.0
 	cloud.google.com/go/gkebackup v1.6.3
 	cloud.google.com/go/gkemulticloud v1.5.1
-	cloud.google.com/go/iam v1.4.1
+	cloud.google.com/go/iam v1.5.0
 	cloud.google.com/go/iap v1.10.3
 	cloud.google.com/go/kms v1.21.0
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
 	cloud.google.com/go/metastore v1.14.3
-	cloud.google.com/go/monitoring v1.24.0
+	cloud.google.com/go/monitoring v1.24.1
 	cloud.google.com/go/netapp v1.7.1
 	cloud.google.com/go/networkmanagement v1.18.0
 	cloud.google.com/go/networksecurity v0.10.3
@@ -136,10 +136,10 @@ require (
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.19.2 // indirect
-	cloud.google.com/go v0.118.3 // indirect
+	cloud.google.com/go v0.120.0 // indirect
 	cloud.google.com/go/auth v0.16.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/bigtable v1.35.0
+	cloud.google.com/go/bigtable v1.37.0
 	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	cloud.google.com/go/longrunning v0.6.6
 	dario.cat/mergo v1.0.0 // indirect
@@ -275,10 +275,10 @@ require (
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/term v0.30.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/term v0.31.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/tools v0.31.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect

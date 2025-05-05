@@ -25,6 +25,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 		return nil
 	}
 	out := &krmv1beta1.BigtableAppProfileSpec{}
+
 	// MISSING: Name
 	// MISSING: Etag
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -47,6 +48,8 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	}
 	out := &pb.AppProfile{}
 	// MISSING: Name
+	out.Name = direct.ValueOf(in.ResourceID)
+
 	// MISSING: Etag
 	out.Description = direct.ValueOf(in.Description)
 	if oneof := in.MultiClusterRoutingUseAny; oneof != nil && *oneof {

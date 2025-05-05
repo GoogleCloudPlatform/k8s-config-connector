@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: google/apps/cloudidentity/groups/v1beta1/service.proto
+// source: google/apps/cloudidentity/v1beta1/service.proto
 
 package groupspb
 
@@ -65,7 +65,7 @@ var CustomersServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CustomersServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
-	Metadata:    "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata:    "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // CustomersUserinvitationsServerClient is the client API for CustomersUserinvitationsServer service.
@@ -306,7 +306,7 @@ var CustomersUserinvitationsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // DevicesServerClient is the client API for DevicesServer service.
@@ -584,7 +584,7 @@ var DevicesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // DevicesDeviceUsersServerClient is the client API for DevicesDeviceUsersServer service.
@@ -939,7 +939,7 @@ var DevicesDeviceUsersServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // DevicesDeviceUsersClientStatesServerClient is the client API for DevicesDeviceUsersClientStatesServer service.
@@ -1066,7 +1066,7 @@ var DevicesDeviceUsersClientStatesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // GroupsServerClient is the client API for GroupsServer service.
@@ -1458,7 +1458,7 @@ var GroupsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // GroupsMembershipsServerClient is the client API for GroupsMembershipsServer service.
@@ -1927,7 +1927,7 @@ var GroupsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // InboundSamlSsoProfilesServerClient is the client API for InboundSamlSsoProfilesServer service.
@@ -2168,7 +2168,7 @@ var InboundSamlSsoProfilesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // InboundSamlSsoProfilesIdpCredentialsServerClient is the client API for InboundSamlSsoProfilesIdpCredentialsServer service.
@@ -2371,7 +2371,7 @@ var InboundSamlSsoProfilesIdpCredentialsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // InboundSsoAssignmentsServerClient is the client API for InboundSsoAssignmentsServer service.
@@ -2612,7 +2612,7 @@ var InboundSsoAssignmentsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // OrgUnitsServerClient is the client API for OrgUnitsServer service.
@@ -2661,7 +2661,7 @@ var OrgUnitsServer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*OrgUnitsServerServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams:     []grpc.StreamDesc{},
-	Metadata:    "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata:    "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // OrgUnitsMembershipsServerClient is the client API for OrgUnitsMembershipsServer service.
@@ -2788,7 +2788,7 @@ var OrgUnitsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
 // PoliciesServerClient is the client API for PoliciesServer service.
@@ -2914,5 +2914,5 @@ var PoliciesServer_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "google/apps/cloudidentity/groups/v1beta1/service.proto",
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }

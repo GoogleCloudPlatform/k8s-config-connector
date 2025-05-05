@@ -109,15 +109,19 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 		switch path {
 		case "description":
 			updated.Description = req.GetAppProfile().GetDescription()
-		case "multiClusterRoutingUseAny":
+		case "multiClusterRoutingUseAny", "multi_cluster_routing_use_any":
 			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
 			}
-		case "singleClusterRouting":
+		case "multiClusterRoutingUseAny.clusterIds", "multi_cluster_routing_use_any.cluster_ids":
+			updated.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
+				MultiClusterRoutingUseAny: req.GetAppProfile().GetMultiClusterRoutingUseAny(),
+			}
+		case "singleClusterRouting", "single_cluster_routing":
 			updated.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{
 				SingleClusterRouting: req.GetAppProfile().GetSingleClusterRouting(),
 			}
-		case "singleClusterRouting.clusterId":
+		case "singleClusterRouting.clusterId", "single_cluster_routing.cluster_id":
 			isAsync = true
 			if updated.GetSingleClusterRouting() == nil {
 				updated.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{
@@ -125,7 +129,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 				}
 			}
 			updated.GetSingleClusterRouting().ClusterId = req.GetAppProfile().GetSingleClusterRouting().GetClusterId()
-		case "standardIsolation":
+		case "standardIsolation", "standard_isolation":
 			updated.Isolation = &pb.AppProfile_StandardIsolation_{
 				StandardIsolation: req.GetAppProfile().GetStandardIsolation(),
 			}
@@ -145,7 +149,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	// Don't return isolation in LRO, unless we updated standardIsolation
 	lroRet := ProtoClone(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
-	if !updatePaths.Has("standardIsolation") {
+	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") {
 		lroRet.Isolation = nil
 	}
 
@@ -154,7 +158,7 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 			return lroRet, nil
 		})
 	} else {
-		return s.operations.DoneLRO(ctx, prefix, metadata, nil)
+		return s.operations.DoneLRO(ctx, prefix, metadata, lroRet)
 	}
 }
 
