@@ -239,6 +239,13 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		}
 		hasChanges = true
 	}
+	if desired.Spec.DataBoostIsolationReadOnly != nil && !cmp.Equal(resource.GetDataBoostIsolationReadOnly(), a.actual.GetDataBoostIsolationReadOnly(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_DataBoostIsolationReadOnly{})) {
+		fieldsToUpdate.Isolation = &gcp.DataBoostIsolationReadOnly{
+			ComputeBillingOwner: gcp.IsolationComputeBillingOwner(resource.GetDataBoostIsolationReadOnly().GetComputeBillingOwner()),
+		}
+		fieldsToUpdate.IgnoreWarnings = true
+		hasChanges = true
+	}
 
 	if !hasChanges {
 		log.V(2).Info("no changes to update", "name", a.id)

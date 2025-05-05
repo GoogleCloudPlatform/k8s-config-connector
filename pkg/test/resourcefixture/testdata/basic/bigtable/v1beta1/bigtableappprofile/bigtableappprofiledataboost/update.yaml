@@ -23,7 +23,7 @@ spec:
   instanceRef:
     name: profiledep${uniqueId}
   singleClusterRouting:
-    allowTransactionalWrites: true
+    allowTransactionalWrites: false
     clusterId: cluster1-${uniqueId}
   dataBoostIsolationReadOnly:
     computeBillingOwner: HOST_PAYS
