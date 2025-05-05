@@ -84,7 +84,7 @@ func (s *WorkflowExecutionsV1) GetExecution(ctx context.Context, req *pb.GetExec
 		CurrentSteps: []*pb.Execution_Status_Step{
 			&pb.Execution_Status_Step{
 				Routine: "main",
-				Step: "returnOutput",
+				Step:    "returnOutput",
 			},
 		},
 	}

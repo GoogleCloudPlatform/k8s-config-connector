@@ -132,7 +132,7 @@ workflowRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}location of the application.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Location of the application.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +142,7 @@ workflowRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}host project of the application.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Host project of the application.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -202,7 +202,7 @@ workflowRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Workflow used for execution.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Workflow application used for execution.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

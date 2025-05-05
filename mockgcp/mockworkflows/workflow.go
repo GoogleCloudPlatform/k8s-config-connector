@@ -74,9 +74,9 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 	obj.UpdateTime = timestamppb.New(now)
 	obj.RevisionCreateTime = timestamppb.New(now)
 	if obj.CryptoKeyName != "" {
-		obj.AllKmsKeys = []string{ obj.CryptoKeyName }
+		obj.AllKmsKeys = []string{obj.CryptoKeyName}
 		obj.CryptoKeyVersion = obj.CryptoKeyName + "/cryptoKeyVersions/1"
-		obj.AllKmsKeysVersions = []string{ obj.CryptoKeyVersion }
+		obj.AllKmsKeysVersions = []string{obj.CryptoKeyVersion}
 		gsaUniqueId := "gsa123456"
 		obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/gsa-%s@%s.iam.gserviceaccount.com", name.Project.ID, gsaUniqueId, name.Project.ID)
 	} else {
