@@ -98,10 +98,6 @@ func init() {
 		ResourceKind: "ComputeSharedVPCServiceProject",
 		SkipUpdate:   true,
 	}
-	resourceContextMap["computesslcertificate"] = ResourceContext{
-		ResourceKind: "ComputeSSLCertificate",
-		SkipUpdate:   true, // No input fields in this resource support update.
-	}
 
 	resourceContextMap["globalcomputesslcertificate"] = ResourceContext{
 		ResourceKind: "ComputeSSLCertificate",
@@ -143,7 +139,7 @@ func init() {
 		SkipUpdate:   true,
 	}
 
-	resourceContextMap["computeinstance"] = ResourceContext{
+	resourceContextMap["computeinstancebasicexample"] = ResourceContext{
 		ResourceKind: "ComputeInstance",
 		// TestCreateNoChangeUpdateDelete/basic-computeinstance: dynamic_controller_integration_test.go:239: reconcile
 		//    returned unexpected error: Update call failed: error applying desired state: Error creating instance:

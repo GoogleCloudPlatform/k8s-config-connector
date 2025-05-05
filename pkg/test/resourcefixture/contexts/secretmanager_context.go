@@ -15,7 +15,7 @@
 package contexts
 
 func init() {
-	resourceContextMap["secretmanagersecret"] = ResourceContext{
+	resourceContextMap["basicsecretmanagersecret"] = ResourceContext{
 		ResourceKind: "SecretManagerSecret",
 		SkipUpdate:   true,
 	}

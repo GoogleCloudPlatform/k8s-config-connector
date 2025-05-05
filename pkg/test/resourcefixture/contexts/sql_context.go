@@ -46,10 +46,6 @@ func init() {
 		ResourceKind: "SQLInstance",
 	}
 
-	resourceContextMap["sqldatabase"] = ResourceContext{
-		ResourceKind: "SQLDatabase",
-	}
-
 	resourceContextMap["sqlsslcert"] = ResourceContext{
 		ResourceKind: "SQLSSLCert",
 		SkipUpdate:   true,
