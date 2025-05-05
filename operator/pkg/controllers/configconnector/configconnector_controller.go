@@ -79,10 +79,10 @@ type Reconciler struct {
 	customizationWatcher *controllers.CustomizationWatcher
 }
 
-func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
+func Add(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
 	r, err := newReconciler(mgr, opt)
 	if err != nil {
-		return err
+		return r, err
 	}
 
 	// Create a new ConfigConnector controller.
@@ -91,14 +91,14 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 1}).
-		WatchesRawSource(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(source.Channel(r.customizationWatcher.Events(), &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
-		return err
+		return r, err
 	}
 
-	return nil
+	return r, nil
 }
 
 func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {

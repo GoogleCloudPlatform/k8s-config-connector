@@ -883,7 +883,7 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
-		WatchesRawSource(&source.Channel{Source: r.CompositionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
+		WatchesRawSource(source.Channel(r.CompositionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
 		WithOptions(controller.Options{RateLimiter: ratelimiter}).
 		Complete(r)
 }
