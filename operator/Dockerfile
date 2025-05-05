@@ -15,7 +15,7 @@
 # This Dockefile builds a thin image containing the manager binary
 
 # Build the manager binary
-FROM golang:1.24.1 AS builder
+FROM golang:1.24.2 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
@@ -29,7 +29,7 @@ COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
 COPY version/ version/
-COPY config/servicemappings/ config/servicemappings/
+COPY config/ config/
 COPY scripts/resource-autogen/ scripts/resource-autogen/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY go.mod  go.mod

@@ -309,7 +309,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -590,7 +590,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Google Cloud Storage location.{% endverbatim %}</p>
+            <p>{% verbatim %}The Google Cloud Storage location.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

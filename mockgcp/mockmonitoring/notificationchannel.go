@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-service
-// http.host: monitoring.googleapis.com
+// +tool:mockgcp-support
 // proto.service: google.monitoring.v3.NotificationChannelService
+// proto.message: google.monitoring.v3.NotificationChannel
 
 package mockmonitoring
 

@@ -66,8 +66,8 @@ spec:
                     metastoreType:
                       description: The type of the backend metastore.
                       enum:
-                      - metastore
-                      - bigquery
+                      - BIGQUERY
+                      - DATAPROC_METASTORE
                       type: string
                     serviceRef:
                       description: |-
@@ -92,6 +92,7 @@ spec:
                           type: string
                       type: object
                   type: object
+                description: map type with key int32 as string and value as BackendMetastore
                 type: object
               labels:
                 additionalProperties:

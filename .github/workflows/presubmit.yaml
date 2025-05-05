@@ -126,6 +126,15 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
+      - name: Free up disk space
+        run: |
+          echo "Before cleanup:"
+          df -h /
+          sudo rm -rf /opt/hostedtoolcache/*  # remove pre-installed tool versions
+          sudo rm -rf /usr/share/dotnet
+          sudo docker system prune -af || true
+          echo "After cleanup:"
+          df -h /
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:

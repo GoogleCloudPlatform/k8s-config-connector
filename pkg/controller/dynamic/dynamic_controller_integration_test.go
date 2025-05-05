@@ -76,6 +76,9 @@ func init() {
 	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
 	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
 
+	// Only run tests associate with the given API version. Supported values are beta or alpha.
+	flag.StringVar(&runTestsVersion, "run-tests-version", "", "only run the tests associate with the given API version")
+
 	// cleanup-resources allows you to disable the cleanup of resources created during testing. This can be useful for debugging test failures.
 	// The default value is true.
 	//
@@ -105,12 +108,13 @@ var (
 	mgr              manager.Manager
 	runTestsRegex    string
 	skipTestsRegex   string
+	runTestsVersion  string
 	cleanupResources bool
 )
 
 const resourceIDTestVar = "${resourceId}"
 
-func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefixture.ResourceFixture) bool {
+func shouldRunBasedOnFlag(parentTestName string, fixture resourcefixture.ResourceFixture) bool {
 	testName := formatTestName(parentTestName, fixture)
 
 	// If a skip-tests regex has been provided and it matches the test name, skip the test.
@@ -127,6 +131,20 @@ func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefi
 		}
 	}
 
+	// If runTestsVersion flag has been provided and set to "beta", only run the test if it associates with Beta resources
+	if runTestsVersion == "beta" {
+		if fixture.GVK.Version != "v1beta1" {
+			return false
+		}
+	}
+
+	// If runTestsVersion flag has been provided and set to "alpha", only run the test if it associates with Alpha resources
+	if runTestsVersion == "alpha" {
+		if fixture.GVK.Version != "v1alpha1" {
+			return false
+		}
+	}
+
 	return true
 }
 
@@ -135,7 +153,7 @@ func TestAcquire(t *testing.T) {
 
 	t.Parallel()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		if !shouldRunBasedOnRunAndSkipRegexes("TestAcquire", fixture) {
+		if !shouldRunBasedOnFlag("TestAcquire", fixture) {
 			return false
 		}
 
@@ -210,7 +228,7 @@ func TestCreateNoChangeUpdateDelete(t *testing.T) {
 			}
 		}
 
-		return shouldRunBasedOnRunAndSkipRegexes("TestCreateNoChangeUpdateDelete", fixture)
+		return shouldRunBasedOnFlag("TestCreateNoChangeUpdateDelete", fixture)
 	}
 	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		context, err := contexts.GetResourceContext(testContext.ResourceFixture, systemContext.DCLConverter.MetadataLoader, systemContext.DCLConverter.SchemaLoader)

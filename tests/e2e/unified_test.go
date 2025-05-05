@@ -33,7 +33,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
-	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -118,7 +117,10 @@ func TestAllInSeries(t *testing.T) {
 					u.SetAnnotations(annotations)
 				}
 
-				create.RunCreateDeleteTest(h, create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true})
+				opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
+				// samples don't do updates so not using SSA is less problematic
+				opt.DoNotUseServerSideApplyForCreate = true
+				create.RunCreateDeleteTest(h, opt)
 			})
 		}
 	})
@@ -160,22 +162,27 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					klog.Infof("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
-					continue
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					klog.Infof("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
-					continue
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
@@ -197,6 +204,17 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
 					}
+
+					// We want to use SSA everywhere, but some of our tests are broken by SSA
+					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
+					case "bigtable.cnrm.cloud.google.com":
+						// Use SSA
+
+					default:
+						t.Logf("not yet using SSA for create of resources in group %q", group)
+						opt.DoNotUseServerSideApplyForCreate = true
+					}
+
 					return primaryResource, opt
 				}
 
@@ -415,7 +433,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 						if id != "" {
-							r.OperationIDs[id] = true
+							// Avoid marking some well-known values that are not operation ids
+							switch id {
+							case "projects":
+							// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+							default:
+								r.OperationIDs[id] = true
+							}
 						}
 					}
 
@@ -576,6 +600,32 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to Compute
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("fingerprint", "abcdef0123A=")
+
+					// Specific to Dataplex
+					addReplacement("executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.latestJob.uid", "0123456789abcdef")
+					addReplacement("executionStatus.latestJob.uid", "0123456789abcdef")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						selfLinkWithId, _, _ := unstructured.NestedString(responseBody, "executionStatus", "latestJob", "name")
+						if selfLinkWithId != "" {
+							tokens := strings.Split(selfLinkWithId, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "jobs":
+									r.PathIDs[id] = "0123456789abcdef"
+								}
+							}
+						}
+					}
+
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
@@ -704,11 +754,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					})
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
-
-					// Specific to BigTable
-					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to Firestore
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
@@ -1224,11 +1269,13 @@ func verifyKubeWatches(h *create.Harness) {
 	}
 
 	// Validate the full watches we do have.
-	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently).
+	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently)
+	// and K8s Secret.
 	allowedFullWatches := sets.NewString(
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectorcontexts",
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectors",
 		"/apis/apiextensions.k8s.io/v1/customresourcedefinitions",
+		"/api/v1/secrets",
 	)
 	for fullWatch := range fullWatches {
 		if !allowedFullWatches.Has(fullWatch) {

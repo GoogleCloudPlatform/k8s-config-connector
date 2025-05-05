@@ -94,7 +94,517 @@ spec:
                           same login page, though it could be overridden at the sub
                           resource level.
                         type: string
-                      tenantIds:
+                      tenantIDs:
+                        description: GCIP tenant ids that are linked to the IAP resource.
+                          tenant_ids could be a string beginning with a number character
+                          to indicate authenticating with GCIP tenant flow, or in
+                          the format of _<ProjectNumber> to indicate authenticating
+                          with GCIP agent flow. If agent flow is used, tenant_ids
+                          should only contain one single element, while for tenant
+                          flow, tenant_ids can contain multiple elements.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  oauthSettings:
+                    description: Settings to configure IAP's OAuth behavior.
+                    properties:
+                      loginHint:
+                        description: 'Domain hint to send as hd=? parameter in OAuth
+                          request flow. Enables redirect to primary IDP by skipping
+                          Google''s login screen. https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+                          Note: IAP does not verify that the id token''s hd claim
+                          matches this value since access behavior is managed by IAM
+                          policies.'
+                        type: string
+                      programmaticClients:
+                        description: List of OAuth client IDs allowed to programmatically
+                          authenticate with IAP.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  reauthSettings:
+                    description: Settings to configure reauthentication policies in
+                      IAP.
+                    properties:
+                      maxAge:
+                        description: Reauth session lifetime, how long before a user
+                          has to reauthenticate again.
+                        type: string
+                      method:
+                        description: Reauth method requested.
+                        type: string
+                      policyType:
+                        description: How IAP determines the effective policy in cases
+                          of hierarchial policies. Policies are merged from higher
+                          in the hierarchy to lower in the hierarchy.
+                        type: string
+                    type: object
+                type: object
+              appEngineRef:
+                description: Project-wide App Engine service settings
+                properties:
+                  applicationRef:
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}'
+                        type: string
+                    type: object
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  serviceRef:
+                    description: Optional. If specified, settings apply to the service
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}'
+                        type: string
+                    type: object
+                  versionRef:
+                    description: Optional. If specified, settings apply to the version
+                    properties:
+                      external:
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
+                        type: string
+                    type: object
+                required:
+                - applicationRef
+                - projectRef
+                type: object
+              applicationSettings:
+                description: Top level wrapper for all application related settings
+                  in IAP
+                properties:
+                  accessDeniedPageSettings:
+                    description: Customization for Access Denied page.
+                    properties:
+                      accessDeniedPageURI:
+                        description: The URI to be redirected to when access is denied.
+                        type: string
+                      generateTroubleshootingURI:
+                        description: Whether to generate a troubleshooting URL on
+                          access denied events to this application.
+                        type: boolean
+                      remediationTokenGenerationEnabled:
+                        description: Whether to generate remediation token on access
+                          denied events to this application.
+                        type: boolean
+                    type: object
+                  attributePropagationSettings:
+                    description: Settings to configure attribute propagation.
+                    properties:
+                      enable:
+                        description: Whether the provided attribute propagation settings
+                          should be evaluated on user requests. If set to true, attributes
+                          returned from the expression will be propagated in the set
+                          output credentials.
+                        type: boolean
+                      expression:
+                        description: |-
+                          Raw string CEL expression. Must return a list of attributes. A maximum of
+                           45 attributes can be selected. Expressions can select different attribute
+                           types from `attributes`: `attributes.saml_attributes`,
+                           `attributes.iap_attributes`. The following functions are supported:
+
+                            - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
+                            `<list>` where `<predicate>` is true for every item.
+
+                            - in `<var> in <list>`: Returns true if `<list>` contains `<var>`.
+
+                            - selectByName `<list>.selectByName(<string>)`: Returns the attribute
+                            in
+                            `<list>` with the given `<string>` name, otherwise returns empty.
+
+                            - emitAs `<attribute>.emitAs(<string>)`: Sets the `<attribute>` name
+                            field to the given `<string>` for propagation in selected output
+                            credentials.
+
+                            - strict `<attribute>.strict()`: Ignores the `x-goog-iap-attr-` prefix
+                            for the provided `<attribute>` when propagating with the `HEADER` output
+                            credential, such as request headers.
+
+                            - append `<target_list>.append(<attribute>)` OR
+                            `<target_list>.append(<list>)`: Appends the provided `<attribute>` or
+                            `<list>` to the end of `<target_list>`.
+
+                           Example expression: `attributes.saml_attributes.filter(x, x.name in
+                           ['test']).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())`
+                        type: string
+                      outputCredentials:
+                        description: Which output credentials attributes selected
+                          by the CEL expression should be propagated in. All attributes
+                          will be fully duplicated in each selected output credential.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  cookieDomain:
+                    description: The Domain value to set for cookies generated by
+                      IAP. This value is not validated by the API, but will be ignored
+                      at runtime if invalid.
+                    type: string
+                  csmSettings:
+                    description: Settings to configure IAP's behavior for a service
+                      mesh.
+                    properties:
+                      rctokenAud:
+                        description: Audience claim set in the generated RCToken.
+                          This value is not validated by IAP.
+                        type: string
+                    type: object
+                type: object
+              computeServiceRef:
+                description: Project-wide Compute service settings
+                properties:
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                  region:
+                    description: Optional. If specified, settings apply to the region
+                    type: string
+                  serviceRef:
+                    description: Optional. If specified, settings apply to the service
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The value of an externally managed ComputeBackendService
+                          resource.
+                        type: string
+                      name:
+                        description: The name of a ComputeBackendService resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeBackendService resource.
+                        type: string
+                    type: object
+                required:
+                - projectRef
+                type: object
+              folderRef:
+                description: Folder-level settings
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              organizationRef:
+                description: Organization-level settings
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: Project-level settings
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              projectWebRef:
+                description: Project-wide web service settings
+                properties:
+                  projectRef:
+                    description: The Project that this resource belongs to.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                      - kind
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                        - required:
+                          - kind
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
+                required:
+                - projectRef
+                type: object
+              resourceID:
+                description: The IAPSettings name.
+                type: string
+            type: object
+            x-kubernetes-validations:
+            - message: Exactly one parent field must be set
+              rule: '(has(self.organizationRef) ? 1 : 0) + (has(self.folderRef) ?
+                1 : 0) + (has(self.projectRef) ? 1 : 0) + (has(self.projectWebRef)
+                ? 1 : 0) + (has(self.computeServiceRef) ? 1 : 0) + (has(self.appEngineRef)
+                ? 1 : 0) == 1'
+          status:
+            description: IAPSettingsStatus defines the config connector machine state
+              of IAPSettings
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the IAPSettings resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: IAPSettings is the Schema for the IAPSettings API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IAPSettingsSpec defines the desired state of IAPSettings
+            properties:
+              accessSettings:
+                description: Top level wrapper for all access related setting in IAP
+                properties:
+                  allowedDomainsSettings:
+                    description: Settings to configure and enable allowed domains.
+                    properties:
+                      domains:
+                        description: List of trusted domains.
+                        items:
+                          type: string
+                        type: array
+                      enable:
+                        description: Configuration for customers to opt in for the
+                          feature.
+                        type: boolean
+                    type: object
+                  corsSettings:
+                    description: Configuration to allow cross-origin requests via
+                      IAP.
+                    properties:
+                      allowHTTPOptions:
+                        description: Configuration to allow HTTP OPTIONS calls to
+                          skip authorization. If undefined, IAP will not apply any
+                          special logic to OPTIONS requests.
+                        type: boolean
+                    type: object
+                  gcipSettings:
+                    description: GCIP claims and endpoint configurations for 3p identity
+                      providers.
+                    properties:
+                      loginPageURI:
+                        description: Login page URI associated with the GCIP tenants.
+                          Typically, all resources within the same project share the
+                          same login page, though it could be overridden at the sub
+                          resource level.
+                        type: string
+                      tenantIDs:
                         description: GCIP tenant ids that are linked to the IAP resource.
                           tenant_ids could be a string beginning with a number character
                           to indicate authenticating with GCIP tenant flow, or in

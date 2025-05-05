@@ -34,15 +34,15 @@ import (
 )
 
 func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryRequest) (*pb.SavedQuery, error) {
-	_, err := parseSavedQueryName(req.Name)
+	name, err := s.parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	obj := &pb.SavedQuery{}
-	if err := s.storage.Get(ctx, req.Name, obj); err != nil {
+	if err := s.storage.Get(ctx, name.String(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "saved query with name %q not found", req.GetName())
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
@@ -51,18 +51,11 @@ func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryR
 }
 
 func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSavedQueryRequest) (*pb.SavedQuery, error) {
-	// Convert project ID to number like in feed.go
-	_, projectNumber, err := s.parseParent(req.GetParent())
+	name, err := s.parseSavedQueryName(req.Parent + "/savedQueries/" + req.GetSavedQueryId())
 	if err != nil {
 		return nil, err
 	}
-
-	// Use project number in the name
-	reqName := fmt.Sprintf("projects/%s/savedQueries/%s", projectNumber, req.GetSavedQueryId())
-	_, err = parseSavedQueryName(reqName)
-	if err != nil {
-		return nil, err
-	}
+	reqName := name.String()
 
 	now := time.Now()
 
@@ -82,12 +75,12 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 }
 
 func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSavedQueryRequest) (*pb.SavedQuery, error) {
-	_, err := parseSavedQueryName(req.GetSavedQuery().GetName())
+	name, err := s.parseSavedQueryName(req.GetSavedQuery().GetName())
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := req.GetSavedQuery().GetName()
+	fqn := name.String()
 	obj := &pb.SavedQuery{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -118,13 +111,13 @@ func (s *AssetService) UpdateSavedQuery(ctx context.Context, req *pb.UpdateSaved
 }
 
 func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSavedQueryRequest) (*emptypb.Empty, error) {
-	_, err := parseSavedQueryName(req.Name)
+	name, err := s.parseSavedQueryName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	deleted := &pb.SavedQuery{}
-	if err := s.storage.Delete(ctx, req.Name, deleted); err != nil {
+	if err := s.storage.Delete(ctx, name.String(), deleted); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "savedQuery %q not found", req.Name)
 		}
@@ -135,28 +128,47 @@ func (s *AssetService) DeleteSavedQuery(ctx context.Context, req *pb.DeleteSaved
 }
 
 type savedQueryName struct {
-	Parent     string
-	Kind       string
-	SavedQuery string
+	projectNumber  int64
+	folderID       string
+	organizationID string
+	savedQueryID   string
 }
 
 func (n *savedQueryName) String() string {
-	return n.Kind + "/" + n.Parent + "/savedQueries/" + n.SavedQuery
+	if n.organizationID != "" {
+		return fmt.Sprintf("organizations/%s/savedQueries/%s", n.organizationID, n.savedQueryID)
+	}
+	if n.folderID != "" {
+		return fmt.Sprintf("folders/%s/savedQueries/%s", n.folderID, n.savedQueryID)
+	}
+	return fmt.Sprintf("projects/%d/savedQueries/%s", n.projectNumber, n.savedQueryID)
 }
 
 // parseSavedQueryName parses a string into an savedQueryName.
 // The expected form is `projects/*/savedQueries/*`.
-func parseSavedQueryName(name string) (*savedQueryName, error) {
+func (s *MockService) parseSavedQueryName(name string) (*savedQueryName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 4 && (tokens[0] == "projects" || tokens[0] == "folders" || tokens[0] == "organizations") && tokens[2] == "savedQueries" {
-		savedQueryName := &savedQueryName{
-			Kind:       tokens[0],
-			Parent:     tokens[1],
-			SavedQuery: tokens[3],
-		}
-
-		return savedQueryName, nil
+	if len(tokens) != 4 || tokens[2] != "savedQueries" {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
-	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+
+	savedQueryName := &savedQueryName{}
+	savedQueryName.savedQueryID = tokens[3]
+	switch tokens[0] {
+	case "projects":
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		savedQueryName.projectNumber = project.Number
+	case "folders":
+		savedQueryName.folderID = tokens[1]
+	case "organizations":
+		savedQueryName.organizationID = tokens[1]
+	default:
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+
+	return savedQueryName, nil
 }

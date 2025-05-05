@@ -255,12 +255,10 @@ func (a *ManagementServerAdapter) Delete(ctx context.Context, deleteOp *directba
 
 func (a *ManagementServerAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.Networks != nil {
-		for _, network := range obj.Spec.Networks {
-			if network.NetworkRef != nil {
-				if err := network.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
-					return err
-				}
+	for i := range obj.Spec.Networks {
+		if obj.Spec.Networks[i].NetworkRef != nil {
+			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+				return err
 			}
 		}
 	}

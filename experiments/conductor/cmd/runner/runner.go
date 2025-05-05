@@ -38,16 +38,19 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 
 	// flag names.
 	branchConfigurationFlag = "branch-conf"
+	mergeConfigurationFlag  = "merge-conf"
 	branchRepoFlag          = "branch-repo"
 	commandFlag             = "command"
 	loggingDirFlag          = "logging-dir"
 	readFileTypeFlag        = "file-type"
+	controllerFilterFlag    = "controller-filter"
 
 	// Command values
 	cmdDeleteGitBranch              = -5
 	cmdHelp                         = 0
 	cmdCheckRepo                    = 1
 	cmdCreateGitBranch              = 2
+	cmdMergeMetadata                = 3
 	cmdEnableGCPAPIs                = 4
 	cmdReadFiles                    = 5
 	cmdWriteFiles                   = 6
@@ -60,7 +63,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdAddServiceRoundTrip          = 13
 	cmdAddProtoMakefile             = 14
 	cmdBuildProto                   = 15
-	cmdRunMockTests                 = 16
+	cmdCaptureMockOutput            = 16
+	cmdRunAndFixMockTests           = 17
 	cmdGenerateTypes                = 20
 	cmdAdjustTypes                  = 21
 	cmdGenerateCRD                  = 22
@@ -98,6 +102,8 @@ func BuildRunnerCmd() *cobra.Command {
 
 	cmd.Flags().StringVarP(&opts.branchConfFile, branchConfigurationFlag,
 		"", "branches.yaml", "File containing the branch configurations.")
+	cmd.Flags().StringVarP(&opts.branchMergeFile, mergeConfigurationFlag,
+		"", "", "File containing the configurations to merge in.")
 	cmd.Flags().StringVarP(&opts.branchRepoDir, branchRepoFlag,
 		"", "", "Directory in which to do the work.")
 	cmd.Flags().StringVarP(&opts.readFileType, readFileTypeFlag,
@@ -126,12 +132,15 @@ func BuildRunnerCmd() *cobra.Command {
 		"", false, "Skip the make ready-pr step when pushing branches")
 	cmd.Flags().StringVarP(&opts.processors, "processors",
 		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
+	cmd.Flags().StringVarP(&opts.controllerFilter, controllerFilterFlag,
+		"", "", "Type of controller to filter for. (Eg terraform-v1beta1)")
 
 	return cmd
 }
 
 type RunnerOptions struct {
 	branchConfFile    string
+	branchMergeFile   string // Secondary metadata file to merge into the primary
 	branchRepoDir     string
 	command           int64
 	loggingDir        string
@@ -146,6 +155,7 @@ type RunnerOptions struct {
 	branchSuffix      string // Suffix to append to remote branch names when pushing
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 	processors        string // Comma-separated list of processor function names to run
+	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
 }
 
 func (opts *RunnerOptions) validateFlags() error {
@@ -274,6 +284,10 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	}
 
 	switch opts.command {
+	case -6:
+		if err := filterMetadata(opts, branches); err != nil {
+			log.Fatalf("unnable to filter metadata: %v", err)
+		}
 	case cmdDeleteGitBranch: // -5
 		for idx, branch := range branches.Branches {
 			log.Printf("Delete GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
@@ -301,6 +315,10 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			*/
 			log.Printf("Create GitHub Branch: %d name: %s, branch: %s\r\n", idx, branch.Name, branch.Local)
 			createGithubBranch(opts, branch)
+		}
+	case cmdMergeMetadata: // 3
+		if err := mergeMetadata(opts, branches); err != nil {
+			log.Fatalf("unnable to merge metadata: %v", err)
 		}
 	case cmdEnableGCPAPIs: // 4
 		for idx, branch := range branches.Branches {
@@ -367,7 +385,9 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: "{{group}}: Add proto generation to makefile", AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
 		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: "chore: Build and add generated proto files"}})
-	case cmdRunMockTests: // 16
+	case cmdCaptureMockOutput: // 16
+		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: runMockgcpTests, CommitMsgTemplate: "{{kind}}: Capture mock golden output"}})
+	case cmdRunAndFixMockTests: // 17
 		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 10, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
 		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "{{kind}}: Add generated types"}})
@@ -412,11 +432,11 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
 		})
 	case cmdCaptureGoldenRealGCPOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests"}})
+		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests", AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenRealGCPOutput: // 46
 		processBranches(ctx, opts, branches.Branches, "Fix Real GCP Tests", []BranchProcessor{{Fn: fixGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix real GCP tests", VerifyFn: runGoldenRealGCPTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdCaptureGoldenMockOutput: // 47
-		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests"}})
+		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests", AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenMockOutput: // 48
 		processBranches(ctx, opts, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix mock GCP tests", VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	default:
@@ -431,7 +451,7 @@ func printHelp() {
 	log.Println("\t0 - Print help")
 	log.Println("\t1 - [Validate] Repo directory and metadata")
 	log.Println("\t2 - [Branch] Create the local github branches from the metadata")
-	log.Println("\t3 - [Branch] Moved to -5. Delete the local github branches from the metadata")
+	log.Println("\t3 - [Branch] Merge updated metadata file into main metadata file")
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
@@ -444,7 +464,8 @@ func printHelp() {
 	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
-	log.Println("\t16 - [Mock] Run and Fix mockgcp tests in each github branch")
+	log.Println("\t16 - [Mock] Capture mock golden output for each branch")
+	log.Println("\t17 - [Mock] Run and Fix mockgcp tests in each github branch")
 	log.Println("\t20 - [CRD] Generate Types for each branch")
 	log.Println("\t21 - [CRD] Adjust the types for each branch")
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
@@ -479,13 +500,14 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	nameMap := make(map[string]Branch)
 	gitMap := make(map[string]string)
 	grMap := make(map[string]Branch)
+	kindMap := make(map[string]string)
 	for idx, branch := range branches.Branches {
 		if branch.Command != "" {
 			if existing, ok := gcloudMap[branch.Command]; ok {
-				log.Printf("Command uniqueness constraint between %s and (%d)%s\r",
-					existing, idx, branch.Name)
+				log.Printf("Command (%s) uniqueness constraint between %s and (%d)%s\r",
+					branch.Command, existing, idx, branch.Name)
 			}
-			gitMap[branch.Command] = branch.Name
+			gcloudMap[branch.Command] = branch.Name
 		}
 		if existing, ok := nameMap[branch.Name]; ok {
 			log.Printf("Name uniqueness constraint between %s at and %s\r",
@@ -505,6 +527,14 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 				existing.Name, idx, branch.Name)
 		}
 		grMap[gr] = branch
+
+		if branch.Kind != "" {
+			if existing, ok := kindMap[branch.Kind]; ok {
+				log.Printf("Kind uniqueness (%s) constraint between names: %s and (%d)%s\r",
+					branch.Kind, existing, idx, branch.Name)
+			}
+		}
+		kindMap[branch.Kind] = branch.Name
 	}
 
 	// Fix the data and write back
@@ -624,22 +654,6 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	*/
 }
 
-const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-`
-
 func fixMetadata(opts *RunnerOptions, branches Branches, what string, modifier BranchModifier) {
 	workDir := filepath.Join(opts.branchRepoDir, ".build", "third_party", "googleapis")
 	var newBranches Branches
@@ -648,16 +662,7 @@ func fixMetadata(opts *RunnerOptions, branches Branches, what string, modifier B
 		newBranch := modifier(opts, branch, workDir)
 		newBranches.Branches = append(newBranches.Branches, newBranch)
 	}
-	data := []byte(COPYRIGHT_HEADER)
-	yamlData, err := yaml.Marshal(newBranches)
-	if err != nil {
-		log.Fatal(err)
-	}
-	data = append(data, yamlData...)
-	err = os.WriteFile("branches-new.yaml", data, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	writeBranchesStableOrder(newBranches, "branches-new.yaml")
 }
 
 func inferProtoPathModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {
@@ -856,17 +861,65 @@ func splitMetadata(opts *RunnerOptions, branches Branches) {
 	}
 	// Hard coding splitting into 7 files
 	for cntr := 0; cntr < 7; cntr++ {
-		data := []byte(COPYRIGHT_HEADER)
-		yamlData, err := yaml.Marshal(newBranches[cntr])
-		if err != nil {
-			log.Fatal(err)
+		writeBranchesStableOrder(newBranches[cntr], fmt.Sprintf("branches-%d.yaml", cntr))
+	}
+}
+
+// Filter metadata for a particular controller type.
+func filterMetadata(opts *RunnerOptions, branches Branches) error {
+	if opts.controllerFilter == "" {
+		return fmt.Errorf("filterMetadata requires that controller fitler be set")
+	}
+
+	var filteredBranch Branches
+	for _, branch := range branches.Branches {
+		if branch.Controller != opts.controllerFilter {
+			continue
 		}
-		data = append(data, yamlData...)
-		err = os.WriteFile(fmt.Sprintf("branches-%d.yaml", cntr), data, 0644)
+		filteredBranch.Branches = append(filteredBranch.Branches, branch)
+	}
+	writeBranchesStableOrder(filteredBranch, fmt.Sprintf("branches-%s.yaml", opts.controllerFilter))
+	return nil
+}
+
+func mergeMetadata(opts *RunnerOptions, branches Branches) error {
+	// Load the merge file
+	var newBranches Branches
+	{
+		b, err := os.ReadFile(opts.branchMergeFile) // For read access.
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("reading branch config file %q: %w", opts.branchMergeFile, err)
+		}
+
+		if err := yaml.Unmarshal(b, &newBranches); err != nil {
+			return fmt.Errorf("parsing branch config file %q: %w", opts.branchMergeFile, err)
 		}
 	}
+	log.Printf("Existing branches is size %d, merging branches is size %d", len(branches.Branches), len(newBranches.Branches))
+
+	// Ensure skip is not set in the merged data
+	// Also build the lookup table
+	branchPresent := make(map[string]bool)
+	for idx, branch := range newBranches.Branches {
+		if branch.Skip == true {
+			branch.Skip = false
+			newBranches.Branches[idx] = branch
+		}
+		branchPresent[branch.Name] = true
+	}
+
+	// Merge the new data into the old.
+	// We do this by copying in old data when absent
+	for _, branch := range branches.Branches {
+		if branchPresent[branch.Name] {
+			continue
+		}
+		newBranches.Branches = append(newBranches.Branches, branch)
+	}
+
+	// Write out the finished data
+	writeBranchesStableOrder(newBranches, "branches-new.yaml")
+	return nil
 }
 
 func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string) Branch {

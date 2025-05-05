@@ -77,6 +77,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.endTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
@@ -173,6 +174,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
+	visitor.replacePaths[".status.generatedId"] = 1111111111111111
 
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
@@ -206,12 +208,29 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// Specific to EssentialContactContact
+	visitor.replacePaths[".validateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to DataFlow
 	visitor.replacePaths[".status.jobId"] = "${jobID}"
 
 	// Specific to DataPlex
 	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.executionStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.executionStatus.latestJob.uid"] = "0123456789abcdef"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.executionStatus.latestJob.name") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "jobs":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "0123456789abcdef")
+				}
+			}
+		}
+		return s
+	})
 
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
@@ -227,6 +246,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.cloudSQL.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
 	visitor.replacePaths[".status.observedState.spark.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
 
+	// Specific to AssetSavedQuery
+	visitor.replacePaths[".status.observedState.lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+	visitor.replacePaths[".lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+
 	// Specific to BigQueryDataTransferConfig
 	if u.GetKind() == "BigQueryDataTransferConfig" {
 		visitor.replacePaths[".status.observedState.nextRunTime"] = "1970-01-01T00:00:00Z"
@@ -237,6 +260,19 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	if u.GetKind() == "DocumentAIProcessorVersion" {
 		visitor.replacePaths[".status.observedState.create_time"] = "1970-01-01T00:00:00Z"
 	}
+
+	// Specific to Datacatalog
+	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".dataCatalogTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.dataCatalogTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.dataCatalogTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".sourceSystemTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".sourceSystemTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Specific to Eventarc
+	visitor.replacePaths[".pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
+	visitor.replacePaths[".response.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
+	visitor.replacePaths[".status.observedState.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
 
 	// Specific to WorkflowsWorkflow
 	visitor.replacePaths[".status.observedState.revisionId"] = "workflows-revision-id-placeholder"
@@ -432,24 +468,30 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			if n >= 3 {
+			typeName := tokens[len(tokens)-2]
+
+			switch typeName {
+			case "contacts":
+				// "projects/${projectNumber}/contacts/${contactId}"
+				needle := "contacts/" + tokens[len(tokens)-1]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, needle, "contacts/${contactId}")
+				})
+			case "rules":
 				// Get firewall policy id from firewall policy rule's externalRef and replace it
 				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
-				typeName := tokens[len(tokens)-2]
-				firewallPolicyId := tokens[len(tokens)-3]
-				if typeName == "rules" {
+				if n >= 3 {
+					firewallPolicyId := tokens[len(tokens)-3]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
 					})
 				}
-			}
-			if n >= 3 {
+			case "processorVersions":
 				// Get processor id and version id from processor version's externalRef and replace it
 				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
-				typeName := tokens[len(tokens)-2]
-				processorId := tokens[len(tokens)-3]
-				processorVersionId := tokens[len(tokens)-1]
-				if typeName == "processorVersions" {
+				if n >= 3 {
+					processorId := tokens[len(tokens)-3]
+					processorVersionId := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, processorId, "${processorID}")
 					})
@@ -1088,6 +1130,10 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Dataplex
 	visitor.replacePaths[".response.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.serviceRevision.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".response.serviceRevision.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".serviceRevision.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".serviceRevision.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".response.assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"

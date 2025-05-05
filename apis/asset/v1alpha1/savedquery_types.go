@@ -23,11 +23,8 @@ import (
 var AssetSavedQueryGVK = GroupVersion.WithKind("AssetSavedQuery")
 
 type Parent struct {
-	// +optional
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
-	// +optional
-	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
-	// +optional
+	ProjectRef      *refv1beta1.ProjectRef      `json:"projectRef,omitempty"`
+	FolderRef       *refv1beta1.FolderRef       `json:"folderRef,omitempty"`
 	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 }
 
@@ -103,7 +100,6 @@ type IAMPolicyAnalysisQuery struct {
 // AssetSavedQuerySpec defines the desired state of AssetSavedQuery
 // +kcc:proto=google.cloud.asset.v1.SavedQuery
 type AssetSavedQuerySpec struct {
-	// +required
 	Parent Parent `json:",inline"`
 	// The AssetSavedQuery name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

@@ -14,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: IAMPolicy
+    listKind: IAMPolicyList
     plural: iampolicies
     shortNames:
     - gcpiampolicy
@@ -134,7 +135,7 @@ spec:
                 type: array
               resourceRef:
                 description: Immutable. Required. The GCP resource to set the IAM
-                  policy on.
+                  policy on (e.g. organization, project...)
                 oneOf:
                 - not:
                     required:
@@ -161,10 +162,13 @@ spec:
                       - external
                 properties:
                   apiVersion:
+                    description: APIVersion of the referenced resource
                     type: string
                   external:
+                    description: The external name of the referenced resource
                     type: string
                   kind:
+                    description: Kind of the referenced resource
                     type: string
                   name:
                     type: string
@@ -219,9 +223,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

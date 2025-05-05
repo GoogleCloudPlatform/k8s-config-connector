@@ -180,11 +180,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 
-	// Specific to BigTable
-	addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
-
 	// Specific to Sql
 	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
@@ -296,8 +291,23 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 		if id != "" {
-			x.OperationIDs[id] = true
+			// Avoid marking some well-known values that are never operationIDs
+			switch id {
+			case "projects":
+			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			default:
+				x.OperationIDs[id] = true
+			}
 		}
+	}
+
+	// Replace any operation IDs that appear in URLs
+	for _, event := range events {
+		u := event.Request.URL
+		for operationID := range x.OperationIDs {
+			u = strings.ReplaceAll(u, operationID, "${operationID}")
+		}
+		event.Request.URL = u
 	}
 
 	for _, event := range events {

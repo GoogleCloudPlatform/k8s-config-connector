@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.monitoring.v3.AlertPolicyService
+// proto.message: google.monitoring.v3.AlertPolicy
+
 package mockmonitoring
 
 import (
@@ -25,9 +29,11 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
@@ -50,6 +56,31 @@ func (s *AlertPolicyService) GetAlertPolicy(ctx context.Context, req *pb.GetAler
 	}
 
 	return obj, nil
+}
+
+func (s *AlertPolicyService) ListAlertPolicies(ctx context.Context, req *pb.ListAlertPoliciesRequest) (*pb.ListAlertPoliciesResponse, error) {
+	name, err := s.parseAlertPolicyName(req.GetName() + "/alertPolicies/" + "placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	var alertPolicies []*pb.AlertPolicy
+
+	findKind := (&pb.AlertPolicy{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		alertPolicy := obj.(*pb.AlertPolicy)
+		alertPolicies = append(alertPolicies, alertPolicy)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListAlertPoliciesResponse{
+		AlertPolicies: alertPolicies,
+		TotalSize:     int32(len(alertPolicies)),
+	}, nil
 }
 
 func (s *AlertPolicyService) CreateAlertPolicy(ctx context.Context, req *pb.CreateAlertPolicyRequest) (*pb.AlertPolicy, error) {
@@ -75,6 +106,7 @@ func (s *AlertPolicyService) CreateAlertPolicy(ctx context.Context, req *pb.Crea
 		MutateTime: timestamppb.New(now),
 	}
 	obj.Name = fqn
+	obj.Enabled = wrapperspb.Bool(true)
 
 	for _, condition := range obj.GetConditions() {
 		conditionID := fmt.Sprintf("%d", rand.Int63())
@@ -104,7 +136,7 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 	updated := proto.Clone(existing).(*pb.AlertPolicy)
 	for _, path := range req.GetUpdateMask().GetPaths() {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			updated.DisplayName = req.GetAlertPolicy().GetDisplayName()
 		case "enabled":
 			updated.Enabled = req.GetAlertPolicy().GetEnabled()

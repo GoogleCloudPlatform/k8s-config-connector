@@ -184,11 +184,11 @@ type RoutineReference struct {
 type TableReference struct {
 	// The ID of the project containing this table.
 	// +required
-	ProjectId *string `json:"projectId,omitempty"`
+	ProjectId *string `json:"projectId"`
 
 	// The ID of the dataset containing this table.
 	// +required
-	DatasetId *string `json:"datasetId,omitempty"`
+	DatasetId *string `json:"datasetId"`
 
 	// The Id of the table. The Id can contain Unicode characters in
 	//  category L (letter), M (mark), N (number), Pc (connector, including
@@ -198,7 +198,7 @@ type TableReference struct {
 	//  of the table Id with a partition decorator, such as
 	//  `sample_table$20190123`.
 	// +required
-	TableId *string `json:"tableId,omitempty"`
+	TableId *string `json:"tableId"`
 }
 
 // +kcc:proto=google.protobuf.BoolValue

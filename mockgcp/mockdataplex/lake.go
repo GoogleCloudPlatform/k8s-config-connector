@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,12 +39,7 @@ import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 )
 
-type DataplexV1 struct {
-	*MockService
-	pb.UnimplementedDataplexServiceServer
-}
-
-func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
+func (s *DataplexService) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.Lake, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err
@@ -62,7 +57,7 @@ func (s *DataplexV1) GetLake(ctx context.Context, req *pb.GetLakeRequest) (*pb.L
 	return obj, nil
 }
 
-func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/lakes/" + req.LakeId
 	name, err := s.parseLakeName(reqName)
 	if err != nil {
@@ -106,7 +101,7 @@ func (s *DataplexV1) CreateLake(ctx context.Context, req *pb.CreateLakeRequest) 
 	})
 }
 
-func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.GetLake().GetName())
 	if err != nil {
 		return nil, err
@@ -155,14 +150,14 @@ func (s *DataplexV1) UpdateLake(ctx context.Context, req *pb.UpdateLakeRequest) 
 	})
 }
 
-func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
+func (s *DataplexService) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*pb.ListLakesResponse, error) {
 	response := &pb.ListLakesResponse{}
 
-	AutoscalingPolicyKind := (&pb.Lake{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, AutoscalingPolicyKind, storage.ListOptions{}, func(obj proto.Message) error {
-		autoScalingPolicy := obj.(*pb.Lake)
-		if strings.HasPrefix(autoScalingPolicy.GetName(), req.Parent) {
-			response.Lakes = append(response.Lakes, autoScalingPolicy)
+	lakeKind := (&pb.Lake{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, lakeKind, storage.ListOptions{}, func(obj proto.Message) error {
+		lake := obj.(*pb.Lake)
+		if strings.HasPrefix(lake.GetName(), req.Parent) {
+			response.Lakes = append(response.Lakes, lake)
 		}
 		return nil
 	}); err != nil {
@@ -171,7 +166,7 @@ func (s *DataplexV1) ListLakes(ctx context.Context, req *pb.ListLakesRequest) (*
 	return response, nil
 }
 
-func (s *DataplexV1) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
+func (s *DataplexService) DeleteLake(ctx context.Context, req *pb.DeleteLakeRequest) (*longrunning.Operation, error) {
 	name, err := s.parseLakeName(req.Name)
 	if err != nil {
 		return nil, err

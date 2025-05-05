@@ -1,0 +1,1 @@
+- exec: gcloud compute zones describe us-central1-a

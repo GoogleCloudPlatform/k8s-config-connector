@@ -95,7 +95,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
@@ -143,7 +142,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
@@ -203,9 +201,10 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
-		./third_party/googleapis/google/cloud/workflows/v1/*.proto \
+		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
+		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/workflows/executions/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto
+		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto	
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
@@ -244,8 +243,8 @@ generate-protos-from-openapi:
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
 
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
-	mkdir -p apis/google/apps/cloudidentity/groups/v1beta1/
-	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.groups.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/groups/v1beta1//service.proto
+	mkdir -p apis/google/apps/cloudidentity/v1beta1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto
 
 	wget -O temp/workflows-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/workflows/v1/workflows-api.json
 	mkdir -p apis/mockgcp/cloud/workflows/v1/

@@ -43,7 +43,7 @@ func (s *DataCatalogV1) GetEntryGroup(ctx context.Context, req *pb.GetEntryGroup
 	obj := &pb.EntryGroup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "EntryGroup %%q not found: %s", fqn)
+			return nil, status.Errorf(codes.PermissionDenied, "No permission to get Entry Group \"%s\" or it does not exist.", name.EntryGroupName)
 		}
 		return nil, err
 	}
@@ -76,6 +76,8 @@ func (s *DataCatalogV1) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEntr
 			switch path {
 			case "description":
 				obj.Description = req.EntryGroup.Description
+			case "displayName":
+				obj.DisplayName = req.EntryGroup.DisplayName
 				// Add other updatable fields here.
 			}
 		}
@@ -89,7 +91,6 @@ func (s *DataCatalogV1) UpdateEntryGroup(ctx context.Context, req *pb.UpdateEntr
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	return obj, nil
 }
 

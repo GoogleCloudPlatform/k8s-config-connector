@@ -26,8 +26,11 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"sort"
 	"strings"
 	"time"
+
+	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -41,7 +44,8 @@ var commandMap = map[int64]string{
 	cmdGenerateMockGo:               "generatemockgo",
 	cmdAddServiceRoundTrip:          "addserviceroundtrip",
 	cmdAddProtoMakefile:             "addprotomakefile",
-	cmdRunMockTests:                 "runmocktests",
+	cmdCaptureMockOutput:            "capturemockoutput",
+	cmdRunAndFixMockTests:           "runandfixmocktests",
 	cmdGenerateTypes:                "generatetypes",
 	cmdGenerateCRD:                  "generatecrd",
 	cmdGenerateFuzzer:               "generatefuzzer",
@@ -937,4 +941,54 @@ func filterGoFilePaths(repoRootPath string, inputPaths []string) []string {
 		}
 	}
 	return goFilePaths
+}
+
+const COPYRIGHT_HEADER string = `# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+`
+
+type branchAscending []Branch
+
+func (v branchAscending) Len() int {
+	return len(v)
+}
+
+func (v branchAscending) Swap(i, j int) {
+	v[i], v[j] = v[j], v[i]
+}
+
+func (v branchAscending) Less(i, j int) bool {
+	if v[i].Group != v[j].Group {
+		return v[i].Group < v[j].Group
+	}
+	if v[i].Kind != v[j].Kind {
+		return v[i].Kind < v[j].Kind
+	}
+	return v[i].Name < v[j].Name
+}
+
+func writeBranchesStableOrder(branches Branches, fileName string) {
+	sort.Sort(branchAscending(branches.Branches))
+	data := []byte(COPYRIGHT_HEADER)
+	yamlData, err := yaml.Marshal(branches)
+	if err != nil {
+		log.Fatal(err)
+	}
+	data = append(data, yamlData...)
+	err = os.WriteFile(fileName, data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

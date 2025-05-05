@@ -1,0 +1,278 @@
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FphraseSets%2Fspeechphraseset-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Unable to find PhraseSet speechphraseset-minimal-${uniqueId} from project ${projectNumber}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets?%24alt=json%3Benum-encoding%3Dint&phraseSetId=speechphraseset-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "Initial description",
+  "phrases": [
+    {
+      "boost": 1,
+      "value": "initial phrase"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createPhraseSetRequest": {
+      "parent": "projects/${projectNumber}/locations/global",
+      "phraseSet": {
+        "displayName": "Initial description",
+        "phrases": [
+          {
+            "boost": 1,
+            "value": "initial phrase"
+          }
+        ]
+      },
+      "phraseSetId": "speechphraseset-minimal-${uniqueId}"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.CreatePhraseSet",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.PhraseSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Initial description",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "phrases": [
+      {
+        "boost": 1,
+        "value": "initial phrase"
+      }
+    ],
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FphraseSets%2Fspeechphraseset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Initial description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+  "phrases": [
+    {
+      "boost": 1,
+      "value": "initial phrase"
+    }
+  ],
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=phrases%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: phrase_set.name=projects%2F${projectId}%2Flocations%2Fglobal%2FphraseSets%2Fspeechphraseset-minimal-${uniqueId}
+
+{
+  "displayName": "Updated description",
+  "name": "projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+  "phrases": [
+    {
+      "boost": 2,
+      "value": "updated phrase"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.UpdatePhraseSet",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "updatePhraseSetRequest": {
+      "phraseSet": {
+        "displayName": "Updated description",
+        "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+        "phrases": [
+          {
+            "boost": 2,
+            "value": "updated phrase"
+          }
+        ]
+      },
+      "updateMask": "phrases,displayName"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.PhraseSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "phrases": [
+      {
+        "boost": 2,
+        "value": "updated phrase"
+      }
+    ],
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FphraseSets%2Fspeechphraseset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+  "phrases": [
+    {
+      "boost": 2,
+      "value": "updated phrase"
+    }
+  ],
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://speech.googleapis.com/v2/projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FphraseSets%2Fspeechphraseset-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletePhraseSetRequest": {
+      "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}"
+    },
+    "method": "google.cloud.speech.v2.Speech.DeletePhraseSet",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.PhraseSet",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectNumber}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}",
+    "phrases": [
+      {
+        "boost": 2,
+        "value": "updated phrase"
+      }
+    ],
+    "state": 4,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

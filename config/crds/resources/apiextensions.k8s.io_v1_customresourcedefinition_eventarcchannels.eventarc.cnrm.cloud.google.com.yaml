@@ -126,7 +126,7 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              provider:
+              providerRef:
                 description: The name of the event provider (e.g. Eventarc SaaS partner)
                   associated with the channel. This provider will be granted permissions
                   to publish events to the channel.
@@ -162,6 +162,7 @@ spec:
                 type: string
             required:
             - location
+            - projectRef
             type: object
           status:
             description: EventarcChannelStatus defines the config connector machine
