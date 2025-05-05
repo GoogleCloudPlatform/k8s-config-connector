@@ -884,6 +884,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 					addReplacement("spark.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 
+					// Specific to BigQueryTable
+					addReplacement("materializedView.lastRefreshTime", "123456789")
+					addReplacement("materializedViewStatus.refreshWatermark", "2024-04-01T12:34:56.123456Z")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
