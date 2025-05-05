@@ -95,9 +95,9 @@ branches:
       package: google.identity.accesscontextmanager.v1
       proto: AccessLevel
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
-      proto-service: ""
+      proto-service: google.identity.accesscontextmanager.v1.AccessContextManager
       proto-msg: google.identity.accesscontextmanager.v1.AccessLevel
-      host-name: ""
+      host-name: accesscontextmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: accesscontextmanager-accesscontextmanageraccesspolicy
@@ -112,9 +112,9 @@ branches:
       package: google.identity.accesscontextmanager.v1
       proto: AccessPolicy
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
-      proto-service: ""
+      proto-service: google.identity.accesscontextmanager.v1.AccessContextManager
       proto-msg: google.identity.accesscontextmanager.v1.AccessPolicy
-      host-name: ""
+      host-name: accesscontextmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: accesscontextmanager-accesscontextmanagerserviceperimeter
@@ -129,9 +129,9 @@ branches:
       package: google.identity.accesscontextmanager.v1
       proto: ServicePerimeter
       proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
-      proto-service: ""
+      proto-service: google.identity.accesscontextmanager.v1.AccessContextManager
       proto-msg: google.identity.accesscontextmanager.v1.ServicePerimeter
-      host-name: ""
+      host-name: accesscontextmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: accesscontextmanager-accesscontextmanagerserviceperimeterresource
@@ -143,12 +143,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: AccessContextManagerServicePerimeterResource
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.identity.accesscontextmanager.v1
+      proto: ServicePerimeter
+      proto-path: google/identity/accesscontextmanager/v1/access_context_manager.proto
+      proto-service: google.identity.accesscontextmanager.v1.AccessContextManager
+      proto-msg: google.identity.accesscontextmanager.v1.ServicePerimeter
+      host-name: accesscontextmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: accesscontextmanager-accesscontextmanagergcpuseraccessbindings
@@ -1652,12 +1652,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: AlloyDBBackup
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.alloydb.v1
+      proto: Backup
+      proto-path: google/cloud/alloydb/v1/resources.proto
+      proto-service: google.cloud.alloydb.v1.AlloyDBAdmin
+      proto-msg: google.cloud.alloydb.v1.Backup
+      host-name: alloydb.googleapis.com
       notes: []
       apis-enabled: []
     - name: alloydb-alloydbcluster
@@ -1669,12 +1669,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: AlloyDBCluster
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.alloydb.v1
+      proto: Cluster
+      proto-path: google/cloud/alloydb/v1/resources.proto
+      proto-service: google.cloud.alloydb.v1.AlloyDBAdmin
+      proto-msg: google.cloud.alloydb.v1.Cluster
+      host-name: alloydb.googleapis.com
       notes: []
       apis-enabled: []
     - name: alloydb-alloydbuser
@@ -1686,12 +1686,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: AlloyDBUser
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.alloydb.v1
+      proto: Backup
+      proto-path: google/cloud/alloydb/v1/resources.proto
+      proto-service: google.cloud.alloydb.v1.AlloyDBAdmin
+      proto-msg: google.cloud.alloydb.v1.User
+      host-name: alloydb.googleapis.com
       notes: []
       apis-enabled: []
     - name: alloydb-backup
@@ -3563,10 +3563,11 @@ branches:
       package: google.devtools.artifactregistry.v1
       proto: Repository
       proto-path: google/devtools/artifactregistry/v1/service.proto
-      proto-service: ""
+      proto-service: google.devtools.artifactregistry.v1.ArtifactRegistry
       proto-msg: google.devtools.artifactregistry.v1.Repository
-      host-name: ""
-      notes: []
+      host-name: artifactregistry.googleapis.com
+      notes:
+        - Terraform controller is using google.devtools.artifactregistry.v1beta1
       apis-enabled: []
     - name: artifactregistry-rule
       local: resource-artifactregistry-rule
@@ -4604,12 +4605,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: BigQueryDataset
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.bigquery.v2
+      proto: Dataset
+      proto-path: google/cloud/bigquery/v2/dataset.proto
+      proto-service: google.cloud.bigquery.v2.DatasetService
+      proto-msg: google.cloud.bigquery.v2.Dataset
+      host-name: bigquery.googleapis.com
       notes: []
       apis-enabled: []
     - name: bigquery-bigqueryjob
@@ -4621,12 +4622,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: BigQueryJob
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.bigquery.v2
+      proto: Job
+      proto-path: google/cloud/bigquery/v2/job.proto
+      proto-service: google.cloud.bigquery.v2.JobService
+      proto-msg: google.cloud.bigquery.v2.Job
+      host-name: bigquery.googleapis.com
       notes: []
       apis-enabled: []
     - name: bigquery-bigqueryroutine
@@ -4638,12 +4639,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: BigQueryRoutine
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.bigquery.v2
+      proto: Routine
+      proto-path: google/cloud/bigquery/v2/routine.proto
+      proto-service: google.cloud.bigquery.v2.RoutineService
+      proto-msg: google.cloud.bigquery.v2.Routine
+      host-name: bigquery.googleapis.com
       notes: []
       apis-enabled: []
     - name: bigquery-bigquerytable
@@ -4655,12 +4656,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: BigQueryTable
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.bigquery.v2
+      proto: Table
+      proto-path: google/cloud/bigquery/v2/table.proto
+      proto-service: google.cloud.bigquery.v2.TableService
+      proto-msg: google.cloud.bigquery.v2.Table
+      host-name: bigquery.googleapis.com
       notes: []
       apis-enabled: []
     - name: bigquery-assignment
@@ -5239,12 +5240,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: BigtableGCPolicy
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.bigtable.admin.v2
+      proto: AppProfile
+      proto-path: google/bigtable/admin/v2/bigtable_instance_admin.proto
+      proto-service: google.bigtable.admin.v2.Bigtable
+      proto-msg: google.bigtable.admin.v2.AppProfile
+      host-name: bigtableadmin.googleapis.com
       notes: []
       apis-enabled: []
     - name: bigtable-hottablet
@@ -5576,9 +5577,9 @@ branches:
       package: google.cloud.certificatemanager.v1
       proto: Certificate
       proto-path: google/cloud/certificatemanager/v1/certificate_manager.proto
-      proto-service: ""
+      proto-service: google.cloud.certificatemanager.v1.CertificateManager
       proto-msg: google.cloud.certificatemanager.v1.Certificate
-      host-name: ""
+      host-name: certificatemanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: certificatemanager-certificateissuanceconfig
@@ -5610,9 +5611,9 @@ branches:
       package: google.cloud.certificatemanager.v1
       proto: CertificateMap
       proto-path: google/cloud/certificatemanager/v1/certificate_manager.proto
-      proto-service: ""
+      proto-service: google.cloud.certificatemanager.v1.CertificateManager
       proto-msg: google.cloud.certificatemanager.v1.CertificateMap
-      host-name: ""
+      host-name: certificatemanager.googleapis.com
       notes:
         - No gcloud command found
       apis-enabled: []
@@ -5628,9 +5629,9 @@ branches:
       package: google.cloud.certificatemanager.v1
       proto: CertificateMapEntry
       proto-path: google/cloud/certificatemanager/v1/certificate_manager.proto
-      proto-service: ""
+      proto-service: google.cloud.certificatemanager.v1.CertificateManager
       proto-msg: google.cloud.certificatemanager.v1.CertificateMapEntry
-      host-name: ""
+      host-name: certificatemanager.googleapis.com
       notes:
         - No gcloud command found
       apis-enabled: []
@@ -6054,12 +6055,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: CloudBuildTrigger
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.devtools.cloudbuild.v1
+      proto: BuildTrigger
+      proto-path: google/devtools/cloudbuild/v1/cloudbuild.proto
+      proto-service: google.devtools.cloudbuild.v1.CloudBuild
+      proto-msg: google.devtools.cloudbuild.v1.BuildTrigger
+      host-name: cloudbuild.googleapis.com
       notes: []
       apis-enabled: []
     - name: cloudbuild-workerpool
@@ -6471,7 +6472,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes:
+        - Could not find a proto for cloudidentity.googleapis.com
       apis-enabled: []
     - name: cloudids-cloudidsendpoint
       local: resource-cloudids-cloudidsendpoint
@@ -6482,12 +6484,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: CloudIDSEndpoint
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.ids.v1
+      proto: Endpoint
+      proto-path: google/cloud/ids/v1/ids.proto
+      proto-service: google.cloud.ids.v1.IDS
+      proto-msg: google.cloud.ids.v1.Endpoint
+      host-name: ids.googleapis.com
       notes: []
       apis-enabled: []
     - name: cloudiot-cloudiotdeviceregistries
@@ -7306,12 +7308,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeFirewall
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: Firewall
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Firewalls
+      proto-msg: google.cloud.compute.v1.Firewall
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computefirewallpolicy
@@ -7571,23 +7573,6 @@ branches:
       notes:
         - TF alpha
       apis-enabled: []
-    - name: compute-computemanagedsslcertificate
-      local: resource-compute-computemanagedsslcertificate
-      remote: resource-compute-computemanagedsslcertificate
-      command: ""
-      group: compute
-      resource: computemanagedsslcertificate
-      controller: terraform-v1beta1
-      skip: false
-      kind: ComputeManagedSSLCertificate
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: compute-computenetwork
       local: resource-compute-computenetwork
       remote: resource-compute-computenetwork
@@ -7669,10 +7654,10 @@ branches:
       skip: false
       kind: ComputeNetworkFirewallPolicy
       package: google.cloud.compute.v1
-      proto: ""
+      proto: FirewallPolicy
       proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
-      proto-msg: ""
+      proto-service: google.cloud.compute.v1.FirewallPolicies
+      proto-msg: google.cloud.compute.v1.FirewallPolicy
       host-name: compute.googleapis.com
       notes:
         - proto not found
@@ -7686,12 +7671,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeNetworkFirewallPolicyAssociation
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: FirewallPolicyAssociation
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.FirewallPolicies
+      proto-msg: google.cloud.compute.v1.FirewallPolicyAssociation
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computenetworkpeering
@@ -7704,11 +7689,11 @@ branches:
       skip: false
       kind: ComputeNetworkPeering
       package: google.cloud.compute.v1
-      proto: ""
+      proto: NetworkPeering
       proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
+      proto-service: google.cloud.compute.v1.Networks
       proto-msg: google.cloud.compute.v1.NetworkPeering
-      host-name: ""
+      host-name: compute.googleapis.com
       notes:
         - TF beta
       apis-enabled: []
@@ -7721,12 +7706,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeNodeGroup
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: NodeGroup
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.NodeGroups
+      proto-msg: google.cloud.compute.v1.NodeGroup
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computenodetemplate
@@ -7738,12 +7723,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeNodeTemplate
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: NodeTemplate
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.NodeTemplates
+      proto-msg: google.cloud.compute.v1.NodeTemplate
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computepacketmirroring
@@ -7774,10 +7759,10 @@ branches:
       skip: false
       kind: ComputeProjectMetadata
       package: google.cloud.compute.v1
-      proto: ""
+      proto: Metadata
       proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
-      proto-msg: ""
+      proto-service: google.cloud.compute.v1.Projects
+      proto-msg: google.cloud.compute.v1.Metadata
       host-name: compute.googleapis.com
       notes:
         - TF beta
@@ -7826,12 +7811,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeRegionNetworkEndpointGroup
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: NetworkEndpointGroup
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.RegionNetworkEndpointGroups
+      proto-msg: google.cloud.compute.v1.NetworkEndpointGroup
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computereservation
@@ -7915,12 +7900,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeRouterInterface
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: RouterInterface
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Routers
+      proto-msg: google.cloud.compute.v1.RouterInterface
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computerouternat
@@ -7933,11 +7918,11 @@ branches:
       skip: false
       kind: ComputeRouterNAT
       package: google.cloud.compute.v1
-      proto: ""
+      proto: RouterNat
       proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
+      proto-service: google.cloud.compute.v1.Routers
       proto-msg: google.cloud.compute.v1.RouterNat
-      host-name: ""
+      host-name: compute.googleapis.com
       notes:
         - TF beta
       apis-enabled: []
@@ -7950,12 +7935,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeRouterPeer
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.compute.v1
+      proto: RouterBgpPeer
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.Routers
+      proto-msg: google.cloud.compute.v1.RouterBgpPeer
+      host-name: compute.googleapis.com
       notes: []
       apis-enabled: []
     - name: compute-computesslcertificate
@@ -8041,12 +8026,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ComputeSharedVPCHostProject
-      package: ""
+      package: google.cloud.compute.v1
       proto: ""
-      proto-path: ""
+      proto-path: google/cloud/compute/v1/compute.proto
       proto-service: ""
       proto-msg: ""
-      host-name: ""
+      host-name: compute.googleapis.com
       notes:
         - gcloud command does not contain any of create/update/delete
         - no proto found
@@ -8062,10 +8047,10 @@ branches:
       kind: ComputeSharedVPCServiceProject
       package: ""
       proto: ""
-      proto-path: ""
+      proto-path: google/cloud/compute/v1/compute.proto
       proto-service: ""
       proto-msg: ""
-      host-name: ""
+      host-name: compute.googleapis.com
       notes:
         - gcloud command does not contain any of create/update/delete
         - no proto found
@@ -8080,9 +8065,9 @@ branches:
       skip: false
       kind: ComputeSnapshot
       package: google.cloud.compute.v1
-      proto: ""
+      proto: Snapshot
       proto-path: google/cloud/compute/v1/compute.proto
-      proto-service: ""
+      proto-service: google.cloud.compute.v1.Snapshots
       proto-msg: google.cloud.compute.v1.Snapshot
       host-name: compute.googleapis.com
       notes: []
@@ -8343,6 +8328,23 @@ branches:
       host-name: compute.googleapis.com
       notes:
         - TF beta
+      apis-enabled: []
+    - name: compute-computemanagedsslcertificate
+      local: resource-compute-computemanagedsslcertificate
+      remote: resource-compute-computemanagedsslcertificate
+      command: ""
+      group: compute
+      resource: computemanagedsslcertificate
+      controller: terraform-v1beta1
+      skip: false
+      kind: SslCertificate
+      package: google.cloud.compute.v1
+      proto: SslCertificateManagedSslCertificate
+      proto-path: google/cloud/compute/v1/compute.proto
+      proto-service: google.cloud.compute.v1.SslCertificates
+      proto-msg: google.cloud.compute.v1.SslCertificate
+      host-name: compute.googleapis.com
+      notes: []
       apis-enabled: []
     - name: confidentialcomputing-challenge
       local: resource-confidentialcomputing-challenge
@@ -8924,12 +8926,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ContainerCluster
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.container.v1
+      proto: Cluster
+      proto-path: google/container/v1/cluster_service.proto
+      proto-service: google.container.v1.ClusterManager
+      proto-msg: google.container.v1.Cluster
+      host-name: container.googleapis.com
       notes: []
       apis-enabled: []
     - name: container-containernodepool
@@ -8941,12 +8943,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ContainerNodePool
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.container.v1
+      proto: NodePool
+      proto-path: google/container/v1/cluster_service.proto
+      proto-service: google.container.v1.ClusterManager
+      proto-msg: google.container.v1.NodePool
+      host-name: container.googleapis.com
       notes: []
       apis-enabled: []
     - name: containeranalysis-containeranalysisnotes
@@ -8992,12 +8994,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ContainerAttachedCluster
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.gkemulticloud.v1
+      proto: AttachedCluster
+      proto-path: cloud/gkemulticloud/v1/attached_resources.proto
+      proto-service: google.gkemulticloud.v1.AttachedClusters
+      proto-msg: google.gkemulticloud.v1.AttachedCluster
+      host-name: gkemulticloud.googleapis.com
       notes: []
       apis-enabled: []
     - name: contentwarehouse-document
@@ -9239,9 +9241,9 @@ branches:
       package: google.cloud.datacatalog.v1
       proto: PolicyTag
       proto-path: google/cloud/datacatalog/v1/policytagmanager.proto
-      proto-service: ""
+      proto-service: google.cloud.datacatalog.v1.PolicyTagManager
       proto-msg: google.cloud.datacatalog.v1.PolicyTag
-      host-name: ""
+      host-name: datacatalog.googleapis.com
       notes:
         - No gcloud command found
       apis-enabled: []
@@ -9345,9 +9347,9 @@ branches:
       package: google.cloud.datacatalog.v1
       proto: Taxonomy
       proto-path: google/cloud/datacatalog/v1/datacatalog.proto
-      proto-service: ""
+      proto-service: google.cloud.datacatalog.v1.DataCatalog
       proto-msg: google.cloud.datacatalog.v1.Taxonomy
-      host-name: ""
+      host-name: datacatalog.googleapis.com
       notes: []
       apis-enabled: []
     - name: dataflow-dataflowsnapshots
@@ -9376,12 +9378,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: DataflowFlexTemplateJob
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.dataflow.v1beta3
+      proto: Job
+      proto-path: google/dataflow/v1beta3/jobs.proto
+      proto-service: google.dataflow.v1beta3.JobsV1Beta3
+      proto-msg: google.dataflow.v1beta3.Job
+      host-name: datacatalog.googleapis.com
       notes: []
       apis-enabled: []
     - name: dataflow-dataflowjob
@@ -9393,12 +9395,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: DataflowJob
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.dataflow.v1beta3
+      proto: Job
+      proto-path: google/dataflow/v1beta3/jobs.proto
+      proto-service: google.dataflow.v1beta3.JobsV1Beta3
+      proto-msg: google.dataflow.v1beta3.Job
+      host-name: datacatalog.googleapis.com
       notes: []
       apis-enabled: []
     - name: dataform-compilationresult
@@ -12035,8 +12037,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: dns.googleapis.com
+      notes:
+        - No proto found for dns.googleapis.com
       apis-enabled: []
     - name: dns-dnspolicy
       local: resource-dns-dnspolicy
@@ -12052,8 +12055,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: dns.googleapis.com
+      notes:
+        - No proto found for dns.googleapis.com
       apis-enabled: []
     - name: dns-dnsrecordset
       local: resource-dns-dnsrecordset
@@ -12069,8 +12073,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: dns.googleapis.com
+      notes:
+        - No proto found for dns.googleapis.com
       apis-enabled: []
     - name: documentai-documentaiprocessordefaultversions
       local: resource-documentai-documentaiprocessordefaultversions
@@ -12345,10 +12350,11 @@ branches:
       package: google.cloud.edgecontainer.v1
       proto: Cluster
       proto-path: google/cloud/edgecontainer/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.edgecontainer.v1.EdgeContainer
       proto-msg: google.cloud.edgecontainer.v1.Cluster
-      host-name: ""
-      notes: []
+      host-name: edgecontainer.googleapis.com
+      notes:
+        - Terraform controller is based on google.cloud.edgecontainer.v1beta1
       apis-enabled: []
     - name: edgecontainer-machine
       local: resource-edgecontainer-machine
@@ -12379,11 +12385,12 @@ branches:
       package: google.cloud.edgecontainer.v1
       proto: NodePool
       proto-path: google/cloud/edgecontainer/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.edgecontainer.v1.EdgeContainer
       proto-msg: google.cloud.edgecontainer.v1.NodePool
-      host-name: ""
+      host-name: edgecontainer.googleapis.com
       notes:
         - No gcloud command found
+        - Terraform controller is based on google.cloud.edgecontainer.v1beta1
       apis-enabled: []
     - name: edgecontainer-edgecontainervpnconnection
       local: resource-edgecontainer-edgecontainervpnconnection
@@ -12397,10 +12404,11 @@ branches:
       package: google.cloud.edgecontainer.v1
       proto: VpnConnection
       proto-path: google/cloud/edgecontainer/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.edgecontainer.v1.EdgeContainer
       proto-msg: google.cloud.edgecontainer.v1.VpnConnection
-      host-name: ""
-      notes: []
+      host-name: edgecontainer.googleapis.com
+      notes:
+        - Terraform controller is based on google.cloud.edgecontainer.v1beta1
       apis-enabled: []
     - name: edgenetwork-operations
       local: resource-edgenetwork-operations
@@ -12466,9 +12474,9 @@ branches:
       package: google.cloud.edgenetwork.v1
       proto: Network
       proto-path: google/cloud/edgenetwork/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.edgenetwork.v1.EdgeNetwork
       proto-msg: google.cloud.edgenetwork.v1.Network
-      host-name: ""
+      host-name: edgenetwork.googleapis.com
       notes: []
       apis-enabled: []
     - name: edgenetwork-router
@@ -12500,9 +12508,9 @@ branches:
       package: google.cloud.edgenetwork.v1
       proto: Subnet
       proto-path: google/cloud/edgenetwork/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.edgenetwork.v1.EdgeNetwork
       proto-msg: google.cloud.edgenetwork.v1.Subnet
-      host-name: ""
+      host-name: edgenetwork.googleapis.com
       notes: []
       apis-enabled: []
     - name: edgenetwork-zone
@@ -13279,9 +13287,9 @@ branches:
       package: google.firestore.admin.v1
       proto: Index
       proto-path: google/firestore/admin/v1/firestore_admin.proto
-      proto-service: ""
+      proto-service: google.firestore.admin.v1.FirestoreAdmin
       proto-msg: google.firestore.admin.v1.Index
-      host-name: ""
+      host-name: firestore.googleapis.com
       notes:
         - already supported as a v1beta1 KCC resource
       apis-enabled:
@@ -14078,12 +14086,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: IAMAccessBoundaryPolicy
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.iam.v3
+      proto: PrincipalAccessBoundaryPolicy
+      proto-path: google/iam/v3/principal_access_boundary_policy_resources.proto
+      proto-service: google.iam.v3.PrincipalAccessBoundaryPolicies
+      proto-msg: google.iam.v3.PrincipalAccessBoundaryPolicy
+      host-name: iam.googleapis.com
       notes: []
       apis-enabled: []
     - name: iam-customrole
@@ -14095,12 +14103,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: IAMCustomRole
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.iam.admin.v1
+      proto: Role
+      proto-path: google/iam/admin/v1/iam.proto
+      proto-service: google.iam.admin.v1.IAM
+      proto-msg: google.iam.admin.v1.Role
+      host-name: iam.googleapis.com
       notes: []
       apis-enabled: []
     - name: iam-policybinding
@@ -14149,9 +14157,9 @@ branches:
       package: google.iam.admin.v1
       proto: ServiceAccount
       proto-path: google/iam/admin/v1/iam.proto
-      proto-service: ""
+      proto-service: google.iam.admin.v1.IAM
       proto-msg: google.iam.admin.v1.ServiceAccount
-      host-name: ""
+      host-name: iam.googleapis.com
       notes: []
       apis-enabled: []
     - name: iam-serviceaccountkey
@@ -14166,9 +14174,9 @@ branches:
       package: google.iam.admin.v1
       proto: ServiceAccountKey
       proto-path: google/iam/admin/v1/iam.proto
-      proto-service: ""
+      proto-service: google.iam.admin.v1.IAM
       proto-msg: google.iam.admin.v1.ServiceAccountKey
-      host-name: ""
+      host-name: iam.googleapis.com
       notes: []
       apis-enabled: []
     - name: iam-workloadidentitypool
@@ -14761,9 +14769,9 @@ branches:
       package: google.cloud.kms.v1
       proto: CryptoKey
       proto-path: google/cloud/kms/v1/autokey.proto
-      proto-service: ""
+      proto-service: google.cloud.kms.v1.Autokey
       proto-msg: google.cloud.kms.v1.CryptoKey
-      host-name: ""
+      host-name: cloudkms.googleapis.com
       notes: []
       apis-enabled: []
     - name: kms-cryptokeyversion
@@ -14869,9 +14877,9 @@ branches:
       package: google.cloud.kms.v1
       proto: KeyRing
       proto-path: google/cloud/kms/v1/autokey.proto
-      proto-service: ""
+      proto-service: google.cloud.kms.v1.Autokey
       proto-msg: google.cloud.kms.v1.KeyRing
-      host-name: ""
+      host-name: cloudkms.googleapis.com
       notes: []
       apis-enabled: []
     - name: kms-protectedresource
@@ -15165,9 +15173,9 @@ branches:
       package: google.logging.v2
       proto: LogSink
       proto-path: google/logging/v2/logging.proto
-      proto-service: ""
+      proto-service: google.logging.v2.LoggingServiceV2
       proto-msg: google.logging.v2.LogSink
-      host-name: ""
+      host-name: logging.googleapis.com
       notes: []
       apis-enabled: []
     - name: logging-logview
@@ -15337,10 +15345,11 @@ branches:
       package: google.cloud.memcache.v1
       proto: Instance
       proto-path: google/cloud/memcache/v1/cloud_memcache.proto
-      proto-service: ""
+      proto-service: google.cloud.memcache.v1.CloudMemcache
       proto-msg: google.cloud.memcache.v1.Instance
-      host-name: ""
-      notes: []
+      host-name: memcache.googleapis.com
+      notes:
+        - Terraform controller is based on google.cloud.memcache.v1beta2
       apis-enabled: []
     - name: memorystore-memorystoreinstances
       local: resource-memorystore-memorystoreinstances
@@ -15914,9 +15923,9 @@ branches:
       package: google.monitoring.v3
       proto: AlertPolicy
       proto-path: google/monitoring/v3/alert_service.proto
-      proto-service: ""
+      proto-service: google.monitoring.v3.AlertPolicyService
       proto-msg: google.monitoring.v3.AlertPolicy
-      host-name: ""
+      host-name: monitoring.googleapis.com
       notes:
         - No gcloud command found
       apis-enabled: []
@@ -16001,9 +16010,9 @@ branches:
       package: google.monitoring.v3
       proto: NotificationChannel
       proto-path: google/monitoring/v3/notification_service.proto
-      proto-service: ""
+      proto-service: google.monitoring.v3.NotificationChannelService
       proto-msg: google.monitoring.v3.NotificationChannel
-      host-name: ""
+      host-name: monitoring.googleapis.com
       notes: []
       apis-enabled: []
     - name: monitoring-notificationchanneldescriptor
@@ -18752,9 +18761,9 @@ branches:
       package: google.pubsub.v1
       proto: Subscription
       proto-path: google/pubsub/v1/pubsub.proto
-      proto-service: ""
+      proto-service: google.pubsub.v1.Subscriber
       proto-msg: google.pubsub.v1.Subscription
-      host-name: ""
+      host-name: pubsub.googleapis.com
       notes: []
       apis-enabled: []
     - name: pubsub-topic
@@ -18769,9 +18778,9 @@ branches:
       package: google.pubsub.v1
       proto: Topic
       proto-path: google/pubsub/v1/pubsub.proto
-      proto-service: ""
+      proto-service: google.pubsub.v1.Publisher
       proto-msg: google.pubsub.v1.Topic
-      host-name: ""
+      host-name: pubsub.googleapis.com
       notes: []
       apis-enabled: []
     - name: pubsublite-pubsublitereservation
@@ -19232,9 +19241,9 @@ branches:
       package: google.cloud.redis.v1
       proto: Instance
       proto-path: google/cloud/redis/v1/cloud_redis.proto
-      proto-service: ""
+      proto-service: google.cloud.redis.v1.CloudRedis
       proto-msg: google.cloud.redis.v1.Instance
-      host-name: ""
+      host-name: redis.googleapis.com
       notes: []
       apis-enabled: []
     - name: remoteworkers-botsession
@@ -19303,11 +19312,11 @@ branches:
       package: google.cloud.resourcemanager.v3
       proto: Folder
       proto-path: google/cloud/resourcemanager/v3/folders.proto
-      proto-service: ""
+      proto-service: google.cloud.resourcemanager.v3.Folders
       proto-msg: google.cloud.resourcemanager.v3.Folder
-      host-name: ""
+      host-name: cloudresourcemanager.googleapis.com
       notes:
-        - Terraform BETA
+        - Terraform controller is built against google.cloud.resourcemanager.v2
       apis-enabled: []
     - name: resourcemanager-project
       local: resource-resourcemanager-project
@@ -19321,11 +19330,12 @@ branches:
       package: google.cloud.resourcemanager.v3
       proto: Project
       proto-path: google/cloud/resourcemanager/v3/projects.proto
-      proto-service: ""
+      proto-service: google.cloud.resourcemanager.v3.Projects
       proto-msg: google.cloud.resourcemanager.v3.Project
-      host-name: ""
+      host-name: cloudresourcemanager.googleapis.com
       notes:
         - No gcloud command found
+        - Terraform controller is built against google.cloud.resourcemanager.v1
       apis-enabled: []
     - name: resourcemanager-resourcemanagerlien
       local: resource-resourcemanager-resourcemanagerlien
@@ -19341,8 +19351,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: cloudresourcemanager.googleapis.com
+      notes:
+        - Proto is part of the V1 proto which is missing
       apis-enabled: []
     - name: resourcemanager-organization
       local: resource-resourcemanager-organization
@@ -19377,7 +19388,8 @@ branches:
       proto-service: ""
       proto-msg: ""
       host-name: ""
-      notes: []
+      notes:
+        - Proto is part of the V1 proto which is missing
       apis-enabled: []
     - name: resourcemanager-tagbinding
       local: resource-resourcemanager-tagbinding
@@ -19822,9 +19834,9 @@ branches:
       package: google.cloud.run.v2
       proto: Job
       proto-path: google/cloud/run/v2/job.proto
-      proto-service: ""
+      proto-service: google.cloud.run.v2.Jobs
       proto-msg: google.cloud.run.v2.Job
-      host-name: ""
+      host-name: run.googleapis.com
       notes: []
       apis-enabled: []
     - name: run-revision
@@ -19859,9 +19871,9 @@ branches:
       package: google.cloud.run.v2
       proto: Service
       proto-path: google/cloud/run/v2/service.proto
-      proto-service: ""
+      proto-service: google.cloud.run.v2.Services
       proto-msg: google.cloud.run.v2.Service
-      host-name: ""
+      host-name: run.googleapis.com
       notes: []
       apis-enabled: []
     - name: run-task
@@ -19911,9 +19923,9 @@ branches:
       package: google.cloud.secretmanager.v1
       proto: Secret
       proto-path: google/cloud/secretmanager/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.secretmanager.v1.SecretManagerService
       proto-msg: google.cloud.secretmanager.v1.Secret
-      host-name: ""
+      host-name: secretmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: secretmanager-secretversion
@@ -19928,9 +19940,9 @@ branches:
       package: google.cloud.secretmanager.v1
       proto: SecretVersion
       proto-path: google/cloud/secretmanager/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.secretmanager.v1.SecretManagerService
       proto-msg: google.cloud.secretmanager.v1.SecretVersion
-      host-name: ""
+      host-name: secretmanager.googleapis.com
       notes: []
       apis-enabled: []
     - name: secretmanager-topic
@@ -20925,11 +20937,11 @@ branches:
       package: google.cloud.servicedirectory.v1
       proto: Endpoint
       proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
+      proto-service: google.cloud.servicedirectory.v1.LookupService
       proto-msg: google.cloud.servicedirectory.v1.Endpoint
-      host-name: ""
+      host-name: servicedirectory.googleapis.com
       notes:
-        - already supported as a v1beta1 KCC resource
+        - Terraform controller based on google.cloud.servicedirectory.v1beta1
       apis-enabled:
         - servicedirectory.googleapis.com
     - name: servicedirectory-servicedirectorynamespace
@@ -20944,9 +20956,9 @@ branches:
       package: google.cloud.servicedirectory.v1
       proto: Namespace
       proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
+      proto-service: google.cloud.servicedirectory.v1.LookupService
       proto-msg: google.cloud.servicedirectory.v1.Namespace
-      host-name: ""
+      host-name: servicedirectory.googleapis.com
       notes:
         - already supported as a v1beta1 KCC resource
       apis-enabled:
@@ -20963,9 +20975,9 @@ branches:
       package: google.cloud.servicedirectory.v1
       proto: Service
       proto-path: google/cloud/servicedirectory/v1/lookup_service.proto
-      proto-service: ""
+      proto-service: google.cloud.servicedirectory.v1.LookupService
       proto-msg: google.cloud.servicedirectory.v1.Service
-      host-name: ""
+      host-name: servicedirectory.googleapis.com
       notes:
         - already supported as a v1beta1 KCC resource
       apis-enabled:
@@ -21038,8 +21050,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: servicenetworking.googleapis.com
+      notes:
+        - No proto found for servicenetworking.googleapis.com
       apis-enabled: []
     - name: api-key
       local: resource-api-key
@@ -21085,12 +21098,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: Service
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.api.serviceusage.v1
+      proto: Service
+      proto-path: google/api/serviceusage/v1/resources.proto
+      proto-service: google.api.serviceusage.v1.ServiceUsage
+      proto-msg: google.api.serviceusage.v1.Service
+      host-name: serviceusage.googleapis.com
       notes: []
       apis-enabled: []
     - name: serviceusage-serviceidentity
@@ -21102,12 +21115,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: ServiceIdentity
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.api.serviceusage.v1beta1
+      proto: ServiceIdentity
+      proto-path: google/api/serviceusage/v1beta1/resources.proto
+      proto-service: google.api.serviceusage.v1beta1.ServiceUsage
+      proto-msg: google.api.serviceusage.v1beta1.ServiceIdentity
+      host-name: serviceusage.googleapis.com
       notes: []
       apis-enabled: []
     - name: shell-environment
@@ -21137,12 +21150,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: SourceRepoRepository
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.devtools.sourcerepo.v1
+      proto: Repo
+      proto-path: google/devtools/sourcerepo/v1/sourcerepo.proto
+      proto-service: google.devtools.sourcerepo.v1.SourceRepo
+      proto-msg: google.devtools.sourcerepo.v1.Repo
+      host-name: sourcerepo.googleapis.com
       notes: []
       apis-enabled: []
     - name: spanner-row
@@ -21229,9 +21242,9 @@ branches:
       package: google.spanner.admin.database.v1
       proto: Database
       proto-path: google/spanner/admin/database/v1/spanner_database_admin.proto
-      proto-service: ""
+      proto-service: google.spanner.admin.database.v1.DatabaseAdmin
       proto-msg: google.spanner.admin.database.v1.Database
-      host-name: ""
+      host-name: spanner.googleapis.com
       notes: []
       apis-enabled: []
     - name: spanner-databaserole
@@ -21264,9 +21277,9 @@ branches:
       package: google.spanner.admin.instance.v1
       proto: Instance
       proto-path: google/spanner/admin/instance/v1/spanner_instance_admin.proto
-      proto-service: ""
+      proto-service: google.spanner.admin.instance.v1InstanceAdmin
       proto-msg: google.spanner.admin.instance.v1.Instance
-      host-name: ""
+      host-name: spanner.googleapis.com
       notes: []
       apis-enabled: []
     - name: spanner-instanceconfig
@@ -21423,12 +21436,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: SQLDatabase
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.sql.v1beta4
+      proto: Database
+      proto-path: cloud/sql/v1beta4/cloud_sql_resources.proto
+      proto-service: google.cloud.sql.v1beta4.SqlDatabasesService
+      proto-msg: google.cloud.sql.v1beta4.Database
+      host-name: sqladmin.googleapis.com
       notes: []
       apis-enabled: []
     - name: sql-sqlsslcert
@@ -21440,12 +21453,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: SQLSSLCert
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.sql.v1beta4
+      proto: SslCert
+      proto-path: cloud/sql/v1beta4/cloud_sql_resources.proto
+      proto-service: google.cloud.sql.v1beta4.SqlSslCertsService
+      proto-msg: google.cloud.sql.v1beta4.SslCert
+      host-name: sqladmin.googleapis.com
       notes: []
       apis-enabled: []
     - name: sql-sqluser
@@ -21457,12 +21470,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: SQLUser
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.cloud.sql.v1beta4
+      proto: User
+      proto-path: cloud/sql/v1beta4/cloud_sql_users.proto
+      proto-service: google.cloud.sql.v1beta4.SqlUsersService
+      proto-msg: google.cloud.sql.v1beta4.User
+      host-name: sqladmin.googleapis.com
       notes: []
       apis-enabled: []
     - name: storage-hmac
@@ -21562,10 +21575,11 @@ branches:
       package: google.storage.v2
       proto: Bucket
       proto-path: google/storage/v2/storage.proto
-      proto-service: ""
+      proto-service: google.storage.v2.Storage
       proto-msg: google.storage.v2.Bucket
-      host-name: ""
-      notes: []
+      host-name: storage.googleapis.com
+      notes:
+        - Original terraform was based on v1.buckets
       apis-enabled: []
     - name: storage-bucketaccesscontrol
       local: resource-storage-bucketaccesscontrol
@@ -21576,13 +21590,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: StorageBucketAccessControl
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.storage.v2
+      proto: BucketAccessControl
+      proto-path: google/storage/v2/storage.proto
+      proto-service: google.storage.v2.Storage
+      proto-msg: google.storage.v2.BucketAccessControl
+      host-name: storage.googleapis.com
+      notes:
+        - Original terraform was based on v1.bucketAccessControls
       apis-enabled: []
     - name: storage-defaultobjectaccesscontrol
       local: resource-storage-defaultobjectaccesscontrol
@@ -21593,13 +21608,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: StorageDefaultObjectAccessControl
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.storage.v2
+      proto: ObjectAccessControl
+      proto-path: google/storage/v2/storage.proto
+      proto-service: google.storage.v2.Storage
+      proto-msg: google.storage.v2.ObjectAccessControl
+      host-name: storage.googleapis.com
+      notes:
+        - Original terraform was based on v1.defaultObjectAccessControls
       apis-enabled: []
     - name: storage-folder
       local: resource-storage-folder
@@ -21644,13 +21660,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: StorageNotification
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.storage.v1
+      proto: Notification
+      proto-path: google/storage/v1/storage_resources.proto
+      proto-service: google.storage.v2.Storage
+      proto-msg: google.storage.v1.Notification
+      host-name: storage.googleapis.com
+      notes:
+        - v1 service no longer runs and instead Google Cloud Storage only supports v2 API
       apis-enabled: []
     - name: storage-storagelayout
       local: resource-storage-storagelayout
@@ -21783,12 +21800,12 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: StorageTransferJob
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
+      package: google.storagetransfer.v1
+      proto: TransferJob
+      proto-path: google/storagetransfer/v1/transfer_types.proto
+      proto-service: google.storagetransfer.v1.StorageTransferService
+      proto-msg: google.storagetransfer.v1.TransferJob
+      host-name: storagetransfer.googleapis.com
       notes: []
       apis-enabled: []
     - name: support-attachment
@@ -21876,8 +21893,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: tags.googleapis.com
+      notes:
+        - No proto found for tags.googleapis.com
       apis-enabled: []
     - name: tags-tagstagkey
       local: resource-tags-tagstagkey
@@ -21893,8 +21911,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: tags.googleapis.com
+      notes:
+        - No proto found for tags.googleapis.com
       apis-enabled: []
     - name: tags-tagstagvalue
       local: resource-tags-tagstagvalue
@@ -21910,8 +21929,9 @@ branches:
       proto-path: ""
       proto-service: ""
       proto-msg: ""
-      host-name: ""
-      notes: []
+      host-name: tags.googleapis.com
+      notes:
+        - No proto found for tags.googleapis.com
       apis-enabled: []
     - name: talent-company
       local: resource-talent-company
@@ -22622,13 +22642,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: VertexAIDataset
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.cloud.aiplatform.v1
+      proto: Dataset
+      proto-path: google/cloud/aiplatform/v1/dataset.proto
+      proto-service: google.cloud.aiplatform.v1.DatasetService
+      proto-msg: google.cloud.aiplatform.v1.Dataset
+      host-name: aiplatform.googleapis.com
+      notes:
+        - TF resource built against google.cloud.aiplatform.v1beta1
       apis-enabled: []
     - name: vertexai-vertexaiendpoint
       local: resource-vertexai-vertexaiendpoint
@@ -22639,13 +22660,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: VertexAIEndpoint
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.cloud.aiplatform.v1
+      proto: Endpoint
+      proto-path: google/cloud/aiplatform/v1/endpoint.proto
+      proto-service: google.cloud.aiplatform.v1.EndpointService
+      proto-msg: google.cloud.aiplatform.v1.Endpoint
+      host-name: aiplatform.googleapis.com
+      notes:
+        - TF resource built against google.cloud.aiplatform.v1beta1
       apis-enabled: []
     - name: vertexai-vertexaiindex
       local: resource-vertexai-vertexaiindex
@@ -22656,13 +22678,14 @@ branches:
       controller: terraform-v1beta1
       skip: false
       kind: VertexAIIndex
-      package: ""
-      proto: ""
-      proto-path: ""
-      proto-service: ""
-      proto-msg: ""
-      host-name: ""
-      notes: []
+      package: google.cloud.aiplatform.v1
+      proto: Index
+      proto-path: google/cloud/aiplatform/v1/index.proto
+      proto-service: google.cloud.aiplatform.v1.IndexService
+      proto-msg: google.cloud.aiplatform.v1.Index
+      host-name: aiplatform.googleapis.com
+      notes:
+        - TF resource built against google.cloud.aiplatform.v1beta1
       apis-enabled: []
     - name: video-asset
       local: resource-video-asset
@@ -23837,11 +23860,12 @@ branches:
       package: google.cloud.vpcaccess.v1
       proto: Connector
       proto-path: google/cloud/vpcaccess/v1/vpc_access.proto
-      proto-service: ""
+      proto-service: google.cloud.vpcaccess.v1.VpcAccessService
       proto-msg: google.cloud.vpcaccess.v1.Connector
-      host-name: ""
+      host-name: vpcaccess.googleapis.com
       notes:
         - No gcloud command found
+        - TF resource built against google.cloud.vpcaccess.v1beta1
       apis-enabled: []
     - name: websecurityscanner-finding
       local: resource-websecurityscanner-finding
