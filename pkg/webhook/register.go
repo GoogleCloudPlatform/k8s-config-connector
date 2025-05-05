@@ -15,6 +15,7 @@
 package webhook
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -241,6 +242,8 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 
 func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
 	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
+	ctx := context.TODO()
+
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
@@ -282,7 +285,7 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 	}
 	// Do an initial call so we can guarantee the webhook configuration resources are
 	// registered in the API server before marking this container as ready.
-	if err := certClient.RefreshCertsAndInstall(); err != nil {
+	if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
 		return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
 	}
 	if err := mgr.Add(certClient); err != nil {
