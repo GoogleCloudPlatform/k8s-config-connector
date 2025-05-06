@@ -1,0 +1,7 @@
+apiVersion: multicluster.core.cnrm.cloud.google.com/v1alpha1
+kind: MultiClusterLease
+metadata:
+  name: multiclusterlease-sample
+spec:
+  # Add fields here
+  foo: bar
