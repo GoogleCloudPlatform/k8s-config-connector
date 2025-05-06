@@ -264,18 +264,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -339,18 +342,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -464,10 +470,13 @@ X-Xss-Protection: 0
   "materializedView": {
     "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
+    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {},
+  "materializedViewStatus": {
+    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
+  },
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -544,10 +553,13 @@ X-Xss-Protection: 0
   "materializedView": {
     "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
+    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {},
+  "materializedViewStatus": {
+    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
+  },
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -759,18 +771,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
