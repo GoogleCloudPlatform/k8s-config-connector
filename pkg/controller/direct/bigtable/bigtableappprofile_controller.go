@@ -212,6 +212,8 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	// var updated *bigtablepb.AppProfile
 	// updated = a.actual
 	var fieldsToUpdate gcp.ProfileAttrsToUpdate
+	// Several field changes (single -> multi cluster; turning on data boost) require us to ignore warnings if we want the update to go through.
+	fieldsToUpdate.IgnoreWarnings = true
 	hasChanges := false
 
 	if desired.Spec.Description != nil && !cmp.Equal(resource.Description, a.actual.Description) {
@@ -222,8 +224,6 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
 		}
-		// Need to ignore warnings if switching from single cluster to multi cluster routing
-		fieldsToUpdate.IgnoreWarnings = true
 		hasChanges = true
 	}
 	if desired.Spec.SingleClusterRouting != nil && !cmp.Equal(resource.GetSingleClusterRouting(), a.actual.GetSingleClusterRouting(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_SingleClusterRouting{})) {
@@ -236,6 +236,12 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	if desired.Spec.StandardIsolation != nil && !cmp.Equal(resource.GetStandardIsolation(), a.actual.GetStandardIsolation(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_StandardIsolation{})) {
 		fieldsToUpdate.Isolation = &gcp.StandardIsolation{
 			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().Priority),
+		}
+		hasChanges = true
+	}
+	if desired.Spec.DataBoostIsolationReadOnly != nil && !cmp.Equal(resource.GetDataBoostIsolationReadOnly(), a.actual.GetDataBoostIsolationReadOnly(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_DataBoostIsolationReadOnly{})) {
+		fieldsToUpdate.Isolation = &gcp.DataBoostIsolationReadOnly{
+			ComputeBillingOwner: gcp.IsolationComputeBillingOwner(resource.GetDataBoostIsolationReadOnly().GetComputeBillingOwner()),
 		}
 		hasChanges = true
 	}

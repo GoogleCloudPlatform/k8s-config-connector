@@ -38,8 +38,8 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	out.MultiClusterRoutingUseAny = isMultiClusterRouting
 	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
 	// MISSING: Priority
+	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
 	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
-	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
 func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
@@ -68,6 +68,8 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	if oneof := AppProfile_StandardIsolation_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
 		out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
 	}
-	// MISSING: DataBoostIsolationReadOnly
+	if oneof := AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
+		out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
+	}
 	return out
 }

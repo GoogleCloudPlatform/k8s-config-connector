@@ -53,6 +53,11 @@ type BigtableAppProfileSpec struct {
 	//  other use cases.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
 	StandardIsolation *AppProfile_StandardIsolation `json:"standardIsolation,omitempty"`
+
+	// Specifies that this app profile is intended for read-only usage via the
+	//  Data Boost feature.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.data_boost_isolation_read_only
+	DataBoostIsolationReadOnly *AppProfile_DataBoostIsolationReadOnly `json:"dataBoostIsolationReadOnly,omitempty"`
 }
 
 // BigtableAppProfileStatus defines the config connector machine state of BigtableAppProfile

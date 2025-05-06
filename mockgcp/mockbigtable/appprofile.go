@@ -133,6 +133,10 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 			updated.Isolation = &pb.AppProfile_StandardIsolation_{
 				StandardIsolation: req.GetAppProfile().GetStandardIsolation(),
 			}
+		case "dataBoostIsolationReadOnly", "data_boost_isolation_read_only", "dataBoostIsolationReadOnly.computeBillingOwner":
+			updated.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{
+				DataBoostIsolationReadOnly: req.GetAppProfile().GetDataBoostIsolationReadOnly(),
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -146,11 +150,14 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	zone := "us-central1-a" // TODO
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
-	// Don't return isolation in LRO, unless we updated standardIsolation
+	// Don't return isolation in LRO, unless we updated Isolation
 	lroRet := ProtoClone(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
-	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") {
+	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") && !updatePaths.Has("dataBoostIsolationReadOnly") && !updatePaths.Has("data_boost_isolation_read_only") {
 		lroRet.Isolation = nil
+	}
+	if !updatePaths.Has("description") {
+		lroRet.Description = ""
 	}
 
 	if isAsync {
