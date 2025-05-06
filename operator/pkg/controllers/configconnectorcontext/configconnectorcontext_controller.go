@@ -67,14 +67,13 @@ type ReconcilerOptions struct {
 // Reconciler also watches "NamespacedControllerResource" kind and apply
 // customizations specified in "NamespacedControllerResource" CRs to per-namespace KCC components.
 type Reconciler struct {
-	reconciler             *declarative.Reconciler
-	client                 client.Client
-	recorder               record.EventRecorder
-	labelMaker             declarative.LabelMaker
-	log                    logr.Logger
-	customizationWatcher   *controllers.CustomizationWatcher
-	jitterGen              jitter.Generator
-	managerNamespaceSuffix string
+	reconciler           *declarative.Reconciler
+	client               client.Client
+	recorder             record.EventRecorder
+	labelMaker           declarative.LabelMaker
+	log                  logr.Logger
+	customizationWatcher *controllers.CustomizationWatcher
+	jitterGen            jitter.Generator
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
@@ -232,7 +231,17 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 		}
-		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, r.managerNamespaceSuffix)
+		var managerNamespaceSuffix string
+		cc, err := controllers.GetConfigConnector(ctx, r.client, controllers.ValidConfigConnectorNamespacedName)
+		if err != nil {
+			if !apierrors.IsNotFound(err) {
+				return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
+			}
+		} else {
+			managerNamespaceSuffix = cc.Labels[k8s.ManagerNamespaceSuffixLabel]
+		}
+
+		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, managerNamespaceSuffix)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
 		}
@@ -282,12 +291,6 @@ func (r *Reconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 		}
 		if cc.GetMode() == k8s.ClusterMode {
 			return r.handleCCContextLifecycleForClusterMode(ctx, ccc, m)
-		}
-		managerNamespaceSuffix, namespacedManager := cc.Labels[k8s.ManagerNamespaceSuffixLabel]
-		if namespacedManager {
-			r.managerNamespaceSuffix = managerNamespaceSuffix
-		} else {
-			r.managerNamespaceSuffix = ""
 		}
 		return r.handleCCContextLifecycleForNamespacedMode(ctx, ccc, m)
 	}

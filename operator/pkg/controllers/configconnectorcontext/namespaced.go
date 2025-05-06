@@ -65,16 +65,6 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 			if err != nil {
 				return nil, err
 			}
-			if managerNamespace != k8s.CNRMSystemNamespace {
-				// When controller manager runs in a separate namespace
-				// (not in cnrm-system), it needs finalizer, so when manager
-				// namespace is deleted the manager stays running until
-				// all CNRM resources are removed
-				processed, err = ensureOperatorFinalizer(processed)
-				if err != nil {
-					return nil, err
-				}
-			}
 		}
 		processed, err := replaceNamespacePattern(processed, ccc.Namespace)
 		if err != nil {
@@ -113,6 +103,9 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 	}
 	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
 	u.SetNamespace(serviceNamespace)
+	if serviceNamespace != k8s.CNRMSystemNamespace {
+		updatePerNamespaceLabels(u, serviceNamespace)
+	}
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), serviceNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
@@ -122,6 +115,7 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 func handleControllerManagerServiceAccount(obj *manifest.Object, managerNamespace string) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 	u.SetNamespace(managerNamespace)
+	updatePerNamespaceLabels(u, managerNamespace)
 	controllers.EnsureOperatorFinalizer(u)
 	return manifest.NewObject(u)
 }
@@ -151,6 +145,7 @@ func handleControllerManagerRoleBinding(obj *manifest.Object, managerNamespace s
 		}
 	}
 	controllers.EnsureOperatorFinalizer(u)
+	updatePerNamespaceLabels(u, managerNamespace)
 	return manifest.NewObject(u)
 }
 
@@ -206,16 +201,18 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 	}
 
 	u.SetNamespace(statefulsetNamespace)
+	if statefulsetNamespace != k8s.CNRMSystemNamespace {
+		updatePerNamespaceLabels(u, statefulsetNamespace)
+		// When controller manager runs in a separate namespace
+		// (not in cnrm-system), it needs finalizer, so when manager
+		// namespace is deleted the manager stays running until
+		// all CNRM resources are removed
+		ensureStatefulSetOperatorFinalizer(u)
+	}
 	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName(), statefulsetNamespace); err != nil {
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
-	return manifest.NewObject(u)
-}
-
-func ensureOperatorFinalizer(obj *manifest.Object) (*manifest.Object, error) {
-	u := obj.UnstructuredObject().DeepCopy()
-	controllers.EnsureOperatorFinalizer(u)
 	return manifest.NewObject(u)
 }
 
@@ -348,4 +345,36 @@ func replaceNamespacePattern(obj *manifest.Object, ns string) (*manifest.Object,
 		return nil, errors.Wrap(err, fmt.Sprintf("error unmarshalling object %v", obj.UnstructuredObject()))
 	}
 	return newObj, nil
+}
+
+func updatePerNamespaceLabels(u *unstructured.Unstructured, namespace string) {
+	labels := u.GetLabels()
+	labels[k8s.PerNamespaceAccessLevelLabel] = k8s.PerNamespaceAccessLevelValue
+	parts := strings.Split(namespace, "-")
+	if len(parts) >= 2 {
+		labels[k8s.PerNamespaceProjectLabel] = parts[0]
+		labels[k8s.PerNamespaceTenantLabel] = fmt.Sprintf("%s-%s", parts[0], parts[1])
+	}
+	u.SetLabels(labels)
+}
+
+func ensureStatefulSetOperatorFinalizer(u *unstructured.Unstructured) error {
+	controllers.EnsureOperatorFinalizer(u)
+
+	finalizersPath := []string{"spec", "template", "metadata", "finalizers"}
+	finalizers, found, err := unstructured.NestedSlice(u.Object, finalizersPath...)
+	if err != nil {
+		return fmt.Errorf("couldn't get finalizers %v: %w", u, err)
+	}
+	if found {
+		for _, finalizer := range finalizers {
+			if finalizer.(string) == k8s.OperatorFinalizer {
+				return nil
+			}
+		}
+	}
+	finalizers = append(finalizers, k8s.OperatorFinalizer)
+	unstructured.SetNestedSlice(u.Object, finalizers, finalizersPath...)
+
+	return nil
 }

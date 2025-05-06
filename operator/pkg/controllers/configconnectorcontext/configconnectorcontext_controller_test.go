@@ -336,7 +336,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
 		},
 		{
@@ -364,7 +364,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", true, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", true, "", c)
 			},
 		},
 
@@ -394,7 +394,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", true, "BILL_ME", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", true, "BILL_ME", c)
 			},
 		},
 	}
@@ -593,7 +593,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -626,7 +626,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -659,7 +659,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
+				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.PerNamespaceComponentsTemplate, "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
@@ -717,6 +717,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			installedObjs := tc.installedObjectsFunc(t, c)
 			for _, obj := range installedObjs {
 				u := testcontroller.ToUnstructured(t, obj)
+				testcontroller.EnsureNamespaceExists(c, u.GetNamespace())
 				if err := c.Create(ctx, u); err != nil && !apierrors.IsAlreadyExists(err) {
 					t.Fatalf("error creating %v %v/%v: %v", u.GetObjectKind(), u.GetNamespace(), u.GetName(), err)
 				}
