@@ -66,6 +66,15 @@ spec:
                   It's recommended to use `googleServiceAccount` when running ConfigConnector in Google Kubernetes Engine (GKE) clusters with Workload Identity enabled.
                   This field cannot be specified together with `googleServiceAccount`.
                 type: string
+              experiments:
+                description: |-
+                  Experiments are a list of strings that allow opting-in to previews/experiments.
+                  This functionality is generally not supported and not expected to work going forwards,
+                  the intention is to allow new functionality to be delivered to non-production environments quickly,
+                  proving the functionality before it is baked into the supported API.
+                items:
+                  type: string
+                type: array
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs. This field is used only when running in cluster mode with Workload Identity enabled.
