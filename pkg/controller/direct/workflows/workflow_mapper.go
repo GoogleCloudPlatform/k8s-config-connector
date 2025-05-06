@@ -43,19 +43,6 @@ func WorkflowsWorkflowStateError_ToProto(mapCtx *direct.MapContext, in *krm.Work
 	return out
 }
 
-func WorkflowsExecutionHistoryLevel_FromProto(mapCtx *direct.MapContext, in pb.ExecutionHistoryLevel) *krm.WorkflowsExecutionHistoryLevel {
-	out := direct.PtrTo(krm.WorkflowsExecutionHistoryLevel(in))
-	return out
-}
-
-func WorkflowsExecutionHistoryLevel_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsExecutionHistoryLevel) pb.ExecutionHistoryLevel {
-	if in == nil {
-		return pb.ExecutionHistoryLevel_EXECUTION_HISTORY_LEVEL_UNSPECIFIED
-	}
-	out := pb.ExecutionHistoryLevel(direct.ValueOf(in))
-	return out
-}
-
 func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowObservedState {
 	if in == nil {
 		return nil
@@ -118,7 +105,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.GetUserEnvVars()
-	out.ExecutionHistoryLevel = WorkflowsExecutionHistoryLevel_FromProto(mapCtx, in.GetExecutionHistoryLevel())
+	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
 	out.Tags = in.GetTags()
 	return out
 }
@@ -153,7 +140,9 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 		out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	}
 	out.UserEnvVars = in.UserEnvVars
-	out.ExecutionHistoryLevel = WorkflowsExecutionHistoryLevel_ToProto(mapCtx, in.ExecutionHistoryLevel)
+	if in.ExecutionHistoryLevel != nil {
+		out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
+	}
 	out.Tags = in.Tags
 	return out
 }

@@ -90,7 +90,7 @@ type WorkflowsWorkflowSpec struct {
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
 
 	// Optional. Describes the execution history level to apply to this workflow.
-	ExecutionHistoryLevel *WorkflowsExecutionHistoryLevel `json:"executionHistoryLevel,omitempty"`
+	ExecutionHistoryLevel *string `json:"executionHistoryLevel,omitempty"`
 
 	// Optional. Input only. Immutable. Tags associated with this workflow.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -158,8 +158,6 @@ type WorkflowsWorkflowObservedState struct {
 	// or decrypt the data associated with the workflow.
 	CryptoKeyVersion *string `json:"cryptoKeyVersion,omitempty"`
 }
-
-type WorkflowsExecutionHistoryLevel int32
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

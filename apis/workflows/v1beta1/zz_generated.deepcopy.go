@@ -258,7 +258,7 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.ExecutionHistoryLevel != nil {
 		in, out := &in.ExecutionHistoryLevel, &out.ExecutionHistoryLevel
-		*out = new(WorkflowsExecutionHistoryLevel)
+		*out = new(string)
 		**out = **in
 	}
 	if in.Tags != nil {

@@ -334,8 +334,7 @@ spec:
               executionHistoryLevel:
                 description: Optional. Describes the execution history level to apply
                   to this workflow.
-                format: int32
-                type: integer
+                type: string
               kmsCryptoKeyRef:
                 description: Optional. The resource name of a KMS crypto key used
                   to encrypt or decrypt the data associated with the workflow. If
