@@ -22,7 +22,6 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
 	testpaths "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 
@@ -425,7 +424,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 			name: "cluster mode, workload identity",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -438,7 +437,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 			name: "cluster mode, gcp identity",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					CredentialSecretName: "my-key",
@@ -451,7 +450,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 			name: "namespaced mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -464,7 +463,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 			name: "namespaced mode by default",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",

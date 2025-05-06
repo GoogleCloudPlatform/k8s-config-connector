@@ -37,7 +37,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set and spec.requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -53,7 +53,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject omitted and spec.requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -68,7 +68,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set to empty and spec.requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -84,7 +84,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject omitted and spec.requestProjectPolicy set to SERVICE_ACCOUNT_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -99,7 +99,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -114,7 +114,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set to empty and requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -130,7 +130,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -146,7 +146,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to SERVICE_ACCOUNT_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{

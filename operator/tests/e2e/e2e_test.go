@@ -28,6 +28,7 @@ import (
 	"testing"
 	"time"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
 	kcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -293,7 +294,7 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	}
 	// The config connector context should NOT be removed as the ArtifactRegistryRepository has not yet been removed due to its extra finalizer
 	log.Info("Verifying the ConfigConnectorContext still exists but is unhealthy...")
-	if err := cluster.waitForConfigConnectorContextToBeUnhealthy(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
+	if err := cluster.waitForConfigConnectorContextToBeUnhealthy(namespace, corev1beta1.ConfigConnectorContextAllowedName); err != nil {
 		t.Fatal(fmt.Errorf("error verifying the ConfigConnectorContext's health: %w", err))
 	}
 	log.Info("Removing custom finalizer to enable deletion...")
@@ -301,7 +302,7 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 		t.Fatal(fmt.Errorf("error removing finalizer from ArtifactRegistryRepository: %w", err))
 	}
 	log.Info("Waiting for ConfigConnectorContext to be removed...")
-	if err := cluster.waitForConfigConnectorContextToBeRemoved(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
+	if err := cluster.waitForConfigConnectorContextToBeRemoved(namespace, corev1beta1.ConfigConnectorContextAllowedName); err != nil {
 		t.Fatal(fmt.Errorf("error waiting for ConfigConnectorContextToBeRemoved: %w", err))
 	}
 	log.Info("Waiting for namespace to be deleted...")
@@ -616,7 +617,7 @@ func TestUpgrade(t *testing.T) {
 		t.Fatal(fmt.Errorf("error installing the latest operator: %w", err))
 	}
 	time.Sleep(120 * time.Second) // Some buffer time for the operator to reconcile on the existing ConfigConnector
-	if err := cluster.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
+	if err := cluster.waitForConfigConnectorToBeHealthy(corev1beta1.ConfigConnectorAllowedName); err != nil {
 		t.Fatal(fmt.Errorf("error waitting for ConfigConnector to be healthy: %w", err))
 	}
 	checkIfKCCHasUpgradedToTheLatestVersion(t, cluster, log)
@@ -629,7 +630,7 @@ func TestUpgrade(t *testing.T) {
 		t.Fatal(err)
 	}
 	log.Info("Deleting ConfigConnectorContext...")
-	if err := cluster.deleteConfigConnectorContext(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
+	if err := cluster.deleteConfigConnectorContext(namespace, corev1beta1.ConfigConnectorContextAllowedName); err != nil {
 		t.Fatal(err)
 	}
 	log.Info("Uninstalling KCC...")
@@ -782,7 +783,7 @@ func (c *cluster) installKCC(configConnectorYAMLPath string) error {
 	if _, err := c.kubectl.apply("-f", configConnectorYAMLPath); err != nil {
 		return fmt.Errorf("error applying ConfigConnector YAML: %w", err)
 	}
-	if err := c.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
+	if err := c.waitForConfigConnectorToBeHealthy(corev1beta1.ConfigConnectorAllowedName); err != nil {
 		return err
 	}
 
@@ -805,10 +806,10 @@ func (c *cluster) enableKCCForNamespace(namespace, configConnectorContextYAMLPat
 	if _, err := c.kubectl.apply("-n", namespace, "-f", configConnectorContextYAMLPath); err != nil {
 		return fmt.Errorf("error applying ConfigConnectorContext YAML for namespace '%v': %w", namespace, err)
 	}
-	if err := c.waitForConfigConnectorToBeHealthy(k8s.ConfigConnectorAllowedName); err != nil {
+	if err := c.waitForConfigConnectorToBeHealthy(corev1beta1.ConfigConnectorAllowedName); err != nil {
 		return err
 	}
-	if err := c.waitForConfigConnectorContextToBeHealthy(namespace, k8s.ConfigConnectorContextAllowedName); err != nil {
+	if err := c.waitForConfigConnectorContextToBeHealthy(namespace, corev1beta1.ConfigConnectorContextAllowedName); err != nil {
 		return err
 	}
 	time.Sleep(90 * time.Second) // Wait for a KCC controller to come up and be registered for the given namespace
@@ -1174,7 +1175,7 @@ func (c *cluster) deleteConfigConnectorContext(namespace, name string) error {
 func (c *cluster) uninstallKCC() error {
 	c.log.Info("deleting the ConfigConnector object")
 	f := func() (interface{}, error) {
-		if _, err := c.kubectl.delete("configconnector", k8s.ConfigConnectorAllowedName); err != nil {
+		if _, err := c.kubectl.delete("configconnector", corev1beta1.ConfigConnectorAllowedName); err != nil {
 			c.log.Info("error deleting ConfigConnector...", "error", err)
 			return nil, err
 		}

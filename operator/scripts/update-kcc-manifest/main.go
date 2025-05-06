@@ -61,6 +61,8 @@ var (
 func main() {
 	ctx := context.TODO()
 
+	channelName := "stable"
+
 	flag.StringVar(&version, "version", "latest", "Version of the KCC core to download.")
 	flag.Parse()
 
@@ -237,9 +239,9 @@ func main() {
 
 	//Update the stable version
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
-	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
+	channel, err := r.LoadChannel(ctx, channelName)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err))
+		log.Fatal(fmt.Errorf("error loading %v channel: %w", channelName, err))
 	}
 	currentVersion, err := channel.Latest(ctx, "configconnector")
 	if err != nil {
@@ -250,25 +252,25 @@ func main() {
 			log.Printf("the current KCC version is the same as the latest version %v\n", version)
 			return
 		}*/
-	stableFilePath := path.Join(operatorSrcRoot, "channels", "stable")
-	b, err = ioutil.ReadFile(stableFilePath)
+	channelFilePath := path.Join(operatorSrcRoot, "channels", channelName)
+	b, err = ioutil.ReadFile(channelFilePath)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading %v: %w", stableFilePath, err))
+		log.Fatal(fmt.Errorf("error reading %v: %w", channelFilePath, err))
 	}
-	stable := string(b)
-	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
-	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
-		log.Fatalf("error updating file %v", stableFilePath)
+	channelVersion := string(b)
+	channelVersion = strings.ReplaceAll(channelVersion, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
+	if err := ioutil.WriteFile(channelFilePath, []byte(channelVersion), fileMode); err != nil {
+		log.Fatalf("error updating file %v", channelFilePath)
 	}
-	stableFilePath = path.Join(operatorSrcRoot, "autopilot-channels", "stable")
-	b, err = ioutil.ReadFile(stableFilePath)
+	channelFilePath = path.Join(operatorSrcRoot, "autopilot-channels", channelName)
+	b, err = ioutil.ReadFile(channelFilePath)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading %v: %w", stableFilePath, err))
+		log.Fatal(fmt.Errorf("error reading %v: %w", channelFilePath, err))
 	}
-	stable = string(b)
-	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
-	if err := ioutil.WriteFile(stableFilePath, []byte(stable), fileMode); err != nil {
-		log.Fatalf("error updating file %v", stableFilePath)
+	channelVersion = string(b)
+	channelVersion = strings.ReplaceAll(channelVersion, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
+	if err := ioutil.WriteFile(channelFilePath, []byte(channelVersion), fileMode); err != nil {
+		log.Fatalf("error updating file %v", channelFilePath)
 	}
 
 	channelDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector")

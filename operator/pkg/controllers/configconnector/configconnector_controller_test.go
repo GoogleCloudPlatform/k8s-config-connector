@@ -168,7 +168,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			cccs: []corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      k8s.ConfigConnectorContextAllowedName,
+						Name:      corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace: "foo-ns",
 					},
 					Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -242,7 +242,7 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			cccs: []corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      k8s.ConfigConnectorContextAllowedName,
+						Name:      corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace: "foo-ns",
 					},
 					Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -386,7 +386,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			cccs: []corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:       k8s.ConfigConnectorContextAllowedName,
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace:  "foo-ns",
 						Finalizers: []string{k8s.OperatorFinalizer},
 					},
@@ -522,7 +522,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			cccs: []*corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:       k8s.ConfigConnectorContextAllowedName,
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace:  "foo-ns",
 						Finalizers: []string{k8s.OperatorFinalizer},
 					},
@@ -565,7 +565,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			cccs: []*corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:       k8s.ConfigConnectorContextAllowedName,
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace:  "foo-ns",
 						Finalizers: []string{k8s.OperatorFinalizer},
 					},
@@ -608,7 +608,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			cccs: []*corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:       k8s.ConfigConnectorContextAllowedName,
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace:  "foo-ns",
 						Finalizers: []string{k8s.OperatorFinalizer},
 					},
@@ -653,7 +653,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			cccs: []*corev1beta1.ConfigConnectorContext{
 				{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:       k8s.ConfigConnectorContextAllowedName,
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
 						Namespace:  "foo-ns",
 						Finalizers: []string{k8s.OperatorFinalizer},
 					},
@@ -920,7 +920,7 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 	var (
 		CC = &corev1beta1.ConfigConnector{
 			ObjectMeta: metav1.ObjectMeta{
-				Name: k8s.ConfigConnectorAllowedName,
+				Name: corev1beta1.ConfigConnectorAllowedName,
 			},
 		}
 		CR = &customizev1beta1.ControllerResource{
@@ -961,8 +961,8 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 		if e.Object.GetNamespace() != "" {
 			t.Fatalf("unexpected namespace for watch event object, want \"\" (global), got %v", e.Object.GetNamespace())
 		}
-		if e.Object.GetName() != k8s.ConfigConnectorAllowedName {
-			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorAllowedName, e.Object.GetName())
+		if e.Object.GetName() != corev1beta1.ConfigConnectorAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", corev1beta1.ConfigConnectorAllowedName, e.Object.GetName())
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatalf("expect watch event, got no event")
@@ -982,8 +982,8 @@ func TestConfigConnectorControllerWatchCustomizationCR(t *testing.T) {
 		if e.Object.GetNamespace() != "" {
 			t.Fatalf("unexpected namespace for watch event object, want \"\" (global), got %v", e.Object.GetNamespace())
 		}
-		if e.Object.GetName() != k8s.ConfigConnectorAllowedName {
-			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorAllowedName, e.Object.GetName())
+		if e.Object.GetName() != corev1beta1.ConfigConnectorAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", corev1beta1.ConfigConnectorAllowedName, e.Object.GetName())
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatalf("expect watch event, got no event")
