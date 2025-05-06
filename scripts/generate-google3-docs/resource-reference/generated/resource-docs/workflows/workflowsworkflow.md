@@ -68,6 +68,7 @@ Workflows provides low latency custom orchestration of services.
 ```yaml
 callLogLevel: string
 description: string
+executionHistoryLevel: integer
 kmsCryptoKeyRef:
   external: string
   name: string
@@ -86,6 +87,8 @@ serviceAccountRef:
   name: string
   namespace: string
 sourceContents: string
+tags:
+  string: string
 userEnvVars:
   string: string
 ```
@@ -115,6 +118,16 @@ userEnvVars:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Description of the workflow provided by the user. Must be at most 1000 unicode characters long.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>executionHistoryLevel</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Optional. Describes the execution history level to apply to this workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -289,6 +302,16 @@ userEnvVars:
     </tr>
     <tr>
         <td>
+            <p><code>tags</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Optional. Input only. Immutable. Tags associated with this workflow.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>userEnvVars</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -314,7 +337,14 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
+  allKmsKeys:
+  - external: string
+    name: string
+    namespace: string
+  allKmsKeysVersions:
+  - string
   createTime: string
+  cryptoKeyVersion: string
   revisionCreateTime: string
   revisionId: string
   state: string
@@ -402,10 +432,66 @@ observedState:
         </td>
     </tr>
     <tr>
+        <td><code>observedState.allKmsKeys</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. A list of all KMS crypto keys used to encrypt or decrypt the data associated with the workflow.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeys[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeys[].external</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeys[].name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeys[].namespace</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeysVersions</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}Output only. A list of all KMS crypto key versions used to encrypt or decrypt the data associated with the workflow.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.allKmsKeysVersions[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The timestamp for when the workflow was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.cryptoKeyVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The resource name of a KMS crypto key version used to encrypt or decrypt the data associated with the workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

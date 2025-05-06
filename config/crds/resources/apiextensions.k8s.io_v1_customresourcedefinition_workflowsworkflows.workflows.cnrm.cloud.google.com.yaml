@@ -331,6 +331,11 @@ spec:
                 description: Description of the workflow provided by the user. Must
                   be at most 1000 unicode characters long.
                 type: string
+              executionHistoryLevel:
+                description: Optional. Describes the execution history level to apply
+                  to this workflow.
+                format: int32
+                type: integer
               kmsCryptoKeyRef:
                 description: Optional. The resource name of a KMS crypto key used
                   to encrypt or decrypt the data associated with the workflow. If
@@ -447,6 +452,12 @@ spec:
                 description: Required. Workflow code to be executed. The size limit
                   is 128KB.
                 type: string
+              tags:
+                additionalProperties:
+                  type: string
+                description: Optional. Input only. Immutable. Tags associated with
+                  this workflow.
+                type: object
               userEnvVars:
                 additionalProperties:
                   type: string
@@ -505,8 +516,50 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  allKmsKeys:
+                    description: Output only. A list of all KMS crypto keys used to
+                      encrypt or decrypt the data associated with the workflow.
+                    items:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed KMSCryptoKey.
+                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                          type: string
+                        name:
+                          description: The `name` of a `KMSCryptoKey` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` of a `KMSCryptoKey` resource.
+                          type: string
+                      type: object
+                    type: array
+                  allKmsKeysVersions:
+                    description: Output only. A list of all KMS crypto key versions
+                      used to encrypt or decrypt the data associated with the workflow.
+                    items:
+                      type: string
+                    type: array
                   createTime:
                     description: The timestamp for when the workflow was created.
+                    type: string
+                  cryptoKeyVersion:
+                    description: Output only. The resource name of a KMS crypto key
+                      version used to encrypt or decrypt the data associated with
+                      the workflow.
                     type: string
                   revisionCreateTime:
                     description: The timestamp for the latest revision of the workflow's
