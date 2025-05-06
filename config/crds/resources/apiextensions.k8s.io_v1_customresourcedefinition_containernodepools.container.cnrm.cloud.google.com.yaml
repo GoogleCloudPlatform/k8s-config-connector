@@ -794,6 +794,16 @@ spec:
                 required:
                 - type
                 type: object
+              queuedProvisioning:
+                description: Immutable. Specifies the configuration of queued provisioning.
+                properties:
+                  enabled:
+                    description: Immutable. Whether nodes in this node pool are obtainable
+                      solely through the ProvisioningRequest API.
+                    type: boolean
+                required:
+                - enabled
+                type: object
               resourceID:
                 description: Immutable. Optional. The name of the resource. Used for
                   creation and acquisition. When unset, the value of `metadata.name`
