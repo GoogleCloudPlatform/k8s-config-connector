@@ -21,8 +21,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-type ManagementConflictPreventionPolicy string
-
 // TODO: clean up old conditions used in handcrafted controllers
 const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
@@ -73,10 +71,6 @@ const (
 	UnmanagedDetectorFieldManager = "cnrm-unmanaged-detector"
 	SupportsSSAManager            = "supports-ssa"
 
-	// Management conflict prevention policies
-	ManagementConflictPreventionPolicyNone     = "none"
-	ManagementConflictPreventionPolicyResource = "resource"
-
 	// State into spec annotation values
 	StateMergeIntoSpec               = "merge"
 	StateAbsentInSpec                = "absent"
@@ -116,13 +110,6 @@ var (
 
 	// Internal Annotation to force reconciliation
 	InternalForceReconcileAnnotation = CNRMTestGroup + "/reconcile-cookie"
-
-	ManagementConflictPreventionPolicyAnnotation               = "management-conflict-prevention-policy"
-	ManagementConflictPreventionPolicyFullyQualifiedAnnotation = FormatAnnotation(ManagementConflictPreventionPolicyAnnotation)
-	ManagementConflictPreventionPolicyValues                   = []string{
-		ManagementConflictPreventionPolicyNone,
-		ManagementConflictPreventionPolicyResource,
-	}
 
 	KCCComponentLabel    = FormatAnnotation("component")
 	KCCSystemLabel       = FormatAnnotation("system")
