@@ -99,6 +99,11 @@ func (i *streamingInformer) Start(ctx context.Context) error {
 	return nil
 }
 
+// IsStopped returns true if the informer has been stopped.
+func (i *streamingInformer) IsStopped() bool {
+	return false
+}
+
 // run runs the informer.
 func (i *streamingInformer) run(ctx context.Context) {
 	log := klog.FromContext(ctx)

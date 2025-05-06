@@ -43,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -678,6 +679,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		t.Log("controller-runtime manager is shutdown")
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	krmtotf.SetUserAgentForTerraformProvider()
 

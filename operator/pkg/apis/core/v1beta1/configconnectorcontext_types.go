@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	"runtime/debug"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
@@ -111,16 +113,14 @@ func init() {
 var _ addonv1alpha1.CommonObject = &ConfigConnectorContext{}
 
 func (c *ConfigConnectorContext) ComponentName() string {
-	// This should not be called, but is needed to satisfy the CommonObject interface.
-	// (We only interact with the status fields)
-	klog.Fatalf("ComponentName should not be called	on ConfigConnectorContext")
-	return ""
+	return "configconnectorcontext"
 }
 
 func (c *ConfigConnectorContext) CommonSpec() addonv1alpha1.CommonSpec {
 	// This should not be called, but is needed to satisfy the CommonObject interface.
 	// (We only interact with the status fields)
-	klog.Fatalf("CommonSpec should not be called on ConfigConnectorContext")
+	stacktrace := debug.Stack()
+	klog.Fatalf("CommonSpec should not be called on ConfigConnectorContext stack: %v", string(stacktrace))
 	return addonv1alpha1.CommonSpec{}
 }
 

@@ -95,8 +95,11 @@ func (o *Operator) run(ctx context.Context) error {
 	}
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                 scheme,
-		MetricsBindAddress:     metricsAddr,
+		Scheme:             scheme,
+		MetricsBindAddress: metricsAddr,
+		// Metrics: server.Options{
+		//     	BindAddress:     metricsAddr,
+		// }
 		Port:                   9443,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,

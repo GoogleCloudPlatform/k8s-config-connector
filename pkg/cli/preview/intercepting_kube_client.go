@@ -51,7 +51,7 @@ func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Conf
 		return nil, fmt.Errorf("building http client: %w", err)
 	}
 
-	upstreamRestMapper, err := apiutil.NewDiscoveryRESTMapper(upstreamRestConfig, httpClient)
+	upstreamRestMapper, err := apiutil.NewDynamicRESTMapper(upstreamRestConfig, httpClient)
 	if err != nil {
 		return nil, fmt.Errorf("creating REST mapper: %w", err)
 	}
@@ -330,7 +330,12 @@ func (c *interceptingControllerRuntimeCache) List(ctx context.Context, list clie
 
 // GetInformer fetches or constructs an informer for the given object that corresponds to a single
 // API kind and resource.
-func (c *interceptingControllerRuntimeCache) GetInformer(ctx context.Context, obj client.Object) (cache.Informer, error) {
+func (c *interceptingControllerRuntimeCache) GetInformer(ctx context.Context, obj client.Object, opts ...cache.InformerGetOption) (cache.Informer, error) {
+	if len(opts) != 0 {
+		klog.Fatalf("GetInformer: GET %v with opts %v", obj, opts)
+		panic("not implemented")
+	}
+
 	typeInfo, err := c.typeStore.getTypeInfo(obj)
 	if err != nil {
 		return nil, err
@@ -367,13 +372,23 @@ func (c *interceptingControllerRuntimeCache) getOrCreateInformer(ctx context.Con
 
 // GetInformerForKind is similar to GetInformer, except that it takes a group-version-kind, instead
 // of the underlying object.
-func (c *interceptingControllerRuntimeCache) GetInformerForKind(ctx context.Context, gvk schema.GroupVersionKind) (cache.Informer, error) {
+func (c *interceptingControllerRuntimeCache) GetInformerForKind(ctx context.Context, gvk schema.GroupVersionKind, opts ...cache.InformerGetOption) (cache.Informer, error) {
+	if len(opts) != 0 {
+		klog.Fatalf("GetInformerForKind: GET %v with opts %v", gvk, opts)
+		panic("not implemented")
+	}
+
 	typeInfo, err := c.typeStore.getTypeInfoForGVK(gvk)
 	if err != nil {
 		return nil, err
 	}
 
 	return c.getOrCreateInformer(ctx, typeInfo)
+}
+
+// RemoveInformer removes an informer entry and stops it if it was running.
+func (c *interceptingControllerRuntimeCache) RemoveInformer(ctx context.Context, obj client.Object) error {
+	panic("not implemented")
 }
 
 // Start runs all the informers known to this cache until the context is closed.

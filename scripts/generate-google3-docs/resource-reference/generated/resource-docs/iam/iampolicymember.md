@@ -585,7 +585,8 @@ role: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IAM identity to be bound to the role. Exactly one of
+'member' or 'memberFrom' must be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -595,7 +596,9 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The IAM identity to be bound to the role. Exactly one of
+'member' or 'memberFrom' must be used, and only one subfield within
+'memberFrom' can be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -605,7 +608,11 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
+            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role.
+Use the Type field to specifie the connection type.
+For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`.
+For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
+For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -645,7 +652,8 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The LoggingLogSink whose writer identity (i.e. its 'status.writerIdentity') is to be bound to the role.{% endverbatim %}</p>
+            <p>{% verbatim %}The LoggingLogSink whose writer identity (i.e. its
+'status.writerIdentity') is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -705,7 +713,8 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The ServiceIdentity whose service account (i.e., its 'status.email') is to be bound to the role.{% endverbatim %}</p>
+            <p>{% verbatim %}The ServiceIdentity whose service account (i.e., its
+'status.email') is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -735,7 +744,8 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The SQLInstance whose service account (i.e. its 'status.serviceAccountEmailAddress') is to be bound to the role.{% endverbatim %}</p>
+            <p>{% verbatim %}The SQLInstance whose service account (i.e. its
+'status.serviceAccountEmailAddress') is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -858,7 +868,8 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the IAM policy's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the IAM
+policy's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -886,7 +897,8 @@ observedGeneration: integer
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last
+transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -907,7 +919,8 @@ observedGeneration: integer
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller.
+If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

@@ -120,7 +120,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
-	kccConfig.ManagerOptions.MetricsBindAddress = "0"
+	kccConfig.ManagerOptions.Metrics.BindAddress = "0"
 	// Prevent manager from binding to a port to serve health probes since
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
