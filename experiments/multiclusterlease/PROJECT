@@ -1,0 +1,7 @@
+domain: multicluster.cloud.google.com
+repo: github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster
+resources:
+- group: multicluster.core.cnrm.cloud.google.com
+  kind: MultiClusterLease
+  version: v1alpha1
+version: "2"

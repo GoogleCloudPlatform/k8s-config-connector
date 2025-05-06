@@ -5,6 +5,7 @@ use (
 	./dev/tools/controllerbuilder
 	./experiments/kompanion
 	./experiments/kubectl-plan
+	./experiments/multiclusterlease
 	./mockgcp
 	./mockgcp/tools/patch-proto
 //	./third_party/github.com/hashicorp/terraform-provider-google-beta
