@@ -57,15 +57,55 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-const controllerName = "registration-controller"
 const serviceAccountKeyAPIGroup = "iam.cnrm.cloud.google.com"
 const serviceAccountKeyKind = "IAMServiceAccountKey"
 
-var logger = crlog.Log.WithName(controllerName)
+type RegistrationControllerOptions struct {
+	ControllerName string
+}
 
-// Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
+// AddDefaultControllers creates the registration controller with the default controller factory,
+// this will dynamically create the default controllers for each CRD.
+func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
+	opt := RegistrationControllerOptions{
+		ControllerName: "registration-controller",
+	}
+	if err := add(mgr, rd,
+		registerDefaultControllers(ctx, controllerConfig), opt); err != nil {
+		return fmt.Errorf("error adding default registration controller: %w", err)
+	}
+	return nil
+}
+
+// AddDeletionDefender creates the registration controller with the deletion-defender factory,
+// this will dynamically create the deletion-defender controller bound to each CRD.
+func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
+	opt := RegistrationControllerOptions{
+		ControllerName: "deletion-defender-registration-controller",
+	}
+
+	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
+		return fmt.Errorf("error adding deletion-defender registration controller: %w", err)
+	}
+	return nil
+}
+
+// AddUnmanagedDetector creates the registration controller with the unmanaged-detector factory,
+// this will dynamically create the unmanaged-detector controller bound to each CRD.
+func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
+	opt := RegistrationControllerOptions{
+		ControllerName: "unmanaged-detector-registration-controller",
+	}
+
+	if err := add(mgr, &controller.Deps{}, registerUnmanagedDetectorController, opt); err != nil {
+		return fmt.Errorf("error adding unmanaged-detector registration controller: %w", err)
+	}
+	return nil
+}
+
+// add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
-func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) error {
+func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opts RegistrationControllerOptions) error {
 	if rd.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
 		if rd.DclConverter != nil {
@@ -86,7 +126,7 @@ func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) err
 		defaulters:       rd.Defaulters,
 		jitterGenerator:  rd.JitterGen,
 	}
-	c, err := crcontroller.New(controllerName, mgr,
+	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
 			Reconciler:              r,
 			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
@@ -124,6 +164,8 @@ type controllerContext struct {
 type registrationFunc func(*ReconcileRegistration, *apiextensions.CustomResourceDefinition, schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error)
 
 func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
+	logger := crlog.FromContext(ctx)
+
 	// Fetch the TypeProvider tp
 	crd := &apiextensions.CustomResourceDefinition{}
 	err := r.Get(ctx, request.NamespacedName, crd)
@@ -178,13 +220,14 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func RegisterDefaultController(config *config.ControllerConfig) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(r, config, crd, gvk)
+		return registerDefaultController(ctx, r, config, crd, gvk)
 	}
 }
 
-func registerDefaultController(r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+	logger := crlog.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
@@ -299,7 +342,7 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 	return schemaUpdater, nil
 }
 
-func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
@@ -309,7 +352,7 @@ func RegisterDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	return nil, nil
 }
 
-func RegisterUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
