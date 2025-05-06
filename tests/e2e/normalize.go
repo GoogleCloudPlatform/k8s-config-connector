@@ -505,9 +505,14 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				})
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, resourceID, "${groupID}")
-				})
+				// groups/{groupID}
+				tokens := strings.Split(resourceID, "/")
+				n := len(tokens)
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${groupID}")
+					})
+				}
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {

@@ -169,7 +169,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The CloudIdentityGroup name. If not given, the metadata.name will be used.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID}. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
