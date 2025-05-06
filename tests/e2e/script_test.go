@@ -440,7 +440,6 @@ func TestE2EScript(t *testing.T) {
 								}
 								continue
 							}
-
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
 
 						}

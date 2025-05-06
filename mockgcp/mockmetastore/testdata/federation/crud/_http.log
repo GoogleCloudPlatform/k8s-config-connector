@@ -75,7 +75,7 @@ X-Xss-Protection: 0
     "endpointUri": "thrift://mock-endpoint:9083",
     "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "state": "ACTIVE",
-    "uid": "test-test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "version": "3.1.2"
   }
@@ -109,7 +109,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "test-test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -133,7 +133,7 @@ Content-Type: application/json
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "test-test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }
@@ -199,7 +199,7 @@ X-Xss-Protection: 0
     "endpointUri": "thrift://mock-endpoint:9083",
     "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
     "state": "ACTIVE",
-    "uid": "test-test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "version": "3.1.2"
   }
@@ -233,7 +233,7 @@ X-Xss-Protection: 0
   "endpointUri": "thrift://mock-endpoint:9083",
   "name": "projects/${projectId}/locations/us-central1/federations/test-${uniqueId}",
   "state": "ACTIVE",
-  "uid": "test-test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "version": "3.1.2"
 }

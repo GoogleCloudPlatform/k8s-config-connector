@@ -70,7 +70,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "role": "roles/storage.admin"
       }
     ],
-    "etag": "1B2M2Y8AsgTpgAmY7PhCfg==",
+    "etag": "abcdef0123A=",
     "version": 3
   },
   "updateMask": "bindings,etag,auditConfigs"

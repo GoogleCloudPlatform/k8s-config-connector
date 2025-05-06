@@ -97,7 +97,7 @@ X-Xss-Protection: 0
       "logFormat": "JSON"
     },
     "tier": "DEVELOPER",
-    "uid": "test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -144,7 +144,7 @@ X-Xss-Protection: 0
     "logFormat": "JSON"
   },
   "tier": "DEVELOPER",
-  "uid": "test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

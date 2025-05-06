@@ -648,8 +648,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 					}
-					// Specific to IAM/policy
-					addReplacement("policy.etag", "abcdef0123A=")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
@@ -680,14 +678,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 
 					// Specific to AlloyDB
-					addReplacement("uid", "111111111111111111111")
-					addReplacement("response.uid", "111111111111111111111")
-					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("ipAddress", "10.1.2.3")
-					addReplacement("response.ipAddress", "10.1.2.3")
-					addReplacement("primary.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("primary.generateTime", "2024-04-01T12:34:56.123456Z")
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, _ := unstructured.NestedString(obj, "name"); found {
 							if strings.Contains(val, "clusters/alloydb") ||

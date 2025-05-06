@@ -1,8 +1,17 @@
 GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}
 
-
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -20,14 +29,15 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
 
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}
 
 {
   "policy": {
@@ -42,13 +52,21 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
         "role": "roles/privateca.auditor"
       }
     ],
-    "etag": "9PV0OUST/G0nKsXZvXJV9Q==",
-    "version": 3
+    "etag": "abcdef0123A=",
+    "version": 1
   },
   "resource": "projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}"
 }
 
-
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -63,5 +81,5 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }

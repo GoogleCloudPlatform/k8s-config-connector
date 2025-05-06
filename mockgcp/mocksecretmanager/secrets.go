@@ -78,7 +78,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 
 func (s *SecretsV1) populateDefaultsForSecret(ctx context.Context, obj *pb.Secret) error {
 	for _, version := range obj.VersionAliases {
-		versionName := obj.Name + "/versions/" + strconv.FormatInt(version, 64)
+		versionName := obj.Name + "/versions/" + strconv.FormatInt(version, 10)
 		_, err := s.GetSecretVersion(ctx, &pb.GetSecretVersionRequest{Name: versionName})
 		if err != nil {
 			return fmt.Errorf("Aliases cannot be assigned to versions that don't exist")

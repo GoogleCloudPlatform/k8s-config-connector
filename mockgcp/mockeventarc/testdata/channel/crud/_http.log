@@ -63,7 +63,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/channels/test-${uniqueId}",
     "pubsubTopic": "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123",
     "state": "ACTIVE",
-    "uid": "test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -90,7 +90,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/channels/test-${uniqueId}",
   "pubsubTopic": "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123",
   "state": "ACTIVE",
-  "uid": "test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -163,7 +163,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/channels/test-${uniqueId}",
     "pubsubTopic": "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123",
     "state": "ACTIVE",
-    "uid": "test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
