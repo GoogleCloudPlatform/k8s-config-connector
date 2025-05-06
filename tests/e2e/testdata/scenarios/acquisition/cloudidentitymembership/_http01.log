@@ -1,0 +1,77 @@
+POST https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "preferredMemberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "roles": [
+    {
+      "name": "MEMBER"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Membership",
+    "memberKey": {
+      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "name": "groups/${groupID}/memberships/${membershipID}",
+    "preferredMemberKey": {
+      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "roles": [
+      {
+        "name": "MEMBER"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "memberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "name": "groups/${groupID}/memberships/${membershipID}",
+  "preferredMemberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "roles": [
+    {
+      "name": "MEMBER"
+    }
+  ],
+  "type": "USER",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
