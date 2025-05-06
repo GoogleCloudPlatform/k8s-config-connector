@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "response": {
-    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Group",
+    "@type": "type.googleapis.com/google.apps.cloudidentity.v1beta1.Group",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "This is a test CloudIdentityGroup.",
     "displayName": "Cloud Identity Group Name",

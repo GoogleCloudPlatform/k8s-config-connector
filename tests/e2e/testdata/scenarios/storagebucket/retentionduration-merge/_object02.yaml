@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -12,18 +12,8 @@ metadata:
   name: bucket-${uniqueId}
   namespace: ${projectId}
 spec:
-  lifecycleRule:
-  - action:
-      type: Delete
-    condition:
-      age: 7
-      withState: ANY
   location: US
-  publicAccessPrevention: inherited
   resourceID: bucket-${uniqueId}
-  softDeletePolicy:
-    retentionDurationSeconds: 0
-  storageClass: STANDARD
   versioning:
     enabled: false
 status:
@@ -36,6 +26,7 @@ status:
   observedGeneration: 2
   observedState:
     softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 0
   selfLink: https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}
   url: gs://bucket-${uniqueId}

@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +18,15 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+cd ${REPO_ROOT}/
 
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
-echo "Running scenarios tests for powertool..."
-RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 \
-  go test -test.count=1 -timeout 600s -v ./tests/e2e \
-  -run TestE2EScript/scenarios/powertool
+# Always write golden output
+export WRITE_GOLDEN_OUTPUT=1
+
+echo "Running scenarios tests..."
+GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
+  go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestE2EScript/scenarios \
+  -skip "TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership"

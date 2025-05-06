@@ -1,5 +1,5 @@
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -36,7 +36,7 @@ X-Xss-Protection: 0
 
 PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -82,7 +82,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
