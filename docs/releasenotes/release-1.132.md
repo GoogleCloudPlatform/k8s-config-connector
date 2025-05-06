@@ -24,7 +24,10 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 * [SecretManagerSecret](https://cloud.google.com/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret). For opt-in direct controller,
   * Added `spec.labels` field.
 
-<!-- ## Reconciliation Improvements -->
+## Reconciliation Improvements:
+* [BigtableAppProfile](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigtable/bigtableappprofile).
+    * All BigtableAppProfile resources are now reconciled using the new direct controller (instead of the legacy Terraform-based controller). 
+    * Added support for `spec.dataBoostIsolationReadOnly` field.
 
 <!-- ## New features: -->
 
