@@ -18,6 +18,6 @@ commonLabels:
 commonAnnotations:
   cnrm.cloud.google.com/operator-version: "1.131.0"
 resources:
-  - crds.yaml
-  - rbac.yaml
-  - manager.yaml
+  - ../../../../operator/config/rbac
+  - ../../../../operator/config/crd
+  - ../../../../operator/config/autopilot-manager

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# runs the config-connector build across all desired systems and architectures and creates a release tarball
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+
+BUILD_DIR="${REPO_ROOT}/.build"
+mkdir -p "${BUILD_DIR}"
+
+
+MANUAL_DIR="${BUILD_DIR}/manual-release"
+mkdir -p "${MANUAL_DIR}/operator-system"
+
+# New process
+kustomize build config/installbundle/release-manifests/standard -o ${MANUAL_DIR}/operator-system/configconnector-operator.yaml
+echo "Added standard release manifest to ${MANUAL_DIR}/operator-system/configconnector-operator.yaml"
+
+kustomize build config/installbundle/release-manifests/autopilot -o ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml
+echo "Added autopilot release manifest to ${MANUAL_DIR}/operator-system/autopilot-configconnector-operator.yaml"
+
+cp -rf operator/config/samples ${MANUAL_DIR}/
+
+tar -czvf ${BUILD_DIR}/release-bundle.tar.gz -C ${MANUAL_DIR}/ .
+
+echo "Generated ${BUILD_DIR}/release-bundle.tar.gz for manual installation "
