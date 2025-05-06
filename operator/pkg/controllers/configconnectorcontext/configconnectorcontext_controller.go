@@ -88,7 +88,7 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 20}).
-		WatchesRawSource(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(source.TypedChannel(r.customizationWatcher.Events(), &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {

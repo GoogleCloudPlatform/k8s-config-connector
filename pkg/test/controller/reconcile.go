@@ -40,6 +40,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
@@ -63,11 +64,17 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.Type, whCf
 
 func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func(), error) {
 	opts := manager.Options{
-		Port:    env.WebhookInstallOptions.LocalServingPort,
-		Host:    env.WebhookInstallOptions.LocalServingHost,
-		CertDir: env.WebhookInstallOptions.LocalServingCertDir,
-		// Disable metrics server for testing
-		MetricsBindAddress: "0",
+		WebhookServer: webhook.NewServer(
+			webhook.Options{
+				Port:    env.WebhookInstallOptions.LocalServingPort,
+				Host:    env.WebhookInstallOptions.LocalServingHost,
+				CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+			},
+		),
+		Metrics: server.Options{
+			// Disable metrics server for testing
+			BindAddress: "0",
+		},
 	}
 	// supply a concrete client to disable the default behavior of caching
 	nocache.OnlyCacheCCAndCCC(&opts)
