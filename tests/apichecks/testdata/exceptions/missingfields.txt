@@ -165,7 +165,6 @@
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.arguments[].mode" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.importedLibraries[]" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.returnTableType" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.clustering[]" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyVersion" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.expirationTime" is not set in unstructured objects
@@ -194,7 +193,6 @@
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.referenceFileSchemaUri" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.schema" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.materializedView.allowNonIncrementalDefinition" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.materializedView.query" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.materializedView.refreshIntervalMs" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.maxStaleness" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.field" is not set in unstructured objects

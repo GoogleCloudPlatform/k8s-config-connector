@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -224,6 +225,31 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 						Type: PtrTo("STRING"),
 					},
 				}
+			}
+		}
+	}
+
+	if obj.MaterializedView != nil {
+		obj.Type = PtrTo("MATERIALIZED_VIEW")
+		obj.MaterializedView.LastRefreshTime = PtrTo(now.UnixMilli())
+		obj.MaterializedViewStatus = &pb.MaterializedViewStatus{
+			RefreshWatermark: timestamppb.New(now),
+		}
+		if obj.Schema == nil {
+			obj.Schema = &pb.TableSchema{}
+			// TODO: Find a way to convert sql string query to actual object instead of hardcoding.
+			// schema of the query in bigquerytable-view test case
+			obj.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("dt"),
+					Type: PtrTo("DATE"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("user_id"),
+					Type: PtrTo("STRING"),
+				},
 			}
 		}
 	}
