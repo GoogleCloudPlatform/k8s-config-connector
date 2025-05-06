@@ -93,16 +93,11 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
 	}
-	fmt.Println("CHKPT1")
-	fmt.Println(existing)
 
 	updated := ProtoClone(existing)
 
 	// Required. The set of fields to update.
 	paths := req.GetUpdateMask().GetPaths()
-	fmt.Println("CHKPT")
-	fmt.Println(req)
-	fmt.Println(paths)
 	if len(paths) == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
@@ -164,8 +159,6 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	if !updatePaths.Has("description") {
 		lroRet.Description = ""
 	}
-	fmt.Println("CHKPT3")
-	fmt.Println(lroRet)
 
 	if isAsync {
 		return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
