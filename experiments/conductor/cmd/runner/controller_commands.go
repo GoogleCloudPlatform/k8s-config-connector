@@ -413,17 +413,27 @@ func moveTestToSubDir(ctx context.Context, opts *RunnerOptions, branch Branch, e
 		branch.Group, strings.ToLower(crdVersion),
 		strings.ToLower(branch.Kind),
 	)
-
 	parentDir := filepath.Join(opts.branchRepoDir, relativeParentDir)
+	subDir := filepath.Join(parentDir, strings.ToLower(branch.Kind))
+	_, err := os.Stat(subDir)
+	if err == nil {
+		log.Printf("Sub directory %s for %s already exists", subDir, branch.Name)
+		return nil, nil, nil
+	}
+	if !errors.Is(err, os.ErrNotExist) {
+		return nil, nil, fmt.Errorf("error checking whether sub directory %s exists: %w", subDir, err)
+	}
+
 	createFilePath := filepath.Join(parentDir, "create.yaml")
-	_, err := os.Stat(createFilePath)
+	_, err = os.Stat(createFilePath)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
+			log.Printf("No test data under directory %s for %s", parentDir, branch.Name)
 			return nil, nil, nil
 		}
 		return nil, nil, fmt.Errorf("error checking whether test data %s exists: %w", createFilePath, err)
 	}
-	subDir := filepath.Join(parentDir, strings.ToLower(branch.Kind))
+
 	if err := os.MkdirAll(subDir, 0755); err != nil {
 		return nil, nil, fmt.Errorf("failed to create sub directory %s: %w", subDir, err)
 	}

@@ -442,7 +442,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case cmdRunAndFixGoldenMockOutput: // 48
 		processBranches(ctx, opts, REGEX_MSG_48, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: COMMIT_MSG_48, VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdMoveExistingTest: // 50
-		processBranches(ctx, opts, REGEX_MSG_50, branches.Branches, "Move existing test", []BranchProcessor{{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_50, AttemptsOnNoChange: 0}})
+		processBranches(ctx, opts, REGEX_MSG_50, branches.Branches, "Move Existing Test", []BranchProcessor{{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_50, AttemptsOnNoChange: 0, CommitOptional: true}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
