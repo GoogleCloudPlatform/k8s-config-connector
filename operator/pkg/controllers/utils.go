@@ -36,7 +36,7 @@ import (
 )
 
 var (
-	ValidConfigConnectorNamespacedName = types.NamespacedName{Name: k8s.ConfigConnectorAllowedName}
+	ValidConfigConnectorNamespacedName = types.NamespacedName{Name: corev1beta1.ConfigConnectorAllowedName}
 )
 
 func GetConfigConnector(ctx context.Context, client client.Client, nn types.NamespacedName) (*corev1beta1.ConfigConnector, error) {

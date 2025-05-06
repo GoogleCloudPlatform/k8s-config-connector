@@ -102,7 +102,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	repo := cnrmmanifest.NewLocalRepository(opt.RepoPath)
 	manifestLoader := cnrmmanifest.NewPerNamespaceManifestLoader(repo)
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
-		preflight.NewNameChecker(mgr.GetClient(), k8s.ConfigConnectorContextAllowedName),
+		preflight.NewNameChecker(mgr.GetClient(), corev1beta1.ConfigConnectorContextAllowedName),
 		preflight.NewUpgradeChecker(mgr.GetClient(), repo),
 		preflight.NewConfigConnectorContextChecker(),
 	})

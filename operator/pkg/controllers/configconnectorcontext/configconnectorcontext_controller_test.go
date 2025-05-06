@@ -104,7 +104,7 @@ spec:
 	ccc := &corev1beta1.ConfigConnectorContext{
 		TypeMeta: metav1.TypeMeta{},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -148,7 +148,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			name: "CC is in cluster mode, CCC surfaces errors",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "cluster",
@@ -156,7 +156,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -170,7 +170,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			name: "CC is in namespaced mode, CCC has spec.requestProjectPolicy omitted",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -178,7 +178,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -194,7 +194,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			name: "CC is in namespaced mode, CCC has spec.requestProjectPolicy set to RESOURCE_PROJECT",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -202,7 +202,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -220,7 +220,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			name: "CC is in namespaced mode, CCC has spec.billingProject set and spec.requestProjectPolicy set to BILLING_PROJECT",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -228,7 +228,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -327,7 +327,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			name: "Delete the CCC object",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -335,7 +335,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:       k8s.ConfigConnectorContextAllowedName,
+					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "foo-ns",
 					Finalizers: []string{k8s.OperatorFinalizer},
 				},
@@ -356,7 +356,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			name: "CC is switched to cluster mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode:                 "cluster",
@@ -365,7 +365,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:       k8s.ConfigConnectorContextAllowedName,
+					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "foo-ns",
 					Finalizers: []string{k8s.OperatorFinalizer},
 				},
@@ -386,7 +386,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			name: "CC is pending deletion",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:       k8s.ConfigConnectorAllowedName,
+					Name:       corev1beta1.ConfigConnectorAllowedName,
 					Finalizers: []string{k8s.OperatorFinalizer},
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
@@ -395,7 +395,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:       k8s.ConfigConnectorContextAllowedName,
+					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "foo-ns",
 					Finalizers: []string{k8s.OperatorFinalizer},
 				},
@@ -418,7 +418,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			cc:   nil,
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:       k8s.ConfigConnectorContextAllowedName,
+					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "foo-ns",
 					Finalizers: []string{k8s.OperatorFinalizer},
 				},
@@ -554,7 +554,7 @@ func TestHandleReconcileFailed(t *testing.T) {
 
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -606,7 +606,7 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -644,13 +644,13 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 	var (
 		fooCCC = &corev1beta1.ConfigConnectorContext{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      k8s.ConfigConnectorContextAllowedName,
+				Name:      corev1beta1.ConfigConnectorContextAllowedName,
 				Namespace: "foo-ns",
 			},
 		}
 		barCCC = &corev1beta1.ConfigConnectorContext{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      k8s.ConfigConnectorContextAllowedName,
+				Name:      corev1beta1.ConfigConnectorContextAllowedName,
 				Namespace: "foo-ns",
 			},
 		}
@@ -711,8 +711,8 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 		if e.Object.GetNamespace() != "foo-ns" {
 			t.Fatalf("unexpected namespace for watch event object, want foo-ns, got %v", e.Object.GetNamespace())
 		}
-		if e.Object.GetName() != k8s.ConfigConnectorContextAllowedName {
-			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorContextAllowedName, e.Object.GetName())
+		if e.Object.GetName() != corev1beta1.ConfigConnectorContextAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", corev1beta1.ConfigConnectorContextAllowedName, e.Object.GetName())
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatalf("expect watch event, got no event")
@@ -734,8 +734,8 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 		if e.Object.GetNamespace() != "bar-ns" {
 			t.Fatalf("unexpected namespace for watch event object, want foo-ns, got %v", e.Object.GetNamespace())
 		}
-		if e.Object.GetName() != k8s.ConfigConnectorContextAllowedName {
-			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorContextAllowedName, e.Object.GetName())
+		if e.Object.GetName() != corev1beta1.ConfigConnectorContextAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", corev1beta1.ConfigConnectorContextAllowedName, e.Object.GetName())
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatalf("expect watch event, got no event")
@@ -755,8 +755,8 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 		if e.Object.GetNamespace() != "foo-ns" {
 			t.Fatalf("unexpected namespace for watch event object, want foo-ns, got %v", e.Object.GetNamespace())
 		}
-		if e.Object.GetName() != k8s.ConfigConnectorContextAllowedName {
-			t.Fatalf("unexpected name for watch event object, want %v, got %v", k8s.ConfigConnectorContextAllowedName, e.Object.GetName())
+		if e.Object.GetName() != corev1beta1.ConfigConnectorContextAllowedName {
+			t.Fatalf("unexpected name for watch event object, want %v, got %v", corev1beta1.ConfigConnectorContextAllowedName, e.Object.GetName())
 		}
 	case <-time.After(3 * time.Second):
 		t.Fatalf("expect watch event, got no event")
@@ -766,7 +766,7 @@ func TestConfigConnectorContextControllerWatchMultipleCustomizationCR(t *testing
 func TestApplyNamespacedCustomizations(t *testing.T) {
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 	}
@@ -898,7 +898,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 	}
