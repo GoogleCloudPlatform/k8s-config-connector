@@ -68,7 +68,7 @@ Workflows provides low latency custom orchestration of services.
 ```yaml
 callLogLevel: string
 description: string
-executionHistoryLevel: integer
+executionHistoryLevel: string
 kmsCryptoKeyRef:
   external: string
   name: string
@@ -126,7 +126,7 @@ userEnvVars:
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">integer</code></p>
+            <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Describes the execution history level to apply to this workflow.{% endverbatim %}</p>
         </td>
     </tr>
@@ -598,9 +598,11 @@ kind: WorkflowsWorkflow
 metadata:
   name: workflow-sample
 spec:
-  # Can be one of "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_ERRORS_ONLY", "CALL_LOG_LEVEL_UNSPECIFIED"
+  # Can be one of "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_ERRORS_ONLY", "CALL_LOG_LEVEL_UNSPECIFIED". See https://cloud.google.com/workflows/docs/reference/rest/v1/projects.locations.workflows#callloglevel
   callLogLevel: "LOG_ALL_CALLS"
   description: "Description about the workflow"
+  # Can be one of "EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED". See https://cloud.google.com/workflows/docs/reference/rest/v1/projects.locations.workflows#executionhistorylevel
+  executionHistoryLevel: "EXECUTION_HISTORY_DETAILED"
   kmsCryptoKeyRef:
     name: workflowsworkflow-dep
   labels:
