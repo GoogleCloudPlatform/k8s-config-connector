@@ -20,7 +20,6 @@ import (
 	"sort"
 	"strings"
 
-	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
@@ -45,7 +44,7 @@ func GetNamespacedName(obj metav1.Object) types.NamespacedName {
 func IsManagedByKCC(gvk schema.GroupVersionKind) bool {
 	// KCC controllers don't manage CRDs under 'core.cnrm.cloud.google.com'.
 	// These CRDs are managed by KCC operator.
-	if strings.HasSuffix(gvk.Group, operatork8s.CoreCNRMGroup) {
+	if strings.HasSuffix(gvk.Group, CoreCNRMGroup) {
 		return false
 	}
 	return strings.HasSuffix(gvk.Group, CNRMGroup)

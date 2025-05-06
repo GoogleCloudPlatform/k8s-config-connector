@@ -18,80 +18,10 @@ import (
 	"strconv"
 	"testing"
 
-	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	opk8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
-
-func TestDecideActuationMode(t *testing.T) {
-	tests := []struct {
-		name                  string
-		cc                    opv1beta1.ConfigConnector
-		ccc                   opv1beta1.ConfigConnectorContext
-		expectedActuationMode opv1beta1.ActuationMode
-	}{
-		{
-			name: "both CC and CCC specify actuationMode in namespaced mode: defer to CCC",
-			cc: opv1beta1.ConfigConnector{
-				Spec: opv1beta1.ConfigConnectorSpec{
-					Mode:      opk8s.NamespacedMode,
-					Actuation: opv1beta1.Reconciling,
-				},
-			},
-			ccc: opv1beta1.ConfigConnectorContext{
-				Spec: opv1beta1.ConfigConnectorContextSpec{
-					Actuation: opv1beta1.Paused,
-				},
-			},
-			expectedActuationMode: opv1beta1.Paused,
-		},
-		{
-			name: "only CC specifies in namespaced mode: Use CC",
-			cc: opv1beta1.ConfigConnector{
-				Spec: opv1beta1.ConfigConnectorSpec{
-					Mode:      opk8s.NamespacedMode,
-					Actuation: opv1beta1.Paused,
-				},
-			},
-			ccc: opv1beta1.ConfigConnectorContext{
-				Spec: opv1beta1.ConfigConnectorContextSpec{},
-			},
-			expectedActuationMode: opv1beta1.Paused,
-		},
-		{
-			name: "both CC and CCC specify an actuationMode in cluster mode: ignore CCC",
-			cc: opv1beta1.ConfigConnector{
-				Spec: opv1beta1.ConfigConnectorSpec{
-					Mode:      opk8s.ClusterMode,
-					Actuation: opv1beta1.Reconciling,
-				},
-			},
-			ccc: opv1beta1.ConfigConnectorContext{
-				Spec: opv1beta1.ConfigConnectorContextSpec{
-					Actuation: opv1beta1.Paused,
-				},
-			},
-			expectedActuationMode: opv1beta1.Reconciling,
-		},
-		{
-			name:                  "neither CC nor CCC specify an actuationMode: Use default",
-			cc:                    opv1beta1.ConfigConnector{},
-			ccc:                   opv1beta1.ConfigConnectorContext{},
-			expectedActuationMode: opv1beta1.Reconciling,
-		},
-	}
-
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			actualMode := resourceactuation.DecideActuationMode(test.cc, test.ccc)
-			if test.expectedActuationMode != actualMode {
-				t.Errorf("DecideActuationMode failed; got %v, want %v", actualMode, test.expectedActuationMode)
-			}
-		})
-	}
-}
 
 func TestShouldSkip(t *testing.T) {
 	testcases := []struct {

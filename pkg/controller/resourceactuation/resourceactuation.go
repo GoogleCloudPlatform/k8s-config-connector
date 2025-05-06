@@ -17,32 +17,11 @@ package resourceactuation
 import (
 	"fmt"
 
-	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	opk8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
-
-// DecideActuationMode looks at CC and CCC to see if they specify an actuationMode.
-// - If both CC & CCC specify a actuationMode in Namespaced mode, we defer to the CCC's value.
-//   - If only CC specifies a actuationMode in Namespaced mode, we defer to the CC's value.
-//
-// - If both CC & CCC specify an actuationMode in cluster mode, the CCC specification is irrelevant.
-// - If neither CC nor CCC specify a actuationMode, we defer to the default value defined in apis.
-func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) opv1beta1.ActuationMode {
-	if ccc.Spec.Actuation != "" && cc.Spec.Mode == opk8s.NamespacedMode {
-		return ccc.Spec.Actuation
-	}
-
-	// if no CCC exists or doesn't define a value, defer to the CC's value.
-	if cc.Spec.Actuation != "" {
-		return cc.Spec.Actuation
-	}
-
-	return opv1beta1.DefaultActuationMode()
-}
 
 // ShouldSkip skips a resource actuatation if the ReconcileIntervalInSecondsAnnotation = 0 and the KRM resource has not changed since its last UpToDate.
 // This will disable drift correction on corresponding GCP resources since the reconcileInterval is set to 0.

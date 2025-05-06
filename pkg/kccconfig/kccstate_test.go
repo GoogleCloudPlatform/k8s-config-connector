@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package kccstate_test
+package kccconfig
 
 import (
 	"context"
@@ -28,7 +28,6 @@ import (
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 )
 
@@ -135,7 +134,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 					t.Fatalf("error creating %+v: %v", tc.ccc.GroupVersionKind(), err)
 				}
 			}
-			gotCC, gotCCC, err := kccstate.FetchLiveKCCState(ctx, client, tc.namespacedName)
+			gotCC, gotCCC, err := FetchLiveKCCState(ctx, client, tc.namespacedName)
 			if tc.expectError {
 				if err == nil {
 					t.Fatalf("got nil, but expect an error")

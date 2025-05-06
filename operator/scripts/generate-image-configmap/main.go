@@ -60,7 +60,7 @@ func run(ctx context.Context) error {
 
 	cc := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
-			Mode:                 k8s.NamespacedMode,
+			Mode:                 corev1beta1.NamespacedMode,
 			GoogleServiceAccount: "someGSA",
 		},
 	}

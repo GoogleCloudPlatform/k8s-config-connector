@@ -14,7 +14,7 @@
 
 package v1beta1
 
-// ActuationMode enum defines the possible actuation values that ConfigConnect (CC)
+// ActuationMode enum defines the possible actuation values that ConfigConnector (CC)
 // and ConfigConnectorContext (CCC) can specify.
 type ActuationMode string
 

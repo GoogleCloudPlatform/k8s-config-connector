@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -51,12 +52,12 @@ func (a *stateIntoSpecAnnotationValidator) Handle(ctx context.Context, req admis
 	}
 
 	value, ok := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, obj)
-	if ok && value == k8s.StateMergeIntoSpec {
+	if ok && value == apis.StateMergeIntoSpec {
 		return allowedResponse.WithWarnings(
 			fmt.Sprintf("'%v: %v' is unsupported for CRDs added in "+
 				"1.114.0 and later. Use '%v' instead. More details can be "+
 				"found at https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields.",
-				k8s.StateIntoSpecAnnotation, k8s.StateMergeIntoSpec, k8s.StateAbsentInSpec))
+				k8s.StateIntoSpecAnnotation, apis.StateMergeIntoSpec, apis.StateAbsentInSpec))
 	}
 	// TODO: Verify if the state-into-spec annotation will be defaulted to 'merge'.
 	return allowedResponse

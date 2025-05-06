@@ -21,8 +21,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -32,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -243,16 +242,16 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
 
-	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
+	config, err := kccconfig.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
 	}
 
-	am := resourceactuation.DecideActuationMode(cc, ccc)
+	am := config.ActuationMode()
 	switch am {
-	case v1beta1.Reconciling:
+	case kccconfig.ActuationModeReconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
-	case v1beta1.Paused:
+	case kccconfig.ActuationModePaused:
 		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling

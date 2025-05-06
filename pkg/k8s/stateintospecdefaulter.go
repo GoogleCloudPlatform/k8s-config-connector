@@ -23,8 +23,8 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccconfig"
 )
 
 // StateIntoSpecDefaulter contains the required 'defaultValue' field and the
@@ -48,62 +48,43 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 		return false, nil
 	}
 
-	annotationValue := StateIntoSpecDefaultValueV1Beta1
-
 	namespacedName := types.NamespacedName{Name: resource.GetName(), Namespace: resource.GetNamespace()}
-	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, v.client, namespacedName)
+	config, err := kccconfig.FetchLiveKCCState(ctx, v.client, namespacedName)
 	if err != nil {
 		return false, fmt.Errorf("error getting ConfigConnector and ConfigConnectorContext objects: %w", err)
 	}
 
-	if cc.Spec.StateIntoSpec != nil {
-		switch *cc.Spec.StateIntoSpec {
-		case operatorv1beta1.StateIntoSpecMerge:
-			annotationValue = StateMergeIntoSpec
-		case operatorv1beta1.StateIntoSpecAbsent:
-			annotationValue = StateAbsentInSpec
-
-		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnector, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
-		}
+	annotationValue, err := config.DefaultStateIntoSpecAnnotation()
+	if err != nil {
+		return false, err
 	}
 
-	if ccc.Spec.StateIntoSpec != nil {
-		switch *ccc.Spec.StateIntoSpec {
-		case operatorv1beta1.StateIntoSpecMerge:
-			annotationValue = StateMergeIntoSpec
-		case operatorv1beta1.StateIntoSpecAbsent:
-			annotationValue = StateAbsentInSpec
-
-		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnectorContext, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
-		}
+	if annotationValue != "" {
+		setStateIntoSpecDefaultValueIfAllowed(annotationValue, resource)
 	}
-
-	setStateIntoSpecDefaultValueIfAllowed(annotationValue, resource)
 	return true, nil
 }
 
 func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Object) {
-	if defaultValue == StateMergeIntoSpec && !SupportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
+	if defaultValue == apis.StateMergeIntoSpec && !SupportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
 		klog.Infof("%v doesn't support %q so the %q annotation is always defaulted to %q",
-			obj.GetObjectKind().GroupVersionKind().Kind, StateMergeIntoSpec,
-			StateIntoSpecAnnotation, StateAbsentInSpec)
-		SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
+			obj.GetObjectKind().GroupVersionKind().Kind, apis.StateMergeIntoSpec,
+			StateIntoSpecAnnotation, apis.StateAbsentInSpec)
+		SetAnnotation(StateIntoSpecAnnotation, apis.StateAbsentInSpec, obj)
 		return
-
 	}
+
 	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 }
 
 func isAcceptedStateIntoSpecValue(value string, gvk schema.GroupVersionKind) bool {
 	if SupportsStateIntoSpecMerge(gvk) {
-		for _, v := range StateIntoSpecAnnotationValues {
+		for _, v := range apis.StateIntoSpecAnnotationValues {
 			if value == v {
 				return true
 			}
 		}
 		return false
 	}
-	return value == StateAbsentInSpec
+	return value == apis.StateAbsentInSpec
 }
