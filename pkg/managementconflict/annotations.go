@@ -19,6 +19,7 @@ import (
 	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type ManagementConflictPreventionPolicy string
@@ -28,7 +29,6 @@ const (
 	ManagementConflictPreventionPolicyNone     = "none"
 	ManagementConflictPreventionPolicyResource = "resource"
 
-	// ShortName                                                  = "management-conflict-prevention-policy"
 	FullyQualifiedAnnotation = "cnrm.cloud.google.com/management-conflict-prevention-policy"
 )
 
@@ -37,6 +37,10 @@ var managementConflictPreventionPolicyValues = []string{
 	ManagementConflictPreventionPolicyResource,
 }
 
+func NewLeasingNotSupportedByKindError(gvk schema.GroupVersionKind) error {
+	return fmt.Errorf("kind '%v' does not support usage of %v='%v'", gvk, FullyQualifiedAnnotation, ManagementConflictPreventionPolicyResource)
+
+}
 func validateManagementConflictPolicyForResource(policy ManagementConflictPreventionPolicy, supportLeasing bool) error {
 	switch policy {
 	case ManagementConflictPreventionPolicyNone:
@@ -62,10 +66,15 @@ func valueToManagementConflictPreventionPolicy(value string) (ManagementConflict
 		value, strings.Join(managementConflictPreventionPolicyValues, ", "))
 }
 
-func GetManagementConflictPreventionAnnotationValue(obj metav1.Object) (ManagementConflictPreventionPolicy, error) {
+// GetManagementConflictPreventionPolicy returns the ManagementConflictPreventionPolicy to use for the object.
+func GetManagementConflictPreventionPolicy(obj metav1.Object) (ManagementConflictPreventionPolicy, error) {
 	if val, ok := obj.GetAnnotations()[FullyQualifiedAnnotation]; ok {
 		return valueToManagementConflictPreventionPolicy(val)
 	}
-	return ManagementConflictPreventionPolicyNone,
-		fmt.Errorf("attempted to get value for annotation %v, but annotation was not found", FullyQualifiedAnnotation)
+	// We used to treat this as an error, but this introduces a requirement that the webhook is working correctly.
+	// Given that the default is off ("None"), we should treat a missing annotation as off/None.
+	// (Also, this is a mutable field, so we don't need to take extra measures to "lock" it)
+	// Error was fmt.Errorf("attempted to get value for annotation %v, but annotation was not found", FullyQualifiedAnnotation)
+	return ManagementConflictPreventionPolicyNone, nil
+
 }
