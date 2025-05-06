@@ -161,6 +161,9 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") && !updatePaths.Has("dataBoostIsolationReadOnly") && !updatePaths.Has("data_boost_isolation_read_only") {
 		lroRet.Isolation = nil
 	}
+	if !updatePaths.Has("description") {
+		lroRet.Description = ""
+	}
 	fmt.Println("CHKPT3")
 	fmt.Println(lroRet)
 
