@@ -18,6 +18,8 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -27,7 +29,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked privateca service.
+func init() {
+	mockgcpregistry.Register(New)
+}
+
+// MockService represents a mocked alloydb admin service.
 type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
@@ -36,7 +42,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,

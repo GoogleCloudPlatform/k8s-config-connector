@@ -2,6 +2,7 @@ apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
 kind: SecretManagerSecretVersion
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
@@ -34,7 +35,5 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     name: projects/${projectNumber}/secrets/secret-${uniqueId}/versions/1
     replicationStatus:
-      userManaged:
-        replicas:
-        - location: us-central1
+      automatic: {}
   version: "1"
