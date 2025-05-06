@@ -510,7 +510,7 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmResource *krmtotf.Resource, liveState *terraform.InstanceState) error {
-	conflictPolicy, err := managementconflict.GetManagementConflictPreventionAnnotationValue(krmResource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionPolicy(krmResource)
 	if err != nil {
 		return err
 	}
@@ -522,8 +522,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmReso
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v='%v'", krmResource.GroupVersionKind(),
-			managementconflict.FullyQualifiedAnnotation, conflictPolicy)
+		return managementconflict.NewLeasingNotSupportedByKindError(krmResource.GroupVersionKind())
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
