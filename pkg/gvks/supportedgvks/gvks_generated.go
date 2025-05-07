@@ -4302,6 +4302,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		},
 	},
 	{
+		Group:   "orgpolicy.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "OrgPolicyPolicy",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
 		Group:   "osconfig.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "OSConfigGuestPolicy",

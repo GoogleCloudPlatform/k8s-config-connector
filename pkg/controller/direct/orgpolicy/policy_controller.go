@@ -37,20 +37,20 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.OrgPolicyCustomConstraintGVK, NewCustomConstraintModel)
+	registry.RegisterModel(krm.OrgPolicyPolicyGVK, NewPolicyModel)
 }
 
-func NewCustomConstraintModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelCustomConstraint{config: *config}, nil
+func NewPolicyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelPolicy{config: *config}, nil
 }
 
-var _ directbase.Model = &modelCustomConstraint{}
+var _ directbase.Model = &modelPolicy{}
 
-type modelCustomConstraint struct {
+type modelPolicy struct {
 	config config.ControllerConfig
 }
 
-func (m *modelCustomConstraint) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelPolicy) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -58,18 +58,18 @@ func (m *modelCustomConstraint) client(ctx context.Context) (*gcp.Client, error)
 	}
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building CustomConstraint client: %w", err)
+		return nil, fmt.Errorf("building Policy client: %w", err)
 	}
 	return gcpClient, err
 }
 
-func (m *modelCustomConstraint) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.OrgPolicyCustomConstraint{}
+func (m *modelPolicy) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	obj := &krm.OrgPolicyPolicy{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewCustomConstraintIdentity(ctx, reader, obj)
+	id, err := krm.NewPolicyIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -79,73 +79,74 @@ func (m *modelCustomConstraint) AdapterForObject(ctx context.Context, reader cli
 	if err != nil {
 		return nil, err
 	}
-	return &CustomConstraintAdapter{
+	return &PolicyAdapter{
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
 }
 
-func (m *modelCustomConstraint) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelPolicy) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
-type CustomConstraintAdapter struct {
-	id        *krm.CustomConstraintIdentity
+type PolicyAdapter struct {
+	id        *krm.PolicyIdentity
 	gcpClient *gcp.Client
-	desired   *krm.OrgPolicyCustomConstraint
-	actual    *orgpolicypb.CustomConstraint
+	desired   *krm.OrgPolicyPolicy
+	actual    *orgpolicypb.Policy
 }
 
-var _ directbase.Adapter = &CustomConstraintAdapter{}
+var _ directbase.Adapter = &PolicyAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
-func (a *CustomConstraintAdapter) Find(ctx context.Context) (bool, error) {
+func (a *PolicyAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting CustomConstraint", "name", a.id)
+	log.V(2).Info("getting Policy", "name", a.id)
 
-	req := &orgpolicypb.GetCustomConstraintRequest{Name: a.id.String()}
-	customconstraintpb, err := a.gcpClient.GetCustomConstraint(ctx, req)
+	req := &orgpolicypb.GetPolicyRequest{Name: a.id.String()}
+	policypb, err := a.gcpClient.GetPolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting CustomConstraint %q: %w", a.id, err)
+		return false, fmt.Errorf("getting Policy %q: %w", a.id, err)
 	}
 
-	a.actual = customconstraintpb
+	a.actual = policypb
 	return true, nil
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *CustomConstraintAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *PolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating CustomConstraint", "name", a.id)
+	log.V(2).Info("creating Policy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := OrgPolicyCustomConstraintSpec_ToProto(mapCtx, &desired.Spec)
+	resource := OrgPolicyPolicySpec_ToProto(mapCtx, &desired.Spec)
 	resource.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	req := &orgpolicypb.CreateCustomConstraintRequest{
-		Parent:           a.id.Parent().String(),
-		CustomConstraint: resource,
+	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
+	req := &orgpolicypb.CreatePolicyRequest{
+		Parent: a.id.Parent().String(),
+		Policy: resource,
 	}
-	created, err := a.gcpClient.CreateCustomConstraint(ctx, req)
+	created, err := a.gcpClient.CreatePolicy(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating CustomConstraint %s: %w", a.id, err)
+		return fmt.Errorf("creating Policy %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created CustomConstraint", "name", a.id)
+	log.V(2).Info("successfully created Policy", "name", a.id)
 
-	status := &krm.OrgPolicyCustomConstraintStatus{}
-	status.ObservedState = OrgPolicyCustomConstraintObservedState_FromProto(mapCtx, created)
+	status := &krm.OrgPolicyPolicyStatus{}
+	status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -154,28 +155,28 @@ func (a *CustomConstraintAdapter) Create(ctx context.Context, createOp *directba
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *CustomConstraintAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating CustomConstraint", "name", a.id)
+	log.V(2).Info("updating Policy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := OrgPolicyCustomConstraintSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := OrgPolicyPolicySpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	req := &orgpolicypb.UpdateCustomConstraintRequest{
-		CustomConstraint: desiredPb,
+	req := &orgpolicypb.UpdatePolicyRequest{
+		Policy: desiredPb,
 	}
-	updated, err := a.gcpClient.UpdateCustomConstraint(ctx, req)
+	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating CustomConstraint %s: %w", a.id, err)
+		return fmt.Errorf("updating Policy %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully updated CustomConstraint", "name", a.id)
+	log.V(2).Info("successfully updated Policy", "name", a.id)
 
-	status := &krm.OrgPolicyCustomConstraintStatus{}
-	status.ObservedState = OrgPolicyCustomConstraintObservedState_FromProto(mapCtx, updated)
+	status := &krm.OrgPolicyPolicyStatus{}
+	status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -183,47 +184,57 @@ func (a *CustomConstraintAdapter) Update(ctx context.Context, updateOp *directba
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
-func (a *CustomConstraintAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *PolicyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.OrgPolicyCustomConstraint{}
+	obj := &krm.OrgPolicyPolicy{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(OrgPolicyCustomConstraintSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(OrgPolicyPolicySpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent().OrganizationID}
+	parentRef, _, err := krm.ParsePolicyExternal(a.actual.Name)
+	if parentRef.ProjectID != "" {
+		obj.Spec.ProjectRef = &refs.ProjectRef{External: parentRef.String()}
+	} else if parentRef.FolderID != "" {
+		obj.Spec.FolderRef = &refs.FolderRef{External: parentRef.String()}
+	} else if parentRef.OrganizationID != "" {
+		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: parentRef.String()}
+	} else {
+		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
+	}
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.OrgPolicyCustomConstraintGVK)
+	u.SetGroupVersionKind(krm.OrgPolicyPolicyGVK)
 
 	u.Object = uObj
 	return u, nil
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
-func (a *CustomConstraintAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *PolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting CustomConstraint", "name", a.id)
+	log.V(2).Info("deleting Policy", "name", a.id)
 
-	req := &orgpolicypb.DeleteCustomConstraintRequest{Name: a.id.String()}
-	err := a.gcpClient.DeleteCustomConstraint(ctx, req)
+	req := &orgpolicypb.DeletePolicyRequest{Name: a.id.String()}
+	err := a.gcpClient.DeletePolicy(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent CustomConstraint, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent Policy, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting CustomConstraint %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting Policy %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted CustomConstraint", "name", a.id)
+	log.V(2).Info("successfully deleted Policy", "name", a.id)
 
 	return true, nil
 }
