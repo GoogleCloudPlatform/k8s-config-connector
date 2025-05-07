@@ -1,0 +1,34 @@
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+kind: OrgPolicyCustomConstraint
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: custom.orgpolicycustomconstraint${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  actionType: ALLOW
+  condition: resource.management.autoUpgrade == true
+  displayName: KCC generated test CuOP for update
+  methodTypes:
+  - CREATE
+  - UPDATE
+  organizationRef:
+    external: organizations/${folderID}
+  resourceID: custom.orgpolicycustomconstraint${uniqueId}
+  resourceTypes:
+  - container.googleapis.com/NodePool
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}
+  observedGeneration: 2
+  observedState:
+    updateTime: "1970-01-01T00:00:00Z"

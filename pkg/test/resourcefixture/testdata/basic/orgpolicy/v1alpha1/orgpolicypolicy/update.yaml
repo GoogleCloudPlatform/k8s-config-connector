@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,12 @@
 # limitations under the License.
 
 apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
-kind: OrgPolicyCustomConstraint
+kind: OrgPolicyPolicy
 metadata:
-  name: orgpolicycustomconstraint-${uniqueId}
+  name: custom.orgpolicypolicy${uniqueId}
 spec:
-  actionType: ALLOW
-  condition: resource.management.autoUpgrade == false
-  methodTypes:
-  - CREATE
-  - UPDATE
-  parent: organizations/${TEST_ORG_ID}
-  resourceID: orgpolicycustomconstraint${uniqueId}
-  resourceTypes:
-  - container.googleapis.com/NodePool
+  projectRef:
+    external: projects/1070934155037  # kcc-orgpolicy-test-project
+  spec:
+    rules:
+      - enforce: true
