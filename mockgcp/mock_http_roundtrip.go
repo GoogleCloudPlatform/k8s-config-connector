@@ -89,12 +89,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
-<<<<<<< HEAD
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
-=======
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
->>>>>>> 5e5ec3b9ac (add mockGCP for OrgPolicy by following k8s-config-connector/mockgcp/README.md)
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"

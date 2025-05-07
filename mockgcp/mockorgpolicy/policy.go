@@ -26,20 +26,15 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
-type orgPolicyV2 struct {
-	*MockService
-	pb.UnimplementedOrgPolicyServer
-}
-
-func (s *orgPolicyV2) GetCustomConstraint(ctx context.Context, req *pb.GetCustomConstraintRequest) (*pb.CustomConstraint, error) {
-	name, err := s.parseCustomConstraintName(req.Name)
+func (s *orgPolicyV2) GetPolicy(ctx context.Context, req *pb.GetPolicyRequest) (*pb.Policy, error) {
+	name, err := s.parsePolicyName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.CustomConstraint{}
+	obj := &pb.Policy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
@@ -50,16 +45,16 @@ func (s *orgPolicyV2) GetCustomConstraint(ctx context.Context, req *pb.GetCustom
 	return obj, nil
 }
 
-func (s *orgPolicyV2) CreateCustomConstraint(ctx context.Context, req *pb.CreateCustomConstraintRequest) (*pb.CustomConstraint, error) {
-	reqName := req.CustomConstraint.Name
-	name, err := s.parseCustomConstraintName(reqName)
+func (s *orgPolicyV2) CreatePolicy(ctx context.Context, req *pb.CreatePolicyRequest) (*pb.Policy, error) {
+	reqName := req.Policy.Name
+	name, err := s.parsePolicyName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.CustomConstraint).(*pb.CustomConstraint)
+	obj := proto.Clone(req.Policy).(*pb.Policy)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -68,16 +63,16 @@ func (s *orgPolicyV2) CreateCustomConstraint(ctx context.Context, req *pb.Create
 	return obj, nil
 }
 
-func (s *orgPolicyV2) UpdateCustomConstraint(ctx context.Context, req *pb.UpdateCustomConstraintRequest) (*pb.CustomConstraint, error) {
-	reqName := req.GetCustomConstraint().GetName()
+func (s *orgPolicyV2) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicyRequest) (*pb.Policy, error) {
+	reqName := req.GetPolicy().GetName()
 
-	name, err := s.parseCustomConstraintName(reqName)
+	name, err := s.parsePolicyName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.CustomConstraint{}
+	obj := &pb.Policy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -89,15 +84,15 @@ func (s *orgPolicyV2) UpdateCustomConstraint(ctx context.Context, req *pb.Update
 	return obj, nil
 }
 
-func (s *orgPolicyV2) DeleteCustomConstraint(ctx context.Context, req *pb.DeleteCustomConstraintRequest) (*empty.Empty, error) {
-	name, err := s.parseCustomConstraintName(req.Name)
+func (s *orgPolicyV2) DeletePolicy(ctx context.Context, req *pb.DeletePolicyRequest) (*empty.Empty, error) {
+	name, err := s.parsePolicyName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	oldObj := &pb.CustomConstraint{}
+	oldObj := &pb.Policy{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
@@ -105,26 +100,44 @@ func (s *orgPolicyV2) DeleteCustomConstraint(ctx context.Context, req *pb.Delete
 	return &empty.Empty{}, nil
 }
 
-type CustomConstraintName struct {
-	Organization         string
-	CustomConstraintName string
+type PolicyName struct {
+	Organization string
+	Folder       string
+	Project      string
+	PolicyName   string
 }
 
-func (n *CustomConstraintName) String() string {
-	return "organizations/" + n.Organization + "/customConstraints/" + n.CustomConstraintName
+func (n *PolicyName) String() string {
+	var parent string
+	if n.Folder != "" {
+		parent = "folders/" + n.Folder
+	} else if n.Project != "" {
+		parent = "projects/" + n.Project
+	} else if n.Organization != "" {
+		parent = "organizations/" + n.Organization
+	} else {
+		return ""
+	}
+	return parent + "/policies/" + n.PolicyName
 }
 
-// parseCustomConstraintName parses a string into a CustomConstraintName.
-// The expected form is organizations/<organizationID>/customConstraints/<CustomConstraintName>
-func (s *MockService) parseCustomConstraintName(name string) (*CustomConstraintName, error) {
+// parsePolicyName parses a string into a PolicyName.
+func (s *MockService) parsePolicyName(name string) (*PolicyName, error) {
 	tokens := strings.Split(name, "/")
-
-	if len(tokens) == 4 && tokens[0] == "organizations" && tokens[2] == "customConstraints" {
-
-		name := &CustomConstraintName{
-			Organization:         tokens[1],
-			CustomConstraintName: tokens[3],
+	if len(tokens) == 4 && tokens[2] == "policies" {
+		var name *PolicyName
+		name = &PolicyName{}
+		switch tokens[0] {
+		case "projects":
+			name.Project = tokens[1]
+		case "folders":
+			name.Folder = tokens[1]
+		case "organizations":
+			name.Organization = tokens[1]
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", tokens[0])
 		}
+		name.PolicyName = tokens[3]
 
 		return name, nil
 	} else {
