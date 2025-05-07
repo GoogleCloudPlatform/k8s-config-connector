@@ -6,5 +6,9 @@ main:
         args:
           name: GOOGLE_CLOUD_LOCATION
         result: location
+    - sleepToBeCancelled:
+        call: sys.sleep
+        args:
+          seconds: 3
     - returnOutput:
         return: '${location}'

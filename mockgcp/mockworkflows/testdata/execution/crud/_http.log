@@ -16,6 +16,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found"
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -30,7 +40,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - sleepToBeCancelled:\n        call: sys.sleep\n        args:\n          seconds: 3\n    - returnOutput:\n        return: '${location}'"
 }
 
 200 OK
@@ -44,6 +54,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -89,7 +100,7 @@ X-Xss-Protection: 0
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
     "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
-    "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+    "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - sleepToBeCancelled:\n        call: sys.sleep\n        args:\n          seconds: 3\n    - returnOutput:\n        return: '${location}'",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -118,7 +129,7 @@ X-Xss-Protection: 0
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
   "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
-  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - sleepToBeCancelled:\n        call: sys.sleep\n        args:\n          seconds: 3\n    - returnOutput:\n        return: '${location}'",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -144,18 +155,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-  "result": "us-central1",
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "SUCCEEDED",
+  "state": "ACTIVE",
   "status": {},
-  "workflowRevisionId": "000001-609"
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
 
-GET https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789?alt=json
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/85b28896-d7c9-4e3c-ba50-87d78f86ffe8?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -171,13 +182,91 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "routine-normalized",
+        "step": "step-normalized"
+      }
+    ]
+  },
+  "workflowRevisionId": "revision-id-placeholder"
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/85b28896-d7c9-4e3c-ba50-87d78f86ffe8?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "routine-normalized",
+        "step": "step-normalized"
+      }
+    ]
+  },
+  "workflowRevisionId": "revision-id-placeholder"
+}
+
+---
+
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/85b28896-d7c9-4e3c-ba50-87d78f86ffe8?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "duration": "0.100000000s",
   "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-  "result": "us-central1",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
+  "result": "\"us-central1\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
-  "status": {},
-  "workflowRevisionId": "000001-609"
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "routine-normalized",
+        "step": "step-normalized"
+      }
+    ]
+  },
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -200,20 +289,28 @@ X-Xss-Protection: 0
 {
   "executions": [
     {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "duration": "0.100000000s",
       "endTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-      "result": "us-central1",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
       "startTime": "2024-04-01T12:34:56.123456Z",
       "state": "SUCCEEDED",
-      "status": {},
-      "workflowRevisionId": "000001-609"
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "routine-normalized",
+            "step": "step-normalized"
+          }
+        ]
+      },
+      "workflowRevisionId": "revision-id-placeholder"
     }
   ]
 }
 
 ---
 
-GET https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789?alt=json
+GET https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/85b28896-d7c9-4e3c-ba50-87d78f86ffe8?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -229,13 +326,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "argument": "null",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "duration": "0.100000000s",
   "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-  "result": "us-central1",
+  "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
+  "result": "\"us-central1\"",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "state": "SUCCEEDED",
-  "status": {},
-  "workflowRevisionId": "000001-609"
+  "status": {
+    "currentSteps": [
+      {
+        "routine": "routine-normalized",
+        "step": "step-normalized"
+      }
+    ]
+  },
+  "workflowRevisionId": "revision-id-placeholder"
 }
 
 ---
@@ -258,13 +365,21 @@ X-Xss-Protection: 0
 {
   "executions": [
     {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "duration": "0.100000000s",
       "endTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-      "result": "us-central1",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
       "startTime": "2024-04-01T12:34:56.123456Z",
       "state": "SUCCEEDED",
-      "status": {},
-      "workflowRevisionId": "000001-609"
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "routine-normalized",
+            "step": "step-normalized"
+          }
+        ]
+      },
+      "workflowRevisionId": "revision-id-placeholder"
     }
   ]
 }
@@ -289,20 +404,28 @@ X-Xss-Protection: 0
 {
   "executions": [
     {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "duration": "0.100000000s",
       "endTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-      "result": "us-central1",
+      "name": "projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/${executionId}",
       "startTime": "2024-04-01T12:34:56.123456Z",
       "state": "SUCCEEDED",
-      "status": {},
-      "workflowRevisionId": "000001-609"
+      "status": {
+        "currentSteps": [
+          {
+            "routine": "routine-normalized",
+            "step": "step-normalized"
+          }
+        ]
+      },
+      "workflowRevisionId": "revision-id-placeholder"
     }
   ]
 }
 
 ---
 
-POST https://workflowexecutions.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789:cancel?alt=json
+POST https://workflowexecutions.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/workflows/test-${uniqueId}/executions/85b28896-d7c9-4e3c-ba50-87d78f86ffe8:cancel?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -310,7 +433,7 @@ Content-Type: application/json
 
 {}
 
-200 OK
+400 Bad Request
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -321,13 +444,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}/executions/123456789",
-  "result": "us-central1",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "CANCELLED",
-  "status": {},
-  "workflowRevisionId": "000001-609"
+  "error": {
+    "code": 400,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "cancelling execution in state SUCCEEDED is not allowed"
+      }
+    ],
+    "message": "cancelling execution in state SUCCEEDED is not allowed",
+    "status": "FAILED_PRECONDITION"
+  }
 }
 
 ---
@@ -348,6 +475,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
