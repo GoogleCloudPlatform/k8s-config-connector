@@ -3,4 +3,4 @@
 # This file holds the pinned SHAs for our repos
 # It is generated using dev/tasks/update-mockgcp
 #
-https://github.com/googleapis/googleapis 79d2e1371246e5d5453e0a4394c7b503413bdeea
+https://github.com/googleapis/googleapis 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5

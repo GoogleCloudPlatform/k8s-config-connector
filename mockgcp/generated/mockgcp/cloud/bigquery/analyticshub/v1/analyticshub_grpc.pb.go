@@ -55,8 +55,8 @@ type AnalyticsHubServiceClient interface {
 	// Upon subscription to a listing for a BigQuery dataset, Analytics Hub
 	// creates a linked dataset in the subscriber's project.
 	SubscribeListing(ctx context.Context, in *SubscribeListingRequest, opts ...grpc.CallOption) (*SubscribeListingResponse, error)
-	// Creates a Subscription to a Data Exchange. This is a long-running operation
-	// as it will create one or more linked datasets.
+	// Creates a Subscription to a Data Clean Room. This is a long-running
+	// operation as it will create one or more linked datasets.
 	SubscribeDataExchange(ctx context.Context, in *SubscribeDataExchangeRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Refreshes a Subscription to a Data Exchange. A Data Exchange can become
 	// stale when a publisher adds or removes data. This is a long-running
@@ -320,8 +320,8 @@ type AnalyticsHubServiceServer interface {
 	// Upon subscription to a listing for a BigQuery dataset, Analytics Hub
 	// creates a linked dataset in the subscriber's project.
 	SubscribeListing(context.Context, *SubscribeListingRequest) (*SubscribeListingResponse, error)
-	// Creates a Subscription to a Data Exchange. This is a long-running operation
-	// as it will create one or more linked datasets.
+	// Creates a Subscription to a Data Clean Room. This is a long-running
+	// operation as it will create one or more linked datasets.
 	SubscribeDataExchange(context.Context, *SubscribeDataExchangeRequest) (*longrunningpb.Operation, error)
 	// Refreshes a Subscription to a Data Exchange. A Data Exchange can become
 	// stale when a publisher adds or removes data. This is a long-running

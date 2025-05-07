@@ -27,8 +27,17 @@ type ModelGardenServiceClient interface {
 	GetPublisherModel(ctx context.Context, in *GetPublisherModelRequest, opts ...grpc.CallOption) (*PublisherModel, error)
 	// Lists publisher models in Model Garden.
 	ListPublisherModels(ctx context.Context, in *ListPublisherModelsRequest, opts ...grpc.CallOption) (*ListPublisherModelsResponse, error)
+	// Deploys a model to a new endpoint.
+	Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deploys publisher models.
 	DeployPublisherModel(ctx context.Context, in *DeployPublisherModelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Exports a publisher model to a user provided Google Cloud Storage bucket.
+	ExportPublisherModel(ctx context.Context, in *ExportPublisherModelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Checks the EULA acceptance status of a publisher model.
+	CheckPublisherModelEulaAcceptance(ctx context.Context, in *CheckPublisherModelEulaAcceptanceRequest, opts ...grpc.CallOption) (*PublisherModelEulaAcceptance, error)
+	// Accepts the EULA acceptance status of a publisher model.
+	AcceptPublisherModelEula(ctx context.Context, in *AcceptPublisherModelEulaRequest, opts ...grpc.CallOption) (*PublisherModelEulaAcceptance, error)
 }
 
 type modelGardenServiceClient struct {
@@ -57,9 +66,46 @@ func (c *modelGardenServiceClient) ListPublisherModels(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *modelGardenServiceClient) Deploy(ctx context.Context, in *DeployRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/Deploy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Deprecated: Do not use.
 func (c *modelGardenServiceClient) DeployPublisherModel(ctx context.Context, in *DeployPublisherModelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/DeployPublisherModel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelGardenServiceClient) ExportPublisherModel(ctx context.Context, in *ExportPublisherModelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/ExportPublisherModel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelGardenServiceClient) CheckPublisherModelEulaAcceptance(ctx context.Context, in *CheckPublisherModelEulaAcceptanceRequest, opts ...grpc.CallOption) (*PublisherModelEulaAcceptance, error) {
+	out := new(PublisherModelEulaAcceptance)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/CheckPublisherModelEulaAcceptance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *modelGardenServiceClient) AcceptPublisherModelEula(ctx context.Context, in *AcceptPublisherModelEulaRequest, opts ...grpc.CallOption) (*PublisherModelEulaAcceptance, error) {
+	out := new(PublisherModelEulaAcceptance)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/AcceptPublisherModelEula", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,8 +120,17 @@ type ModelGardenServiceServer interface {
 	GetPublisherModel(context.Context, *GetPublisherModelRequest) (*PublisherModel, error)
 	// Lists publisher models in Model Garden.
 	ListPublisherModels(context.Context, *ListPublisherModelsRequest) (*ListPublisherModelsResponse, error)
+	// Deploys a model to a new endpoint.
+	Deploy(context.Context, *DeployRequest) (*longrunningpb.Operation, error)
+	// Deprecated: Do not use.
 	// Deploys publisher models.
 	DeployPublisherModel(context.Context, *DeployPublisherModelRequest) (*longrunningpb.Operation, error)
+	// Exports a publisher model to a user provided Google Cloud Storage bucket.
+	ExportPublisherModel(context.Context, *ExportPublisherModelRequest) (*longrunningpb.Operation, error)
+	// Checks the EULA acceptance status of a publisher model.
+	CheckPublisherModelEulaAcceptance(context.Context, *CheckPublisherModelEulaAcceptanceRequest) (*PublisherModelEulaAcceptance, error)
+	// Accepts the EULA acceptance status of a publisher model.
+	AcceptPublisherModelEula(context.Context, *AcceptPublisherModelEulaRequest) (*PublisherModelEulaAcceptance, error)
 	mustEmbedUnimplementedModelGardenServiceServer()
 }
 
@@ -89,8 +144,20 @@ func (UnimplementedModelGardenServiceServer) GetPublisherModel(context.Context, 
 func (UnimplementedModelGardenServiceServer) ListPublisherModels(context.Context, *ListPublisherModelsRequest) (*ListPublisherModelsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPublisherModels not implemented")
 }
+func (UnimplementedModelGardenServiceServer) Deploy(context.Context, *DeployRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Deploy not implemented")
+}
 func (UnimplementedModelGardenServiceServer) DeployPublisherModel(context.Context, *DeployPublisherModelRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeployPublisherModel not implemented")
+}
+func (UnimplementedModelGardenServiceServer) ExportPublisherModel(context.Context, *ExportPublisherModelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportPublisherModel not implemented")
+}
+func (UnimplementedModelGardenServiceServer) CheckPublisherModelEulaAcceptance(context.Context, *CheckPublisherModelEulaAcceptanceRequest) (*PublisherModelEulaAcceptance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckPublisherModelEulaAcceptance not implemented")
+}
+func (UnimplementedModelGardenServiceServer) AcceptPublisherModelEula(context.Context, *AcceptPublisherModelEulaRequest) (*PublisherModelEulaAcceptance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptPublisherModelEula not implemented")
 }
 func (UnimplementedModelGardenServiceServer) mustEmbedUnimplementedModelGardenServiceServer() {}
 
@@ -141,6 +208,24 @@ func _ModelGardenService_ListPublisherModels_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModelGardenService_Deploy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeployRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelGardenServiceServer).Deploy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/Deploy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelGardenServiceServer).Deploy(ctx, req.(*DeployRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ModelGardenService_DeployPublisherModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeployPublisherModelRequest)
 	if err := dec(in); err != nil {
@@ -155,6 +240,60 @@ func _ModelGardenService_DeployPublisherModel_Handler(srv interface{}, ctx conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModelGardenServiceServer).DeployPublisherModel(ctx, req.(*DeployPublisherModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelGardenService_ExportPublisherModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportPublisherModelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelGardenServiceServer).ExportPublisherModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/ExportPublisherModel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelGardenServiceServer).ExportPublisherModel(ctx, req.(*ExportPublisherModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelGardenService_CheckPublisherModelEulaAcceptance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckPublisherModelEulaAcceptanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelGardenServiceServer).CheckPublisherModelEulaAcceptance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/CheckPublisherModelEulaAcceptance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelGardenServiceServer).CheckPublisherModelEulaAcceptance(ctx, req.(*CheckPublisherModelEulaAcceptanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModelGardenService_AcceptPublisherModelEula_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcceptPublisherModelEulaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModelGardenServiceServer).AcceptPublisherModelEula(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.ModelGardenService/AcceptPublisherModelEula",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModelGardenServiceServer).AcceptPublisherModelEula(ctx, req.(*AcceptPublisherModelEulaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -175,8 +314,24 @@ var ModelGardenService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ModelGardenService_ListPublisherModels_Handler,
 		},
 		{
+			MethodName: "Deploy",
+			Handler:    _ModelGardenService_Deploy_Handler,
+		},
+		{
 			MethodName: "DeployPublisherModel",
 			Handler:    _ModelGardenService_DeployPublisherModel_Handler,
+		},
+		{
+			MethodName: "ExportPublisherModel",
+			Handler:    _ModelGardenService_ExportPublisherModel_Handler,
+		},
+		{
+			MethodName: "CheckPublisherModelEulaAcceptance",
+			Handler:    _ModelGardenService_CheckPublisherModelEulaAcceptance_Handler,
+		},
+		{
+			MethodName: "AcceptPublisherModelEula",
+			Handler:    _ModelGardenService_AcceptPublisherModelEula_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

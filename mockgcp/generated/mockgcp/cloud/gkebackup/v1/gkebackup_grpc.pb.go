@@ -33,6 +33,20 @@ type BackupForGKEClient interface {
 	UpdateBackupPlan(ctx context.Context, in *UpdateBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes an existing BackupPlan.
 	DeleteBackupPlan(ctx context.Context, in *DeleteBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Creates a new BackupChannel in a given location.
+	CreateBackupChannel(ctx context.Context, in *CreateBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists BackupChannels in a given location.
+	ListBackupChannels(ctx context.Context, in *ListBackupChannelsRequest, opts ...grpc.CallOption) (*ListBackupChannelsResponse, error)
+	// Retrieve the details of a single BackupChannel.
+	GetBackupChannel(ctx context.Context, in *GetBackupChannelRequest, opts ...grpc.CallOption) (*BackupChannel, error)
+	// Update a BackupChannel.
+	UpdateBackupChannel(ctx context.Context, in *UpdateBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes an existing BackupChannel.
+	DeleteBackupChannel(ctx context.Context, in *DeleteBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists BackupPlanBindings in a given location.
+	ListBackupPlanBindings(ctx context.Context, in *ListBackupPlanBindingsRequest, opts ...grpc.CallOption) (*ListBackupPlanBindingsResponse, error)
+	// Retrieve the details of a single BackupPlanBinding.
+	GetBackupPlanBinding(ctx context.Context, in *GetBackupPlanBindingRequest, opts ...grpc.CallOption) (*BackupPlanBinding, error)
 	// Creates a Backup for the given BackupPlan.
 	CreateBackup(ctx context.Context, in *CreateBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists the Backups for a given BackupPlan.
@@ -57,6 +71,20 @@ type BackupForGKEClient interface {
 	UpdateRestorePlan(ctx context.Context, in *UpdateRestorePlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes an existing RestorePlan.
 	DeleteRestorePlan(ctx context.Context, in *DeleteRestorePlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Creates a new RestoreChannel in a given location.
+	CreateRestoreChannel(ctx context.Context, in *CreateRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists RestoreChannels in a given location.
+	ListRestoreChannels(ctx context.Context, in *ListRestoreChannelsRequest, opts ...grpc.CallOption) (*ListRestoreChannelsResponse, error)
+	// Retrieve the details of a single RestoreChannel.
+	GetRestoreChannel(ctx context.Context, in *GetRestoreChannelRequest, opts ...grpc.CallOption) (*RestoreChannel, error)
+	// Update a RestoreChannel.
+	UpdateRestoreChannel(ctx context.Context, in *UpdateRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes an existing RestoreChannel.
+	DeleteRestoreChannel(ctx context.Context, in *DeleteRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists RestorePlanBindings in a given location.
+	ListRestorePlanBindings(ctx context.Context, in *ListRestorePlanBindingsRequest, opts ...grpc.CallOption) (*ListRestorePlanBindingsResponse, error)
+	// Retrieve the details of a single RestorePlanBinding.
+	GetRestorePlanBinding(ctx context.Context, in *GetRestorePlanBindingRequest, opts ...grpc.CallOption) (*RestorePlanBinding, error)
 	// Creates a new Restore for the given RestorePlan.
 	CreateRestore(ctx context.Context, in *CreateRestoreRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists the Restores for a given RestorePlan.
@@ -122,6 +150,69 @@ func (c *backupForGKEClient) UpdateBackupPlan(ctx context.Context, in *UpdateBac
 func (c *backupForGKEClient) DeleteBackupPlan(ctx context.Context, in *DeleteBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/DeleteBackupPlan", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) CreateBackupChannel(ctx context.Context, in *CreateBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/CreateBackupChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) ListBackupChannels(ctx context.Context, in *ListBackupChannelsRequest, opts ...grpc.CallOption) (*ListBackupChannelsResponse, error) {
+	out := new(ListBackupChannelsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListBackupChannels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) GetBackupChannel(ctx context.Context, in *GetBackupChannelRequest, opts ...grpc.CallOption) (*BackupChannel, error) {
+	out := new(BackupChannel)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetBackupChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) UpdateBackupChannel(ctx context.Context, in *UpdateBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/UpdateBackupChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) DeleteBackupChannel(ctx context.Context, in *DeleteBackupChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/DeleteBackupChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) ListBackupPlanBindings(ctx context.Context, in *ListBackupPlanBindingsRequest, opts ...grpc.CallOption) (*ListBackupPlanBindingsResponse, error) {
+	out := new(ListBackupPlanBindingsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListBackupPlanBindings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) GetBackupPlanBinding(ctx context.Context, in *GetBackupPlanBindingRequest, opts ...grpc.CallOption) (*BackupPlanBinding, error) {
+	out := new(BackupPlanBinding)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetBackupPlanBinding", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -236,6 +327,69 @@ func (c *backupForGKEClient) DeleteRestorePlan(ctx context.Context, in *DeleteRe
 	return out, nil
 }
 
+func (c *backupForGKEClient) CreateRestoreChannel(ctx context.Context, in *CreateRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/CreateRestoreChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) ListRestoreChannels(ctx context.Context, in *ListRestoreChannelsRequest, opts ...grpc.CallOption) (*ListRestoreChannelsResponse, error) {
+	out := new(ListRestoreChannelsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListRestoreChannels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) GetRestoreChannel(ctx context.Context, in *GetRestoreChannelRequest, opts ...grpc.CallOption) (*RestoreChannel, error) {
+	out := new(RestoreChannel)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetRestoreChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) UpdateRestoreChannel(ctx context.Context, in *UpdateRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/UpdateRestoreChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) DeleteRestoreChannel(ctx context.Context, in *DeleteRestoreChannelRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/DeleteRestoreChannel", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) ListRestorePlanBindings(ctx context.Context, in *ListRestorePlanBindingsRequest, opts ...grpc.CallOption) (*ListRestorePlanBindingsResponse, error) {
+	out := new(ListRestorePlanBindingsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupForGKEClient) GetRestorePlanBinding(ctx context.Context, in *GetRestorePlanBindingRequest, opts ...grpc.CallOption) (*RestorePlanBinding, error) {
+	out := new(RestorePlanBinding)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetRestorePlanBinding", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupForGKEClient) CreateRestore(ctx context.Context, in *CreateRestoreRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkebackup.v1.BackupForGKE/CreateRestore", in, out, opts...)
@@ -322,6 +476,20 @@ type BackupForGKEServer interface {
 	UpdateBackupPlan(context.Context, *UpdateBackupPlanRequest) (*longrunningpb.Operation, error)
 	// Deletes an existing BackupPlan.
 	DeleteBackupPlan(context.Context, *DeleteBackupPlanRequest) (*longrunningpb.Operation, error)
+	// Creates a new BackupChannel in a given location.
+	CreateBackupChannel(context.Context, *CreateBackupChannelRequest) (*longrunningpb.Operation, error)
+	// Lists BackupChannels in a given location.
+	ListBackupChannels(context.Context, *ListBackupChannelsRequest) (*ListBackupChannelsResponse, error)
+	// Retrieve the details of a single BackupChannel.
+	GetBackupChannel(context.Context, *GetBackupChannelRequest) (*BackupChannel, error)
+	// Update a BackupChannel.
+	UpdateBackupChannel(context.Context, *UpdateBackupChannelRequest) (*longrunningpb.Operation, error)
+	// Deletes an existing BackupChannel.
+	DeleteBackupChannel(context.Context, *DeleteBackupChannelRequest) (*longrunningpb.Operation, error)
+	// Lists BackupPlanBindings in a given location.
+	ListBackupPlanBindings(context.Context, *ListBackupPlanBindingsRequest) (*ListBackupPlanBindingsResponse, error)
+	// Retrieve the details of a single BackupPlanBinding.
+	GetBackupPlanBinding(context.Context, *GetBackupPlanBindingRequest) (*BackupPlanBinding, error)
 	// Creates a Backup for the given BackupPlan.
 	CreateBackup(context.Context, *CreateBackupRequest) (*longrunningpb.Operation, error)
 	// Lists the Backups for a given BackupPlan.
@@ -346,6 +514,20 @@ type BackupForGKEServer interface {
 	UpdateRestorePlan(context.Context, *UpdateRestorePlanRequest) (*longrunningpb.Operation, error)
 	// Deletes an existing RestorePlan.
 	DeleteRestorePlan(context.Context, *DeleteRestorePlanRequest) (*longrunningpb.Operation, error)
+	// Creates a new RestoreChannel in a given location.
+	CreateRestoreChannel(context.Context, *CreateRestoreChannelRequest) (*longrunningpb.Operation, error)
+	// Lists RestoreChannels in a given location.
+	ListRestoreChannels(context.Context, *ListRestoreChannelsRequest) (*ListRestoreChannelsResponse, error)
+	// Retrieve the details of a single RestoreChannel.
+	GetRestoreChannel(context.Context, *GetRestoreChannelRequest) (*RestoreChannel, error)
+	// Update a RestoreChannel.
+	UpdateRestoreChannel(context.Context, *UpdateRestoreChannelRequest) (*longrunningpb.Operation, error)
+	// Deletes an existing RestoreChannel.
+	DeleteRestoreChannel(context.Context, *DeleteRestoreChannelRequest) (*longrunningpb.Operation, error)
+	// Lists RestorePlanBindings in a given location.
+	ListRestorePlanBindings(context.Context, *ListRestorePlanBindingsRequest) (*ListRestorePlanBindingsResponse, error)
+	// Retrieve the details of a single RestorePlanBinding.
+	GetRestorePlanBinding(context.Context, *GetRestorePlanBindingRequest) (*RestorePlanBinding, error)
 	// Creates a new Restore for the given RestorePlan.
 	CreateRestore(context.Context, *CreateRestoreRequest) (*longrunningpb.Operation, error)
 	// Lists the Restores for a given RestorePlan.
@@ -384,6 +566,27 @@ func (UnimplementedBackupForGKEServer) UpdateBackupPlan(context.Context, *Update
 func (UnimplementedBackupForGKEServer) DeleteBackupPlan(context.Context, *DeleteBackupPlanRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupPlan not implemented")
 }
+func (UnimplementedBackupForGKEServer) CreateBackupChannel(context.Context, *CreateBackupChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBackupChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) ListBackupChannels(context.Context, *ListBackupChannelsRequest) (*ListBackupChannelsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackupChannels not implemented")
+}
+func (UnimplementedBackupForGKEServer) GetBackupChannel(context.Context, *GetBackupChannelRequest) (*BackupChannel, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackupChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) UpdateBackupChannel(context.Context, *UpdateBackupChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackupChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) DeleteBackupChannel(context.Context, *DeleteBackupChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) ListBackupPlanBindings(context.Context, *ListBackupPlanBindingsRequest) (*ListBackupPlanBindingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackupPlanBindings not implemented")
+}
+func (UnimplementedBackupForGKEServer) GetBackupPlanBinding(context.Context, *GetBackupPlanBindingRequest) (*BackupPlanBinding, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackupPlanBinding not implemented")
+}
 func (UnimplementedBackupForGKEServer) CreateBackup(context.Context, *CreateBackupRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackup not implemented")
 }
@@ -419,6 +622,27 @@ func (UnimplementedBackupForGKEServer) UpdateRestorePlan(context.Context, *Updat
 }
 func (UnimplementedBackupForGKEServer) DeleteRestorePlan(context.Context, *DeleteRestorePlanRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRestorePlan not implemented")
+}
+func (UnimplementedBackupForGKEServer) CreateRestoreChannel(context.Context, *CreateRestoreChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRestoreChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) ListRestoreChannels(context.Context, *ListRestoreChannelsRequest) (*ListRestoreChannelsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRestoreChannels not implemented")
+}
+func (UnimplementedBackupForGKEServer) GetRestoreChannel(context.Context, *GetRestoreChannelRequest) (*RestoreChannel, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRestoreChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) UpdateRestoreChannel(context.Context, *UpdateRestoreChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRestoreChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) DeleteRestoreChannel(context.Context, *DeleteRestoreChannelRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRestoreChannel not implemented")
+}
+func (UnimplementedBackupForGKEServer) ListRestorePlanBindings(context.Context, *ListRestorePlanBindingsRequest) (*ListRestorePlanBindingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRestorePlanBindings not implemented")
+}
+func (UnimplementedBackupForGKEServer) GetRestorePlanBinding(context.Context, *GetRestorePlanBindingRequest) (*RestorePlanBinding, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRestorePlanBinding not implemented")
 }
 func (UnimplementedBackupForGKEServer) CreateRestore(context.Context, *CreateRestoreRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRestore not implemented")
@@ -543,6 +767,132 @@ func _BackupForGKE_DeleteBackupPlan_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BackupForGKEServer).DeleteBackupPlan(ctx, req.(*DeleteBackupPlanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_CreateBackupChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBackupChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).CreateBackupChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/CreateBackupChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).CreateBackupChannel(ctx, req.(*CreateBackupChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_ListBackupChannels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupChannelsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).ListBackupChannels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListBackupChannels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).ListBackupChannels(ctx, req.(*ListBackupChannelsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_GetBackupChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).GetBackupChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetBackupChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).GetBackupChannel(ctx, req.(*GetBackupChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_UpdateBackupChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBackupChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).UpdateBackupChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/UpdateBackupChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).UpdateBackupChannel(ctx, req.(*UpdateBackupChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_DeleteBackupChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBackupChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).DeleteBackupChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/DeleteBackupChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).DeleteBackupChannel(ctx, req.(*DeleteBackupChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_ListBackupPlanBindings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupPlanBindingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).ListBackupPlanBindings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListBackupPlanBindings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).ListBackupPlanBindings(ctx, req.(*ListBackupPlanBindingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_GetBackupPlanBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupPlanBindingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).GetBackupPlanBinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetBackupPlanBinding",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).GetBackupPlanBinding(ctx, req.(*GetBackupPlanBindingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -763,6 +1113,132 @@ func _BackupForGKE_DeleteRestorePlan_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupForGKE_CreateRestoreChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRestoreChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).CreateRestoreChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/CreateRestoreChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).CreateRestoreChannel(ctx, req.(*CreateRestoreChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_ListRestoreChannels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRestoreChannelsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).ListRestoreChannels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListRestoreChannels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).ListRestoreChannels(ctx, req.(*ListRestoreChannelsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_GetRestoreChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRestoreChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).GetRestoreChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetRestoreChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).GetRestoreChannel(ctx, req.(*GetRestoreChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_UpdateRestoreChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRestoreChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).UpdateRestoreChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/UpdateRestoreChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).UpdateRestoreChannel(ctx, req.(*UpdateRestoreChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_DeleteRestoreChannel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRestoreChannelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).DeleteRestoreChannel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/DeleteRestoreChannel",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).DeleteRestoreChannel(ctx, req.(*DeleteRestoreChannelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_ListRestorePlanBindings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRestorePlanBindingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).ListRestorePlanBindings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).ListRestorePlanBindings(ctx, req.(*ListRestorePlanBindingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupForGKE_GetRestorePlanBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRestorePlanBindingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupForGKEServer).GetRestorePlanBinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkebackup.v1.BackupForGKE/GetRestorePlanBinding",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupForGKEServer).GetRestorePlanBinding(ctx, req.(*GetRestorePlanBindingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupForGKE_CreateRestore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateRestoreRequest)
 	if err := dec(in); err != nil {
@@ -935,6 +1411,34 @@ var BackupForGKE_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackupForGKE_DeleteBackupPlan_Handler,
 		},
 		{
+			MethodName: "CreateBackupChannel",
+			Handler:    _BackupForGKE_CreateBackupChannel_Handler,
+		},
+		{
+			MethodName: "ListBackupChannels",
+			Handler:    _BackupForGKE_ListBackupChannels_Handler,
+		},
+		{
+			MethodName: "GetBackupChannel",
+			Handler:    _BackupForGKE_GetBackupChannel_Handler,
+		},
+		{
+			MethodName: "UpdateBackupChannel",
+			Handler:    _BackupForGKE_UpdateBackupChannel_Handler,
+		},
+		{
+			MethodName: "DeleteBackupChannel",
+			Handler:    _BackupForGKE_DeleteBackupChannel_Handler,
+		},
+		{
+			MethodName: "ListBackupPlanBindings",
+			Handler:    _BackupForGKE_ListBackupPlanBindings_Handler,
+		},
+		{
+			MethodName: "GetBackupPlanBinding",
+			Handler:    _BackupForGKE_GetBackupPlanBinding_Handler,
+		},
+		{
 			MethodName: "CreateBackup",
 			Handler:    _BackupForGKE_CreateBackup_Handler,
 		},
@@ -981,6 +1485,34 @@ var BackupForGKE_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteRestorePlan",
 			Handler:    _BackupForGKE_DeleteRestorePlan_Handler,
+		},
+		{
+			MethodName: "CreateRestoreChannel",
+			Handler:    _BackupForGKE_CreateRestoreChannel_Handler,
+		},
+		{
+			MethodName: "ListRestoreChannels",
+			Handler:    _BackupForGKE_ListRestoreChannels_Handler,
+		},
+		{
+			MethodName: "GetRestoreChannel",
+			Handler:    _BackupForGKE_GetRestoreChannel_Handler,
+		},
+		{
+			MethodName: "UpdateRestoreChannel",
+			Handler:    _BackupForGKE_UpdateRestoreChannel_Handler,
+		},
+		{
+			MethodName: "DeleteRestoreChannel",
+			Handler:    _BackupForGKE_DeleteRestoreChannel_Handler,
+		},
+		{
+			MethodName: "ListRestorePlanBindings",
+			Handler:    _BackupForGKE_ListRestorePlanBindings_Handler,
+		},
+		{
+			MethodName: "GetRestorePlanBinding",
+			Handler:    _BackupForGKE_GetRestorePlanBinding_Handler,
 		},
 		{
 			MethodName: "CreateRestore",

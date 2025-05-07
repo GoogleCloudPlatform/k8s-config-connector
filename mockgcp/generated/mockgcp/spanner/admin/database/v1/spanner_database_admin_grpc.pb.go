@@ -202,6 +202,8 @@ type DatabaseAdminClient interface {
 	ListBackupOperations(ctx context.Context, in *ListBackupOperationsRequest, opts ...grpc.CallOption) (*ListBackupOperationsResponse, error)
 	// Lists Cloud Spanner database roles.
 	ListDatabaseRoles(ctx context.Context, in *ListDatabaseRolesRequest, opts ...grpc.CallOption) (*ListDatabaseRolesResponse, error)
+	// Adds split points to specified tables, indexes of a database.
+	AddSplitPoints(ctx context.Context, in *AddSplitPointsRequest, opts ...grpc.CallOption) (*AddSplitPointsResponse, error)
 	// Creates a new backup schedule.
 	CreateBackupSchedule(ctx context.Context, in *CreateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error)
 	// Gets backup schedule for the input schedule name.
@@ -396,6 +398,15 @@ func (c *databaseAdminClient) ListBackupOperations(ctx context.Context, in *List
 func (c *databaseAdminClient) ListDatabaseRoles(ctx context.Context, in *ListDatabaseRolesRequest, opts ...grpc.CallOption) (*ListDatabaseRolesResponse, error) {
 	out := new(ListDatabaseRolesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseRoles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *databaseAdminClient) AddSplitPoints(ctx context.Context, in *AddSplitPointsRequest, opts ...grpc.CallOption) (*AddSplitPointsResponse, error) {
+	out := new(AddSplitPointsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/AddSplitPoints", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -628,6 +639,8 @@ type DatabaseAdminServer interface {
 	ListBackupOperations(context.Context, *ListBackupOperationsRequest) (*ListBackupOperationsResponse, error)
 	// Lists Cloud Spanner database roles.
 	ListDatabaseRoles(context.Context, *ListDatabaseRolesRequest) (*ListDatabaseRolesResponse, error)
+	// Adds split points to specified tables, indexes of a database.
+	AddSplitPoints(context.Context, *AddSplitPointsRequest) (*AddSplitPointsResponse, error)
 	// Creates a new backup schedule.
 	CreateBackupSchedule(context.Context, *CreateBackupScheduleRequest) (*BackupSchedule, error)
 	// Gets backup schedule for the input schedule name.
@@ -704,6 +717,9 @@ func (UnimplementedDatabaseAdminServer) ListBackupOperations(context.Context, *L
 }
 func (UnimplementedDatabaseAdminServer) ListDatabaseRoles(context.Context, *ListDatabaseRolesRequest) (*ListDatabaseRolesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDatabaseRoles not implemented")
+}
+func (UnimplementedDatabaseAdminServer) AddSplitPoints(context.Context, *AddSplitPointsRequest) (*AddSplitPointsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSplitPoints not implemented")
 }
 func (UnimplementedDatabaseAdminServer) CreateBackupSchedule(context.Context, *CreateBackupScheduleRequest) (*BackupSchedule, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackupSchedule not implemented")
@@ -1093,6 +1109,24 @@ func _DatabaseAdmin_ListDatabaseRoles_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DatabaseAdmin_AddSplitPoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSplitPointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).AddSplitPoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/AddSplitPoints",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).AddSplitPoints(ctx, req.(*AddSplitPointsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DatabaseAdmin_CreateBackupSchedule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBackupScheduleRequest)
 	if err := dec(in); err != nil {
@@ -1269,6 +1303,10 @@ var DatabaseAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListDatabaseRoles",
 			Handler:    _DatabaseAdmin_ListDatabaseRoles_Handler,
+		},
+		{
+			MethodName: "AddSplitPoints",
+			Handler:    _DatabaseAdmin_AddSplitPoints_Handler,
 		},
 		{
 			MethodName: "CreateBackupSchedule",

@@ -1117,8 +1117,10 @@ type OrganizationsApiproductsServerClient interface {
 	DeleteOrganizationsApiproduct(ctx context.Context, in *DeleteOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error)
 	// Gets configuration details for an API product. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via the UI or the API. View the list of API products to verify the internal name.
 	GetOrganizationsApiproduct(ctx context.Context, in *GetOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error)
-	// Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters.
+	// Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsApiproducts(ctx context.Context, in *ListOrganizationsApiproductsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApiProductsResponse, error)
+	// Moves an API product to a different space.
+	MoveOrganizationsApiproduct(ctx context.Context, in *MoveOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error)
 	// Updates an existing API product. You must include all required values, whether or not you are updating them, as well as any optional values that you are updating. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via UI or API. View the list of API products to identify their internal names.
 	UpdateOrganizationsApiproduct(ctx context.Context, in *UpdateOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error)
 }
@@ -1176,6 +1178,15 @@ func (c *organizationsApiproductsServerClient) ListOrganizationsApiproducts(ctx 
 	return out, nil
 }
 
+func (c *organizationsApiproductsServerClient) MoveOrganizationsApiproduct(ctx context.Context, in *MoveOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error) {
+	out := new(GoogleCloudApigeeV1ApiProduct)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApiproductsServer/MoveOrganizationsApiproduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *organizationsApiproductsServerClient) UpdateOrganizationsApiproduct(ctx context.Context, in *UpdateOrganizationsApiproductRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProduct, error) {
 	out := new(GoogleCloudApigeeV1ApiProduct)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApiproductsServer/UpdateOrganizationsApiproduct", in, out, opts...)
@@ -1197,8 +1208,10 @@ type OrganizationsApiproductsServerServer interface {
 	DeleteOrganizationsApiproduct(context.Context, *DeleteOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error)
 	// Gets configuration details for an API product. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via the UI or the API. View the list of API products to verify the internal name.
 	GetOrganizationsApiproduct(context.Context, *GetOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error)
-	// Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters.
+	// Lists all API product names for an organization. Filter the list by passing an `attributename` and `attibutevalue`. The maximum number of API products returned is 1000. You can paginate the list of API products returned using the `startKey` and `count` query parameters. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsApiproducts(context.Context, *ListOrganizationsApiproductsRequest) (*GoogleCloudApigeeV1ListApiProductsResponse, error)
+	// Moves an API product to a different space.
+	MoveOrganizationsApiproduct(context.Context, *MoveOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error)
 	// Updates an existing API product. You must include all required values, whether or not you are updating them, as well as any optional values that you are updating. The API product name required in the request URL is the internal name of the product, not the display name. While they may be the same, it depends on whether the API product was created via UI or API. View the list of API products to identify their internal names.
 	UpdateOrganizationsApiproduct(context.Context, *UpdateOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error)
 	mustEmbedUnimplementedOrganizationsApiproductsServerServer()
@@ -1222,6 +1235,9 @@ func (UnimplementedOrganizationsApiproductsServerServer) GetOrganizationsApiprod
 }
 func (UnimplementedOrganizationsApiproductsServerServer) ListOrganizationsApiproducts(context.Context, *ListOrganizationsApiproductsRequest) (*GoogleCloudApigeeV1ListApiProductsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsApiproducts not implemented")
+}
+func (UnimplementedOrganizationsApiproductsServerServer) MoveOrganizationsApiproduct(context.Context, *MoveOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveOrganizationsApiproduct not implemented")
 }
 func (UnimplementedOrganizationsApiproductsServerServer) UpdateOrganizationsApiproduct(context.Context, *UpdateOrganizationsApiproductRequest) (*GoogleCloudApigeeV1ApiProduct, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrganizationsApiproduct not implemented")
@@ -1330,6 +1346,24 @@ func _OrganizationsApiproductsServer_ListOrganizationsApiproducts_Handler(srv in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsApiproductsServer_MoveOrganizationsApiproduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveOrganizationsApiproductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApiproductsServerServer).MoveOrganizationsApiproduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApiproductsServer/MoveOrganizationsApiproduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApiproductsServerServer).MoveOrganizationsApiproduct(ctx, req.(*MoveOrganizationsApiproductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrganizationsApiproductsServer_UpdateOrganizationsApiproduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateOrganizationsApiproductRequest)
 	if err := dec(in); err != nil {
@@ -1374,6 +1408,10 @@ var OrganizationsApiproductsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOrganizationsApiproducts",
 			Handler:    _OrganizationsApiproductsServer_ListOrganizationsApiproducts_Handler,
+		},
+		{
+			MethodName: "MoveOrganizationsApiproduct",
+			Handler:    _OrganizationsApiproductsServer_MoveOrganizationsApiproduct_Handler,
 		},
 		{
 			MethodName: "UpdateOrganizationsApiproduct",
@@ -1838,8 +1876,10 @@ type OrganizationsApisServerClient interface {
 	DeleteOrganizationsApi(ctx context.Context, in *DeleteOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error)
 	// Gets an API proxy including a list of existing revisions.
 	GetOrganizationsApi(ctx context.Context, in *GetOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error)
-	// Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy.
+	// Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsApis(ctx context.Context, in *ListOrganizationsApisRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApiProxiesResponse, error)
+	// Moves an API proxy to a different space.
+	MoveOrganizationsApi(ctx context.Context, in *MoveOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error)
 	// Updates an existing API proxy.
 	PatchOrganizationsApi(ctx context.Context, in *PatchOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error)
 }
@@ -1888,6 +1928,15 @@ func (c *organizationsApisServerClient) ListOrganizationsApis(ctx context.Contex
 	return out, nil
 }
 
+func (c *organizationsApisServerClient) MoveOrganizationsApi(ctx context.Context, in *MoveOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error) {
+	out := new(GoogleCloudApigeeV1ApiProxy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApisServer/MoveOrganizationsApi", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *organizationsApisServerClient) PatchOrganizationsApi(ctx context.Context, in *PatchOrganizationsApiRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ApiProxy, error) {
 	out := new(GoogleCloudApigeeV1ApiProxy)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApisServer/PatchOrganizationsApi", in, out, opts...)
@@ -1907,8 +1956,10 @@ type OrganizationsApisServerServer interface {
 	DeleteOrganizationsApi(context.Context, *DeleteOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error)
 	// Gets an API proxy including a list of existing revisions.
 	GetOrganizationsApi(context.Context, *GetOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error)
-	// Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy.
+	// Lists the names of all API proxies in an organization. The names returned correspond to the names defined in the configuration files for each API proxy. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsApis(context.Context, *ListOrganizationsApisRequest) (*GoogleCloudApigeeV1ListApiProxiesResponse, error)
+	// Moves an API proxy to a different space.
+	MoveOrganizationsApi(context.Context, *MoveOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error)
 	// Updates an existing API proxy.
 	PatchOrganizationsApi(context.Context, *PatchOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error)
 	mustEmbedUnimplementedOrganizationsApisServerServer()
@@ -1929,6 +1980,9 @@ func (UnimplementedOrganizationsApisServerServer) GetOrganizationsApi(context.Co
 }
 func (UnimplementedOrganizationsApisServerServer) ListOrganizationsApis(context.Context, *ListOrganizationsApisRequest) (*GoogleCloudApigeeV1ListApiProxiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsApis not implemented")
+}
+func (UnimplementedOrganizationsApisServerServer) MoveOrganizationsApi(context.Context, *MoveOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveOrganizationsApi not implemented")
 }
 func (UnimplementedOrganizationsApisServerServer) PatchOrganizationsApi(context.Context, *PatchOrganizationsApiRequest) (*GoogleCloudApigeeV1ApiProxy, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsApi not implemented")
@@ -2019,6 +2073,24 @@ func _OrganizationsApisServer_ListOrganizationsApis_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsApisServer_MoveOrganizationsApi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveOrganizationsApiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApisServerServer).MoveOrganizationsApi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApisServer/MoveOrganizationsApi",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApisServerServer).MoveOrganizationsApi(ctx, req.(*MoveOrganizationsApiRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrganizationsApisServer_PatchOrganizationsApi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PatchOrganizationsApiRequest)
 	if err := dec(in); err != nil {
@@ -2061,8 +2133,101 @@ var OrganizationsApisServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrganizationsApisServer_ListOrganizationsApis_Handler,
 		},
 		{
+			MethodName: "MoveOrganizationsApi",
+			Handler:    _OrganizationsApisServer_MoveOrganizationsApi_Handler,
+		},
+		{
 			MethodName: "PatchOrganizationsApi",
 			Handler:    _OrganizationsApisServer_PatchOrganizationsApi_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsApisDebugsessionsServerClient is the client API for OrganizationsApisDebugsessionsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsApisDebugsessionsServerClient interface {
+	// Lists debug sessions that are currently active in the given API Proxy.
+	ListOrganizationsApisDebugsessions(ctx context.Context, in *ListOrganizationsApisDebugsessionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApiDebugSessionsResponse, error)
+}
+
+type organizationsApisDebugsessionsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsApisDebugsessionsServerClient(cc grpc.ClientConnInterface) OrganizationsApisDebugsessionsServerClient {
+	return &organizationsApisDebugsessionsServerClient{cc}
+}
+
+func (c *organizationsApisDebugsessionsServerClient) ListOrganizationsApisDebugsessions(ctx context.Context, in *ListOrganizationsApisDebugsessionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListApiDebugSessionsResponse, error) {
+	out := new(GoogleCloudApigeeV1ListApiDebugSessionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsApisDebugsessionsServer/ListOrganizationsApisDebugsessions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsApisDebugsessionsServerServer is the server API for OrganizationsApisDebugsessionsServer service.
+// All implementations must embed UnimplementedOrganizationsApisDebugsessionsServerServer
+// for forward compatibility
+type OrganizationsApisDebugsessionsServerServer interface {
+	// Lists debug sessions that are currently active in the given API Proxy.
+	ListOrganizationsApisDebugsessions(context.Context, *ListOrganizationsApisDebugsessionsRequest) (*GoogleCloudApigeeV1ListApiDebugSessionsResponse, error)
+	mustEmbedUnimplementedOrganizationsApisDebugsessionsServerServer()
+}
+
+// UnimplementedOrganizationsApisDebugsessionsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsApisDebugsessionsServerServer struct {
+}
+
+func (UnimplementedOrganizationsApisDebugsessionsServerServer) ListOrganizationsApisDebugsessions(context.Context, *ListOrganizationsApisDebugsessionsRequest) (*GoogleCloudApigeeV1ListApiDebugSessionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsApisDebugsessions not implemented")
+}
+func (UnimplementedOrganizationsApisDebugsessionsServerServer) mustEmbedUnimplementedOrganizationsApisDebugsessionsServerServer() {
+}
+
+// UnsafeOrganizationsApisDebugsessionsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsApisDebugsessionsServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsApisDebugsessionsServerServer interface {
+	mustEmbedUnimplementedOrganizationsApisDebugsessionsServerServer()
+}
+
+func RegisterOrganizationsApisDebugsessionsServerServer(s grpc.ServiceRegistrar, srv OrganizationsApisDebugsessionsServerServer) {
+	s.RegisterService(&OrganizationsApisDebugsessionsServer_ServiceDesc, srv)
+}
+
+func _OrganizationsApisDebugsessionsServer_ListOrganizationsApisDebugsessions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsApisDebugsessionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsApisDebugsessionsServerServer).ListOrganizationsApisDebugsessions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsApisDebugsessionsServer/ListOrganizationsApisDebugsessions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsApisDebugsessionsServerServer).ListOrganizationsApisDebugsessions(ctx, req.(*ListOrganizationsApisDebugsessionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsApisDebugsessionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsApisDebugsessionsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsApisDebugsessionsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsApisDebugsessionsServer",
+	HandlerType: (*OrganizationsApisDebugsessionsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ListOrganizationsApisDebugsessions",
+			Handler:    _OrganizationsApisDebugsessionsServer_ListOrganizationsApisDebugsessions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -2786,7 +2951,7 @@ var OrganizationsApisRevisionsDeploymentsServer_ServiceDesc = grpc.ServiceDesc{
 type OrganizationsAppgroupsServerClient interface {
 	// Creates an AppGroup. Once created, user can register apps under the AppGroup to obtain secret key and password. At creation time, the AppGroup's state is set as `active`.
 	CreateOrganizationsAppgroup(ctx context.Context, in *CreateOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
-	// Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+	// Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
 	DeleteOrganizationsAppgroup(ctx context.Context, in *DeleteOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
 	// Returns the AppGroup details for the provided AppGroup name in the request URI.
 	GetOrganizationsAppgroup(ctx context.Context, in *GetOrganizationsAppgroupRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroup, error)
@@ -2855,7 +3020,7 @@ func (c *organizationsAppgroupsServerClient) UpdateOrganizationsAppgroup(ctx con
 type OrganizationsAppgroupsServerServer interface {
 	// Creates an AppGroup. Once created, user can register apps under the AppGroup to obtain secret key and password. At creation time, the AppGroup's state is set as `active`.
 	CreateOrganizationsAppgroup(context.Context, *CreateOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
-	// Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+	// Deletes an AppGroup. All app and API keys associations with the AppGroup are also removed. **Warning**: This API will permanently delete the AppGroup and related artifacts. **Note**: The delete operation is asynchronous. The AppGroup is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
 	DeleteOrganizationsAppgroup(context.Context, *DeleteOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
 	// Returns the AppGroup details for the provided AppGroup name in the request URI.
 	GetOrganizationsAppgroup(context.Context, *GetOrganizationsAppgroupRequest) (*GoogleCloudApigeeV1AppGroup, error)
@@ -4057,7 +4222,7 @@ type OrganizationsDevelopersServerClient interface {
 	AttributesOrganizationsDeveloper(ctx context.Context, in *AttributesOrganizationsDeveloperRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Attributes, error)
 	// Creates a developer. Once created, the developer can register an app and obtain an API key. At creation time, a developer is set as `active`. To change the developer status, use the SetDeveloperStatus API.
 	CreateOrganizationsDeveloper(ctx context.Context, in *CreateOrganizationsDeveloperRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Developer, error)
-	// Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+	// Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
 	DeleteOrganizationsDeveloper(ctx context.Context, in *DeleteOrganizationsDeveloperRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Developer, error)
 	// Returns the developer details, including the developer's name, email address, apps, and other information. **Note**: The response includes only the first 100 developer apps.
 	GetOrganizationsDeveloper(ctx context.Context, in *GetOrganizationsDeveloperRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Developer, error)
@@ -4181,7 +4346,7 @@ type OrganizationsDevelopersServerServer interface {
 	AttributesOrganizationsDeveloper(context.Context, *AttributesOrganizationsDeveloperRequest) (*GoogleCloudApigeeV1Attributes, error)
 	// Creates a developer. Once created, the developer can register an app and obtain an API key. At creation time, a developer is set as `active`. To change the developer status, use the SetDeveloperStatus API.
 	CreateOrganizationsDeveloper(context.Context, *CreateOrganizationsDeveloperRequest) (*GoogleCloudApigeeV1Developer, error)
-	// Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer app is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
+	// Deletes a developer. All apps and API keys associated with the developer are also removed. **Warning**: This API will permanently delete the developer and related artifacts. To avoid permanently deleting developers and their artifacts, set the developer status to `inactive` using the SetDeveloperStatus API. **Note**: The delete operation is asynchronous. The developer is deleted immediately, but its associated resources, such as apps and API keys, may take anywhere from a few seconds to a few minutes to be deleted.
 	DeleteOrganizationsDeveloper(context.Context, *DeleteOrganizationsDeveloperRequest) (*GoogleCloudApigeeV1Developer, error)
 	// Returns the developer details, including the developer's name, email address, apps, and other information. **Note**: The response includes only the first 100 developer apps.
 	GetOrganizationsDeveloper(context.Context, *GetOrganizationsDeveloperRequest) (*GoogleCloudApigeeV1Developer, error)
@@ -5984,6 +6149,209 @@ var OrganizationsDevelopersSubscriptionsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOrganizationsDevelopersSubscriptions",
 			Handler:    _OrganizationsDevelopersSubscriptionsServer_ListOrganizationsDevelopersSubscriptions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsDnsZonesServerClient is the client API for OrganizationsDnsZonesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsDnsZonesServerClient interface {
+	// Creates a new DNS zone.
+	CreateOrganizationsDnsZone(ctx context.Context, in *CreateOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a previously created DNS zone.
+	DeleteOrganizationsDnsZone(ctx context.Context, in *DeleteOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Fetches the representation of an existing DNS zone.
+	GetOrganizationsDnsZone(ctx context.Context, in *GetOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1DnsZone, error)
+	// Enumerates DNS zones that have been created but not yet deleted.
+	ListOrganizationsDnsZones(ctx context.Context, in *ListOrganizationsDnsZonesRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListDnsZonesResponse, error)
+}
+
+type organizationsDnsZonesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsDnsZonesServerClient(cc grpc.ClientConnInterface) OrganizationsDnsZonesServerClient {
+	return &organizationsDnsZonesServerClient{cc}
+}
+
+func (c *organizationsDnsZonesServerClient) CreateOrganizationsDnsZone(ctx context.Context, in *CreateOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/CreateOrganizationsDnsZone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsDnsZonesServerClient) DeleteOrganizationsDnsZone(ctx context.Context, in *DeleteOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/DeleteOrganizationsDnsZone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsDnsZonesServerClient) GetOrganizationsDnsZone(ctx context.Context, in *GetOrganizationsDnsZoneRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1DnsZone, error) {
+	out := new(GoogleCloudApigeeV1DnsZone)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/GetOrganizationsDnsZone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsDnsZonesServerClient) ListOrganizationsDnsZones(ctx context.Context, in *ListOrganizationsDnsZonesRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListDnsZonesResponse, error) {
+	out := new(GoogleCloudApigeeV1ListDnsZonesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/ListOrganizationsDnsZones", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsDnsZonesServerServer is the server API for OrganizationsDnsZonesServer service.
+// All implementations must embed UnimplementedOrganizationsDnsZonesServerServer
+// for forward compatibility
+type OrganizationsDnsZonesServerServer interface {
+	// Creates a new DNS zone.
+	CreateOrganizationsDnsZone(context.Context, *CreateOrganizationsDnsZoneRequest) (*longrunningpb.Operation, error)
+	// Deletes a previously created DNS zone.
+	DeleteOrganizationsDnsZone(context.Context, *DeleteOrganizationsDnsZoneRequest) (*longrunningpb.Operation, error)
+	// Fetches the representation of an existing DNS zone.
+	GetOrganizationsDnsZone(context.Context, *GetOrganizationsDnsZoneRequest) (*GoogleCloudApigeeV1DnsZone, error)
+	// Enumerates DNS zones that have been created but not yet deleted.
+	ListOrganizationsDnsZones(context.Context, *ListOrganizationsDnsZonesRequest) (*GoogleCloudApigeeV1ListDnsZonesResponse, error)
+	mustEmbedUnimplementedOrganizationsDnsZonesServerServer()
+}
+
+// UnimplementedOrganizationsDnsZonesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsDnsZonesServerServer struct {
+}
+
+func (UnimplementedOrganizationsDnsZonesServerServer) CreateOrganizationsDnsZone(context.Context, *CreateOrganizationsDnsZoneRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsDnsZone not implemented")
+}
+func (UnimplementedOrganizationsDnsZonesServerServer) DeleteOrganizationsDnsZone(context.Context, *DeleteOrganizationsDnsZoneRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsDnsZone not implemented")
+}
+func (UnimplementedOrganizationsDnsZonesServerServer) GetOrganizationsDnsZone(context.Context, *GetOrganizationsDnsZoneRequest) (*GoogleCloudApigeeV1DnsZone, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsDnsZone not implemented")
+}
+func (UnimplementedOrganizationsDnsZonesServerServer) ListOrganizationsDnsZones(context.Context, *ListOrganizationsDnsZonesRequest) (*GoogleCloudApigeeV1ListDnsZonesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsDnsZones not implemented")
+}
+func (UnimplementedOrganizationsDnsZonesServerServer) mustEmbedUnimplementedOrganizationsDnsZonesServerServer() {
+}
+
+// UnsafeOrganizationsDnsZonesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsDnsZonesServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsDnsZonesServerServer interface {
+	mustEmbedUnimplementedOrganizationsDnsZonesServerServer()
+}
+
+func RegisterOrganizationsDnsZonesServerServer(s grpc.ServiceRegistrar, srv OrganizationsDnsZonesServerServer) {
+	s.RegisterService(&OrganizationsDnsZonesServer_ServiceDesc, srv)
+}
+
+func _OrganizationsDnsZonesServer_CreateOrganizationsDnsZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsDnsZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsDnsZonesServerServer).CreateOrganizationsDnsZone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/CreateOrganizationsDnsZone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsDnsZonesServerServer).CreateOrganizationsDnsZone(ctx, req.(*CreateOrganizationsDnsZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsDnsZonesServer_DeleteOrganizationsDnsZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsDnsZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsDnsZonesServerServer).DeleteOrganizationsDnsZone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/DeleteOrganizationsDnsZone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsDnsZonesServerServer).DeleteOrganizationsDnsZone(ctx, req.(*DeleteOrganizationsDnsZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsDnsZonesServer_GetOrganizationsDnsZone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsDnsZoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsDnsZonesServerServer).GetOrganizationsDnsZone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/GetOrganizationsDnsZone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsDnsZonesServerServer).GetOrganizationsDnsZone(ctx, req.(*GetOrganizationsDnsZoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsDnsZonesServer_ListOrganizationsDnsZones_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsDnsZonesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsDnsZonesServerServer).ListOrganizationsDnsZones(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer/ListOrganizationsDnsZones",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsDnsZonesServerServer).ListOrganizationsDnsZones(ctx, req.(*ListOrganizationsDnsZonesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsDnsZonesServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsDnsZonesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsDnsZonesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsDnsZonesServer",
+	HandlerType: (*OrganizationsDnsZonesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsDnsZone",
+			Handler:    _OrganizationsDnsZonesServer_CreateOrganizationsDnsZone_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsDnsZone",
+			Handler:    _OrganizationsDnsZonesServer_DeleteOrganizationsDnsZone_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsDnsZone",
+			Handler:    _OrganizationsDnsZonesServer_GetOrganizationsDnsZone_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsDnsZones",
+			Handler:    _OrganizationsDnsZonesServer_ListOrganizationsDnsZones_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -7908,7 +8276,7 @@ var OrganizationsEnvironmentsApisDeploymentsServer_ServiceDesc = grpc.ServiceDes
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrganizationsEnvironmentsApisRevisionsServerClient interface {
-	// Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}`
+	// Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}` All successful API proxy deployments to Apigee are [zero-downtime deployments](https://cloud.google.com/apigee/docs/api-platform/deploy/ui-deploy-overview#zero-downtime-deployment). Apigee hybrid validates the dependencies between shared flows and API proxies at deployment time. For example, if the Flow Callout policy in an API proxy references a shared flow that either doesn't exist or isn't deployed, the API proxy deployment fails.
 	DeployOrganizationsEnvironmentsApisRevision(ctx context.Context, in *DeployOrganizationsEnvironmentsApisRevisionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Deployment, error)
 	// Gets the deployment of an API proxy revision and actual state reported by runtime pods.
 	GetDeploymentsOrganizationsEnvironmentsApisRevision(ctx context.Context, in *GetDeploymentsOrganizationsEnvironmentsApisRevisionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Deployment, error)
@@ -7955,7 +8323,7 @@ func (c *organizationsEnvironmentsApisRevisionsServerClient) UndeployOrganizatio
 // All implementations must embed UnimplementedOrganizationsEnvironmentsApisRevisionsServerServer
 // for forward compatibility
 type OrganizationsEnvironmentsApisRevisionsServerServer interface {
-	// Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}`
+	// Deploys a revision of an API proxy. If another revision of the same API proxy revision is currently deployed, set the `override` parameter to `true` to have this revision replace the currently deployed revision. You cannot invoke an API proxy until it has been deployed to an environment. After you deploy an API proxy revision, you cannot edit it. To edit the API proxy, you must create and deploy a new revision. For a request path `organizations/{org}/environments/{env}/apis/{api}/revisions/{rev}/deployments`, two permissions are required: * `apigee.deployments.create` on the resource `organizations/{org}/environments/{env}` * `apigee.proxyrevisions.deploy` on the resource `organizations/{org}/apis/{api}/revisions/{rev}` All successful API proxy deployments to Apigee are [zero-downtime deployments](https://cloud.google.com/apigee/docs/api-platform/deploy/ui-deploy-overview#zero-downtime-deployment). Apigee hybrid validates the dependencies between shared flows and API proxies at deployment time. For example, if the Flow Callout policy in an API proxy references a shared flow that either doesn't exist or isn't deployed, the API proxy deployment fails.
 	DeployOrganizationsEnvironmentsApisRevision(context.Context, *DeployOrganizationsEnvironmentsApisRevisionRequest) (*GoogleCloudApigeeV1Deployment, error)
 	// Gets the deployment of an API proxy revision and actual state reported by runtime pods.
 	GetDeploymentsOrganizationsEnvironmentsApisRevision(context.Context, *GetDeploymentsOrganizationsEnvironmentsApisRevisionRequest) (*GoogleCloudApigeeV1Deployment, error)
@@ -9365,7 +9733,7 @@ type OrganizationsEnvironmentsKeystoresAliasesServerClient interface {
 	GetOrganizationsEnvironmentsKeystoresAliase(ctx context.Context, in *GetOrganizationsEnvironmentsKeystoresAliaseRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Alias, error)
 	// Gets the certificate from an alias in PEM-encoded form.
 	GetCertificateOrganizationsEnvironmentsKeystoresAliase(ctx context.Context, in *GetCertificateOrganizationsEnvironmentsKeystoresAliaseRequest, opts ...grpc.CallOption) (*GoogleApiHttpBody, error)
-	// Updates the certificate in an alias.
+	// Updates the certificate in an alias. The updated certificate must be in PEM- or DER-encoded X.509 format.
 	UpdateOrganizationsEnvironmentsKeystoresAliase(ctx context.Context, in *UpdateOrganizationsEnvironmentsKeystoresAliaseRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Alias, error)
 }
 
@@ -9445,7 +9813,7 @@ type OrganizationsEnvironmentsKeystoresAliasesServerServer interface {
 	GetOrganizationsEnvironmentsKeystoresAliase(context.Context, *GetOrganizationsEnvironmentsKeystoresAliaseRequest) (*GoogleCloudApigeeV1Alias, error)
 	// Gets the certificate from an alias in PEM-encoded form.
 	GetCertificateOrganizationsEnvironmentsKeystoresAliase(context.Context, *GetCertificateOrganizationsEnvironmentsKeystoresAliaseRequest) (*GoogleApiHttpBody, error)
-	// Updates the certificate in an alias.
+	// Updates the certificate in an alias. The updated certificate must be in PEM- or DER-encoded X.509 format.
 	UpdateOrganizationsEnvironmentsKeystoresAliase(context.Context, *UpdateOrganizationsEnvironmentsKeystoresAliaseRequest) (*GoogleCloudApigeeV1Alias, error)
 	mustEmbedUnimplementedOrganizationsEnvironmentsKeystoresAliasesServerServer()
 }
@@ -14715,6 +15083,247 @@ var OrganizationsSecurityAssessmentResultsServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
 }
 
+// OrganizationsSecurityMonitoringConditionsServerClient is the client API for OrganizationsSecurityMonitoringConditionsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsSecurityMonitoringConditionsServerClient interface {
+	// Create a security monitoring condition.
+	CreateOrganizationsSecurityMonitoringCondition(ctx context.Context, in *CreateOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+	// Delete a security monitoring condition.
+	DeleteOrganizationsSecurityMonitoringCondition(ctx context.Context, in *DeleteOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error)
+	// Get a security monitoring condition.
+	GetOrganizationsSecurityMonitoringCondition(ctx context.Context, in *GetOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+	// List security monitoring conditions.
+	ListOrganizationsSecurityMonitoringConditions(ctx context.Context, in *ListOrganizationsSecurityMonitoringConditionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse, error)
+	// Update a security monitoring condition.
+	PatchOrganizationsSecurityMonitoringCondition(ctx context.Context, in *PatchOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+}
+
+type organizationsSecurityMonitoringConditionsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsSecurityMonitoringConditionsServerClient(cc grpc.ClientConnInterface) OrganizationsSecurityMonitoringConditionsServerClient {
+	return &organizationsSecurityMonitoringConditionsServerClient{cc}
+}
+
+func (c *organizationsSecurityMonitoringConditionsServerClient) CreateOrganizationsSecurityMonitoringCondition(ctx context.Context, in *CreateOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	out := new(GoogleCloudApigeeV1SecurityMonitoringCondition)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/CreateOrganizationsSecurityMonitoringCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityMonitoringConditionsServerClient) DeleteOrganizationsSecurityMonitoringCondition(ctx context.Context, in *DeleteOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error) {
+	out := new(GoogleProtobufEmpty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/DeleteOrganizationsSecurityMonitoringCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityMonitoringConditionsServerClient) GetOrganizationsSecurityMonitoringCondition(ctx context.Context, in *GetOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	out := new(GoogleCloudApigeeV1SecurityMonitoringCondition)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/GetOrganizationsSecurityMonitoringCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityMonitoringConditionsServerClient) ListOrganizationsSecurityMonitoringConditions(ctx context.Context, in *ListOrganizationsSecurityMonitoringConditionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse, error) {
+	out := new(GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/ListOrganizationsSecurityMonitoringConditions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSecurityMonitoringConditionsServerClient) PatchOrganizationsSecurityMonitoringCondition(ctx context.Context, in *PatchOrganizationsSecurityMonitoringConditionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	out := new(GoogleCloudApigeeV1SecurityMonitoringCondition)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/PatchOrganizationsSecurityMonitoringCondition", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsSecurityMonitoringConditionsServerServer is the server API for OrganizationsSecurityMonitoringConditionsServer service.
+// All implementations must embed UnimplementedOrganizationsSecurityMonitoringConditionsServerServer
+// for forward compatibility
+type OrganizationsSecurityMonitoringConditionsServerServer interface {
+	// Create a security monitoring condition.
+	CreateOrganizationsSecurityMonitoringCondition(context.Context, *CreateOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+	// Delete a security monitoring condition.
+	DeleteOrganizationsSecurityMonitoringCondition(context.Context, *DeleteOrganizationsSecurityMonitoringConditionRequest) (*GoogleProtobufEmpty, error)
+	// Get a security monitoring condition.
+	GetOrganizationsSecurityMonitoringCondition(context.Context, *GetOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+	// List security monitoring conditions.
+	ListOrganizationsSecurityMonitoringConditions(context.Context, *ListOrganizationsSecurityMonitoringConditionsRequest) (*GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse, error)
+	// Update a security monitoring condition.
+	PatchOrganizationsSecurityMonitoringCondition(context.Context, *PatchOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error)
+	mustEmbedUnimplementedOrganizationsSecurityMonitoringConditionsServerServer()
+}
+
+// UnimplementedOrganizationsSecurityMonitoringConditionsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsSecurityMonitoringConditionsServerServer struct {
+}
+
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) CreateOrganizationsSecurityMonitoringCondition(context.Context, *CreateOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsSecurityMonitoringCondition not implemented")
+}
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) DeleteOrganizationsSecurityMonitoringCondition(context.Context, *DeleteOrganizationsSecurityMonitoringConditionRequest) (*GoogleProtobufEmpty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsSecurityMonitoringCondition not implemented")
+}
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) GetOrganizationsSecurityMonitoringCondition(context.Context, *GetOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsSecurityMonitoringCondition not implemented")
+}
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) ListOrganizationsSecurityMonitoringConditions(context.Context, *ListOrganizationsSecurityMonitoringConditionsRequest) (*GoogleCloudApigeeV1ListSecurityMonitoringConditionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsSecurityMonitoringConditions not implemented")
+}
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) PatchOrganizationsSecurityMonitoringCondition(context.Context, *PatchOrganizationsSecurityMonitoringConditionRequest) (*GoogleCloudApigeeV1SecurityMonitoringCondition, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsSecurityMonitoringCondition not implemented")
+}
+func (UnimplementedOrganizationsSecurityMonitoringConditionsServerServer) mustEmbedUnimplementedOrganizationsSecurityMonitoringConditionsServerServer() {
+}
+
+// UnsafeOrganizationsSecurityMonitoringConditionsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsSecurityMonitoringConditionsServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsSecurityMonitoringConditionsServerServer interface {
+	mustEmbedUnimplementedOrganizationsSecurityMonitoringConditionsServerServer()
+}
+
+func RegisterOrganizationsSecurityMonitoringConditionsServerServer(s grpc.ServiceRegistrar, srv OrganizationsSecurityMonitoringConditionsServerServer) {
+	s.RegisterService(&OrganizationsSecurityMonitoringConditionsServer_ServiceDesc, srv)
+}
+
+func _OrganizationsSecurityMonitoringConditionsServer_CreateOrganizationsSecurityMonitoringCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsSecurityMonitoringConditionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).CreateOrganizationsSecurityMonitoringCondition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/CreateOrganizationsSecurityMonitoringCondition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).CreateOrganizationsSecurityMonitoringCondition(ctx, req.(*CreateOrganizationsSecurityMonitoringConditionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsSecurityMonitoringConditionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).DeleteOrganizationsSecurityMonitoringCondition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/DeleteOrganizationsSecurityMonitoringCondition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).DeleteOrganizationsSecurityMonitoringCondition(ctx, req.(*DeleteOrganizationsSecurityMonitoringConditionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsSecurityMonitoringConditionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).GetOrganizationsSecurityMonitoringCondition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/GetOrganizationsSecurityMonitoringCondition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).GetOrganizationsSecurityMonitoringCondition(ctx, req.(*GetOrganizationsSecurityMonitoringConditionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityMonitoringConditionsServer_ListOrganizationsSecurityMonitoringConditions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsSecurityMonitoringConditionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).ListOrganizationsSecurityMonitoringConditions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/ListOrganizationsSecurityMonitoringConditions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).ListOrganizationsSecurityMonitoringConditions(ctx, req.(*ListOrganizationsSecurityMonitoringConditionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSecurityMonitoringConditionsServer_PatchOrganizationsSecurityMonitoringCondition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsSecurityMonitoringConditionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).PatchOrganizationsSecurityMonitoringCondition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer/PatchOrganizationsSecurityMonitoringCondition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSecurityMonitoringConditionsServerServer).PatchOrganizationsSecurityMonitoringCondition(ctx, req.(*PatchOrganizationsSecurityMonitoringConditionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsSecurityMonitoringConditionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsSecurityMonitoringConditionsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsSecurityMonitoringConditionsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsSecurityMonitoringConditionsServer",
+	HandlerType: (*OrganizationsSecurityMonitoringConditionsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsSecurityMonitoringCondition",
+			Handler:    _OrganizationsSecurityMonitoringConditionsServer_CreateOrganizationsSecurityMonitoringCondition_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsSecurityMonitoringCondition",
+			Handler:    _OrganizationsSecurityMonitoringConditionsServer_DeleteOrganizationsSecurityMonitoringCondition_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsSecurityMonitoringCondition",
+			Handler:    _OrganizationsSecurityMonitoringConditionsServer_GetOrganizationsSecurityMonitoringCondition_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsSecurityMonitoringConditions",
+			Handler:    _OrganizationsSecurityMonitoringConditionsServer_ListOrganizationsSecurityMonitoringConditions_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsSecurityMonitoringCondition",
+			Handler:    _OrganizationsSecurityMonitoringConditionsServer_PatchOrganizationsSecurityMonitoringCondition_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
 // OrganizationsSecurityProfilesServerClient is the client API for OrganizationsSecurityProfilesServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
@@ -15410,8 +16019,10 @@ type OrganizationsSharedflowsServerClient interface {
 	DeleteOrganizationsSharedflow(ctx context.Context, in *DeleteOrganizationsSharedflowRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SharedFlow, error)
 	// Gets a shared flow by name, including a list of its revisions.
 	GetOrganizationsSharedflow(ctx context.Context, in *GetOrganizationsSharedflowRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SharedFlow, error)
-	// Lists all shared flows in the organization.
+	// Lists all shared flows in the organization. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsSharedflows(ctx context.Context, in *ListOrganizationsSharedflowsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSharedFlowsResponse, error)
+	// Moves an shared flow to a different space.
+	MoveOrganizationsSharedflow(ctx context.Context, in *MoveOrganizationsSharedflowRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SharedFlow, error)
 }
 
 type organizationsSharedflowsServerClient struct {
@@ -15458,6 +16069,15 @@ func (c *organizationsSharedflowsServerClient) ListOrganizationsSharedflows(ctx 
 	return out, nil
 }
 
+func (c *organizationsSharedflowsServerClient) MoveOrganizationsSharedflow(ctx context.Context, in *MoveOrganizationsSharedflowRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SharedFlow, error) {
+	out := new(GoogleCloudApigeeV1SharedFlow)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSharedflowsServer/MoveOrganizationsSharedflow", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsSharedflowsServerServer is the server API for OrganizationsSharedflowsServer service.
 // All implementations must embed UnimplementedOrganizationsSharedflowsServerServer
 // for forward compatibility
@@ -15468,8 +16088,10 @@ type OrganizationsSharedflowsServerServer interface {
 	DeleteOrganizationsSharedflow(context.Context, *DeleteOrganizationsSharedflowRequest) (*GoogleCloudApigeeV1SharedFlow, error)
 	// Gets a shared flow by name, including a list of its revisions.
 	GetOrganizationsSharedflow(context.Context, *GetOrganizationsSharedflowRequest) (*GoogleCloudApigeeV1SharedFlow, error)
-	// Lists all shared flows in the organization.
+	// Lists all shared flows in the organization. If the resource has the `space` attribute set, the response may not return all resources. To learn more, read the [Apigee Spaces Overview](https://cloud.google.com/apigee/docs/api-platform/system-administration/spaces/apigee-spaces-overview).
 	ListOrganizationsSharedflows(context.Context, *ListOrganizationsSharedflowsRequest) (*GoogleCloudApigeeV1ListSharedFlowsResponse, error)
+	// Moves an shared flow to a different space.
+	MoveOrganizationsSharedflow(context.Context, *MoveOrganizationsSharedflowRequest) (*GoogleCloudApigeeV1SharedFlow, error)
 	mustEmbedUnimplementedOrganizationsSharedflowsServerServer()
 }
 
@@ -15488,6 +16110,9 @@ func (UnimplementedOrganizationsSharedflowsServerServer) GetOrganizationsSharedf
 }
 func (UnimplementedOrganizationsSharedflowsServerServer) ListOrganizationsSharedflows(context.Context, *ListOrganizationsSharedflowsRequest) (*GoogleCloudApigeeV1ListSharedFlowsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsSharedflows not implemented")
+}
+func (UnimplementedOrganizationsSharedflowsServerServer) MoveOrganizationsSharedflow(context.Context, *MoveOrganizationsSharedflowRequest) (*GoogleCloudApigeeV1SharedFlow, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveOrganizationsSharedflow not implemented")
 }
 func (UnimplementedOrganizationsSharedflowsServerServer) mustEmbedUnimplementedOrganizationsSharedflowsServerServer() {
 }
@@ -15575,6 +16200,24 @@ func _OrganizationsSharedflowsServer_ListOrganizationsSharedflows_Handler(srv in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsSharedflowsServer_MoveOrganizationsSharedflow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveOrganizationsSharedflowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSharedflowsServerServer).MoveOrganizationsSharedflow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSharedflowsServer/MoveOrganizationsSharedflow",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSharedflowsServerServer).MoveOrganizationsSharedflow(ctx, req.(*MoveOrganizationsSharedflowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsSharedflowsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsSharedflowsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -15597,6 +16240,10 @@ var OrganizationsSharedflowsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOrganizationsSharedflows",
 			Handler:    _OrganizationsSharedflowsServer_ListOrganizationsSharedflows_Handler,
+		},
+		{
+			MethodName: "MoveOrganizationsSharedflow",
+			Handler:    _OrganizationsSharedflowsServer_MoveOrganizationsSharedflow_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -16548,6 +17195,247 @@ var OrganizationsSitesApidocsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateDocumentationOrganizationsSitesApidoc",
 			Handler:    _OrganizationsSitesApidocsServer_UpdateDocumentationOrganizationsSitesApidoc_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/apigee/v1/service.proto",
+}
+
+// OrganizationsSpacesServerClient is the client API for OrganizationsSpacesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type OrganizationsSpacesServerClient interface {
+	// Create a space under an organization.
+	CreateOrganizationsSpace(ctx context.Context, in *CreateOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error)
+	// Deletes an organization space.
+	DeleteOrganizationsSpace(ctx context.Context, in *DeleteOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error)
+	// Get a space under an Organization.
+	GetOrganizationsSpace(ctx context.Context, in *GetOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error)
+	// Lists spaces under an organization.
+	ListOrganizationsSpaces(ctx context.Context, in *ListOrganizationsSpacesRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSpacesResponse, error)
+	// Updates a space.
+	PatchOrganizationsSpace(ctx context.Context, in *PatchOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error)
+}
+
+type organizationsSpacesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewOrganizationsSpacesServerClient(cc grpc.ClientConnInterface) OrganizationsSpacesServerClient {
+	return &organizationsSpacesServerClient{cc}
+}
+
+func (c *organizationsSpacesServerClient) CreateOrganizationsSpace(ctx context.Context, in *CreateOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error) {
+	out := new(GoogleCloudApigeeV1Space)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/CreateOrganizationsSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSpacesServerClient) DeleteOrganizationsSpace(ctx context.Context, in *DeleteOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error) {
+	out := new(GoogleProtobufEmpty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/DeleteOrganizationsSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSpacesServerClient) GetOrganizationsSpace(ctx context.Context, in *GetOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error) {
+	out := new(GoogleCloudApigeeV1Space)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/GetOrganizationsSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSpacesServerClient) ListOrganizationsSpaces(ctx context.Context, in *ListOrganizationsSpacesRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSpacesResponse, error) {
+	out := new(GoogleCloudApigeeV1ListSpacesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/ListOrganizationsSpaces", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsSpacesServerClient) PatchOrganizationsSpace(ctx context.Context, in *PatchOrganizationsSpaceRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1Space, error) {
+	out := new(GoogleCloudApigeeV1Space)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/PatchOrganizationsSpace", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// OrganizationsSpacesServerServer is the server API for OrganizationsSpacesServer service.
+// All implementations must embed UnimplementedOrganizationsSpacesServerServer
+// for forward compatibility
+type OrganizationsSpacesServerServer interface {
+	// Create a space under an organization.
+	CreateOrganizationsSpace(context.Context, *CreateOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error)
+	// Deletes an organization space.
+	DeleteOrganizationsSpace(context.Context, *DeleteOrganizationsSpaceRequest) (*GoogleProtobufEmpty, error)
+	// Get a space under an Organization.
+	GetOrganizationsSpace(context.Context, *GetOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error)
+	// Lists spaces under an organization.
+	ListOrganizationsSpaces(context.Context, *ListOrganizationsSpacesRequest) (*GoogleCloudApigeeV1ListSpacesResponse, error)
+	// Updates a space.
+	PatchOrganizationsSpace(context.Context, *PatchOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error)
+	mustEmbedUnimplementedOrganizationsSpacesServerServer()
+}
+
+// UnimplementedOrganizationsSpacesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedOrganizationsSpacesServerServer struct {
+}
+
+func (UnimplementedOrganizationsSpacesServerServer) CreateOrganizationsSpace(context.Context, *CreateOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsSpace not implemented")
+}
+func (UnimplementedOrganizationsSpacesServerServer) DeleteOrganizationsSpace(context.Context, *DeleteOrganizationsSpaceRequest) (*GoogleProtobufEmpty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsSpace not implemented")
+}
+func (UnimplementedOrganizationsSpacesServerServer) GetOrganizationsSpace(context.Context, *GetOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganizationsSpace not implemented")
+}
+func (UnimplementedOrganizationsSpacesServerServer) ListOrganizationsSpaces(context.Context, *ListOrganizationsSpacesRequest) (*GoogleCloudApigeeV1ListSpacesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsSpaces not implemented")
+}
+func (UnimplementedOrganizationsSpacesServerServer) PatchOrganizationsSpace(context.Context, *PatchOrganizationsSpaceRequest) (*GoogleCloudApigeeV1Space, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsSpace not implemented")
+}
+func (UnimplementedOrganizationsSpacesServerServer) mustEmbedUnimplementedOrganizationsSpacesServerServer() {
+}
+
+// UnsafeOrganizationsSpacesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OrganizationsSpacesServerServer will
+// result in compilation errors.
+type UnsafeOrganizationsSpacesServerServer interface {
+	mustEmbedUnimplementedOrganizationsSpacesServerServer()
+}
+
+func RegisterOrganizationsSpacesServerServer(s grpc.ServiceRegistrar, srv OrganizationsSpacesServerServer) {
+	s.RegisterService(&OrganizationsSpacesServer_ServiceDesc, srv)
+}
+
+func _OrganizationsSpacesServer_CreateOrganizationsSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationsSpaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSpacesServerServer).CreateOrganizationsSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/CreateOrganizationsSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSpacesServerServer).CreateOrganizationsSpace(ctx, req.(*CreateOrganizationsSpaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSpacesServer_DeleteOrganizationsSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsSpaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSpacesServerServer).DeleteOrganizationsSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/DeleteOrganizationsSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSpacesServerServer).DeleteOrganizationsSpace(ctx, req.(*DeleteOrganizationsSpaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSpacesServer_GetOrganizationsSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationsSpaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSpacesServerServer).GetOrganizationsSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/GetOrganizationsSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSpacesServerServer).GetOrganizationsSpace(ctx, req.(*GetOrganizationsSpaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSpacesServer_ListOrganizationsSpaces_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizationsSpacesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSpacesServerServer).ListOrganizationsSpaces(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/ListOrganizationsSpaces",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSpacesServerServer).ListOrganizationsSpaces(ctx, req.(*ListOrganizationsSpacesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsSpacesServer_PatchOrganizationsSpace_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsSpaceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsSpacesServerServer).PatchOrganizationsSpace(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsSpacesServer/PatchOrganizationsSpace",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsSpacesServerServer).PatchOrganizationsSpace(ctx, req.(*PatchOrganizationsSpaceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// OrganizationsSpacesServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsSpacesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var OrganizationsSpacesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.apigee.v1.OrganizationsSpacesServer",
+	HandlerType: (*OrganizationsSpacesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateOrganizationsSpace",
+			Handler:    _OrganizationsSpacesServer_CreateOrganizationsSpace_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsSpace",
+			Handler:    _OrganizationsSpacesServer_DeleteOrganizationsSpace_Handler,
+		},
+		{
+			MethodName: "GetOrganizationsSpace",
+			Handler:    _OrganizationsSpacesServer_GetOrganizationsSpace_Handler,
+		},
+		{
+			MethodName: "ListOrganizationsSpaces",
+			Handler:    _OrganizationsSpacesServer_ListOrganizationsSpaces_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsSpace",
+			Handler:    _OrganizationsSpacesServer_PatchOrganizationsSpace_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
