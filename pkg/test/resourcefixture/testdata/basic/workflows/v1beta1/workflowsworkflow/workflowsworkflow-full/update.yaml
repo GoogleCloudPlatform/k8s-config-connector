@@ -21,6 +21,7 @@ metadata:
 spec:
   location: us-central1
   description: "Updated Example workflow"
+  executionHistoryLevel: "EXECUTION_HISTORY_DETAILED"
   labels:
     env: "test"
     updated: "true"
