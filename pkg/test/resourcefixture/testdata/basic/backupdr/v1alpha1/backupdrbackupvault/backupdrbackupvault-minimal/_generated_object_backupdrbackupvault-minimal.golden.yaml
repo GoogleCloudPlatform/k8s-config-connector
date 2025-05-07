@@ -1,0 +1,33 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRBackupVault
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: backupdrbackupvault-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupMinimumEnforcedRetentionDuration: 200000s
+  description: Updated description
+  location: us-west2
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    deletable: true
+    serviceAccount: vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

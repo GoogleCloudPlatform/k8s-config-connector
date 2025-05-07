@@ -21,7 +21,7 @@ func init() {
 		SkipDriftDetection: true,
 	}
 
-	resourceContextMap["privatecacapool"] = ResourceContext{
+	resourceContextMap["privatecacapoolbasic"] = ResourceContext{
 		ResourceKind: "PrivateCACaPool",
 		// You can't recreate a resource with the same name as a deleted resource.
 		SkipDriftDetection: true,

@@ -100,3 +100,46 @@ type TableObservedState struct {
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Table.expire_time
 	ExpireTime *string `json:"expireTime,omitempty"`
 }
+
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+type Catalog struct {
+}
+
+// +kcc:proto=google.cloud.bigquery.biglake.v1.Catalog
+type CatalogObservedState struct {
+	// // Output only. The resource name.
+	// //  Format:
+	// //  projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
+	// // +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.name
+	// Name *string `json:"name,omitempty"`
+
+	// Output only. The creation time of the catalog.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last modification time of the catalog.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// // Output only. The deletion time of the catalog. Only set after the catalog
+	// //  is deleted.
+	// // +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.delete_time
+	// DeleteTime *string `json:"deleteTime,omitempty"`
+
+	// // Output only. The time when this catalog is considered expired. Only set
+	// //  after the catalog is deleted.
+	// // +kcc:proto:field=google.cloud.bigquery.biglake.v1.Catalog.expire_time
+	// ExpireTime *string `json:"expireTime,omitempty"`
+}
+
+// +kcc:proto=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions
+type HiveDatabaseOptions struct {
+	// Cloud Storage folder URI where the database data is stored, starting with
+	//  "gs://".
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.location_uri
+	LocationURI *string `json:"locationURI,omitempty"`
+
+	// Stores user supplied Hive database parameters.
+	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
+}

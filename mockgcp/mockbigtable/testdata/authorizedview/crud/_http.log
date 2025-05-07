@@ -1,0 +1,556 @@
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "clusters": {
+    "test-cluster-${uniqueId}": {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-east1-c",
+      "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
+      "serveNodes": 1
+    }
+  },
+  "instance": {
+    "displayName": "test-instance",
+    "type": "PRODUCTION"
+  },
+  "instanceId": "test-instance-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "test-cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-c",
+          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "test-instance",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "test-instance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "clusters": {
+        "test-cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-c",
+          "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "test-instance",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "test-instance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "test-instance",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
+    "state": "READY",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "test-instance",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "table": {
+    "columnFamilies": {
+      "customer": {}
+    },
+    "deletionProtection": false
+  },
+  "tableId": "test-table"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "columnFamilies": {
+    "customer": {
+      "valueType": {}
+    }
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table"
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews?alt=json&authorizedViewId=av-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "deletionProtection": false,
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateAuthorizedViewMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AuthorizedView",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+    "subsetView": {
+      "familySubsets": {
+        "customer": {
+          "qualifierPrefixes": [
+            "dGVs"
+          ],
+          "qualifiers": [
+            "YWRkcmVzcw=="
+          ]
+        }
+      },
+      "rowPrefixes": [
+        "ZXhhbXBsZXN0b3JlMSM="
+      ]
+    }
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json&updateMask=subset_view%2Cdeletion_protection
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "deletionProtection": false,
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAuthorizedViewMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "authorizedView": {
+        "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+        "subsetView": {
+          "familySubsets": {
+            "customer": {
+              "qualifierPrefixes": [
+                "dGVs"
+              ],
+              "qualifiers": [
+                "YWRkcmVzcw=="
+              ]
+            }
+          },
+          "rowPrefixes": [
+            "ZXhhbXBsZXN0b3JlMSM="
+          ]
+        }
+      },
+      "updateMask": "subsetView,deletionProtection"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.AuthorizedView",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+    "subsetView": {
+      "familySubsets": {
+        "customer": {
+          "qualifierPrefixes": [
+            "dGVs"
+          ],
+          "qualifiers": [
+            "YWRkcmVzcw=="
+          ]
+        }
+      },
+      "rowPrefixes": [
+        "ZXhhbXBsZXN0b3JlMSM="
+      ]
+    }
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}",
+  "subsetView": {
+    "familySubsets": {
+      "customer": {
+        "qualifierPrefixes": [
+          "dGVs"
+        ],
+        "qualifiers": [
+          "YWRkcmVzcw=="
+        ]
+      }
+    },
+    "rowPrefixes": [
+      "ZXhhbXBsZXN0b3JlMSM="
+    ]
+  }
+}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table/authorizedViews/av-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

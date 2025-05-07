@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -32,7 +31,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -60,7 +58,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -94,7 +91,6 @@ x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -122,7 +118,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

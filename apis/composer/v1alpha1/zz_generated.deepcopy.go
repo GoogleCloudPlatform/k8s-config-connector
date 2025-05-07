@@ -137,16 +137,6 @@ func (in *ComposerEnvironmentObservedState) DeepCopyInto(out *ComposerEnvironmen
 		*out = new(EnvironmentConfigObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.SatisfiesPzs != nil {
-		in, out := &in.SatisfiesPzs, &out.SatisfiesPzs
-		*out = new(bool)
-		**out = **in
-	}
-	if in.SatisfiesPzi != nil {
-		in, out := &in.SatisfiesPzi, &out.SatisfiesPzi
-		*out = new(bool)
-		**out = **in
-	}
 	if in.Uuid != nil {
 		in, out := &in.Uuid, &out.Uuid
 		*out = new(string)
@@ -420,8 +410,8 @@ func (in *EnvironmentConfigObservedState) DeepCopyInto(out *EnvironmentConfigObs
 		*out = new(string)
 		**out = **in
 	}
-	if in.DagGcsPrefix != nil {
-		in, out := &in.DagGcsPrefix, &out.DagGcsPrefix
+	if in.DagGCSPrefix != nil {
+		in, out := &in.DagGCSPrefix, &out.DagGCSPrefix
 		*out = new(string)
 		**out = **in
 	}
@@ -430,8 +420,8 @@ func (in *EnvironmentConfigObservedState) DeepCopyInto(out *EnvironmentConfigObs
 		*out = new(PrivateEnvironmentConfigObservedState)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.AirflowByoidURI != nil {
-		in, out := &in.AirflowByoidURI, &out.AirflowByoidURI
+	if in.AirflowBYOIDURI != nil {
+		in, out := &in.AirflowBYOIDURI, &out.AirflowBYOIDURI
 		*out = new(string)
 		**out = **in
 	}

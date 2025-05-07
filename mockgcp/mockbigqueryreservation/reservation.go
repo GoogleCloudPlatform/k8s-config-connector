@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/reservation/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -65,6 +66,15 @@ func (s *ReservationV1) CreateReservation(ctx context.Context, req *pb.CreateRes
 		Seconds: now.Unix(),
 	}
 
+	if obj.SecondaryLocation != "" {
+		if obj.Edition == pb.Edition_ENTERPRISE_PLUS {
+			obj.PrimaryLocation = name.Location
+			obj.OriginalPrimaryLocation = obj.PrimaryLocation
+		} else {
+			return nil, status.Error(codes.InvalidArgument, "secondary_location can only be specified for ENTERPRISE_PLUS edition")
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -105,8 +115,34 @@ func (s *ReservationV1) UpdateReservation(ctx context.Context, req *pb.UpdateRes
 		return nil, err
 	}
 
+	updateSecondaryLocation := false
+	for _, p := range req.UpdateMask.Paths {
+		if p == "secondaryLocation" {
+			updateSecondaryLocation = true
+			break
+		}
+	}
+
+	if updateSecondaryLocation {
+		if obj.Edition != pb.Edition_ENTERPRISE_PLUS {
+			return nil, status.Error(codes.InvalidArgument, "secondary_location can only be specified for ENTERPRISE_PLUS edition")
+		}
+		if obj.SecondaryLocation != "" && req.Reservation.SecondaryLocation != "" {
+			return nil, status.Error(codes.InvalidArgument, "Changing the secondary location of an existing failover reservation is not supported. Please remove the existing secondary location before setting a new secondary location.")
+		}
+	}
+
 	if err := fields.UpdateByFieldMask(obj, req.Reservation, req.UpdateMask.Paths); err != nil {
 		return nil, fmt.Errorf("update field_mask.paths: %w", err)
+	}
+
+	if updateSecondaryLocation {
+		// handle the case of changing from failover to non-failover reservation
+		if obj.SecondaryLocation == "" {
+			obj = setFieldfailoverNonFailover(obj)
+		} else {
+			obj = setFieldNonfailoverFailover(obj, name.Location)
+		}
 	}
 
 	obj.UpdateTime = &timestamppb.Timestamp{
@@ -163,4 +199,158 @@ func (s *MockService) parseReservationName(name string) (*reservationName, error
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+// For Enterprise_plus, user can switch between failover and non-failover reservations
+// by setting or unsetting the secondary_location.
+// When user unsets the secondary_location, setFieldfailoverNonFailover removes
+// the primary_location, original_primary_location and secondary_location in the response.
+func setFieldfailoverNonFailover(obj *pb.Reservation) *pb.Reservation {
+	if obj.OriginalPrimaryLocation != "" && obj.PrimaryLocation != "" {
+		obj.OriginalPrimaryLocation = ""
+		obj.PrimaryLocation = ""
+	}
+	return obj
+}
+
+func setFieldNonfailoverFailover(obj *pb.Reservation, location string) *pb.Reservation {
+	if obj.OriginalPrimaryLocation == "" && obj.PrimaryLocation == "" {
+		obj.OriginalPrimaryLocation = location
+		obj.PrimaryLocation = location
+	}
+	return obj
+}
+
+type assignmentName struct {
+	Reservation *reservationName
+	ResourceID  string
+}
+
+// parseAssignmentName parses a string into a assignmentName.
+// The expected form is projects/<projectId>/locations/<location>/reservations/<reservationID>/assignments/<assignmentID>
+func (s *MockService) parseAssignmentName(name string) (*assignmentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "reservations" && tokens[6] == "assignments" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &assignmentName{
+			Reservation: &reservationName{
+				Project:    project,
+				Location:   tokens[3],
+				ResourceID: tokens[5],
+			},
+			ResourceID: tokens[7],
+		}
+		return name, nil
+	}
+
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (n *assignmentName) String() string {
+	return "projects/" + n.Reservation.Project.ID + "/locations/" + n.Reservation.Location + "/reservations/" + n.Reservation.ResourceID + "/assignments/" + n.ResourceID
+}
+
+// Creates an assignment object which allows the given project to submit jobs
+// of a certain type using slots from the specified reservation.
+func (s *ReservationV1) CreateAssignment(ctx context.Context, req *pb.CreateAssignmentRequest) (*pb.Assignment, error) {
+
+	// reqName = req.Parent + "/assignments/" + uuid.New().String()
+	// Using fixed UUID to test "acquire" in spec.resourceID. This also fix the dynamic uuid value in the `x-goog-request-params` header.
+	var name string
+	if req.AssignmentId == "" {
+		name = req.Parent + "/assignments/" + "87687860-6689-5789-1dfzymot3v66w7f"
+	} else {
+		name = req.Parent + "/assignments/" + req.AssignmentId
+	}
+
+	obj := proto.Clone(req.Assignment).(*pb.Assignment)
+	obj.Name = name
+	obj.State = pb.Assignment_ACTIVE
+
+	if err := s.storage.Create(ctx, name, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+// Lists assignments.
+// Only explicitly created assignments will be returned.
+func (s *ReservationV1) ListAssignments(ctx context.Context, req *pb.ListAssignmentsRequest) (*pb.ListAssignmentsResponse, error) {
+	parent, err := s.parseReservationName(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListAssignmentsResponse{}
+
+	assignmentKind := (&pb.Assignment{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, assignmentKind, storage.ListOptions{}, func(obj proto.Message) error {
+		assignment := obj.(*pb.Assignment)
+		var name *assignmentName
+		name, err = s.parseAssignmentName(assignment.Name)
+		if err != nil {
+			return err
+		}
+		if name.Reservation.String() == parent.String() {
+			response.Assignments = append(response.Assignments, assignment)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Moves an assignment under a new reservation.
+//
+// This differs from removing an existing assignment and recreating a new one
+// by providing a transactional change that ensures an assignee always has an
+// associated reservation.
+func (s *ReservationV1) MoveAssignment(ctx context.Context, req *pb.MoveAssignmentRequest) (*pb.Assignment, error) {
+	name, err := s.parseAssignmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Assignment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Rebuild name for the Assignment
+	obj.Name = req.DestinationId + "/assignments/" + name.ResourceID
+	// Delete and recreate
+	if err := s.storage.Delete(ctx, fqn, &pb.Assignment{}); err != nil {
+		return nil, err
+	}
+	if err := s.storage.Create(ctx, obj.Name, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+// Deletes a assignment. No expansion will happen.
+func (s *ReservationV1) DeleteAssignment(ctx context.Context, req *pb.DeleteAssignmentRequest) (*empty.Empty, error) {
+	name, err := s.parseAssignmentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	oldObj := &pb.Assignment{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }

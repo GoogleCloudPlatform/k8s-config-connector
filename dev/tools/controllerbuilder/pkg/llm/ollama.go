@@ -205,6 +205,7 @@ type Schema struct {
 
 const TypeObject = "object"
 const TypeString = "string"
+const TypeBoolean = "boolean"
 
 type FunctionCallResult struct {
 	Name   string         `json:"name,omitempty"`

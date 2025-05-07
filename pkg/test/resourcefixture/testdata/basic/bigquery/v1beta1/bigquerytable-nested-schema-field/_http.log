@@ -1,0 +1,1275 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Table containing policy history",
+  "friendlyName": "bigquerytable-sample",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "Table containing policy history",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "atlan_get_time"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "Table containing policy history",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "atlan_get_time"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Table containing policy history updated",
+  "friendlyName": "bigquerytable-sample-updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "Table containing policy history updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "atlan_get_time"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "Table containing policy history updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "atlan_get_time"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}:getIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "Table containing policy history updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerytable-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "atlan_get_time"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Fully qualified name of the entity",
+        "mode": "REQUIRED",
+        "name": "qualified_name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Unique identifier of the entity",
+        "mode": "REQUIRED",
+        "name": "guid",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "List of Atlan Tags associated with the entity",
+        "fields": [
+          {
+            "description": "Name of Atlan Tag",
+            "mode": "NULLABLE",
+            "name": "type_name",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "GUID of the entity for this tag",
+            "mode": "NULLABLE",
+            "name": "entity_guid",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "Status of the entity",
+            "mode": "NULLABLE",
+            "name": "entity_status",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "atlan_tags",
+        "type": "RECORD"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      },
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "type_resource",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "Last update time of the entity",
+        "mode": "REQUIRED",
+        "name": "update_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "description": "time when cdp get data",
+        "mode": "REQUIRED",
+        "name": "atlan_get_time",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "atlan_get_time",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0

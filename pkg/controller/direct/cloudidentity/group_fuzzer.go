@@ -15,7 +15,7 @@
 package cloudidentity
 
 import (
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 

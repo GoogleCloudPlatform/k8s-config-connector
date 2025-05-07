@@ -1,0 +1,91 @@
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateFirewallPolicy
+
+{
+  "firewallPolicy": {
+    "description": "Initial description"
+  },
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "description": "Initial description",
+  "name": "projects/${projectNumber}/firewallpolicies/200"
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
+
+{
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+OK
+
+{
+  "description": "Initial description",
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateFirewallPolicy
+
+{
+  "firewallPolicy": {
+    "description": "Updated description",
+    "name": "projects/${projectId}/firewallpolicies/200"
+  },
+  "updateMask": "description"
+}
+
+OK
+
+{
+  "description": "Updated description",
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
+
+{
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+OK
+
+{
+  "description": "Updated description",
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy
+
+{
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+OK
+
+{
+  "description": "Updated description",
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteFirewallPolicy
+
+{
+  "name": "projects/${projectId}/firewallpolicies/200"
+}
+
+OK
+
+{}

@@ -2,7 +2,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=js
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -48,7 +47,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -95,7 +93,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=js
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -144,7 +141,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 {
   "launchParameter": {
     "containerSpecGcsPath": "gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion",
-    "environment": {},
+    "environment": {
+      "autoscalingAlgorithm": "AUTOSCALING_ALGORITHM_NONE"
+    },
     "jobName": "dataflowflextemplatejob-${uniqueId}",
     "parameters": {
       "inputFileFormat": "csv",
@@ -157,7 +156,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -185,7 +183,6 @@ GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-cent
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -367,7 +364,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -387,7 +383,6 @@ GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-cent
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -565,7 +560,6 @@ GET https://dataflow.googleapis.com/v1b3/projects/${projectId}/locations/us-cent
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -742,7 +736,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt=js
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -788,7 +781,6 @@ GET https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}/o?alt=
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -796,7 +788,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
@@ -805,7 +801,6 @@ DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-${uniqueId}?alt
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache

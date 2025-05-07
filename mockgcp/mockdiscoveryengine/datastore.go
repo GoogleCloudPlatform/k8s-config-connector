@@ -35,11 +35,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
-type dataStoreService struct {
-	*MockService
-	pb.UnimplementedDataStoreServiceServer
-}
-
 func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDataStoreRequest) (*longrunningpb.Operation, error) {
 	reqName := fmt.Sprintf("%s/dataStores/%s", req.GetParent(), req.GetDataStoreId())
 	name, err := s.parseDataStoreName(reqName)

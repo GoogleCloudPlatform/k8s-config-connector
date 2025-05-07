@@ -82,13 +82,20 @@ var _ Operation = &CreateOperation{}
 
 type CreateOperation struct {
 	operationBase
+	lifecycleHandler lifecyclehandler.LifecycleHandler
 }
 
-func NewCreateOperation(client client.Client, object *unstructured.Unstructured) *CreateOperation {
+func NewCreateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *CreateOperation {
 	op := &CreateOperation{}
+	op.lifecycleHandler = lifecycleHandler
 	op.client = client
 	op.object = object
 	return op
+}
+
+func (o *CreateOperation) RecordUpdatingEvent() {
+	r := o.lifecycleHandler.Recorder
+	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
 
 type DeleteOperation struct {

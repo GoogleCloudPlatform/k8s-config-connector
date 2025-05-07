@@ -23,6 +23,8 @@ import (
 	"time"
 
 	"github.com/googleapis/gax-go/v2/apierror"
+	grpcCode "google.golang.org/grpc/codes"
+	grpcStatus "google.golang.org/grpc/status"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -133,6 +135,18 @@ func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	if v == 0 {
 		return nil
 	}
+
+	val := descriptor.Values().ByNumber(protoreflect.EnumNumber(v))
+	if val == nil {
+		mapCtx.Errorf("unknown enum value %d", v)
+		return nil
+	}
+	s := string(val.Name())
+	return &s
+}
+
+func ZeroBasedEnum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
+	descriptor := v.Descriptor()
 
 	val := descriptor.Values().ByNumber(protoreflect.EnumNumber(v))
 	if val == nil {
@@ -255,6 +269,11 @@ func ValueOf[T any](p *T) T {
 	return v
 }
 
+// IsPermissionDenied returns true if the given error is an HTTP 403.
+func IsPermissionDenied(err error) bool {
+	return HasHTTPCode(err, 403)
+}
+
 // IsNotFound returns true if the given error is an HTTP 404.
 func IsNotFound(err error) bool {
 	return HasHTTPCode(err, 404)
@@ -267,6 +286,7 @@ func IsBadRequest(err error) bool {
 
 // HasHTTPCode returns true if the given error is an HTTP response with the given code.
 func HasHTTPCode(err error, code int) bool {
+
 	if err == nil {
 		return false
 	}
@@ -274,6 +294,12 @@ func HasHTTPCode(err error, code int) bool {
 	if errors.As(err, &apiError) {
 		if apiError.HTTPCode() == code {
 			return true
+		}
+		// Check for GRPC error code
+		if apiError.HTTPCode() == -1 {
+			if grpcStatus.Code(err) == grpcCode.NotFound {
+				return true
+			}
 		}
 	} else {
 		klog.Warningf("unexpected error type %T", err)
@@ -485,4 +511,19 @@ func UnixMillisToTime(m int64) time.Time {
 		return time.Time{}
 	}
 	return time.Unix(0, m*1e6)
+}
+
+func ByteSliceToStringPtr(mapCtx *MapContext, in []byte) *string {
+	if in == nil {
+		return nil
+	}
+	out := string(in[:])
+	return &out
+}
+
+func StringPtrToByteSlice(mapCtx *MapContext, in *string) []byte {
+	if in == nil {
+		return nil
+	}
+	return []byte(*in)
 }

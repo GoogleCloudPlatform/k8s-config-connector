@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -48,6 +49,30 @@ func (s *ZonesV1) Get(ctx context.Context, req *pb.GetZoneRequest) (*pb.Zone, er
 	obj.Status = PtrTo("UP")
 	obj.Region = &region
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
+	obj.SupportsPzs = PtrTo(false)
+	obj.Description = PtrTo(name.Zone)
+	obj.CreationTimestamp = PtrTo(s.formatDate(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)))
+	obj.Id = PtrTo(s.generateID())
+
+	obj.AvailableCpuPlatforms = []string{
+		"Ampere Altra",
+		"Intel Broadwell",
+		"Intel Cascade Lake",
+		"Intel Emerald Rapids",
+		"AMD Genoa",
+		"NVIDIA Grace",
+		"Intel Granite Rapids",
+		"Intel Haswell",
+		"Intel Ice Lake",
+		"Intel Ivy Bridge",
+		"Google Axion",
+		"AMD Milan",
+		"AMD Rome",
+		"Intel Sandy Bridge",
+		"Intel Sapphire Rapids",
+		"Intel Skylake",
+		"AMD Turin",
+	}
 
 	return obj, nil
 }

@@ -398,6 +398,12 @@ func ResourceBigQueryTable() *schema.Resource {
 			resourceBigQueryTableSchemaCustomizeDiff,
 		),
 		Schema: map[string]*schema.Schema{
+			"unmanaged": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default: "",
+				Description: `Collection of fields to ignore during update`,
+			},
 			// TableId: [Required] The ID of the table. The ID must contain only
 			// letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum
 			// length is 1,024 characters.
@@ -1395,6 +1401,13 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigQuery table %q", tableID))
 	}
 
+	// Explicitly set virtual fields to default values if unset
+	if _, ok := d.GetOkExists("unmanaged"); !ok {
+		if err := d.Set("unmanaged", ""); err != nil {
+			return fmt.Errorf("Error setting unmanaged: %s", err)
+		}
+	}
+
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error setting project: %s", err)
 	}
@@ -1564,9 +1577,23 @@ func resourceBigQueryTableUpdate(d *schema.ResourceData, meta interface{}) error
 
 	datasetID := d.Get("dataset_id").(string)
 	tableID := d.Get("table_id").(string)
-
-	if _, err = config.NewBigQueryClient(userAgent).Tables.Update(project, datasetID, tableID, table).Do(); err != nil {
-		return err
+	unmanaged := d.Get("unmanaged").(string)
+	if unmanaged != "" {
+		unmanagedFields := strings.Split(unmanaged, ",")
+		for _, field := range unmanagedFields {
+			// This ability is only intended for spec.schema field for the moment.
+			if field == "spec.schema" {
+				table.Schema = nil
+			}
+		}
+		// Make PATCH call with nil schema to avoid schema being updated.
+		if _, err = config.NewBigQueryClient(userAgent).Tables.Patch(project, datasetID, tableID, table).Do(); err != nil {
+			return err
+		}
+	} else {
+		if _, err = config.NewBigQueryClient(userAgent).Tables.Update(project, datasetID, tableID, table).Do(); err != nil {
+			return err
+		}
 	}
 
 	return resourceBigQueryTableRead(d, meta)
@@ -2334,6 +2361,10 @@ func resourceBigQueryTableImport(d *schema.ResourceData, meta interface{}) ([]*s
 		"(?P<dataset_id>[^/]+)/(?P<table_id>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
+	}
+	// Explicitly set virtual fields to default values on import
+	if err := d.Set("unmanaged", ""); err != nil {
+		return nil, fmt.Errorf("Error setting unmanaged: %s", err)
 	}
 
 	// Explicitly set virtual fields to default values on import

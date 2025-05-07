@@ -11,7 +11,6 @@ x-goog-request-params: parent=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqu
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

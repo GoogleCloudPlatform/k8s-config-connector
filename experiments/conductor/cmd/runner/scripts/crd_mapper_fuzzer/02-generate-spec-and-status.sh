@@ -18,47 +18,17 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-cd $(dirname "$0")
-SCRIPT_DIR=`pwd`
-
-PROMPT=${SCRIPT_DIR}/01-generate-script.prompt
-
-if [[ -z "${WORKDIR}" ]]; then
-  echo "WORKDIR is required"
-  exit 1
-fi
-
-if [[ -z "${BRANCH_NAME}" ]]; then
-  echo "BRANCH_NAME is required"
-  exit 1
-fi
-
-if [[ -z "${LOG_DIR}" ]]; then
-  echo "LOG_DIR is required"
-  exit 1
-fi
-
-mkdir -p ${LOG_DIR}
-
-cd ${WORKDIR}
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
 
-git co master
-git co ${BRANCH_NAME}
+# TODO: sanity check the branch
+git checkout "${BRANCH_NAME}"
 
-cd apis/${SERVICE}/${CRD_VERSION}
+type_file="${REPO_ROOT}/apis/${SERVICE}/${CRD_VERSION}/$(eval "echo ${RESOURCE,,}_types.go")"
 
-# TODO: We should be able to in-place replace here
-# TODO: Generate spec and status separately
-# TODO: lower case (but it's nice right now because it always fails compilation)
-# TODO: Auto-exclude any examples with the same proto??
-controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/k8s-config-connector/.build/third_party/googleapis/ <<EOF >> ${RESOURCE}_types.go
+controllerbuilder prompt --src-dir "${REPO_ROOT}" --proto-dir "${REPO_ROOT}"/.build/third_party/googleapis/ <<EOF >> "${type_file}"
 // +kcc:proto=${PROTO_SERVICE}.${PROTO_RESOURCE}
+// crd.kind: ${CRD_KIND} 
 EOF
-
-# TODO: go mod tidy?
 
 git status
 git add .

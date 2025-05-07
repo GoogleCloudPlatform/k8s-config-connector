@@ -1,0 +1,202 @@
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission denied for ${projectId}.dctt_${uniqueId}, or resource doesn't exist. ",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates?tagTemplateId=dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "type": {
+        "primitiveType": 2
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+}
+
+---
+
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}?updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: tag_template.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "UpdatedTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "type": {
+        "primitiveType": 2
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "UpdatedTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "UpdatedTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/dctt_${uniqueId}?force=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtagTemplates%2Fdctt_${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

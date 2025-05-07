@@ -1,0 +1,99 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytablesample${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: "Table containing policy history"
+  datasetRef:
+    name: bigquerydatasetsample${uniqueId}
+  timePartitioning:
+    field: atlan_get_time
+    type: DAY
+    requirePartitionFilter: false
+  friendlyName: bigquerytable-sample
+  schema: |-
+    [
+      {
+        "name": "qualified_name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Fully qualified name of the entity"
+      },
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity"
+      },
+      {
+        "name": "guid",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Unique identifier of the entity"
+      },
+        {
+        "name": "atlan_tags",
+        "type": "RECORD",
+        "mode": "REPEATED",
+          "description": "List of Atlan Tags associated with the entity",
+          "fields":[
+          {
+            "name": "type_name",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "Name of Atlan Tag"
+            },
+            {
+            "name":"entity_guid",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"GUID of the entity for this tag"
+            },
+            {
+            "name":"entity_status",
+            "type":"STRING",
+            "mode": "NULLABLE",
+              "description": "Status of the entity"
+          }
+          ]
+      },
+      {
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields":[
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key"
+            },
+            {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+            }],
+        "description": "atlan BQ labels"
+      },
+      {
+        "name": "type_resource",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity"
+      },
+      {
+        "name": "update_time",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED",
+        "description": "Last update time of the entity"
+      },
+      {
+        "name": "atlan_get_time",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED",
+        "description": "time when cdp get data"
+      }
+    ]

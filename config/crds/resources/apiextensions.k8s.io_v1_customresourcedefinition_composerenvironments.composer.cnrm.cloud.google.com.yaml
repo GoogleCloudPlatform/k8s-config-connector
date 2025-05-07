@@ -244,10 +244,31 @@ spec:
 
                            This field is supported for Cloud Composer environments in versions
                            composer-3.*.*-airflow-*.*.* and newer.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
                             description: The value of an externally managed ComputeNetworkAttachment
                               resource in the form "projects/{{project}}/regions/{{region}}/networkAttachments/{{name}}".
+                            type: string
+                          name:
+                            description: The name of a ComputeNetworkAttachment resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a ComputeNetworkAttachment
+                              resource.
                             type: string
                         type: object
                       diskSizeGB:
@@ -1097,7 +1118,7 @@ spec:
                   config:
                     description: Optional. Configuration parameters for this environment.
                     properties:
-                      airflowByoidURI:
+                      airflowBYOIDURI:
                         description: Output only. The 'bring your own identity' variant
                           of the URI of the Apache Airflow Web UI hosted within this
                           environment, to be accessed with external identities using
@@ -1108,7 +1129,7 @@ spec:
                         description: Output only. The URI of the Apache Airflow Web
                           UI hosted within this environment (see [Airflow web interface](/composer/docs/how-to/accessing/airflow-web-interface)).
                         type: string
-                      dagGcsPrefix:
+                      dagGCSPrefix:
                         description: Output only. The Cloud Storage prefix of the
                           DAGs for this environment. Although Cloud Storage objects
                           reside in a flat namespace, a hierarchical file tree can
@@ -1159,12 +1180,6 @@ spec:
                     description: Output only. The time at which this environment was
                       created.
                     type: string
-                  satisfiesPzi:
-                    description: Output only. Reserved for future use.
-                    type: boolean
-                  satisfiesPzs:
-                    description: Output only. Reserved for future use.
-                    type: boolean
                   state:
                     description: The current state of the environment.
                     type: string

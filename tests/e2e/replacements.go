@@ -80,6 +80,10 @@ func (r *Replacements) ApplyReplacements(s string) string {
 		normalizers = append(normalizers, ReplaceString(replacement.find, replacement.replace))
 	}
 
+	if testgcp.TestOrgID.Get() != "" {
+		normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get(), "${organizationID}"))
+	}
+
 	// Replace our testgcp env vars
 	if testgcp.IsolatedTestOrgName.Get() != "" {
 		normalizers = append(normalizers, ReplaceString(testgcp.IsolatedTestOrgName.Get(), "${ISOLATED_TEST_ORG_NAME}"))
@@ -92,7 +96,7 @@ func (r *Replacements) ApplyReplacements(s string) string {
 }
 
 // placeholderForGCPResource returns the placeholder we use for the value, if we recognize the GCP resource type
-func (r *Replacements) placeholderForGCPResource(resource string) string {
+func (r *Replacements) placeholderForGCPResource(resource string, name string) string {
 	switch resource {
 	case "addresses":
 		return "${addressID}"
@@ -101,6 +105,10 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 	case "tensorboards":
 		return "${tensorboardID}"
 	case "tagKeys":
+		if name == "namespaced" {
+			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
+			return ""
+		}
 		return "${tagKeyID}"
 	case "tagValues":
 		return "${tagValueID}"
@@ -129,6 +137,10 @@ func (r *Replacements) placeholderForGCPResource(resource string) string {
 	case "uptimeCheckConfigs":
 		return "${uptimeCheckConfigID}"
 	case "operations":
+		if name == "projects" {
+			// This is not an operation ID, it's an unusual prefix used by bigtable
+			return ""
+		}
 		return "${operationID}"
 	case "transferConfigs":
 		return "${transferConfigID}"
@@ -164,7 +176,7 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 	u, _ := ParseGCPLink(link)
 	if u != nil {
 		for _, item := range u.PathItems {
-			placeholder := r.placeholderForGCPResource(item.Resource)
+			placeholder := r.placeholderForGCPResource(item.Resource, item.Name)
 			if placeholder != "" {
 				r.PathIDs[item.Name] = placeholder
 			}
@@ -172,7 +184,13 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			// Special case for operations
 			// TODO: Can we get rid of this?
 			if item.Resource == "operations" {
-				r.OperationIDs[item.Name] = true
+				// Avoid marking some well-known values that are not operation ids
+				switch item.Name {
+				case "projects":
+				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+				default:
+					r.OperationIDs[item.Name] = true
+				}
 			}
 		}
 	}

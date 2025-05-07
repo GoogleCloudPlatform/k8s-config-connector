@@ -11,7 +11,7 @@ generate-pb: install-protoc-linux
 		-I ./third_party/googleapis/ \
 		-I ../../../mockgcp/apis \
 		../../../mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
-		../../../mockgcp/apis/google/apps/cloudidentity/groups/*/*.proto \
+		../../../mockgcp/apis/google/apps/cloudidentity/*/*.proto \
 		./third_party/googleapis/google/api/*.proto \
 		./third_party/googleapis/google/api/*/*/*.proto \
 		./third_party/googleapis/google/bigtable/*/*/*.proto \

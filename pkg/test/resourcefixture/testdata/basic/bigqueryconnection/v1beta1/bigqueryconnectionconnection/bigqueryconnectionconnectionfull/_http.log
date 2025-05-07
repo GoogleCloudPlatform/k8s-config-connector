@@ -10,7 +10,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -39,7 +38,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -75,7 +73,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -104,7 +101,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -133,7 +129,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

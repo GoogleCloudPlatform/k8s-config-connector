@@ -125,6 +125,11 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
 	}
 
+	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
+	if isDirect {
+		return allowedResponse
+	}
+
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
 		return validateImmutableFieldsForDCLBasedResource(obj, oldObj, spec, oldSpec, a.dclSchemaLoader, a.serviceMetadataLoader)
 	}
@@ -294,10 +299,6 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
 			fmt.Errorf("couldn't get ResourceConfig for kind %v: %w", obj.GetKind(), err))
-	}
-	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
-	if isDirect && rc.Name != "google_sql_database_instance" {
-		return allowedResponse
 	}
 
 	if err := validateContainerAnnotationsForResource(obj.GetKind(), obj.GetAnnotations(), oldObj.GetAnnotations(), rc.Containers, rc.HierarchicalReferences); err != nil {

@@ -185,12 +185,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypool.md
   - title: "IAMWorkloadIdentityPoolProvider"
     path: /config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypoolprovider.md
-- title: "Identity-Aware Proxy"
+- title: "Identity-Aware Proxy (IAP)"
   section:
   - title: "IAPBrand"
     path: /config-connector/docs/reference/resource-docs/iap/iapbrand.md
   - title: "IAPIdentityAwareProxyClient"
     path: /config-connector/docs/reference/resource-docs/iap/iapidentityawareproxyclient.md
+  - title: "IAPSettings"
+    path: /config-connector/docs/reference/resource-docs/iap/iapsettings.md
 - title: "Identity Platform"
   section:
   - title: "IdentityPlatformConfig"
@@ -549,6 +551,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret.md
   - title: "SecretManagerSecretVersion"
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md
+- title: "SecureSourceManager"
+  section:
+  - title: "SecureSourceManagerInstance"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md
+  - title: "SecureSourceManagerRepository"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md
 - title: "Service Directory"
   section:
   - title: "ServiceDirectoryEndpoint"

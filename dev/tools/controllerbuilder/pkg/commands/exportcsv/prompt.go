@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
@@ -46,9 +47,12 @@ type PromptOptions struct {
 }
 
 func (o *PromptOptions) InitDefaults() error {
-	root := os.Getenv("REPO_ROOT")
+	root, err := options.RepoRoot()
+	if err != nil {
+		return err
+	}
 	o.SrcDir = root
-	o.ProtoDir = root + "/.build/third_party/googleapis/"
+	o.ProtoDir = filepath.Join(root, ".build/third_party/googleapis/google")
 	return nil
 }
 
@@ -125,12 +129,6 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 		x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
 	}
 
-	if o.SrcDir != "" {
-		if err := x.VisitCodeDir(ctx, o.SrcDir); err != nil {
-			return err
-		}
-	}
-
 	var b []byte
 	if o.InputFile == "" {
 		if b, err = io.ReadAll(os.Stdin); err != nil {
@@ -156,9 +154,18 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 
 	log.Info("built data point", "dataPoint", dataPoint)
 
+	if o.SrcDir != "" {
+		filterByType := func(p *toolbot.DataPoint) bool {
+			return p.Type == dataPoint.Type
+		}
+		if err := x.VisitCodeDir(ctx, o.SrcDir, filterByType); err != nil {
+			return err
+		}
+	}
+
 	model := os.Getenv("LLM_MODEL")
 	if model == "" {
-		model = "gemini-2.0-pro-exp-02-05"
+		model = "gemini-2.5-pro-exp-03-25"
 	}
 	log.Info("using model", "model", model)
 

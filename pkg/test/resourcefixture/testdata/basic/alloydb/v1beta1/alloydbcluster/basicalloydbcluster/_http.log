@@ -3,7 +3,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -19,208 +18,19 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.networks.patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Default network for the project",
-  "id": "000000000000000000000",
-  "kind": "compute#network",
-  "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -240,12 +50,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1
 
 {
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -260,7 +71,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -285,12 +95,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -383,12 +193,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -408,13 +218,13 @@ X-Xss-Protection: 0
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -423,7 +233,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -431,22 +241,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -459,37 +269,36 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
-    "labels": {
-      "source": "kcc-test"
-    },
+    "enabled": false,
     "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -498,27 +307,31 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
   },
+  "databaseVersion": 3,
+  "geminiConfig": {},
   "initialUser": {
-    "password": "postgres",
+    "password": "updated",
     "user": "postgres"
   },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "network": "projects/${projectNumber}/global/networks/${networkID}",
+  "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/${networkID}"
-  }
+    "network": "projects/${projectId}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "subscriptionType": 1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -543,12 +356,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -575,9 +388,6 @@ X-Xss-Protection: 0
     "automatedBackupPolicy": {
       "backupWindow": "3600s",
       "enabled": false,
-      "labels": {
-        "source": "kcc-test"
-      },
       "location": "southamerica-east1",
       "timeBasedRetention": {
         "retentionPeriod": "1209600s"
@@ -644,12 +454,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -663,22 +473,19 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "labels": {
-      "source": "kcc-test"
-    },
     "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -687,7 +494,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -695,22 +502,22 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 3,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
@@ -723,20 +530,20 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": "READY",
-  "subscriptionType": "STANDARD",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -761,12 +568,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

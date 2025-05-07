@@ -1,0 +1,150 @@
+POST https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "email": "bill-alerts@test.com",
+  "languageTag": "en",
+  "notificationCategorySubscriptions": [
+    7
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bill-alerts@test.com",
+  "languageTag": "en",
+  "name": "projects/${projectNumber}/contacts/7",
+  "notificationCategorySubscriptions": [
+    7
+  ],
+  "validateTime": "2024-04-01T12:34:56.123456Z",
+  "validationState": 1
+}
+
+---
+
+GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bill-alerts@test.com",
+  "languageTag": "en",
+  "name": "projects/${projectNumber}/contacts/7",
+  "notificationCategorySubscriptions": [
+    7
+  ],
+  "validateTime": "2024-04-01T12:34:56.123456Z",
+  "validationState": 1
+}
+
+---
+
+PATCH https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint&updateMask=notificationCategorySubscriptions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: contact.name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
+
+{
+  "email": "all-alerts@test.com",
+  "languageTag": "en",
+  "name": "projects/${projectId}/contacts/7",
+  "notificationCategorySubscriptions": [
+    2
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bill-alerts@test.com",
+  "languageTag": "en",
+  "name": "projects/${projectNumber}/contacts/7",
+  "notificationCategorySubscriptions": [
+    2
+  ],
+  "validateTime": "2024-04-01T12:34:56.123456Z",
+  "validationState": 1
+}
+
+---
+
+GET https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "bill-alerts@test.com",
+  "languageTag": "en",
+  "name": "projects/${projectNumber}/contacts/7",
+  "notificationCategorySubscriptions": [
+    2
+  ],
+  "validateTime": "2024-04-01T12:34:56.123456Z",
+  "validationState": 1
+}
+
+---
+
+DELETE https://essentialcontacts.googleapis.com/v1/projects/${projectId}/contacts/7?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fcontacts%2F7
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

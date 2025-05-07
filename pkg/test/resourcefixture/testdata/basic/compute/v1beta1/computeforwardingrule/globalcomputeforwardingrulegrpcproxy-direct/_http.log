@@ -3,7 +3,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -48,7 +47,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -76,7 +74,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -111,7 +108,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -147,7 +143,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -175,7 +170,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -201,7 +195,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -217,11 +210,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found"
   }
 }
 
@@ -233,13 +226,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "A target gRPC proxy intended for load balancing gRPC traffic, referenced by global forwarding rules. References a URL map which specifies how traffic routes to gRPC backend services.",
-  "name": "computetargetgrpcproxy-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -260,7 +252,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -270,7 +262,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/opera
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -292,7 +283,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -303,7 +294,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -319,8 +309,8 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetGrpcProxy",
-  "name": "computetargetgrpcproxy-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
@@ -333,7 +323,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -349,11 +338,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}' was not found"
   }
 }
 
@@ -365,13 +354,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "Another target gRPC proxy intended for load balancing gRPC traffic, referenced by global forwarding rules. References a URL map which specifies how traffic routes to gRPC backend services.",
-  "name": "computetargetgrpcproxy-2-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -392,7 +380,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -402,7 +390,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/opera
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -424,7 +411,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -435,7 +422,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -451,8 +437,8 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetGrpcProxy",
-  "name": "computetargetgrpcproxy-2-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
@@ -466,7 +452,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -482,11 +467,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/forwardingRules/${forwardingRuleID}' was not found"
   }
 }
 
@@ -507,13 +492,12 @@ X-Goog-Request-Params: project=${projectId}
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
-  "name": "computeregionalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "portRange": "100",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}"
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -534,7 +518,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -546,7 +530,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&operation=${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -568,7 +551,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -580,7 +563,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -600,12 +582,12 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
-  "name": "computeregionalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
   "networkTier": "PREMIUM",
   "portRange": "100-100",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}"
 }
 
 ---
@@ -625,7 +607,6 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -647,7 +628,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -659,7 +640,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -684,12 +664,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
-  "name": "computeregionalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
   "networkTier": "PREMIUM",
   "portRange": "100-100",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}"
 }
 
 ---
@@ -709,7 +689,6 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -731,7 +710,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -743,11 +722,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 {
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}"
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -768,7 +746,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -780,7 +758,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&operation=${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -802,7 +779,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -814,7 +791,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -839,12 +815,12 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
-  "name": "computeregionalforwardingrule-${uniqueId}",
+  "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
   "networkTier": "PREMIUM",
   "portRange": "100-100",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}"
 }
 
 ---
@@ -855,7 +831,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -876,7 +851,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -888,7 +863,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&operation=${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -910,7 +884,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeregionalforwardingrule-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "user": "user@example.com"
 }
 
@@ -921,7 +895,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -937,8 +910,8 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetGrpcProxy",
-  "name": "computetargetgrpcproxy-2-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
@@ -951,7 +924,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -972,7 +944,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -982,7 +954,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/opera
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1004,7 +975,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-2-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -1015,7 +986,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1031,8 +1001,8 @@ X-Xss-Protection: 0
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
   "kind": "compute#targetGrpcProxy",
-  "name": "computetargetgrpcproxy-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "name": "${targetGrpcProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}",
   "validateForProxyless": true
@@ -1045,7 +1015,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1066,7 +1035,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -1076,7 +1045,6 @@ GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/opera
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1098,7 +1066,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${targetGrpcProxyID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/computetargetgrpcproxy-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetGrpcProxies/${targetGrpcProxyID}",
   "user": "user@example.com"
 }
 
@@ -1109,7 +1077,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1135,7 +1102,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1163,7 +1129,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -1198,7 +1163,6 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

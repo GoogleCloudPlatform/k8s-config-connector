@@ -40,6 +40,7 @@ SUPPORTED_SERVICES=(
   apikeys.googleapis.com
   appengine.googleapis.com
   artifactregistry.googleapis.com
+  backupdr.googleapis.com
   bigquery.googleapis.com
   bigqueryconnection.googleapis.com
   bigquerydatatransfer.googleapis.com
@@ -63,6 +64,7 @@ SUPPORTED_SERVICES=(
   dataflow.googleapis.com
   datafusion.googleapis.com
   dataproc.googleapis.com
+  datastream.googleapis.com
   discoveryengine.googleapis.com
   dlp.googleapis.com
   dns.googleapis.com
@@ -71,6 +73,7 @@ SUPPORTED_SERVICES=(
   eventarc.googleapis.com
   file.googleapis.com
   firestore.googleapis.com
+  gkebackup.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
   gkemulticloud.googleapis.com
@@ -106,6 +109,7 @@ SUPPORTED_SERVICES=(
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
+  vmwareengine.googleapis.com
   workstations.googleapis.com
 )
 

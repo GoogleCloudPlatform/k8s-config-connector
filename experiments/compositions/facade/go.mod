@@ -1,8 +1,8 @@
 module facade
 
-go 1.22
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.2
 
 require (
 	k8s.io/apimachinery v0.28.3

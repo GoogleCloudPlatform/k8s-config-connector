@@ -16,7 +16,7 @@ metadata:
 spec:
   displayName: KCC-2 ${uniqueId}
   folderRef:
-    external: "123451001"
+    external: ${folderID}
   resourceID: ${folderId}
 status:
   conditions:

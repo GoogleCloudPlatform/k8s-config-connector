@@ -12,12 +12,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 set -o errexit
 set -o nounset
 set -o pipefail
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-source ${REPO_ROOT}/scripts/shared-vars-public.sh
 cd ${REPO_ROOT}
+
+echo "Downloading envtest assets..."
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+source ${REPO_ROOT}/scripts/shared-vars-public.sh
 source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 	fetch_tools && \
 	setup_envs

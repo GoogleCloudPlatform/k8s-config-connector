@@ -52,6 +52,9 @@ type NormalizingVisitor interface {
 
 	// ReplaceStringValue replaces the given string value with the provided string value
 	ReplaceStringValue(oldValue string, newValue string)
+
+	// SortSlice will sort the slice at the given path
+	SortSlice(path string)
 }
 
 type Normalizer interface {
@@ -64,6 +67,9 @@ type Normalizer interface {
 type Event interface {
 	// URL returns the URL of the request
 	URL() string
+
+	// Method returns the HTTP Method of the request
+	Method() string
 
 	// VisitRequestStringValues calls the callback for each string-typed value found in the request object (if any)
 	VisitRequestStringValues(callback func(path string, value string))

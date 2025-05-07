@@ -8,7 +8,6 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: vertexaimetadatastores.vertexai.cnrm.cloud.google.com
 spec:
   group: vertexai.cnrm.cloud.google.com
@@ -16,6 +15,7 @@ spec:
     categories:
     - gcp
     kind: VertexAIMetadataStore
+    listKind: VertexAIMetadataStoreList
     plural: vertexaimetadatastores
     shortNames:
     - gcpvertexaimetadatastore
@@ -43,34 +43,73 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: VertexAIMetadataStore is the Schema for the VertexAIMetadataStore
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: VertexAIMetadataStoreSpec defines the desired state of VertexAIMetadataStore
             properties:
+              dataplexConfig:
+                description: Optional. Dataplex integration settings.
+                properties:
+                  enabledPipelinesLineage:
+                    description: Optional. Whether or not Data Lineage synchronization
+                      is enabled for Vertex Pipelines.
+                    type: boolean
+                type: object
               description:
-                description: Immutable. Description of the MetadataStore.
+                description: Description of the MetadataStore.
                 type: string
               encryptionSpec:
-                description: Immutable. Customer-managed encryption key spec for a
-                  MetadataStore. If set, this MetadataStore and all sub-resources
-                  of this MetadataStore will be secured by this key.
+                description: Customer-managed encryption key spec for a Metadata Store.
+                  If set, this Metadata Store and all sub-resources of this Metadata
+                  Store are secured using this key.
                 properties:
-                  kmsKeyName:
-                    description: |-
-                      Immutable. Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
-                      Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key. The key needs to be in the same region as where the resource is created.
-                    type: string
+                  kmsKeyRef:
+                    description: Required. The Cloud KMS resource identifier of the
+                      customer managed encryption key used to protect a resource.
+                      The key needs to be in the same region as where the compute
+                      resource is created.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed KMSCryptoKey.
+                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        type: string
+                      name:
+                        description: The `name` of a `KMSCryptoKey` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` of a `KMSCryptoKey` resource.
+                        type: string
+                    type: object
+                required:
+                - kmsKeyRef
                 type: object
               projectRef:
                 description: The project that this resource belongs to.
@@ -90,32 +129,35 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               region:
-                description: Immutable. The region of the Metadata Store. eg us-central1.
+                description: The region of the Metadata Store. eg us-central1.
                 type: string
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The VertexAIMetadataStore name. If not given, the metadata.name
+                  will be used.
                 type: string
-            required:
-            - projectRef
-            - region
             type: object
           status:
+            description: VertexAIMetadataStoreStatus defines the config connector
+              machine state of VertexAIMetadataStore
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -139,10 +181,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The timestamp of when the MetadataStore was created in
-                  RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
-                  nine fractional digits.
+              externalRef:
+                description: A unique specifier for the VertexAIMetadataStore resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -150,21 +191,34 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              state:
-                description: State information of the MetadataStore.
-                items:
-                  properties:
-                    diskUtilizationBytes:
-                      description: The disk utilization of the MetadataStore in bytes.
-                      type: string
-                  type: object
-                type: array
-              updateTime:
-                description: The timestamp of when the MetadataStore was last updated
-                  in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
-                  to nine fractional digits.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when this MetadataStore was
+                      created.
+                    type: string
+                  name:
+                    description: Output only. The resource name of the MetadataStore
+                      instance.
+                    type: string
+                  state:
+                    description: Output only. State information of the MetadataStore.
+                    properties:
+                      diskUtilizationBytes:
+                        description: The disk utilization of the MetadataStore in
+                          bytes.
+                        format: int64
+                        type: integer
+                    type: object
+                  updateTime:
+                    description: Output only. Timestamp when this MetadataStore was
+                      last updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -173,9 +227,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

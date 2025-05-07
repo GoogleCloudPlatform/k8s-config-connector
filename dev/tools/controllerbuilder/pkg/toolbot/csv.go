@@ -42,7 +42,9 @@ type CSVExporter struct {
 
 // Extractor is an interface for extracting data points from source code.
 type Extractor interface {
-	Extract(ctx context.Context, description string, b []byte) ([]*DataPoint, error)
+	// Extract returns DataPoints parsed from b
+	// If filters are provided, only matching DataPoints wil be extracted
+	Extract(ctx context.Context, description string, b []byte, filters ...Filter) ([]*DataPoint, error)
 }
 
 // Enhancer is an interface for enhancing a data point.
@@ -63,12 +65,13 @@ func NewCSVExporter(extractor Extractor, enhancers ...Enhancer) (*CSVExporter, e
 }
 
 // visitGoFile visits a Go file and extracts data points from it.
-func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) visitGoFile(ctx context.Context, p string, filters ...Filter) error {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return fmt.Errorf("reading file %q: %w", p, err)
 	}
-	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b)
+	dataPoints, err := x.BuildDataPoints(ctx, "file://"+p, b, filters...)
 	if err != nil {
 		return err
 	}
@@ -76,8 +79,11 @@ func (x *CSVExporter) visitGoFile(ctx context.Context, p string) error {
 	return nil
 }
 
+type Filter func(d *DataPoint) bool
+
 // VisitCodeDir visits a directory and extracts data points from all Go files in the directory tree.
-func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string, filters ...Filter) error {
 	if err := filepath.WalkDir(srcDir, func(p string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -95,9 +101,9 @@ func (x *CSVExporter) VisitCodeDir(ctx context.Context, srcDir string) error {
 			return nil
 		}
 		// klog.Infof("%v", p)
-		if err := x.visitGoFile(ctx, p); err != nil {
+		if err := x.visitGoFile(ctx, p, filters...); err != nil {
 			if strings.HasSuffix(p, "cmd/runner/mock_commands.go") {
-				 klog.Infof("Skipping file: %v", p)
+				klog.Infof("Skipping file: %v", p)
 				return nil
 			}
 			return fmt.Errorf("processing file %q: %w", p, err)
@@ -182,8 +188,9 @@ func (x *CSVExporter) EnhanceDataPoint(ctx context.Context, d *DataPoint) error 
 }
 
 // BuildDataPoints extracts data points from a byte slice representing a Go file.
-func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte) ([]*DataPoint, error) {
-	dataPoints, err := x.extractor.Extract(ctx, description, src)
+// If filters are provided, only matching DataPoints wil be extracted
+func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, src []byte, filters ...Filter) ([]*DataPoint, error) {
+	dataPoints, err := x.extractor.Extract(ctx, description, src, filters...)
 	if err != nil {
 		return nil, err
 	}
@@ -200,15 +207,31 @@ func (x *CSVExporter) BuildDataPoints(ctx context.Context, description string, s
 // pickExamples returns the examples we should feed into the promp
 func (x *CSVExporter) pickExamples(input *DataPoint) []*DataPoint {
 	var examples []*DataPoint
+	var sameAPIGroupExamples []*DataPoint
+
 	// We only include data points for the same tool as the input.
 	for _, dataPoint := range x.dataPoints {
 		if dataPoint.Type != input.Type {
 			continue
 		}
-		if dataPoint.Type == "fuzz-gen" && dataPoint.Input["api.group"] == "" { // Hack to only include data points with "api.group" marker
-			continue
+		switch dataPoint.Type {
+		case "fuzz-gen":
+			// only include data points with "api.group" marker
+			if dataPoint.Input["api.group"] == "" {
+				continue
+			}
+		case "mockgcp-support", "controller":
+			// collect examples with the same proto service (API group)
+			if dataPoint.Input["proto.service"] == input.Input["proto.service"] {
+				sameAPIGroupExamples = append(sameAPIGroupExamples, dataPoint)
+			}
 		}
 		examples = append(examples, dataPoint)
+	}
+
+	// If we have examples with the same API group, use only those
+	if len(sameAPIGroupExamples) > 0 {
+		return sameAPIGroupExamples
 	}
 	return examples
 }
@@ -251,7 +274,7 @@ func (x *CSVExporter) InferOutput_WithChat(ctx context.Context, input *DataPoint
 
 	resp, err := chat.SendMessage(ctx, userParts...)
 	if err != nil {
-		return fmt.Errorf("generating content with gemini: %w", err)
+		return fmt.Errorf("generating content with LLM: %w", err)
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
@@ -297,17 +320,18 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 				"Function signature:\n"+
 				"func <resourceName>Fuzzer() fuzztesting.KRMFuzzer\n\n"+
 				"The function should:\n"+
-				"1. Create a new fuzzer with fuzztesting.NewKRMTypedFuzzer() using:\n"+
+				"1. Create a new fuzzer using:\n"+
 				"   - Proto message type (&pb.YourType{})\n"+
 				"   - Top-level mapping functions (Spec_FromProto, Spec_ToProto, and if exists: ObservedState_FromProto, ObservedState_ToProto, or Status_FromProto, Status_ToProto)\n\n"+
 				"2. Configure field sets:\n"+
-				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, a field that is not included in the mapping function of its parent message)\n"+
+				"   - UnimplementedFields: fields to exclude from fuzzing (e.g., NOTYET fields, or a field conversion that is missing in the mapping function of its parent message)\n"+
 				"   - SpecFields: fields in the resource spec\n"+
 				"   - StatusFields: fields in the resource status\n\n"+
 				"Context:\n"+
 				"- All mapper functions for the resource are provided for reference\n"+
 				"- Nested mapper functions can help identify which fields should be marked as unimplemented\n"+
-				"- Only top-level mapper functions are needed in the fuzzer initialization\n\n"+
+				"- Only top-level mapper functions are needed in the fuzzer initialization\n"+
+				"- Use the same protobuf import alias ('pb') as used in the mapper functions\n\n"+
 				"Examples:\n")
 	}
 
@@ -339,7 +363,7 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 		Prompt: prompt.String(),
 	})
 	if err != nil {
-		return fmt.Errorf("generating content with gemini: %w", err)
+		return fmt.Errorf("generating content with LLM: %w", err)
 	}
 
 	// Print the usage metadata (includes token count i.e. cost)
@@ -349,14 +373,19 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 
 	lines := strings.Split(strings.TrimSpace(text), "\n")
 
-	// Remove some of the decoration
+	// First remove trailing empty lines
+	for len(lines) > 0 && strings.TrimSpace(lines[len(lines)-1]) == "" {
+		lines = lines[:len(lines)-1]
+	}
+
+	// Then remove decorative elements
 	for len(lines) > 1 {
 		if lines[0] == "```go" {
 			lines = lines[1:]
 			continue
 		}
 
-		if lines[len(lines)-1] == "```" {
+		if lines[len(lines)-1] == "```" || lines[len(lines)-1] == "``" {
 			lines = lines[:len(lines)-1]
 			continue
 		}
@@ -373,6 +402,11 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, model stri
 
 		if strings.HasPrefix(lines[0], "out:") {
 			lines[0] = strings.TrimPrefix(lines[0], "out:")
+			continue
+		}
+
+		if lines[len(lines)-1] == "" { // empty line
+			lines = lines[:len(lines)-1]
 			continue
 		}
 

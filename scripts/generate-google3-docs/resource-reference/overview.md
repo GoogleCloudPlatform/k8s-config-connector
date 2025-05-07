@@ -598,6 +598,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/iap/iapidentityawareproxyclient.md">IAPIdentityAwareProxyClient</a></td>
 </tr>
 <tr>
+  <td><a href="/iap/docs/">{{iap_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/iap/iapsettings.md">IAPSettings</a></td>
+</tr>
+<tr>
   <td><a href="/identity-platform/docs/">{{cicp_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/identityplatform/identityplatformoauthidpconfig.md">IdentityPlatformOAuthIDPConfig</a></td>
 </tr>
@@ -792,6 +796,14 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/secret-manager/docs/">{{secret_manager_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md">SecretManagerSecretVersion</a></td>
+</tr>
+<tr>
+  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md">SecureSourceManagerInstance</a></td>
+</tr>
+<tr>
+  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md">SecureSourceManagerRepository</a></td>
 </tr>
 <tr>
   <td><a href="/service-directory/docs/">{{sd_name}}</a></td>

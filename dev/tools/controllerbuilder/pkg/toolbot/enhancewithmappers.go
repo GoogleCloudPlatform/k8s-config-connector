@@ -16,6 +16,7 @@ package toolbot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -56,7 +57,12 @@ func (x *EnhanceWithMappers) EnhanceDataPoint(ctx context.Context, p *DataPoint)
 	mapperDir := filepath.Join(x.srcDirectory, resourceType)
 	files, err := os.ReadDir(mapperDir)
 	if err != nil {
-		return fmt.Errorf("reading mapper directory: %w", err)
+		if errors.Is(err, os.ErrNotExist) {
+			klog.Warningf("skip enhancing with mappers for resource type %q because mapper directory does not exist. api.group %q might be incorrect", resourceType, apiGroup)
+			return nil
+		} else {
+			return fmt.Errorf("reading mapper directory: %w", err)
+		}
 	}
 
 	var mappers []string

@@ -1,0 +1,214 @@
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Requested entity was not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries?%24alt=json%3Benum-encoding%3Dint&savedQueryId=assetsavedquery-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}"
+      },
+      "scope": "projects/${projectNumber}"
+    }
+  },
+  "description": "A minimal saved query for testing."
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}"
+      },
+      "scope": "projects/${projectNumber}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}"
+      },
+      "scope": "projects/${projectNumber}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: saved_query.name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+{
+  "description": "An updated minimal saved query for testing.",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}"
+      },
+      "scope": "projects/${projectNumber}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "content": {
+    "iamPolicyAnalysisQuery": {
+      "identitySelector": {
+        "identity": "user:test-user@example.com"
+      },
+      "resourceSelector": {
+        "fullResourceName": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}"
+      },
+      "scope": "projects/${projectNumber}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated minimal saved query for testing.",
+  "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

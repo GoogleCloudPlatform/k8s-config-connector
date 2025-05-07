@@ -28,13 +28,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &{{.ProtoResource}}Ref{}
+var _ refsv1beta1.ExternalNormalizer = &{{.ProtoMessageName}}Ref{}
 
-// {{.ProtoResource}}Ref defines the resource reference to {{.Kind}}, which "External" field
+// {{.ProtoMessageName}}Ref defines the resource reference to {{.Kind}}, which "External" field
 // holds the GCP identifier for the KRM object.
-type {{.ProtoResource}}Ref struct {
+type {{.ProtoMessageName}}Ref struct {
 	// A reference to an externally managed {{.Kind}} resource.
-	// Should be in the format "projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoResource | ToLower }}s/{{"{{"}}{{.ProtoResource | ToLower }}ID{{"}}"}}".
+	// Should be in the format "projects/{{"{{"}}projectID{{"}}"}}/locations/{{"{{"}}location{{"}}"}}/{{.ProtoMessageName | ToLower }}s/{{"{{"}}{{.ProtoMessageName | ToLower }}ID{{"}}"}}".
 	External string ` + "`" + `json:"external,omitempty"` + "`" + `
 
 	// The name of a {{.Kind}} resource.
@@ -47,13 +47,13 @@ type {{.ProtoResource}}Ref struct {
 // NormalizedExternal provision the "External" value for other resource that depends on {{.Kind}}.
 // If the "External" is given in the other resource's spec.{{.Kind}}Ref, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual {{.Kind}} object from the cluster.
-func (r *{{.ProtoResource}}Ref) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *{{.ProtoMessageName}}Ref) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", {{.Kind}}GVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := Parse{{.ProtoResource}}External(r.External); err != nil {
+		if _, _, err := Parse{{.ProtoMessageName}}External(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

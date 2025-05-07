@@ -211,7 +211,7 @@ func (cb *CodeBot) sendToLlm(text string) error {
 	userParts = append(userParts, text)
 
 	if err := cb.chatSession.SendMessage(cb.ctx, userParts...); err != nil {
-		return fmt.Errorf("generating content with gemini: %w", err)
+		return fmt.Errorf("generating content with LLM: %w", err)
 	}
 
 	return nil

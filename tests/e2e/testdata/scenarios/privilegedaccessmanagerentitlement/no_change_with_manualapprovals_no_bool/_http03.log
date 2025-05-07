@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F123451001%2Flocations%2Fglobal%2Fentitlements%2Fprivilegedaccessmanagerentitlement-${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

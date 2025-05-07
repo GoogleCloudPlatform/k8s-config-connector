@@ -1,0 +1,70 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineNetwork
+metadata:
+  name: vmwareenginenetwork-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "test dependent VMwareEngine network"
+  type: STANDARD
+---
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEnginePrivateCloud
+metadata:
+  name: vmwareengineprivatecloud-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1-a # Private clouds of type STANDARD and TIME_LIMITED are zonal resources, STRETCHED private clouds are regional. 
+  description: "test dependent VMwareEngine private cloud"
+  networkConfig:
+    vmwareEngineNetworkRef:
+      name: vmwareenginenetwork-minimal-${uniqueId}
+    managementCIDR: "192.168.50.0/24"
+  managementCluster:
+    clusterID: "cluster-1"
+    nodeTypeConfigs:
+      - nodeTypeID: "standard-72"
+        nodeCount: 3
+---
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineNetworkPolicy
+metadata:
+  name: vmwareenginenetworkpolicy-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "test dependent VMwareEngine network policy"
+  edgeServicesCIDR: "192.168.30.0/26"
+  vmwareEngineNetworkRef:
+    name: vmwareenginenetwork-minimal-${uniqueId}
+  externalIP:
+    enabled: true
+  internetAccess:
+    enabled: true
+---
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineExternalAddress
+metadata:
+  name: vmwareengineexternaladdress-minimal-${uniqueId}
+spec:
+  privateCloudRef:
+    name: vmwareengineprivatecloud-minimal-${uniqueId}
+  description: "test dependent VMwareEngine external address"
+  internalIP: "192.168.0.65"

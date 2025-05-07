@@ -26,6 +26,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
 )
 
@@ -67,6 +68,46 @@ func (s *connectionsV1) ListServicesConnections(ctx context.Context, req *pb.Lis
 	}
 
 	return response, nil
+}
+
+func (s *connectionsV1) CreateServicesConnection(ctx context.Context, req *pb.CreateServicesConnectionRequest) (*longrunningpb.Operation, error) {
+	log := klog.FromContext(ctx)
+	log.Info("CreateServicesConnection", "request", req)
+
+	// Parse the parent (service name) from the request
+	serviceName, err := s.parseServiceName(req.GetParent())
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the network from the connection
+	network, err := s.parseNetworkName(req.GetServicesConnection().GetNetwork())
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a connection name based on the service and network
+	connectionName := &serviceConnectionName{
+		Service: serviceName.Name,
+		Name:    network.Project.ID,
+	}
+
+	// Use the same fqn format as in PatchServicesConnection
+	fqn := connectionName.String() + network.String()
+	obj := &pb.Connection{
+		Network:               network.String(),
+		Peering:               "servicenetworking-googleapis-com",
+		Service:               serviceName.String(),
+		ReservedPeeringRanges: req.GetServicesConnection().GetReservedPeeringRanges(),
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *connectionsV1) PatchServicesConnection(ctx context.Context, req *pb.PatchServicesConnectionRequest) (*longrunningpb.Operation, error) {
@@ -118,6 +159,42 @@ func (s *connectionsV1) PatchServicesConnection(ctx context.Context, req *pb.Pat
 
 	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
 		return obj, nil
+	})
+}
+
+func (s *connectionsV1) DeleteConnectionServicesConnection(ctx context.Context, req *pb.DeleteConnectionServicesConnectionRequest) (*longrunningpb.Operation, error) {
+	log := klog.FromContext(ctx)
+	log.Info("DeleteServicesConnection", "request", req)
+
+	connectionName, err := s.parseServiceConnectionName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	network, err := s.parseNetworkName(req.GetServicesConnection().GetConsumerNetwork())
+	if err != nil {
+		return nil, err
+	}
+
+	if connectionName.Name == "-" {
+		connectionName.Name = network.Project.ID
+	}
+
+	fqn := connectionName.String() + network.String()
+	obj := &pb.Connection{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Connection %s does not exist", fqn)
+		}
+		return nil, err
+	}
+
+	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
 	})
 }
 

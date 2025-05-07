@@ -3,7 +3,6 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -34,7 +33,6 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -59,7 +57,6 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -90,7 +87,6 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -116,7 +112,6 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -142,7 +137,6 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -161,7 +155,6 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

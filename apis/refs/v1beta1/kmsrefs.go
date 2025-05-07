@@ -94,18 +94,13 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src clien
 		return nil, err
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, kmsKey)
-	if err != nil {
-		return nil, err
-	}
-
 	kmsRing, err := ResolveKeyRingForObject(ctx, reader, kmsKey)
 	if err != nil {
 		return nil, err
 	}
 
 	ref = &KMSCryptoKeyRef{
-		External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", projectID, kmsRing.Location, kmsRing.ResourceID, kmsKeyResourceID),
+		External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", kmsRing.ProjectID, kmsRing.Location, kmsRing.ResourceID, kmsKeyResourceID),
 	}
 
 	return ref, nil
@@ -122,6 +117,7 @@ type KMSKeyRingRef struct {
 
 type KMSKeyRing struct {
 	Ref        *KMSKeyRingRef
+	ProjectID  string
 	ResourceID string
 	Location   string
 }
@@ -192,7 +188,7 @@ func ResolveKMSKeyRingRef(ctx context.Context, reader client.Reader, src client.
 		External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", projectID, location, kmsKeyResourceID),
 	}
 
-	return &KMSKeyRing{Ref: ref, ResourceID: kmsKeyResourceID, Location: location}, nil
+	return &KMSKeyRing{Ref: ref, ProjectID: projectID, ResourceID: kmsKeyResourceID, Location: location}, nil
 }
 
 func ResolveKeyRingForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (*KMSKeyRing, error) {

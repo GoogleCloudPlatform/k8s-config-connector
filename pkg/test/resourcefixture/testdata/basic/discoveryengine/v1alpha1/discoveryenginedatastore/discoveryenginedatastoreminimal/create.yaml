@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,30 +23,3 @@ spec:
   collection: default_collection
   displayName: "My first data store"
   industryVertical: GENERIC
-
-
-#   content_config               = "NO_CONTENT"
-#   solution_types               = ["SOLUTION_TYPE_SEARCH"]
-#   create_advanced_site_search  = false
-#   skip_default_schema_creation = false
-
-
-# googleapi: Error 400: Unsupported value INDUSTRY_VERTICAL_UNSPECIFIED is found in \"dataStore.industryVertical\"
-# .\nerror details: name = DebugInfo detail = [ORIGINAL ERROR] generic::invalid_argument: 
-# Unsupported value INDUSTRY_VERTICAL_UNSPECIFIED is found in \"dataStore.industryVertical\"
-# . [google.rpc.error_details_ext] { message: \"Unsupported value INDUSTRY_VERTICAL_UNSPECIFIED is found in \\\"dataStore.industryVertical\\\".\" } stack =","reason":"UpdateFailed","status":"False","type":"Ready"}]}
-
-
-# {"severity":"info","timestamp":"2024-10-24T10:41:38.822-0400","msg":"resource is not ready","kind":
-# "DiscoveryEngineDataStore","name":"datastore-fwfjlvl45ygnsoy","c
-# onditions":[{"lastTransitionTime":"2024-10-24T10:40:40-04:00","message"
-# :"Update call failed: error creating: creating discoveryengine datast
-# ore projects/justinsb-root-20220725/locations/global/collections/test-basic/dataStores/datastore-fwfjlvl45ygns
-# oy: googleapi: Error 404: Collection with name projects/719301307883/locations/global/collections/test-basic does not exist.\nerror details: name = DebugInfo detail = [ORIGINAL ERROR] generic::not_found: Collection with name projects/719301307883/locations/global/collections/test-basic does not exist. [google.rpc.error_details_ext] { message: \"Collection with name projects/719301307883/locations/global/collections/test-basic does not exist.\" } stack =","reason":"UpdateFailed","status":"False","type":"Ready"}]}
-
-
-# {"severity":"error","timestamp":"2024-10-24T10:46:55.910-0400","msg":"Reconciler error","controller":"discoveryenginedatastore-controller","controllerGroup":"discoveryengine.cnrm.cloud.google.com",
-# "controllerKind":"DiscoveryEngineDataStore","DiscoveryEngineDataStore":{"name":"datastore-tlvdvrbwjqmjria","namespace":"tlvdvrbwjqmjria"},
-# "namespace":"tlvdvrbwjqmjria","name":"datastore-tlvdvrbwjqmjria","reconcileID":"4913eda1-fc90-456b-ba37-e834b609ad7a",
-# "error":"Delete call failed: deleting discoveryengine datastore projects/justinsb-root-20220725/locations/global/collections/default_collection/dataStores/datastore-tlvdvrbwjqmjria: googleapi: Error 404: DataStore projects/719301307883/locations/global/collections/default_collection/dataStores/datastore-tlvdvrbwjqmjria not found.\nerror details: name = DebugInfo detail = [ORIGINAL ERROR] generic::not_found: DataStore projects/719301307883/locations/global/collections/default_collection/dataStores/datastore-tlvdvrbwjqmjria not found. [google.rpc.error_details_ext] { message: \"DataStore projects/719301307883/locations/global/collections/default_collection/dataStores/datastore-tlvdvrbwjqmjria not found.\" } 123456789 { 1: 7 2: \"dataStoreId\" } stack ="}
-

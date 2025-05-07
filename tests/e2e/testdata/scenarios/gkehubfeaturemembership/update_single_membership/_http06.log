@@ -2,7 +2,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/
 User-Agent: kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -61,7 +60,6 @@ User-Agent: kcc/controller-manager
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -87,7 +85,6 @@ GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/
 User-Agent: kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

@@ -82,7 +82,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.StackType == nil {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
-	networkName, err := s.parseNetworkName(obj.GetNetwork())
+	networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
 	}

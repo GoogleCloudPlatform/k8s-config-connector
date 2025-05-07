@@ -2,14 +2,13 @@ apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"FORCE"}}'
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: alloydbcluster-2-${uniqueId}
@@ -26,7 +25,6 @@ spec:
       name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  resourceID: alloydbcluster-2-${uniqueId}
   secondaryConfig:
     primaryClusterNameRef:
       name: alloydbcluster-1-${uniqueId}
@@ -52,8 +50,9 @@ status:
   databaseVersion: POSTGRES_15
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+  externalRef: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
   name: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
-  observedGeneration: 3
+  observedGeneration: 2
   observedState:
     clusterType: SECONDARY
   uid: "12345678"

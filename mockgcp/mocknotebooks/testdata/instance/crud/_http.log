@@ -19,7 +19,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -32,7 +31,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
     "target": "projects/${projectId}/locations/us-central1-a/instances/test-${uniqueId}",
@@ -49,7 +47,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -63,7 +60,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
@@ -123,6 +119,7 @@ X-Xss-Protection: 0
     },
     "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
     "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
       "disable-swap-binaries": "true",
       "enable-guest-attributes": "TRUE",
       "notebooks-api": "PROD",
@@ -165,7 +162,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -226,6 +222,7 @@ X-Xss-Protection: 0
   },
   "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
     "notebooks-api": "PROD",
@@ -267,7 +264,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -328,6 +324,7 @@ X-Xss-Protection: 0
   },
   "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
     "notebooks-api": "PROD",
@@ -369,7 +366,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -399,7 +395,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

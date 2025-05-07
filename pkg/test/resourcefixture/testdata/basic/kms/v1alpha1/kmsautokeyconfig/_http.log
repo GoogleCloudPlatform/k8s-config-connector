@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -31,7 +30,6 @@ x-goog-request-params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -55,7 +53,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -84,7 +81,6 @@ x-goog-request-params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -108,7 +104,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=folders%2F${folderID}%2FautokeyConfig
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

@@ -3,7 +3,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -51,7 +50,6 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -100,7 +98,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -148,7 +145,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -196,7 +192,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -244,7 +239,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -279,7 +273,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -304,7 +297,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -328,7 +320,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -358,7 +349,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -383,7 +373,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -407,7 +396,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -455,7 +443,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -479,7 +466,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -497,7 +483,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 204 No Content
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -513,7 +498,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
 404 Not Found
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache

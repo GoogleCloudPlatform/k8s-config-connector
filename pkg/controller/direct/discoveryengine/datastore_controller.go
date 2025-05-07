@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:controller
+// proto.service: google.cloud.discoveryengine.v1.DataStoreService
+// proto.message: google.cloud.discoveryengine.v1.DataStore
+// crd.type: DiscoveryEngineDataStore
+// crd.version: v1alpha1
+
 package discoveryengine
 
 import (

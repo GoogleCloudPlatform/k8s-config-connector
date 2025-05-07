@@ -4,7 +4,6 @@ User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -48,7 +47,6 @@ x-goog-request-params: parent=projects%2F${projectId}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -80,7 +78,6 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

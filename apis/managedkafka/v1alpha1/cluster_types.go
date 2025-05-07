@@ -109,6 +109,14 @@ type ManagedKafkaClusterSpec struct {
 	RebalanceConfig *RebalanceConfig `json:"rebalanceConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig
+type RebalanceConfig struct {
+	// Optional. The rebalance behavior for the cluster.
+	//  When not specified, defaults to `NO_REBALANCE`.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.RebalanceConfig.mode
+	Mode *string `json:"mode,omitempty"`
+}
+
 // ManagedKafkaClusterStatus defines the config connector machine state of ManagedKafkaCluster
 type ManagedKafkaClusterStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -153,7 +161,6 @@ type ManagedKafkaClusterObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpmanagedkafkacluster;gcpmanagedkafkaclusters
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"

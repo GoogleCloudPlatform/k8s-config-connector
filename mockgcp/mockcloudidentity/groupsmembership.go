@@ -20,13 +20,13 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/timestamppb"
+
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/timestamppb"
-
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
 )
 
 type groupsMembershipsServer struct {
@@ -46,7 +46,7 @@ func (s *groupsMembershipsServer) GetGroupsMembership(ctx context.Context, req *
 	obj := &pb.Membership{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.PermissionDenied, "Error(2017): Permission denied for group resource '%s' (or it may not exist).", fqn)
+			return nil, status.Errorf(codes.NotFound, "Error(4006): Membership does not exist.")
 		}
 		return nil, err
 	}
@@ -74,23 +74,26 @@ func (s *groupsMembershipsServer) CreateGroupsMembership(ctx context.Context, re
 	obj.Name = PtrTo(fmt.Sprintf("%s", name.String()))
 	obj.CreateTime = now
 	obj.UpdateTime = now
-
-	obj.Type = PtrTo("USER")              // TODO: logic for this value ?
-	obj.DeliverySetting = PtrTo("DIGEST") // TODO: logic for this value ?
+	obj.Type = PtrTo("USER")
+	// Legacy field, not available in API v1 but in v1beta1
+	obj.MemberKey = obj.PreferredMemberKey
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	// TODO: is this all for LRO ?
 	retObj := proto.Clone(obj).(*pb.Membership)
+	// output-only fields are not populated in LRO
+	retObj.CreateTime = nil
+	retObj.UpdateTime = nil
+	retObj.Type = nil
 	return buildLRO(retObj)
 }
 
-// No patch in mockgcp/generated/google/apps/cloudidentity/groups/v1beta1/service_grpc.pb.go
+// No patch in mockgcp/generated/google/apps/cloudidentity/v1beta1/service_grpc.pb.go
 // func (s *groupsMembershipsServer) PatchGroupsMembership(ctx context.Context, req *pb.PatchGroupsMembershipRequest) (*longrunning.Operation, error) {}
 
-// TODO: implement these from mockgcp/generated/google/apps/cloudidentity/groups/v1beta1/service_grpc.pb.go ?
+// TODO: implement these from mockgcp/generated/google/apps/cloudidentity/v1beta1/service_grpc.pb.go ?
 // Modifies the `MembershipRole`s of a `Membership`.
 // ModifyMembershipRolesGroupsMembership(ctx context.Context, in *ModifyMembershipRolesGroupsMembershipRequest, opts ...grpc.CallOption) (*ModifyMembershipRolesResponse, error)
 // Searches direct groups of a member.
@@ -110,33 +113,31 @@ func (s *groupsMembershipsServer) ModifyMembershipRolesGroupsMembership(ctx cont
 
 	obj := &pb.Membership{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.PermissionDenied, "Error(2017): Permission denied for group resource '%s' (or it may not exist).", fqn)
-		}
 		return nil, err
-	}
-
-	retObj := proto.Clone(obj).(*pb.Membership)
-	response := &pb.ModifyMembershipRolesResponse{
-		Membership: retObj,
 	}
 
 	gm := req.GetGroupsMembership()
 	if gm == nil {
-		return response, nil
+		return &pb.ModifyMembershipRolesResponse{
+			Membership: &pb.Membership{Name: obj.Name, Roles: obj.Roles},
+		}, nil
 	}
 
+	// Only contains the added/removed/updated roles in response
+	var modifiedRoles []*pb.MembershipRole
 	for i := range gm.RemoveRoles {
-		for j := range retObj.Roles {
-			if gm.RemoveRoles[i] == *retObj.Roles[j].Name {
-				retObj.Roles = append(retObj.Roles[:j], retObj.Roles[j+1:]...)
+		for j, role := range obj.Roles {
+			if gm.RemoveRoles[i] == *obj.Roles[j].Name {
+				obj.Roles = append(obj.Roles[:j], obj.Roles[j+1:]...)
+				modifiedRoles = append(modifiedRoles, role)
 				break
 			}
 		}
 	}
 
 	for _, role := range gm.AddRoles {
-		retObj.Roles = append(retObj.Roles, role)
+		obj.Roles = append(obj.Roles, role)
+		modifiedRoles = append(modifiedRoles, role)
 	}
 
 	// From proto defn:
@@ -162,18 +163,19 @@ func (s *groupsMembershipsServer) ModifyMembershipRolesGroupsMembership(ctx cont
 			continue
 		}
 
-		for j := range retObj.Roles {
-			if *umr.Name == *retObj.Roles[j].Name {
-				retObj.Roles[j].ExpiryDetail = proto.Clone(umr.ExpiryDetail).(*pb.ExpiryDetail)
+		for j, role := range obj.Roles {
+			if *umr.Name == *obj.Roles[j].Name {
+				obj.Roles[j].ExpiryDetail = proto.Clone(umr.ExpiryDetail).(*pb.ExpiryDetail)
+				modifiedRoles = append(modifiedRoles, role)
 				break
 			}
 		}
 	}
 
-	if err := s.storage.Update(ctx, fqn, retObj); err != nil {
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return response, nil
+	return &pb.ModifyMembershipRolesResponse{Membership: &pb.Membership{Name: obj.Name, Roles: modifiedRoles}}, nil
 }
 
 func (s *groupsMembershipsServer) DeleteGroupsMembership(ctx context.Context, req *pb.DeleteGroupsMembershipRequest) (*longrunning.Operation, error) {
@@ -205,7 +207,7 @@ func (n *membershipName) String() string {
 }
 
 func (s *MockService) parseMembershipName(name string) (*membershipName, error) {
-	//From GET https://cloudidentity.googleapis.com/v1/{name=groups/*/memberships/*}
+	// From GET https://cloudidentity.googleapis.com/v1/{name=groups/*/memberships/*}
 	// name: groups/{group}/memberships/{membership}
 	tokens := strings.Split(name, "/")
 

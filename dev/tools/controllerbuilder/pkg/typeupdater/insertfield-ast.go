@@ -25,8 +25,9 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"k8s.io/klog/v2"
 )
@@ -36,11 +37,22 @@ type target struct {
 	endPos int
 }
 
+func IsFieldBehavior(field protoreflect.FieldDescriptor, fieldBehavior annotations.FieldBehavior) bool {
+	d := field.Options()
+	fieldBehaviors := proto.GetExtension(d, annotations.E_FieldBehavior).([]annotations.FieldBehavior)
+	for _, f := range fieldBehaviors {
+		if f == fieldBehavior {
+			return true
+		}
+	}
+	return false
+}
+
 func (u *FieldInserter) insertGoField() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.proto.Name())
 
 	targetComment := fmt.Sprintf("+kcc:proto=%s", u.newField.parent.FullName())
-	outputOnly := common.IsFieldBehavior(u.newField.proto, annotations.FieldBehavior_OUTPUT_ONLY)
+	outputOnly := IsFieldBehavior(u.newField.proto, annotations.FieldBehavior_OUTPUT_ONLY)
 
 	filepath.WalkDir(u.opts.APIDirectory, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || filepath.Ext(path) != ".go" {

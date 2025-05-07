@@ -1,0 +1,42 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityGroup
+metadata:
+  name: cloudidentitygroup-${uniqueId}
+spec:
+  displayName: Cloud Identity Group Name
+  description: This is a test CloudIdentityGroup.
+  groupKey:
+    id: ${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}
+  parent: customers/C00qzcxfe
+  labels:
+    cloudidentity.googleapis.com/groups.discussion_forum: ""
+
+---
+TEST: ABANDON-AND-REACQUIRE-WITH-GENERATED-ID
+apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+kind: CloudIdentityGroup
+metadata:
+  name: cloudidentitygroup-${uniqueId}
+spec:
+  resourceID: ${TEST_GENERATED_ID}
+  displayName: Cloud Identity Group Name
+  description: This is a test CloudIdentityGroup.
+  groupKey:
+    id: ${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}
+  parent: customers/C00qzcxfe
+  labels:
+    cloudidentity.googleapis.com/groups.discussion_forum: ""

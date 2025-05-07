@@ -24,6 +24,7 @@ import (
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testutil "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -34,10 +35,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
+	admissionv1 "k8s.io/api/admission/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+	"sigs.k8s.io/yaml"
 )
 
 func TestChangesOnImmutableFields(t *testing.T) {
@@ -2562,5 +2566,38 @@ func TestUpdateGKEHubFeatureMembership(t *testing.T) {
 				t.Fatalf("got: %v, but want: %v", actual, tc.response)
 			}
 		})
+	}
+}
+
+func TestDirectResourcesAlwaysAllowed(t *testing.T) {
+	directGVKs := supportedgvks.DirectResources()
+	for gvk, _ := range directGVKs {
+		v := immutableFieldsValidatorHandler{}
+		unstruct := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"kind":       gvk.Kind,
+				"apiVersion": fmt.Sprintf("%s", gvk.GroupVersion()),
+			},
+		}
+
+		yamlData, err := yaml.Marshal(unstruct)
+		if err != nil {
+			t.Fatalf("Error marshaling YAML: %v", err)
+		}
+		req := admission.Request{
+			AdmissionRequest: admissionv1.AdmissionRequest{
+				Object: runtime.RawExtension{
+					Raw: yamlData,
+				},
+				OldObject: runtime.RawExtension{
+					Raw: yamlData,
+				},
+			},
+		}
+
+		response := v.Handle(nil, req)
+		if response.Allowed != true {
+			t.Fatalf("unexpected value for Allowed: got '%v', want 'true'", response.Allowed)
+		}
 	}
 }

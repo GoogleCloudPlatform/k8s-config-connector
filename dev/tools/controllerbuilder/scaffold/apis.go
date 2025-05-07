@@ -23,8 +23,10 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
 	"github.com/fatih/color"
+	"k8s.io/klog/v2"
 )
 
 type APIScaffolder struct {
@@ -35,30 +37,30 @@ type APIScaffolder struct {
 	PackageProtoTag string
 }
 
-func (a *APIScaffolder) RefsFileExist(kind, resourceProtoName string) bool {
-	refsFilePath := a.PathToRefsFile(kind, resourceProtoName)
-	_, err := os.Stat(refsFilePath)
+func fileExists(p string) bool {
+	_, err := os.Stat(p)
 	if err == nil {
 		return true
 	}
-	return !errors.Is(err, os.ErrNotExist)
+	if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	klog.Fatalf("unexpected error checking for file %q: %v", p, err)
+	return false
 }
 
-func (a *APIScaffolder) PathToRefsFile(kind, resourceProtoName string) string {
-	fileName := strings.ToLower(resourceProtoName) + "_reference.go"
+func (a *APIScaffolder) RefsFileExist(resource options.Resource) bool {
+	return fileExists(a.PathToRefsFile(resource))
+}
+
+func (a *APIScaffolder) PathToRefsFile(resource options.Resource) string {
+	fileName := strings.ToLower(resource.ProtoMessageName()) + "_reference.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddRefsFile(kind, resourceProtoName string) error {
-	refsFilePath := a.PathToRefsFile(kind, resourceProtoName)
-	cArgs := &apis.APIArgs{
-		Group:           a.Group,
-		Version:         a.Version,
-		Kind:            kind,
-		PackageProtoTag: a.PackageProtoTag,
-		KindProtoTag:    a.PackageProtoTag + "." + resourceProtoName,
-		ProtoResource:   resourceProtoName,
-	}
+func (a *APIScaffolder) AddRefsFile(resource options.Resource) error {
+	refsFilePath := a.PathToRefsFile(resource)
+	cArgs := a.buildAPIArgs(&resource)
 	return scaffoldRefsFile(refsFilePath, cArgs)
 }
 
@@ -80,30 +82,39 @@ func scaffoldIdentityFile(path string, cArgs *apis.APIArgs) error {
 	return nil
 }
 
-func (a *APIScaffolder) IdentityFileExist(kind, resourceProtoName string) bool {
-	refsFilePath := a.PathToIdentityFile(kind, resourceProtoName)
-	_, err := os.Stat(refsFilePath)
-	if err == nil {
-		return true
-	}
-	return !errors.Is(err, os.ErrNotExist)
+func (a *APIScaffolder) IdentityFileExist(resource options.Resource) bool {
+	return fileExists(a.PathToIdentityFile(resource))
 }
 
-func (a *APIScaffolder) PathToIdentityFile(kind, resourceProtoName string) string {
-	fileName := strings.ToLower(resourceProtoName) + "_identity.go"
+func (a *APIScaffolder) PathToIdentityFile(resource options.Resource) string {
+	fileName := strings.ToLower(resource.ProtoMessageName()) + "_identity.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddIdentityFile(kind, resourceProtoName string) error {
-	refsFilePath := a.PathToIdentityFile(kind, resourceProtoName)
-	cArgs := &apis.APIArgs{
+// Populates an APIArgs for templating.  Arguments are optional.
+func (a *APIScaffolder) buildAPIArgs(resource *options.Resource) *apis.APIArgs {
+	args := &apis.APIArgs{
 		Group:           a.Group,
 		Version:         a.Version,
-		Kind:            kind,
 		PackageProtoTag: a.PackageProtoTag,
-		KindProtoTag:    a.PackageProtoTag + "." + resourceProtoName,
-		ProtoResource:   resourceProtoName,
 	}
+
+	if resource != nil {
+		args.Kind = resource.Kind
+
+		args.KindProtoTag = a.PackageProtoTag + "." + resource.ProtoName
+		args.ProtoResource = resource.ProtoName
+
+		args.ProtoMessageName = resource.ProtoMessageName()
+		args.ProtoMessageFullName = resource.ProtoMessageFullName(a.PackageProtoTag)
+	}
+
+	return args
+}
+
+func (a *APIScaffolder) AddIdentityFile(resource options.Resource) error {
+	refsFilePath := a.PathToIdentityFile(resource)
+	cArgs := a.buildAPIArgs(&resource)
 	return scaffoldIdentityFile(refsFilePath, cArgs)
 }
 
@@ -125,30 +136,18 @@ func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
 	return nil
 }
 
-func (a *APIScaffolder) TypeFileNotExist(resourceProtoName string) bool {
-	typeFilePath := a.PathToTypeFile(resourceProtoName)
-	_, err := os.Stat(typeFilePath)
-	if err == nil {
-		return false
-	}
-	return errors.Is(err, os.ErrNotExist)
+func (a *APIScaffolder) TypeFileExists(resource options.Resource) bool {
+	return fileExists(a.PathToTypeFile(resource))
 }
 
-func (a *APIScaffolder) PathToTypeFile(resourceProtoName string) string {
-	fileName := strings.ToLower(resourceProtoName) + "_types.go"
+func (a *APIScaffolder) PathToTypeFile(resource options.Resource) string {
+	fileName := strings.ToLower(resource.ProtoMessageName()) + "_types.go"
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddTypeFile(resourceProtoName, kind string) error {
-	typeFilePath := a.PathToTypeFile(resourceProtoName)
-	cArgs := &apis.APIArgs{
-		Group:           a.Group,
-		Version:         a.Version,
-		Kind:            kind,
-		PackageProtoTag: a.PackageProtoTag,
-		KindProtoTag:    a.PackageProtoTag + "." + resourceProtoName,
-		ProtoResource:   resourceProtoName,
-	}
+func (a *APIScaffolder) AddTypeFile(resource options.Resource) error {
+	typeFilePath := a.PathToTypeFile(resource)
+	cArgs := a.buildAPIArgs(&resource)
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }
 
@@ -185,11 +184,7 @@ func (a *APIScaffolder) GroupVersionFileNotExist() bool {
 
 func (a *APIScaffolder) AddGroupVersionFile() error {
 	docFilePath := filepath.Join(a.BaseDir, a.GoPackage, "groupversion_info.go")
-	cArgs := &apis.APIArgs{
-		Group:           a.Group,
-		Version:         a.Version,
-		PackageProtoTag: a.PackageProtoTag,
-	}
+	cArgs := a.buildAPIArgs(nil)
 	return scaffoldGroupVersionFile(docFilePath, cArgs)
 }
 
@@ -204,11 +199,7 @@ func (a *APIScaffolder) DocFileNotExist() bool {
 
 func (a *APIScaffolder) AddDocFile() error {
 	docFilePath := filepath.Join(a.BaseDir, a.GoPackage, "doc.go")
-	cArgs := &apis.APIArgs{
-		Group:           a.Group,
-		Version:         a.Version,
-		PackageProtoTag: a.PackageProtoTag,
-	}
+	cArgs := a.buildAPIArgs(nil)
 	return scaffoldDocFile(docFilePath, cArgs)
 }
 

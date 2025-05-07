@@ -43,6 +43,17 @@ func FuzzRedisClusterSpec(f *testing.F) {
 		unimplementedFields := sets.New(
 			".name",
 			".labels",
+			".cluster_endpoints",
+			".backup_collection",
+			".managed_backup_source",
+			".psc_service_attachments",
+			".cross_cluster_replication_config",
+			".kms_key",
+			".maintenance_policy",
+			".maintenance_schedule",
+			".automated_backup_config",
+			".encryption_info",
+			".gcs_source",
 		)
 
 		// Status fields
@@ -103,6 +114,18 @@ func FuzzRedisClusterObservedState(f *testing.F) {
 		unimplementedFields := sets.New(
 			".name",
 			".labels",
+			".cluster_endpoints",
+			".backup_collection",
+			".managed_backup_source",
+			".psc_service_attachments",
+			".cross_cluster_replication_config",
+			".kms_key",
+			".maintenance_policy",
+			".maintenance_schedule",
+			".automated_backup_config",
+			".encryption_info",
+			".gcs_source",
+			".psc_connections",
 		)
 
 		// Spec fields

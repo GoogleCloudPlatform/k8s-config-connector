@@ -1,0 +1,126 @@
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs?alt=json&importJobId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "protectionLevel": "HSM"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs/test-${uniqueId}",
+  "protectionLevel": "HSM",
+  "state": "PENDING_GENERATION"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "certChains": {
+      "caviumCerts": [
+        "-----BEGIN CERTIFICATE-----\ncertificate 1\n-----END CERTIFICATE-----\n",
+        "-----BEGIN CERTIFICATE-----\ncertificate 2\n-----END CERTIFICATE-----\n"
+      ],
+      "googleCardCerts": [
+        "-----BEGIN CERTIFICATE-----\ncertificate 3\n-----END CERTIFICATE-----\n"
+      ],
+      "googlePartitionCerts": [
+        "-----BEGIN CERTIFICATE-----\ncertificate 4\n-----END CERTIFICATE-----\n"
+      ]
+    },
+    "content": "Y29udGVudA==",
+    "format": "CAVIUM_V2_COMPRESSED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "expireTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs/test-${uniqueId}",
+  "protectionLevel": "HSM",
+  "publicKey": {
+    "pem": "-----BEGIN PUBLIC KEY-----\npublic key\n-----END PUBLIC KEY-----\n"
+  },
+  "state": "ACTIVE"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "importJobs": [
+    {
+      "attestation": {
+        "certChains": {
+          "caviumCerts": [
+            "-----BEGIN CERTIFICATE-----\ncertificate 1\n-----END CERTIFICATE-----\n",
+            "-----BEGIN CERTIFICATE-----\ncertificate 2\n-----END CERTIFICATE-----\n"
+          ],
+          "googleCardCerts": [
+            "-----BEGIN CERTIFICATE-----\ncertificate 3\n-----END CERTIFICATE-----\n"
+          ],
+          "googlePartitionCerts": [
+            "-----BEGIN CERTIFICATE-----\ncertificate 4\n-----END CERTIFICATE-----\n"
+          ]
+        },
+        "content": "Y29udGVudA==",
+        "format": "CAVIUM_V2_COMPRESSED"
+      },
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "expireTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "importMethod": "RSA_OAEP_3072_SHA1_AES_256",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/test-keyring-${uniqueId}/importJobs/test-${uniqueId}",
+      "protectionLevel": "HSM",
+      "publicKey": {
+        "pem": "-----BEGIN PUBLIC KEY-----\npublic key\n-----END PUBLIC KEY-----\n"
+      },
+      "state": "ACTIVE"
+    }
+  ],
+  "totalSize": 1
+}

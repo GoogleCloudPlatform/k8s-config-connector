@@ -1,0 +1,326 @@
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "name": "storagebucket-sample-${uniqueId}",
+  "storageClass": "STANDARD",
+  "versioning": {
+    "enabled": false
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-sample-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-sample-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-sample-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "customPlacementConfig": {
+    "dataLocations": [
+      "US-EAST1",
+      "US-WEST1"
+    ]
+  },
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "storagebucket-sample-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}

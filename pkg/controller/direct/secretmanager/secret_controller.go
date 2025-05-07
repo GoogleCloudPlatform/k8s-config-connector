@@ -25,6 +25,8 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -42,7 +44,25 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.SecretManagerSecretGVK, NewModel)
+	rg := &SecretReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.SecretManagerSecretGVK, NewModel, rg)
+}
+
+type SecretReconcileGate struct {
+	optIn kccpredicate.OptInToDirectReconciliation
+}
+
+var _ kccpredicate.ReconcileGate = &SecretReconcileGate{}
+
+func (r *SecretReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+	obj := &krm.SecretManagerSecret{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
+		return false
+	}
+	return obj.Spec.Labels != nil
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -194,7 +214,6 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -250,7 +269,6 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
-	resource.Labels = common.ComputeGCPLabels(desired.GetLabels())
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag

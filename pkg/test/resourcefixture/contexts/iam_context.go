@@ -19,7 +19,7 @@ func init() {
 		ResourceKind: "IAMServiceAccountKey",
 		SkipUpdate:   true,
 	}
-	resourceContextMap["iamcustomrole"] = ResourceContext{
+	resourceContextMap["projectrole"] = ResourceContext{
 		ResourceKind: "IAMCustomRole",
 		// TestCreateNoChangeUpdateDelete/basic-iamcustomrole: dynamic_controller_integration_test.go:282:
 		//   reconcile returned unexpected error: Delete call failed: error deleting resource: Error deleting

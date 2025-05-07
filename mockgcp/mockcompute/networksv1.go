@@ -68,6 +68,12 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
 	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
+	obj.NetworkFirewallPolicyEnforcementOrder = PtrTo("AFTER_CLASSIC_FIREWALL")
+	if obj.RoutingConfig != nil {
+		if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
+			obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -219,6 +225,7 @@ func (s *MockService) parseNetworkSelfLink(selfLink string) (*networkName, error
 	name := selfLink
 	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
 	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
 
 	return s.parseNetworkName(name)
 }

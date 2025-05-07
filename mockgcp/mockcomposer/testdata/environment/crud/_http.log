@@ -23,7 +23,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -53,7 +52,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -169,7 +167,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -266,7 +263,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -370,7 +366,6 @@ Content-Type: application/json
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -400,7 +395,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -519,7 +513,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -548,7 +541,6 @@ Authorization: (removed)
 Connection: keep-alive
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

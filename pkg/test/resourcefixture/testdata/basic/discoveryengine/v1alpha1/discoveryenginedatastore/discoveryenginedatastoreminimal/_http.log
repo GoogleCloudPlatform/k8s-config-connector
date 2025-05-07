@@ -5,7 +5,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcolle
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -38,7 +37,6 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -69,7 +67,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcolle
 X-Goog-User-Project: ${projectId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -102,7 +99,6 @@ X-Goog-User-Project: ${projectId}
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -129,7 +125,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcolle
 X-Goog-User-Project: ${projectId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -156,7 +151,6 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcolle
 X-Goog-User-Project: ${projectId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

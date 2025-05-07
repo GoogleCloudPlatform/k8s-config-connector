@@ -74,7 +74,7 @@ func BuildVertexAIClient(ctx context.Context, options ...GCPOptions) (*VertexAIC
 	if err != nil {
 		return nil, fmt.Errorf("building vertexai client: %w", err)
 	}
-	model := "gemini-2.0-pro-exp-02-05"
+	model := "gemini-2.5-pro-exp-03-25"
 	return &VertexAIClient{
 		client: client,
 		model:  model,
@@ -168,6 +168,8 @@ func toVertexAISchema(schema *Schema) (*genai.Schema, error) {
 		ret.Type = genai.TypeObject
 	case TypeString:
 		ret.Type = genai.TypeString
+	case TypeBoolean:
+		ret.Type = genai.TypeBoolean
 	default:
 		return nil, fmt.Errorf("type %q not handled by genai.Schema", schema.Type)
 	}

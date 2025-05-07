@@ -2,7 +2,6 @@ GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&pret
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -68,7 +67,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Content-Type: application/json; charset=UTF-8
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
@@ -204,7 +202,6 @@ GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&pret
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer
@@ -263,7 +260,6 @@ GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&pret
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Cache-Control: private, max-age=0, must-revalidate, no-transform
 Content-Type: application/json; charset=UTF-8
 Expires: {now+0m}
 Server: UploadServer

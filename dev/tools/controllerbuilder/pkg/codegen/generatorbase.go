@@ -22,6 +22,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
 	"k8s.io/klog/v2"
 )
 
@@ -54,6 +55,8 @@ type generatedFile struct {
 	key         generatedFileKey
 	packageName string
 	body        bytes.Buffer
+
+	fileAnnotation *annotations.FileAnnotation
 
 	imports map[string]string
 }
@@ -94,6 +97,11 @@ func (f *generatedFile) Write(addCopyright bool) error {
 
 	if addCopyright {
 		writeCopyright(&w, time.Now().Year())
+	}
+
+	if f.fileAnnotation != nil {
+		s := f.fileAnnotation.FormatGo()
+		fmt.Fprintf(&w, "%s\n", s)
 	}
 
 	if f.packageName != "" {

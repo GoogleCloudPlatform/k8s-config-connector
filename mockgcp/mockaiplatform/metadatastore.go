@@ -98,7 +98,7 @@ func (s *metadataStoreService) CreateMetadataStore(ctx context.Context, req *pb.
 	})
 }
 
-func (s *metadataStoreService) ListSchemas(ctx context.Context, req *pb.ListMetadataStoresRequest) (*pb.ListMetadataStoresResponse, error) {
+func (s *metadataStoreService) ListMetadataStores(ctx context.Context, req *pb.ListMetadataStoresRequest) (*pb.ListMetadataStoresResponse, error) {
 	project, err := s.Projects.GetProjectByID(req.Parent)
 	if err != nil {
 		return nil, err

@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: managedkafka.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.managedkafka.v1
+// resource: ManagedKafkaCluster:Cluster
+// resource: ManagedKafkaTopic:Topic
+
 package v1beta1
 
 // +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig

@@ -16,7 +16,6 @@ package e2e
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -143,6 +142,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("id", "000000000000000000000")
 	addReplacement("uniqueId", "111111111111111111111")
 	addReplacement("oauth2ClientId", "888888888888888888888")
+	addReplacement("response.oauth2ClientId", "888888888888888888888")
 
 	addReplacement("etag", "abcdef0123A=")
 	addReplacement("serviceAccount.etag", "abcdef0123A=")
@@ -155,10 +155,17 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
 	addSetStringReplacement(".monitoredProjects[].createTime", "2024-04-01T12:34:56.123456Z")
 
+	addReplacement("lastUpdateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+	// Specific to datacatalog
+	addReplacement("dataCatalogTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("dataCatalogTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("sourceSystemTimestamps.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("sourceSystemTimestamps.updateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to cloudbuild
 	addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
@@ -173,11 +180,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 
-	// Specific to BigTable
-	addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
-
 	// Specific to Sql
 	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
@@ -188,6 +190,17 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 	addReplacement("settings.backupConfiguration.startTime", "12:00")
 	addReplacement("settings.settingsVersion", "123")
+
+	// Specific to Dataproc Metastore
+	addReplacement("hiveMetastoreConfig.configOverrides.hive.metastore.warehouse.dir", "gs://gcs-bucket-${uniqueId}/hive-warehouse")
+	addReplacement("artifactGcsUri", "gs://gcs-bucket-${uniqueId}")
+	addReplacement("response.artifactGcsUri", "gs://gcs-bucket-${uniqueId}")
+	addReplacement("endpointUri", "thrift://mock-endpoint:9083")
+	addReplacement("response.endpointUri", "thrift://mock-endpoint:9083")
+	addReplacement("serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//
@@ -208,11 +221,17 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		}
 	})
 
+	// Add Essential Contacts specific normalizations
+	addReplacement("validateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.validateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".contacts[].validateTime", "2024-04-01T12:34:56.123456Z")
+
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	events.RemoveHTTPRequestHeader("X-Goog-User-Project")
 	// Remove headers in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
@@ -272,8 +291,23 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 		if id != "" {
-			x.OperationIDs[id] = true
+			// Avoid marking some well-known values that are never operationIDs
+			switch id {
+			case "projects":
+			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			default:
+				x.OperationIDs[id] = true
+			}
 		}
+	}
+
+	// Replace any operation IDs that appear in URLs
+	for _, event := range events {
+		u := event.Request.URL
+		for operationID := range x.OperationIDs {
+			u = strings.ReplaceAll(u, operationID, "${operationID}")
+		}
+		event.Request.URL = u
 	}
 
 	for _, event := range events {
@@ -290,6 +324,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// TODO: Remove this, it should now be done in normalize in mockcompute
 	// Extract resource IDs / numbers from compute operations.
 	// The number / id is in the targetID field, we infer the type from the targetLink field.
 	for _, event := range events {
@@ -304,7 +339,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			if u != nil {
 				kind := u.PathItems[len(u.PathItems)-1].Resource
 
-				placeholder := x.placeholderForGCPResource(kind)
+				placeholder := x.placeholderForGCPResource(kind, targetId)
 				if placeholder != "" {
 					// We _should_ differentiate between ID and number.
 					// But this causes too many diffs right now.
@@ -318,11 +353,6 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 	}
-}
-
-func isNumber(s string) bool {
-	_, err := strconv.ParseInt(s, 10, 64)
-	return err == nil
 }
 
 // ReplaceString is a normalization function that replaces a string, useful for e.g. project IDs.

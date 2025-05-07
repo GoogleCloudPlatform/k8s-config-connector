@@ -64,7 +64,12 @@ func (p *Proxy) ListenAndServeHTTPS(ctx context.Context) error {
 		IsCA: true,
 	}
 	// tlsCertificateTemplate.IPAddresses = append(tlsCertificateTemplate.IPAddresses, p.httpsEndpoint.IP)
-	tlsCertificateTemplate.DNSNames = []string{"billingbudgets.googleapis.com", "tpu.googleapis.com", "play.googleapis.com"}
+	tlsCertificateTemplate.DNSNames = []string{
+		"billingbudgets.googleapis.com",
+		"tpu.googleapis.com",
+		"play.googleapis.com",
+		"*.googleapis.com",
+	}
 	tlsCertificate, err := CreateSelfSignedCertificate(tlsCertificateTemplate)
 	if err != nil {
 		return fmt.Errorf("creating self-signed certificate: %w", err)
@@ -213,7 +218,9 @@ func (p *Proxy) runRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	u := req.URL
-	u.Scheme = "https"
+	if u.Scheme == "" {
+		u.Scheme = "https"
+	}
 	if u.Host == "" {
 		// for CONNECT requests, the host appears here
 		u.Host = req.Host
@@ -262,126 +269,13 @@ func (p *Proxy) BuildGcloudConfig(proxyEndpoint *net.TCPAddr, mockgcp mockgcp.In
 	config.AddConfig("proxy/port", strconv.Itoa(proxyEndpoint.Port))
 	config.AddConfig("auth/disable_ssl_validation", "True")
 
-	// We need to register services to use http, to stop gcloud trying to use TUNNEL with our proxy
+	// Note: we used to use api_endpoint_overrides here; however that seems to change the behaviour of gcloud,
+	// particularly when normalizing compute urls?
 
-	// We need a hard-coded list, because we don't always mockgcp available
-
-	// This list should be kept in sync with the output from `gcloud config  list api_endpoint_overrides/ --all --format json | jq -r '.api_endpoint_overrides | keys[]'`
-	apiEndpointOverrides := []string{
-		"accessapproval",
-		"accesscontextmanager",
-		"ai",
-		"aiplatform",
-		"anthosevents",
-		"anthospolicycontrollerstatus_pa",
-		"apigateway",
-		"apigee",
-		"appengine",
-		"apphub",
-		"artifactregistry",
-		"assuredworkloads",
-		"auditmanager",
-		"baremetalsolution",
-		"bigtableadmin",
-		"certificatemanager",
-		"cloudasset",
-		"cloudbilling",
-		"cloudbuild",
-		"cloudcommerceconsumerprocurement",
-		"clouddebugger",
-		"clouddeploy",
-		"clouderrorreporting",
-		"cloudfunctions",
-		"cloudidentity",
-		"cloudkms",
-		"cloudresourcemanager",
-		"cloudscheduler",
-		"cloudtasks",
-		"cloudtrace",
-		"composer",
-		"compute",
-		"config",
-		"container",
-		"datacatalog",
-		"dataflow",
-		"datafusion",
-		"datamigration",
-		"datapipelines",
-		"dataplex",
-		"dataproc",
-		"datastore",
-		"datastream",
-		"deploymentmanager",
-		"developerconnect",
-		"dns",
-		"domains",
-		"edgecontainer",
-		"eventarc",
-		"eventarcpublishing",
-		"faultinjectiontesting",
-		"file",
-		"firebasedataconnect",
-		"firestore",
-		"genomics",
-		"gkemulticloud",
-		"healthcare",
-		"iam",
-		"iamcredentials",
-		"iap",
-		"ids",
-		"krmapihosting",
-		"language",
-		"lifesciences",
-		"logging",
-		"looker",
-		"managedidentities",
-		"marketplacesolutions",
-		"mediaasset",
-		"memcache",
-		"metastore",
-		"monitoring",
-		"netapp",
-		"networkconnectivity",
-		"networkmanagement",
-		"networksecurity",
-		"networkservices",
-		"notebooks",
-		"orgpolicy",
-		"pam",
-		"policyanalyzer",
-		"privateca",
-		"publicca",
-		"pubsub",
-		"recaptchaenterprise",
-		"recommender",
-		"redis",
-		"resourcesettings",
-		"run",
-		"runtimeconfig",
-		"sddc",
-		"secretmanager",
-		"securitycenter",
-		"servicedirectory",
-		"servicemanagement",
-		"sourcerepo",
-		"spanner",
-		"speech",
-		"sql",
-		"storage",
-		"testing",
-		"transfer",
-		"transferappliance",
-		"vision",
-		"vmmigration",
-		"vmwareengine",
-		"workflowexecutions",
-		"workflows",
-		"workstations",
-	}
-
-	for _, apiEndpointOverride := range apiEndpointOverrides {
-		config.AddConfig(fmt.Sprintf("api_endpoint_overrides/%v", apiEndpointOverride), fmt.Sprintf("http://%s.googleapis.com/", apiEndpointOverride))
-	}
+	// Customize the api endpoint overrides for reCAPTCHA Enterprise.
+	// Gcloud commands for reCAPTCHA Enterprise works only when pointing
+	// to public-preview-recaptchaenterprise.googleapis.com.
+	config.AddConfig(fmt.Sprintf("api_endpoint_overrides/recaptchaenterprise"), "https://public-preview-recaptchaenterprise.googleapis.com/")
 
 	return config
 }

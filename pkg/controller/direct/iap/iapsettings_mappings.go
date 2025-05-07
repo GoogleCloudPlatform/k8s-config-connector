@@ -16,7 +16,7 @@ package iap
 
 import (
 	pb "cloud.google.com/go/iap/apiv1/iappb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iap/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -28,5 +28,23 @@ func AccessDeniedPageSettings_ToProto(mapCtx *direct.MapContext, in *krm.AccessD
 	out.AccessDeniedPageUri = direct.StringValue_ToProto(mapCtx, in.AccessDeniedPageURI)
 	out.GenerateTroubleshootingUri = direct.BoolValue_ToProto(mapCtx, in.GenerateTroubleshootingURI)
 	out.RemediationTokenGenerationEnabled = direct.BoolValue_ToProto(mapCtx, in.RemediationTokenGenerationEnabled) // this line is manually edited because proto field is incorrectly marked as oneof
+	return out
+}
+func GcipSettings_FromProto(mapCtx *direct.MapContext, in *pb.GcipSettings) *krm.GcipSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GcipSettings{}
+	out.TenantIDs = in.TenantIds
+	out.LoginPageURI = direct.StringValue_FromProto(mapCtx, in.GetLoginPageUri())
+	return out
+}
+func GcipSettings_ToProto(mapCtx *direct.MapContext, in *krm.GcipSettings) *pb.GcipSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcipSettings{}
+	out.TenantIds = in.TenantIDs
+	out.LoginPageUri = direct.StringValue_ToProto(mapCtx, in.LoginPageURI)
 	return out
 }

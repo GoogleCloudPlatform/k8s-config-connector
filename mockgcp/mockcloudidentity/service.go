@@ -26,7 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 )
 
 // MockService represents a mocked cloudidentity service.
@@ -64,6 +64,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	)
 	if err != nil {
 		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 && strings.Contains(error.Message, "Membership") {
+			error.Errors = nil
+		}
 	}
 
 	// DCL sends a trailing slash, but that is not technically correct

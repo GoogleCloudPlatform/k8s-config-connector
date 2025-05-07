@@ -112,10 +112,8 @@ spec:
                   empty.
                 properties:
                   dataLocations:
-                    description: 'Immutable. The list of individual regions that comprise
-                      a dual-region bucket. See the docs for a list of acceptable
-                      regions. Note: If any of the data_locations changes, it will
-                      recreate the bucket.'
+                    description: The list of individual regions that comprise a dual-region
+                      bucket. See the docs for a list of acceptable regions.
                     items:
                       type: string
                     type: array
@@ -244,7 +242,7 @@ spec:
                 type: array
               location:
                 default: US
-                description: Immutable. The Google Cloud Storage location.
+                description: The Google Cloud Storage location.
                 type: string
               logging:
                 description: The bucket's Access & Storage Logs configuration.

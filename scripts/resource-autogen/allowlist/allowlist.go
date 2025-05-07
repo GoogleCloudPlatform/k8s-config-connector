@@ -61,7 +61,6 @@ var (
 		"cloud_asset/google_cloud_asset_organization_feed",
 		"cloud_asset/google_cloud_asset_project_feed",
 		"cloud_ids/google_cloud_ids_endpoint",
-		"cloud_tasks/google_cloud_tasks_queue",
 		"cloudfunctions2/google_cloudfunctions2_function",
 		"cloudiot/google_cloudiot_device",
 		"cloudiot/google_cloudiot_registry",

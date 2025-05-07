@@ -15,7 +15,7 @@
 package contexts
 
 func init() {
-	resourceContextMap["storagenotification"] = ResourceContext{
+	resourceContextMap["storagenotificationbase"] = ResourceContext{
 		ResourceKind: "StorageNotification",
 		SkipUpdate:   true,
 	}

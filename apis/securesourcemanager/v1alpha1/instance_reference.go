@@ -23,6 +23,7 @@ import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -159,7 +160,7 @@ func NewSecureSourceManagerInstanceRef(ctx context.Context, reader client.Reader
 	parent := &ProjectIDAndLocation{ProjectID: projectID, Location: location}
 
 	// Get desired ID
-	resourceID := valueOf(obj.Spec.ResourceID)
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -168,7 +169,7 @@ func NewSecureSourceManagerInstanceRef(ctx context.Context, reader client.Reader
 	}
 
 	// Use approved External
-	externalRef := valueOf(obj.Status.ExternalRef)
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
 		id.External = parent.String() + "/instances/" + resourceID
 		return id, nil
@@ -225,12 +226,4 @@ type ProjectIDAndLocation struct {
 
 func (p *ProjectIDAndLocation) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
 }

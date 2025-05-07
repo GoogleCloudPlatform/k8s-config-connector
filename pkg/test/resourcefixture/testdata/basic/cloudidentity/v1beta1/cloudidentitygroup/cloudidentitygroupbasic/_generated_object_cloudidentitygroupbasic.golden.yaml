@@ -21,7 +21,7 @@ spec:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
     cloudidentity.googleapis.com/groups.security: ""
   parent: customers/C00qzcxfe
-  resourceID: ${groupID}
+  resourceID: groups/${groupID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,6 +30,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: ${groupID}
+  name: groups/${groupID}
   observedGeneration: 3
   updateTime: "1970-01-01T00:00:00Z"

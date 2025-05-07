@@ -19,7 +19,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/ignore-warnings: "true"
 spec:
-  description: Automatically routes requests to the nearest available cluster in an instance.
+  description: Updated description.
   instanceRef:
     name: profiledep${uniqueId}
   multiClusterRoutingUseAny: true

@@ -1,0 +1,230 @@
+POST https://storage.googleapis.com/storage/v1/b?alt=json&enableObjectRetention=False&project=${projectId}&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "bucket${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {}
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bucket${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "bucket": "bucket${uniqueId}",
+  "name": "testmanagedfolder"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "metageneration": "1",
+  "name": "testmanagedfolder",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "metageneration": "1",
+  "name": "testmanagedfolder",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders?alt=json&pageSize=1000
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "items": [
+    {
+      "bucket": "bucket${uniqueId}",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "metageneration": "1",
+      "name": "testmanagedfolder",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o/testmanagedfolder?alt=json&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "object not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "object not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/o?alt=json&delimiter=%2F&includeFoldersAsPrefixes=True&maxResults=1000&prefix=testmanagedfolder&projection=noAcl
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "bucket": "bucket${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "metageneration": "1",
+  "name": "testmanagedfolder",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+204 No Content
+Content-Type: application/json
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+

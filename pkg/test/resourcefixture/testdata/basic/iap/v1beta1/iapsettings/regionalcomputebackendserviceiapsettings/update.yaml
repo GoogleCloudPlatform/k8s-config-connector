@@ -1,0 +1,35 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iap.cnrm.cloud.google.com/v1beta1
+kind: IAPSettings
+metadata:
+  name: iapsettings-${uniqueId}
+spec:
+  computeServiceRef:
+    projectRef:
+      external: projects/${projectId}
+    region: us-central1
+    serviceRef:
+      name: computebackendservice-${uniqueId}
+  accessSettings:
+    corsSettings:
+      allowHTTPOptions: false  # true -> false
+    reauthSettings:
+      method: "LOGIN"  # SECURE_KEY -> LOGIN
+      maxAge: "600s"  # 305s -> 600s
+      policyType: "DEFAULT"  # MINIMUM -> DEFAULT
+  applicationSettings:
+    cookieDomain: ".updated-example.com"  # test.abc.com -> .updated-example.com
+

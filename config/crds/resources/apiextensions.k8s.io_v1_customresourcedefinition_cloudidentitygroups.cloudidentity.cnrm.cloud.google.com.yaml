@@ -125,8 +125,9 @@ spec:
                 - message: Parent field is immutable
                   rule: self == oldSelf
               resourceID:
-                description: Immutable. The CloudIdentityGroup name. If not given,
-                  the metadata.name will be used.
+                description: 'Immutable. Optional. The service-generated name of the
+                  resource. Format: groups/{groupID}. Used for acquisition only. Leave
+                  unset to create a new resource.'
                 type: string
             required:
             - groupKey

@@ -140,6 +140,12 @@ func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, 
 	if err != nil {
 		t.Fatalf("unable to determine GroupVersionKind for test case named %v: %v", testName, err)
 	}
+	if gvk.Kind == "" {
+		t.Fatalf("got empty kind for test case named %v", testName)
+	}
+	if gvk.Version == "" {
+		t.Fatalf("got empty version for test case named %v", testName)
+	}
 
 	rf := ResourceFixture{
 		Name:      testName,

@@ -26,6 +26,16 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["basicalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipNoChange: true, // MBUR fields always triggers an update.
+	}
+
+	resourceContextMap["fullalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipNoChange: true, // MBUR fields always triggers an update.
+	}
+
 	resourceContextMap["restorebackupalloydbcluster"] = ResourceContext{
 		ResourceKind: "AlloyDBCluster",
 		SkipUpdate:   true,
@@ -41,7 +51,7 @@ func init() {
 	// dynamic_controller_integration_test.go:518: expected GCP client to return
 	// NotFound for 'alloydbinstance-2-nwdw57rwwk37lvskfvya', instead got:
 	// expected error, instead got 'nil'
-	resourceContextMap["basicalloydbsecondaryinstance"] = ResourceContext{
+	resourceContextMap["basicsecondaryalloydbinstance"] = ResourceContext{
 		ResourceKind:       "AlloyDBInstance",
 		SkipDriftDetection: true,
 		SkipDelete:         true,

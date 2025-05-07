@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -29,8 +30,12 @@ import (
 	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/bigtable/admin/v2"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
-	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked bigtable service.
 type MockService struct {
@@ -41,7 +46,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -63,9 +68,17 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterBigtableInstanceAdminHandler,
+		grpcpb.RegisterBigtableTableAdminHandler,
 		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

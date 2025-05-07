@@ -1,0 +1,209 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: batchtasks.batch.cnrm.cloud.google.com
+spec:
+  group: batch.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BatchTask
+    listKind: BatchTaskList
+    plural: batchtasks
+    shortNames:
+    - gcpbatchtask
+    - gcpbatchtasks
+    singular: batchtask
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BatchTask is the Schema for the BatchTask API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BatchTaskSpec defines the desired state of BatchTask
+            properties:
+              location:
+                description: Immutable. The location where the alloydb cluster should
+                  reside.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The BatchTask name. If not given, the metadata.name will
+                  be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: BatchTaskStatus defines the config connector machine state
+              of BatchTask
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BatchTask resource in GCP.
+                type: string
+              name:
+                description: 'Task name. The name is generated from the parent TaskGroup
+                  name and ''id'' field. For example: "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01".'
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: BatchTaskObservedState is the state of the BatchTask
+                  resource as most recently observed in GCP.
+                properties:
+                  status:
+                    description: Task Status.
+                    properties:
+                      state:
+                        description: Task state.
+                        type: string
+                      statusEvents:
+                        description: Detailed info about why the state is reached.
+                        items:
+                          properties:
+                            description:
+                              description: Description of the event.
+                              type: string
+                            eventTime:
+                              description: The time this event occurred.
+                              type: string
+                            taskExecution:
+                              description: Task Execution. This field is only defined
+                                for task-level status events where the task fails.
+                              properties:
+                                exitCode:
+                                  description: |-
+                                    The exit code of a finished task.
+
+                                     If the task succeeded, the exit code will be 0. If the task failed but not
+                                     due to the following reasons, the exit code will be 50000.
+
+                                     Otherwise, it can be from different sources:
+                                     * Batch known failures:
+                                     https://cloud.google.com/batch/docs/troubleshooting#reserved-exit-codes.
+                                     * Batch runnable execution failures; you can rely on Batch logs to further
+                                     diagnose: https://cloud.google.com/batch/docs/analyze-job-using-logs. If
+                                     there are multiple runnables failures, Batch only exposes the first error.
+                                  format: int32
+                                  type: integer
+                              type: object
+                            taskState:
+                              description: Task State. This field is only defined
+                                for task-level status events.
+                              type: string
+                            type:
+                              description: Type of the event.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

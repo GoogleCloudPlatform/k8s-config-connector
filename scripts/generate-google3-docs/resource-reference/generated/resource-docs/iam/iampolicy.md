@@ -755,7 +755,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -765,7 +765,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}APIVersion of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -775,7 +775,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -785,7 +785,7 @@ resourceRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Kind of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
