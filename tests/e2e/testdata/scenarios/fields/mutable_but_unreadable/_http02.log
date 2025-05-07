@@ -21,14 +21,21 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "test test test",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
-    "description": "test test test",
+    "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -53,7 +60,23 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
+    "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey",
+        "valueType": "STRING"
+      }
+    ],
+    "launchStage": "ALPHA",
+    "metadata": {
+      "ingestDelay": "1s",
+      "samplePeriod": "1s"
+    },
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
@@ -85,7 +108,17 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
+    "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
@@ -122,7 +155,17 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
+    "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",

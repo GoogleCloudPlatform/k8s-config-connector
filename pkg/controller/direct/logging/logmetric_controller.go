@@ -264,11 +264,48 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			}
 		}
 
+		// MetricDescriptor contains mutable but unreadable fields so we populate those in the actual before comparing
+		if updateOp.HasOldObject() {
+			oldU := updateOp.GetOldUnstructured()
+			old := &krm.LoggingLogMetric{}
+			err := runtime.DefaultUnstructuredConverter.FromUnstructured(oldU.Object, old)
+			if err != nil {
+				return fmt.Errorf("error converting to %T: %w", old, err)
+			}
+
+			if old.Spec.MetricDescriptor != nil {
+				if a.actual.MetricDescriptor == nil {
+					a.actual.MetricDescriptor = &api.MetricDescriptor{}
+				}
+				if old.Spec.MetricDescriptor.LaunchStage != nil {
+					a.actual.MetricDescriptor.LaunchStage = direct.ValueOf(old.Spec.MetricDescriptor.LaunchStage)
+				}
+
+				if old.Spec.MetricDescriptor.Metadata != nil {
+					if a.actual.MetricDescriptor.Metadata == nil {
+						a.actual.MetricDescriptor.Metadata = &api.MetricDescriptorMetadata{}
+					}
+					if old.Spec.MetricDescriptor.Metadata.IngestDelay != nil {
+						a.actual.MetricDescriptor.Metadata.IngestDelay = direct.ValueOf(old.Spec.MetricDescriptor.Metadata.IngestDelay)
+					}
+					if old.Spec.MetricDescriptor.Metadata.SamplePeriod != nil {
+						a.actual.MetricDescriptor.Metadata.SamplePeriod = direct.ValueOf(old.Spec.MetricDescriptor.Metadata.SamplePeriod)
+					}
+				}
+			}
+		}
+
 		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
 			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
 				return fmt.Errorf("logMetric update failed: %w", err)
 			}
 			update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
+
+			// populate output only fields in the proto
+			if a.desired.Status.MetricDescriptor != nil {
+				update.MetricDescriptor.Name = direct.ValueOf(a.desired.Status.MetricDescriptor.Name)
+				update.MetricDescriptor.Type = direct.ValueOf(a.desired.Status.MetricDescriptor.Type)
+			}
 		}
 
 		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {
@@ -291,16 +328,20 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			// Don't return an error as we're only logging
 			log.Error(err, "computing changed field paths (for logging)")
 		}
-		log.Info("updating logMetric", "diffs", diffs)
+		if len(diffs) != 0 {
+			log.Info("updating logMetric", "diffs", diffs)
 
-		// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
-		// but this behavior is consistent with the DCL backed behavior we provide for this resource.
-		// todo acpana: look for / switch to a better method and/or use etags etc
-		updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("logMetric update failed: %w", err)
+			// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
+			// but this behavior is consistent with the DCL backed behavior we provide for this resource.
+			// todo acpana: look for / switch to a better method and/or use etags etc
+			updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("logMetric update failed: %w", err)
+			}
+			latest = updated
+		} else {
+			log.Info("no diffs found for logMetric", "logMetric", a.fullyQualifiedName())
 		}
-		latest = updated
 	}
 
 	status := &krm.LoggingLogMetricStatus{}

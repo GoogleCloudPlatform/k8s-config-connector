@@ -63,14 +63,24 @@ type UpdateOperation struct {
 	operationBase
 
 	lifecycleHandler lifecyclehandler.LifecycleHandler
+	oldObject        *unstructured.Unstructured
 }
 
-func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured) *UpdateOperation {
+func NewUpdateOperation(lifecycleHandler lifecyclehandler.LifecycleHandler, client client.Client, object *unstructured.Unstructured, oldObject *unstructured.Unstructured) *UpdateOperation {
 	op := &UpdateOperation{}
 	op.lifecycleHandler = lifecycleHandler
 	op.client = client
 	op.object = object
+	op.oldObject = oldObject
 	return op
+}
+
+func (o *UpdateOperation) HasOldObject() bool {
+	return o.oldObject != nil
+}
+
+func (o *UpdateOperation) GetOldUnstructured() *unstructured.Unstructured {
+	return o.oldObject
 }
 
 func (o *UpdateOperation) RecordUpdatingEvent() {

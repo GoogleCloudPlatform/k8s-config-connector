@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -42,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/cache"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
@@ -94,6 +96,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
 		jitterGenerator: jg,
+		oldObjectsCache: &sync.Map{},
 	}
 	return &r, nil
 }
@@ -112,8 +115,7 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
+		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{})
 
 	// The controller should watch K8s Secret if it supports sensitive fields.
 	if _, ok := r.model.(SensitiveFieldModel); ok {
@@ -137,6 +139,41 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 				return requests
 			}),
 		)
+	}
+
+	// For GVKs that model resources with mutable but unreadable fields (including sensitive fields),
+	// we add an event handler to cache the most recent old object update
+	// TODO acpana: better GVK abstraction for registration
+	if r.gvk.Kind == "LoggingLogMetric" {
+		log.FromContext(context.Background()).Info("adding event handler for LoggingLogMetric")
+
+		informer, err := mgr.GetCache().GetInformer(context.Background(), obj)
+		if err != nil {
+			return fmt.Errorf("error getting informer for %s: %w", r.gvk, err)
+		}
+		_, err = informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
+			UpdateFunc: func(oldObj, newObj interface{}) {
+				if oldObj == nil || newObj == nil {
+					return
+				}
+				oldUnstruct, ok := oldObj.(*unstructured.Unstructured)
+				if !ok {
+					log.FromContext(context.Background()).Error(fmt.Errorf("expected oldObj to be of type *unstructured.Unstructured"), "error converting oldObj in UpdateEvent handler")
+				}
+				key := types.NamespacedName{
+					Name:      oldUnstruct.GetName(),
+					Namespace: oldUnstruct.GetNamespace(),
+				}
+
+				r.oldObjectsCache.Store(key, oldUnstruct.DeepCopy())
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("error adding event handler for %s: %w", r.gvk, err)
+		}
+		controllerBuilder = controllerBuilder.For(obj, builder.WithPredicates(predicateList...))
+	} else {
+		controllerBuilder = controllerBuilder.For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
 	}
 
 	_, err := controllerBuilder.Build(r)
@@ -168,6 +205,8 @@ type DirectReconciler struct {
 	jitterGenerator            jitter.Generator
 
 	controllerName string
+
+	oldObjectsCache *sync.Map // map[types.NamespacedName]*unstructured.Unstructured
 }
 
 type reconcileContext struct {
@@ -341,7 +380,16 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		hasSetReadyCondition = createOp.HasSetReadyCondition
 		requeueRequested = createOp.RequeueRequested
 	} else {
-		updateOp := NewUpdateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u)
+		var oldUnstruct *unstructured.Unstructured
+		if oldObject, found := r.Reconciler.oldObjectsCache.Load(k8s.GetNamespacedName(u)); found {
+			var ok bool
+			oldUnstruct, ok = oldObject.(*unstructured.Unstructured)
+			if !ok {
+				return false, fmt.Errorf("error converting oldObject to unstructured")
+			}
+		}
+
+		updateOp := NewUpdateOperation(r.Reconciler.LifecycleHandler, r.Reconciler.Client, u, oldUnstruct)
 		if err := adapter.Update(ctx, updateOp); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))

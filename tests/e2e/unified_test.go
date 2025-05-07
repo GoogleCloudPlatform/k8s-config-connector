@@ -1268,7 +1268,11 @@ func verifyKubeWatches(h *create.Harness) {
 	// if we read from both of them.
 	for metadataWatch := range metadataWatches {
 		if fullWatches.Has(metadataWatch) {
-			h.Errorf("two watches on %q (metadata and full); likely to cause race conditions", metadataWatch)
+			if strings.Contains(metadataWatch, "logging.cnrm.cloud.google.com/v1beta1/logginglogmetrics") {
+				h.Logf("%q has a full and metadata watch from deletiondefender running in process", metadataWatch)
+			} else {
+				h.Errorf("two watches on %q (metadata and full); likely to cause race conditions", metadataWatch)
+			}
 		}
 	}
 
@@ -1280,6 +1284,8 @@ func verifyKubeWatches(h *create.Harness) {
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectors",
 		"/apis/apiextensions.k8s.io/v1/customresourcedefinitions",
 		"/api/v1/secrets",
+		// for mutable but unreadable fields
+		"/apis/logging.cnrm.cloud.google.com/v1beta1/logginglogmetrics",
 	)
 	for fullWatch := range fullWatches {
 		if !allowedFullWatches.Has(fullWatch) {

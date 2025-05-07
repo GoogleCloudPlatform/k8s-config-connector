@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-WRITE-KUBE-OBJECT: false
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
@@ -44,7 +43,12 @@ spec:
   projectRef:
     external: "projects/${projectId}"
 ---
-WRITE-KUBE-OBJECT: false
+TEST: TOUCH
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-${uniqueId}
+---
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
@@ -55,7 +59,7 @@ spec:
   filter: "resource.type=gae_app AND severity<=ERROR"
   metricDescriptor:
     displayName: "a concise name"
-    launchStage: "EARLY_ACCESS"
+    launchStage: "ALPHA"
     metadata:
       ingestDelay: "1s"
       samplePeriod: "1s"
