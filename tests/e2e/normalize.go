@@ -933,6 +933,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	visitor.removePaths.Insert(".error.details[].stackEntries")
 
 	// Common variables
 	visitor.replacePaths[".etag"] = "abcdef0123A="
@@ -1081,9 +1082,30 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		// WorkflowsExecution
 		visitor.ReplacePath(".workflowRevisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".duration", "0.100000000s")
+		visitor.ReplacePath(".status.currentSteps[].routine", "routine-normalized")
+		visitor.ReplacePath(".status.currentSteps[].step", "step-normalized")
 		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 			switch path {
 			case ".name":
+				tokens := strings.Split(s, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+					tokens[len(tokens)-1] = "${executionId}"
+					s = strings.Join(tokens, "/")
+				}
+			}
+			return s
+		})
+		// Again in .executions[]
+		visitor.ReplacePath(".executions[].workflowRevisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".executions[].duration", "0.100000000s")
+		visitor.ReplacePath(".executions[].status.currentSteps[].routine", "routine-normalized")
+		visitor.ReplacePath(".executions[].status.currentSteps[].step", "step-normalized")
+		visitor.ReplacePath(".executions[].createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".executions[].endTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".executions[].startTime", "2024-04-01T12:34:56.123456Z")
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			switch path {
+			case ".executions[].name":
 				tokens := strings.Split(s, "/")
 				if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
 					tokens[len(tokens)-1] = "${executionId}"
