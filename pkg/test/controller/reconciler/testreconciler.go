@@ -286,7 +286,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		}
 		return reconciler
 	case ReconcilerTypeIAMPartialPolicy:
-		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg, nil)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
