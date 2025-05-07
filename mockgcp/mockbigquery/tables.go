@@ -16,6 +16,7 @@ package mockbigquery
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -254,6 +255,12 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		}
 	}
 
+	if obj.EncryptionConfiguration != nil {
+		fmt.Println("####################################################")
+		fmt.Printf("%+v\n", obj.EncryptionConfiguration)
+		fmt.Println("####################################################")
+	}
+
 	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	obj.Etag = PtrTo(computeEtag(obj))
@@ -295,6 +302,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	updated.Etag = PtrTo(computeEtag(updated))
 
+	updated.TableConstraints = req.GetTable().TableConstraints
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}

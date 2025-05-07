@@ -23,7 +23,7 @@ spec:
   friendlyName: BigQueryTable Full Example
   requirePartitionFilter: true
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"REQUIRED","name":"name","type":"STRING"},{"name":"post_abbr","type":"STRING"},{"name":"date","type":"DATE"},{"name":"col_numeric","precision":"38","scale":"9","type":"NUMERIC"},{"name":"col_bignumeric","precision":"76","scale":"38","type":"BIGNUMERIC"},{"name":"col_geography","type":"GEOGRAPHY"},{"name":"col_timestamp","type":"TIMESTAMP"},{"fields":[{"name":"sub_col1","type":"INTEGER"},{"name":"sub_col2","type":"BOOLEAN"}],"name":"col_record","type":"RECORD"},{"mode":"REPEATED","name":"col_array","type":"INTEGER"}]'
+  schema: '[{"mode":"REQUIRED","name":"name","policyTags":{},"type":"STRING"},{"name":"post_abbr","policyTags":{},"type":"STRING"},{"name":"date","policyTags":{},"type":"DATE"},{"name":"col_numeric","policyTags":{},"precision":"38","scale":"9","type":"NUMERIC"},{"name":"col_bignumeric","policyTags":{},"precision":"76","scale":"38","type":"BIGNUMERIC"},{"name":"col_geography","policyTags":{},"type":"GEOGRAPHY"},{"name":"col_timestamp","policyTags":{},"type":"TIMESTAMP"},{"fields":[{"name":"sub_col1","policyTags":{},"type":"INTEGER"},{"name":"sub_col2","policyTags":{},"type":"BOOLEAN"}],"name":"col_record","type":"RECORD"},{"mode":"REPEATED","name":"col_array","policyTags":{},"type":"INTEGER"}]'
   tableConstraints:
     foreignKeys:
     - columnReferences:
