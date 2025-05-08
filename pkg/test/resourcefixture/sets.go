@@ -114,6 +114,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"SecureSourceManagerRepository",
 		"ManagedKafkaCluster",
 		"ManagedKafkaTopic",
+		"WorkflowsWorkflow",
 		"IAPSettings",
 		"SpeechCustomClass",
 		"SpeechPhraseSet",
