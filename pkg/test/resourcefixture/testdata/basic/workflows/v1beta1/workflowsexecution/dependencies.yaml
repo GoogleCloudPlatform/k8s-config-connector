@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: workflows.cnrm.cloud.google.com/v1alpha1
+apiVersion: workflows.cnrm.cloud.google.com/v1beta1
 kind: WorkflowsWorkflow
 metadata:
   annotations:
@@ -23,4 +23,6 @@ spec:
   description: "Example workflow"
   labels:
     env: "test"
-  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: locationEnvVar\n        result: location\n    - returnOutput:\n        return: '${\"Hello \" + input.firstName + \" \" + input.lastName}'"
+  projectRef:
+    external: ${projectId}

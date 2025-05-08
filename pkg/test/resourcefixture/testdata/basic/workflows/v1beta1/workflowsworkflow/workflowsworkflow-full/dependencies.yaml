@@ -98,3 +98,41 @@ spec:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSCryptoKey
     name: kmscryptokey-${uniqueId}-updated
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-${uniqueId}
+spec:
+  description: Key For KCC create testing.
+  parent: projects/${projectId}
+  shortName: keyname${uniqueId}
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagKey
+metadata:
+  name: tagstagkey-${uniqueId}-updated
+spec:
+  description: Key For KCC update testing.
+  parent: projects/${projectId}
+  shortName: keyname${uniqueId}-updated
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-${uniqueId}
+spec:
+  description: Value for KCC create testing.
+  parentRef:
+    name: tagstagkey-${uniqueId}
+  shortName: valuename
+---
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagValue
+metadata:
+  name: tagstagvalue-${uniqueId}-updated
+spec:
+  description: Value for KCC update testing.
+  parentRef:
+    name: tagstagkey-${uniqueId}-updated
+  shortName: valuename-updated
