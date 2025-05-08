@@ -59,6 +59,7 @@ const (
 	COMMIT_MSG_46  = "{{kind}}: Verify and Fix real GCP tests"
 	COMMIT_MSG_47  = "{{kind}}: Record golden logs for mock GCP tests"
 	COMMIT_MSG_48  = "{{kind}}: Verify and Fix mock GCP tests"
+	COMMIT_MSG_50  = "{{kind}}: Move existing test to subdirectory"
 )
 
 var REGEX_MSG_9A = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_9A))
@@ -96,6 +97,7 @@ var REGEX_MSG_45 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_45))
 var REGEX_MSG_46 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_46))
 var REGEX_MSG_47 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_47))
 var REGEX_MSG_48 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_48))
+var REGEX_MSG_50 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_50))
 
 func skipPost21A(msg string) bool {
 	return REGEX_MSG_21A.MatchString(msg)

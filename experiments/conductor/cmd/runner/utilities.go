@@ -64,6 +64,7 @@ var commandMap = map[int64]string{
 	cmdRunAndFixGoldenRealGCPOutput: "runandfixgoldenrealgcpoutput",
 	cmdCaptureGoldenMockOutput:      "capturegoldenmockoutput",
 	cmdRunAndFixGoldenMockOutput:    "runandfixgoldenmockoutput",
+	cmdMoveExistingTest:             "moveexistingtest",
 }
 
 type exitBash func()
@@ -580,6 +581,7 @@ type BranchProcessor struct {
 	VerifyAttempts     int
 	AttemptsOnChanges  int // Number of attempts to run the processor if changes are detected
 	SkipProcessorOnMsg SkipProcessorOnMsgFn
+	CommitOptional     bool // Whether a commit is optional or required; default to be required
 }
 
 func (b *BranchProcessor) CommitMsg(branch Branch) string {
@@ -632,9 +634,11 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 			}
 		}
 
-		// If commitMsg is not set, we don't need to commit the changes
-		// we assume there are no changes to commit
-		if commitMsg == "" {
+		// If commitMsg is not set, we don't need to commit the changes,
+		// we assume there are no changes to commit.
+		// If CommitOptional is explicitly set to true and there is no change,
+		// we assume there are no changes to commit.
+		if commitMsg == "" || processor.CommitOptional && !someChanged {
 			return changesCommitted, execResults, nil
 		}
 
