@@ -18,7 +18,7 @@ import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -76,15 +76,15 @@ func DocumentAIProcessorVersionSpec_ToProto(mapCtx *direct.MapContext, in *krm.D
 	out.DeprecationInfo = ProcessorVersion_DeprecationInfo_ToProto(mapCtx, in.DeprecationInfo)
 	return out
 }
-func DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx *direct.MapContext, in string) *refs.KMSCryptoKeyRef {
+func DocumentAIProcessorVersionSpec_KMSKeyNameRef_FromProto(mapCtx *direct.MapContext, in string) *kmsv1beta1.KMSKeyRef_OneOf {
 	if in == "" {
 		return nil
 	}
-	return &refs.KMSCryptoKeyRef{
+	return &kmsv1beta1.KMSKeyRef_OneOf{
 		External: in,
 	}
 }
-func DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx *direct.MapContext, in *refs.KMSCryptoKeyRef) string {
+func DocumentAIProcessorVersionSpec_KMSKeyNameRef_ToProto(mapCtx *direct.MapContext, in *kmsv1beta1.KMSKeyRef_OneOf) string {
 	if in == nil {
 		return ""
 	}

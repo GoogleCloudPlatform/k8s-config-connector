@@ -28,13 +28,8 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &KMSKeyHandleRef{}
 
-// KMSKeyHandleRef defines the resource reference to KMSKeyHandle, which "External" field
-// holds the GCP identifier for the KRM object.
+// KMSKeyHandleRef defines the resource reference to KMSKeyHandle
 type KMSKeyHandleRef struct {
-	// A reference to an externally managed KMSKeyHandle resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyHandles/{{keyhandleID}}".
-	External string `json:"external,omitempty"`
-
 	// The name of a KMSKeyHandle resource.
 	Name string `json:"name,omitempty"`
 
@@ -43,18 +38,10 @@ type KMSKeyHandleRef struct {
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSKeyHandle.
-// If the "External" is given in the other resource's spec.KMSKeyHandleRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
+// The "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
 func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSKeyHandleGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseKMSKeyHandleExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
+	if r.Name == "" {
+		return "", fmt.Errorf("use KMS autokey requires referring to the Config Connector `KMSKeyHanle` object. please provide the `name` of your  `KMSKeyHanle`.")
 	}
 
 	// From the Config Connector object
@@ -70,14 +57,13 @@ func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyHandleGVK, key, err)
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	// Use status.observedState.kmsKey instead of status.externalRef as the name of autoKey
+	kmsKey, _, err := unstructured.NestedString(u.Object, "status", "observedState", "kmsKey")
 	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+		return "", fmt.Errorf("reading status.observedState.kmsKey: %w", err)
 	}
-	if actualExternalRef == "" {
+	if kmsKey == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return kmsKey, nil
 }
