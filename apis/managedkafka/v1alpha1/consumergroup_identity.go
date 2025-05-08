@@ -32,7 +32,7 @@ type ConsumerGroupIdentity struct {
 }
 
 func (i *ConsumerGroupIdentity) String() string {
-	return i.parent.String() + "/consumergroups/" + i.id
+	return i.parent.String() + "/consumerGroups/" + i.id
 }
 
 func (i *ConsumerGroupIdentity) ID() string {
@@ -111,8 +111,8 @@ func NewConsumerGroupIdentity(ctx context.Context, reader client.Reader, obj *Ma
 
 func ParseConsumerGroupExternal(external string) (parent *ConsumerGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "consumergroups" {
-		return nil, "", fmt.Errorf("format of ManagedKafkaConsumerGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{cluster}}/consumergroups/{{consumergroupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "clusters" || tokens[6] != "consumerGroups" {
+		return nil, "", fmt.Errorf("format of ManagedKafkaConsumerGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/clusters/{{cluster}}/consumerGroups/{{consumergroupID}})", external)
 	}
 	parent = &ConsumerGroupParent{
 		ProjectID:   tokens[1],
