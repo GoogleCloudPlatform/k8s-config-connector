@@ -21,7 +21,7 @@ sync-repo:
 			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
 	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
-	@cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION)
+	cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
 
 .PHONY: gen-proto
 gen-proto: tools sync-repo
@@ -186,7 +186,10 @@ gen-proto-no-fixup:
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
 	mkdir -p third_party
-	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git pull)
+	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all)
+	git -C third_party/googleapis reset --hard $(GOOGLEAPI_VERSION)
+	git -C third_party/googleapis clean -df .
+	git -C third_party/googleapis status
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
