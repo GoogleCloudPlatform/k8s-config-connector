@@ -21,7 +21,7 @@ package workflowexecutions
 
 import (
 	pb "cloud.google.com/go/workflows/executions/apiv1/executionspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflowexecutions/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflowexecutions/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -151,61 +151,5 @@ func Execution_Status_Step_ToProto(mapCtx *direct.MapContext, in *krm.Execution_
 	out := &pb.Execution_Status_Step{}
 	out.Routine = direct.ValueOf(in.Routine)
 	out.Step = direct.ValueOf(in.Step)
-	return out
-}
-func WorkflowsExecutionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.WorkflowsExecutionObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkflowsExecutionObservedState{}
-	// MISSING: Name
-	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
-	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.Result = direct.LazyPtr(in.GetResult())
-	out.Error = Execution_Error_FromProto(mapCtx, in.GetError())
-	out.WorkflowRevisionID = direct.LazyPtr(in.GetWorkflowRevisionId())
-	out.Status = Execution_Status_FromProto(mapCtx, in.GetStatus())
-	out.StateError = Execution_StateError_FromProto(mapCtx, in.GetStateError())
-	return out
-}
-func WorkflowsExecutionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsExecutionObservedState) *pb.Execution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Execution{}
-	// MISSING: Name
-	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
-	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
-	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
-	out.State = direct.Enum_ToProto[pb.Execution_State](mapCtx, in.State)
-	out.Result = direct.ValueOf(in.Result)
-	out.Error = Execution_Error_ToProto(mapCtx, in.Error)
-	out.WorkflowRevisionId = direct.ValueOf(in.WorkflowRevisionID)
-	out.Status = Execution_Status_ToProto(mapCtx, in.Status)
-	out.StateError = Execution_StateError_ToProto(mapCtx, in.StateError)
-	return out
-}
-func WorkflowsExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Execution) *krm.WorkflowsExecutionSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WorkflowsExecutionSpec{}
-	// MISSING: Name
-	out.Argument = direct.LazyPtr(in.GetArgument())
-	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
-	out.Labels = in.Labels
-	return out
-}
-func WorkflowsExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsExecutionSpec) *pb.Execution {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Execution{}
-	// MISSING: Name
-	out.Argument = direct.ValueOf(in.Argument)
-	out.CallLogLevel = direct.Enum_ToProto[pb.Execution_CallLogLevel](mapCtx, in.CallLogLevel)
-	out.Labels = in.Labels
 	return out
 }

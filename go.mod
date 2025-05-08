@@ -63,7 +63,7 @@ require (
 	cloud.google.com/go/speech v1.26.0
 	cloud.google.com/go/storage v1.50.0
 	cloud.google.com/go/vmwareengine v1.3.3
-	cloud.google.com/go/workflows v1.13.3
+	cloud.google.com/go/workflows v1.14.2
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0

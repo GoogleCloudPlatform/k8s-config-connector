@@ -1,0 +1,261 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package mockgcp.cloud.workflows.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/workflows/apiv1/workflowspb;workflowspb";
+
+service ProjectsServer {
+}
+
+service ProjectsLocationsServer {
+
+  // Gets information about a location.
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*}"
+    };
+  };
+
+  // Lists information about the supported locations for this service.
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*}/locations"
+    };
+  };
+}
+
+service ProjectsLocationsWorkflowsServer {
+
+  // Creates a new workflow. If a workflow with the specified name already exists in the specified project and location, the long running operation returns a ALREADY_EXISTS error.
+  rpc CreateProjectsLocationsWorkflow(CreateProjectsLocationsWorkflowRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/workflows"
+      body: "projects_locations_workflow"
+    };
+  };
+
+  // Deletes a workflow with the specified name. This method also cancels and deletes all running executions of the workflow.
+  rpc DeleteProjectsLocationsWorkflow(DeleteProjectsLocationsWorkflowRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/workflows/*}"
+    };
+  };
+
+  // Gets details of a single workflow.
+  rpc GetProjectsLocationsWorkflow(GetProjectsLocationsWorkflowRequest) returns (Workflow) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/workflows/*}"
+    };
+  };
+
+  // Lists workflows in a given project and location. The default order is not specified.
+  rpc ListProjectsLocationsWorkflows(ListProjectsLocationsWorkflowsRequest) returns (ListWorkflowsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/workflows"
+    };
+  };
+
+  // Lists revisions for a given workflow.
+  rpc ListRevisionsProjectsLocationsWorkflow(ListRevisionsProjectsLocationsWorkflowRequest) returns (ListWorkflowRevisionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/workflows/*}:listRevisions"
+    };
+  };
+
+  // Updates an existing workflow. Running this method has no impact on already running executions of the workflow. A new revision of the workflow might be created as a result of a successful update operation. In that case, the new revision is used in new workflow executions.
+  rpc PatchProjectsLocationsWorkflow(PatchProjectsLocationsWorkflowRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/workflows/*}"
+      body: "projects_locations_workflow"
+    };
+  };
+}
+
+// A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+
+// The response message for Locations.ListLocations.
+message ListLocationsResponse {
+  // A list of locations that matches the specified filter in the request.
+  repeated Location locations = 1 [json_name="locations"];
+  // The standard List next-page token.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for Operations.ListOperations.
+message ListOperationsResponse {
+  // The standard List next-page token.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // A list of operations that matches the specified filter in the request.
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+}
+
+// Response for the ListWorkflowRevisions method.
+message ListWorkflowRevisionsResponse {
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The revisions of the workflow, ordered in reverse chronological order.
+  repeated Workflow workflows = 2 [json_name="workflows"];
+}
+
+// Response for the ListWorkflows method.
+message ListWorkflowsResponse {
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // Unreachable resources.
+  repeated string unreachable = 2 [json_name="unreachable"];
+  // The workflows that match the request.
+  repeated Workflow workflows = 3 [json_name="workflows"];
+}
+
+// A resource that represents a Google Cloud location.
+message Location {
+  // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
+  optional string display_name = 1 [json_name="displayName"];
+  // Cross-service attributes for the location. For example {"cloud.googleapis.com/region": "us-east1"}
+  map<string, string> labels = 2 [json_name="labels"];
+  // The canonical id for this location. For example: `"us-east1"`.
+  optional string location_id = 3 [json_name="locationId"];
+  // Service-specific metadata. For example the available capacity at the given location.
+  map<string, .google.protobuf.Any> metadata = 4 [json_name="metadata"];
+  // Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`
+  optional string name = 5 [json_name="name"];
+}
+
+// Represents the metadata of the long-running operation.
+message OperationMetadata {
+  // API version used to start the operation.
+  optional string api_version = 1 [json_name="apiVersion"];
+  // The time the operation was created.
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // The time the operation finished running.
+  optional .google.protobuf.Timestamp end_time = 3 [json_name="endTime"];
+  // Server-defined resource path for the target of the operation.
+  optional string target = 4 [json_name="target"];
+  // Name of the verb executed by the operation.
+  optional string verb = 5 [json_name="verb"];
+}
+
+// Describes an error related to the current state of the workflow.
+message StateError {
+  // Provides specifics about the error.
+  optional string details = 1 [json_name="details"];
+  // The type of this state error.
+  optional string type = 2 [json_name="type"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
+}
+
+// Workflow program to be executed by Workflows.
+message Workflow {
+  // Output only. A list of all KMS crypto keys used to encrypt or decrypt the data associated with the workflow.
+  repeated string all_kms_keys = 1 [json_name="allKmsKeys"];
+  // Output only. A list of all KMS crypto key versions used to encrypt or decrypt the data associated with the workflow.
+  repeated string all_kms_keys_versions = 2 [json_name="allKmsKeysVersions"];
+  // Optional. Describes the level of platform logging to apply to calls and call responses during executions of this workflow. If both the workflow and the execution specify a logging level, the execution level takes precedence.
+  optional string call_log_level = 3 [json_name="callLogLevel"];
+  // Output only. The timestamp for when the workflow was created. This is a workflow-wide field and is not tied to a specific revision.
+  optional .google.protobuf.Timestamp create_time = 4 [json_name="createTime"];
+  // Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. Format: projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey} Using `-` as a wildcard for the `{project}` or not providing one at all will infer the project from the account. If not provided, data associated with the workflow will not be CMEK-encrypted.
+  optional string crypto_key_name = 5 [json_name="cryptoKeyName"];
+  // Output only. The resource name of a KMS crypto key version used to encrypt or decrypt the data associated with the workflow. Format: projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}
+  optional string crypto_key_version = 6 [json_name="cryptoKeyVersion"];
+  // Description of the workflow provided by the user. Must be at most 1000 Unicode characters long. This is a workflow-wide field and is not tied to a specific revision.
+  optional string description = 7 [json_name="description"];
+  // Optional. Describes the execution history level to apply to this workflow.
+  optional string execution_history_level = 8 [json_name="executionHistoryLevel"];
+  // Labels associated with this workflow. Labels can contain at most 64 entries. Keys and values can be no longer than 63 characters and can only contain lowercase letters, numeric characters, underscores, and dashes. Label keys must start with a letter. International characters are allowed. This is a workflow-wide field and is not tied to a specific revision.
+  map<string, string> labels = 9 [json_name="labels"];
+  // The resource name of the workflow. Format: projects/{project}/locations/{location}/workflows/{workflow}. This is a workflow-wide field and is not tied to a specific revision.
+  optional string name = 10 [json_name="name"];
+  // Output only. The timestamp for the latest revision of the workflow's creation.
+  optional .google.protobuf.Timestamp revision_create_time = 11 [json_name="revisionCreateTime"];
+  // Output only. The revision of the workflow. A new revision of a workflow is created as a result of updating the following properties of a workflow: - Service account - Workflow code to be executed The format is "000001-a4d", where the first six characters define the zero-padded revision ordinal number. They are followed by a hyphen and three hexadecimal random characters.
+  optional string revision_id = 12 [json_name="revisionId"];
+  // The service account associated with the latest workflow version. This service account represents the identity of the workflow and determines what permissions the workflow has. Format: projects/{project}/serviceAccounts/{account} or {account} Using `-` as a wildcard for the `{project}` or not providing one at all will infer the project from the account. The `{account}` value can be the `email` address or the `unique_id` of the service account. If not provided, workflow will use the project's default service account. Modifying this field for an existing workflow results in a new workflow revision.
+  optional string service_account = 13 [json_name="serviceAccount"];
+  // Workflow code to be executed. The size limit is 128KB.
+  optional string source_contents = 14 [json_name="sourceContents"];
+  // Output only. State of the workflow deployment.
+  optional string state = 15 [json_name="state"];
+  // Output only. Error regarding the state of the workflow. For example, this field will have error details if the execution data is unavailable due to revoked KMS key permissions.
+  optional StateError state_error = 16 [json_name="stateError"];
+  // Optional. Input only. Immutable. Tags associated with this workflow.
+  map<string, string> tags = 17 [json_name="tags"];
+  // Output only. The timestamp for when the workflow was last updated. This is a workflow-wide field and is not tied to a specific revision.
+  optional .google.protobuf.Timestamp update_time = 18 [json_name="updateTime"];
+  // Optional. User-defined environment variables associated with this workflow revision. This map has a maximum length of 20. Each string can take up to 4KiB. Keys cannot be empty strings and cannot start with "GOOGLE" or "WORKFLOWS".
+  map<string, string> user_env_vars = 19 [json_name="userEnvVars"];
+}
+
+message GetProjectsLocationRequest {
+  optional string name = 1;
+}
+
+message ListProjectsLocationsRequest {
+  optional string extra_location_types = 1;
+  optional string filter = 2;
+  optional string name = 3;
+  optional int32 page_size = 4;
+  optional string page_token = 5;
+}
+
+message CreateProjectsLocationsWorkflowRequest {
+  optional string parent = 1;
+  optional string workflow_id = 2;
+  optional Workflow projects_locations_workflow = 3;
+}
+
+message DeleteProjectsLocationsWorkflowRequest {
+  optional string name = 1;
+}
+
+message GetProjectsLocationsWorkflowRequest {
+  optional string name = 1;
+  optional string revision_id = 2;
+}
+
+message ListProjectsLocationsWorkflowsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+
+message ListRevisionsProjectsLocationsWorkflowRequest {
+  optional string name = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+}
+
+message PatchProjectsLocationsWorkflowRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Workflow projects_locations_workflow = 3;
+}

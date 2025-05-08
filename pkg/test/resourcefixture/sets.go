@@ -112,6 +112,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"SecureSourceManagerRepository",
 		"ManagedKafkaCluster",
 		"ManagedKafkaTopic",
+		"WorkflowsWorkflow",
+		"WorkflowsExecution",
 		"IAPSettings",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)

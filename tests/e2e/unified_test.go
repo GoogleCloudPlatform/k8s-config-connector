@@ -569,6 +569,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					addReplacement("revisionId", "revision-id-placeholder")
+
 					// specific to apigateway
 					addReplacement("managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
 					addReplacement("response.managedService", "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog")
@@ -798,7 +800,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("revisionId", "revision-id-placeholder")
 
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)

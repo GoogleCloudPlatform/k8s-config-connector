@@ -274,9 +274,20 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".response.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
 	visitor.replacePaths[".status.observedState.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
 
-	// Specific to WorflowsWorkflow
+	// Specific to WorkflowsWorkflow
 	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"
+	// Specific to WorkflowsExecution
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.externalRef") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+				tokens[len(tokens)-1] = "${executionId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
 
 	// Specific to DocumentAIProcessor
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -934,6 +945,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	visitor.removePaths.Insert(".error.details[].stackEntries")
 
 	// Common variables
 	visitor.replacePaths[".etag"] = "abcdef0123A="
@@ -1079,6 +1091,41 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
 		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+		// WorkflowsExecution
+		visitor.ReplacePath(".workflowRevisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".duration", "0.100000000s")
+		visitor.ReplacePath(".status.currentSteps[].routine", "routine-normalized")
+		visitor.ReplacePath(".status.currentSteps[].step", "step-normalized")
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			switch path {
+			case ".name":
+				tokens := strings.Split(s, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+					tokens[len(tokens)-1] = "${executionId}"
+					s = strings.Join(tokens, "/")
+				}
+			}
+			return s
+		})
+		// Again in .executions[]
+		visitor.ReplacePath(".executions[].workflowRevisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".executions[].duration", "0.100000000s")
+		visitor.ReplacePath(".executions[].status.currentSteps[].routine", "routine-normalized")
+		visitor.ReplacePath(".executions[].status.currentSteps[].step", "step-normalized")
+		visitor.ReplacePath(".executions[].createTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".executions[].endTime", "2024-04-01T12:34:56.123456Z")
+		visitor.ReplacePath(".executions[].startTime", "2024-04-01T12:34:56.123456Z")
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			switch path {
+			case ".executions[].name":
+				tokens := strings.Split(s, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "executions" {
+					tokens[len(tokens)-1] = "${executionId}"
+					s = strings.Join(tokens, "/")
+				}
+			}
+			return s
+		})
 	}
 
 	// DocumentAI
