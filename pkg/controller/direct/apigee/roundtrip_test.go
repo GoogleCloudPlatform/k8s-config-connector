@@ -222,7 +222,7 @@ func FuzzApigeeEnvgroupAttachmentObservedState(f *testing.F) {
 			".CreatedAt": func(t *testing.T, fieldName string, field reflect.Value) {
 				// Generate a valid timestamp within 10 years.
 				validTime := time.Now().Add(time.Duration(stream.Intn(365*10)) * 24 * time.Hour)
-				field.SetString(validTime.Format(time.RFC3339))
+				field.SetString(validTime.UTC().Format(time.RFC3339))
 			},
 		}
 
