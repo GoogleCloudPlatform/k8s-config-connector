@@ -277,28 +277,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
-
-{
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-OK
-
-{
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_MEDIUM"
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
 
 {
@@ -332,27 +310,6 @@ OK
     "singleClusterRouting": {
       "clusterId": "cluster1-${uniqueId}"
     }
-  }
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
-
-{
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-OK
-
-{
-  "dataBoostIsolationReadOnly": {
-    "computeBillingOwner": "HOST_PAYS"
-  },
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "clusterId": "cluster1-${uniqueId}"
   }
 }
 
