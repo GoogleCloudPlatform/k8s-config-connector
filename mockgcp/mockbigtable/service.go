@@ -20,14 +20,14 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
-	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/bigtable/admin/v2"
+	// grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/bigtable/admin/v2"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
@@ -66,20 +66,22 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		grpcpb.RegisterBigtableInstanceAdminHandler,
-		grpcpb.RegisterBigtableTableAdminHandler,
-		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(pb.NewBigtableTableAdminClient(conn))
+	grpcMux.AddService(pb.NewBigtableInstanceAdminClient(conn))
+
+	mux := grpcMux.RegisterWithHTTPMux("/v2/{prefix=**}/operations/{name=**}", conn, grpcMux)
+
+	// // Returns slightly non-standard errors
+	// mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+	// 	if error.Code == 404 {
+	// 		error.Errors = nil
+	// 	}
+	// }
 
 	return mux, nil
 }
