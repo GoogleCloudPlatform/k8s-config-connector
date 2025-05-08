@@ -97,7 +97,7 @@ func main() {
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
 		log.Fatal(err, "error adding registration controller")
 	}
 
