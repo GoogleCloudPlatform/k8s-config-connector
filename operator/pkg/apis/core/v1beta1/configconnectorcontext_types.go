@@ -111,10 +111,9 @@ func init() {
 var _ addonv1alpha1.CommonObject = &ConfigConnectorContext{}
 
 func (c *ConfigConnectorContext) ComponentName() string {
-	// This should not be called, but is needed to satisfy the CommonObject interface.
+	// This is only called to build a logger, but is needed to satisfy the CommonObject interface.
 	// (We only interact with the status fields)
-	klog.Fatalf("ComponentName should not be called	on ConfigConnectorContext")
-	return ""
+	return "configconnectorcontext"
 }
 
 func (c *ConfigConnectorContext) CommonSpec() addonv1alpha1.CommonSpec {

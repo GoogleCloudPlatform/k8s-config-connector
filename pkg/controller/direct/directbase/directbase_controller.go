@@ -112,7 +112,7 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
 		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(source.Channel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
 
 	// The controller should watch K8s Secret if it supports sensitive fields.

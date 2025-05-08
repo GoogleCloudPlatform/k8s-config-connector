@@ -21,7 +21,6 @@ import (
 )
 
 const (
-	ConfigConnectorComponentName         = "configconnector"
 	WorkloadIdentityAnnotation           = "iam.gke.io/gcp-service-account"
 	ServiceAccountNamePrefix             = "cnrm-controller-manager-"
 	ControllerManagerPodForClusterMode   = "cnrm-controller-manager-0"
@@ -39,10 +38,7 @@ const (
 	VersionAnnotation                    = "cnrm.cloud.google.com/version"
 	OperatorVersionAnnotation            = "cnrm.cloud.google.com/operator-version"
 	ProjectIDAnnotation                  = "cnrm.cloud.google.com/project-id"
-	StableChannel                        = "stable"
 	CoreCNRMGroup                        = "core.cnrm.cloud.google.com"
-	ConfigConnectorAllowedName           = "configconnector.core.cnrm.cloud.google.com"
-	ConfigConnectorContextAllowedName    = "configconnectorcontext.core.cnrm.cloud.google.com"
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "ConfigConnector is up to date"
 	UpdateFailed                         = "UpdateFailed"

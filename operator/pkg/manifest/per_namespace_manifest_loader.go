@@ -19,10 +19,14 @@ import (
 	"fmt"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
+)
+
+const (
+	ConfigConnectorComponentName = "configconnector"
+	StableChannel                = "stable"
 )
 
 type PerNamespaceManifestLoader struct {
@@ -44,8 +48,8 @@ func (p *PerNamespaceManifestLoader) ResolveManifest(ctx context.Context, o runt
 		return nil, fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 	}
 
-	componentName := k8s.ConfigConnectorComponentName
-	channelName := k8s.StableChannel
+	componentName := ConfigConnectorComponentName
+	channelName := StableChannel
 
 	version := ccc.Spec.Version
 	if version == "" {
