@@ -282,6 +282,320 @@ spec:
         - spec
         type: object
     served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Workflow is the Schema for the Workflow API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: WorkflowsWorkflowSpec defines the desired state of Workflow
+            properties:
+              callLogLevel:
+                description: Optional. Describes the level of platform logging to
+                  apply to calls and call responses during executions of this workflow.
+                  If both the workflow and the execution specify a logging level,
+                  the execution level takes precedence.
+                type: string
+              description:
+                description: Description of the workflow provided by the user. Must
+                  be at most 1000 unicode characters long.
+                type: string
+              executionHistoryLevel:
+                description: Optional. Describes the execution history level to apply
+                  to this workflow.
+                type: string
+              kmsCryptoKeyRef:
+                description: Optional. The resource name of a KMS crypto key used
+                  to encrypt or decrypt the data associated with the workflow. If
+                  not provided, data associated with the workflow will not be CMEK-encrypted.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels associated with this workflow. Labels can contain
+                  at most 64 entries. Keys and values can be no longer than 63 characters
+                  and can only contain lowercase letters, numeric characters, underscores,
+                  and dashes. Label keys must start with a letter. International characters
+                  are allowed.
+                type: object
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The Workflow name. If not given, the metadata.name will
+                  be used.
+                type: string
+              serviceAccountRef:
+                description: The service account associated with the latest workflow
+                  version. This service account represents the identity of the workflow
+                  and determines what permissions the workflow has. If not provided,
+                  workflow will use the project's default service account. Modifying
+                  this field for an existing workflow results in a new workflow revision.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              sourceContents:
+                description: Required. Workflow code to be executed. The size limit
+                  is 128KB.
+                type: string
+              tags:
+                additionalProperties:
+                  type: string
+                description: Optional. Input only. Immutable. Tags associated with
+                  this workflow.
+                type: object
+              userEnvVars:
+                additionalProperties:
+                  type: string
+                description: Optional.User-defined environment variables associated
+                  with this workflow revision. This map has a maximum length of 20.
+                  Each string can take up to 40KiB. Keys cannot be empty strings and
+                  cannot start with “GOOGLE” or “WORKFLOWS".
+                type: object
+            required:
+            - location
+            - projectRef
+            - sourceContents
+            type: object
+          status:
+            description: WorkflowsWorkflowStatus defines the config connector machine
+              state of Workflow
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the Workflow resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  allKmsKeys:
+                    description: Output only. A list of all KMS crypto keys used to
+                      encrypt or decrypt the data associated with the workflow.
+                    items:
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed KMSCryptoKey.
+                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                          type: string
+                        name:
+                          description: The `name` of a `KMSCryptoKey` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` of a `KMSCryptoKey` resource.
+                          type: string
+                      type: object
+                    type: array
+                  allKmsKeysVersions:
+                    description: Output only. A list of all KMS crypto key versions
+                      used to encrypt or decrypt the data associated with the workflow.
+                    items:
+                      type: string
+                    type: array
+                  createTime:
+                    description: The timestamp for when the workflow was created.
+                    type: string
+                  cryptoKeyVersion:
+                    description: Output only. The resource name of a KMS crypto key
+                      version used to encrypt or decrypt the data associated with
+                      the workflow.
+                    type: string
+                  revisionCreateTime:
+                    description: The timestamp for the latest revision of the workflow's
+                      creation.
+                    type: string
+                  revisionId:
+                    description: 'The revision of the workflow. A new revision of
+                      a workflow is created as a result of updating the following
+                      properties of a workflow: - service_account - source_content
+                      The format is "000001-a4d", where the first six characters define
+                      the zero-padded revision ordinal number. They are followed by
+                      a hyphen and three hexadecimal random characters.'
+                    type: string
+                  state:
+                    description: State of the workflow deployment.
+                    type: string
+                  stateError:
+                    description: Error regarding the state of the workflow. For example,
+                      this field will have error details if the execution data is
+                      unavailable due to revoked KMS key permissions.
+                    properties:
+                      details:
+                        description: Provides specifics about the error.
+                        type: string
+                      type:
+                        description: The type of this state error.
+                        type: string
+                    type: object
+                  updateTime:
+                    description: The timestamp for when the workflow was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
     storage: true
     subresources:
       status: {}
