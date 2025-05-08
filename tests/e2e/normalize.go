@@ -488,6 +488,13 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
 					})
 				}
+			// Replace the server generated group id
+			case "groups":
+				// e.g. "groups/194f77d03ad"
+				groupId := tokens[len(tokens)-1]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, groupId, "${groupID}")
+				})
 			}
 		}
 

@@ -39,6 +39,9 @@ go test -v ./pkg/controller/direct/compute/firewallpolicyrule -fuzz=FuzzComputeF
 go test -v ./pkg/controller/direct/compute/forwardingrule -fuzz=FuzzComputeForwardingRuleSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/compute/targettcpproxy -fuzz=FuzzComputeTargetTCPProxySpec -fuzztime 60s
 
+go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupObservedState -fuzztime 60s
+
 go test -v ./pkg/controller/direct/discoveryengine/ -fuzz=FuzzDiscoveryEngineChatEngineSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/discoveryengine/ -fuzz=FuzzDiscoveryEngineChatEngineObservedState -fuzztime 60s
 
