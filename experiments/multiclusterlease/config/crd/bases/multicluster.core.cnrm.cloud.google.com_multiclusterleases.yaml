@@ -1,3 +1,17 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -15,7 +29,21 @@ spec:
     singular: multiclusterlease
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - additionalPrinterColumns:
+    - jsonPath: .spec.holderIdentity
+      name: Holder (Spec)
+      type: string
+    - jsonPath: .status.globalHolderIdentity
+      name: Leader (Status)
+      type: string
+    - format: date-time
+      jsonPath: .status.globalRenewTime
+      name: Renew Time (Status)
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: MultiClusterLease is the Schema for the multiclusterleases API
@@ -35,14 +63,128 @@ spec:
           spec:
             description: MultiClusterLeaseSpec defines the desired state of MultiClusterLease
             properties:
-              foo:
-                description: Foo is an example field of MultiClusterLease. Edit MultiClusterLease_types.go
-                  to remove/update
-                type: string
+              leaseDurationSeconds:
+                description: LeaseDurationSeconds is the duration that non-leader
+                  candidates will wait to force acquire leadership.
+                format: int32
+                type: integer
+              renewDeadlineSeconds:
+                description: RenewDeadlineSeconds is the duration that a leader candidate
+                  will wait to renew its leadership.
+                format: int32
+                type: integer
+              retryPeriodSeconds:
+                description: RetryPeriodSeconds is the period between attempts to
+                  acquire or renew leadership.
+                format: int32
+                type: integer
             type: object
           status:
             description: MultiClusterLeaseStatus defines the observed state of MultiClusterLease
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the MultiClusterLease's state.
+                items:
+                  description: "Condition contains details for one aspect of the current
+                    state of this API Resource. --- This struct is intended for direct
+                    use as an array at the field path .status.conditions.  For example,
+                    \n type FooStatus struct{ // Represents the observations of a
+                    foo's current state. // Known .status.conditions.type are: \"Available\",
+                    \"Progressing\", and \"Degraded\" // +patchMergeKey=type // +patchStrategy=merge
+                    // +listType=map // +listMapKey=type Conditions []metav1.Condition
+                    `json:\"conditions,omitempty\" patchStrategy:\"merge\" patchMergeKey:\"type\"
+                    protobuf:\"bytes,1,rep,name=conditions\"` \n // other fields }"
+                  properties:
+                    lastTransitionTime:
+                      description: lastTransitionTime is the last time the condition
+                        transitioned from one status to another. This should be when
+                        the underlying condition changed.  If that is not known, then
+                        using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: message is a human readable message indicating
+                        details about the transition. This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: observedGeneration represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.conditions[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: reason contains a programmatic identifier indicating
+                        the reason for the condition's last transition. Producers
+                        of specific condition types may define expected values and
+                        meanings for this field, and whether the values are considered
+                        a guaranteed API. The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                        --- Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important. The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              globalHolderIdentity:
+                description: GlobalHolderIdentity is the globally unique identifier
+                  of the candidate currently confirmed as holding the global lock
+                  for this lease scope.
+                type: string
+              globalLeaseDurationSeconds:
+                description: GlobalLeaseDurationSeconds is the lease duration (in
+                  seconds) currently being enforced by the global leader.
+                format: int32
+                type: integer
+              globalLeaseTransitions:
+                description: GlobalLeaseTransitions is the number of times the global
+                  leader has changed.
+                format: int32
+                type: integer
+              globalRenewTime:
+                description: GlobalRenewTime is the timestamp when the GlobalHolderIdentity
+                  is last renewed.
+                type: string
+              isLeadingCluster:
+                description: IsLeadingCluster is true if the candidate is holding
+                  the global lease. This is the source of truth for leadership.
+                type: boolean
+              observedGeneration:
+                description: ObservedGeneration is the .metadata.generation of the
+                  MultiClusterLease CR that was last processed to produce this status.
+                  Used by clients to determine if the status reflects their latest
+                  spec changes.
+                format: int64
+                type: integer
             type: object
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}
