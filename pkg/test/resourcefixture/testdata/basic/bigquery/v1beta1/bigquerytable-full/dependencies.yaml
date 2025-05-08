@@ -1,0 +1,106 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: kmskeyring-${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  labels:
+    key-one: value-one
+  name: kmscryptokey-${uniqueId}
+spec:
+  keyRingRef:
+    name: kmskeyring-${uniqueId}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: serviceidentity-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: bigquery.googleapis.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: iampolicy-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmscryptokey-${uniqueId}
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: "${projectId}"
+  name: iamsa-${uniqueId}
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerydataset${uniqueId}
+spec:
+  location: us-central1
+  defaultEncryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: referencedtable${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  friendlyName: referencedtable${uniqueId}
+  timePartitioning:
+    field: dt
+    type: DAY
+  tableConstraints:
+    primaryKey:
+      columns:
+        - dt
+        - state_code
+  schema: |-
+    [
+      {
+        "name": "dt",
+        "type": "DATE",
+        "mode": "REQUIRED",
+        "description": "Date"
+      },
+      {
+        "name": "state_code",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "State Code"
+      }
+    ]

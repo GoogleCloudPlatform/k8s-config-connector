@@ -1,0 +1,108 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    key1: value1
+    key2: value2
+spec:
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  friendlyName: BigQueryTable Full Example
+  description: "A detailed example of a BigQuery Table resource."
+  labels: # These are GCP labels, use .metadata.labels for K8s labels unless using direct reconciler
+    gcp-label-key: gcp-label-value
+  schema: |-
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING"
+      },
+      {
+        "name": "date",
+        "type": "DATE"
+      },
+      {
+        "name": "col_numeric",
+        "type": "NUMERIC",
+        "precision": "38",
+        "scale": "9"
+      },
+      {
+        "name": "col_bignumeric",
+        "type": "BIGNUMERIC",
+        "precision": "76",
+        "scale": "38"
+      },
+      {
+        "name": "col_geography",
+        "type": "GEOGRAPHY"
+      },
+      {
+        "name": "col_timestamp",
+        "type": "TIMESTAMP"
+      },
+      {
+        "name": "col_record",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "sub_col1",
+            "type": "INTEGER"
+          },
+          {
+            "name": "sub_col2",
+            "type": "BOOLEAN"
+          }
+        ]
+      },
+      {
+        "name": "col_array",
+        "type": "INTEGER",
+        "mode": "REPEATED"
+      }
+    ]
+  timePartitioning:
+    type: DAY
+    expirationMs: 86400000
+    field: date
+  requirePartitionFilter: true # Use top-level field instead of the one under timePartitioning
+  clustering:
+    - name # Must match a field in the schema
+    - post_abbr
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
+  expirationTime: 1800000000000 # Example expiration time (milliseconds since epoch)
+  tableConstraints:
+    primaryKey:
+      columns:
+        - name
+    foreignKeys:
+      - name: fk_constraint_example
+        columnReferences:
+          referencingColumn: post_abbr
+          referencedColumn: state_code
+        referencedTable:
+          projectId: ${projectId}
+          datasetId:  bigquerydataset${uniqueId}
+          tableId: referencedtable${uniqueId}

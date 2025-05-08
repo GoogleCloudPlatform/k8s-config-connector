@@ -1,0 +1,51 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    key1: value1
+    key2: value2
+    managed-by-cnrm: "true"
+  name: bigquerytable-${uniqueId}
+spec:
+  clustering:
+  - name
+  - post_abbr
+  datasetRef:
+    external: bigquerydataset${uniqueId}
+  description: A detailed example of a BigQuery Table resource.
+  encryptionConfiguration:
+    kmsKeyRef:
+      external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+  expirationTime: 1800000000000
+  friendlyName: BigQueryTable Full Example
+  requirePartitionFilter: true
+  resourceID: bigquerytable-${uniqueId}
+  schema: '[{"mode":"REQUIRED","name":"name","policyTags":{},"type":"STRING"},{"name":"post_abbr","policyTags":{},"type":"STRING"},{"name":"date","policyTags":{},"type":"DATE"},{"name":"col_numeric","policyTags":{},"precision":"38","scale":"9","type":"NUMERIC"},{"name":"col_bignumeric","policyTags":{},"precision":"76","scale":"38","type":"BIGNUMERIC"},{"name":"col_geography","policyTags":{},"type":"GEOGRAPHY"},{"name":"col_timestamp","policyTags":{},"type":"TIMESTAMP"},{"fields":[{"name":"sub_col1","policyTags":{},"type":"INTEGER"},{"name":"sub_col2","policyTags":{},"type":"BOOLEAN"}],"name":"col_record","type":"RECORD"},{"mode":"REPEATED","name":"col_array","policyTags":{},"type":"INTEGER"}]'
+  tableConstraints:
+    foreignKeys:
+    - columnReferences:
+        referencedColumn: state_code
+        referencingColumn: post_abbr
+      name: fk_constraint_example
+      referencedTable:
+        datasetId: bigquerydataset${uniqueId}
+        projectId: ${projectId}
+        tableId: referencedtable${uniqueId}
+    - columnReferences:
+        referencedColumn: dt
+        referencingColumn: date
+      name: fk_constraint_example_2
+      referencedTable:
+        datasetId: bigquerydataset${uniqueId}
+        projectId: ${projectId}
+        tableId: referencedtable${uniqueId}
+    primaryKey:
+      columns:
+      - name
+  timePartitioning:
+    expirationMs: 86400000
+    field: date
+    type: DAY

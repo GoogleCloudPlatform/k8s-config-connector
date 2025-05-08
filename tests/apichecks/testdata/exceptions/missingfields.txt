@@ -165,9 +165,7 @@
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.arguments[].mode" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.importedLibraries[]" is not set in unstructured objects
 [missing_field] crd=bigqueryroutines.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.returnTableType" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyVersion" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.expirationTime" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.avroOptions.useAvroLogicalTypes" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.compression" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.externalDataConfiguration.connectionId" is not set in unstructured objects
@@ -199,12 +197,6 @@
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.end" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.interval" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.start" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].name" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].referencedTable.datasetId" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].referencedTable.projectId" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.foreignKeys[].referencedTable.tableId" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.tableConstraints.primaryKey.columns[]" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.timePartitioning.expirationMs" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.view.query" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.view.useLegacySql" is not set in unstructured objects
 [missing_field] crd=bigtablegcpolicies.bigtable.cnrm.cloud.google.com version=v1beta1: field ".spec.deletionPolicy" is not set in unstructured objects
