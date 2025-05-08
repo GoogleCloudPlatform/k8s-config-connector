@@ -92,6 +92,9 @@ X-Xss-Protection: 0
   },
   "notebookRuntimeType": "USER_DEFINED",
   "shieldedVmConfig": {},
+  "softwareConfig": {
+    "postStartupScriptConfig": {}
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

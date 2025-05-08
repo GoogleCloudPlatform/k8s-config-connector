@@ -32,6 +32,9 @@ type AlloyDBAdminClient interface {
 	CreateCluster(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Exports data from the cluster.
+	// Imperative only.
+	ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Upgrades a single Cluster.
 	// Imperative only.
 	UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
@@ -160,6 +163,15 @@ func (c *alloyDBAdminClient) CreateCluster(ctx context.Context, in *CreateCluste
 func (c *alloyDBAdminClient) UpdateCluster(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/UpdateCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -457,6 +469,9 @@ type AlloyDBAdminServer interface {
 	CreateCluster(context.Context, *CreateClusterRequest) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error)
+	// Exports data from the cluster.
+	// Imperative only.
+	ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error)
 	// Upgrades a single Cluster.
 	// Imperative only.
 	UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error)
@@ -563,6 +578,9 @@ func (UnimplementedAlloyDBAdminServer) CreateCluster(context.Context, *CreateClu
 }
 func (UnimplementedAlloyDBAdminServer) UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCluster not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportCluster not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpgradeCluster not implemented")
@@ -738,6 +756,24 @@ func _AlloyDBAdmin_UpdateCluster_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AlloyDBAdminServer).UpdateCluster(ctx, req.(*UpdateClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_ExportCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).ExportCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).ExportCluster(ctx, req.(*ExportClusterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1322,6 +1358,10 @@ var AlloyDBAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateCluster",
 			Handler:    _AlloyDBAdmin_UpdateCluster_Handler,
+		},
+		{
+			MethodName: "ExportCluster",
+			Handler:    _AlloyDBAdmin_ExportCluster_Handler,
 		},
 		{
 			MethodName: "UpgradeCluster",
