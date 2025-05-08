@@ -26,10 +26,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
+	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/workflows/v1"
+	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/workflows/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -41,11 +42,6 @@ type MockService struct {
 	operations *operations.Operations
 
 	v1 *WorkflowsV1
-}
-
-type WorkflowsV1 struct {
-	*MockService
-	pb.UnimplementedWorkflowsServer
 }
 
 // New creates a MockService.
@@ -69,7 +65,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterWorkflowsHandler,
+		grpcpb.RegisterWorkflowsHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
