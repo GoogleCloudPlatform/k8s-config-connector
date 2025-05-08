@@ -372,51 +372,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "capacityConfig": {
-    "memoryBytes": "4294967296",
-    "vcpuCount": "4"
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "gcpConfig": {
-    "accessConfig": {
-      "networkConfigs": [
-        {
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}"
-        }
-      ]
-    }
-  },
-  "labels": {
-    "test": "label"
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}",
-  "rebalanceConfig": {
-    "mode": "AUTO_REBALANCE_ON_SCALE_UP"
-  },
-  "satisfiesPzi": false,
-  "satisfiesPzs": false,
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 DELETE https://managedkafka.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/test-kafka-cluster-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)

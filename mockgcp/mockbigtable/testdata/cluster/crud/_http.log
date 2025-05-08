@@ -246,32 +246,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "defaultStorageType": "SSD",
-  "location": "projects/${projectId}/locations/us-central1-f",
-  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f",
-  "nodeScalingFactor": "NODE_SCALING_FACTOR_1X",
-  "serveNodes": 3,
-  "state": "READY"
-}
-
----
-
 PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/central1f?alt=json&updateMask=serve_nodes
 Accept: application/json
 Authorization: (removed)

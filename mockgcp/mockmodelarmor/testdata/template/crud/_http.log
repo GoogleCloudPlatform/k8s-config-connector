@@ -65,35 +65,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filterConfig": {
-    "maliciousUriFilterSettings": {
-      "filterEnforcement": "ENABLED"
-    }
-  },
-  "name": "projects/${projectId}/locations/us-central1/templates/test-${uniqueId}",
-  "templateMetadata": {},
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 PATCH https://modelarmor.us-central1.rep.googleapis.com/v1/projects/${projectId}/locations/us-central1/templates/test-${uniqueId}?alt=json&updateMask=filterConfig.maliciousUriFilterSettings.filterEnforcement
 Accept: application/json
 Authorization: (removed)

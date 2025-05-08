@@ -21,7 +21,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
+PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -39,62 +39,6 @@ X-Xss-Protection: 0
   "labels": {
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/global/features/configmanagement"
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/global/features/configmanagement"
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/global/features/configmanagement"
-}
-
----
-
-PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-{
   "membershipSpecs": {
     "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
       "configmanagement": {
@@ -193,48 +137,4 @@ X-Xss-Protection: 0
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "membershipSpecs": {
-    "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "configSync": {
-          "git": {
-            "gcpServiceAccountEmail": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "httpsProxy": "https://github.com",
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD\"",
-            "syncWaitSecs": "20"
-          },
-          "sourceFormat": "hierarchy"
-        },
-        "version": "1.18.1"
-      }
-    }
-  },
-  "name": "projects/${projectId}/locations/global/features/configmanagement",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }

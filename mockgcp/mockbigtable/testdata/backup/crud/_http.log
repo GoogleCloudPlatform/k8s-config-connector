@@ -274,36 +274,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/test-cluster-${uniqueId}/backups/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "backupType": "STANDARD",
-  "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-  },
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "expireTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/clusters/test-cluster-${uniqueId}/backups/test-${uniqueId}",
-  "sourceTable": "projects/${projectId}/instances/test-instance-${uniqueId}/tables/test-table-${uniqueId}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "READY"
-}
-
----
-
 PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/clusters/test-cluster-${uniqueId}/backups/test-${uniqueId}?alt=json&updateMask=expire_time
 Accept: application/json
 Authorization: (removed)
