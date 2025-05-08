@@ -57,7 +57,7 @@ type CloudIdentityGroupSpec struct {
 	// +required
 	Parent *string `json:"parent,omitempty"`
 
-	// Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID}. Used for acquisition only. Leave unset to create a new resource.
+	// Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID} or {groupID}. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 

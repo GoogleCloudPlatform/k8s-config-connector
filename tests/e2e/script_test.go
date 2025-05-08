@@ -279,7 +279,12 @@ func TestE2EScript(t *testing.T) {
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
-							h.Fatalf("object did not have spec.resource: %v", existing)
+							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
+							if externalRef == "" {
+								h.Fatalf("object did not have spec.resourceID or status.externalRef: %v", existing.Object)
+							}
+							tokens := strings.Split(externalRef, "/")
+							resourceID = tokens[len(tokens)-1]
 						}
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						deleteObj := obj.DeepCopy()
