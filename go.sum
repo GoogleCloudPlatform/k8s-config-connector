@@ -170,8 +170,8 @@ cloud.google.com/go/storage v1.50.0 h1:3TbVkzTooBvnZsk7WaAQfOsNrdoM8QHusXA1cpk6Q
 cloud.google.com/go/storage v1.50.0/go.mod h1:l7XeiD//vx5lfqE3RavfmU9yvk5Pp0Zhcv482poyafY=
 cloud.google.com/go/vmwareengine v1.3.3 h1:TfuQr5j7qriINulUMotaC/+27SQaW2thIkF3Gb6VJ38=
 cloud.google.com/go/vmwareengine v1.3.3/go.mod h1:G7vz05KGijha0c0dj1INRKyDAaQW8TRMZt/FrfOZVXc=
-cloud.google.com/go/workflows v1.13.3 h1:lNFDMranJymDEB7cTI7DI9czbc1WU0RWY9KCEv9zuDY=
-cloud.google.com/go/workflows v1.13.3/go.mod h1:Xi7wggEt/ljoEcyk+CB/Oa1AHBCk0T1f5UH/exBB5CE=
+cloud.google.com/go/workflows v1.14.2 h1:phBz5TOAES0YGogxZ6Q7ISSudaf618lRhE3euzBpE9U=
+cloud.google.com/go/workflows v1.14.2/go.mod h1:5nqKjMD+MsJs41sJhdVrETgvD5cOK3hUcAs8ygqYvXQ=
 cloud.google.com/go/workstations v1.1.1 h1:wIA5Pk4Z9xwdmltGQoAVP4vr441MGhOu9sGv0Sk4lnI=
 cloud.google.com/go/workstations v1.1.1/go.mod h1:ajqvxTXbkzcvuzSMDUyasKCgEl6ZioN5HBEkzkBb0i0=
 contrib.go.opencensus.io/exporter/prometheus v0.1.0 h1:SByaIoWwNgMdPSgl5sMqM2KDE5H/ukPWBRo314xiDvg=
