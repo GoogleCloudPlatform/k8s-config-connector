@@ -159,6 +159,9 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	if !updatePaths.Has("description") {
 		lroRet.Description = ""
 	}
+	if !updatePaths.Has("single_cluster_routing") && !updatePaths.Has("singleClusterRouting") {
+		lroRet.RoutingPolicy = nil
+	}
 
 	if isAsync {
 		return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {

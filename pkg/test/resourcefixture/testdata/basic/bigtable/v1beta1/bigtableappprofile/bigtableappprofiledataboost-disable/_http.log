@@ -290,23 +290,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
