@@ -16,65 +16,142 @@ package preview
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcptests"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/klog/v2"
 	"k8s.io/klog/v2/klogr"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/yaml"
 )
 
-// TestPreview creates an object using KCC, and then runs the preview command to look for additional changes
-func TestPreview(t *testing.T) {
+// TestLocalModePreview creates an object using KCC, and then runs the preview command to look for additional changes
+func TestLocalModePreview(t *testing.T) {
 	log.SetLogger(klogr.New())
-
-	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
-		assetDir, err := getKubebuilderAssetDir()
-		if err != nil {
-			t.Fatalf("getting asset dir: %v", err)
-		}
-		klog.Warningf("defaulting KUBEBUILDER_ASSETS to %v", assetDir)
-		os.Setenv("KUBEBUILDER_ASSETS", assetDir)
-	}
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	harness := create.NewHarness(ctx, t, create.WithKubeTarget("envtest"), create.WithGCPTarget("mock"))
+	harness := mockgcptests.NewHarness(ctx, t, mockgcptests.WithGCPTarget("mock"))
+	harness.Init()
 
+	localKube := NewLocalModeKube()
+
+	{
+		crd := &unstructured.Unstructured{}
+		crd.SetGroupVersionKind(schema.GroupVersionKind{Group: "apiextensions.k8s.io", Version: "v1", Kind: "CustomResourceDefinition"})
+		crd.SetName("pubsubtopics.pubsub.cnrm.cloud.google.com")
+		unstructured.SetNestedField(crd.Object, "pubsub.cnrm.cloud.google.com", "spec", "group")
+		unstructured.SetNestedField(crd.Object, "PubSubTopic", "spec", "names", "kind")
+		unstructured.SetNestedField(crd.Object, "pubsubtopics", "spec", "names", "plural")
+		unstructured.SetNestedField(crd.Object, false, "spec", "preserveUnknownFields")
+		unstructured.SetNestedField(crd.Object, "Namespaced", "spec", "scope")
+		versions := []any{
+			map[string]any{
+				"name": "v1beta1",
+				"schema": map[string]any{
+					"openAPIV3Schema": map[string]any{
+						"type": "object",
+					},
+				},
+			},
+		}
+		unstructured.SetNestedField(crd.Object, versions, "spec", "versions")
+
+		crd.SetLabels(map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "stable",
+			"cnrm.cloud.google.com/system":          "true",
+			"cnrm.cloud.google.com/tf2crd":          "true",
+		})
+
+		localKube.AddObject(crd)
+	}
+
+	{
+		group := "core.cnrm.cloud.google.com"
+		kind := "ConfigConnectorContext"
+		resource := "configconnectorcontexts"
+		scope := "Namespaced"
+		version := "v1beta1"
+
+		crd := &unstructured.Unstructured{}
+		crd.SetGroupVersionKind(schema.GroupVersionKind{Group: "apiextensions.k8s.io", Version: "v1", Kind: "CustomResourceDefinition"})
+		crd.SetName(resource + "." + group)
+		unstructured.SetNestedField(crd.Object, group, "spec", "group")
+		unstructured.SetNestedField(crd.Object, kind, "spec", "names", "kind")
+		unstructured.SetNestedField(crd.Object, resource, "spec", "names", "plural")
+		unstructured.SetNestedField(crd.Object, false, "spec", "preserveUnknownFields")
+		unstructured.SetNestedField(crd.Object, scope, "spec", "scope")
+		versions := []any{
+			map[string]any{
+				"name": version,
+				"schema": map[string]any{
+					"openAPIV3Schema": map[string]any{
+						"type": "object",
+					},
+				},
+			},
+		}
+		unstructured.SetNestedField(crd.Object, versions, "spec", "versions")
+
+		crd.SetLabels(map[string]string{})
+
+		localKube.AddObject(crd)
+	}
+
+	{
+		group := "core.cnrm.cloud.google.com"
+		kind := "ConfigConnector"
+		resource := "configconnectors"
+		scope := "Cluster"
+		version := "v1beta1"
+
+		crd := &unstructured.Unstructured{}
+		crd.SetGroupVersionKind(schema.GroupVersionKind{Group: "apiextensions.k8s.io", Version: "v1", Kind: "CustomResourceDefinition"})
+		crd.SetName(resource + "." + group)
+		unstructured.SetNestedField(crd.Object, group, "spec", "group")
+		unstructured.SetNestedField(crd.Object, kind, "spec", "names", "kind")
+		unstructured.SetNestedField(crd.Object, resource, "spec", "names", "plural")
+		unstructured.SetNestedField(crd.Object, false, "spec", "preserveUnknownFields")
+		unstructured.SetNestedField(crd.Object, scope, "spec", "scope")
+		versions := []any{
+			map[string]any{
+				"name": version,
+				"schema": map[string]any{
+					"openAPIV3Schema": map[string]any{
+						"type": "object",
+					},
+				},
+			},
+		}
+		unstructured.SetNestedField(crd.Object, versions, "spec", "versions")
+
+		crd.SetLabels(map[string]string{})
+
+		localKube.AddObject(crd)
+	}
 	// Create KCC objects
 	ns := &unstructured.Unstructured{}
 	ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
 	ns.SetName(harness.Project.ProjectID)
-	if err := harness.GetClient().Create(ctx, ns); err != nil {
-		t.Fatalf("creating object: %v", err)
-	}
+	localKube.AddObject(ns)
 
 	cc := &unstructured.Unstructured{}
 	cc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"})
 	cc.SetName("configconnector.core.cnrm.cloud.google.com")
 	MustSetNestedField(t, cc, "spec.mode", "namespaced")
-	if err := harness.GetClient().Create(ctx, cc); err != nil {
-		t.Fatalf("creating object: %v", err)
-	}
+	localKube.AddObject(cc)
 
 	ccc := &unstructured.Unstructured{}
 	ccc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"})
 	ccc.SetName("configconnectorcontext.core.cnrm.cloud.google.com")
 	ccc.SetNamespace(ns.GetName())
 	MustSetNestedField(t, ccc, "spec.googleServiceAccount", "fake@fake.iam.gserviceaccount.com")
-	if err := harness.GetClient().Create(ctx, ccc); err != nil {
-		t.Fatalf("creating object: %v", err)
-	}
+	localKube.AddObject(ccc)
 
 	// Create a pubsub topic (should be created in mock gcp)
 	testObj := &unstructured.Unstructured{}
@@ -93,25 +170,32 @@ spec:
 			t.Fatalf("unmarshaling yaml: %v", err)
 		}
 		testObj.SetNamespace(ns.GetName())
-		if err := harness.GetClient().Create(ctx, testObj); err != nil {
-			t.Fatalf("creating object: %v", err)
+		annotations := testObj.GetAnnotations()
+		if annotations == nil {
+			annotations = make(map[string]string)
 		}
+		// TODO: we should not rely on webhooks
+		annotations["cnrm.cloud.google.com/project-id"] = harness.Project.ProjectID
+		testObj.SetAnnotations(annotations)
+
+		// TODO: precreate finalizers?
+		finalizers := testObj.GetFinalizers()
+		finalizers = append(finalizers, "cnrm.cloud.google.com/finalizer", "cnrm.cloud.google.com/deletion-defender")
+		testObj.SetFinalizers(finalizers)
+
+		localKube.AddObject(testObj)
 
 		// Wait for object to be ready
-		create.WaitForReady(harness, time.Minute, testObj)
+		// create.WaitForReadySingleResource(ctx, localKube.BuildControllerRuntimeClient(), testObj, time.Minute)
 	}
-
-	// Now we can run our test ... let's run the preview mode, we expect a read of the GCP object but no write
-	upstreamRESTConfig := harness.GetRESTConfig()
 
 	recorder := NewRecorder()
 
 	authorization := harness.GCPAuthorization()
 
-	upstreamKubeClient, upstreamKubeRESTMapper, err := BuildKubeClient(upstreamRESTConfig)
 	previewInstanceOptions := PreviewInstanceOptions{
-		UpstreamKubeClient:       upstreamKubeClient,
-		UpstreamKubeRESTMapper:   upstreamKubeRESTMapper,
+		UpstreamKubeClient:       localKube.BuildKubeClient(),
+		UpstreamKubeRESTMapper:   localKube.BuildRESTMapper(),
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    harness.GCPHTTPClient(),
 	}
@@ -160,8 +244,12 @@ spec:
 			switch event.eventType {
 			case EventTypeDiff:
 				t.Logf("  diff %+v", event.diff)
+
 			case EventTypeReconcileStart:
 				t.Logf("  reconcileStart %+v", event.object)
+
+			case EventTypeReconcileEnd:
+				t.Logf("  reconcileEnd %+v", event.object)
 
 			case EventTypeKubeAction:
 				t.Logf("  kubeAction %+v", event.kubeAction)
@@ -198,48 +286,12 @@ spec:
 				// We aren't expected changes
 				t.Errorf("unexpected gcpAction in changelist: %+v", event.gcpAction)
 
-			case EventTypeReconcileStart:
+			case EventTypeReconcileStart, EventTypeReconcileEnd:
 				// We do expect this!
 
 			default:
 				t.Errorf("unexpected event type in changelist: %v", event.eventType)
 			}
 		}
-	}
-}
-
-// getKubebuilderAssetDir returns the path to the kubebuilder assets directory
-// which is the latest directory in the ~/.local/share/kubebuilder-envtest/k8s directory
-func getKubebuilderAssetDir() (string, error) {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return "", fmt.Errorf("getting home dir: %w", err)
-	}
-	dir := filepath.Join(homeDir, ".local", "share", "kubebuilder-envtest", "k8s")
-	files, err := os.ReadDir(dir)
-	if err != nil {
-		return "", fmt.Errorf("reading directory %v: %w", dir, err)
-	}
-	var candidates []string
-	for _, file := range files {
-		if !file.IsDir() {
-			continue
-		}
-
-		candidates = append(candidates, file.Name())
-	}
-	if len(candidates) == 0 {
-		return "", fmt.Errorf("found no kubebuilder assets in %v", dir)
-	}
-	bestCandidate := candidates[len(candidates)-1]
-	return filepath.Join(dir, bestCandidate), nil
-}
-
-// MustSetNestedField sets a nested field on an unstructured object
-// and panics if it fails.  This is a helper function for tests.
-func MustSetNestedField(t *testing.T, obj *unstructured.Unstructured, path string, value interface{}) {
-	fields := strings.Split(path, ".")
-	if err := unstructured.SetNestedField(obj.Object, value, fields...); err != nil {
-		t.Fatalf("setting nested field %v: %v", path, err)
 	}
 }

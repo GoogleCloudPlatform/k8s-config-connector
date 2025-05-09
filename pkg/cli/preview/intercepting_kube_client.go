@@ -37,29 +37,27 @@ import (
 // It forwards read-only operations "upstream" to real Kubernetes.
 // It returns an error on any write operations.
 type interceptingKubeClient struct {
-	upstreamRestConfig *rest.Config
-	upstreamClient     *StreamingClient
+	upstreamKubeClient KubeClient
 	upstreamRestMapper meta.RESTMapper
 
 	recorder *Recorder
 }
 
-// newInterceptingKubeClient creates a new interceptingKubeClient.
-func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Config) (*interceptingKubeClient, error) {
+func BuildKubeClient(upstreamRestConfig *rest.Config) (KubeClient, meta.RESTMapper, error) {
 	httpClient, err := rest.HTTPClientFor(upstreamRestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("building http client: %w", err)
+		return nil, nil, fmt.Errorf("building http client: %w", err)
 	}
 
 	upstreamRestMapper, err := apiutil.NewDiscoveryRESTMapper(upstreamRestConfig, httpClient)
 	if err != nil {
-		return nil, fmt.Errorf("creating REST mapper: %w", err)
+		return nil, nil, fmt.Errorf("creating REST mapper: %w", err)
 	}
 
 	// TODO: Replace with rest.DefaultServerUrlFor
 	baseURL, _, err := DefaultServerUrlFor(upstreamRestConfig)
 	if err != nil {
-		return nil, fmt.Errorf("getting base url: %w", err)
+		return nil, nil, fmt.Errorf("getting base url: %w", err)
 	}
 	clientOptions := ClientOptions{
 		BaseURL:    baseURL,
@@ -67,9 +65,13 @@ func newInterceptingKubeClient(recorder *Recorder, upstreamRestConfig *rest.Conf
 	}
 	upstreamClient := NewStreamingClient(clientOptions)
 
+	return upstreamClient, upstreamRestMapper, nil
+}
+
+// newInterceptingKubeClient creates a new interceptingKubeClient.
+func newInterceptingKubeClient(recorder *Recorder, upstreamKubeClient KubeClient, upstreamRestMapper meta.RESTMapper) (*interceptingKubeClient, error) {
 	return &interceptingKubeClient{
-		upstreamRestConfig: upstreamRestConfig,
-		upstreamClient:     upstreamClient,
+		upstreamKubeClient: upstreamKubeClient,
 		upstreamRestMapper: upstreamRestMapper,
 		recorder:           recorder,
 	}, nil
@@ -112,7 +114,7 @@ func (c *interceptingKubeClient) NewCache(restConfig *rest.Config, opts cache.Op
 		scheme:     opts.Scheme,
 	}
 
-	return newInterceptingControllerRuntimeCache(c.upstreamClient, typeStore)
+	return newInterceptingControllerRuntimeCache(c.upstreamKubeClient, typeStore)
 }
 
 // interceptingControllerRuntimeClient is a controller-runtime client that intercepts Kubernetes API calls.
@@ -179,7 +181,7 @@ func (c *interceptingControllerRuntimeClient) Get(ctx context.Context, key clien
 		return c.cache.Get(ctx, key, obj, opts...)
 	}
 
-	client := c.parent.upstreamClient
+	client := c.parent.upstreamKubeClient
 	namespace := key.Namespace
 	name := key.Name
 	if len(opts) > 0 {
@@ -280,7 +282,7 @@ func (c *interceptingControllerRuntimeClientSubResourceWriter) Patch(ctx context
 // interceptingControllerRuntimeCache is a controller-runtime cache that intercepts Kubernetes API calls.
 // Write operations would be blocked, but generally the cache is only used for read operations.
 type interceptingControllerRuntimeCache struct {
-	streamingClient *StreamingClient
+	streamingClient KubeClient
 	typeStore       *typeStore
 
 	mutex sync.Mutex
@@ -291,7 +293,7 @@ type interceptingControllerRuntimeCache struct {
 }
 
 // newInterceptingControllerRuntimeCache creates a new interceptingControllerRuntimeCache.
-func newInterceptingControllerRuntimeCache(streamingClient *StreamingClient, typeStore *typeStore) (*interceptingControllerRuntimeCache, error) {
+func newInterceptingControllerRuntimeCache(streamingClient KubeClient, typeStore *typeStore) (*interceptingControllerRuntimeCache, error) {
 	return &interceptingControllerRuntimeCache{
 		streamingClient: streamingClient,
 		informers:       make(map[schema.GroupVersionKind]*streamingInformer),
