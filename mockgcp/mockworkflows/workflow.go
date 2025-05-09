@@ -74,11 +74,8 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 		obj.AllKmsKeys = []string{obj.CryptoKeyName}
 		obj.CryptoKeyVersion = obj.CryptoKeyName + "/cryptoKeyVersions/1"
 		obj.AllKmsKeysVersions = []string{obj.CryptoKeyVersion}
-		gsaUniqueId := "gsa123456"
-		obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/gsa-%s@%s.iam.gserviceaccount.com", name.Project.ID, gsaUniqueId, name.Project.ID)
-	} else {
-		obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
 	}
+	obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
 	obj.RevisionId = "000001-a4d" // TODO: increment
 	obj.State = pb.Workflow_ACTIVE
 	s.populateDefaultsForWorkflow(obj)
