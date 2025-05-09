@@ -114,37 +114,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "mysql": {
-    "host": "1.2.3.4",
-    "passwordSet": true,
-    "port": 3306,
-    "ssl": {},
-    "username": "my-user"
-  },
-  "name": "projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}",
-  "state": "READY",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 PATCH https://datamigration.googleapis.com/v1/projects/${projectId}/locations/us-central1/connectionProfiles/test-${uniqueId}?alt=json&requestId=123456&updateMask=displayName
 Accept: application/json
 Authorization: (removed)

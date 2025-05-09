@@ -285,34 +285,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "Updated Test App Profile",
-  "name": "projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles/test-app-profile-${uniqueId}",
-  "singleClusterRouting": {
-    "clusterId": "test-cluster-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_HIGH"
-  }
-}
-
----
-
 GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/appProfiles?alt=json
 Accept: application/json
 Authorization: (removed)

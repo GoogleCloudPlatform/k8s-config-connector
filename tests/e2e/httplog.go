@@ -41,8 +41,43 @@ func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 }
 
 // RemoveExtraEvents removes events that are not as relevant to our golden logs
-// In particular, we remove LRO polling operations (and things that look like LROs)
+// In particular, we remove repeated GET requests and LRO polling operations (and things that look like LROs)
 func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
+	// Remove repeated GET requests (after normalization)
+	var previous *test.LogEntry
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		lastComponent := func(s string) string {
+			return s[strings.LastIndex(s, "/")+1:]
+		}
+
+		// isGet checks if this is a GET request, or a GRPC equivalent
+		isGet := func(r test.Request) bool {
+			if r.Method == "GET" {
+				return true
+			}
+			if r.Method == "GRPC" {
+				methodName := lastComponent(r.URL)
+				switch methodName {
+				case "GetAppProfile":
+					return true
+				}
+			}
+			return false
+		}
+		keep := true
+		if isGet(e.Request) && previous != nil {
+			if isGet(previous.Request) && previous.Request.URL == e.Request.URL {
+				if previous.Response.Status == e.Response.Status {
+					if previous.Response.Body == e.Response.Body {
+						keep = false
+					}
+				}
+			}
+		}
+		previous = e
+		return keep
+	})
+
 	// Remove operation polling requests (ones where the operation is not ready)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
 		if !isGetOperation(e) {

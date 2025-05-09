@@ -150,52 +150,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "artifactGcsUri": "gs://gcs-bucket-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseType": "MYSQL",
-  "encryptionConfig": {},
-  "endpointUri": "thrift://mock-endpoint:9083",
-  "hiveMetastoreConfig": {
-    "configOverrides": {
-      "hive.metastore.warehouse.dir": "gs://gcs-bucket-test-${uniqueId}/hive-warehouse"
-    },
-    "endpointProtocol": "THRIFT",
-    "version": "3.1.2"
-  },
-  "metadataManagementActivity": {},
-  "name": "projects/${projectId}/locations/us-central1/services/test-${uniqueId}",
-  "network": "projects/${projectId}/global/networks/default",
-  "networkConfig": {},
-  "port": 9083,
-  "releaseChannel": "STABLE",
-  "state": "ACTIVE",
-  "stateMessage": "The service is ready to use",
-  "telemetryConfig": {
-    "logFormat": "JSON"
-  },
-  "tier": "DEVELOPER",
-  "uid": "test-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 DELETE https://metastore.googleapis.com/v1/projects/${projectId}/locations/us-central1/services/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)

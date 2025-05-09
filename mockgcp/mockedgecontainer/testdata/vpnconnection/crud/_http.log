@@ -94,31 +94,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cluster": "projects/${projectId}/locations/us-central1/clusters/testcluster-${uniqueId}",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "vpc": "test-vpc-network"
-}
-
----
-
 DELETE https://edgecontainer.googleapis.com/v1/projects/${projectId}/locations/us-central1/vpnConnections/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)

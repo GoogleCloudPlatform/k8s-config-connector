@@ -122,32 +122,3 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
-
----
-
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "description 1",
-  "format": "DOCKER",
-  "labels": {
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "mode": "STANDARD_REPOSITORY",
-  "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}

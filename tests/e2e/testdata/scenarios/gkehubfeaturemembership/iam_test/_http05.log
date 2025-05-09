@@ -42,7 +42,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
+PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
