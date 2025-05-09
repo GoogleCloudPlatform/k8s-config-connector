@@ -773,6 +773,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 		".response.pscConnections[].forwardingRule",
 		".response.pscConnections[].network",
 		".selfLink",
+		".selfLinkWithId",
 	)
 
 	wellKnownPaths := map[string]string{
