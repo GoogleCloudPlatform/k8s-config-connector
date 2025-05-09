@@ -58,6 +58,8 @@ func main() {
 func run(ctx context.Context) error {
 	log := klog.FromContext(ctx)
 
+	channelName := "stable"
+
 	cc := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
 			Mode:                 k8s.NamespacedMode,
@@ -66,16 +68,16 @@ func run(ctx context.Context) error {
 	}
 	operatorSrcRoot := paths.GetOperatorSrcRootOrLogFatal()
 	r := cnrmmanifest.NewLocalRepository(path.Join(operatorSrcRoot, "channels"))
-	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
+	channel, err := r.LoadChannel(ctx, channelName)
 	if err != nil {
-		return fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err)
+		return fmt.Errorf("error loading %v channel: %w", channelName, err)
 	}
 	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
 		return fmt.Errorf("error resolving the version to deploy: %w", err)
 	}
 	if version == nil {
-		return fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
+		return fmt.Errorf("could not find the latest version in channel %v", channelName)
 	}
 
 	log.Info("got latest version from channel", "version", version.Version)

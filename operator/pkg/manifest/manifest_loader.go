@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -58,7 +57,7 @@ func (c *Loader) ResolveManifest(ctx context.Context, o runtime.Object) (map[str
 	mlog.Info("resolving manifest", "name", cc.Name)
 
 	componentName := cc.ComponentName()
-	channelName := k8s.StableChannel
+	channelName := StableChannel
 	version, err := ResolveVersion(ctx, c.repo, componentName, channelName)
 	if err != nil {
 		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %w", componentName, channelName, err)

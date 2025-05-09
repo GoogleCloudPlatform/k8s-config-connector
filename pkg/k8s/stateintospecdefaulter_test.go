@@ -26,7 +26,6 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
@@ -95,7 +94,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode:          "cluster",
@@ -119,7 +118,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					StateIntoSpec: &mergeValue,
@@ -127,7 +126,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      operatork8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "test-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -151,7 +150,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -159,7 +158,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      operatork8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "test-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -183,7 +182,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 			},
 			expectError: true,
@@ -202,7 +201,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",

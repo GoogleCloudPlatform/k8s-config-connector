@@ -19,6 +19,7 @@ import (
 	"strings"
 	"testing"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
 
@@ -422,7 +423,7 @@ func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, s
 		applied = strings.ReplaceAll(applied, "${NAMESPACE?}", nsName)
 		u := ToUnstructured(t, applied)
 		labels := u.GetLabels()
-		labels[k8s.ConfigConnectorContextNamespaceLabel] = nsName
+		labels[corev1beta1.ConfigConnectorContextNamespaceLabel] = nsName
 		u.SetLabels(labels)
 		applied = ToString(t, u)
 		res = append(res, applied)
