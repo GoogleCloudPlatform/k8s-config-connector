@@ -8,7 +8,6 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: cloudidentitygroups.cloudidentity.cnrm.cloud.google.com
 spec:
   group: cloudidentity.cnrm.cloud.google.com
