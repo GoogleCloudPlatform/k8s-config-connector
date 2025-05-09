@@ -68,6 +68,8 @@ const (
 	NamespaceEnvVar                      = "NAMESPACE"
 	ImmediateReconcileRequestsBufferSize = 10000
 	MaxNumResourceWatcherRoutines        = 10000
+	ConfigConnectorAllowedName           = "configconnector.core.cnrm.cloud.google.com"
+	ManagerNamespaceSuffixLabel          = "cnrm.cloud.google.com/manager-namespace-suffix"
 
 	ControllerManagedFieldManager = "cnrm-controller-manager"
 	UnmanagedDetectorFieldManager = "cnrm-unmanaged-detector"

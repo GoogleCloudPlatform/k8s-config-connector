@@ -38,3 +38,9 @@ rules:
     verbs:
       - create
       - patch
+  - apiGroups:
+    - core.cnrm.cloud.google.com
+    resources:
+    - configconnectors
+    verbs:
+    - get
