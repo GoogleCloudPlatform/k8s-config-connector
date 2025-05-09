@@ -126,6 +126,8 @@ var (
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
 
+	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
+
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)
 
