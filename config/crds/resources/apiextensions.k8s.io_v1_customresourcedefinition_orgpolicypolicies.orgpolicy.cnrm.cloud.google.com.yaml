@@ -1,0 +1,447 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: orgpolicypolicies.orgpolicy.cnrm.cloud.google.com
+spec:
+  group: orgpolicy.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: OrgPolicyPolicy
+    listKind: OrgPolicyPolicyList
+    plural: orgpolicypolicies
+    shortNames:
+    - gcporgpolicypolicy
+    - gcporgpolicypolicys
+    singular: orgpolicypolicy
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: OrgPolicyPolicy is the Schema for the OrgPolicyPolicy API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OrgPolicyPolicySpec defines the desired state of OrgPolicyPolicy
+            properties:
+              dryRunSpec:
+                description: Dry-run policy. Audit-only policy, can be used to monitor
+                  how the policy would have impacted the existing and future resources
+                  if it's enforced.
+                properties:
+                  etag:
+                    description: |-
+                      An opaque tag indicating the current version of the policySpec, used for
+                       concurrency control.
+
+                       This field is ignored if used in a `CreatePolicy` request.
+
+                       When the policy is returned from either a `GetPolicy` or a
+                       `ListPolicies` request, this `etag` indicates the version of the
+                       current policySpec to use when executing a read-modify-write loop.
+
+                       When the policy is returned from a `GetEffectivePolicy` request, the
+                       `etag` will be unset.
+                    type: string
+                  inheritFromParent:
+                    description: |-
+                      Determines the inheritance behavior for this policy.
+
+                       If `inherit_from_parent` is true, policy rules set higher up in the
+                       hierarchy (up to the closest root) are inherited and present in the
+                       effective policy. If it is false, then no rules are inherited, and this
+                       policy becomes the new root for evaluation.
+                       This field can be set only for policies which configure list constraints.
+                    type: boolean
+                  reset:
+                    description: Ignores policies set above this resource and restores
+                      the `constraint_default` enforcement behavior of the specific
+                      constraint at this resource. This field can be set in policies
+                      for either list or boolean constraints. If set, `rules` must
+                      be empty and `inherit_from_parent` must be set to false.
+                    type: boolean
+                  rules:
+                    description: |-
+                      In policies for boolean constraints, the following requirements apply:
+
+                         - There must be one and only one policy rule where condition is unset.
+                         - Boolean policy rules with conditions must set `enforced` to the
+                           opposite of the policy rule without a condition.
+                         - During policy evaluation, policy rules with conditions that are
+                           true for a target resource take precedence.
+                    items:
+                      properties:
+                        allowAll:
+                          description: Setting this to true means that all values
+                            are allowed. This field can be set only in policies for
+                            list constraints.
+                          type: boolean
+                        condition:
+                          description: 'A condition which determines whether this
+                            rule is used in the evaluation of the policy. When set,
+                            the `expression` field in the `Expr'' must include from
+                            1 to 10 subexpressions, joined by the "||" or "&&" operators.
+                            Each subexpression must be of the form "resource.matchTag(''<ORG_ID>/tag_key_short_name,
+                            ''tag_value_short_name'')". or "resource.matchTagId(''tagKeys/key_id'',
+                            ''tagValues/value_id'')". where key_name and value_name
+                            are the resource names for Label Keys and Values. These
+                            names are available from the Tag Manager Service. An example
+                            expression is: "resource.matchTag(''123456789/environment,
+                            ''prod'')". or "resource.matchTagId(''tagKeys/123'', ''tagValues/456'')".'
+                          properties:
+                            description:
+                              description: Optional. Description of the expression.
+                                This is a longer text which describes the expression,
+                                e.g. when hovered over it in a UI.
+                              type: string
+                            expression:
+                              description: Textual representation of an expression
+                                in Common Expression Language syntax.
+                              type: string
+                            location:
+                              description: Optional. String indicating the location
+                                of the expression for error reporting, e.g. a file
+                                name and a position in the file.
+                              type: string
+                            title:
+                              description: Optional. Title for the expression, i.e.
+                                a short string describing its purpose. This can be
+                                used e.g. in UIs which allow to enter the expression.
+                              type: string
+                          type: object
+                        denyAll:
+                          description: Setting this to true means that all values
+                            are denied. This field can be set only in policies for
+                            list constraints.
+                          type: boolean
+                        enforce:
+                          description: If `true`, then the policy is enforced. If
+                            `false`, then any configuration is acceptable. This field
+                            can be set only in policies for boolean constraints.
+                          type: boolean
+                        values:
+                          description: List of values to be used for this policy rule.
+                            This field can be set only in policies for list constraints.
+                          properties:
+                            allowedValues:
+                              description: List of values allowed at this resource.
+                              items:
+                                type: string
+                              type: array
+                            deniedValues:
+                              description: List of values denied at this resource.
+                              items:
+                                type: string
+                              type: array
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              etag:
+                description: Optional. An opaque tag indicating the current state
+                  of the policy, used for concurrency control. This 'etag' is computed
+                  by the server based on the value of other fields, and may be sent
+                  on update and delete requests to ensure the client has an up-to-date
+                  value before proceeding.
+                type: string
+              folderRef:
+                description: Immutable. The Folder that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef'
+                  must be set.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              name:
+                description: |-
+                  Immutable. The resource name of the policy. Must be one of the following
+                   forms, where `constraint_name` is the name of the constraint which this
+                   policy configures:
+
+                   * `projects/{project_number}/policies/{constraint_name}`
+                   * `folders/{folder_id}/policies/{constraint_name}`
+                   * `organizations/{organization_id}/policies/{constraint_name}`
+
+                   For example, `projects/123/policies/compute.disableSerialPortAccess`.
+
+                   Note: `projects/{project_id}/policies/{constraint_name}` is also an
+                   acceptable name for API requests, but responses will return the name using
+                   the equivalent project number.
+                type: string
+              organizationRef:
+                description: Immutable. The Organization that this resource belongs
+                  to. One and only one of 'projectRef', 'folderRef', or 'organizationRef'
+                  must be set.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                  One and only one of 'projectRef', 'folderRef', or 'organizationRef'
+                  must be set.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The OrgPolicyPolicy name. If not given, the metadata.name
+                  will be used.
+                type: string
+              spec:
+                description: Basic information about the Organization Policy.
+                properties:
+                  etag:
+                    description: |-
+                      An opaque tag indicating the current version of the policySpec, used for
+                       concurrency control.
+
+                       This field is ignored if used in a `CreatePolicy` request.
+
+                       When the policy is returned from either a `GetPolicy` or a
+                       `ListPolicies` request, this `etag` indicates the version of the
+                       current policySpec to use when executing a read-modify-write loop.
+
+                       When the policy is returned from a `GetEffectivePolicy` request, the
+                       `etag` will be unset.
+                    type: string
+                  inheritFromParent:
+                    description: |-
+                      Determines the inheritance behavior for this policy.
+
+                       If `inherit_from_parent` is true, policy rules set higher up in the
+                       hierarchy (up to the closest root) are inherited and present in the
+                       effective policy. If it is false, then no rules are inherited, and this
+                       policy becomes the new root for evaluation.
+                       This field can be set only for policies which configure list constraints.
+                    type: boolean
+                  reset:
+                    description: Ignores policies set above this resource and restores
+                      the `constraint_default` enforcement behavior of the specific
+                      constraint at this resource. This field can be set in policies
+                      for either list or boolean constraints. If set, `rules` must
+                      be empty and `inherit_from_parent` must be set to false.
+                    type: boolean
+                  rules:
+                    description: |-
+                      In policies for boolean constraints, the following requirements apply:
+
+                         - There must be one and only one policy rule where condition is unset.
+                         - Boolean policy rules with conditions must set `enforced` to the
+                           opposite of the policy rule without a condition.
+                         - During policy evaluation, policy rules with conditions that are
+                           true for a target resource take precedence.
+                    items:
+                      properties:
+                        allowAll:
+                          description: Setting this to true means that all values
+                            are allowed. This field can be set only in policies for
+                            list constraints.
+                          type: boolean
+                        condition:
+                          description: 'A condition which determines whether this
+                            rule is used in the evaluation of the policy. When set,
+                            the `expression` field in the `Expr'' must include from
+                            1 to 10 subexpressions, joined by the "||" or "&&" operators.
+                            Each subexpression must be of the form "resource.matchTag(''<ORG_ID>/tag_key_short_name,
+                            ''tag_value_short_name'')". or "resource.matchTagId(''tagKeys/key_id'',
+                            ''tagValues/value_id'')". where key_name and value_name
+                            are the resource names for Label Keys and Values. These
+                            names are available from the Tag Manager Service. An example
+                            expression is: "resource.matchTag(''123456789/environment,
+                            ''prod'')". or "resource.matchTagId(''tagKeys/123'', ''tagValues/456'')".'
+                          properties:
+                            description:
+                              description: Optional. Description of the expression.
+                                This is a longer text which describes the expression,
+                                e.g. when hovered over it in a UI.
+                              type: string
+                            expression:
+                              description: Textual representation of an expression
+                                in Common Expression Language syntax.
+                              type: string
+                            location:
+                              description: Optional. String indicating the location
+                                of the expression for error reporting, e.g. a file
+                                name and a position in the file.
+                              type: string
+                            title:
+                              description: Optional. Title for the expression, i.e.
+                                a short string describing its purpose. This can be
+                                used e.g. in UIs which allow to enter the expression.
+                              type: string
+                          type: object
+                        denyAll:
+                          description: Setting this to true means that all values
+                            are denied. This field can be set only in policies for
+                            list constraints.
+                          type: boolean
+                        enforce:
+                          description: If `true`, then the policy is enforced. If
+                            `false`, then any configuration is acceptable. This field
+                            can be set only in policies for boolean constraints.
+                          type: boolean
+                        values:
+                          description: List of values to be used for this policy rule.
+                            This field can be set only in policies for list constraints.
+                          properties:
+                            allowedValues:
+                              description: List of values allowed at this resource.
+                              items:
+                                type: string
+                              type: array
+                            deniedValues:
+                              description: List of values denied at this resource.
+                              items:
+                                type: string
+                              type: array
+                          type: object
+                      type: object
+                    type: array
+                type: object
+            type: object
+          status:
+            description: OrgPolicyPolicyStatus defines the config connector machine
+              state of OrgPolicyPolicy
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the OrgPolicyPolicy resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
