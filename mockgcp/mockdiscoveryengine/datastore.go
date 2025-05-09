@@ -29,7 +29,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -57,6 +57,11 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	// Returns with no createTime
 	lroRet := proto.Clone(obj).(*pb.DataStore)
 	lroRet.CreateTime = nil
+	// output-only
+	if obj.LanguageInfo != nil {
+		lroRet.LanguageInfo.NormalizedLanguageCode = obj.LanguageInfo.LanguageCode
+		lroRet.LanguageInfo.Language = obj.LanguageInfo.LanguageCode
+	}
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 
@@ -141,7 +146,10 @@ func (s *MockService) parseDataStoreName(name string) (*dataStoreName, error) {
 
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
-			return nil, err
+			project, err = s.Projects.GetProjectByNumber(tokens[1])
+			if err != nil {
+				return nil, err
+			}
 		}
 
 		return &dataStoreName{

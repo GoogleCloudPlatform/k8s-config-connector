@@ -66,10 +66,6 @@ type DiscoveryEngineEngineSpec struct {
 	// solution_type is SOLUTION_TYPE_SEARCH.
 	SearchEngineConfig *Engine_SearchEngineConfig `json:"searchEngineConfig,omitempty"`
 
-	// Optional. Whether to disable analytics for searches performed on this
-	//  engine.
-	DisableAnalytics *bool `json:"disableAnalytics,omitempty"`
-
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef *refs.ProjectRef `json:"projectRef"`
 

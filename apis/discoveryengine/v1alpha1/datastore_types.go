@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,65 +15,178 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DiscoveryEngineDataStoreGVK = GroupVersion.WithKind("DiscoveryEngineDataStore")
 
+type DiscoveryEngineDataStoreParent struct {
+	// Required. The location of the application.
+	// +required
+	Location *string `json:"location,omitempty"`
+
+	// Required. The host project of the application.
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// TODO: The collection is a parent but it does not show up in the proto.
+	// Collection is optional.
+
+	// Immutable. The collection for the DataStore.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
+	Collection *string `json:"collection"`
+}
+
 // DiscoveryEngineDataStoreSpec defines the desired state of DiscoveryEngineDataStore
-// +kcc:proto=google.cloud.discoveryengine.v1.DataStore
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.DataStore
 type DiscoveryEngineDataStoreSpec struct {
 	// The DiscoveryEngineDataStore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Required. Defines the parent path of the resource.
+	DiscoveryEngineDataStoreParent `json:",inline"`
+
 	// Required. The data store display name.
 	//
-	// This field must be a UTF-8 encoded string with a length limit of 128
-	// characters. Otherwise, an INVALID_ARGUMENT error is returned.
+	//  This field must be a UTF-8 encoded string with a length limit of 128
+	//  characters. Otherwise, an INVALID_ARGUMENT error is returned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The industry vertical that the data store registers.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.industry_vertical
 	IndustryVertical *string `json:"industryVertical,omitempty"`
 
+	// Immutable.
 	// The solutions that the data store enrolls. Available solutions for each
-	// [industry_vertical][google.cloud.discoveryengine.v1.DataStore.industry_vertical]:
+	//  [industry_vertical][google.cloud.discoveryengine.v1alpha.DataStore.industry_vertical]:
 	//
-	// * `MEDIA`: `SOLUTION_TYPE_RECOMMENDATION` and `SOLUTION_TYPE_SEARCH`.
-	// * `SITE_SEARCH`: `SOLUTION_TYPE_SEARCH` is automatically enrolled. Other
-	//   solutions cannot be enrolled.
+	//  * `MEDIA`: `SOLUTION_TYPE_RECOMMENDATION` and `SOLUTION_TYPE_SEARCH`.
+	//  * `SITE_SEARCH`: `SOLUTION_TYPE_SEARCH` is automatically enrolled. Other
+	//    solutions cannot be enrolled.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.solution_types
 	SolutionTypes []string `json:"solutionTypes,omitempty"`
 
+	// +kubebuilder:validation:Enum=CONTENT_CONFIG_UNSPECIFIED;NO_CONTENT;CONTENT_REQUIRED;PUBLIC_WEBSITE;GOOGLE_WORKSPACE
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The content config of the data store. If this field is unset,
-	// the server behavior defaults to
-	// [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT].
+	//  the server behavior defaults to
+	//  [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1alpha.DataStore.ContentConfig.NO_CONTENT].
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.content_config
 	ContentConfig *string `json:"contentConfig,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// Data store level identity provider config.
+	// This needs to be set up separately in the Vertex AI "Authentication settings"
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.idp_config
+	IdpConfig *IdpConfig `json:"idpConfig,omitempty"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// Immutable. Whether data in the
+	//  [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] has ACL
+	//  information. If set to `true`, the source data must have ACL. ACL will be
+	//  devingested when data is ingested by
+	//  [DocumentService.ImportDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ImportDocuments]
+	//  methods.
+	//
+	//  When ACL is enabled for the
+	//  [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+	//  [Document][google.cloud.discoveryengine.v1alpha.Document] can't be accessed
+	//  by calling
+	//  [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
+	//  or
+	//  [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments].
+	//
+	//  Currently ACL is only supported in `GENERIC` industry vertical with
+	//  non-`PUBLIC_WEBSITE` content config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.acl_enabled
+	AclEnabled *bool `json:"aclEnabled,omitempty"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Config to store data store type configuration for workspace data. This
-	// must be set when
-	// [DataStore.content_config][google.cloud.discoveryengine.v1.DataStore.content_config]
-	// is set as
-	// [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1.DataStore.ContentConfig.GOOGLE_WORKSPACE].
+	//  must be set when
+	//  [DataStore.content_config][google.cloud.discoveryengine.v1alpha.DataStore.content_config]
+	//  is set as
+	//  [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1alpha.DataStore.ContentConfig.GOOGLE_WORKSPACE].
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.workspace_config
 	WorkspaceConfig *WorkspaceConfig `json:"workspaceConfig,omitempty"`
 
-	/* NOTYET: this includes a map[string]object which is difficult to map to KRM
+	// Language info for DataStore.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.language_info
+	LanguageInfo *LanguageInfo `json:"languageInfo,omitempty"`
+
 	// Configuration for Document understanding and enrichment.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.document_processing_config
 	DocumentProcessingConfig *DocumentProcessingConfig `json:"documentProcessingConfig,omitempty"`
-	*/
+}
 
-	/* The ID of the project in which the resource belongs.*/
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.IdpConfig
+type IdpConfig struct {
+	// Identity provider type configured.
+	// +kubebuilder:validation:Enum=THIRD_PARTY;GSUITE;IDP_TYPE_UNSPECIFIED
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.IdpConfig.idp_type
+	IdpType *string `json:"idpType,omitempty"`
 
-	// Immutable. The collection for the DataStore.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Collection field is immutable"
-	// +required
-	Collection string `json:"collection"`
+	// External Identity provider config.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.IdpConfig.external_idp_config
+	ExternalIdpConfig *IdpConfig_ExternalIdpConfig `json:"externalIdpConfig,omitempty"`
+}
 
-	// Immutable. The location for the resource.
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// +required
-	Location string `json:"location"`
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig
+type DocumentProcessingConfig struct {
+	// Whether chunking mode is enabled.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.chunking_config
+	ChunkingConfig *DocumentProcessingConfig_ChunkingConfig `json:"chunkingConfig,omitempty"`
+
+	// Configurations for default Document parser.
+	//  If not specified, we will configure it as default DigitalParsingConfig, and
+	//  the default parsing config will be applied to all file types for Document
+	//  parsing.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.default_parsing_config
+	DefaultParsingConfig *DocumentProcessingConfig_ParsingConfig `json:"defaultParsingConfig,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.LanguageInfo
+type LanguageInfo struct {
+	// The language code for the DataStore. See https://cloud.google.com/vertex-ai/docs/general/supported-languages
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.LanguageInfo.language_code
+	LanguageCode *string `json:"languageCode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.DataStore
+type DataStoreObservedState struct {
+	// Output only. The id of the default
+	//  [Schema][google.cloud.discoveryengine.v1alpha.Schema] asscociated to this
+	//  data store.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.default_schema_id
+	DefaultSchemaID *string `json:"defaultSchemaID,omitempty"`
+
+	// Output only. Timestamp the
+	//  [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] was created at.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Language info for DataStore.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.DataStore.language_info
+	LanguageInfo *LanguageInfoObservedState `json:"languageInfo,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1alpha.WorkspaceConfig
+type WorkspaceConfig struct {
+	// +kubebuilder:validation:Enum=TYPE_UNSPECIFIED;GOOGLE_DRIVE;GOOGLE_MAIL;GOOGLE_SITES;GOOGLE_CALENDAR;GOOGLE_CHAT;GOOGLE_GROUPS;GOOGLE_KEEP
+	// The Google Workspace data source. Valid values are TYPE_UNSPECIFIED, GOOGLE_DRIVE, GOOGLE_MAIL, GOOGLE_SITES, GOOGLE_CALENDAR,
+	// GOOGLE_CHAT, GOOGLE_GROUPS, GOOGLE_KEEP
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.WorkspaceConfig.type
+	Type *string `json:"type,omitempty"`
+
+	// Obfuscated Dasher customer ID.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1alpha.WorkspaceConfig.dasher_customer_id
+	DasherCustomerID *string `json:"dasherCustomerID,omitempty"`
 }
 
 // DiscoveryEngineDataStoreStatus defines the config connector machine state of DiscoveryEngineDataStore
@@ -89,23 +202,7 @@ type DiscoveryEngineDataStoreStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DiscoveryEngineDataStoreObservedState `json:"observedState,omitempty"`
-}
-
-// DiscoveryEngineDataStoreObservedState is the state of the DiscoveryEngineDataStore resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.discoveryengine.v1.DataStore
-type DiscoveryEngineDataStoreObservedState struct {
-	// Output only. The id of the default
-	// [Schema][google.cloud.discoveryengine.v1.Schema] associated to this data
-	// store.
-	DefaultSchemaID *string `json:"defaultSchemaID,omitempty"`
-
-	// Output only. Timestamp the
-	// [DataStore][google.cloud.discoveryengine.v1.DataStore] was created at.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Data size estimation for billing.
-	BillingEstimation *DataStore_BillingEstimation `json:"billingEstimation,omitempty"`
+	ObservedState *DataStoreObservedState `json:"observedState,omitempty"`
 }
 
 // +genclient

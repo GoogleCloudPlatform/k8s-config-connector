@@ -18,7 +18,7 @@
 package discoveryengine
 
 import (
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,12 +29,15 @@ func init() {
 func engineFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Engine{},
 		DiscoveryEngineEngineSpec_FromProto, DiscoveryEngineEngineSpec_ToProto,
-		DiscoveryEngineEngineObservedState_FromProto, DiscoveryEngineEngineObservedState_ToProto,
+		EngineObservedState_FromProto, EngineObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
 	f.UnimplementedFields.Insert(".create_time")          // Could be status
 	f.UnimplementedFields.Insert(".update_time")          // Could be status
+	f.UnimplementedFields.Insert(".recommendation_metadata")
+	f.UnimplementedFields.Insert(".media_recommendation_engine_config")
+	f.UnimplementedFields.Insert(".similar_documents_config")
 
 	f.UnimplementedFields.Insert(".name") // special field
 

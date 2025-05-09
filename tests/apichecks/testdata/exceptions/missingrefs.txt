@@ -65,7 +65,6 @@
 [refs] crd=dialogflowcxwebhooks.dialogflowcx.cnrm.cloud.google.com version=v1alpha1: field ".spec.securitySettings" should be a reference
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputContextNames" should be a reference
 [refs] crd=dialogflowintents.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentFollowupIntentName" should be a reference
-[refs] crd=discoveryenginedatastores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.workspaceConfig.superAdminServiceAccount" should be a reference
 [refs] crd=dnsmanagedzones.dns.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceDirectoryConfig.namespace.namespaceUrl" should be a reference
 [refs] crd=dnsresponsepolicies.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].networkUrl" should be a reference
 [refs] crd=healthcareconsentstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" should be a reference

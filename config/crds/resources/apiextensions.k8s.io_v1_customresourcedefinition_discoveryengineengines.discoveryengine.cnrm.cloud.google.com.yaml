@@ -71,9 +71,9 @@ spec:
 
                        Note that these configurations are one-time consumed by
                        and passed to Dialogflow service. It means they cannot be retrieved using
-                       [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
+                       [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
                        or
-                       [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+                       [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
                        API after engine creation.
                     properties:
                       business:
@@ -109,11 +109,11 @@ spec:
 
                        Note that the `dialogflow_agent_to_link` are one-time consumed by and
                        passed to Dialogflow service. It means they cannot be retrieved using
-                       [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
+                       [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
                        or
-                       [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+                       [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
                        API after engine creation. Use
-                       [ChatEngineMetadata.dialogflow_agent][google.cloud.discoveryengine.v1.Engine.ChatEngineMetadata.dialogflow_agent]
+                       [ChatEngineMetadata.dialogflow_agent][google.cloud.discoveryengine.v1alpha.Engine.ChatEngineMetadata.dialogflow_agent]
                        for actual agent association after Engine is created.
                     type: string
                 type: object
@@ -168,10 +168,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              disableAnalytics:
-                description: Optional. Whether to disable analytics for searches performed
-                  on this engine.
-                type: boolean
               displayName:
                 description: Required. The display name of the engine. Should be human
                   readable. UTF-8 encoded string with limit of 1024 characters.
@@ -238,7 +234,7 @@ spec:
                        pricing. To learn more, check the pricing documentation.
 
                        Defaults to
-                       [SearchTier.SEARCH_TIER_STANDARD][google.cloud.discoveryengine.v1.SearchTier.SEARCH_TIER_STANDARD]
+                       [SearchTier.SEARCH_TIER_STANDARD][google.cloud.discoveryengine.v1alpha.SearchTier.SEARCH_TIER_STANDARD]
                        if not specified.
                     type: string
                 type: object

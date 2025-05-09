@@ -18,7 +18,7 @@
 package discoveryengine
 
 import (
-	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	pb "cloud.google.com/go/discoveryengine/apiv1alpha/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -29,7 +29,7 @@ func init() {
 func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataStore{},
 		DiscoveryEngineDataStoreSpec_FromProto, DiscoveryEngineDataStoreSpec_ToProto,
-		DiscoveryEngineDataStoreObservedState_FromProto, DiscoveryEngineDataStoreObservedState_ToProto,
+		DataStoreObservedState_FromProto, DataStoreObservedState_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")                       // special field
@@ -41,10 +41,13 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".solution_types")
 	f.SpecFields.Insert(".content_config")
 	f.SpecFields.Insert(".workspace_config")
+	f.SpecFields.Insert(".language_info")
+	f.SpecFields.Insert(".idp_config")
+	f.SpecFields.Insert(".acl_enabled")
 
 	f.StatusFields.Insert(".default_schema_id")
 	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".billing_estimation")
+	f.StatusFields.Insert(".language_info")
 
 	return f
 }
