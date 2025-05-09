@@ -232,6 +232,15 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
+
+	if obj.GetDeletionTimestamp() != nil {
+		if k8s.HasFinalizer(obj, k8s.DeletionDefenderFinalizerName) {
+			// Object is being deleted, but we are waiting on the finalizer
+			// When the finalizer is removed the watch will fire, so no need for time-based re-reconciliation.
+			return reconcile.Result{}, nil
+		}
+	}
+
 	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.gvk, obj)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -245,7 +254,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
-		return true, err
+		return false, err
 	}
 
 	am := resourceactuation.DecideActuationMode(cc, ccc)
@@ -296,8 +305,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
 			// deletion defender has not yet finalized; requeuing
-			logger.Info("deletion defender has not yet finalized; requeuing", "resource", k8s.GetNamespacedName(u))
-			return true, nil
+			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
+			return false, nil
 		}
 		if !k8s.HasAbandonAnnotation(u) {
 			deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
