@@ -105,8 +105,12 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			RateLimiter:             ratelimiter.NewRateLimiter(),
+		}).
+		WatchesRawSource(
+			source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...)).
 		Build(r)
 	if err != nil {

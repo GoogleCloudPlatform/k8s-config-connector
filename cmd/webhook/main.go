@@ -43,6 +43,7 @@ import (
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+	crwebhook "sigs.k8s.io/controller-runtime/pkg/webhook"
 )
 
 var logger = klog.Log.WithName("setup")
@@ -101,7 +102,11 @@ func main() {
 		// Although this Port value will specify the port of any webhooks
 		// spawned by the manager, those used by this manager are generated
 		// by the RegisterCommonWebhooks call below, and will not honor this value.
-		Port: webhook.ServicePort,
+		WebhookServer: crwebhook.NewServer(
+			crwebhook.Options{
+				Port: webhook.ServicePort,
+			},
+		),
 		NewCache: func(config *rest.Config, opts cache.Options) (cache.Cache, error) {
 			opts.ByObject = map[client.Object]cache.ByObject{
 				crdKind: {

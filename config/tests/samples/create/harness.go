@@ -43,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -182,7 +183,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
-	kccConfig.ManagerOptions.MetricsBindAddress = "0"
+	kccConfig.ManagerOptions.Metrics.BindAddress = "0"
 	// Prevent manager from binding to a port to serve health probes since
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
@@ -224,9 +225,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 		h.restConfig = restConfig
 
-		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
-		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
-		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+		webhookOptions := webhook.Options{
+			Port:    env.WebhookInstallOptions.LocalServingPort,
+			Host:    env.WebhookInstallOptions.LocalServingHost,
+			CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+		}
+		kccConfig.ManagerOptions.WebhookServer = webhook.NewServer(webhookOptions)
 
 		if pprofPath := os.Getenv("KUBEAPISERVER_CAPTURE_PPROF"); pprofPath != "" {
 			pprofDone := make(chan error)
@@ -675,6 +679,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		t.Log("controller-runtime manager is shutdown")
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
