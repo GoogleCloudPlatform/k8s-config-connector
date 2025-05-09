@@ -950,6 +950,14 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md">VPCAccessConnector</a></td>
 </tr>
 <tr>
+  <td><a href="/workflows/docs/">{{workstations_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/workflows/workflowexecution.md">WorkflowExecutions</a></td>
+</tr>
+<tr>
+  <td><a href="/workflows/docs/">{{workstations_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/workflows/workflowsworkflow.md">WorkflowsWorkflow</a></td>
+</tr>
+<tr>
   <td><a href="/workstations/docs/">{{workstations_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/workstations/workstationcluster.md">WorkstationCluster</a></td>
 </tr>

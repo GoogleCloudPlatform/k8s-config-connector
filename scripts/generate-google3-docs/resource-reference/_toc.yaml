@@ -603,6 +603,12 @@ toc:
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
+- title: "Workflows"
+  section:
+  - title: "WorkflowExecutions"
+    path: /config-connector/docs/reference/resource-docs/workflows/workflowexecutions.md
+  - title: "WorkflowsWorkflow"
+    path: /config-connector/docs/reference/resource-docs/workflows/workflowsworkflow.md
 - title: "Workstations"
   section:
   - title: "WorkstationCluster"
