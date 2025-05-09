@@ -1,7 +1,7 @@
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -32,8 +32,8 @@ X-Xss-Protection: 0
 
 PATCH https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=versionAliases
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecret-${uniqueId}
 
 {
   "etag": "abcdef0123A=",
@@ -84,7 +84,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secret-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

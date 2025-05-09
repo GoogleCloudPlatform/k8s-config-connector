@@ -67,7 +67,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
     "state": "ACTIVE",
-    "uid": "lake-test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -102,7 +102,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
   "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
   "state": "ACTIVE",
-  "uid": "lake-test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -219,7 +219,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
     "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
     "state": "ACTIVE",
-    "uid": "lake-test-${uniqueId}",
+    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -255,7 +255,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/lakes/test-${uniqueId}",
   "serviceAccount": "service-${projectNumber}@gcp-sa-dataplex.iam.gserviceaccount.com",
   "state": "ACTIVE",
-  "uid": "lake-test-${uniqueId}",
+  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
