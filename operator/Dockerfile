@@ -15,7 +15,7 @@
 # This Dockefile builds a thin image containing the manager binary
 
 # Build the manager binary
-FROM golang:1.24.2 AS builder
+FROM golang:1.24.3 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
