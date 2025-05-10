@@ -1,0 +1,393 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: clouddeployautomations.clouddeploy.cnrm.cloud.google.com
+spec:
+  group: clouddeploy.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudDeployAutomation
+    listKind: CloudDeployAutomationList
+    plural: clouddeployautomations
+    shortNames:
+    - gcpclouddeployautomation
+    - gcpclouddeployautomations
+    singular: clouddeployautomation
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudDeployAutomation is the Schema for the CloudDeployAutomation
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AutomationSpec defines the desired state of CloudDeployAutomation
+            properties:
+              description:
+                description: Optional. Description of the `Automation`. Max length
+                  is 255 characters.
+                type: string
+              location:
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The CloudDeployAutomation name. If not given, the metadata.name
+                  will be used.
+                type: string
+              rules:
+                description: 'Required. List of Automation rules associated with the
+                  Automation resource. Must have at least one rule and limited to
+                  250 rules per Delivery Pipeline. Note: the order of the rules here
+                  is not the same as the order of execution.'
+                items:
+                  properties:
+                    advanceRolloutRule:
+                      description: Optional. The `AdvanceRolloutRule` will automatically
+                        advance a successful Rollout.
+                      properties:
+                        id:
+                          description: Required. ID of the rule. This id must be unique
+                            in the `Automation` resource to which this rule belongs.
+                            The format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+                          type: string
+                        sourcePhases:
+                          description: 'Optional. Proceeds only after phase name matched
+                            any one in the list. This value must consist of lower-case
+                            letters, numbers, and hyphens, start with a letter and
+                            end with a letter or a number, and have a max length of
+                            63 characters. In other words, it must match the following
+                            regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.'
+                          items:
+                            type: string
+                          type: array
+                        wait:
+                          description: Optional. How long to wait after a rollout
+                            is finished.
+                          type: string
+                      type: object
+                    promoteReleaseRule:
+                      description: Optional. `PromoteReleaseRule` will automatically
+                        promote a release from the current target to a specified target.
+                      properties:
+                        destinationPhase:
+                          description: Optional. The starting phase of the rollout
+                            created by this operation. Default to the first phase.
+                          type: string
+                        destinationTargetID:
+                          description: |-
+                            Optional. The ID of the stage in the pipeline to which this `Release` is
+                             deploying. If unspecified, default it to the next stage in the promotion
+                             flow. The value of this field could be one of the following:
+
+                             * The last segment of a target name
+                             * "@next", the next target in the promotion sequence
+                          type: string
+                        id:
+                          description: Required. ID of the rule. This id must be unique
+                            in the `Automation` resource to which this rule belongs.
+                            The format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+                          type: string
+                        wait:
+                          description: Optional. How long the release need to be paused
+                            until being promoted to the next target.
+                          type: string
+                      type: object
+                    repairRolloutRule:
+                      description: Optional. The `RepairRolloutRule` will automatically
+                        repair a failed rollout.
+                      properties:
+                        id:
+                          description: Required. ID of the rule. This id must be unique
+                            in the `Automation` resource to which this rule belongs.
+                            The format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+                          type: string
+                        jobs:
+                          description: 'Optional. Jobs to repair. Proceeds only after
+                            job name matched any one in the list, or for all jobs
+                            if unspecified or empty. The phase that includes the job
+                            must match the phase ID specified in `source_phase`. This
+                            value must consist of lower-case letters, numbers, and
+                            hyphens, start with a letter and end with a letter or
+                            a number, and have a max length of 63 characters. In other
+                            words, it must match the following regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.'
+                          items:
+                            type: string
+                          type: array
+                        phases:
+                          description: 'Optional. Phases within which jobs are subject
+                            to automatic repair actions on failure. Proceeds only
+                            after phase name matched any one in the list, or for all
+                            phases if unspecified. This value must consist of lower-case
+                            letters, numbers, and hyphens, start with a letter and
+                            end with a letter or a number, and have a max length of
+                            63 characters. In other words, it must match the following
+                            regex: `^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$`.'
+                          items:
+                            type: string
+                          type: array
+                        repairPhases:
+                          description: Required. Defines the types of automatic repair
+                            phases for failed jobs.
+                          items:
+                            properties:
+                              retry:
+                                description: Optional. Retries a failed job.
+                                properties:
+                                  attempts:
+                                    description: Required. Total number of retries.
+                                      Retry is skipped if set to 0; The minimum value
+                                      is 1, and the maximum value is 10.
+                                    format: int64
+                                    type: integer
+                                  backoffMode:
+                                    description: Optional. The pattern of how wait
+                                      time will be increased. Default is linear. Backoff
+                                      mode will be ignored if `wait` is 0.
+                                    type: string
+                                  wait:
+                                    description: Optional. How long to wait for the
+                                      first retry. Default is 0, and the maximum value
+                                      is 14d.
+                                    type: string
+                                type: object
+                              rollback:
+                                description: Optional. Rolls back a `Rollout`.
+                                properties:
+                                  destinationPhase:
+                                    description: Optional. The starting phase ID for
+                                      the `Rollout`. If unspecified, the `Rollout`
+                                      will start in the stable phase.
+                                    type: string
+                                  disableRollbackIfRolloutPending:
+                                    description: Optional. If pending rollout exists
+                                      on the target, the rollback operation will be
+                                      aborted.
+                                    type: boolean
+                                type: object
+                            type: object
+                          type: array
+                      type: object
+                    timedPromoteReleaseRule:
+                      description: Optional. The `TimedPromoteReleaseRule` will automatically
+                        promote a release from the current target(s) to the specified
+                        target(s) on a configured schedule.
+                      properties:
+                        destinationPhase:
+                          description: Optional. The starting phase of the rollout
+                            created by this rule. Default to the first phase.
+                          type: string
+                        destinationTargetID:
+                          description: |-
+                            Optional. The ID of the stage in the pipeline to which this `Release` is
+                             deploying. If unspecified, default it to the next stage in the promotion
+                             flow. The value of this field could be one of the following:
+
+                             * The last segment of a target name
+                             * "@next", the next target in the promotion sequence
+                          type: string
+                        id:
+                          description: Required. ID of the rule. This ID must be unique
+                            in the `Automation` resource to which this rule belongs.
+                            The format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+                          type: string
+                        schedule:
+                          description: Required. Schedule in crontab format. e.g.
+                            "0 9 * * 1" for every Monday at 9am.
+                          type: string
+                        timeZone:
+                          description: Required. The time zone in IANA format [IANA
+                            Time Zone Database](https://www.iana.org/time-zones) (e.g.
+                            America/New_York).
+                          type: string
+                      type: object
+                  type: object
+                type: array
+              selector:
+                description: Required. Selected resources to which the automation
+                  will be applied.
+                properties:
+                  targets:
+                    description: Contains attributes about a target.
+                    items:
+                      properties:
+                        id:
+                          description: |-
+                            ID of the `Target`. The value of this field could be one of the
+                             following:
+
+                             * The last segment of a target name
+                             * "*", all targets in a location
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Target labels.
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              serviceAccount:
+                description: Required. Email address of the user-managed IAM service
+                  account that creates Cloud Deploy release and rollout resources.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `email` field of an `IAMServiceAccount` resource.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              suspended:
+                description: Optional. When Suspended, automation is deactivated from
+                  execution.
+                type: boolean
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: AutomationStatus defines the config connector machine state
+              of CloudDeployAutomation
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudDeployAutomation resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time at which the automation was created.
+                    type: string
+                  updateTime:
+                    description: Output only. Time at which the automation was updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
