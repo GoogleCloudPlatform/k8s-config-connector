@@ -16,6 +16,8 @@ apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityMembership
 metadata:
   name: cloudidentitymembership-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   groupRef:
     name: cloudidentitygroup-${uniqueId}
