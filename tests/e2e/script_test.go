@@ -45,6 +45,11 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+type SkippableLogEntries struct {
+	SkipCheck bool // not sent to CompareGoldenFile
+	Entries   []*test.LogEntry
+}
+
 // TestE2EScript runs a Scenario test that runs step-by-step.
 // See testdata/scenarios/README.md for more information.
 func TestE2EScript(t *testing.T) {
@@ -92,14 +97,17 @@ func TestE2EScript(t *testing.T) {
 					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
 				})
 
-				var eventsByStep [][]*test.LogEntry
+				var eventsByStep []*SkippableLogEntries
 				eventsBefore := h.Events.HTTPEvents
-				captureHTTPLogEvents := func() {
+				captureHTTPLogEvents := func(skip bool) {
 					var stepEvents []*test.LogEntry
 					for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
 						stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
 					}
-					eventsByStep = append(eventsByStep, stepEvents)
+					eventsByStep = append(eventsByStep, &SkippableLogEntries{
+						SkipCheck: skip,
+						Entries:   stepEvents,
+					})
 					eventsBefore = h.Events.HTTPEvents
 				}
 
@@ -139,7 +147,38 @@ func TestE2EScript(t *testing.T) {
 							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
 						}
 
-						captureHTTPLogEvents()
+						captureHTTPLogEvents(false)
+						continue
+					}
+
+					// SystemRun let's KCC run for a while to observe/ gather HTTP logs
+					if obj.GroupVersionKind().Kind == "SystemRun" {
+						if h.MockGCP != nil {
+							d, _, _ := unstructured.NestedInt64(obj.Object, "duration")
+							waitTimeout := time.Duration(d) * time.Second
+							timeoutChan := time.After(waitTimeout)
+							ticker := time.NewTicker(30 * time.Second)
+
+							for {
+								stopWaiting := false
+								select {
+								case <-timeoutChan:
+									t.Logf("finished waiting for http log collections")
+									stopWaiting = true
+									break
+								case <-ticker.C:
+									t.Logf("waiting for http log collections")
+								}
+								if stopWaiting {
+									break
+								}
+							}
+
+						} else {
+							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+						}
+
+						captureHTTPLogEvents(true)
 						continue
 					}
 
@@ -371,7 +410,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					captureHTTPLogEvents()
+					captureHTTPLogEvents(false)
 				}
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
@@ -379,14 +418,26 @@ func TestE2EScript(t *testing.T) {
 						x := NewNormalizer(uniqueID, project)
 
 						for _, stepEvents := range eventsByStep {
-							x.Preprocess(stepEvents)
+							x.Preprocess(stepEvents.Entries)
 						}
 
 						for i, stepEvents := range eventsByStep {
 							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-							NormalizeHTTPLog(t, stepEvents, h.RegisteredServices(), project, uniqueID, "", "")
-							got := x.Render(stepEvents)
+							NormalizeHTTPLog(t, stepEvents.Entries, h.RegisteredServices(), project, uniqueID, "", "")
+							got := x.Render(stepEvents.Entries)
+							if stepEvents.SkipCheck {
+								// if we have to skip the check we might still want to write the file!
+								if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+									if err := os.WriteFile(expectedPath, []byte(got), 0644); err != nil {
+										t.Fatalf("FAIL: failed to write golden output %s: %v", expectedPath, err)
+									}
+									t.Logf("wrote updated golden output to %s", expectedPath)
+								}
+								continue
+							}
+
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
+
 						}
 					}
 				}
