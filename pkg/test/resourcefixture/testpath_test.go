@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package basic
+package resourcefixture
 
 import (
 	"fmt"
@@ -182,7 +182,6 @@ func loadTestPaths() ([]string, error) {
 				if !file.IsDir() && strings.HasSuffix(file.Name(), ".yaml") {
 					// Directories with any yaml file are considered a test path to verify.
 					testPath := strings.TrimPrefix(path, rootPath)
-					fmt.Println(testPath)
 					result = append(result, testPath)
 					break
 				}
