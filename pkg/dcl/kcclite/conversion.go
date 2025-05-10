@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
@@ -443,9 +445,18 @@ func getReferencedResource(resourceRefValRaw map[string]interface{}, tc *corekcc
 	return refResource, nil
 }
 
-// TODO(kcc-eng): consolidate this method with krmtotf.resolveTargetFieldValue when resourceID support is added
 func resolveTargetFieldValue(refResource *k8s.Resource, typeConfig *corekccv1alpha1.TypeConfig) (string, error) {
 	if typeConfig.TargetField == "name" {
+		// Resolve target value from direct resources, when spec.resourceID is unspecified.
+		// Get resourceID from externalRef
+		if supportedgvks.IsDirectByGVK(refResource.GroupVersionKind()) {
+			val, _, err := unstructured.NestedString(refResource.Status, "externalRef")
+			if err != nil {
+				return "", err
+			}
+			tokens := strings.Split(val, "/")
+			return tokens[len(tokens)-1], nil
+		}
 		val, ok, err := unstructured.NestedString(refResource.Spec, k8s.ResourceIDFieldName)
 		if err != nil {
 			return "", err

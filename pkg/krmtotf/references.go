@@ -232,6 +232,16 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 }
 
 func resolveDefaultTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {
+	// Resolve target value from direct resources, when spec.resourceID is unspecified.
+	// Get resourceID from externalRef
+	if r.ResourceConfig.Direct {
+		val, _, err := unstructured.NestedString(r.Status, "externalRef")
+		if err != nil {
+			return "", err
+		}
+		tokens := strings.Split(val, "/")
+		return tokens[len(tokens)-1], nil
+	}
 	if !tc.DCLBasedResource && !SupportsResourceIDField(&r.ResourceConfig) {
 		return r.GetName(), nil
 	}
