@@ -15,6 +15,7 @@
 package preview
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 
@@ -117,4 +118,22 @@ func (s *typeStore) getTypeInfo(obj client.Object) (*typeInfo, error) {
 // GroupResource returns the group and resource for the type info.
 func (t *typeInfo) GroupResource() schema.GroupResource {
 	return schema.GroupResource{Group: t.gvr.Group, Resource: t.gvr.Resource}
+}
+
+// GroupKind returns the group and kind for the type info.
+func (t *typeInfo) GroupKind() GroupKind {
+	return GroupKind{Group: t.gvk.Group, Kind: t.gvk.Kind}
+}
+
+// CopyObjectInto copies the object into the given object.
+func (t *typeInfo) CopyObjectInto(src Object, dest Object) error {
+	// TODO: How do we want to copy objects?
+	b, err := json.Marshal(src)
+	if err != nil {
+		return fmt.Errorf("error copying %T: %w", src, err)
+	}
+	if err := json.Unmarshal(b, dest); err != nil {
+		return fmt.Errorf("error copying %T: %w", src, err)
+	}
+	return nil
 }
