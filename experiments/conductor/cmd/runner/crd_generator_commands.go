@@ -292,7 +292,8 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 	fuzzerPath := filepath.Join(fuzzerDir, fmt.Sprintf("%s_fuzzer.go", strings.ToLower(branch.Resource)))
 	stdinInput := fmt.Sprintf(`// +tool:fuzz-gen
 // proto.message: %s
-`, branch.ProtoMsg)
+// crd.kind: %s
+`, branch.ProtoMsg, branch.Kind)
 
 	cfg := CommandConfig{
 		Name:         "Fuzzer generation",
