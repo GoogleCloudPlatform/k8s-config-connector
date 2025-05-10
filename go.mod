@@ -86,7 +86,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.23.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
 	github.com/hashicorp/terraform-provider-google-beta v0.0.0-00010101000000-000000000000
-	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
+	github.com/nasa9084/go-openapi v0.0.0-20240619113810-c62c58bb3428
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/onsi/gomega v1.36.1
 	github.com/pkg/errors v0.9.1
