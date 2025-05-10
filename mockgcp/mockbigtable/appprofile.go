@@ -152,8 +152,6 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 
 	lroRet := ProtoClone(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
-	fmt.Println("CHKPT")
-	fmt.Println(updatePaths)
 	// Only return in LRO whatever has actually been updated/changed.
 	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") && !updatePaths.Has("dataBoostIsolationReadOnly") && !updatePaths.Has("data_boost_isolation_read_only") {
 		lroRet.Isolation = nil
