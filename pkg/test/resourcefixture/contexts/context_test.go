@@ -51,34 +51,36 @@ func loadTestCaseNameKindMap(root string) (map[string]string, error) {
 		}
 		if d.IsDir() {
 			dirs := strings.Split(path, "/")
-			if len(dirs) < 3 {
-				// Test data must be under the leaf directory with at least
-				// 3 levels of depth: [group]/[version]/[kind]
+
+			// If it's at the leaf directory then the last section in dirs array
+			// is the test case name; otherwise, it's just a parent directory
+			// name.
+			potentialTestCaseName := dirs[len(dirs)-1]
+			// Leaf directories like "_vcr_cassettes" are not test cases.
+			if strings.HasPrefix(potentialTestCaseName, "_") {
 				return nil
+			}
+
+			potentialTestKind := ""
+			// It's possible to identify the kind from path for basic testdata.
+			if strings.Contains(path, "resourcefixture/testdata/basic") {
+				// If it's at the leaf directory then the second to last section in
+				// dirs array may be the test kind; otherwise, it's just a parent
+				// directory name.
+				potentialTestKind = dirs[len(dirs)-2]
+				if potentialTestKind == "v1beta1" || potentialTestKind == "v1alpha1" {
+					// When there is only one test case for a kind, it's possible
+					// that the test case name is the test kind.
+					potentialTestKind = potentialTestCaseName
+				}
 			}
 
 			files, err := os.ReadDir(path)
 			if err != nil {
 				return err
 			}
-
-			testCaseName := dirs[len(dirs)-1]
-			if strings.HasPrefix(testCaseName, "_") {
-				// Leaf directories like "_vcr_cassettes" are not test cases.
-				return nil
-			}
-
-			testKind := ""
-			// It's possible to identify the kind from path for basic testdata.
-			if strings.Contains(path, "resourcefixture/testdata/basic") {
-				testKind = dirs[len(dirs)-2]
-				if testKind == "v1beta1" || testKind == "v1alpha1" {
-					testKind = testCaseName
-				}
-			}
-
-			if len(files) == 0 {
-				testCaseNames[testCaseName] = testKind
+			if len(files) == 0 { // leaf directory
+				testCaseNames[potentialTestCaseName] = potentialTestKind
 				return nil
 			}
 
@@ -86,12 +88,13 @@ func loadTestCaseNameKindMap(root string) (map[string]string, error) {
 			for _, file := range files {
 				// Directories like "_vcr_cassettes" are not test cases.
 				if file.IsDir() && !strings.HasPrefix(file.Name(), "_") {
+					// Contains subdirectory that could map to test cases.
 					isLowest = false
 					break
 				}
 			}
-			if isLowest {
-				testCaseNames[testCaseName] = testKind
+			if isLowest { // confirmed leaf directory
+				testCaseNames[potentialTestCaseName] = potentialTestKind
 			}
 		}
 		return nil
