@@ -80,6 +80,8 @@
 ### Spec
 #### Schema
 ```yaml
+dataBoostIsolationReadOnly:
+  computeBillingOwner: string
 description: string
 instanceRef:
   external: string
@@ -103,6 +105,26 @@ standardIsolation:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>dataBoostIsolationReadOnly</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specifies that this app profile is intended for read-only usage via the Data Boost feature.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dataBoostIsolationReadOnly.computeBillingOwner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The Compute Billing Owner for this Data Boost App Profile.{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>description</code></p>

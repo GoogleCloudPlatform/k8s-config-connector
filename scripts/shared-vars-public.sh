@@ -147,4 +147,7 @@ sqlinstanceencryptionkey|\
 subnetconnector|\
 vertexaidatasetencryptionkey|\
 vertexaiendpointencryptionkey|\
+vmwareengineexternalaccessrule|\
+vmwareengineexternaladdress|\
+vmwareengineprivatecloud|\
 zonalalloydbinstance"

@@ -16,6 +16,7 @@ package mockbigquery
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -23,6 +24,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -33,6 +35,38 @@ import (
 type tablesServer struct {
 	*MockService
 	pb.UnimplementedTablesServerServer
+}
+
+func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest) (*pb.Table, error) {
+	name, err := s.buildTableName(req.GetProjectId(), req.GetDatasetId(), req.GetTableId())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Table{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	updated := CloneProto(existing)
+	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
+
+	updated.FriendlyName = req.GetTable().FriendlyName
+	if updated.GetExternalDataConfiguration() != nil {
+		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+	}
+
+	updated.Etag = PtrTo(computeEtag(updated))
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	return updated, err
 }
 
 func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*pb.Table, error) {
@@ -76,8 +110,13 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 	obj.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	obj.Id = PtrTo(obj.GetTableReference().GetProjectId() + ":" + obj.GetTableReference().GetTableId())
 	obj.Kind = PtrTo("bigquery#table")
+
+	if obj.TimePartitioning != nil {
+		col := pb.PartitionedColumn{Field: obj.TimePartitioning.Field}
+		obj.PartitionDefinition = &pb.PartitioningDefinition{PartitionedColumn: []*pb.PartitionedColumn{&col}}
+	}
 	if obj.Location == nil {
-		obj.Location = PtrTo("US")
+		obj.Location = PtrTo("us-central1")
 	}
 
 	if obj.GetExternalDataConfiguration() != nil {
@@ -191,6 +230,37 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		}
 	}
 
+	if obj.MaterializedView != nil {
+		obj.Type = PtrTo("MATERIALIZED_VIEW")
+		obj.MaterializedView.LastRefreshTime = PtrTo(now.UnixMilli())
+		obj.MaterializedViewStatus = &pb.MaterializedViewStatus{
+			RefreshWatermark: timestamppb.New(now),
+		}
+		if obj.Schema == nil {
+			obj.Schema = &pb.TableSchema{}
+			// TODO: Find a way to convert sql string query to actual object instead of hardcoding.
+			// schema of the query in bigquerytable-view test case
+			obj.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("dt"),
+					Type: PtrTo("DATE"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("user_id"),
+					Type: PtrTo("STRING"),
+				},
+			}
+		}
+	}
+
+	if obj.EncryptionConfiguration != nil {
+		fmt.Println("####################################################")
+		fmt.Printf("%+v\n", obj.EncryptionConfiguration)
+		fmt.Println("####################################################")
+	}
+
 	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	obj.Etag = PtrTo(computeEtag(obj))
@@ -224,7 +294,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	updated := CloneProto(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
-
+	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
@@ -232,6 +302,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	updated.Etag = PtrTo(computeEtag(updated))
 
+	updated.TableConstraints = req.GetTable().TableConstraints
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}

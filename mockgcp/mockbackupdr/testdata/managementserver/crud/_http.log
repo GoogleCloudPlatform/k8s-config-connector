@@ -417,42 +417,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "managementUri": {
-    "api": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com/actifio",
-    "webUi": "https://bmc-${projectNumber}-3aclcdbj-dot-us-central1.backupdr.googleusercontent.com"
-  },
-  "name": "projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}",
-  "networks": [
-    {
-      "network": "projects/${projectId}/global/networks/${networkID}"
-    }
-  ],
-  "oauth2ClientId": "888888888888888888888",
-  "state": "READY",
-  "type": "BACKUP_RESTORE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/managementServers/test-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)

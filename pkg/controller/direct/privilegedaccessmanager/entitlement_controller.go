@@ -357,6 +357,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			return mapCtx.Err()
 		}
 		status.ObservedState = observedState
+		status.ExternalRef = a.id.AsExternalRef()
 		return setStatus(u, status)
 	}
 

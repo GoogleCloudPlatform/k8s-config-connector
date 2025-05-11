@@ -433,7 +433,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 						}
 						if id != "" {
-							r.OperationIDs[id] = true
+							// Avoid marking some well-known values that are not operation ids
+							switch id {
+							case "projects":
+							// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+							default:
+								r.OperationIDs[id] = true
+							}
 						}
 					}
 
@@ -594,6 +600,32 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to Compute
 					addReplacement("natIP", "192.0.0.10")
 					addReplacement("fingerprint", "abcdef0123A=")
+
+					// Specific to Dataplex
+					addReplacement("executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.executionStatus.latestJob.uid", "0123456789abcdef")
+					addReplacement("executionStatus.latestJob.uid", "0123456789abcdef")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						selfLinkWithId, _, _ := unstructured.NestedString(responseBody, "executionStatus", "latestJob", "name")
+						if selfLinkWithId != "" {
+							tokens := strings.Split(selfLinkWithId, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "jobs":
+									r.PathIDs[id] = "0123456789abcdef"
+								}
+							}
+						}
+					}
+
 					// Matches the mock ip address of Compute forwarding rule
 					addReplacement("IPAddress", "8.8.8.8")
 					addReplacement("pscConnectionId", "111111111111")
@@ -723,11 +755,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
 
-					// Specific to BigTable
-					addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
-
 					// Specific to Firestore
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if _, found, _ := unstructured.NestedMap(obj, "response"); found {
@@ -856,6 +883,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
 					addReplacement("cloudSql.serviceAccountId", "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com")
 					addReplacement("spark.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+
+					// Specific to BigQueryTable
+					addReplacement("materializedView.lastRefreshTime", "123456789")
+					addReplacement("materializedViewStatus.refreshWatermark", "2024-04-01T12:34:56.123456Z")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -1068,25 +1099,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
 
 					events = RemoveExtraEvents(events)
-
-					// Remove repeated GET requests (after normalization)
-					{
-						var previous *test.LogEntry
-						events = events.KeepIf(func(e *test.LogEntry) bool {
-							keep := true
-							if e.Request.Method == "GET" && previous != nil {
-								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
-									if previous.Response.Status == e.Response.Status {
-										if previous.Response.Body == e.Response.Body {
-											keep = false
-										}
-									}
-								}
-							}
-							previous = e
-							return keep
-						})
-					}
 
 					got := events.FormatHTTP()
 					normalizers := []func(string) string{}

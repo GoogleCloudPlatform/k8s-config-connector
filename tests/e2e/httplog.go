@@ -41,8 +41,43 @@ func NewNormalizer(uniqueID string, project testgcp.GCPProject) *Normalizer {
 }
 
 // RemoveExtraEvents removes events that are not as relevant to our golden logs
-// In particular, we remove LRO polling operations (and things that look like LROs)
+// In particular, we remove repeated GET requests and LRO polling operations (and things that look like LROs)
 func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
+	// Remove repeated GET requests (after normalization)
+	var previous *test.LogEntry
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		lastComponent := func(s string) string {
+			return s[strings.LastIndex(s, "/")+1:]
+		}
+
+		// isGet checks if this is a GET request, or a GRPC equivalent
+		isGet := func(r test.Request) bool {
+			if r.Method == "GET" {
+				return true
+			}
+			if r.Method == "GRPC" {
+				methodName := lastComponent(r.URL)
+				switch methodName {
+				case "GetAppProfile":
+					return true
+				}
+			}
+			return false
+		}
+		keep := true
+		if isGet(e.Request) && previous != nil {
+			if isGet(previous.Request) && previous.Request.URL == e.Request.URL {
+				if previous.Response.Status == e.Response.Status {
+					if previous.Response.Body == e.Response.Body {
+						keep = false
+					}
+				}
+			}
+		}
+		previous = e
+		return keep
+	})
+
 	// Remove operation polling requests (ones where the operation is not ready)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
 		if !isGetOperation(e) {
@@ -180,11 +215,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 
-	// Specific to BigTable
-	addSetStringReplacement(".instances[].createTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.requestTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".metadata.finishTime", "2024-04-01T12:34:56.123456Z")
-
 	// Specific to Sql
 	addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
@@ -296,8 +326,23 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			}
 		}
 		if id != "" {
-			x.OperationIDs[id] = true
+			// Avoid marking some well-known values that are never operationIDs
+			switch id {
+			case "projects":
+			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			default:
+				x.OperationIDs[id] = true
+			}
 		}
+	}
+
+	// Replace any operation IDs that appear in URLs
+	for _, event := range events {
+		u := event.Request.URL
+		for operationID := range x.OperationIDs {
+			u = strings.ReplaceAll(u, operationID, "${operationID}")
+		}
+		event.Request.URL = u
 	}
 
 	for _, event := range events {

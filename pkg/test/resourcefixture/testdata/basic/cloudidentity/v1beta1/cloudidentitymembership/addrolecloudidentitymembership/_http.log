@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "response": {
-    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Group",
+    "@type": "type.googleapis.com/google.apps.cloudidentity.v1beta1.Group",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "This is a test CloudIdentityGroup. It should be modified before use as a sample.",
     "displayName": "Cloud Identity Group Name",
@@ -148,9 +148,10 @@ X-Xss-Protection: 0
 {
   "done": true,
   "response": {
-    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Membership",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "deliverySetting": "DIGEST",
+    "@type": "type.googleapis.com/google.apps.cloudidentity.v1beta1.Membership",
+    "memberKey": {
+      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+    },
     "name": "groups/${groupID}/memberships/${membershipID}",
     "preferredMemberKey": {
       "id": "test2@${ISOLATED_TEST_ORG_NAME}"
@@ -159,9 +160,7 @@ X-Xss-Protection: 0
       {
         "name": "MEMBER"
       }
-    ],
-    "type": "USER",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    ]
   }
 }
 
@@ -183,7 +182,9 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "deliverySetting": "DIGEST",
+  "memberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
   "name": "groups/${groupID}/memberships/${membershipID}",
   "preferredMemberKey": {
     "id": "test2@${ISOLATED_TEST_ORG_NAME}"
@@ -227,22 +228,12 @@ X-Xss-Protection: 0
 
 {
   "membership": {
-    "createTime": "2025-01-17T18:51:02.320337735Z",
-    "deliverySetting": "DIGEST",
     "name": "groups/${groupID}/memberships/${membershipID}",
-    "preferredMemberKey": {
-      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
-    },
     "roles": [
-      {
-        "name": "MEMBER"
-      },
       {
         "name": "MANAGER"
       }
-    ],
-    "type": "USER",
-    "updateTime": "2025-01-17T18:51:02.320337735Z"
+    ]
   }
 }
 
@@ -264,7 +255,9 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "deliverySetting": "DIGEST",
+  "memberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
   "name": "groups/${groupID}/memberships/${membershipID}",
   "preferredMemberKey": {
     "id": "test2@${ISOLATED_TEST_ORG_NAME}"
@@ -307,7 +300,7 @@ GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/$
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
-403 Forbidden
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -319,9 +312,9 @@ X-Xss-Protection: 0
 
 {
   "error": {
-    "code": 403,
-    "message": "Error(2017): Permission denied for group resource 'groups/${groupID}/memberships/${membershipID}' (or it may not exist).",
-    "status": "PERMISSION_DENIED"
+    "code": 404,
+    "message": "Error(4006): Membership does not exist.",
+    "status": "NOT_FOUND"
   }
 }
 

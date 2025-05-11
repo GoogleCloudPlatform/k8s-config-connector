@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	corev1 "k8s.io/api/core/v1"
@@ -305,6 +306,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
+	structuredreporting.ReportError(ctx, err, resource)
 	msg := fmt.Errorf("Update call failed: %w", err).Error()
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())

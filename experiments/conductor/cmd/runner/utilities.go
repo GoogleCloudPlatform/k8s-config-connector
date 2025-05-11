@@ -25,6 +25,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"runtime"
 	"sort"
 	"strings"
@@ -44,7 +45,8 @@ var commandMap = map[int64]string{
 	cmdGenerateMockGo:               "generatemockgo",
 	cmdAddServiceRoundTrip:          "addserviceroundtrip",
 	cmdAddProtoMakefile:             "addprotomakefile",
-	cmdRunMockTests:                 "runmocktests",
+	cmdCaptureMockOutput:            "capturemockoutput",
+	cmdRunAndFixMockTests:           "runandfixmocktests",
 	cmdGenerateTypes:                "generatetypes",
 	cmdGenerateCRD:                  "generatecrd",
 	cmdGenerateFuzzer:               "generatefuzzer",
@@ -62,6 +64,7 @@ var commandMap = map[int64]string{
 	cmdRunAndFixGoldenRealGCPOutput: "runandfixgoldenrealgcpoutput",
 	cmdCaptureGoldenMockOutput:      "capturegoldenmockoutput",
 	cmdRunAndFixGoldenMockOutput:    "runandfixgoldenmockoutput",
+	cmdMoveExistingTest:             "moveexistingtest",
 }
 
 type exitBash func()
@@ -568,6 +571,8 @@ func stageChanges(ctx context.Context, opts *RunnerOptions, paths []string, comm
 }
 
 type BranchProcessorFn func(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error)
+type SkipProcessorOnMsgFn func(msg string) bool
+
 type BranchProcessor struct {
 	CommitMsgTemplate  string
 	Fn                 BranchProcessorFn
@@ -575,6 +580,8 @@ type BranchProcessor struct {
 	VerifyFn           BranchProcessorFn
 	VerifyAttempts     int
 	AttemptsOnChanges  int // Number of attempts to run the processor if changes are detected
+	SkipProcessorOnMsg SkipProcessorOnMsgFn
+	CommitOptional     bool // Whether a commit is optional or required; default to be required
 }
 
 func (b *BranchProcessor) CommitMsg(branch Branch) string {
@@ -627,9 +634,11 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 			}
 		}
 
-		// If commitMsg is not set, we don't need to commit the changes
-		// we assume there are no changes to commit
-		if commitMsg == "" {
+		// If commitMsg is not set, we don't need to commit the changes,
+		// we assume there are no changes to commit.
+		// If CommitOptional is explicitly set to true and there is no change,
+		// we assume there are no changes to commit.
+		if commitMsg == "" || processor.CommitOptional && !someChanged {
 			return changesCommitted, execResults, nil
 		}
 
@@ -674,20 +683,9 @@ func runBranchFnWithRetriesAndCommit(ctx context.Context, opts *RunnerOptions, b
 	return changesCommitted, execResults, nil
 }
 
-// processBranch handles the processing of a single branch
-func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
+// runProcessOnBranch handles the processing of a single branch
+func runProcessOnBranch(ctx context.Context, opts *RunnerOptions, branch Branch, description string, processor BranchProcessor) error {
 	log.Printf("Processing branch %s: %s, processor: %s", branch.Name, description, processor.CommitMsg(branch))
-
-	// Skip if branch should be skipped
-	if branch.Skip {
-		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
-		return nil
-	}
-
-	close := setLoggingWriter(opts, branch)
-	defer close()
-
-	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
 	if processor.VerifyFn == nil || processor.VerifyAttempts == 0 {
 		attempts := processor.AttemptsOnChanges
@@ -751,7 +749,7 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, desc
 }
 
 // processBranches applies the given processors to each branch
-func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch, description string, processors []BranchProcessor) {
+func processBranches(ctx context.Context, opts *RunnerOptions, skipOnGitMessage *regexp.Regexp, branches []Branch, description string, processors []BranchProcessor) {
 	// If processors filter is provided, filter the processors
 	if opts.processors != "" {
 		selectedProcessors := strings.Split(opts.processors, ",")
@@ -785,14 +783,46 @@ func processBranches(ctx context.Context, opts *RunnerOptions, branches []Branch
 	}
 
 	for _, branch := range branches {
-		for _, processor := range processors {
-			err := processBranch(ctx, opts, branch, description, processor)
-			if err != nil {
-				log.Printf("Error processing branch %s: %v", branch.Name, err)
-				break
-			}
+		err := processBranch(ctx, opts, branch, skipOnGitMessage, description, processors)
+		if err != nil {
+			log.Printf("Error processing branch %s: %v", branch.Name, err)
+			// Not breaking because we want to process the next branch
 		}
 	}
+}
+
+func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, skipOnGitMessage *regexp.Regexp, description string, processors []BranchProcessor) error {
+	// Skip if branch should be skipped
+	if branch.Skip {
+		log.Printf("Skipping branch %s: marked as Skip", branch.Name)
+		return nil
+	}
+
+	close := setLoggingWriter(opts, branch)
+	defer close()
+
+	checkoutBranch(ctx, branch, opts.branchRepoDir)
+
+	// Run git diff command
+	message, found := getLatestGitMessage(opts.branchRepoDir, opts, branch)
+	if skipOnGitMessage != nil {
+		if found && skipOnGitMessage.MatchString(message) {
+			log.Printf("Skipping branch %s: git commit %s", branch.Name, message)
+			return nil
+		}
+	}
+
+	for _, processor := range processors {
+		if processor.SkipProcessorOnMsg != nil && found && processor.SkipProcessorOnMsg(message) {
+			log.Printf("Skipping branch(processor) %s(%s): git commit %s", branch.Name, processor.CommitMsgTemplate, message)
+			continue
+		}
+		err := runProcessOnBranch(ctx, opts, branch, description, processor)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // getFunctionName returns the name of a function

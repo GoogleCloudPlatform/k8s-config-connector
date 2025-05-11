@@ -102,6 +102,22 @@ type FirestoreAdminClient interface {
 	UpdateDatabase(ctx context.Context, in *UpdateDatabaseRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a database.
 	DeleteDatabase(ctx context.Context, in *DeleteDatabaseRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Create a user creds.
+	CreateUserCreds(ctx context.Context, in *CreateUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error)
+	// Gets a user creds resource. Note that the returned resource does not
+	// contain the secret value itself.
+	GetUserCreds(ctx context.Context, in *GetUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error)
+	// List all user creds in the database. Note that the returned resource
+	// does not contain the secret value itself.
+	ListUserCreds(ctx context.Context, in *ListUserCredsRequest, opts ...grpc.CallOption) (*ListUserCredsResponse, error)
+	// Enables a user creds. No-op if the user creds are already enabled.
+	EnableUserCreds(ctx context.Context, in *EnableUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error)
+	// Disables a user creds. No-op if the user creds are already disabled.
+	DisableUserCreds(ctx context.Context, in *DisableUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error)
+	// Resets the password of a user creds.
+	ResetUserPassword(ctx context.Context, in *ResetUserPasswordRequest, opts ...grpc.CallOption) (*UserCreds, error)
+	// Deletes a user creds.
+	DeleteUserCreds(ctx context.Context, in *DeleteUserCredsRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Gets information about a backup.
 	GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error)
 	// Lists all the backups.
@@ -283,6 +299,69 @@ func (c *firestoreAdminClient) DeleteDatabase(ctx context.Context, in *DeleteDat
 	return out, nil
 }
 
+func (c *firestoreAdminClient) CreateUserCreds(ctx context.Context, in *CreateUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error) {
+	out := new(UserCreds)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/CreateUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) GetUserCreds(ctx context.Context, in *GetUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error) {
+	out := new(UserCreds)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/GetUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) ListUserCreds(ctx context.Context, in *ListUserCredsRequest, opts ...grpc.CallOption) (*ListUserCredsResponse, error) {
+	out := new(ListUserCredsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/ListUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) EnableUserCreds(ctx context.Context, in *EnableUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error) {
+	out := new(UserCreds)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/EnableUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) DisableUserCreds(ctx context.Context, in *DisableUserCredsRequest, opts ...grpc.CallOption) (*UserCreds, error) {
+	out := new(UserCreds)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/DisableUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) ResetUserPassword(ctx context.Context, in *ResetUserPasswordRequest, opts ...grpc.CallOption) (*UserCreds, error) {
+	out := new(UserCreds)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/ResetUserPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *firestoreAdminClient) DeleteUserCreds(ctx context.Context, in *DeleteUserCredsRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/DeleteUserCreds", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *firestoreAdminClient) GetBackup(ctx context.Context, in *GetBackupRequest, opts ...grpc.CallOption) (*Backup, error) {
 	out := new(Backup)
 	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/GetBackup", in, out, opts...)
@@ -446,6 +525,22 @@ type FirestoreAdminServer interface {
 	UpdateDatabase(context.Context, *UpdateDatabaseRequest) (*longrunningpb.Operation, error)
 	// Deletes a database.
 	DeleteDatabase(context.Context, *DeleteDatabaseRequest) (*longrunningpb.Operation, error)
+	// Create a user creds.
+	CreateUserCreds(context.Context, *CreateUserCredsRequest) (*UserCreds, error)
+	// Gets a user creds resource. Note that the returned resource does not
+	// contain the secret value itself.
+	GetUserCreds(context.Context, *GetUserCredsRequest) (*UserCreds, error)
+	// List all user creds in the database. Note that the returned resource
+	// does not contain the secret value itself.
+	ListUserCreds(context.Context, *ListUserCredsRequest) (*ListUserCredsResponse, error)
+	// Enables a user creds. No-op if the user creds are already enabled.
+	EnableUserCreds(context.Context, *EnableUserCredsRequest) (*UserCreds, error)
+	// Disables a user creds. No-op if the user creds are already disabled.
+	DisableUserCreds(context.Context, *DisableUserCredsRequest) (*UserCreds, error)
+	// Resets the password of a user creds.
+	ResetUserPassword(context.Context, *ResetUserPasswordRequest) (*UserCreds, error)
+	// Deletes a user creds.
+	DeleteUserCreds(context.Context, *DeleteUserCredsRequest) (*empty.Empty, error)
 	// Gets information about a backup.
 	GetBackup(context.Context, *GetBackupRequest) (*Backup, error)
 	// Lists all the backups.
@@ -533,6 +628,27 @@ func (UnimplementedFirestoreAdminServer) UpdateDatabase(context.Context, *Update
 }
 func (UnimplementedFirestoreAdminServer) DeleteDatabase(context.Context, *DeleteDatabaseRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDatabase not implemented")
+}
+func (UnimplementedFirestoreAdminServer) CreateUserCreds(context.Context, *CreateUserCredsRequest) (*UserCreds, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUserCreds not implemented")
+}
+func (UnimplementedFirestoreAdminServer) GetUserCreds(context.Context, *GetUserCredsRequest) (*UserCreds, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCreds not implemented")
+}
+func (UnimplementedFirestoreAdminServer) ListUserCreds(context.Context, *ListUserCredsRequest) (*ListUserCredsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserCreds not implemented")
+}
+func (UnimplementedFirestoreAdminServer) EnableUserCreds(context.Context, *EnableUserCredsRequest) (*UserCreds, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnableUserCreds not implemented")
+}
+func (UnimplementedFirestoreAdminServer) DisableUserCreds(context.Context, *DisableUserCredsRequest) (*UserCreds, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DisableUserCreds not implemented")
+}
+func (UnimplementedFirestoreAdminServer) ResetUserPassword(context.Context, *ResetUserPasswordRequest) (*UserCreds, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResetUserPassword not implemented")
+}
+func (UnimplementedFirestoreAdminServer) DeleteUserCreds(context.Context, *DeleteUserCredsRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserCreds not implemented")
 }
 func (UnimplementedFirestoreAdminServer) GetBackup(context.Context, *GetBackupRequest) (*Backup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBackup not implemented")
@@ -844,6 +960,132 @@ func _FirestoreAdmin_DeleteDatabase_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FirestoreAdmin_CreateUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).CreateUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/CreateUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).CreateUserCreds(ctx, req.(*CreateUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_GetUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).GetUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/GetUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).GetUserCreds(ctx, req.(*GetUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_ListUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).ListUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/ListUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).ListUserCreds(ctx, req.(*ListUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_EnableUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnableUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).EnableUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/EnableUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).EnableUserCreds(ctx, req.(*EnableUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_DisableUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisableUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).DisableUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/DisableUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).DisableUserCreds(ctx, req.(*DisableUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_ResetUserPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetUserPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).ResetUserPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/ResetUserPassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).ResetUserPassword(ctx, req.(*ResetUserPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FirestoreAdmin_DeleteUserCreds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserCredsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).DeleteUserCreds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/DeleteUserCreds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).DeleteUserCreds(ctx, req.(*DeleteUserCredsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FirestoreAdmin_GetBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBackupRequest)
 	if err := dec(in); err != nil {
@@ -1072,6 +1314,34 @@ var FirestoreAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteDatabase",
 			Handler:    _FirestoreAdmin_DeleteDatabase_Handler,
+		},
+		{
+			MethodName: "CreateUserCreds",
+			Handler:    _FirestoreAdmin_CreateUserCreds_Handler,
+		},
+		{
+			MethodName: "GetUserCreds",
+			Handler:    _FirestoreAdmin_GetUserCreds_Handler,
+		},
+		{
+			MethodName: "ListUserCreds",
+			Handler:    _FirestoreAdmin_ListUserCreds_Handler,
+		},
+		{
+			MethodName: "EnableUserCreds",
+			Handler:    _FirestoreAdmin_EnableUserCreds_Handler,
+		},
+		{
+			MethodName: "DisableUserCreds",
+			Handler:    _FirestoreAdmin_DisableUserCreds_Handler,
+		},
+		{
+			MethodName: "ResetUserPassword",
+			Handler:    _FirestoreAdmin_ResetUserPassword_Handler,
+		},
+		{
+			MethodName: "DeleteUserCreds",
+			Handler:    _FirestoreAdmin_DeleteUserCreds_Handler,
 		},
 		{
 			MethodName: "GetBackup",

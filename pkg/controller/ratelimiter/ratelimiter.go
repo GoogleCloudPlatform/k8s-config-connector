@@ -21,10 +21,11 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/util/flowcontrol"
 	"k8s.io/client-go/util/workqueue"
-	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-func NewRateLimiter() ratelimiter.RateLimiter {
+// func NewRateLimiter() ratelimiter.RateLimiter {
+func NewRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
 	// This is based on workqueue.DefaultControllerRateLimiter, but with different parameters better suited to KRM reconciliation.
 	// Context is in b/188203307
 
@@ -35,11 +36,10 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 
 	// If we implement b/190097904 we should revisit these values, in particular the max delay could
 	// likely be much higher again.
-
-	return workqueue.NewMaxOfRateLimiter(
-		workqueue.NewItemExponentialFailureRateLimiter(2*time.Second, 120*time.Second),
+	return workqueue.NewTypedMaxOfRateLimiter(
+		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](2*time.Second, 120*time.Second),
 		// 10 qps, 100 bucket size.  This is only for retry speed and its only the overall factor (not per item)
-		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
+		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
 	)
 }
 
@@ -65,10 +65,10 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 // traffic to 5 qps.  That will hopefully leave enough capacity for
 // more latency sensitive reconciliations, at the expense of a longer
 // delay in re-reconciliation.
-func RequeueRateLimiter() ratelimiter.RateLimiter {
-	return workqueue.NewMaxOfRateLimiter(
-		// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
-		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
+func RequeueRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
+	// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
+	return workqueue.NewTypedMaxOfRateLimiter(
+		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
 	)
 }
 

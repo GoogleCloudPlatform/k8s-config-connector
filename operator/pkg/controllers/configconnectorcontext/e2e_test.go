@@ -20,7 +20,6 @@ import (
 	"time"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -50,7 +49,7 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 
 	cc := &corev1beta1.ConfigConnector{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: k8s.ConfigConnectorAllowedName,
+			Name: corev1beta1.ConfigConnectorAllowedName,
 		},
 		Spec: corev1beta1.ConfigConnectorSpec{
 			Mode: "namespaced",
@@ -62,7 +61,7 @@ func TestConfigConnectorContextE2E(t *testing.T) {
 
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
 			Namespace: "foo-ns",
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{

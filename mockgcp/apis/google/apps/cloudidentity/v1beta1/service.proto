@@ -1,0 +1,2056 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package google.apps.cloudidentity.v1beta1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/cloudidentity/apiv1beta1/cloudidentitypb;cloudidentitypb";
+
+service CustomersServer {
+}
+
+service CustomersUserinvitationsServer {
+
+  // Cancels a UserInvitation that was already sent.
+  rpc CancelCustomersUserinvitation(CancelCustomersUserinvitationRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=customers/*/userinvitations/*}:cancel"
+      body: "customers_userinvitation"
+    };
+  };
+
+  // Retrieves a UserInvitation resource. **Note:** New consumer accounts with the customer's verified domain created within the previous 48 hours will not appear in the result. This delay also applies to newly-verified domains.
+  rpc GetCustomersUserinvitation(GetCustomersUserinvitationRequest) returns (UserInvitation) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=customers/*/userinvitations/*}"
+    };
+  };
+
+  // Verifies whether a user account is eligible to receive a UserInvitation (is an unmanaged account). Eligibility is based on the following criteria: * the email address is a consumer account and it's the primary email address of the account, and * the domain of the email address matches an existing verified Google Workspace or Cloud Identity domain If both conditions are met, the user is eligible. **Note:** This method is not supported for Workspace Essentials customers.
+  rpc IsInvitableUserCustomersUserinvitation(IsInvitableUserCustomersUserinvitationRequest) returns (IsInvitableUserResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=customers/*/userinvitations/*}:isInvitableUser"
+    };
+  };
+
+  // Retrieves a list of UserInvitation resources. **Note:** New consumer accounts with the customer's verified domain created within the previous 48 hours will not appear in the result. This delay also applies to newly-verified domains.
+  rpc ListCustomersUserinvitations(ListCustomersUserinvitationsRequest) returns (ListUserInvitationsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=customers/*}/userinvitations"
+    };
+  };
+
+  // Sends a UserInvitation to email. If the `UserInvitation` does not exist for this request and it is a valid request, the request creates a `UserInvitation`. **Note:** The `get` and `list` methods have a 48-hour delay where newly-created consumer accounts will not appear in the results. You can still send a `UserInvitation` to those accounts if you know the unmanaged email address and IsInvitableUser==True.
+  rpc SendCustomersUserinvitation(SendCustomersUserinvitationRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=customers/*/userinvitations/*}:send"
+      body: "customers_userinvitation"
+    };
+  };
+}
+
+service DevicesServer {
+
+  // Cancels an unfinished device wipe. This operation can be used to cancel device wipe in the gap between the wipe operation returning success and the device being wiped.
+  rpc CancelWipeDevice(CancelWipeDeviceServiceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*}:cancelWipe"
+      body: "device"
+    };
+  };
+
+  // Creates a device. Only company-owned device may be created. **Note**: This method is available only to customers who have one of the following SKUs: Enterprise Standard, Enterprise Plus, Enterprise for Education, and Cloud Identity Premium
+  rpc CreateDevice(CreateDeviceServiceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/devices"
+      body: "device"
+    };
+  };
+
+  // Deletes the specified device.
+  rpc DeleteDevice(DeleteDeviceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=devices/*}"
+    };
+  };
+
+  // Retrieves the specified device.
+  rpc GetDevice(GetDeviceRequest) returns (Device) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=devices/*}"
+    };
+  };
+
+  // Lists/Searches devices.
+  rpc ListDevices(ListDevicesRequest) returns (ListDevicesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/devices"
+    };
+  };
+
+  // Wipes all data on the specified device.
+  rpc WipeDevice(WipeDeviceServiceRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*}:wipe"
+      body: "device"
+    };
+  };
+}
+
+service DevicesDeviceUsersServer {
+
+  // Approves device to access user data.
+  rpc ApproveDevicesDeviceUser(ApproveDevicesDeviceUserRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*/deviceUsers/*}:approve"
+      body: "devices_device_user"
+    };
+  };
+
+  // Blocks device from accessing user data
+  rpc BlockDevicesDeviceUser(BlockDevicesDeviceUserRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*/deviceUsers/*}:block"
+      body: "devices_device_user"
+    };
+  };
+
+  // Cancels an unfinished user account wipe. This operation can be used to cancel device wipe in the gap between the wipe operation returning success and the device being wiped.
+  rpc CancelWipeDevicesDeviceUser(CancelWipeDevicesDeviceUserRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*/deviceUsers/*}:cancelWipe"
+      body: "devices_device_user"
+    };
+  };
+
+  // Deletes the specified DeviceUser. This also revokes the user's access to device data.
+  rpc DeleteDevicesDeviceUser(DeleteDevicesDeviceUserRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=devices/*/deviceUsers/*}"
+    };
+  };
+
+  // Retrieves the specified DeviceUser
+  rpc GetDevicesDeviceUser(GetDevicesDeviceUserRequest) returns (DeviceUser) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=devices/*/deviceUsers/*}"
+    };
+  };
+
+  // Lists/Searches DeviceUsers.
+  rpc ListDevicesDeviceUsers(ListDevicesDeviceUsersRequest) returns (ListDeviceUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=devices/*}/deviceUsers"
+    };
+  };
+
+  // Looks up resource names of the DeviceUsers associated with the caller's credentials, as well as the properties provided in the request. This method must be called with end-user credentials with the scope: https://www.googleapis.com/auth/cloud-identity.devices.lookup If multiple properties are provided, only DeviceUsers having all of these properties are considered as matches - i.e. the query behaves like an AND. Different platforms require different amounts of information from the caller to ensure that the DeviceUser is uniquely identified. - iOS: No properties need to be passed, the caller's credentials are sufficient to identify the corresponding DeviceUser. - Android: Specifying the 'android_id' field is required. - Desktop: Specifying the 'raw_resource_id' field is required.
+  rpc LookupDevicesDeviceUser(LookupDevicesDeviceUserRequest) returns (LookupSelfDeviceUsersResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=devices/*/deviceUsers}:lookup"
+    };
+  };
+
+  // Wipes the user's account on a device.
+  rpc WipeDevicesDeviceUser(WipeDevicesDeviceUserRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=devices/*/deviceUsers/*}:wipe"
+      body: "devices_device_user"
+    };
+  };
+}
+
+service DevicesDeviceUsersClientStatesServer {
+
+  // Gets the client state for the device user
+  rpc GetDevicesDeviceUsersClientState(GetDevicesDeviceUsersClientStateRequest) returns (ClientState) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=devices/*/deviceUsers/*/clientStates/*}"
+    };
+  };
+
+  // Updates the client state for the device user **Note**: This method is available only to customers who have one of the following SKUs: Enterprise Standard, Enterprise Plus, Enterprise for Education, and Cloud Identity Premium
+  rpc PatchDevicesDeviceUsersClientState(PatchDevicesDeviceUsersClientStateRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=devices/*/deviceUsers/*/clientStates/*}"
+      body: "devices_device_users_client_state"
+    };
+  };
+}
+
+service GroupsServer {
+
+  // Creates a `Group`.
+  rpc CreateGroup(CreateGroupRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/groups"
+      body: "group"
+    };
+  };
+
+  // Deletes a `Group`.
+  rpc DeleteGroup(DeleteGroupRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=groups/*}"
+    };
+  };
+
+  // Retrieves a `Group`.
+  rpc GetGroup(GetGroupRequest) returns (Group) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=groups/*}"
+    };
+  };
+
+  // Get Security Settings
+  rpc GetSecuritySettingsGroup(GetSecuritySettingsGroupRequest) returns (SecuritySettings) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=groups/*/securitySettings}"
+    };
+  };
+
+  // Lists the `Group` resources under a customer or namespace.
+  rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/groups"
+    };
+  };
+
+  // Looks up the [resource name](https://cloud.google.com/apis/design/resource_names) of a `Group` by its `EntityKey`.
+  rpc LookupGroup(LookupGroupRequest) returns (LookupGroupNameResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/groups:lookup"
+    };
+  };
+
+  // Updates a `Group`.
+  rpc PatchGroup(PatchGroupRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=groups/*}"
+      body: "group"
+    };
+  };
+
+  // Searches for `Group` resources matching a specified query.
+  rpc SearchGroup(SearchGroupRequest) returns (SearchGroupsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/groups:search"
+    };
+  };
+
+  // Update Security Settings
+  rpc UpdateSecuritySettingsGroup(UpdateSecuritySettingsGroupRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=groups/*/securitySettings}"
+      body: "group"
+    };
+  };
+}
+
+service GroupsMembershipsServer {
+
+  // Check a potential member for membership in a group. **Note:** This feature is only available to Google Workspace Enterprise Standard, Enterprise Plus, and Enterprise for Education; and Cloud Identity Premium accounts. A member has membership to a group as long as there is a single viewable transitive membership between the group and the member. The actor must have view permissions to at least one transitive membership between the member and group.
+  rpc CheckTransitiveMembershipGroupsMembership(CheckTransitiveMembershipGroupsMembershipRequest) returns (CheckTransitiveMembershipResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:checkTransitiveMembership"
+    };
+  };
+
+  // Creates a `Membership`.
+  rpc CreateGroupsMembership(CreateGroupsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=groups/*}/memberships"
+      body: "groups_membership"
+    };
+  };
+
+  // Deletes a `Membership`.
+  rpc DeleteGroupsMembership(DeleteGroupsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=groups/*/memberships/*}"
+    };
+  };
+
+  // Retrieves a `Membership`.
+  rpc GetGroupsMembership(GetGroupsMembershipRequest) returns (Membership) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=groups/*/memberships/*}"
+    };
+  };
+
+  // Get a membership graph of just a member or both a member and a group. **Note:** This feature is only available to Google Workspace Enterprise Standard, Enterprise Plus, and Enterprise for Education; and Cloud Identity Premium accounts. Given a member, the response will contain all membership paths from the member. Given both a group and a member, the response will contain all membership paths between the group and the member.
+  rpc GetMembershipGraphGroupsMembership(GetMembershipGraphGroupsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:getMembershipGraph"
+    };
+  };
+
+  // Lists the `Membership`s within a `Group`.
+  rpc ListGroupsMemberships(ListGroupsMembershipsRequest) returns (ListMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships"
+    };
+  };
+
+  // Looks up the [resource name](https://cloud.google.com/apis/design/resource_names) of a `Membership` by its `EntityKey`.
+  rpc LookupGroupsMembership(LookupGroupsMembershipRequest) returns (LookupMembershipNameResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:lookup"
+    };
+  };
+
+  // Modifies the `MembershipRole`s of a `Membership`.
+  rpc ModifyMembershipRolesGroupsMembership(ModifyMembershipRolesGroupsMembershipRequest) returns (ModifyMembershipRolesResponse) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=groups/*/memberships/*}:modifyMembershipRoles"
+      body: "groups_membership"
+    };
+  };
+
+  // Searches direct groups of a member.
+  rpc SearchDirectGroupsGroupsMembership(SearchDirectGroupsGroupsMembershipRequest) returns (SearchDirectGroupsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:searchDirectGroups"
+    };
+  };
+
+  // Search transitive groups of a member. **Note:** This feature is only available to Google Workspace Enterprise Standard, Enterprise Plus, and Enterprise for Education; and Cloud Identity Premium accounts. A transitive group is any group that has a direct or indirect membership to the member. Actor must have view permissions all transitive groups.
+  rpc SearchTransitiveGroupsGroupsMembership(SearchTransitiveGroupsGroupsMembershipRequest) returns (SearchTransitiveGroupsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:searchTransitiveGroups"
+    };
+  };
+
+  // Search transitive memberships of a group. **Note:** This feature is only available to Google Workspace Enterprise Standard, Enterprise Plus, and Enterprise for Education; and Cloud Identity Premium accounts. A transitive membership is any direct or indirect membership of a group. Actor must have view permissions to all transitive memberships.
+  rpc SearchTransitiveMembershipsGroupsMembership(SearchTransitiveMembershipsGroupsMembershipRequest) returns (SearchTransitiveMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=groups/*}/memberships:searchTransitiveMemberships"
+    };
+  };
+}
+
+service InboundSamlSsoProfilesServer {
+
+  // Creates an InboundSamlSsoProfile for a customer. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+  rpc CreateInboundSamlSsoProfile(CreateInboundSamlSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/inboundSamlSsoProfiles"
+      body: "inbound_saml_sso_profile"
+    };
+  };
+
+  // Deletes an InboundSamlSsoProfile.
+  rpc DeleteInboundSamlSsoProfile(DeleteInboundSamlSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=inboundSamlSsoProfiles/*}"
+    };
+  };
+
+  // Gets an InboundSamlSsoProfile.
+  rpc GetInboundSamlSsoProfile(GetInboundSamlSsoProfileRequest) returns (InboundSamlSsoProfile) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=inboundSamlSsoProfiles/*}"
+    };
+  };
+
+  // Lists InboundSamlSsoProfiles for a customer.
+  rpc ListInboundSamlSsoProfiles(ListInboundSamlSsoProfilesRequest) returns (ListInboundSamlSsoProfilesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/inboundSamlSsoProfiles"
+    };
+  };
+
+  // Updates an InboundSamlSsoProfile. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+  rpc PatchInboundSamlSsoProfile(PatchInboundSamlSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=inboundSamlSsoProfiles/*}"
+      body: "inbound_saml_sso_profile"
+    };
+  };
+}
+
+service InboundSamlSsoProfilesIdpCredentialsServer {
+
+  // Adds an IdpCredential. Up to 2 credentials are allowed. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+  rpc AddInboundSamlSsoProfilesIdpCredential(AddInboundSamlSsoProfilesIdpCredentialRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{parent=inboundSamlSsoProfiles/*}/idpCredentials:add"
+      body: "inbound_saml_sso_profiles_idp_credential"
+    };
+  };
+
+  // Deletes an IdpCredential.
+  rpc DeleteInboundSamlSsoProfilesIdpCredential(DeleteInboundSamlSsoProfilesIdpCredentialRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=inboundSamlSsoProfiles/*/idpCredentials/*}"
+    };
+  };
+
+  // Gets an IdpCredential.
+  rpc GetInboundSamlSsoProfilesIdpCredential(GetInboundSamlSsoProfilesIdpCredentialRequest) returns (IdpCredential) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=inboundSamlSsoProfiles/*/idpCredentials/*}"
+    };
+  };
+
+  // Returns a list of IdpCredentials in an InboundSamlSsoProfile.
+  rpc ListInboundSamlSsoProfilesIdpCredentials(ListInboundSamlSsoProfilesIdpCredentialsRequest) returns (ListIdpCredentialsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=inboundSamlSsoProfiles/*}/idpCredentials"
+    };
+  };
+}
+
+service InboundSsoAssignmentsServer {
+
+  // Creates an InboundSsoAssignment for users and devices in a `Customer` under a given `Group` or `OrgUnit`.
+  rpc CreateInboundSsoAssignment(CreateInboundSsoAssignmentRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/inboundSsoAssignments"
+      body: "inbound_sso_assignment"
+    };
+  };
+
+  // Deletes an InboundSsoAssignment. To disable SSO, Create (or Update) an assignment that has `sso_mode` == `SSO_OFF`.
+  rpc DeleteInboundSsoAssignment(DeleteInboundSsoAssignmentRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=inboundSsoAssignments/*}"
+    };
+  };
+
+  // Gets an InboundSsoAssignment.
+  rpc GetInboundSsoAssignment(GetInboundSsoAssignmentRequest) returns (InboundSsoAssignment) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=inboundSsoAssignments/*}"
+    };
+  };
+
+  // Lists the InboundSsoAssignments for a `Customer`.
+  rpc ListInboundSsoAssignments(ListInboundSsoAssignmentsRequest) returns (ListInboundSsoAssignmentsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/inboundSsoAssignments"
+    };
+  };
+
+  // Updates an InboundSsoAssignment. The body of this request is the `inbound_sso_assignment` field and the `update_mask` is relative to that. For example: a PATCH to `/v1beta1/inboundSsoAssignments/0abcdefg1234567&update_mask=rank` with a body of `{ "rank": 1 }` moves that (presumably group-targeted) SSO assignment to the highest priority and shifts any other group-targeted assignments down in priority.
+  rpc PatchInboundSsoAssignment(PatchInboundSsoAssignmentRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=inboundSsoAssignments/*}"
+      body: "inbound_sso_assignment"
+    };
+  };
+}
+
+service OrgUnitsServer {
+}
+
+service OrgUnitsMembershipsServer {
+
+  // List OrgMembership resources in an OrgUnit treated as 'parent'. Parent format: orgUnits/{$orgUnitId} where `$orgUnitId` is the `orgUnitId` from the [Admin SDK `OrgUnit` resource](https://developers.google.com/admin-sdk/directory/reference/rest/v1/orgunits)
+  rpc ListOrgUnitsMemberships(ListOrgUnitsMembershipsRequest) returns (ListOrgMembershipsResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/{parent=orgUnits/*}/memberships"
+    };
+  };
+
+  // Move an OrgMembership to a new OrgUnit. NOTE: This is an atomic copy-and-delete. The resource will have a new copy under the destination OrgUnit and be deleted from the source OrgUnit. The resource can only be searched under the destination OrgUnit afterwards.
+  rpc MoveOrgUnitsMembership(MoveOrgUnitsMembershipRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/{name=orgUnits/*/memberships/*}:move"
+      body: "org_units_membership"
+    };
+  };
+}
+
+service PoliciesServer {
+
+  // Get a Policy
+  rpc GetPolicy(GetPolicyRequest) returns (Policy) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=policies/*}"
+    };
+  };
+
+  // List Policies
+  rpc ListPolicies(ListPoliciesRequest) returns (ListPoliciesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/policies"
+    };
+  };
+}
+
+// LRO response metadata for InboundSamlSsoProfilesService.AddIdpCredential.
+message AddIdpCredentialOperationMetadata {
+  // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
+  optional string state = 1 [json_name="state"];
+}
+
+// The request for creating an IdpCredential with its associated payload. An InboundSamlSsoProfile can own up to 2 credentials.
+message AddIdpCredentialRequest {
+  // PEM encoded x509 certificate containing the public key for verifying IdP signatures.
+  optional string pem_data = 1 [json_name="pemData"];
+}
+
+// Resource representing the Android specific attributes of a Device.
+message AndroidAttributes {
+  // Whether the device passes Android CTS compliance.
+  optional bool cts_profile_match = 1 [json_name="ctsProfileMatch"];
+  // Whether applications from unknown sources can be installed on device.
+  optional bool enabled_unknown_sources = 2 [json_name="enabledUnknownSources"];
+  // Whether any potentially harmful apps were detected on the device.
+  optional bool has_potentially_harmful_apps = 3 [json_name="hasPotentiallyHarmfulApps"];
+  // Whether this account is on an owner/primary profile. For phones, only true for owner profiles. Android 4+ devices can have secondary or restricted user profiles.
+  optional bool owner_profile_account = 4 [json_name="ownerProfileAccount"];
+  // Ownership privileges on device.
+  optional string ownership_privilege = 5 [json_name="ownershipPrivilege"];
+  // Whether device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
+  optional bool supports_work_profile = 6 [json_name="supportsWorkProfile"];
+  // Whether Android verified boot status is GREEN.
+  optional bool verified_boot = 7 [json_name="verifiedBoot"];
+  // Whether Google Play Protect Verify Apps is enabled.
+  optional bool verify_apps_enabled = 8 [json_name="verifyAppsEnabled"];
+}
+
+// Request message for approving the device to access user data.
+message ApproveDeviceUserRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+}
+
+// Response message for approving the device to access user data.
+message ApproveDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Request message for blocking account on device.
+message BlockDeviceUserRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+}
+
+// Response message for blocking the device from accessing user data.
+message BlockDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Contains information about browser profiles reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+message BrowserAttributes {
+  // Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+  optional BrowserInfo chrome_browser_info = 1 [json_name="chromeBrowserInfo"];
+  // Chrome profile ID that is exposed by the Chrome API. It is unique for each device.
+  optional string chrome_profile_id = 2 [json_name="chromeProfileId"];
+  // Timestamp in milliseconds since the Unix epoch when the profile/gcm id was last synced.
+  optional .google.protobuf.Timestamp last_profile_sync_time = 3 [json_name="lastProfileSyncTime"];
+}
+
+// Browser-specific fields reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+message BrowserInfo {
+  // Output only. Browser's management state.
+  optional string browser_management_state = 1 [json_name="browserManagementState"];
+  // Version of the request initiating browser. E.g. `91.0.4442.4`.
+  optional string browser_version = 2 [json_name="browserVersion"];
+  // Current state of [built-in DNS client](https://chromeenterprise.google/policies/#BuiltInDnsClientEnabled).
+  optional bool is_built_in_dns_client_enabled = 3 [json_name="isBuiltInDnsClientEnabled"];
+  // Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_bulk_data_entry_analysis_enabled = 4 [json_name="isBulkDataEntryAnalysisEnabled"];
+  // Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+  optional bool is_chrome_cleanup_enabled = 5 [json_name="isChromeCleanupEnabled"];
+  // Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
+  optional bool is_chrome_remote_desktop_app_blocked = 6 [json_name="isChromeRemoteDesktopAppBlocked"];
+  // Current state of [file download analysis](https://chromeenterprise.google/policies/#OnFileDownloadedEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_file_download_analysis_enabled = 7 [json_name="isFileDownloadAnalysisEnabled"];
+  // Current state of [file upload analysis](https://chromeenterprise.google/policies/#OnFileAttachedEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_file_upload_analysis_enabled = 8 [json_name="isFileUploadAnalysisEnabled"];
+  // Current state of [real-time URL check](https://chromeenterprise.google/policies/#EnterpriseRealTimeUrlCheckMode). Set to true if provider list from Chrome is non-empty.
+  optional bool is_realtime_url_check_enabled = 9 [json_name="isRealtimeUrlCheckEnabled"];
+  // Current state of [security event analysis](https://chromeenterprise.google/policies/#OnSecurityEventEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_security_event_analysis_enabled = 10 [json_name="isSecurityEventAnalysisEnabled"];
+  // Current state of [site isolation](https://chromeenterprise.google/policies/?policy=IsolateOrigins).
+  optional bool is_site_isolation_enabled = 11 [json_name="isSiteIsolationEnabled"];
+  // Current state of [third-party blocking](https://chromeenterprise.google/policies/#ThirdPartyBlockingEnabled).
+  optional bool is_third_party_blocking_enabled = 12 [json_name="isThirdPartyBlockingEnabled"];
+  // Current state of [password protection trigger](https://chromeenterprise.google/policies/#PasswordProtectionWarningTrigger).
+  optional string password_protection_warning_trigger = 13 [json_name="passwordProtectionWarningTrigger"];
+  // Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel).
+  optional string safe_browsing_protection_level = 14 [json_name="safeBrowsingProtectionLevel"];
+}
+
+// Request to cancel sent invitation for target email in UserInvitation.
+message CancelUserInvitationRequest {
+}
+
+// Request message for cancelling an unfinished device wipe.
+message CancelWipeDeviceRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+}
+
+// Response message for cancelling an unfinished device wipe.
+message CancelWipeDeviceResponse {
+  // Resultant Device object for the action. Note that asset tags will not be returned in the device object.
+  optional Device device = 1 [json_name="device"];
+}
+
+// Request message for cancelling an unfinished user account wipe.
+message CancelWipeDeviceUserRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+}
+
+// Response message for cancelling an unfinished user account wipe.
+message CancelWipeDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Stores information about a certificate.
+message CertificateAttributes {
+  // The X.509 extension for CertificateTemplate.
+  optional CertificateTemplate certificate_template = 1 [json_name="certificateTemplate"];
+  // The encoded certificate fingerprint.
+  optional string fingerprint = 2 [json_name="fingerprint"];
+  // The name of the issuer of this certificate.
+  optional string issuer = 3 [json_name="issuer"];
+  // Serial number of the certificate, Example: "123456789".
+  optional string serial_number = 4 [json_name="serialNumber"];
+  // The subject name of this certificate.
+  optional string subject = 5 [json_name="subject"];
+  // The certificate thumbprint.
+  optional string thumbprint = 6 [json_name="thumbprint"];
+  // Validation state of this certificate.
+  optional string validation_state = 7 [json_name="validationState"];
+  // Certificate not valid at or after this timestamp.
+  optional .google.protobuf.Timestamp validity_expiration_time = 8 [json_name="validityExpirationTime"];
+  // Certificate not valid before this timestamp.
+  optional .google.protobuf.Timestamp validity_start_time = 9 [json_name="validityStartTime"];
+}
+
+// CertificateTemplate (v3 Extension in X.509).
+message CertificateTemplate {
+  // The template id of the template. Example: "1.3.6.1.4.1.311.21.8.15608621.11768144.5720724.16068415.6889630.81.2472537.7784047".
+  optional string id = 1 [json_name="id"];
+  // The Major version of the template. Example: 100.
+  optional int32 major_version = 2 [json_name="majorVersion"];
+  // The minor version of the template. Example: 12.
+  optional int32 minor_version = 3 [json_name="minorVersion"];
+}
+
+// The response message for MembershipsService.CheckTransitiveMembership.
+message CheckTransitiveMembershipResponse {
+  // Response does not include the possible roles of a member since the behavior of this rpc is not all-or-nothing unlike the other rpcs. So, it may not be possible to list all the roles definitively, due to possible lack of authorization in some of the paths.
+  optional bool has_membership = 1 [json_name="hasMembership"];
+}
+
+// Represents the state associated with an API client calling the Devices API. Resource representing ClientState and supports updates from API users
+message ClientState {
+  // The caller can specify asset tags for this resource
+  repeated string asset_tags = 1 [json_name="assetTags"];
+  // The compliance state of the resource as specified by the API client.
+  optional string compliance_state = 2 [json_name="complianceState"];
+  // Output only. The time the client state data was created.
+  optional .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // This field may be used to store a unique identifier for the API resource within which these CustomAttributes are a field.
+  optional string custom_id = 4 [json_name="customId"];
+  // The token that needs to be passed back for concurrency control in updates. Token needs to be passed back in UpdateRequest
+  optional string etag = 5 [json_name="etag"];
+  // The Health score of the resource
+  optional string health_score = 6 [json_name="healthScore"];
+  // The map of key-value attributes stored by callers specific to a device. The total serialized length of this map may not exceed 10KB. No limit is placed on the number of attributes in a map.
+  map<string, CustomAttributeValue> key_value_pairs = 7 [json_name="keyValuePairs"];
+  // Output only. The time the client state data was last updated.
+  optional .google.protobuf.Timestamp last_update_time = 8 [json_name="lastUpdateTime"];
+  // The management state of the resource as specified by the API client.
+  optional string managed = 9 [json_name="managed"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the ClientState in format: `devices/{device_id}/deviceUsers/{device_user_id}/clientState/{partner_id}`, where partner_id corresponds to the partner storing the data.
+  optional string name = 10 [json_name="name"];
+  // Output only. The owner of the ClientState
+  optional string owner_type = 11 [json_name="ownerType"];
+  // A descriptive cause of the health score.
+  optional string score_reason = 12 [json_name="scoreReason"];
+}
+
+// Request message for creating a Company Owned device.
+message CreateDeviceRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+  // Required. The device to be created. The name field within this device is ignored in the create method. A new name is created by the method, and returned within the response. Only the fields `device_type`, `serial_number` and `asset_tag` (if present) are used to create the device. All other fields are ignored. The `device_type` and `serial_number` fields are required.
+  optional Device device = 2 [json_name="device"];
+}
+
+// LRO response metadata for InboundSamlSsoProfilesService.CreateInboundSamlSsoProfile.
+message CreateInboundSamlSsoProfileOperationMetadata {
+  // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
+  optional string state = 1 [json_name="state"];
+}
+
+// LRO response metadata for InboundSsoAssignmentsService.CreateInboundSsoAssignment.
+message CreateInboundSsoAssignmentOperationMetadata {
+}
+
+// Additional custom attribute values may be one of these types
+message CustomAttributeValue {
+  // Represents a boolean value.
+  optional bool bool_value = 1 [json_name="boolValue"];
+  // Represents a double value.
+  optional double number_value = 2 [json_name="numberValue"];
+  // Represents a string value.
+  optional string string_value = 3 [json_name="stringValue"];
+}
+
+// LRO response metadata for InboundSamlSsoProfilesService.DeleteIdpCredential.
+message DeleteIdpCredentialOperationMetadata {
+}
+
+// LRO response metadata for InboundSamlSsoProfilesService.DeleteInboundSamlSsoProfile.
+message DeleteInboundSamlSsoProfileOperationMetadata {
+}
+
+// LRO response metadata for InboundSsoAssignmentsService.DeleteInboundSsoAssignment.
+message DeleteInboundSsoAssignmentOperationMetadata {
+}
+
+// A Device within the Cloud Identity Devices API. Represents a Device known to Google Cloud, independent of the device ownership, type, and whether it is assigned or in use by a user. Important: Device API scopes require that you use domain-wide delegation to access the API. For more information, see [Set up the Devices API](https://cloud.google.com/identity/docs/how-to/setup-devices).
+message Device {
+  // Output only. Attributes specific to Android devices.
+  optional AndroidAttributes android_specific_attributes = 1 [json_name="androidSpecificAttributes"];
+  // Asset tag of the device.
+  optional string asset_tag = 2 [json_name="assetTag"];
+  // Output only. Baseband version of the device.
+  optional string baseband_version = 3 [json_name="basebandVersion"];
+  // Output only. Device bootloader version. Example: 0.6.7.
+  optional string bootloader_version = 4 [json_name="bootloaderVersion"];
+  // Output only. Device brand. Example: Samsung.
+  optional string brand = 5 [json_name="brand"];
+  // Output only. Build number of the device.
+  optional string build_number = 6 [json_name="buildNumber"];
+  // List of the clients the device is reporting to.
+  repeated string client_types = 7 [json_name="clientTypes"];
+  // Output only. Represents whether the Device is compromised.
+  optional string compromised_state = 8 [json_name="compromisedState"];
+  // Output only. When the Company-Owned device was imported. This field is empty for BYOD devices.
+  optional .google.protobuf.Timestamp create_time = 9 [json_name="createTime"];
+  // Unique identifier for the device.
+  optional string device_id = 10 [json_name="deviceId"];
+  // Output only. Type of device.
+  optional string device_type = 11 [json_name="deviceType"];
+  // Output only. Whether developer options is enabled on device.
+  optional bool enabled_developer_options = 12 [json_name="enabledDeveloperOptions"];
+  // Output only. Whether USB debugging is enabled on device.
+  optional bool enabled_usb_debugging = 13 [json_name="enabledUsbDebugging"];
+  // Output only. Device encryption state.
+  optional string encryption_state = 14 [json_name="encryptionState"];
+  // Output only. Attributes specific to [Endpoint Verification](https://cloud.google.com/endpoint-verification/docs/overview) devices.
+  optional EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 15 [json_name="endpointVerificationSpecificAttributes"];
+  // Host name of the device.
+  optional string hostname = 16 [json_name="hostname"];
+  // Output only. IMEI number of device if GSM device; empty otherwise.
+  optional string imei = 17 [json_name="imei"];
+  // Output only. Kernel version of the device.
+  optional string kernel_version = 18 [json_name="kernelVersion"];
+  // Most recent time when device synced with this service.
+  optional .google.protobuf.Timestamp last_sync_time = 19 [json_name="lastSyncTime"];
+  // Output only. Management state of the device
+  optional string management_state = 20 [json_name="managementState"];
+  // Output only. Device manufacturer. Example: Motorola.
+  optional string manufacturer = 21 [json_name="manufacturer"];
+  // Output only. MEID number of device if CDMA device; empty otherwise.
+  optional string meid = 22 [json_name="meid"];
+  // Output only. Model name of device. Example: Pixel 3.
+  optional string model = 23 [json_name="model"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device_id}`, where device_id is the unique id assigned to the Device.
+  optional string name = 24 [json_name="name"];
+  // Output only. Mobile or network operator of device, if available.
+  optional string network_operator = 25 [json_name="networkOperator"];
+  // Output only. OS version of the device. Example: Android 8.1.0.
+  optional string os_version = 26 [json_name="osVersion"];
+  // Output only. Domain name for Google accounts on device. Type for other accounts on device. On Android, will only be populated if |ownership_privilege| is |PROFILE_OWNER| or |DEVICE_OWNER|. Does not include the account signed in to the device policy app if that account's domain has only one account. Examples: "com.example", "xyz.com".
+  repeated string other_accounts = 27 [json_name="otherAccounts"];
+  // Output only. Whether the device is owned by the company or an individual
+  optional string owner_type = 28 [json_name="ownerType"];
+  // Output only. OS release version. Example: 6.0.
+  optional string release_version = 29 [json_name="releaseVersion"];
+  // Output only. OS security patch update time on device.
+  optional .google.protobuf.Timestamp security_patch_time = 30 [json_name="securityPatchTime"];
+  // Serial Number of device. Example: HT82V1A01076.
+  optional string serial_number = 31 [json_name="serialNumber"];
+  // Output only. Unified device id of the device.
+  optional string unified_device_id = 32 [json_name="unifiedDeviceId"];
+  // WiFi MAC addresses of device.
+  repeated string wifi_mac_addresses = 33 [json_name="wifiMacAddresses"];
+}
+
+// Represents a user's use of a Device in the Cloud Identity Devices API. A DeviceUser is a resource representing a user's use of a Device
+message DeviceUser {
+  // Compromised State of the DeviceUser object
+  optional string compromised_state = 1 [json_name="compromisedState"];
+  // When the user first signed in to the device
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Output only. Most recent time when user registered with this service.
+  optional .google.protobuf.Timestamp first_sync_time = 3 [json_name="firstSyncTime"];
+  // Output only. Default locale used on device, in IETF BCP-47 format.
+  optional string language_code = 4 [json_name="languageCode"];
+  // Output only. Last time when user synced with policies.
+  optional .google.protobuf.Timestamp last_sync_time = 5 [json_name="lastSyncTime"];
+  // Output only. Management state of the user on the device.
+  optional string management_state = 6 [json_name="managementState"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the DeviceUser in format: `devices/{device_id}/deviceUsers/{device_user_id}`, where `device_user_id` uniquely identifies a user's use of a device.
+  optional string name = 7 [json_name="name"];
+  // Password state of the DeviceUser object
+  optional string password_state = 8 [json_name="passwordState"];
+  // Output only. User agent on the device for this specific user
+  optional string user_agent = 9 [json_name="userAgent"];
+  // Email address of the user registered on the device.
+  optional string user_email = 10 [json_name="userEmail"];
+}
+
+// Information of a DSA public key.
+message DsaPublicKeyInfo {
+  // Key size in bits (size of parameter P).
+  optional int32 key_size = 1 [json_name="keySize"];
+}
+
+// Dynamic group metadata like queries and status.
+message DynamicGroupMetadata {
+  // Memberships will be the union of all queries. Only one entry with USER resource is currently supported. Customers can create up to 500 dynamic groups.
+  repeated DynamicGroupQuery queries = 1 [json_name="queries"];
+  // Output only. Status of the dynamic group.
+  optional DynamicGroupStatus status = 2 [json_name="status"];
+}
+
+// Defines a query on a resource.
+message DynamicGroupQuery {
+  // Query that determines the memberships of the dynamic group. Examples: All users with at least one `organizations.department` of engineering. `user.organizations.exists(org, org.department=='engineering')` All users with at least one location that has `area` of `foo` and `building_id` of `bar`. `user.locations.exists(loc, loc.area=='foo' && loc.building_id=='bar')` All users with any variation of the name John Doe (case-insensitive queries add `equalsIgnoreCase()` to the value being queried). `user.name.value.equalsIgnoreCase('jOhn DoE')`
+  optional string query = 1 [json_name="query"];
+  optional string resource_type = 2 [json_name="resourceType"];
+}
+
+// The current status of a dynamic group along with timestamp.
+message DynamicGroupStatus {
+  // Status of the dynamic group.
+  optional string status = 1 [json_name="status"];
+  // The latest time at which the dynamic group is guaranteed to be in the given status. If status is `UP_TO_DATE`, the latest time at which the dynamic group was confirmed to be up-to-date. If status is `UPDATING_MEMBERSHIPS`, the time at which dynamic group was created.
+  optional .google.protobuf.Timestamp status_time = 2 [json_name="statusTime"];
+}
+
+// Resource representing the [Endpoint Verification-specific attributes](https://cloud.google.com/endpoint-verification/docs/device-information) of a device.
+message EndpointVerificationSpecificAttributes {
+  // [Additional signals](https://cloud.google.com/endpoint-verification/docs/device-information) reported by Endpoint Verification. It includes the following attributes: * Non-configurable attributes: hotfixes, av_installed, av_enabled, windows_domain_name, is_os_native_firewall_enabled, and is_secure_boot_enabled. * [Configurable attributes](https://cloud.google.com/endpoint-verification/docs/collect-config-attributes): file, folder, and binary attributes; registry entries; and properties in a plist.
+  map<string, .google.protobuf.Any> additional_signals = 1 [json_name="additionalSignals"];
+  // Details of browser profiles reported by Endpoint Verification.
+  repeated BrowserAttributes browser_attributes = 2 [json_name="browserAttributes"];
+  // Details of certificates.
+  repeated CertificateAttributes certificate_attributes = 3 [json_name="certificateAttributes"];
+}
+
+// A unique identifier for an entity in the Cloud Identity Groups API. An entity can represent either a group with an optional `namespace` or a user without a `namespace`. The combination of `id` and `namespace` must be unique; however, the same `id` can be used with different `namespace`s.
+message EntityKey {
+  // The ID of the entity. For Google-managed entities, the `id` must be the email address of an existing group or user. For external-identity-mapped entities, the `id` must be a string conforming to the Identity Source's requirements. Must be unique within a `namespace`.
+  optional string id = 1 [json_name="id"];
+  // The namespace in which the entity exists. If not specified, the `EntityKey` represents a Google-managed entity such as a Google user or a Google Group. If specified, the `EntityKey` represents an external-identity-mapped group. The namespace must correspond to an identity source created in Admin Console and must be in the form of `identitysources/{identity_source_id}`.
+  optional string namespace = 2 [json_name="namespace"];
+}
+
+// The `MembershipRole` expiry details.
+message ExpiryDetail {
+  // The time at which the `MembershipRole` will expire.
+  optional .google.protobuf.Timestamp expire_time = 1 [json_name="expireTime"];
+}
+
+// The response message for MembershipsService.GetMembershipGraph.
+message GetMembershipGraphResponse {
+  // The membership graph's path information represented as an adjacency list.
+  repeated MembershipAdjacencyList adjacency_list = 1 [json_name="adjacencyList"];
+  // The resources representing each group in the adjacency list. Each group in this list can be correlated to a 'group' of the MembershipAdjacencyList using the 'name' of the Group resource.
+  repeated Group groups = 2 [json_name="groups"];
+}
+
+// Resource representing the Android specific attributes of a Device.
+message GoogleAppsCloudidentityDevicesV1AndroidAttributes {
+  // Whether the device passes Android CTS compliance.
+  optional bool cts_profile_match = 1 [json_name="ctsProfileMatch"];
+  // Whether applications from unknown sources can be installed on device.
+  optional bool enabled_unknown_sources = 2 [json_name="enabledUnknownSources"];
+  // Whether any potentially harmful apps were detected on the device.
+  optional bool has_potentially_harmful_apps = 3 [json_name="hasPotentiallyHarmfulApps"];
+  // Whether this account is on an owner/primary profile. For phones, only true for owner profiles. Android 4+ devices can have secondary or restricted user profiles.
+  optional bool owner_profile_account = 4 [json_name="ownerProfileAccount"];
+  // Ownership privileges on device.
+  optional string ownership_privilege = 5 [json_name="ownershipPrivilege"];
+  // Whether device supports Android work profiles. If false, this service will not block access to corp data even if an administrator turns on the "Enforce Work Profile" policy.
+  optional bool supports_work_profile = 6 [json_name="supportsWorkProfile"];
+  // Whether Android verified boot status is GREEN.
+  optional bool verified_boot = 7 [json_name="verifiedBoot"];
+  // Whether Google Play Protect Verify Apps is enabled.
+  optional bool verify_apps_enabled = 8 [json_name="verifyAppsEnabled"];
+}
+
+// Metadata for ApproveDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1ApproveDeviceUserMetadata {
+}
+
+// Response message for approving the device to access user data.
+message GoogleAppsCloudidentityDevicesV1ApproveDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional GoogleAppsCloudidentityDevicesV1DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Metadata for BlockDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1BlockDeviceUserMetadata {
+}
+
+// Response message for blocking the device from accessing user data.
+message GoogleAppsCloudidentityDevicesV1BlockDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional GoogleAppsCloudidentityDevicesV1DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Contains information about browser profiles reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+message GoogleAppsCloudidentityDevicesV1BrowserAttributes {
+  // Represents the current state of the [Chrome browser attributes](https://cloud.google.com/access-context-manager/docs/browser-attributes) sent by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+  optional GoogleAppsCloudidentityDevicesV1BrowserInfo chrome_browser_info = 1 [json_name="chromeBrowserInfo"];
+  // Chrome profile ID that is exposed by the Chrome API. It is unique for each device.
+  optional string chrome_profile_id = 2 [json_name="chromeProfileId"];
+  // Timestamp in milliseconds since the Unix epoch when the profile/gcm id was last synced.
+  optional .google.protobuf.Timestamp last_profile_sync_time = 3 [json_name="lastProfileSyncTime"];
+}
+
+// Browser-specific fields reported by the [Endpoint Verification extension](https://chromewebstore.google.com/detail/endpoint-verification/callobklhcbilhphinckomhgkigmfocg?pli=1).
+message GoogleAppsCloudidentityDevicesV1BrowserInfo {
+  // Output only. Browser's management state.
+  optional string browser_management_state = 1 [json_name="browserManagementState"];
+  // Version of the request initiating browser. E.g. `91.0.4442.4`.
+  optional string browser_version = 2 [json_name="browserVersion"];
+  // Current state of [built-in DNS client](https://chromeenterprise.google/policies/#BuiltInDnsClientEnabled).
+  optional bool is_built_in_dns_client_enabled = 3 [json_name="isBuiltInDnsClientEnabled"];
+  // Current state of [bulk data analysis](https://chromeenterprise.google/policies/#OnBulkDataEntryEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_bulk_data_entry_analysis_enabled = 4 [json_name="isBulkDataEntryAnalysisEnabled"];
+  // Current state of [Chrome Cleanup](https://chromeenterprise.google/policies/#ChromeCleanupEnabled).
+  optional bool is_chrome_cleanup_enabled = 5 [json_name="isChromeCleanupEnabled"];
+  // Current state of [Chrome Remote Desktop app](https://chromeenterprise.google/policies/#URLBlocklist).
+  optional bool is_chrome_remote_desktop_app_blocked = 6 [json_name="isChromeRemoteDesktopAppBlocked"];
+  // Current state of [file download analysis](https://chromeenterprise.google/policies/#OnFileDownloadedEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_file_download_analysis_enabled = 7 [json_name="isFileDownloadAnalysisEnabled"];
+  // Current state of [file upload analysis](https://chromeenterprise.google/policies/#OnFileAttachedEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_file_upload_analysis_enabled = 8 [json_name="isFileUploadAnalysisEnabled"];
+  // Current state of [real-time URL check](https://chromeenterprise.google/policies/#EnterpriseRealTimeUrlCheckMode). Set to true if provider list from Chrome is non-empty.
+  optional bool is_realtime_url_check_enabled = 9 [json_name="isRealtimeUrlCheckEnabled"];
+  // Current state of [security event analysis](https://chromeenterprise.google/policies/#OnSecurityEventEnterpriseConnector). Set to true if provider list from Chrome is non-empty.
+  optional bool is_security_event_analysis_enabled = 10 [json_name="isSecurityEventAnalysisEnabled"];
+  // Current state of [site isolation](https://chromeenterprise.google/policies/?policy=IsolateOrigins).
+  optional bool is_site_isolation_enabled = 11 [json_name="isSiteIsolationEnabled"];
+  // Current state of [third-party blocking](https://chromeenterprise.google/policies/#ThirdPartyBlockingEnabled).
+  optional bool is_third_party_blocking_enabled = 12 [json_name="isThirdPartyBlockingEnabled"];
+  // Current state of [password protection trigger](https://chromeenterprise.google/policies/#PasswordProtectionWarningTrigger).
+  optional string password_protection_warning_trigger = 13 [json_name="passwordProtectionWarningTrigger"];
+  // Current state of [Safe Browsing protection level](https://chromeenterprise.google/policies/#SafeBrowsingProtectionLevel).
+  optional string safe_browsing_protection_level = 14 [json_name="safeBrowsingProtectionLevel"];
+}
+
+// Metadata for CancelWipeDevice LRO.
+message GoogleAppsCloudidentityDevicesV1CancelWipeDeviceMetadata {
+}
+
+// Response message for cancelling an unfinished device wipe.
+message GoogleAppsCloudidentityDevicesV1CancelWipeDeviceResponse {
+  // Resultant Device object for the action. Note that asset tags will not be returned in the device object.
+  optional GoogleAppsCloudidentityDevicesV1Device device = 1 [json_name="device"];
+}
+
+// Metadata for CancelWipeDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1CancelWipeDeviceUserMetadata {
+}
+
+// Response message for cancelling an unfinished user account wipe.
+message GoogleAppsCloudidentityDevicesV1CancelWipeDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional GoogleAppsCloudidentityDevicesV1DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// Stores information about a certificate.
+message GoogleAppsCloudidentityDevicesV1CertificateAttributes {
+  // The X.509 extension for CertificateTemplate.
+  optional GoogleAppsCloudidentityDevicesV1CertificateTemplate certificate_template = 1 [json_name="certificateTemplate"];
+  // The encoded certificate fingerprint.
+  optional string fingerprint = 2 [json_name="fingerprint"];
+  // The name of the issuer of this certificate.
+  optional string issuer = 3 [json_name="issuer"];
+  // Serial number of the certificate, Example: "123456789".
+  optional string serial_number = 4 [json_name="serialNumber"];
+  // The subject name of this certificate.
+  optional string subject = 5 [json_name="subject"];
+  // The certificate thumbprint.
+  optional string thumbprint = 6 [json_name="thumbprint"];
+  // Output only. Validation state of this certificate.
+  optional string validation_state = 7 [json_name="validationState"];
+  // Certificate not valid at or after this timestamp.
+  optional .google.protobuf.Timestamp validity_expiration_time = 8 [json_name="validityExpirationTime"];
+  // Certificate not valid before this timestamp.
+  optional .google.protobuf.Timestamp validity_start_time = 9 [json_name="validityStartTime"];
+}
+
+// CertificateTemplate (v3 Extension in X.509).
+message GoogleAppsCloudidentityDevicesV1CertificateTemplate {
+  // The template id of the template. Example: "1.3.6.1.4.1.311.21.8.15608621.11768144.5720724.16068415.6889630.81.2472537.7784047".
+  optional string id = 1 [json_name="id"];
+  // The Major version of the template. Example: 100.
+  optional int32 major_version = 2 [json_name="majorVersion"];
+  // The minor version of the template. Example: 12.
+  optional int32 minor_version = 3 [json_name="minorVersion"];
+}
+
+// Represents the state associated with an API client calling the Devices API. Resource representing ClientState and supports updates from API users
+message GoogleAppsCloudidentityDevicesV1ClientState {
+  // The caller can specify asset tags for this resource
+  repeated string asset_tags = 1 [json_name="assetTags"];
+  // The compliance state of the resource as specified by the API client.
+  optional string compliance_state = 2 [json_name="complianceState"];
+  // Output only. The time the client state data was created.
+  optional .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  // This field may be used to store a unique identifier for the API resource within which these CustomAttributes are a field.
+  optional string custom_id = 4 [json_name="customId"];
+  // The token that needs to be passed back for concurrency control in updates. Token needs to be passed back in UpdateRequest
+  optional string etag = 5 [json_name="etag"];
+  // The Health score of the resource. The Health score is the callers specification of the condition of the device from a usability point of view. For example, a third-party device management provider may specify a health score based on its compliance with organizational policies.
+  optional string health_score = 6 [json_name="healthScore"];
+  // The map of key-value attributes stored by callers specific to a device. The total serialized length of this map may not exceed 10KB. No limit is placed on the number of attributes in a map.
+  map<string, GoogleAppsCloudidentityDevicesV1CustomAttributeValue> key_value_pairs = 7 [json_name="keyValuePairs"];
+  // Output only. The time the client state data was last updated.
+  optional .google.protobuf.Timestamp last_update_time = 8 [json_name="lastUpdateTime"];
+  // The management state of the resource as specified by the API client.
+  optional string managed = 9 [json_name="managed"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the ClientState in format: `devices/{device}/deviceUsers/{device_user}/clientState/{partner}`, where partner corresponds to the partner storing the data. For partners belonging to the "BeyondCorp Alliance", this is the partner ID specified to you by Google. For all other callers, this is a string of the form: `{customer}-suffix`, where `customer` is your customer ID. The *suffix* is any string the caller specifies. This string will be displayed verbatim in the administration console. This suffix is used in setting up Custom Access Levels in Context-Aware Access. Your organization's customer ID can be obtained from the URL: `GET https://www.googleapis.com/admin/directory/v1/customers/my_customer` The `id` field in the response contains the customer ID starting with the letter 'C'. The customer ID to be used in this API is the string after the letter 'C' (not including 'C')
+  optional string name = 10 [json_name="name"];
+  // Output only. The owner of the ClientState
+  optional string owner_type = 11 [json_name="ownerType"];
+  // A descriptive cause of the health score.
+  optional string score_reason = 12 [json_name="scoreReason"];
+}
+
+// Metadata for CreateDevice LRO.
+message GoogleAppsCloudidentityDevicesV1CreateDeviceMetadata {
+}
+
+// Additional custom attribute values may be one of these types
+message GoogleAppsCloudidentityDevicesV1CustomAttributeValue {
+  // Represents a boolean value.
+  optional bool bool_value = 1 [json_name="boolValue"];
+  // Represents a double value.
+  optional double number_value = 2 [json_name="numberValue"];
+  // Represents a string value.
+  optional string string_value = 3 [json_name="stringValue"];
+}
+
+// Metadata for DeleteDevice LRO.
+message GoogleAppsCloudidentityDevicesV1DeleteDeviceMetadata {
+}
+
+// Metadata for DeleteDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1DeleteDeviceUserMetadata {
+}
+
+//  A Device within the Cloud Identity Devices API. Represents a Device known to Google Cloud, independent of the device ownership, type, and whether it is assigned or in use by a user.
+message GoogleAppsCloudidentityDevicesV1Device {
+  // Output only. Attributes specific to Android devices.
+  optional GoogleAppsCloudidentityDevicesV1AndroidAttributes android_specific_attributes = 1 [json_name="androidSpecificAttributes"];
+  // Asset tag of the device.
+  optional string asset_tag = 2 [json_name="assetTag"];
+  // Output only. Baseband version of the device.
+  optional string baseband_version = 3 [json_name="basebandVersion"];
+  // Output only. Device bootloader version. Example: 0.6.7.
+  optional string bootloader_version = 4 [json_name="bootloaderVersion"];
+  // Output only. Device brand. Example: Samsung.
+  optional string brand = 5 [json_name="brand"];
+  // Output only. Build number of the device.
+  optional string build_number = 6 [json_name="buildNumber"];
+  // Output only. Represents whether the Device is compromised.
+  optional string compromised_state = 7 [json_name="compromisedState"];
+  // Output only. When the Company-Owned device was imported. This field is empty for BYOD devices.
+  optional .google.protobuf.Timestamp create_time = 8 [json_name="createTime"];
+  // Unique identifier for the device.
+  optional string device_id = 9 [json_name="deviceId"];
+  // Output only. Type of device.
+  optional string device_type = 10 [json_name="deviceType"];
+  // Output only. Whether developer options is enabled on device.
+  optional bool enabled_developer_options = 11 [json_name="enabledDeveloperOptions"];
+  // Output only. Whether USB debugging is enabled on device.
+  optional bool enabled_usb_debugging = 12 [json_name="enabledUsbDebugging"];
+  // Output only. Device encryption state.
+  optional string encryption_state = 13 [json_name="encryptionState"];
+  // Output only. Attributes specific to [Endpoint Verification](https://cloud.google.com/endpoint-verification/docs/overview) devices.
+  optional GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes endpoint_verification_specific_attributes = 14 [json_name="endpointVerificationSpecificAttributes"];
+  // Host name of the device.
+  optional string hostname = 15 [json_name="hostname"];
+  // Output only. IMEI number of device if GSM device; empty otherwise.
+  optional string imei = 16 [json_name="imei"];
+  // Output only. Kernel version of the device.
+  optional string kernel_version = 17 [json_name="kernelVersion"];
+  // Most recent time when device synced with this service.
+  optional .google.protobuf.Timestamp last_sync_time = 18 [json_name="lastSyncTime"];
+  // Output only. Management state of the device
+  optional string management_state = 19 [json_name="managementState"];
+  // Output only. Device manufacturer. Example: Motorola.
+  optional string manufacturer = 20 [json_name="manufacturer"];
+  // Output only. MEID number of device if CDMA device; empty otherwise.
+  optional string meid = 21 [json_name="meid"];
+  // Output only. Model name of device. Example: Pixel 3.
+  optional string model = 22 [json_name="model"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Device in format: `devices/{device}`, where device is the unique id assigned to the Device. Important: Device API scopes require that you use domain-wide delegation to access the API. For more information, see [Set up the Devices API](https://cloud.google.com/identity/docs/how-to/setup-devices).
+  optional string name = 23 [json_name="name"];
+  // Output only. Mobile or network operator of device, if available.
+  optional string network_operator = 24 [json_name="networkOperator"];
+  // Output only. OS version of the device. Example: Android 8.1.0.
+  optional string os_version = 25 [json_name="osVersion"];
+  // Output only. Domain name for Google accounts on device. Type for other accounts on device. On Android, will only be populated if |ownership_privilege| is |PROFILE_OWNER| or |DEVICE_OWNER|. Does not include the account signed in to the device policy app if that account's domain has only one account. Examples: "com.example", "xyz.com".
+  repeated string other_accounts = 26 [json_name="otherAccounts"];
+  // Output only. Whether the device is owned by the company or an individual
+  optional string owner_type = 27 [json_name="ownerType"];
+  // Output only. OS release version. Example: 6.0.
+  optional string release_version = 28 [json_name="releaseVersion"];
+  // Output only. OS security patch update time on device.
+  optional .google.protobuf.Timestamp security_patch_time = 29 [json_name="securityPatchTime"];
+  // Serial Number of device. Example: HT82V1A01076.
+  optional string serial_number = 30 [json_name="serialNumber"];
+  // Output only. Unified device id of the device.
+  optional string unified_device_id = 31 [json_name="unifiedDeviceId"];
+  // WiFi MAC addresses of device.
+  repeated string wifi_mac_addresses = 32 [json_name="wifiMacAddresses"];
+}
+
+// Represents a user's use of a Device in the Cloud Identity Devices API. A DeviceUser is a resource representing a user's use of a Device
+message GoogleAppsCloudidentityDevicesV1DeviceUser {
+  // Compromised State of the DeviceUser object
+  optional string compromised_state = 1 [json_name="compromisedState"];
+  // When the user first signed in to the device
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // Output only. Most recent time when user registered with this service.
+  optional .google.protobuf.Timestamp first_sync_time = 3 [json_name="firstSyncTime"];
+  // Output only. Default locale used on device, in IETF BCP-47 format.
+  optional string language_code = 4 [json_name="languageCode"];
+  // Output only. Last time when user synced with policies.
+  optional .google.protobuf.Timestamp last_sync_time = 5 [json_name="lastSyncTime"];
+  // Output only. Management state of the user on the device.
+  optional string management_state = 6 [json_name="managementState"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the DeviceUser in format: `devices/{device}/deviceUsers/{device_user}`, where `device_user` uniquely identifies a user's use of a device.
+  optional string name = 7 [json_name="name"];
+  // Password state of the DeviceUser object
+  optional string password_state = 8 [json_name="passwordState"];
+  // Output only. User agent on the device for this specific user
+  optional string user_agent = 9 [json_name="userAgent"];
+  // Email address of the user registered on the device.
+  optional string user_email = 10 [json_name="userEmail"];
+}
+
+// Resource representing the [Endpoint Verification-specific attributes](https://cloud.google.com/endpoint-verification/docs/device-information) of a device.
+message GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+  // [Additional signals](https://cloud.google.com/endpoint-verification/docs/device-information) reported by Endpoint Verification. It includes the following attributes: * Non-configurable attributes: hotfixes, av_installed, av_enabled, windows_domain_name, is_os_native_firewall_enabled, and is_secure_boot_enabled. * [Configurable attributes](https://cloud.google.com/endpoint-verification/docs/collect-config-attributes): file, folder, and binary attributes; registry entries; and properties in a plist.
+  map<string, .google.protobuf.Any> additional_signals = 1 [json_name="additionalSignals"];
+  // Details of browser profiles reported by Endpoint Verification.
+  repeated GoogleAppsCloudidentityDevicesV1BrowserAttributes browser_attributes = 2 [json_name="browserAttributes"];
+  // Details of certificates.
+  repeated GoogleAppsCloudidentityDevicesV1CertificateAttributes certificate_attributes = 3 [json_name="certificateAttributes"];
+}
+
+// Metadata for ListEndpointApps LRO.
+message GoogleAppsCloudidentityDevicesV1ListEndpointAppsMetadata {
+}
+
+// Metadata for SignoutDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1SignoutDeviceUserMetadata {
+}
+
+// Metadata for UpdateClientState LRO.
+message GoogleAppsCloudidentityDevicesV1UpdateClientStateMetadata {
+}
+
+// Metadata for UpdateDevice LRO.
+message GoogleAppsCloudidentityDevicesV1UpdateDeviceMetadata {
+}
+
+// Metadata for WipeDevice LRO.
+message GoogleAppsCloudidentityDevicesV1WipeDeviceMetadata {
+}
+
+// Response message for wiping all data on the device.
+message GoogleAppsCloudidentityDevicesV1WipeDeviceResponse {
+  // Resultant Device object for the action. Note that asset tags will not be returned in the device object.
+  optional GoogleAppsCloudidentityDevicesV1Device device = 1 [json_name="device"];
+}
+
+// Metadata for WipeDeviceUser LRO.
+message GoogleAppsCloudidentityDevicesV1WipeDeviceUserMetadata {
+}
+
+// Response message for wiping the user's account from the device.
+message GoogleAppsCloudidentityDevicesV1WipeDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional GoogleAppsCloudidentityDevicesV1DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+// A group within the Cloud Identity Groups API. A `Group` is a collection of entities, where each entity is either a user, another group, or a service account.
+message Group {
+  // Output only. Additional group keys associated with the Group.
+  repeated EntityKey additional_group_keys = 1 [json_name="additionalGroupKeys"];
+  // Output only. The time when the `Group` was created.
+  optional .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  // An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters.
+  optional string description = 3 [json_name="description"];
+  // The display name of the `Group`.
+  optional string display_name = 4 [json_name="displayName"];
+  // Optional. Dynamic group metadata like queries and status.
+  optional DynamicGroupMetadata dynamic_group_metadata = 5 [json_name="dynamicGroupMetadata"];
+  // Required. The `EntityKey` of the `Group`.
+  optional EntityKey group_key = 6 [json_name="groupKey"];
+  // Required. One or more label entries that apply to the Group. Labels contain a key with an empty value. Google Groups are the default type of group and have a label with a key of `cloudidentity.googleapis.com/groups.discussion_forum` and an empty value. Existing Google Groups can have an additional label with a key of `cloudidentity.googleapis.com/groups.security` and an empty value added to them. **This is an immutable change and the security label cannot be removed once added.** Dynamic groups have a label with a key of `cloudidentity.googleapis.com/groups.dynamic`. Identity-mapped groups for Cloud Search have a label with a key of `system/groups/external` and an empty value. (Beta) Google Groups can be [locked](https://support.google.com/a?p=locked-groups). To lock a group, add a label with a key of `cloudidentity.googleapis.com/groups.locked` and an empty value. Doing so locks the group. To unlock the group, remove this label.
+  map<string, string> labels = 7 [json_name="labels"];
+  // Output only. The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`.
+  optional string name = 8 [json_name="name"];
+  // Required. Immutable. The resource name of the entity under which this `Group` resides in the Cloud Identity resource hierarchy. Must be of the form `identitysources/{identity_source}` for external [identity-mapped groups](https://support.google.com/a/answer/9039510) or `customers/{customer_id}` for Google Groups. The `customer_id` must begin with "C" (for example, 'C046psxkn'). [Find your customer ID.] (https://support.google.com/cloudidentity/answer/10070793)
+  optional string parent = 9 [json_name="parent"];
+  // Optional. The POSIX groups associated with the `Group`.
+  repeated PosixGroup posix_groups = 10 [json_name="posixGroups"];
+  // Output only. The time when the `Group` was last updated.
+  optional .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+}
+
+// Message representing a transitive group of a user or a group.
+message GroupRelation {
+  // Display name for this group.
+  optional string display_name = 1 [json_name="displayName"];
+  // Resource name for this group.
+  optional string group = 2 [json_name="group"];
+  // Entity key has an id and a namespace. In case of discussion forums, the id will be an email address without a namespace.
+  optional EntityKey group_key = 3 [json_name="groupKey"];
+  // Labels for Group resource.
+  map<string, string> labels = 4 [json_name="labels"];
+  // The relation between the member and the transitive group.
+  optional string relation_type = 5 [json_name="relationType"];
+  // Membership roles of the member for the group.
+  repeated TransitiveMembershipRole roles = 6 [json_name="roles"];
+}
+
+// Credential for verifying signatures produced by the Identity Provider.
+message IdpCredential {
+  // Output only. Information of a DSA public key.
+  optional DsaPublicKeyInfo dsa_key_info = 1 [json_name="dsaKeyInfo"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the credential.
+  optional string name = 2 [json_name="name"];
+  // Output only. Information of a RSA public key.
+  optional RsaPublicKeyInfo rsa_key_info = 3 [json_name="rsaKeyInfo"];
+  // Output only. Time when the `IdpCredential` was last updated.
+  optional .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
+}
+
+// A [SAML 2.0](https://www.oasis-open.org/standards#samlv2.0) federation between a Google enterprise customer and a SAML identity provider.
+message InboundSamlSsoProfile {
+  // Immutable. The customer. For example: `customers/C0123abc`.
+  optional string customer = 1 [json_name="customer"];
+  // Human-readable name of the SAML SSO profile.
+  optional string display_name = 2 [json_name="displayName"];
+  // SAML identity provider configuration.
+  optional SamlIdpConfig idp_config = 3 [json_name="idpConfig"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the SAML SSO profile.
+  optional string name = 4 [json_name="name"];
+  // SAML service provider configuration for this SAML SSO profile. These are the service provider details provided by Google that should be configured on the corresponding identity provider.
+  optional SamlSpConfig sp_config = 5 [json_name="spConfig"];
+}
+
+// Targets with "set" SSO assignments and their respective assignments.
+message InboundSsoAssignment {
+  // Immutable. The customer. For example: `customers/C0123abc`.
+  optional string customer = 1 [json_name="customer"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Inbound SSO Assignment.
+  optional string name = 2 [json_name="name"];
+  // Must be zero (which is the default value so it can be omitted) for assignments with `target_org_unit` set and must be greater-than-or-equal-to one for assignments with `target_group` set.
+  optional int32 rank = 3 [json_name="rank"];
+  // SAML SSO details. Must be set if and only if `sso_mode` is set to `SAML_SSO`.
+  optional SamlSsoInfo saml_sso_info = 4 [json_name="samlSsoInfo"];
+  // Assertions about users assigned to an IdP will always be accepted from that IdP. This controls whether/when Google should redirect a user to the IdP. Unset (defaults) is the recommended configuration.
+  optional SignInBehavior sign_in_behavior = 5 [json_name="signInBehavior"];
+  // Inbound SSO behavior.
+  optional string sso_mode = 6 [json_name="ssoMode"];
+  // Immutable. Must be of the form `groups/{group}`.
+  optional string target_group = 7 [json_name="targetGroup"];
+  // Immutable. Must be of the form `orgUnits/{org_unit}`.
+  optional string target_org_unit = 8 [json_name="targetOrgUnit"];
+}
+
+// Response for IsInvitableUser RPC.
+message IsInvitableUserResponse {
+  // Returns true if the email address is invitable.
+  optional bool is_invitable_user = 1 [json_name="isInvitableUser"];
+}
+
+// Response message that is returned in LRO result of ListClientStates Operation.
+message ListClientStatesResponse {
+  // Client states meeting the list restrictions.
+  repeated ClientState client_states = 1 [json_name="clientStates"];
+  // Token to retrieve the next page of results. Empty if there are no more results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response message that is returned from the ListDeviceUsers method.
+message ListDeviceUsersResponse {
+  // Devices meeting the list restrictions.
+  repeated DeviceUser device_users = 1 [json_name="deviceUsers"];
+  // Token to retrieve the next page of results. Empty if there are no more results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response message that is returned from the ListDevices method.
+message ListDevicesResponse {
+  // Devices meeting the list restrictions.
+  repeated Device devices = 1 [json_name="devices"];
+  // Token to retrieve the next page of results. Empty if there are no more results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for GroupsService.ListGroups.
+message ListGroupsResponse {
+  // The `Group` resources under the specified `parent`.
+  repeated Group groups = 1 [json_name="groups"];
+  // A continuation token to retrieve the next page of results, or empty if there are no more results available.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response of the InboundSamlSsoProfilesService.ListIdpCredentials method.
+message ListIdpCredentialsResponse {
+  // The IdpCredentials from the specified InboundSamlSsoProfile.
+  repeated IdpCredential idp_credentials = 1 [json_name="idpCredentials"];
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response of the InboundSamlSsoProfilesService.ListInboundSamlSsoProfiles method.
+message ListInboundSamlSsoProfilesResponse {
+  // List of InboundSamlSsoProfiles.
+  repeated InboundSamlSsoProfile inbound_saml_sso_profiles = 1 [json_name="inboundSamlSsoProfiles"];
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response of the InboundSsoAssignmentsService.ListInboundSsoAssignments method.
+message ListInboundSsoAssignmentsResponse {
+  // The assignments.
+  repeated InboundSsoAssignment inbound_sso_assignments = 1 [json_name="inboundSsoAssignments"];
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for MembershipsService.ListMemberships.
+message ListMembershipsResponse {
+  // The `Membership`s under the specified `parent`.
+  repeated Membership memberships = 1 [json_name="memberships"];
+  // A continuation token to retrieve the next page of results, or empty if there are no more results available.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for OrgMembershipsService.ListOrgMemberships.
+message ListOrgMembershipsResponse {
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is empty, there are no subsequent pages.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The non-vacuous membership in an orgUnit.
+  repeated OrgMembership org_memberships = 2 [json_name="orgMemberships"];
+}
+
+// The response message for PoliciesService.ListPolicies.
+message ListPoliciesResponse {
+  // The pagination token to retrieve the next page of results. If this field is empty, there are no subsequent pages.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The results
+  repeated Policy policies = 2 [json_name="policies"];
+}
+
+// Response message for UserInvitation listing request.
+message ListUserInvitationsResponse {
+  // The token for the next page. If not empty, indicates that there may be more `UserInvitation` resources that match the listing request; this value can be used in a subsequent ListUserInvitationsRequest to get continued results with the current list call.
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  // The list of UserInvitation resources.
+  repeated UserInvitation user_invitations = 2 [json_name="userInvitations"];
+}
+
+// The response message for GroupsService.LookupGroupName.
+message LookupGroupNameResponse {
+  // Output only. The [resource name](https://cloud.google.com/apis/design/resource_names) of the looked-up `Group`.
+  optional string name = 1 [json_name="name"];
+}
+
+// The response message for MembershipsService.LookupMembershipName.
+message LookupMembershipNameResponse {
+  // The [resource name](https://cloud.google.com/apis/design/resource_names) of the looked-up `Membership`. Must be of the form `groups/{group_id}/memberships/{membership_id}`.
+  optional string name = 1 [json_name="name"];
+}
+
+// Response containing resource names of the DeviceUsers associated with the caller's credentials.
+message LookupSelfDeviceUsersResponse {
+  // The customer Id that may be passed back to other Devices API methods such as List, Get, etc.
+  optional string customer = 1 [json_name="customer"];
+  // [Resource names](https://cloud.google.com/apis/design/resource_names) of the DeviceUsers in the format: `devices/{device_id}/deviceUsers/{user_resource_id}`, where device_id is the unique ID assigned to a Device and user_resource_id is the unique user ID
+  repeated string names = 2 [json_name="names"];
+  // Token to retrieve the next page of results. Empty if there are no more results.
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+}
+
+// Message representing a transitive membership of a group.
+message MemberRelation {
+  // Resource name for this member.
+  optional string member = 1 [json_name="member"];
+  // Entity key has an id and a namespace. In case of discussion forums, the id will be an email address without a namespace.
+  repeated EntityKey preferred_member_key = 2 [json_name="preferredMemberKey"];
+  // The relation between the group and the transitive membership.
+  optional string relation_type = 3 [json_name="relationType"];
+  // The membership role details (i.e name of role and expiry time).
+  repeated TransitiveMembershipRole roles = 4 [json_name="roles"];
+}
+
+// The definition of MemberRestriction
+message MemberRestriction {
+  // The evaluated state of this restriction on a group.
+  optional RestrictionEvaluation evaluation = 1 [json_name="evaluation"];
+  // Member Restriction as defined by CEL expression. Supported restrictions are: `member.customer_id` and `member.type`. Valid values for `member.type` are `1`, `2` and `3`. They correspond to USER, SERVICE_ACCOUNT, and GROUP respectively. The value for `member.customer_id` only supports `groupCustomerId()` currently which means the customer id of the group will be used for restriction. Supported operators are `&&`, `||` and `==`, corresponding to AND, OR, and EQUAL. Examples: Allow only service accounts of given customer to be members. `member.type == 2 && member.customer_id == groupCustomerId()` Allow only users or groups to be members. `member.type == 1 || member.type == 3`
+  optional string query = 2 [json_name="query"];
+}
+
+// A membership within the Cloud Identity Groups API. A `Membership` defines a relationship between a `Group` and an entity belonging to that `Group`, referred to as a "member".
+message Membership {
+  // Output only. The time when the `Membership` was created.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // Output only. Delivery setting associated with the membership.
+  optional string delivery_setting = 2 [json_name="deliverySetting"];
+  // Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
+  optional EntityKey member_key = 3 [json_name="memberKey"];
+  // Output only. The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Membership`. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
+  optional string name = 4 [json_name="name"];
+  // Required. Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
+  optional EntityKey preferred_member_key = 5 [json_name="preferredMemberKey"];
+  // The `MembershipRole`s that apply to the `Membership`. If unspecified, defaults to a single `MembershipRole` with `name` `MEMBER`. Must not contain duplicate `MembershipRole`s with the same `name`.
+  repeated MembershipRole roles = 6 [json_name="roles"];
+  // Output only. The type of the membership.
+  optional string type = 7 [json_name="type"];
+  // Output only. The time when the `Membership` was last updated.
+  optional .google.protobuf.Timestamp update_time = 8 [json_name="updateTime"];
+}
+
+// Membership graph's path information as an adjacency list.
+message MembershipAdjacencyList {
+  // Each edge contains information about the member that belongs to this group. Note: Fields returned here will help identify the specific Membership resource (e.g `name`, `preferred_member_key` and `role`), but may not be a comprehensive list of all fields.
+  repeated Membership edges = 1 [json_name="edges"];
+  // Resource name of the group that the members belong to.
+  optional string group = 2 [json_name="group"];
+}
+
+// Message containing membership relation.
+message MembershipRelation {
+  // An extended description to help users determine the purpose of a `Group`.
+  optional string description = 1 [json_name="description"];
+  // The display name of the `Group`.
+  optional string display_name = 2 [json_name="displayName"];
+  // The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Group`. Shall be of the form `groups/{group_id}`.
+  optional string group = 3 [json_name="group"];
+  // The `EntityKey` of the `Group`.
+  optional EntityKey group_key = 4 [json_name="groupKey"];
+  // One or more label entries that apply to the Group. Currently supported labels contain a key with an empty value.
+  map<string, string> labels = 5 [json_name="labels"];
+  // The [resource name](https://cloud.google.com/apis/design/resource_names) of the `Membership`. Shall be of the form `groups/{group_id}/memberships/{membership_id}`.
+  optional string membership = 6 [json_name="membership"];
+  // The `MembershipRole`s that apply to the `Membership`.
+  repeated MembershipRole roles = 7 [json_name="roles"];
+}
+
+// A membership role within the Cloud Identity Groups API. A `MembershipRole` defines the privileges granted to a `Membership`.
+message MembershipRole {
+  // The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value.
+  optional ExpiryDetail expiry_detail = 1 [json_name="expiryDetail"];
+  // The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.
+  optional string name = 2 [json_name="name"];
+  // Evaluations of restrictions applied to parent group on this membership.
+  optional RestrictionEvaluations restriction_evaluations = 3 [json_name="restrictionEvaluations"];
+}
+
+// The evaluated state of this restriction.
+message MembershipRoleRestrictionEvaluation {
+  // Output only. The current state of the restriction
+  optional string state = 1 [json_name="state"];
+}
+
+// The request message for MembershipsService.ModifyMembershipRoles.
+message ModifyMembershipRolesRequest {
+  // The `MembershipRole`s to be added. Adding or removing roles in the same request as updating roles is not supported. Must not be set if `update_roles_params` is set.
+  repeated MembershipRole add_roles = 1 [json_name="addRoles"];
+  // The `name`s of the `MembershipRole`s to be removed. Adding or removing roles in the same request as updating roles is not supported. It is not possible to remove the `MEMBER` `MembershipRole`. If you wish to delete a `Membership`, call MembershipsService.DeleteMembership instead. Must not contain `MEMBER`. Must not be set if `update_roles_params` is set.
+  repeated string remove_roles = 2 [json_name="removeRoles"];
+  // The `MembershipRole`s to be updated. Updating roles in the same request as adding or removing roles is not supported. Must not be set if either `add_roles` or `remove_roles` is set.
+  repeated UpdateMembershipRolesParams update_roles_params = 3 [json_name="updateRolesParams"];
+}
+
+// The response message for MembershipsService.ModifyMembershipRoles.
+message ModifyMembershipRolesResponse {
+  // The `Membership` resource after modifying its `MembershipRole`s.
+  optional Membership membership = 1 [json_name="membership"];
+}
+
+// The request message for OrgMembershipsService.MoveOrgMembership.
+message MoveOrgMembershipRequest {
+  // Required. Immutable. Customer on whose membership change is made. All authorization will happen on the role assignments of this customer. Format: customers/{$customerId} where `$customerId` is the `id` from the [Admin SDK `Customer` resource](https://developers.google.com/admin-sdk/directory/reference/rest/v1/customers). You may also use `customers/my_customer` to specify your own organization.
+  optional string customer = 1 [json_name="customer"];
+  // Required. Immutable. OrgUnit where the membership will be moved to. Format: orgUnits/{$orgUnitId} where `$orgUnitId` is the `orgUnitId` from the [Admin SDK `OrgUnit` resource](https://developers.google.com/admin-sdk/directory/reference/rest/v1/orgunits).
+  optional string destination_org_unit = 2 [json_name="destinationOrgUnit"];
+}
+
+// A membership in an OrgUnit. An `OrgMembership` defines a relationship between an `OrgUnit` and an entity belonging to that `OrgUnit`, referred to as a "member".
+message OrgMembership {
+  // Immutable. Org member id as full resource name. Format for shared drive resource: //drive.googleapis.com/drives/{$memberId} where `$memberId` is the `id` from [Drive API (V3) `Drive` resource](https://developers.google.com/drive/api/v3/reference/drives#resource).
+  optional string member = 1 [json_name="member"];
+  // Uri with which you can read the member. This follows https://aip.dev/122 Format for shared drive resource: https://drive.googleapis.com/drive/v3/drives/{$memberId} where `$memberId` is the `id` from [Drive API (V3) `Drive` resource](https://developers.google.com/drive/api/v3/reference/drives#resource).
+  optional string member_uri = 2 [json_name="memberUri"];
+  // Required. Immutable. The [resource name](https://cloud.google.com/apis/design/resource_names) of the OrgMembership. Format: orgUnits/{$orgUnitId}/memberships/{$membership} The `$orgUnitId` is the `orgUnitId` from the [Admin SDK `OrgUnit` resource](https://developers.google.com/admin-sdk/directory/reference/rest/v1/orgunits). The `$membership` shall be of the form `{$entityType};{$memberId}`, where `$entityType` is the enum value of [OrgMembership.EntityType], and `memberId` is the `id` from [Drive API (V3) `Drive` resource](https://developers.google.com/drive/api/v3/reference/drives#resource) for OrgMembership.EntityType.SHARED_DRIVE.
+  optional string name = 3 [json_name="name"];
+  // Immutable. Entity type for the org member.
+  optional string type = 4 [json_name="type"];
+}
+
+// A Policy resource binds an instance of a single Setting with the scope of a PolicyQuery. The Setting instance will be applied to all entities that satisfy the query.
+message Policy {
+  // Immutable. Customer that the Policy belongs to. The value is in the format 'customers/{customerId}'. The `customerId` must begin with "C" To find your customer ID in Admin Console see https://support.google.com/a/answer/10070793.
+  optional string customer = 1 [json_name="customer"];
+  // Output only. Identifier. The [resource name](https://cloud.google.com/apis/design/resource_names) of the Policy. Format: policies/{policy}.
+  optional string name = 2 [json_name="name"];
+  // Required. The PolicyQuery the Setting applies to.
+  optional PolicyQuery policy_query = 3 [json_name="policyQuery"];
+  // Required. The Setting configured by this Policy.
+  optional Setting setting = 4 [json_name="setting"];
+  // Output only. The type of the policy.
+  optional string type = 5 [json_name="type"];
+}
+
+// PolicyQuery
+message PolicyQuery {
+  // Immutable. The group that the query applies to. This field is only set if there is a single value for group that satisfies all clauses of the query. If no group applies, this will be the empty string.
+  optional string group = 1 [json_name="group"];
+  // Required. Immutable. Non-empty default. The OrgUnit the query applies to. This field is only set if there is a single value for org_unit that satisfies all clauses of the query.
+  optional string org_unit = 2 [json_name="orgUnit"];
+  // Immutable. The CEL query that defines which entities the Policy applies to (ex. a User entity). For details about CEL see https://opensource.google.com/projects/cel. The OrgUnits the Policy applies to are represented by a clause like so: entity.org_units.exists(org_unit, org_unit.org_unit_id == orgUnitId('{orgUnitId}')) The Group the Policy applies to are represented by a clause like so: entity.groups.exists(group, group.group_id == groupId('{groupId}')) The Licenses the Policy applies to are represented by a clause like so: entity.licenses.exists(license, license in ['/product/{productId}/sku/{skuId}']) The above clauses can be present in any combination, and used in conjunction with the &&, || and ! operators. The org_unit and group fields below are helper fields that contain the corresponding value(s) as the query to make the query easier to use.
+  optional string query = 3 [json_name="query"];
+  // Output only. The decimal sort order of this PolicyQuery. The value is relative to all other policies with the same setting type for the customer. (There are no duplicates within this set).
+  optional double sort_order = 4 [json_name="sortOrder"];
+}
+
+// POSIX Group definition to represent a group in a POSIX compliant system. Caution: POSIX groups are deprecated. As of September 26, 2024, you can no longer create new POSIX groups. For more information, see https://cloud.google.com/identity/docs/deprecations/posix-groups
+message PosixGroup {
+  // GID of the POSIX group.
+  optional uint64 gid = 1 [json_name="gid"];
+  // Name of the POSIX group.
+  optional string name = 2 [json_name="name"];
+  // System identifier for which group name and gid apply to. If not specified it will default to empty value.
+  optional string system_id = 3 [json_name="systemId"];
+}
+
+// The evaluated state of this restriction.
+message RestrictionEvaluation {
+  // Output only. The current state of the restriction
+  optional string state = 1 [json_name="state"];
+}
+
+// Evaluations of restrictions applied to parent group on this membership.
+message RestrictionEvaluations {
+  // Evaluation of the member restriction applied to this membership. Empty if the user lacks permission to view the restriction evaluation.
+  optional MembershipRoleRestrictionEvaluation member_restriction_evaluation = 1 [json_name="memberRestrictionEvaluation"];
+}
+
+// Information of a RSA public key.
+message RsaPublicKeyInfo {
+  // Key size in bits (size of the modulus).
+  optional int32 key_size = 1 [json_name="keySize"];
+}
+
+// SAML IDP (identity provider) configuration.
+message SamlIdpConfig {
+  // The **Change Password URL** of the identity provider. Users will be sent to this URL when changing their passwords at `myaccount.google.com`. This takes precedence over the change password URL configured at customer-level. Must use `HTTPS`.
+  optional string change_password_uri = 1 [json_name="changePasswordUri"];
+  // Required. The SAML **Entity ID** of the identity provider.
+  optional string entity_id = 2 [json_name="entityId"];
+  // The **Logout Redirect URL** (sign-out page URL) of the identity provider. When a user clicks the sign-out link on a Google page, they will be redirected to this URL. This is a pure redirect with no attached SAML `LogoutRequest` i.e. SAML single logout is not supported. Must use `HTTPS`.
+  optional string logout_redirect_uri = 3 [json_name="logoutRedirectUri"];
+  // Required. The `SingleSignOnService` endpoint location (sign-in page URL) of the identity provider. This is the URL where the `AuthnRequest` will be sent. Must use `HTTPS`. Assumed to accept the `HTTP-Redirect` binding.
+  optional string single_sign_on_service_uri = 4 [json_name="singleSignOnServiceUri"];
+}
+
+// SAML SP (service provider) configuration.
+message SamlSpConfig {
+  // Output only. The SAML **Assertion Consumer Service (ACS) URL** to be used for the IDP-initiated login. Assumed to accept response messages via the `HTTP-POST` binding.
+  optional string assertion_consumer_service_uri = 1 [json_name="assertionConsumerServiceUri"];
+  // Output only. The SAML **Entity ID** for this service provider.
+  optional string entity_id = 2 [json_name="entityId"];
+}
+
+// Details that are applicable when `sso_mode` == `SAML_SSO`.
+message SamlSsoInfo {
+  // Required. Name of the `InboundSamlSsoProfile` to use. Must be of the form `inboundSamlSsoProfiles/{inbound_saml_sso_profile}`. 
+  optional string inbound_saml_sso_profile = 1 [json_name="inboundSamlSsoProfile"];
+}
+
+// The response message for MembershipsService.SearchDirectGroups.
+message SearchDirectGroupsResponse {
+  // List of direct groups satisfying the query.
+  repeated MembershipRelation memberships = 1 [json_name="memberships"];
+  // Token to retrieve the next page of results, or empty if there are no more results available for listing.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for GroupsService.SearchGroups.
+message SearchGroupsResponse {
+  // The `Group` resources that match the search query.
+  repeated Group groups = 1 [json_name="groups"];
+  // A continuation token to retrieve the next page of results, or empty if there are no more results available.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for MembershipsService.SearchTransitiveGroups.
+message SearchTransitiveGroupsResponse {
+  // List of transitive groups satisfying the query.
+  repeated GroupRelation memberships = 1 [json_name="memberships"];
+  // Token to retrieve the next page of results, or empty if there are no more results available for listing.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The response message for MembershipsService.SearchTransitiveMemberships.
+message SearchTransitiveMembershipsResponse {
+  // List of transitive memberships satisfying the query.
+  repeated MemberRelation memberships = 1 [json_name="memberships"];
+  // Token to retrieve the next page of results, or empty if there are no more results.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// The definiion of security settings.
+message SecuritySettings {
+  // The Member Restriction value
+  optional MemberRestriction member_restriction = 1 [json_name="memberRestriction"];
+  // Output only. The resource name of the security settings. Shall be of the form `groups/{group_id}/securitySettings`.
+  optional string name = 2 [json_name="name"];
+}
+
+// A request to send email for inviting target user corresponding to the UserInvitation.
+message SendUserInvitationRequest {
+}
+
+// Setting
+message Setting {
+  // Required. Immutable. The type of the Setting. .
+  optional string type = 1 [json_name="type"];
+  // Required. The value of the Setting.
+  map<string, .google.protobuf.Any> value = 2 [json_name="value"];
+}
+
+// Controls sign-in behavior.
+message SignInBehavior {
+  // When to redirect sign-ins to the IdP.
+  optional string redirect_condition = 1 [json_name="redirectCondition"];
+}
+
+// The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+message Status {
+  // The status code, which should be an enum value of google.rpc.Code.
+  optional int32 code = 1 [json_name="code"];
+  // A list of messages that carry the error details. There is a common set of message types for APIs to use.
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  optional string message = 3 [json_name="message"];
+}
+
+// Message representing the role of a TransitiveMembership.
+message TransitiveMembershipRole {
+  // TransitiveMembershipRole in string format. Currently supported TransitiveMembershipRoles: `"MEMBER"`, `"OWNER"`, and `"MANAGER"`.
+  optional string role = 1 [json_name="role"];
+}
+
+// LRO response metadata for InboundSamlSsoProfilesService.UpdateInboundSamlSsoProfile.
+message UpdateInboundSamlSsoProfileOperationMetadata {
+  // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
+  optional string state = 1 [json_name="state"];
+}
+
+// LRO response metadata for InboundSsoAssignmentsService.UpdateInboundSsoAssignment.
+message UpdateInboundSsoAssignmentOperationMetadata {
+}
+
+// The details of an update to a `MembershipRole`.
+message UpdateMembershipRolesParams {
+  // The fully-qualified names of fields to update. May only contain the field `expiry_detail.expire_time`.
+  optional string field_mask = 1 [json_name="fieldMask"];
+  // The `MembershipRole`s to be updated. Only `MEMBER` `MembershipRoles` can currently be updated. May only contain a `MembershipRole` with `name` `MEMBER`.
+  optional MembershipRole membership_role = 2 [json_name="membershipRole"];
+}
+
+// The `UserInvitation` resource represents an email that can be sent to an unmanaged user account inviting them to join the customer's Google Workspace or Cloud Identity account. An unmanaged account shares an email address domain with the Google Workspace or Cloud Identity account but is not managed by it yet. If the user accepts the `UserInvitation`, the user account will become managed.
+message UserInvitation {
+  // Number of invitation emails sent to the user.
+  optional int64 mails_sent_count = 1 [json_name="mailsSentCount"];
+  // Shall be of the form `customers/{customer}/userinvitations/{user_email_address}`.
+  optional string name = 2 [json_name="name"];
+  // State of the `UserInvitation`.
+  optional string state = 3 [json_name="state"];
+  // Time when the `UserInvitation` was last updated.
+  optional .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
+}
+
+// Request message for wiping all data on the device.
+message WipeDeviceRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+  // Optional. Specifies if a user is able to factory reset a device after a Device Wipe. On iOS, this is called "Activation Lock", while on Android, this is known as "Factory Reset Protection". If true, this protection will be removed from the device, so that a user can successfully factory reset. If false, the setting is untouched on the device.
+  optional bool remove_reset_lock = 2 [json_name="removeResetLock"];
+}
+
+// Response message for wiping all data on the device.
+message WipeDeviceResponse {
+  // Resultant Device object for the action. Note that asset tags will not be returned in the device object.
+  optional Device device = 1 [json_name="device"];
+}
+
+// Request message for starting an account wipe on device.
+message WipeDeviceUserRequest {
+  // Optional. [Resource name](https://cloud.google.com/apis/design/resource_names) of the customer. If you're using this API for your own organization, use `customers/my_customer` If you're using this API to manage another organization, use `customers/{customer_id}`, where customer_id is the customer to whom the device belongs.
+  optional string customer = 1 [json_name="customer"];
+}
+
+// Response message for wiping the user's account from the device.
+message WipeDeviceUserResponse {
+  // Resultant DeviceUser object for the action.
+  optional DeviceUser device_user = 1 [json_name="deviceUser"];
+}
+
+message CancelCustomersUserinvitationRequest {
+  optional string name = 1;
+  optional CancelUserInvitationRequest customers_userinvitation = 2;
+}
+
+message GetCustomersUserinvitationRequest {
+  optional string name = 1;
+}
+
+message IsInvitableUserCustomersUserinvitationRequest {
+  optional string name = 1;
+}
+
+message ListCustomersUserinvitationsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+
+message SendCustomersUserinvitationRequest {
+  optional string name = 1;
+  optional SendUserInvitationRequest customers_userinvitation = 2;
+}
+
+message CancelWipeDeviceServiceRequest {
+  optional string name = 1;
+  optional CancelWipeDeviceRequest device = 2;
+}
+
+message CreateDeviceServiceRequest {
+  optional CreateDeviceRequest device = 1;
+}
+
+message DeleteDeviceRequest {
+  optional string customer = 1;
+  optional string name = 2;
+}
+
+message GetDeviceRequest {
+  optional string customer = 1;
+  optional string name = 2;
+}
+
+message ListDevicesRequest {
+  optional string customer = 1;
+  optional string filter = 2;
+  optional string order_by = 3;
+  optional int32 page_size = 4;
+  optional string page_token = 5;
+  optional string view = 6;
+}
+
+message WipeDeviceServiceRequest {
+  optional string name = 1;
+  optional WipeDeviceRequest device = 2;
+}
+
+message ApproveDevicesDeviceUserRequest {
+  optional string name = 1;
+  optional ApproveDeviceUserRequest devices_device_user = 2;
+}
+
+message BlockDevicesDeviceUserRequest {
+  optional string name = 1;
+  optional BlockDeviceUserRequest devices_device_user = 2;
+}
+
+message CancelWipeDevicesDeviceUserRequest {
+  optional string name = 1;
+  optional CancelWipeDeviceUserRequest devices_device_user = 2;
+}
+
+message DeleteDevicesDeviceUserRequest {
+  optional string customer = 1;
+  optional string name = 2;
+}
+
+message GetDevicesDeviceUserRequest {
+  optional string customer = 1;
+  optional string name = 2;
+}
+
+message ListDevicesDeviceUsersRequest {
+  optional string customer = 1;
+  optional string filter = 2;
+  optional string order_by = 3;
+  optional int32 page_size = 4;
+  optional string page_token = 5;
+  optional string parent = 6;
+}
+
+message LookupDevicesDeviceUserRequest {
+  optional string android_id = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+  optional string raw_resource_id = 5;
+  optional string user_id = 6;
+}
+
+message WipeDevicesDeviceUserRequest {
+  optional string name = 1;
+  optional WipeDeviceUserRequest devices_device_user = 2;
+}
+
+message GetDevicesDeviceUsersClientStateRequest {
+  optional string customer = 1;
+  optional string name = 2;
+}
+
+message PatchDevicesDeviceUsersClientStateRequest {
+  optional string customer = 1;
+  optional string name = 2;
+  optional string update_mask = 3;
+  optional ClientState devices_device_users_client_state = 4;
+}
+
+message CreateGroupRequest {
+  optional string initial_group_config = 1;
+  optional Group group = 2;
+}
+
+message DeleteGroupRequest {
+  optional string name = 1;
+}
+
+message GetGroupRequest {
+  optional string name = 1;
+}
+
+message GetSecuritySettingsGroupRequest {
+  optional string name = 1;
+  optional string read_mask = 2;
+}
+
+message ListGroupsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional string view = 4;
+}
+
+message LookupGroupRequest {
+  optional string group_key_id = 1;
+  optional string group_key_namespace = 2;
+}
+
+message PatchGroupRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional Group group = 3;
+}
+
+message SearchGroupRequest {
+  optional string order_by = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string query = 4;
+  optional string view = 5;
+}
+
+message UpdateSecuritySettingsGroupRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional SecuritySettings group = 3;
+}
+
+message CheckTransitiveMembershipGroupsMembershipRequest {
+  optional string parent = 1;
+  optional string query = 2;
+}
+
+message CreateGroupsMembershipRequest {
+  optional string parent = 1;
+  optional Membership groups_membership = 2;
+}
+
+message DeleteGroupsMembershipRequest {
+  optional string name = 1;
+}
+
+message GetGroupsMembershipRequest {
+  optional string name = 1;
+}
+
+message GetMembershipGraphGroupsMembershipRequest {
+  optional string parent = 1;
+  optional string query = 2;
+}
+
+message ListGroupsMembershipsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional string view = 4;
+}
+
+message LookupGroupsMembershipRequest {
+  optional string member_key_id = 1;
+  optional string member_key_namespace = 2;
+  optional string parent = 3;
+}
+
+message ModifyMembershipRolesGroupsMembershipRequest {
+  optional string name = 1;
+  optional ModifyMembershipRolesRequest groups_membership = 2;
+}
+
+message SearchDirectGroupsGroupsMembershipRequest {
+  optional string order_by = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+  optional string parent = 4;
+  optional string query = 5;
+}
+
+message SearchTransitiveGroupsGroupsMembershipRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+  optional string query = 4;
+}
+
+message SearchTransitiveMembershipsGroupsMembershipRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CreateInboundSamlSsoProfileRequest {
+  optional InboundSamlSsoProfile inbound_saml_sso_profile = 1;
+}
+
+message DeleteInboundSamlSsoProfileRequest {
+  optional string name = 1;
+}
+
+message GetInboundSamlSsoProfileRequest {
+  optional string name = 1;
+}
+
+message ListInboundSamlSsoProfilesRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+}
+
+message PatchInboundSamlSsoProfileRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional InboundSamlSsoProfile inbound_saml_sso_profile = 3;
+}
+
+message AddInboundSamlSsoProfilesIdpCredentialRequest {
+  optional string parent = 1;
+  optional AddIdpCredentialRequest inbound_saml_sso_profiles_idp_credential = 2;
+}
+
+message DeleteInboundSamlSsoProfilesIdpCredentialRequest {
+  optional string name = 1;
+}
+
+message GetInboundSamlSsoProfilesIdpCredentialRequest {
+  optional string name = 1;
+}
+
+message ListInboundSamlSsoProfilesIdpCredentialsRequest {
+  optional int32 page_size = 1;
+  optional string page_token = 2;
+  optional string parent = 3;
+}
+
+message CreateInboundSsoAssignmentRequest {
+  optional InboundSsoAssignment inbound_sso_assignment = 1;
+}
+
+message DeleteInboundSsoAssignmentRequest {
+  optional string name = 1;
+}
+
+message GetInboundSsoAssignmentRequest {
+  optional string name = 1;
+}
+
+message ListInboundSsoAssignmentsRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+}
+
+message PatchInboundSsoAssignmentRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional InboundSsoAssignment inbound_sso_assignment = 3;
+}
+
+message ListOrgUnitsMembershipsRequest {
+  optional string customer = 1;
+  optional string filter = 2;
+  optional int32 page_size = 3;
+  optional string page_token = 4;
+  optional string parent = 5;
+}
+
+message MoveOrgUnitsMembershipRequest {
+  optional string name = 1;
+  optional MoveOrgMembershipRequest org_units_membership = 2;
+}
+
+message GetPolicyRequest {
+  optional string name = 1;
+}
+
+message ListPoliciesRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+}

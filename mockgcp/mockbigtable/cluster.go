@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
 	// Note: we use the "real" proto (not mockgcp), because the client uses GRPC.
+	"cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 
@@ -104,15 +105,26 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	// 	return nil, err
 	// }
 
+	now := time.Now()
+
 	clusterFQN := clusterName.String()
 
 	obj := proto.Clone(req.Cluster).(*pb.Cluster)
 	obj.Name = clusterFQN
 
-	lroMetadata := &pb.CreateClusterMetadata{}
-	lroPrefix := ""
+	lroMetadata := &pb.CreateClusterMetadata{
+		RequestTime: timestamppb.New(now),
+	}
 
-	if obj.ServeNodes != 0 && obj.GetClusterConfig().ClusterAutoscalingConfig != nil {
+	// Populate LRO originalRequest, though not all fields are included
+	lroMetadata.OriginalRequest = ProtoClone(req)
+	if lroMetadata.OriginalRequest.Cluster.DefaultStorageType == pb.StorageType_STORAGE_TYPE_UNSPECIFIED {
+		lroMetadata.OriginalRequest.Cluster.DefaultStorageType = pb.StorageType_SSD
+	}
+
+	lroPrefix := fmt.Sprintf("operations/%s/locations/%s", clusterName.String(), lastComponent(req.GetCluster().GetLocation()))
+
+	if obj.ServeNodes != 0 && obj.GetClusterConfig().GetClusterAutoscalingConfig() != nil {
 		return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 			return nil, status.Errorf(codes.Aborted, "Operation successfully rolled back: Both manual scaling (serve_nodes) and autoscaling (cluster_autoscaling_config) enabled. Exactly one must be set for CreateInstance/CreateCluster")
 		})
@@ -127,7 +139,11 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		return obj, nil
+		lroMetadata.FinishTime = timestamppb.New(time.Now())
+
+		returnObj := ProtoClone(obj)
+		returnObj.NodeScalingFactor = adminpb.Cluster_NODE_SCALING_FACTOR_UNSPECIFIED // For some reason, not populated here
+		return returnObj, nil
 	})
 }
 
@@ -182,13 +198,13 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 		return nil, err
 	}
 
-	zone := "us-central1-a" // TODO
-	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
+	zone := lastComponent(obj.GetLocation())
+	lroPrefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 	metadata := &pb.PartialUpdateClusterMetadata{
 		RequestTime:     timestamppb.New(now),
 		OriginalRequest: req,
 	}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		metadata.FinishTime = timestamppb.Now()
 		return obj, nil
 	})

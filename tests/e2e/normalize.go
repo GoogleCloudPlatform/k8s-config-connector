@@ -174,6 +174,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
+	visitor.replacePaths[".status.generatedId"] = 1111111111111111
 
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
@@ -216,6 +217,20 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to DataPlex
 	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.executionStatus.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.executionStatus.latestJob.uid"] = "0123456789abcdef"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.executionStatus.latestJob.name") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "jobs":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "0123456789abcdef")
+				}
+			}
+		}
+		return s
+	})
 
 	// Specific to SecretManager
 	visitor.replacePaths[".expireTime"] = "2024-04-01T12:34:56.123456Z"
@@ -473,6 +488,13 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
 					})
 				}
+			// Replace the server generated group id
+			case "groups":
+				// e.g. "groups/194f77d03ad"
+				groupId := tokens[len(tokens)-1]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, groupId, "${groupID}")
+				})
 			}
 		}
 
@@ -490,9 +512,14 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				})
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, resourceID, "${groupID}")
-				})
+				// groups/{groupID}
+				tokens := strings.Split(resourceID, "/")
+				n := len(tokens)
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${groupID}")
+					})
+				}
 
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -746,6 +773,7 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 		".response.pscConnections[].forwardingRule",
 		".response.pscConnections[].network",
 		".selfLink",
+		".selfLinkWithId",
 	)
 
 	wellKnownPaths := map[string]string{

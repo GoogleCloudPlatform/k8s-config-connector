@@ -104,9 +104,6 @@ find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google
 find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/servicemesh/apiv1beta/servicemeshpb;servicemeshpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta;servicemeshpb"@g'
 find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
 
-# Temporary fixup during publishing process
-find ${MOCKGCP}/generated/ -type f -print0 | xargs -0 sed -i -e 's@"cloud.google.com/go/bigtable/admin/apiv2/adminpb"@"google.golang.org/genproto/googleapis/bigtable/admin/v2"@g'
-
 cd ${GOOGLEAPIS}/mockgrafeas
 find . -type f -print0 | xargs -0 sed -i -e "s@grafeas/@mockgrafeas/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@grafeas\.@mockgrafeas.@g"

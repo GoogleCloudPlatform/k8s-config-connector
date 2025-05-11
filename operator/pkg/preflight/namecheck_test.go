@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/asserts"
 
@@ -38,7 +37,7 @@ func TestNameChecker_ConfigConnector(t *testing.T) {
 			name: "predefined name",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 			},
 			err: nil,
@@ -50,14 +49,14 @@ func TestNameChecker_ConfigConnector(t *testing.T) {
 					Name: "test-configconnector",
 				},
 			},
-			err: fmt.Errorf("the only allowed name for ConfigConnector object is '%v'", k8s.ConfigConnectorAllowedName),
+			err: fmt.Errorf("the only allowed name for ConfigConnector object is '%v'", corev1beta1.ConfigConnectorAllowedName),
 		},
 	}
 
 	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 	defer stop()
 	client := mgr.GetClient()
-	checker := NewNameChecker(client, k8s.ConfigConnectorAllowedName)
+	checker := NewNameChecker(client, corev1beta1.ConfigConnectorAllowedName)
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -79,7 +78,7 @@ func TestNameChecker_ConfigConnectorContext(t *testing.T) {
 			name: "valid ConfigConnectorContext name",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorContextAllowedName,
+					Name: corev1beta1.ConfigConnectorContextAllowedName,
 				},
 			},
 			err: nil,
@@ -91,14 +90,14 @@ func TestNameChecker_ConfigConnectorContext(t *testing.T) {
 					Name: "test-ccc",
 				},
 			},
-			err: fmt.Errorf("the only allowed name for ConfigConnectorContext object is '%v'", k8s.ConfigConnectorContextAllowedName),
+			err: fmt.Errorf("the only allowed name for ConfigConnectorContext object is '%v'", corev1beta1.ConfigConnectorContextAllowedName),
 		},
 	}
 
 	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 	defer stop()
 	client := mgr.GetClient()
-	checker := NewNameChecker(client, k8s.ConfigConnectorContextAllowedName)
+	checker := NewNameChecker(client, corev1beta1.ConfigConnectorContextAllowedName)
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {

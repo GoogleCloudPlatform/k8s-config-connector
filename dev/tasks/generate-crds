@@ -22,7 +22,7 @@ cd ${REPO_ROOT}
 
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.3 \
+go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
   object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
   crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
   output:crd:artifacts:config=config/crd/ \

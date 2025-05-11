@@ -1,0 +1,127 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    key1: value1
+    key2: value2
+  name: bigquerytable-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clustering:
+  - name
+  - post_abbr
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  description: A detailed example of a BigQuery Table resource.
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
+  expirationTime: 1800000000000
+  friendlyName: BigQueryTable Full Example
+  labels:
+    gcp-label-key: gcp-label-value
+  requirePartitionFilter: true
+  resourceID: bigquerytable-${uniqueId}
+  schema: |
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "post_abbr",
+        "type": "STRING"
+      },
+      {
+        "name": "date",
+        "type": "DATE"
+      },
+      {
+        "name": "col_numeric",
+        "type": "NUMERIC",
+        "precision": "38",
+        "scale": "9"
+      },
+      {
+        "name": "col_bignumeric",
+        "type": "BIGNUMERIC",
+        "precision": "76",
+        "scale": "38"
+      },
+      {
+        "name": "col_geography",
+        "type": "GEOGRAPHY"
+      },
+      {
+        "name": "col_timestamp",
+        "type": "TIMESTAMP"
+      },
+      {
+        "name": "col_record",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "sub_col1",
+            "type": "INTEGER"
+          },
+          {
+            "name": "sub_col2",
+            "type": "BOOLEAN"
+          }
+        ]
+      },
+      {
+        "name": "col_array",
+        "type": "INTEGER",
+        "mode": "REPEATED"
+      }
+    ]
+  tableConstraints:
+    foreignKeys:
+    - columnReferences:
+        referencedColumn: state_code
+        referencingColumn: post_abbr
+      name: fk_constraint_example
+      referencedTable:
+        datasetId: bigquerydataset${uniqueId}
+        projectId: ${projectId}
+        tableId: referencedtable${uniqueId}
+    - columnReferences:
+        referencedColumn: dt
+        referencingColumn: date
+      name: fk_constraint_example_2
+      referencedTable:
+        datasetId: bigquerydataset${uniqueId}
+        projectId: ${projectId}
+        tableId: referencedtable${uniqueId}
+    primaryKey:
+      columns:
+      - name
+  timePartitioning:
+    expirationMs: 86400000
+    field: date
+    type: DAY
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 3
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
+  type: TABLE

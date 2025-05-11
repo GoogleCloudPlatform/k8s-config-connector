@@ -74,6 +74,22 @@ func NewTagTemplateIdentity(ctx context.Context, reader client.Reader, obj *Data
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
+	// Validate resourceID format
+	if len(resourceID) > 64 {
+		return nil, fmt.Errorf("resourceID length must be at most 64 characters, got %d characters", len(resourceID))
+	}
+
+	// Must start with lowercase letter or underscore
+	if len(resourceID) == 0 || (resourceID[0] != '_' && (resourceID[0] < 'a' || resourceID[0] > 'z')) {
+		return nil, fmt.Errorf("resourceID must start with a lowercase letter or underscore, got %q", resourceID)
+	}
+
+	// Must contain only lowercase letters, numbers or underscores
+	for i, c := range resourceID {
+		if !(c >= 'a' && c <= 'z') && !(c >= '0' && c <= '9') && c != '_' {
+			return nil, fmt.Errorf("resourceID must contain only lowercase letters, numbers or underscores, got invalid character %q at position %d", c, i)
+		}
+	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)

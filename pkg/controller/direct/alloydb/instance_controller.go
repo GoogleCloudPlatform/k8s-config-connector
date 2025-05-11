@@ -268,9 +268,12 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		log.V(2).Info("no field needs update", "name", a.id)
 		if *a.desired.Status.ExternalRef == "" {
 			// If it is the first reconciliation after switching to direct controller,
-			// then update Status to fill out the ExternalRef even if there is
-			// no update.
-			status := a.desired.Status
+			// or is an acquisition, then update Status to fill out the ExternalRef
+			// and ObservedState.
+			status := AlloyDBInstanceStatus_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			return updateOp.UpdateStatus(ctx, status, nil)
 		}
@@ -304,7 +307,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 	if *a.desired.Status.ExternalRef == "" {
 		// If it is the first reconciliation after switching to direct controller,
-		// then fill out the ExternalRef.
+		// or is an acquisition with updates, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)

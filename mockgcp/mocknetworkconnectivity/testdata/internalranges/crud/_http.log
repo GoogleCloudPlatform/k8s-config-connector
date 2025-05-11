@@ -153,6 +153,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
+  "immutable": false,
   "network": "${networkID}",
   "peering": "FOR_SELF",
   "prefixLength": 24,
@@ -218,33 +219,6 @@ X-Xss-Protection: 0
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "usage": "FOR_VPC"
   }
-}
-
----
-
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/global/internalRanges/test-${uniqueId}",
-  "network": "${networkID}",
-  "peering": "FOR_SELF",
-  "prefixLength": 24,
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "usage": "FOR_VPC"
 }
 
 ---

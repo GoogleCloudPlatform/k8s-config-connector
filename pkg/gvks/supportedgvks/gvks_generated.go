@@ -863,10 +863,8 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 		Kind:    "BigtableAppProfile",
 	}: {
 		Labels: map[string]string{
-			"cnrm.cloud.google.com/managed-by-kcc":  "true",
-			"cnrm.cloud.google.com/stability-level": "stable",
-			"cnrm.cloud.google.com/system":          "true",
-			"cnrm.cloud.google.com/tf2crd":          "true",
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{
@@ -4269,6 +4267,16 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 			"cnrm.cloud.google.com/managed-by-kcc":  "true",
 			"cnrm.cloud.google.com/stability-level": "stable",
 			"cnrm.cloud.google.com/system":          "true",
+		},
+	},
+	{
+		Group:   "notebooks.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "NotebookInstance",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
 		},
 	},
 	{

@@ -91,7 +91,7 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 1}).
-		WatchesRawSource(&source.Channel{Source: r.customizationWatcher.Events()}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(source.TypedChannel(r.customizationWatcher.Events(), &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
@@ -105,7 +105,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	repo := cnrmmanifest.NewLocalRepository(opt.RepoPath)
 	manifestLoader := cnrmmanifest.NewLoader(repo)
 	preflight := preflight.NewCompositePreflight([]declarative.Preflight{
-		preflight.NewNameChecker(mgr.GetClient(), k8s.ConfigConnectorAllowedName),
+		preflight.NewNameChecker(mgr.GetClient(), corev1beta1.ConfigConnectorAllowedName),
 		preflight.NewUpgradeChecker(mgr.GetClient(), repo),
 	})
 

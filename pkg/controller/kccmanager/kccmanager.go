@@ -79,6 +79,10 @@ type Config struct {
 	// StateIntoSpecUserOverride is an optional field. If specified, it is used
 	// as the default value for 'state-into-spec' annotation if unset.
 	StateIntoSpecUserOverride *string
+
+	// UseCache is true if we should use the informer cache
+	// Currently only used in preview
+	UseCache bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -102,7 +106,9 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	// only cache CC and CCC resources
-	nocache.OnlyCacheCCAndCCC(&opts)
+	if !cfg.UseCache {
+		nocache.OnlyCacheCCAndCCC(&opts)
+	}
 
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
@@ -168,8 +174,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, &rd,
-		registration.RegisterDefaultController(controllerConfig)); err != nil {
+	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

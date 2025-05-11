@@ -1,0 +1,43 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+    cnrm.cloud.google.com/unmanaged: spec.schema
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: bigquerytablesample${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  datasetRef:
+    name: bigquerydatasetsample${uniqueId}
+  externalDataConfiguration:
+    autodetect: true
+    sourceFormat: CSV
+    sourceUris:
+    - gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt
+  friendlyName: bigquerytable-sample-updated
+  requirePartitionFilter: false
+  resourceID: bigquerytablesample${uniqueId}
+  schema: '[{"description":"Name","mode":"NULLABLE","name":"name","type":"STRING"},{"description":"Email","mode":"NULLABLE","name":"email","type":"STRING"},{"description":"First
+    name","mode":"NULLABLE","name":"first_name","type":"STRING"}]'
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 3
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}
+  type: EXTERNAL

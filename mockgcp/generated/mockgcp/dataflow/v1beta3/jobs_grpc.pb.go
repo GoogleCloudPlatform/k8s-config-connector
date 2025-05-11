@@ -29,6 +29,9 @@ type JobsV1Beta3Client interface {
 	// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
 	// `projects.jobs.create` is not recommended, as your job will always start
 	// in `us-central1`.
+	//
+	// Do not enter confidential information when you supply string values using
+	// the API.
 	CreateJob(ctx context.Context, in *CreateJobRequest, opts ...grpc.CallOption) (*Job, error)
 	// Gets the state of the specified Cloud Dataflow job.
 	//
@@ -52,10 +55,17 @@ type JobsV1Beta3Client interface {
 	// `projects.locations.jobs.list` with a [regional endpoint]
 	// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To
 	// list the all jobs across all regions, use `projects.jobs.aggregated`. Using
-	// `projects.jobs.list` is not recommended, as you can only get the list of
-	// jobs that are running in `us-central1`.
+	// `projects.jobs.list` is not recommended, because you can only get the list
+	// of jobs that are running in `us-central1`.
+	//
+	// `projects.locations.jobs.list` and `projects.jobs.list` support filtering
+	// the list of jobs by name. Filtering by name isn't supported by
+	// `projects.jobs.aggregated`.
 	ListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*ListJobsResponse, error)
 	// List the jobs of a project across all regions.
+	//
+	// **Note:** This method doesn't support filtering the list of
+	// jobs by name.
 	AggregatedListJobs(ctx context.Context, in *ListJobsRequest, opts ...grpc.CallOption) (*ListJobsResponse, error)
 	// Check for existence of active jobs in the given project across all regions.
 	CheckActiveJobs(ctx context.Context, in *CheckActiveJobsRequest, opts ...grpc.CallOption) (*CheckActiveJobsResponse, error)
@@ -145,6 +155,9 @@ type JobsV1Beta3Server interface {
 	// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
 	// `projects.jobs.create` is not recommended, as your job will always start
 	// in `us-central1`.
+	//
+	// Do not enter confidential information when you supply string values using
+	// the API.
 	CreateJob(context.Context, *CreateJobRequest) (*Job, error)
 	// Gets the state of the specified Cloud Dataflow job.
 	//
@@ -168,10 +181,17 @@ type JobsV1Beta3Server interface {
 	// `projects.locations.jobs.list` with a [regional endpoint]
 	// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To
 	// list the all jobs across all regions, use `projects.jobs.aggregated`. Using
-	// `projects.jobs.list` is not recommended, as you can only get the list of
-	// jobs that are running in `us-central1`.
+	// `projects.jobs.list` is not recommended, because you can only get the list
+	// of jobs that are running in `us-central1`.
+	//
+	// `projects.locations.jobs.list` and `projects.jobs.list` support filtering
+	// the list of jobs by name. Filtering by name isn't supported by
+	// `projects.jobs.aggregated`.
 	ListJobs(context.Context, *ListJobsRequest) (*ListJobsResponse, error)
 	// List the jobs of a project across all regions.
+	//
+	// **Note:** This method doesn't support filtering the list of
+	// jobs by name.
 	AggregatedListJobs(context.Context, *ListJobsRequest) (*ListJobsResponse, error)
 	// Check for existence of active jobs in the given project across all regions.
 	CheckActiveJobs(context.Context, *CheckActiveJobsRequest) (*CheckActiveJobsResponse, error)

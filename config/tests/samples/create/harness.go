@@ -43,6 +43,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -102,6 +103,14 @@ type Harness struct {
 	// some fields that can be set by options
 	vcrPath    string
 	filterCRDs func(gk schema.GroupKind) bool
+
+	// KubeTarget is the kube-emulation mode to use
+	// If not set, will use the E2E_KUBE_TARGET env var
+	KubeTarget string
+
+	// GCPTarget is the GCP mode to use (real, mock, vcr)
+	// If not set, will use the E2E_GCP_TARGET env var
+	GCPTarget GCPTargetMode
 }
 
 type httpRoundTripperKeyType int
@@ -133,6 +142,27 @@ func WithVCRPath(vcrPath string) HarnessOption {
 		h.vcrPath = vcrPath
 	}
 }
+
+func WithKubeTarget(kubeTarget string) HarnessOption {
+	return func(h *Harness) {
+		h.KubeTarget = kubeTarget
+	}
+}
+
+type GCPTargetMode string
+
+const (
+	GCPTargetModeReal GCPTargetMode = "real"
+	GCPTargetModeMock GCPTargetMode = "mock"
+	GCPTargetModeVCR  GCPTargetMode = "vcr"
+)
+
+func WithGCPTarget(gcpTarget GCPTargetMode) HarnessOption {
+	return func(h *Harness) {
+		h.GCPTarget = gcpTarget
+	}
+}
+
 func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
@@ -153,7 +183,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
-	kccConfig.ManagerOptions.MetricsBindAddress = "0"
+	kccConfig.ManagerOptions.Metrics.BindAddress = "0"
 	// Prevent manager from binding to a port to serve health probes since
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
@@ -164,7 +194,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	var webhooks []cnrmwebhook.Config
 
 	loadCRDs := true
-	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" {
+	if h.KubeTarget == "" {
+		h.KubeTarget = os.Getenv("E2E_KUBE_TARGET")
+	}
+	if h.KubeTarget == "envtest" {
 		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
 		if err != nil {
 			h.Fatalf("error getting common wehbook configs: %v", err)
@@ -192,9 +225,12 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 		h.restConfig = restConfig
 
-		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
-		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
-		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+		webhookOptions := webhook.Options{
+			Port:    env.WebhookInstallOptions.LocalServingPort,
+			Host:    env.WebhookInstallOptions.LocalServingHost,
+			CertDir: env.WebhookInstallOptions.LocalServingCertDir,
+		}
+		kccConfig.ManagerOptions.WebhookServer = webhook.NewServer(webhookOptions)
 
 		if pprofPath := os.Getenv("KUBEAPISERVER_CAPTURE_PPROF"); pprofPath != "" {
 			pprofDone := make(chan error)
@@ -244,7 +280,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 				pprofDone <- err
 			}()
 		}
-	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
+	} else if h.KubeTarget == "mock" {
 		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
 		if err != nil {
 			h.Fatalf("error building mock kube-apiserver: %v", err)
@@ -271,7 +307,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			Burst: 2000.0,
 		}
 	} else {
-		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
+		t.Fatalf("E2E_KUBE_TARGET=%q not supported", h.KubeTarget)
 	}
 
 	// Set up eventSinks for logging GCP and kube requests
@@ -360,7 +396,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	var mockCloudGRPCClientConnection *grpc.ClientConn
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+	if h.GCPTarget == "" {
+		h.GCPTarget = GCPTargetMode(os.Getenv("E2E_GCP_TARGET"))
+	}
+	if h.GCPTarget == GCPTargetModeMock {
 		t.Logf("creating mock gcp")
 
 		mockCloud := mockgcp.NewMockRoundTripperForTest(t, h.client, storage.NewInMemoryStorage())
@@ -383,20 +422,20 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 
 		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
-	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+	} else if h.GCPTarget == GCPTargetModeReal {
 		t.Logf("targeting real GCP")
 
 		// We create registered services, even though we only use it for replacements
 		var kubeClient client.Client // TODO: We should replace this, it didn't work
 		mockCloud := mockgcp.NewMockRoundTripperForTest(t, kubeClient, storage.NewInMemoryStorage())
 		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
-	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+	} else if h.GCPTarget == GCPTargetModeVCR {
 		t.Logf("creating vcr test")
 	} else {
-		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
+		t.Fatalf("E2E_GCP_TARGET=%q not supported", h.GCPTarget)
 	}
 
-	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+	if h.GCPTarget == GCPTargetModeMock {
 		// Some fixed-value fake org-ids for testing.
 		// We used fixed values so that the output is predictable (for golden testing)
 		testgcp.TestFolderID.Set("123451001")
@@ -449,7 +488,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")
 		h.Project = project
-	} else if os.Getenv("E2E_GCP_TARGET") == "vcr" && os.Getenv("VCR_MODE") == "replay" {
+	} else if h.GCPTarget == GCPTargetModeVCR && os.Getenv("VCR_MODE") == "replay" {
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 
@@ -469,7 +508,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.Project = testgcp.GetDefaultProject(t)
 	}
 
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+	if h.GCPTarget == GCPTargetModeVCR {
 		// Initialize VCR recorder
 		inputMode := os.Getenv("VCR_MODE")
 		var vcrMode recorder.Mode
@@ -640,6 +679,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		t.Log("controller-runtime manager is shutdown")
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
+	kccConfig.ManagerOptions.Controller.SkipNameValidation = ptr.To(true)
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
@@ -656,7 +696,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
@@ -722,8 +762,21 @@ func (h *Harness) GetRESTConfig() *rest.Config {
 	return h.restConfig
 }
 
+func (h *Harness) GCPAuthorization() oauth2.TokenSource {
+	return oauth2.StaticTokenSource(&oauth2.Token{AccessToken: h.gcpAccessToken})
+}
+
+// GCPHTTPClient is the http.Client to use when talking to GCP
+// It is wired up to our mocks for tests.
+func (h *Harness) GCPHTTPClient() *http.Client {
+	return h.kccConfig.HTTPClient
+}
+
 func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
-	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+	// Note: we don't have the harness yet, we have to look to the env var
+	gcpTarget := os.Getenv("E2E_GCP_TARGET")
+
+	if gcpTarget == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
 
@@ -732,6 +785,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 				continue
 			}
 			if gvk.Group == "" && gvk.Kind == "MockGCPBackdoor" {
+				continue
+			}
+			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
 
@@ -855,6 +911,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogEntry"}:
 			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogEntryGroup"}:
+			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogTag"}:
+			case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogTagTemplate"}:
 
 			case schema.GroupKind{Group: "dataflow.cnrm.cloud.google.com", Kind: "DataflowFlexTemplateJob"}:
 
@@ -867,6 +925,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexEntryGroup"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexLake"}:
 			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexZone"}:
+			case schema.GroupKind{Group: "dataplex.cnrm.cloud.google.com", Kind: "DataplexTask"}:
 
 			case schema.GroupKind{Group: "documentai.cnrm.cloud.google.com", Kind: "DocumentAIProcessorVersion"}:
 
@@ -902,6 +961,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
 			//case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:
 
+			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreFederation"}:
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreBackup"}:
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreService"}:
 
@@ -1002,6 +1062,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineNetworkPolicy"}:
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineNetworkPeering"}:
 			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEnginePrivateCloud"}:
+			case schema.GroupKind{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineExternalAccessRule"}:
 
 			case schema.GroupKind{Group: "vpcaccess.cnrm.cloud.google.com", Kind: "VPCAccessConnector"}:
 
@@ -1012,13 +1073,14 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "recaptchaenterprise.cnrm.cloud.google.com", Kind: "ReCAPTCHAEnterpriseFirewallPolicy"}:
 
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechCustomClass"}:
+			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechPhraseSet"}:
 
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
 			}
 		}
 	}
-	if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+	if gcpTarget == "vcr" {
 		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
 		switch name {
 		// update test data requires regeneration of the vcr log, skip the test for now.

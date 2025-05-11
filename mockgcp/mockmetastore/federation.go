@@ -48,7 +48,7 @@ func (s *DataprocMetastoreFederationV1) GetFederation(ctx context.Context, req *
 	obj := &pb.Federation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Federation %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}

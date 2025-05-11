@@ -144,6 +144,16 @@ type NetAppClient interface {
 	UpdateBackupPolicy(ctx context.Context, in *UpdateBackupPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Warning! This operation will permanently delete the backup policy.
 	DeleteBackupPolicy(ctx context.Context, in *DeleteBackupPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Returns list of all quota rules in a location.
+	ListQuotaRules(ctx context.Context, in *ListQuotaRulesRequest, opts ...grpc.CallOption) (*ListQuotaRulesResponse, error)
+	// Returns details of the specified quota rule.
+	GetQuotaRule(ctx context.Context, in *GetQuotaRuleRequest, opts ...grpc.CallOption) (*QuotaRule, error)
+	// Creates a new quota rule.
+	CreateQuotaRule(ctx context.Context, in *CreateQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a quota rule.
+	UpdateQuotaRule(ctx context.Context, in *UpdateQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a quota rule.
+	DeleteQuotaRule(ctx context.Context, in *DeleteQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type netAppClient struct {
@@ -649,6 +659,51 @@ func (c *netAppClient) DeleteBackupPolicy(ctx context.Context, in *DeleteBackupP
 	return out, nil
 }
 
+func (c *netAppClient) ListQuotaRules(ctx context.Context, in *ListQuotaRulesRequest, opts ...grpc.CallOption) (*ListQuotaRulesResponse, error) {
+	out := new(ListQuotaRulesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/ListQuotaRules", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) GetQuotaRule(ctx context.Context, in *GetQuotaRuleRequest, opts ...grpc.CallOption) (*QuotaRule, error) {
+	out := new(QuotaRule)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/GetQuotaRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) CreateQuotaRule(ctx context.Context, in *CreateQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/CreateQuotaRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) UpdateQuotaRule(ctx context.Context, in *UpdateQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/UpdateQuotaRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *netAppClient) DeleteQuotaRule(ctx context.Context, in *DeleteQuotaRuleRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.netapp.v1.NetApp/DeleteQuotaRule", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NetAppServer is the server API for NetApp service.
 // All implementations must embed UnimplementedNetAppServer
 // for forward compatibility
@@ -774,6 +829,16 @@ type NetAppServer interface {
 	UpdateBackupPolicy(context.Context, *UpdateBackupPolicyRequest) (*longrunningpb.Operation, error)
 	// Warning! This operation will permanently delete the backup policy.
 	DeleteBackupPolicy(context.Context, *DeleteBackupPolicyRequest) (*longrunningpb.Operation, error)
+	// Returns list of all quota rules in a location.
+	ListQuotaRules(context.Context, *ListQuotaRulesRequest) (*ListQuotaRulesResponse, error)
+	// Returns details of the specified quota rule.
+	GetQuotaRule(context.Context, *GetQuotaRuleRequest) (*QuotaRule, error)
+	// Creates a new quota rule.
+	CreateQuotaRule(context.Context, *CreateQuotaRuleRequest) (*longrunningpb.Operation, error)
+	// Updates a quota rule.
+	UpdateQuotaRule(context.Context, *UpdateQuotaRuleRequest) (*longrunningpb.Operation, error)
+	// Deletes a quota rule.
+	DeleteQuotaRule(context.Context, *DeleteQuotaRuleRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedNetAppServer()
 }
 
@@ -945,6 +1010,21 @@ func (UnimplementedNetAppServer) UpdateBackupPolicy(context.Context, *UpdateBack
 }
 func (UnimplementedNetAppServer) DeleteBackupPolicy(context.Context, *DeleteBackupPolicyRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupPolicy not implemented")
+}
+func (UnimplementedNetAppServer) ListQuotaRules(context.Context, *ListQuotaRulesRequest) (*ListQuotaRulesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListQuotaRules not implemented")
+}
+func (UnimplementedNetAppServer) GetQuotaRule(context.Context, *GetQuotaRuleRequest) (*QuotaRule, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetQuotaRule not implemented")
+}
+func (UnimplementedNetAppServer) CreateQuotaRule(context.Context, *CreateQuotaRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateQuotaRule not implemented")
+}
+func (UnimplementedNetAppServer) UpdateQuotaRule(context.Context, *UpdateQuotaRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateQuotaRule not implemented")
+}
+func (UnimplementedNetAppServer) DeleteQuotaRule(context.Context, *DeleteQuotaRuleRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteQuotaRule not implemented")
 }
 func (UnimplementedNetAppServer) mustEmbedUnimplementedNetAppServer() {}
 
@@ -1949,6 +2029,96 @@ func _NetApp_DeleteBackupPolicy_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetApp_ListQuotaRules_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListQuotaRulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).ListQuotaRules(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/ListQuotaRules",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).ListQuotaRules(ctx, req.(*ListQuotaRulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_GetQuotaRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetQuotaRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).GetQuotaRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/GetQuotaRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).GetQuotaRule(ctx, req.(*GetQuotaRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_CreateQuotaRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateQuotaRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).CreateQuotaRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/CreateQuotaRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).CreateQuotaRule(ctx, req.(*CreateQuotaRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_UpdateQuotaRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateQuotaRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).UpdateQuotaRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/UpdateQuotaRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).UpdateQuotaRule(ctx, req.(*UpdateQuotaRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetApp_DeleteQuotaRule_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteQuotaRuleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetAppServer).DeleteQuotaRule(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.netapp.v1.NetApp/DeleteQuotaRule",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetAppServer).DeleteQuotaRule(ctx, req.(*DeleteQuotaRuleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NetApp_ServiceDesc is the grpc.ServiceDesc for NetApp service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2175,6 +2345,26 @@ var NetApp_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteBackupPolicy",
 			Handler:    _NetApp_DeleteBackupPolicy_Handler,
+		},
+		{
+			MethodName: "ListQuotaRules",
+			Handler:    _NetApp_ListQuotaRules_Handler,
+		},
+		{
+			MethodName: "GetQuotaRule",
+			Handler:    _NetApp_GetQuotaRule_Handler,
+		},
+		{
+			MethodName: "CreateQuotaRule",
+			Handler:    _NetApp_CreateQuotaRule_Handler,
+		},
+		{
+			MethodName: "UpdateQuotaRule",
+			Handler:    _NetApp_UpdateQuotaRule_Handler,
+		},
+		{
+			MethodName: "DeleteQuotaRule",
+			Handler:    _NetApp_DeleteQuotaRule_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

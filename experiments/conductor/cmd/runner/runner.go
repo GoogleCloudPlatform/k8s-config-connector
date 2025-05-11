@@ -63,7 +63,8 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdAddServiceRoundTrip          = 13
 	cmdAddProtoMakefile             = 14
 	cmdBuildProto                   = 15
-	cmdRunMockTests                 = 16
+	cmdCaptureMockOutput            = 16
+	cmdRunAndFixMockTests           = 17
 	cmdGenerateTypes                = 20
 	cmdAdjustTypes                  = 21
 	cmdGenerateCRD                  = 22
@@ -80,6 +81,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdRunAndFixGoldenRealGCPOutput = 46
 	cmdCaptureGoldenMockOutput      = 47
 	cmdRunAndFixGoldenMockOutput    = 48
+	cmdMoveExistingTest             = 50
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -353,7 +355,8 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 	case cmdDiff: // 7
 		for idx, branch := range branches.Branches {
 			log.Printf("Showing diff for last %d commits: %d name: %s, branch: %s\r\n", opts.numCommits, idx, branch.Name, branch.Local)
-			diffLastNCommits(opts, branch)
+			// diffLastNCommits(opts, branch)
+			determineCommandByCommit(opts, branch)
 		}
 
 	case cmdRevert: // 8
@@ -367,75 +370,79 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		}
 	case cmdPushBranch: // 9
 		processors := []BranchProcessor{
-			{Fn: runAPIChecks, CommitMsgTemplate: "{{kind}}: Normalize api checks", AttemptsOnNoChange: 1},
-			{Fn: makeReadyPR, CommitMsgTemplate: "make ready-pr", AttemptsOnChanges: 5, AttemptsOnNoChange: 1},
-			{Fn: pushBranch, CommitMsgTemplate: "push branch", AttemptsOnNoChange: 1},
+			{Fn: runAPIChecks, CommitMsgTemplate: COMMIT_MSG_9A, AttemptsOnNoChange: 1},
+			{Fn: makeReadyPR, CommitMsgTemplate: COMMIT_MSG_9B, AttemptsOnChanges: 5, AttemptsOnNoChange: 1},
+			{Fn: pushBranch, CommitMsgTemplate: COMMIT_MSG_9C, AttemptsOnNoChange: 1},
 		}
-		processBranches(ctx, opts, branches.Branches, "Prep and Push Branch", processors)
+		processBranches(ctx, opts, REGEX_MSG_9C, branches.Branches, "Prep and Push Branch", processors)
 	case cmdCreateScriptYaml: // 10
-		processBranches(ctx, opts, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsgTemplate: "mockgcp: create test script for {{command}}"}})
+		processBranches(ctx, opts, REGEX_MSG_10, branches.Branches, "Script YAML", []BranchProcessor{{Fn: createScriptYaml, CommitMsgTemplate: COMMIT_MSG_10}})
 	case cmdCaptureHttpLog: // 11
-		processBranches(ctx, opts, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsgTemplate: "mockgcp: golden output for TestScripts/mock{{group}}/testdata/{{resource}}/crud"}})
+		processBranches(ctx, opts, REGEX_MSG_11, branches.Branches, "HTTP Log", []BranchProcessor{{Fn: captureHttpLog, CommitMsgTemplate: COMMIT_MSG_11}})
 	case cmdGenerateMockGo: // 12
-		processBranches(ctx, opts, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsgTemplate: "{{kind}}: Add generated mock files"}})
+		processBranches(ctx, opts, REGEX_MSG_12, branches.Branches, "Mock Go Files", []BranchProcessor{{Fn: generateMockGo, CommitMsgTemplate: COMMIT_MSG_12}})
 	case cmdAddServiceRoundTrip: // 13
-		processBranches(ctx, opts, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsgTemplate: "mockgcp: Add mock{{group}} service to mock_http_roundtrip.go"}})
+		processBranches(ctx, opts, REGEX_MSG_13, branches.Branches, "Service RoundTrip", []BranchProcessor{{Fn: addServiceToRoundTrip, CommitMsgTemplate: COMMIT_MSG_13}})
 	case cmdAddProtoMakefile: // 14
-		processBranches(ctx, opts, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: "{{group}}: Add proto generation to makefile", AttemptsOnNoChange: 1}})
+		processBranches(ctx, opts, REGEX_MSG_14, branches.Branches, "Proto Makefile", []BranchProcessor{{Fn: addProtoToMakefile, CommitMsgTemplate: COMMIT_MSG_14, AttemptsOnNoChange: 1}})
 	case cmdBuildProto: // 15
-		processBranches(ctx, opts, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: "chore: Build and add generated proto files"}})
-	case cmdRunMockTests: // 16
-		processBranches(ctx, opts, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: "Verify and Fix mock tests", VerifyFn: runMockgcpTests, VerifyAttempts: 10, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, REGEX_MSG_15, branches.Branches, "Build Proto", []BranchProcessor{{Fn: buildProtoFiles, CommitMsgTemplate: COMMIT_MSG_15}})
+	case cmdCaptureMockOutput: // 16
+		processBranches(ctx, opts, REGEX_MSG_16, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: runMockgcpTests, CommitMsgTemplate: COMMIT_MSG_16}})
+	case cmdRunAndFixMockTests: // 17
+		processBranches(ctx, opts, REGEX_MSG_17, branches.Branches, "Mock Tests", []BranchProcessor{{Fn: fixMockgcpFailures, CommitMsgTemplate: COMMIT_MSG_17, VerifyFn: runMockgcpTests, VerifyAttempts: 10, AttemptsOnNoChange: 2}})
 	case cmdGenerateTypes: // 20
-		processBranches(ctx, opts, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: "{{kind}}: Add generated types"}})
+		processBranches(ctx, opts, REGEX_MSG_20, branches.Branches, "Types", []BranchProcessor{{Fn: generateTypes, CommitMsgTemplate: COMMIT_MSG_20}})
 	case cmdAdjustTypes: // 21
 		processors := []BranchProcessor{
-			{Fn: setTypeSpecStatus, CommitMsgTemplate: "{{kind}}: Add spec and status to generated type", AttemptsOnNoChange: 6},
-			{Fn: setTypeParent, CommitMsgTemplate: "{{kind}}: Add parent to generated type", AttemptsOnNoChange: 6},
-			{Fn: adjustIdentityParent, CommitMsgTemplate: "{{kind}}: Adjust identity parent", AttemptsOnNoChange: 6},
-			{Fn: regenerateTypes, CommitMsgTemplate: "{{kind}}: Regenerate types"},
-			{Fn: removeNameField, CommitMsgTemplate: "{{kind}}: Remove Name Field"},
-			{Fn: moveEtagField, CommitMsgTemplate: "{{kind}}: Move Etag Field", AttemptsOnNoChange: 1},
+			{Fn: setTypeSpecStatus, CommitMsgTemplate: COMMIT_MSG_21A, AttemptsOnNoChange: 6, SkipProcessorOnMsg: skipPost21A},
+			{Fn: setTypeParent, CommitMsgTemplate: COMMIT_MSG_21B, AttemptsOnNoChange: 6, SkipProcessorOnMsg: skipPost21B},
+			{Fn: adjustIdentityParent, CommitMsgTemplate: COMMIT_MSG_21C, AttemptsOnNoChange: 6, SkipProcessorOnMsg: skipPost21C},
+			{Fn: regenerateTypes, CommitMsgTemplate: COMMIT_MSG_21D, SkipProcessorOnMsg: skipPost21D},
+			{Fn: removeNameField, CommitMsgTemplate: COMMIT_MSG_21E, SkipProcessorOnMsg: skipPost21E},
+			{Fn: moveEtagField, CommitMsgTemplate: COMMIT_MSG_21F, AttemptsOnNoChange: 1, SkipProcessorOnMsg: skipPost21F},
 			// add a kubebuilder required field label to the fields that are marked required in proto
-			{Fn: addRequiredFieldTags, CommitMsgTemplate: "{{kind}}: Add Required Field Tags"},
+			{Fn: addRequiredFieldTags, CommitMsgTemplate: COMMIT_MSG_21G},
 			// TODO? manual: Add something to handle references to other resources: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4010/commits/1651a0a7af5bca37b5c2e134dd3f600ebac6a172
 			// * https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4017/commits/cc726106aff55d41e6bc94272acc3612f2636397
 		}
-		processBranches(ctx, opts, branches.Branches, "Adjusting types", processors)
+		processBranches(ctx, opts, REGEX_MSG_21G, branches.Branches, "Adjusting types", processors)
 	case cmdGenerateCRD: // 22
-		processBranches(ctx, opts, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsgTemplate: "{{kind}}: Add generated CRD"}})
+		processBranches(ctx, opts, REGEX_MSG_22, branches.Branches, "CRD", []BranchProcessor{{Fn: generateCRD, CommitMsgTemplate: COMMIT_MSG_22}})
 	case cmdGenerateMapper: // 23
-		processBranches(ctx, opts, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsgTemplate: "{{kind}}: Add generated mapper"}})
+		processBranches(ctx, opts, REGEX_MSG_23, branches.Branches, "Mapper", []BranchProcessor{{Fn: generateMapper, CommitMsgTemplate: COMMIT_MSG_23}})
 	case cmdGenerateFuzzer: // 24
-		processBranches(ctx, opts, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsgTemplate: "{{kind}}: Add generated fuzzer"}})
+		processBranches(ctx, opts, REGEX_MSG_24, branches.Branches, "Fuzzer", []BranchProcessor{{Fn: generateFuzzer, CommitMsgTemplate: COMMIT_MSG_24}})
 	case cmdRunAndFixFuzzTests: // 25
-		processBranches(ctx, opts, branches.Branches, "Fuzzer Tests", []BranchProcessor{{Fn: fixFuzzerFailures, CommitMsgTemplate: "{{kind}}: Verify and Fix fuzzer tests", VerifyFn: runFuzzerTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, REGEX_MSG_25, branches.Branches, "Fuzzer Tests", []BranchProcessor{{Fn: fixFuzzerFailures, CommitMsgTemplate: COMMIT_MSG_25, VerifyFn: runFuzzerTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdRunAndFixAPIChecks: // 26
-		processBranches(ctx, opts, branches.Branches, "API Checks", []BranchProcessor{{Fn: fixAPICheckFailures, CommitMsgTemplate: "{{kind}}: Verify and Fix API checks", VerifyFn: runAPIChecks, VerifyAttempts: 5}})
+		processBranches(ctx, opts, REGEX_MSG_26, branches.Branches, "API Checks", []BranchProcessor{{Fn: fixAPICheckFailures, CommitMsgTemplate: COMMIT_MSG_26, VerifyFn: runAPIChecks, VerifyAttempts: 5}})
 	case cmdControllerClient: // 40
-		processBranches(ctx, opts, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsgTemplate: "{{kind}}: Add controller client"}})
+		processBranches(ctx, opts, REGEX_MSG_40, branches.Branches, "Controller Client", []BranchProcessor{{Fn: generateControllerClient, CommitMsgTemplate: COMMIT_MSG_40}})
 	case cmdGenerateController: // 41
-		processBranches(ctx, opts, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsgTemplate: "{{kind}}: Add controller"}})
+		processBranches(ctx, opts, REGEX_MSG_41, branches.Branches, "Controller", []BranchProcessor{{Fn: generateController, CommitMsgTemplate: COMMIT_MSG_41}})
 	case cmdBuildAndFixController: // 42
-		processBranches(ctx, opts, branches.Branches, "Build and Fix Controller", []BranchProcessor{{Fn: fixControllerBuild, CommitMsgTemplate: "{{kind}}: Build and fix controller", VerifyFn: buildController, VerifyAttempts: 10}})
+		processBranches(ctx, opts, REGEX_MSG_42, branches.Branches, "Build and Fix Controller", []BranchProcessor{{Fn: fixControllerBuild, CommitMsgTemplate: COMMIT_MSG_42, VerifyFn: buildController, VerifyAttempts: 10}})
 	case cmdCreateIdentity: // 43
-		processBranches(ctx, opts, branches.Branches, "Identity and Reference", []BranchProcessor{
-			{Fn: generateControllerIdentity, CommitMsgTemplate: "{{kind}}: Add controller identity"},
-			{Fn: generateControllerReference, CommitMsgTemplate: "{{kind}}: Add controller reference"},
+		processBranches(ctx, opts, REGEX_MSG_43B, branches.Branches, "Identity and Reference", []BranchProcessor{
+			{Fn: generateControllerIdentity, CommitMsgTemplate: COMMIT_MSG_43A},
+			{Fn: generateControllerReference, CommitMsgTemplate: COMMIT_MSG_43B},
 		})
 	case cmdControllerCreateTest: // 44
-		processBranches(ctx, opts, branches.Branches, "Controller Test", []BranchProcessor{
-			{Fn: createControllerTest, CommitMsgTemplate: "{{kind}}: Create minimal test"},
-			{Fn: updateTestHarness, CommitMsgTemplate: "{{kind}}: Support for testing with mockgcp"},
+		processBranches(ctx, opts, REGEX_MSG_44B, branches.Branches, "Controller Test", []BranchProcessor{
+			{Fn: createControllerTest, CommitMsgTemplate: COMMIT_MSG_44A},
+			{Fn: updateTestHarness, CommitMsgTemplate: COMMIT_MSG_44B},
 		})
 	case cmdCaptureGoldenRealGCPOutput: // 45
-		processBranches(ctx, opts, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: "{{kind}}: Record golden logs for real GCP tests"}})
+		processBranches(ctx, opts, REGEX_MSG_45, branches.Branches, "Record Golden Real GCP Tests", []BranchProcessor{{Fn: runGoldenRealGCPTests, CommitMsgTemplate: COMMIT_MSG_45, AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenRealGCPOutput: // 46
-		processBranches(ctx, opts, branches.Branches, "Fix Real GCP Tests", []BranchProcessor{{Fn: fixGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix real GCP tests", VerifyFn: runGoldenRealGCPTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, REGEX_MSG_46, branches.Branches, "Fix Real GCP Tests", []BranchProcessor{{Fn: fixGoldenTests, CommitMsgTemplate: COMMIT_MSG_46, VerifyFn: runGoldenRealGCPTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdCaptureGoldenMockOutput: // 47
-		processBranches(ctx, opts, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: "{{kind}}: Record golden logs for mock GCP tests"}})
+		processBranches(ctx, opts, REGEX_MSG_47, branches.Branches, "Record Golden Mock Tests", []BranchProcessor{{Fn: runGoldenMockTests, CommitMsgTemplate: COMMIT_MSG_47, AttemptsOnNoChange: 1}})
 	case cmdRunAndFixGoldenMockOutput: // 48
-		processBranches(ctx, opts, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: "{{kind}}: Verify and Fix mock GCP tests", VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+		processBranches(ctx, opts, REGEX_MSG_48, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: COMMIT_MSG_48, VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
+	case cmdMoveExistingTest: // 50
+		processBranches(ctx, opts, REGEX_MSG_50, branches.Branches, "Move Existing Test", []BranchProcessor{{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_50, AttemptsOnNoChange: 0, CommitOptional: true}})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -452,7 +459,7 @@ func printHelp() {
 	log.Println("\t4 - [Project] Enable GCP APIs for each branch")
 	log.Println("\t5 - [Generated] Read the specific type of generated files in each github branch")
 	log.Println("\t6 - [Generated] Write the specific type of files from all_scripts.yaml to each github branch")
-	log.Println("\t7 - [Git] Show diff of last N commits in each branch (use -n to specify N)")
+	log.Println("\t7 - [Git] Use git to determine the last command run on each branch")
 	log.Println("\t8 - [Git] Revert last N commits in each branch (use -n to specify N)")
 	log.Println("\t9 - [Git] Make ready-pr and push each branch to origin. Use --branch-suffix to specify a suffix for the remote branch if needed")
 	log.Println("\t10 - [Mock] Create script.yaml for mock gcp generation in each github branch")
@@ -461,7 +468,8 @@ func printHelp() {
 	log.Println("\t13 - [Mock] Add service to mock_http_roundtrip.go in each github branch")
 	log.Println("\t14 - [Mock] Add proto to makefile in each github branch")
 	log.Println("\t15 - [Proto] Build proto files in mockgcp directory")
-	log.Println("\t16 - [Mock] Run and Fix mockgcp tests in each github branch")
+	log.Println("\t16 - [Mock] Capture mock golden output for each branch")
+	log.Println("\t17 - [Mock] Run and Fix mockgcp tests in each github branch")
 	log.Println("\t20 - [CRD] Generate Types for each branch")
 	log.Println("\t21 - [CRD] Adjust the types for each branch")
 	log.Println("\t22 - [CRD] Generate CRD for each branch")
@@ -478,6 +486,7 @@ func printHelp() {
 	log.Println("\t46 - [Controller] Run and Fix real GCP tests for each branch")
 	log.Println("\t47 - [Controller] Capture golden logs for mock GCP tests for each branch")
 	log.Println("\t48 - [Controller] Run and Fix mock GCP tests for each branch")
+	log.Println("\t50 - [Test] Move test data to subdirectory if the test files are directly under <version>/<kind> directory for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
@@ -500,10 +509,10 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 	for idx, branch := range branches.Branches {
 		if branch.Command != "" {
 			if existing, ok := gcloudMap[branch.Command]; ok {
-				log.Printf("Command uniqueness constraint between %s and (%d)%s\r",
-					existing, idx, branch.Name)
+				log.Printf("Command (%s) uniqueness constraint between %s and (%d)%s\r",
+					branch.Command, existing, idx, branch.Name)
 			}
-			gitMap[branch.Command] = branch.Name
+			gcloudMap[branch.Command] = branch.Name
 		}
 		if existing, ok := nameMap[branch.Name]; ok {
 			log.Printf("Name uniqueness constraint between %s at and %s\r",
@@ -524,11 +533,13 @@ func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {
 		}
 		grMap[gr] = branch
 
-		if existing, ok := kindMap[branch.Kind]; ok {
-			log.Printf("Kind uniqueness constraint between %s and (%d)%s\r",
-				existing, idx, branch.Name)
+		if branch.Kind != "" {
+			if existing, ok := kindMap[branch.Kind]; ok {
+				log.Printf("Kind uniqueness (%s) constraint between names: %s and (%d)%s\r",
+					branch.Kind, existing, idx, branch.Name)
+			}
 		}
-		gitMap[branch.Kind] = branch.Name
+		kindMap[branch.Kind] = branch.Name
 	}
 
 	// Fix the data and write back
@@ -955,6 +966,189 @@ func setSkipOnBranchModifier(opts *RunnerOptions, branch Branch, workDir string)
 		branch.Notes = append(branch.Notes, "gcloud command does not contain any of create/update/delete")
 	}
 	return branch
+}
+
+func determineCommandByCommit(opts *RunnerOptions, branch Branch) {
+	close := setLoggingWriter(opts, branch)
+	defer close()
+	workDir := opts.branchRepoDir
+
+	ctx := context.TODO()
+	checkoutBranch(ctx, branch, workDir)
+
+	// Run git diff command
+	message, found := getLatestGitMessage(workDir, opts, branch)
+	if !found {
+		return
+	}
+
+	switch {
+	case REGEX_MSG_9A.MatchString(message):
+		log.Printf("%s: command 9A\n", branch.Name)
+		fmt.Printf("%s: command 9A\n", branch.Name)
+	case REGEX_MSG_9B.MatchString(message):
+		log.Printf("%s: command 9B\n", branch.Name)
+		fmt.Printf("%s: command 9B\n", branch.Name)
+	case REGEX_MSG_9C.MatchString(message):
+		log.Printf("%s: command 9C\n", branch.Name)
+		fmt.Printf("%s: command 9C\n", branch.Name)
+	case REGEX_MSG_10.MatchString(message):
+		log.Printf("%s: command 10\n", branch.Name)
+		fmt.Printf("%s: command 10\n", branch.Name)
+	case REGEX_MSG_11.MatchString(message):
+		log.Printf("%s: command 11\n", branch.Name)
+		fmt.Printf("%s: command 11\n", branch.Name)
+	case REGEX_MSG_12.MatchString(message):
+		log.Printf("%s: command 12\n", branch.Name)
+		fmt.Printf("%s: command 12\n", branch.Name)
+	case REGEX_MSG_13.MatchString(message):
+		log.Printf("%s: command 13\n", branch.Name)
+		fmt.Printf("%s: command 13\n", branch.Name)
+	case REGEX_MSG_14.MatchString(message):
+		log.Printf("%s: command 14\n", branch.Name)
+		fmt.Printf("%s: command 14\n", branch.Name)
+	case REGEX_MSG_15.MatchString(message):
+		log.Printf("%s: command 15\n", branch.Name)
+		fmt.Printf("%s: command 15\n", branch.Name)
+	case REGEX_MSG_16.MatchString(message):
+		log.Printf("%s: command 16\n", branch.Name)
+		fmt.Printf("%s: command 16\n", branch.Name)
+	case REGEX_MSG_17.MatchString(message):
+		log.Printf("%s: command 17\n", branch.Name)
+		fmt.Printf("%s: command 17\n", branch.Name)
+	case REGEX_MSG_20.MatchString(message):
+		log.Printf("%s: command 20\n", branch.Name)
+		fmt.Printf("%s: command 20\n", branch.Name)
+	case REGEX_MSG_21A.MatchString(message):
+		log.Printf("%s: command 21A\n", branch.Name)
+		fmt.Printf("%s: command 21A\n", branch.Name)
+	case REGEX_MSG_21B.MatchString(message):
+		log.Printf("%s: command 21B\n", branch.Name)
+		fmt.Printf("%s: command 21B\n", branch.Name)
+	case REGEX_MSG_21C.MatchString(message):
+		log.Printf("%s: command 21C\n", branch.Name)
+		fmt.Printf("%s: command 21C\n", branch.Name)
+	case REGEX_MSG_21D.MatchString(message):
+		log.Printf("%s: command 21D\n", branch.Name)
+		fmt.Printf("%s: command 21D\n", branch.Name)
+	case REGEX_MSG_21E.MatchString(message):
+		log.Printf("%s: command 21E\n", branch.Name)
+		fmt.Printf("%s: command 21E\n", branch.Name)
+	case REGEX_MSG_21F.MatchString(message):
+		log.Printf("%s: command 21F\n", branch.Name)
+		fmt.Printf("%s: command 21F\n", branch.Name)
+	case REGEX_MSG_21G.MatchString(message):
+		log.Printf("%s: command 21G\n", branch.Name)
+		fmt.Printf("%s: command 21G\n", branch.Name)
+	case REGEX_MSG_22.MatchString(message):
+		log.Printf("%s: command 22\n", branch.Name)
+		fmt.Printf("%s: command 22\n", branch.Name)
+	case REGEX_MSG_23.MatchString(message):
+		log.Printf("%s: command 23\n", branch.Name)
+		fmt.Printf("%s: command 23\n", branch.Name)
+	case REGEX_MSG_24.MatchString(message):
+		log.Printf("%s: command 24\n", branch.Name)
+		fmt.Printf("%s: command 24\n", branch.Name)
+	case REGEX_MSG_25.MatchString(message):
+		log.Printf("%s: command 25\n", branch.Name)
+		fmt.Printf("%s: command 25\n", branch.Name)
+	case REGEX_MSG_26.MatchString(message):
+		log.Printf("%s: command 26\n", branch.Name)
+		fmt.Printf("%s: command 26\n", branch.Name)
+	case REGEX_MSG_40.MatchString(message):
+		log.Printf("%s: command 40\n", branch.Name)
+		fmt.Printf("%s: command 40\n", branch.Name)
+	case REGEX_MSG_41.MatchString(message):
+		log.Printf("%s: command 41\n", branch.Name)
+		fmt.Printf("%s: command 41\n", branch.Name)
+	case REGEX_MSG_42.MatchString(message):
+		log.Printf("%s: command 42\n", branch.Name)
+		fmt.Printf("%s: command 42\n", branch.Name)
+	case REGEX_MSG_43A.MatchString(message):
+		log.Printf("%s: command 43A\n", branch.Name)
+		fmt.Printf("%s: command 43A\n", branch.Name)
+	case REGEX_MSG_43B.MatchString(message):
+		log.Printf("%s: command 43B\n", branch.Name)
+		fmt.Printf("%s: command 43B\n", branch.Name)
+	case REGEX_MSG_44A.MatchString(message):
+		log.Printf("%s: command 44A\n", branch.Name)
+		fmt.Printf("%s: command 44A\n", branch.Name)
+	case REGEX_MSG_44B.MatchString(message):
+		log.Printf("%s: command 44B\n", branch.Name)
+		fmt.Printf("%s: command 44B\n", branch.Name)
+	case REGEX_MSG_45.MatchString(message):
+		log.Printf("%s: command 45\n", branch.Name)
+		fmt.Printf("%s: command 45\n", branch.Name)
+	case REGEX_MSG_46.MatchString(message):
+		log.Printf("%s: command 46\n", branch.Name)
+		fmt.Printf("%s: command 46\n", branch.Name)
+	case REGEX_MSG_47.MatchString(message):
+		log.Printf("%s: command 47\n", branch.Name)
+		fmt.Printf("%s: command 47\n", branch.Name)
+	case REGEX_MSG_48.MatchString(message):
+		log.Printf("%s: command 48\n", branch.Name)
+		fmt.Printf("%s: command 48\n", branch.Name)
+	case REGEX_MSG_50.MatchString(message):
+		log.Printf("%s: command 50\n", branch.Name)
+		fmt.Printf("%s: command 50\n", branch.Name)
+	default:
+		log.Printf("%s: unrecognized command for message %s\n", branch.Name, message)
+		fmt.Printf("%s: unrecognized command for message %s\n", branch.Name, message)
+	}
+}
+
+func getLatestGitMessage(workDir string, opts *RunnerOptions, branch Branch) (string, bool) {
+	cfg := CommandConfig{
+		Name: "Git log",
+		Cmd:  "git",
+		Args: []string{
+			"log",
+			"--no-decorate",
+			"-n",
+			"1",
+		},
+		WorkDir:     workDir,
+		MaxAttempts: 1,
+	}
+	output, err := executeCommand(opts, cfg)
+	if err != nil {
+		log.Printf("Git diff error for branch %s: %v", branch.Name, err)
+		return "", false
+	}
+
+	// Parse the output
+	logMsg := output.Stdout
+	cut := strings.Split(logMsg, "\n")
+	if len(cut) < 6 {
+		log.Printf("Unrecognized short(%d) log for %s:\n", len(cut), branch.Name)
+		fmt.Printf("Unrecognized short(%d) log for %s:\n", len(cut), branch.Name)
+		return "", false
+	}
+
+	// Find the author line, its not always at the same index.
+	idx := 0
+	var author string
+	for idx < 5 {
+		author = cut[idx]
+		if regexp.MustCompile(`^Author: `).MatchString(author) {
+			break
+		}
+		idx++
+	}
+	if !strings.Contains(author, "kcc-conductor-bot@google.com") {
+		log.Printf("%s: unrecognized command by author %s\n", branch.Name, author)
+		fmt.Printf("%s: unrecognized command by author %s\n", branch.Name, author)
+		return "", false
+	}
+
+	// We believe the message will be at author index + 3
+	if idx+3 >= len(cut) {
+		log.Printf("%s: unrecognized command no message\n", branch.Name)
+		fmt.Printf("%s: unrecognized command no message\n", branch.Name)
+		return "", false
+	}
+	message := cut[idx+3]
+	return message, true
 }
 
 func diffLastNCommits(opts *RunnerOptions, branch Branch) {

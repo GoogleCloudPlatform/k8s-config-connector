@@ -337,7 +337,7 @@ config-connector-manifests-autopilot: build-crd-manifests build-rbac-manifests b
 
 .PHONY: build-crd-manifests
 build-crd-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
 	kustomize build operator/config/crd -o config/installbundle/release-manifests/crds.yaml
 
 .PHONY: build-rbac-manifests

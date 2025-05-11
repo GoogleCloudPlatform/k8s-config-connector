@@ -278,6 +278,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "primaryContact": "someone@something.com"
   },
   "requestAccess": "someone@something.com",
+  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
   "state": "STATE_UNSPECIFIED"
 }
@@ -323,6 +324,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "primaryContact": "someone@something.com"
   },
   "requestAccess": "someone@something.com",
+  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
   "state": "STATE_UNSPECIFIED"
 }
@@ -398,6 +400,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "primaryContact": "updated@updated.com"
   },
   "requestAccess": "someone@something.com",
+  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
   "state": "STATE_UNSPECIFIED"
 }
@@ -443,6 +446,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "primaryContact": "updated@updated.com"
   },
   "requestAccess": "someone@something.com",
+  "resourceType": "SHARED_RESOURCE_TYPE_UNSPECIFIED",
   "restrictedExportConfig": null,
   "state": "STATE_UNSPECIFIED"
 }

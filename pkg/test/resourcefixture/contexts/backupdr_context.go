@@ -19,11 +19,11 @@ func init() {
 		ResourceKind: "BackupDRManagementServer",
 		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/backup-disaster-recovery/docs/reference/rest#rest-resource:-v1.projects.locations.managementservers
 	}
-	resourceContextMap["backupdrbackupplan"] = ResourceContext{
+	resourceContextMap["backupdrbackupplan-minimal"] = ResourceContext{
 		ResourceKind: "BackupDRBackupPlan",
 		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/backup-disaster-recovery/docs/reference/rest#rest-resource:-v1.projects.locations.backupplans
 	}
-	resourceContextMap["backupdrbackupplanassociation"] = ResourceContext{
+	resourceContextMap["backupdrbackupplanassociation-minimal"] = ResourceContext{
 		ResourceKind: "BackupDRBackupPlanAssociation",
 		SkipUpdate:   true, // This resource cannot be updated. https://cloud.google.com/backup-disaster-recovery/docs/reference/rest#rest-resource:-v1.projects.locations.backupplanassociations
 	}

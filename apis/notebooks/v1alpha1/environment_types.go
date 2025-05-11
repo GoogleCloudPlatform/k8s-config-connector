@@ -47,7 +47,7 @@ type NotebooksEnvironmentSpec struct {
 
 	// Use a Compute Engine VM image to start the notebook instance.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.vm_image
-	VmImage *VmImage `json:"vmImage,omitempty"`
+	VmImage *VMImage `json:"vmImage,omitempty"`
 
 	// Use a container image to start the notebook instance.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Environment.container_image

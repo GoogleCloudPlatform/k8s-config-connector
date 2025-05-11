@@ -30,7 +30,7 @@ type GroupIdentity struct {
 }
 
 func (i *GroupIdentity) String() string {
-	return "/groups/" + i.id
+	return "groups/" + i.id
 }
 
 func (i *GroupIdentity) ID() string {
@@ -41,12 +41,6 @@ func (i *GroupIdentity) ID() string {
 func NewGroupIdentity(ctx context.Context, reader client.Reader, obj *CloudIdentityGroup) (*GroupIdentity, error) {
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -56,11 +50,13 @@ func NewGroupIdentity(ctx context.Context, reader client.Reader, obj *CloudIdent
 		if err != nil {
 			return nil, err
 		}
-		if actualResourceID != resourceID {
+		if resourceID != "" && actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		resourceID = actualResourceID
 	}
+
 	return &GroupIdentity{
 		id: resourceID,
 	}, nil

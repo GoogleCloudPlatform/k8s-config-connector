@@ -43,6 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -127,7 +128,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		Build(r)
 	if err != nil {
@@ -436,11 +437,11 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resource *dcl.Resource, liveLabels map[string]string) error {
-	conflictPolicy, err := k8s.GetManagementConflictPreventionAnnotationValue(resource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionAnnotationValue(resource)
 	if err != nil {
 		return err
 	}
-	if conflictPolicy != k8s.ManagementConflictPreventionPolicyResource {
+	if conflictPolicy != managementconflict.ManagementConflictPreventionPolicyResource {
 		return nil
 	}
 	ok, err := leasable.DCLSchemaSupportsLeasing(resource.Schema)
@@ -448,8 +449,8 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v of '%v'", resource.GroupVersionKind(),
-			k8s.ManagementConflictPreventionPolicyAnnotation, conflictPolicy)
+		return fmt.Errorf("kind '%v' does not support usage of %v='%v'", resource.GroupVersionKind(),
+			managementconflict.FullyQualifiedAnnotation, conflictPolicy)
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.

@@ -137,6 +137,10 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "uptimeCheckConfigs":
 		return "${uptimeCheckConfigID}"
 	case "operations":
+		if name == "projects" {
+			// This is not an operation ID, it's an unusual prefix used by bigtable
+			return ""
+		}
 		return "${operationID}"
 	case "transferConfigs":
 		return "${transferConfigID}"
@@ -180,7 +184,13 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			// Special case for operations
 			// TODO: Can we get rid of this?
 			if item.Resource == "operations" {
-				r.OperationIDs[item.Name] = true
+				// Avoid marking some well-known values that are not operation ids
+				switch item.Name {
+				case "projects":
+				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+				default:
+					r.OperationIDs[item.Name] = true
+				}
 			}
 		}
 	}

@@ -36,6 +36,7 @@ import (
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -147,7 +148,11 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
-			Namespace: scopedNamespace,
+			Cache: cache.Options{
+				DefaultNamespaces: map[string]cache.Config{
+					scopedNamespace: {},
+				},
+			},
 		},
 	}
 

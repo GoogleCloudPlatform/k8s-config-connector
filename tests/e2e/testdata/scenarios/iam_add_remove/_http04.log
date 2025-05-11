@@ -19,27 +19,6 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}:getIamPolicy?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}
-
-
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:sa1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/privateca.admin"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 3
-}
-
----
-
 POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}:setIamPolicy?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fcapool-${uniqueId}

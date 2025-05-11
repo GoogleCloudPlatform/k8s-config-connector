@@ -44,7 +44,7 @@ type EnvironmentsClient interface {
 	// runs a single Composer component.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-2.*.*-airflow-*.*.* and newer.
 	ListWorkloads(ctx context.Context, in *ListWorkloadsRequest, opts ...grpc.CallOption) (*ListWorkloadsResponse, error)
 	// Check if an upgrade operation on the environment will succeed.
 	//
@@ -53,53 +53,53 @@ type EnvironmentsClient interface {
 	// Creates a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	CreateUserWorkloadsSecret(ctx context.Context, in *CreateUserWorkloadsSecretRequest, opts ...grpc.CallOption) (*UserWorkloadsSecret, error)
 	// Gets an existing user workloads Secret.
 	// Values of the "data" field in the response are cleared.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	GetUserWorkloadsSecret(ctx context.Context, in *GetUserWorkloadsSecretRequest, opts ...grpc.CallOption) (*UserWorkloadsSecret, error)
 	// Lists user workloads Secrets.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ListUserWorkloadsSecrets(ctx context.Context, in *ListUserWorkloadsSecretsRequest, opts ...grpc.CallOption) (*ListUserWorkloadsSecretsResponse, error)
 	// Updates a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	UpdateUserWorkloadsSecret(ctx context.Context, in *UpdateUserWorkloadsSecretRequest, opts ...grpc.CallOption) (*UserWorkloadsSecret, error)
 	// Deletes a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	DeleteUserWorkloadsSecret(ctx context.Context, in *DeleteUserWorkloadsSecretRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Creates a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	CreateUserWorkloadsConfigMap(ctx context.Context, in *CreateUserWorkloadsConfigMapRequest, opts ...grpc.CallOption) (*UserWorkloadsConfigMap, error)
 	// Gets an existing user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	GetUserWorkloadsConfigMap(ctx context.Context, in *GetUserWorkloadsConfigMapRequest, opts ...grpc.CallOption) (*UserWorkloadsConfigMap, error)
 	// Lists user workloads ConfigMaps.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ListUserWorkloadsConfigMaps(ctx context.Context, in *ListUserWorkloadsConfigMapsRequest, opts ...grpc.CallOption) (*ListUserWorkloadsConfigMapsResponse, error)
 	// Updates a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	UpdateUserWorkloadsConfigMap(ctx context.Context, in *UpdateUserWorkloadsConfigMapRequest, opts ...grpc.CallOption) (*UserWorkloadsConfigMap, error)
 	// Deletes a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	DeleteUserWorkloadsConfigMap(ctx context.Context, in *DeleteUserWorkloadsConfigMapRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Creates a snapshots of a Cloud Composer environment.
 	//
@@ -365,7 +365,7 @@ type EnvironmentsServer interface {
 	// runs a single Composer component.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-2.*.*-airflow-*.*.* and newer.
 	ListWorkloads(context.Context, *ListWorkloadsRequest) (*ListWorkloadsResponse, error)
 	// Check if an upgrade operation on the environment will succeed.
 	//
@@ -374,53 +374,53 @@ type EnvironmentsServer interface {
 	// Creates a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	CreateUserWorkloadsSecret(context.Context, *CreateUserWorkloadsSecretRequest) (*UserWorkloadsSecret, error)
 	// Gets an existing user workloads Secret.
 	// Values of the "data" field in the response are cleared.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	GetUserWorkloadsSecret(context.Context, *GetUserWorkloadsSecretRequest) (*UserWorkloadsSecret, error)
 	// Lists user workloads Secrets.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ListUserWorkloadsSecrets(context.Context, *ListUserWorkloadsSecretsRequest) (*ListUserWorkloadsSecretsResponse, error)
 	// Updates a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	UpdateUserWorkloadsSecret(context.Context, *UpdateUserWorkloadsSecretRequest) (*UserWorkloadsSecret, error)
 	// Deletes a user workloads Secret.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	DeleteUserWorkloadsSecret(context.Context, *DeleteUserWorkloadsSecretRequest) (*empty.Empty, error)
 	// Creates a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	CreateUserWorkloadsConfigMap(context.Context, *CreateUserWorkloadsConfigMapRequest) (*UserWorkloadsConfigMap, error)
 	// Gets an existing user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	GetUserWorkloadsConfigMap(context.Context, *GetUserWorkloadsConfigMapRequest) (*UserWorkloadsConfigMap, error)
 	// Lists user workloads ConfigMaps.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	ListUserWorkloadsConfigMaps(context.Context, *ListUserWorkloadsConfigMapsRequest) (*ListUserWorkloadsConfigMapsResponse, error)
 	// Updates a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	UpdateUserWorkloadsConfigMap(context.Context, *UpdateUserWorkloadsConfigMapRequest) (*UserWorkloadsConfigMap, error)
 	// Deletes a user workloads ConfigMap.
 	//
 	// This method is supported for Cloud Composer environments in versions
-	// composer-3.*.*-airflow-*.*.* and newer.
+	// composer-3-airflow-*.*.*-build.* and newer.
 	DeleteUserWorkloadsConfigMap(context.Context, *DeleteUserWorkloadsConfigMapRequest) (*empty.Empty, error)
 	// Creates a snapshots of a Cloud Composer environment.
 	//

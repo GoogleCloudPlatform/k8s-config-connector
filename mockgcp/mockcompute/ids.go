@@ -18,9 +18,13 @@ import "time"
 
 func (s *MockService) nowString() string {
 	now := time.Now()
+	return s.formatDate(now)
+}
+
+func (s *MockService) formatDate(t time.Time) string {
 	format := "2006-01-02T15:04:05.999Z07:00"
 
-	return now.Format(format)
+	return t.Format(format)
 }
 
 func (s *MockService) generateID() uint64 {

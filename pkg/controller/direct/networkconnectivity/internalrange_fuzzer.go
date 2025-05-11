@@ -46,5 +46,10 @@ func fuzzNetworkConnectivityInteralRange() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".users")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
+
+	// Unimplemented fields that we should likely add support for
+	f.UnimplementedFields.Insert(".exclude_cidr_ranges")
+	f.UnimplementedFields.Insert(".immutable")
+
 	return f
 }

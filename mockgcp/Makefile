@@ -21,7 +21,7 @@ sync-repo:
 			git clone https://github.com/googleapis/googleapis.git third_party/googleapis; \
 	fi
 	@echo "Syncing to commit $(GOOGLEAPI_VERSION)...";
-	@cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION)
+	cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git clean -df . && git status
 
 .PHONY: gen-proto
 gen-proto: tools sync-repo
@@ -45,7 +45,7 @@ gen-proto-no-fixup:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
-		./apis/google/apps/cloudidentity/groups/v1beta1/*.proto \
+		./apis/google/apps/cloudidentity/v1beta1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -63,6 +63,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/api_auth.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/artifact.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/lineage_subgraph.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/content.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/context.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/execution.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/event.proto \
@@ -85,6 +86,27 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/featurestore*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/feature_monitoring_stats.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/types.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_service.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_software_config.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_execution_job.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/network_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_idle_shutdown_config.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_euc_config.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime_template_ref.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/openapi.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/training_pipeline.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_job.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_state.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tool.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/vertex_rag_data.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/apphub/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
@@ -95,7 +117,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/billing/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/certificatemanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
@@ -145,27 +166,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgrafeas/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/biglake/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/bigquery/reservation/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orchestration/airflow/service/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/cloudquotas/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/asset/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/schedule_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_service.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_execution_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/network_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_idle_shutdown_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_euc_config.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/notebook_runtime_template_ref.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/training_pipeline.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_job.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_state.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/service_networking.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/ui_pipeline_spec.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/pipeline_failure_policy.proto \
-		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/value.proto \
 		./third_party/googleapis/mockgcp/cloud/datacatalog/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/eventarc/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/metastore/v1/*.proto \
@@ -183,7 +186,10 @@ gen-proto-no-fixup:
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
 	mkdir -p third_party
-	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all && git reset --hard $(GOOGLEAPI_VERSION) && git pull)
+	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git fetch --all)
+	git -C third_party/googleapis reset --hard $(GOOGLEAPI_VERSION)
+	git -C third_party/googleapis clean -df .
+	git -C third_party/googleapis status
 	mkdir -p ./generated
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
@@ -205,7 +211,9 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto
+		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
+		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
+		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto	
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
@@ -244,7 +252,7 @@ generate-protos-from-openapi:
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.apigee.v1 ../../temp/apigee-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
 
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
-	mkdir -p apis/google/apps/cloudidentity/groups/v1beta1/
-	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.groups.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/groups/v1beta1//service.proto
+	mkdir -p apis/google/apps/cloudidentity/v1beta1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto
 
 	rm -r temp

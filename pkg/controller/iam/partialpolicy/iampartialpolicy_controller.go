@@ -51,6 +51,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/workqueue"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -58,7 +59,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -116,8 +116,11 @@ func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy) error {
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: kccratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			RateLimiter:             kccratelimiter.NewRateLimiter(),
+		}).
+		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
@@ -142,7 +145,7 @@ type ReconcileIAMPartialPolicy struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	// rate limit requeues (periodic re-reconciliation), so we don't use the whole rate limit on re-reconciles
-	requeueRateLimiter ratelimiter.RateLimiter
+	requeueRateLimiter workqueue.TypedRateLimiter[reconcile.Request]
 	jitterGen          jitter.Generator
 }
 

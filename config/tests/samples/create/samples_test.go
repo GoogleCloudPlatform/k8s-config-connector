@@ -313,7 +313,7 @@ func setup(ctx context.Context) {
 		logging.Fatal(err, "error creating new manager")
 	}
 	// Register the deletion defender controller
-	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
 		logging.Fatal(err, "error adding registration controller for deletion defender controllers")
 	}
 	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously

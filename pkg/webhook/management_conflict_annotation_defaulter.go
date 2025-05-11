@@ -22,7 +22,7 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -91,7 +91,7 @@ func defaultManagementConflictAnnotationForDCLBasedResources(obj *unstructured.U
 			fmt.Errorf("error getting the DCL Schema for GroupVersionKind %v: %w", gvk, err))
 	}
 	newObj := obj.DeepCopy()
-	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResource(newObj, ns, schema); err != nil {
+	if err := managementconflict.ValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResource(newObj, ns, schema); err != nil {
 		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %w", err))
 	}
 	return constructPatchResponse(obj, newObj)
@@ -104,7 +104,7 @@ func defaultManagementConflictAnnotationForTFBasedResources(obj *unstructured.Un
 			fmt.Errorf("error getting ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
 	newObj := obj.DeepCopy()
-	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(newObj, ns, rc, tfResourceMap); err != nil {
+	if err := managementconflict.ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(newObj, ns, rc, tfResourceMap); err != nil {
 		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %w", err))
 	}
 	return constructPatchResponse(obj, newObj)

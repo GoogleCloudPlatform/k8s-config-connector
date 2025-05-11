@@ -572,9 +572,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 		if *a.desired.Status.ExternalRef == "" {
 			// If it is the first reconciliation after switching to direct controller,
-			// then update Status to fill out the ExternalRef even if there is
-			// no update.
-			status := a.desired.Status
+			// or is an acquisition, then update Status to fill out the ExternalRef
+			// and ObservedState.
+			status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
 			status.ExternalRef = direct.LazyPtr(a.id.String())
 			return updateOp.UpdateStatus(ctx, status, nil)
 		}
@@ -615,7 +618,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 	if *a.desired.Status.ExternalRef == "" {
 		// If it is the first reconciliation after switching to direct controller,
-		// then fill out the ExternalRef.
+		// or is an acquisition with update, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)

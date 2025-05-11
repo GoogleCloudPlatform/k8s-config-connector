@@ -47,12 +47,17 @@ type BigtableAppProfileSpec struct {
 
 	// Use a single-cluster routing policy.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
-	SingleClusterRouting *AppProfile_SingleClusterRoutingClusterId `json:"singleClusterRouting,omitempty"`
+	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
 
 	// The standard options used for isolating this app profile's traffic from
 	//  other use cases.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.standard_isolation
 	StandardIsolation *AppProfile_StandardIsolation `json:"standardIsolation,omitempty"`
+
+	// Specifies that this app profile is intended for read-only usage via the
+	//  Data Boost feature.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.data_boost_isolation_read_only
+	DataBoostIsolationReadOnly *AppProfile_DataBoostIsolationReadOnly `json:"dataBoostIsolationReadOnly,omitempty"`
 }
 
 // BigtableAppProfileStatus defines the config connector machine state of BigtableAppProfile
@@ -85,7 +90,7 @@ type BigtableAppProfileObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtableappprofile;gcpbigtableappprofiles
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -110,14 +115,17 @@ type BigtableAppProfileList struct {
 	Items           []BigtableAppProfile `json:"items"`
 }
 
+// We have to manually override AppProfile_SingleClusterRouting because of clusterId vs clusterID
 // +kcc:proto=google.bigtable.admin.v2.AppProfile.SingleClusterRouting
-type AppProfile_SingleClusterRoutingClusterId struct {
+type AppProfile_SingleClusterRouting struct {
 	// The cluster to which read/write requests should be routed.
-	ClusterId *string `json:"clusterId,omitempty"`
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.SingleClusterRouting.cluster_id
+	ClusterID *string `json:"clusterId,omitempty"`
 
 	// Whether or not `CheckAndMutateRow` and `ReadModifyWriteRow` requests are
 	//  allowed by this app profile. It is unsafe to send these requests to
 	//  the same table/row/column in multiple clusters.
+	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.SingleClusterRouting.allow_transactional_writes
 	AllowTransactionalWrites *bool `json:"allowTransactionalWrites,omitempty"`
 }
 

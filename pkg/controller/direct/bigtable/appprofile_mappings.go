@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
-// krm.group: bigtable.cnrm.cloud.google.com
-// krm.version: v1beta1
-// proto.service: google.bigtable.admin.v2
-
 package bigtable
 
 import (
@@ -30,6 +25,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 		return nil
 	}
 	out := &krmv1beta1.BigtableAppProfileSpec{}
+
 	// MISSING: Name
 	// MISSING: Etag
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -40,10 +36,10 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 		out.MultiClusterRoutingClusterIds = clusterIds
 	}
 	out.MultiClusterRoutingUseAny = isMultiClusterRouting
-	out.SingleClusterRouting = AppProfile_SingleClusterRoutingClusterId_FromProto(mapCtx, in.GetSingleClusterRouting())
+	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
 	// MISSING: Priority
+	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
 	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
-	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
 func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
@@ -52,6 +48,8 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	}
 	out := &pb.AppProfile{}
 	// MISSING: Name
+	out.Name = direct.ValueOf(in.ResourceID)
+
 	// MISSING: Etag
 	out.Description = direct.ValueOf(in.Description)
 	if oneof := in.MultiClusterRoutingUseAny; oneof != nil && *oneof {
@@ -63,13 +61,15 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 			},
 		}
 	}
-	if oneof := AppProfile_SingleClusterRoutingClusterId_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
+	if oneof := AppProfile_SingleClusterRouting_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
 		out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
 	}
 	// MISSING: Priority
 	if oneof := AppProfile_StandardIsolation_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
 		out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
 	}
-	// MISSING: DataBoostIsolationReadOnly
+	if oneof := AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
+		out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
+	}
 	return out
 }

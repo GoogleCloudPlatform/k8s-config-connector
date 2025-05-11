@@ -31,7 +31,6 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
     "target": "projects/${projectId}/locations/us-central1-a/instances/test-${uniqueId}",
@@ -61,7 +60,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
@@ -121,6 +119,7 @@ X-Xss-Protection: 0
     },
     "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
     "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
       "disable-swap-binaries": "true",
       "enable-guest-attributes": "TRUE",
       "notebooks-api": "PROD",
@@ -223,107 +222,7 @@ X-Xss-Protection: 0
   },
   "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
-    "disable-swap-binaries": "true",
-    "enable-guest-attributes": "TRUE",
-    "notebooks-api": "PROD",
-    "notebooks-api-version": "v1",
-    "proxy-mode": "service_account",
-    "serial-port-logging-enable": "true",
-    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
-    "warmup-libraries": "matplotlib.pyplot"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/test-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
-  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-  "serviceAccountScopes": [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email"
-  ],
-  "shieldedInstanceConfig": {
-    "enableIntegrityMonitoring": true,
-    "enableVtpm": true
-  },
-  "state": "PROVISIONING",
-  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
-  "tags": [
-    "deeplearning-vm",
-    "notebook-instance"
-  ],
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "vmImage": {
-    "imageFamily": "common-cpu",
-    "project": "deeplearning-platform-release"
-  }
-}
-
----
-
-GET https://notebooks.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/instances/test-${uniqueId}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "creator": "${creatorID}",
-  "diskEncryption": "GMEK",
-  "disks": [
-    {
-      "autoDelete": true,
-      "boot": true,
-      "deviceName": "boot",
-      "diskSizeGb": "150",
-      "guestOsFeatures": [
-        {
-          "type": "VIRTIO_SCSI_MULTIQUEUE"
-        },
-        {
-          "type": "UEFI_COMPATIBLE"
-        },
-        {
-          "type": "GVNIC"
-        }
-      ],
-      "interface": "SCSI",
-      "kind": "compute#attachedDisk",
-      "licenses": [
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
-        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
-      ],
-      "mode": "READ_WRITE",
-      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/test-${uniqueId}-boot",
-      "type": "PERSISTENT"
-    },
-    {
-      "autoDelete": true,
-      "deviceName": "data",
-      "diskSizeGb": "100",
-      "index": "1",
-      "interface": "SCSI",
-      "kind": "compute#attachedDisk",
-      "mode": "READ_WRITE",
-      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/test-${uniqueId}-data",
-      "type": "PERSISTENT"
-    }
-  ],
-  "labels": {
-    "goog-caip-notebook": ""
-  },
-  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
-  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
     "disable-swap-binaries": "true",
     "enable-guest-attributes": "TRUE",
     "notebooks-api": "PROD",

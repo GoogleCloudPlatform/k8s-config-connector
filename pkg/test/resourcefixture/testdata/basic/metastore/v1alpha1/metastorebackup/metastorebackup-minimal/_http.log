@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Resource 'projects/${projectId}/locations/us-central1/services/mssvc-${uniqueId}' was not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/services/mssvc-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -137,13 +130,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Resource 'projects/${projectId}/locations/us-central1/services/mssvc-${uniqueId}/backups/msbackup-${uniqueId}' was not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/services/mssvc-${uniqueId}/backups/msbackup-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }

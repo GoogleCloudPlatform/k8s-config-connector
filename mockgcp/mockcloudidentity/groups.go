@@ -27,7 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/groups/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 )
 
 type groupsServer struct {
@@ -85,7 +85,9 @@ func (s *groupsServer) CreateGroup(ctx context.Context, req *pb.CreateGroupReque
 	retObj := proto.Clone(obj).(*pb.Group)
 	retObj.AdditionalGroupKeys = nil
 	go func() {
-		time.Sleep(time.Second)
+		// realGCP adds the additional key very quickly(under 1s)
+		// Set a short wait time to match realGCP log
+		time.Sleep(10 * time.Millisecond)
 		if err := s.addAdditionalGroupKeys(context.Background(), name); err != nil {
 			klog.Fatalf("error adding additionalGroupKeys: %v", err)
 		}
@@ -151,12 +153,12 @@ func (s *groupsServer) PatchGroup(ctx context.Context, req *pb.PatchGroupRequest
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range strings.Split(req.GetUpdateMask(), ",") {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name": // TF controller uses displayName while direct controller uses display_name
 			obj.DisplayName = req.GetGroup().DisplayName
-		case "description":
-			obj.Description = req.GetGroup().Description
 		case "labels":
 			obj.Labels = req.GetGroup().Labels
+		case "description":
+			obj.Description = req.GetGroup().Description
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
