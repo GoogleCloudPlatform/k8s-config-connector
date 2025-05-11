@@ -246,17 +246,9 @@ func deleteGithubBranch(opts *RunnerOptions, branch Branch) {
 	log.Printf("CHECK LOCAL BRANCH %s\r\n", msg)
 	exists := strings.Contains(msg, branch.Local)
 
-	// Ask for final confirmation
-	fmt.Printf("Are you sure you want to delete the branch %s? [y/N]: ", branch.Local)
-	var response string
-	if _, err := fmt.Scanln(&response); err != nil {
-		log.Printf("Error reading input: %v", err)
-		return
-	}
-	if response != "y" && response != "Y" {
-		log.Printf("Skipping delete for branch %s", branch.Local)
-		return
-	}
+	// DO *NOT* ASK for final confirmation
+	// That DEFEATS the purpose of having batch processing!
+
 	// Delete the actual branch
 	// git checkout -b "${RELEASE}"
 	if exists {
