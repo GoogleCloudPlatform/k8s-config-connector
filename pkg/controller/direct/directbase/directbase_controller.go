@@ -304,7 +304,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet finalized; requeuing
+			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
 			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
