@@ -23,8 +23,8 @@ spec:
     role: roles/editor
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    external: projects/iampartialpolicy-dep-project
     kind: Project
-    name: iampartialpolicy-dep-project
 status:
   allBindings:
   - members:

@@ -39,7 +39,8 @@ metadata:
 spec:
   resourceRef:
     kind: Project
-    name: iampartialpolicy-dep-project
+    #name: iampartialpolicy-dep-project
+    external: projects/iampartialpolicy-dep-project
   bindings:
     - role: roles/storage.admin
       members:
