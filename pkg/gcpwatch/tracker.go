@@ -103,7 +103,7 @@ func (t *DependencyTracker) PollForever(ctx context.Context, initialDelay time.D
 		}
 
 		// todo acpana jitter and configurable interval
-		time.Sleep(1 * time.Minute)
+		time.Sleep(10 * time.Minute)
 
 		if time.Now().Before(nextPoll) {
 			continue
