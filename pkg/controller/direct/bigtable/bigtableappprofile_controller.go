@@ -156,9 +156,18 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 		}
 	}
 	var isolation gcp.AppProfileIsolation
-	if standardIsolation := resource.GetStandardIsolation(); standardIsolation != nil {
+	if dataBoostIsolationReadOnly := resource.GetDataBoostIsolationReadOnly(); dataBoostIsolationReadOnly != nil {
+		isolation = &gcp.DataBoostIsolationReadOnly{
+			ComputeBillingOwner: gcp.IsolationComputeBillingOwner(resource.GetDataBoostIsolationReadOnly().GetComputeBillingOwner()),
+		}
+	} else if standardIsolation := resource.GetStandardIsolation(); standardIsolation != nil {
 		isolation = &gcp.StandardIsolation{
 			Priority: gcp.AppProfilePriority(resource.GetStandardIsolation().GetPriority()),
+		}
+	}
+	if isolation == nil {
+		isolation = &gcp.StandardIsolation{
+			Priority: gcp.AppProfilePriority(bigtablepb.AppProfile_PRIORITY_HIGH),
 		}
 	}
 	profileConf := &gcp.ProfileConf{
