@@ -1,0 +1,79 @@
+POST https://cloudidentity.googleapis.com/v1beta1/groups?alt=json&initialGroupConfig=EMPTY&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "This is a test CloudIdentityGroup.",
+  "displayName": "Cloud Identity Group Name",
+  "groupKey": {
+    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  },
+  "parent": "customers/C00qzcxfe"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.apps.cloudidentity.groups.v1beta1.Group",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "This is a test CloudIdentityGroup.",
+    "displayName": "Cloud Identity Group Name",
+    "groupKey": {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "labels": {
+      "cloudidentity.googleapis.com/groups.discussion_forum": ""
+    },
+    "name": "groups/${groupID}",
+    "parent": "customers/C00qzcxfe",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additionalGroupKeys": [
+    {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is a test CloudIdentityGroup.",
+  "displayName": "Cloud Identity Group Name",
+  "groupKey": {
+    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  },
+  "name": "groups/${groupID}",
+  "parent": "customers/C00qzcxfe",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
