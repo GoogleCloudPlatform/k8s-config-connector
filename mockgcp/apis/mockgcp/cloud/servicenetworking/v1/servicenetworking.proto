@@ -301,7 +301,7 @@ message AddSubnetworkRequest {
   bool allow_subnet_cidr_routes_overlap = 1 [json_name="allowSubnetCidrRoutesOverlap"];
   // Optional. The IAM permission check determines whether the consumer project has 'servicenetworking.services.use' permission or not.
   bool check_service_networking_use_permission = 2 [json_name="checkServiceNetworkingUsePermission"];
-  // Optional. Specifies a custom time bucket for Arcus subnetwork request idempotency. If two equivalent concurrent requests are made, Arcus will know to ignore the request if it has already been completed or is in progress. Only requests with matching compute_idempotency_window have guaranteed idempotency. Changing this time window between requests results in undefined behavior. Zero (or empty) value with custom_compute_idempotency_window=true specifies no idempotency (i.e. no request ID is provided to Arcus). Maximum value of 14 days (enforced by Arcus limit). For more information on how to use, see: go/revisit-sn-idempotency-window
+  // Optional. Specifies a custom time bucket for GCE subnetwork request idempotency. If two equivalent concurrent requests are made, GCE will know to ignore the request if it has already been completed or is in progress. Only requests with matching compute_idempotency_window have guaranteed idempotency. Changing this time window between requests results in undefined behavior. Zero (or empty) value with custom_compute_idempotency_window=true specifies no idempotency (i.e. no request ID is provided to GCE). Maximum value of 14 days (enforced by GCE limit).
   .google.protobuf.Duration compute_idempotency_window = 3 [json_name="computeIdempotencyWindow"];
   // Required. A resource that represents the service consumer, such as `projects/123456`. The project number can be different from the value in the consumer network parameter. For example, the network might be part of a Shared VPC network. In those cases, Service Networking validates that this resource belongs to that Shared VPC.
   string consumer = 4 [json_name="consumer"];
@@ -335,7 +335,7 @@ message AddSubnetworkRequest {
   string subnetwork = 18 [json_name="subnetwork"];
   // A list of members that are granted the `roles/servicenetworking.subnetworkAdmin` role on the subnet.
   repeated string subnetwork_users = 19 [json_name="subnetworkUsers"];
-  // Optional. Specifies if Service Networking should use a custom time bucket for Arcus idempotency. If false, Service Networking uses a 300 second (5 minute) Arcus idempotency window. If true, Service Networking uses a custom idempotency window provided by the user in field compute_idempotency_window. For more information on how to use, see: go/revisit-sn-idempotency-window
+  // Optional. Specifies if Service Networking should use a custom time bucket for GCE idempotency. If false, Service Networking uses a 300 second (5 minute) GCE idempotency window. If true, Service Networking uses a custom idempotency window provided by the user in field compute_idempotency_window.
   bool use_custom_compute_idempotency_window = 20 [json_name="useCustomComputeIdempotencyWindow"];
 }
 
@@ -355,6 +355,14 @@ message Api {
   string syntax = 6 [json_name="syntax"];
   // A version string for this interface. If specified, must have the form `major-version.minor-version`, as in `1.10`. If the minor version is omitted, it defaults to zero. If the entire version field is empty, the major version is derived from the package name, as outlined below. If the field is not empty, the version in the package name will be verified to be consistent with what is provided here. The versioning schema uses [semantic versioning](http://semver.org) where the major version number indicates a breaking change and the minor version an additive, non-breaking change. Both version numbers are signals to users what to expect from different versions, and should be carefully chosen based on the product plan. The major version is also reflected in the package name of the interface, which must end in `v`, as in `google.feature.v1`. For major versions 0 and 1, the suffix can be omitted. Zero major versions must only be used for experimental, non-GA interfaces. 
   string version = 7 [json_name="version"];
+}
+
+// Aspect represents Generic aspect. It is used to configure an aspect without making direct changes to service.proto
+message Aspect {
+  // The type of this aspect configuration.
+  string kind = 1 [json_name="kind"];
+  // Content of the configuration. The underlying schema should be defined by Aspect owners as protobuf message under `apiserving/configaspects/proto`.
+  map<string, .google.protobuf.Any> spec = 2 [json_name="spec"];
 }
 
 // Configuration for an authentication provider, including support for [JSON Web Token (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
@@ -417,17 +425,19 @@ message BackendRule {
   bool disable_auth = 3 [json_name="disableAuth"];
   // The JWT audience is used when generating a JWT ID token for the backend. This ID token will be added in the HTTP "authorization" header, and sent to the backend.
   string jwt_audience = 4 [json_name="jwtAudience"];
+  // The load balancing policy used for connection to the application backend. Defined as an arbitrary string to accomondate custom load balancing policies supported by the underlying channel, but suggest most users use one of the standard policies, such as the default, "RoundRobin".
+  string load_balancing_policy = 5 [json_name="loadBalancingPolicy"];
   // Deprecated, do not use.
-  double min_deadline = 5 [json_name="minDeadline"];
+  double min_deadline = 6 [json_name="minDeadline"];
   // The number of seconds to wait for the completion of a long running operation. The default is no deadline.
-  double operation_deadline = 6 [json_name="operationDeadline"];
+  double operation_deadline = 7 [json_name="operationDeadline"];
   // The map between request protocol and the backend address.
-  map<string, BackendRule> overrides_by_request_protocol = 7 [json_name="overridesByRequestProtocol"];
-  string path_translation = 8 [json_name="pathTranslation"];
+  map<string, BackendRule> overrides_by_request_protocol = 8 [json_name="overridesByRequestProtocol"];
+  string path_translation = 9 [json_name="pathTranslation"];
   // The protocol used for sending a request to the backend. The supported values are "http/1.1" and "h2". The default value is inferred from the scheme in the address field: SCHEME PROTOCOL http:// http/1.1 https:// http/1.1 grpc:// h2 grpcs:// h2 For secure HTTP backends (https://) that support HTTP/2, set this field to "h2" for improved performance. Configuring this field to non-default values is only supported for secure HTTP backends. This field will be ignored for all other backends. See https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids for more details on the supported values.
-  string protocol = 9 [json_name="protocol"];
+  string protocol = 10 [json_name="protocol"];
   // Selects the methods to which this rule applies. Refer to selector for syntax details.
-  string selector = 10 [json_name="selector"];
+  string selector = 11 [json_name="selector"];
 }
 
 // Billing related configuration of the service. The following example shows how to configure monitored resources and metrics for billing, `consumer_destinations` is the only supported destination and the monitored resources need at least one label key `cloud.googleapis.com/location` to indicate the location of the billing usage, using different monitored resources between monitoring and billing is recommended so they can be evolved independently: monitored_resources: - type: library.googleapis.com/billing_branch labels: - key: cloud.googleapis.com/location description: | Predefined label to support billing location restriction. - key: city description: | Custom label to define the city where the library branch is located in. - key: name description: Custom label to define the name of the library branch. metrics: - name: library.googleapis.com/book/borrowed_count metric_kind: DELTA value_type: INT64 unit: "1" billing: consumer_destinations: - monitored_resource: library.googleapis.com/billing_branch metrics: - library.googleapis.com/book/borrowed_count
@@ -664,7 +674,7 @@ message Documentation {
   repeated Page pages = 4 [json_name="pages"];
   // A list of documentation rules that apply to individual API elements. **NOTE:** All service configuration rules follow "last one wins" order.
   repeated DocumentationRule rules = 5 [json_name="rules"];
-  // Specifies section and content to override boilerplate content provided by go/api-docgen. Currently overrides following sections: 1. rest.service.client_libraries
+  // Specifies section and content to override the boilerplate content. Currently overrides following sections: 1. rest.service.client_libraries
   repeated Page section_overrides = 6 [json_name="sectionOverrides"];
   // Specifies the service root url if the default one (the service name from the yaml file) is not suitable. This can be seen in any fully specified service urls as well as sections that show a base that other urls are relative to.
   string service_root_url = 7 [json_name="serviceRootUrl"];
@@ -678,7 +688,7 @@ message DocumentationRule {
   string deprecation_description = 1 [json_name="deprecationDescription"];
   // Description of the selected proto element (e.g. a message, a method, a 'service' definition, or a field). Defaults to leading & trailing comments taken from the proto source definition of the proto element.
   string description = 2 [json_name="description"];
-  // String of comma or space separated case-sensitive words for which method/field name replacement will be disabled by go/api-docgen.
+  // String of comma or space separated case-sensitive words for which method/field name replacement will be disabled.
   string disable_replacement_words = 3 [json_name="disableReplacementWords"];
   // The selector is a comma-separated list of patterns for any element such as a method, a field, an enum value. Each pattern is a qualified name of the element which may end in "*", indicating a wildcard. Wildcards are only allowed at the end and for a whole component of the qualified name, i.e. "foo.*" is ok, but not "foo.b*" or "foo.*.bar". A wildcard will match one or more components. To specify a default for all applicable elements, the whole pattern "*" is used.
   string selector = 4 [json_name="selector"];
@@ -754,6 +764,8 @@ message ExperimentalFeatures {
   bool protobuf_pythonic_types_enabled = 1 [json_name="protobufPythonicTypesEnabled"];
   // Enables generation of asynchronous REST clients if `rest` transport is enabled. By default, asynchronous REST clients will not be generated. This feature will be enabled by default 1 month after launching the feature in preview packages.
   bool rest_async_io_enabled = 2 [json_name="restAsyncIoEnabled"];
+  // Disables generation of an unversioned Python package for this client library. This means that the module names will need to be versioned in import statements. For example `import google.cloud.library_v2` instead of `import google.cloud.library`.
+  bool unversioned_package_disabled = 3 [json_name="unversionedPackageDisabled"];
 }
 
 // A single field of a message type.
@@ -876,7 +888,7 @@ message HttpRule {
 message JavaSettings {
   // Some settings.
   CommonLanguageSettings common = 1 [json_name="common"];
-  // The package name to use in Java. Clobbers the java_package option set in the protobuf. This should be used **only** by APIs who have already set the language_settings.java.package_name" field in gapic.yaml. API teams should use the protobuf java_package option where possible. Example of a YAML configuration:: publishing: java_settings: library_package: com.google.cloud.pubsub.v1
+  // The package name to use in Java. Clobbers the java_package option set in the protobuf. This should be used **only** by APIs who have already set the language_settings.java.package_name" field in gapic.yaml. API teams should use the protobuf java_package option where possible. Example of a YAML configuration:: publishing: library_settings: java_settings: library_package: com.google.cloud.pubsub.v1
   string library_package = 2 [json_name="libraryPackage"];
   // Configure the Java class name to use instead of the service's for its corresponding generated GAPIC client. Keys are fully-qualified service names as they appear in the protobuf (including the full the language_settings.java.interface_names" field in gapic.yaml. API teams should otherwise use the service name as it appears in the protobuf. Example of a YAML configuration:: publishing: java_settings: service_class_names: - google.pubsub.v1.Publisher: TopicAdmin - google.pubsub.v1.Subscriber: SubscriptionAdmin
   map<string, string> service_class_names = 3 [json_name="serviceClassNames"];
@@ -1120,7 +1132,7 @@ message Option {
 
 // Represents a documentation page. A page can contain subpages to represent nested documentation set structure.
 message Page {
-  // The Markdown content of the page. You can use (== include {path} ==) to include content from a Markdown file. The content can be used to produce the documentation page such as HTML format page.
+  // The Markdown content of the page. You can use ```(== include {path} ==)``` to include content from a Markdown file. The content can be used to produce the documentation page such as HTML format page.
   string content = 1 [json_name="content"];
   // The name of the page. It will be used as an identity of the page to generate URI of the page, text of the link to this page in navigation, etc. The full page name (start from the root page name to this page concatenated with `.`) can be used as reference to the page in your documentation. For example: pages: - name: Tutorial content: (== include tutorial.md ==) subpages: - name: Java content: (== include tutorial_java.md ==) You can reference `Java` page using Markdown reference link syntax: `Java`.
   string name = 2 [json_name="name"];
@@ -1324,68 +1336,72 @@ message SecondaryIpRangeSpec {
 
 // This message is used to configure the generation of a subset of the RPCs in a service for client libraries.
 message SelectiveGapicGeneration {
+  // Setting this to true indicates to the client generators that methods that would be excluded from the generation should instead be generated in a way that indicates these methods should not be consumed by end users. How this is expressed is up to individual language implementations to decide. Some examples may be: added annotations, obfuscated identifiers, or other language idiomatic patterns.
+  bool generate_omitted_as_internal = 1 [json_name="generateOmittedAsInternal"];
   // An allowlist of the fully qualified names of RPCs that should be included on public client surfaces.
-  repeated string methods = 1 [json_name="methods"];
+  repeated string methods = 2 [json_name="methods"];
 }
 
 // `Service` is the root object of Google API service configuration (service config). It describes the basic information about a logical service, such as the service name and the user-facing title, and delegates other aspects to sub-sections. Each sub-section is either a proto message or a repeated proto message that configures a specific aspect, such as auth. For more information, see each proto message definition. Example: type: google.api.Service name: calendar.googleapis.com title: Google Calendar API apis: - name: google.calendar.v3.Calendar visibility: rules: - selector: "google.calendar.v3.*" restriction: PREVIEW backend: rules: - selector: "google.calendar.v3.*" address: calendar.example.com authentication: providers: - id: google_calendar_auth jwks_uri: https://www.googleapis.com/oauth2/v1/certs issuer: https://securetoken.google.com rules: - selector: "*" requirements: provider_id: google_calendar_auth
 message Service {
   // A list of API interfaces exported by this service. Only the `name` field of the google.protobuf.Api needs to be provided by the configuration author, as the remaining fields will be derived from the IDL during the normalization process. It is an error to specify an API interface here which cannot be resolved against the associated IDL files.
   repeated Api apis = 1 [json_name="apis"];
+  // Configuration aspects. This is a repeated field to allow multiple aspects to be configured. The kind field in each ConfigAspect specifies the type of aspect. The spec field contains the configuration for that aspect. The schema for the spec field is defined by the backend service owners.
+  repeated Aspect aspects = 2 [json_name="aspects"];
   // Auth configuration.
-  Authentication authentication = 2 [json_name="authentication"];
+  Authentication authentication = 3 [json_name="authentication"];
   // API backend configuration.
-  Backend backend = 3 [json_name="backend"];
+  Backend backend = 4 [json_name="backend"];
   // Billing configuration.
-  Billing billing = 4 [json_name="billing"];
+  Billing billing = 5 [json_name="billing"];
   // Obsolete. Do not use. This field has no semantic meaning. The service config compiler always sets this field to `3`.
-  uint32 config_version = 5 [json_name="configVersion"];
+  uint32 config_version = 6 [json_name="configVersion"];
   // Context configuration.
-  Context context = 6 [json_name="context"];
+  Context context = 7 [json_name="context"];
   // Configuration for the service control plane.
-  Control control = 7 [json_name="control"];
+  Control control = 8 [json_name="control"];
   // Custom error configuration.
-  CustomError custom_error = 8 [json_name="customError"];
+  CustomError custom_error = 9 [json_name="customError"];
   // Additional API documentation.
-  Documentation documentation = 9 [json_name="documentation"];
+  Documentation documentation = 10 [json_name="documentation"];
   // Configuration for network endpoints. If this is empty, then an endpoint with the same name as the service is automatically generated to service all defined APIs.
-  repeated Endpoint endpoints = 10 [json_name="endpoints"];
+  repeated Endpoint endpoints = 11 [json_name="endpoints"];
   // A list of all enum types included in this API service. Enums referenced directly or indirectly by the `apis` are automatically included. Enums which are not referenced but shall be included should be listed here by name by the configuration author. Example: enums: - name: google.someapi.v1.SomeEnum
-  repeated Enum enums = 11 [json_name="enums"];
+  repeated Enum enums = 12 [json_name="enums"];
   // HTTP configuration.
-  Http http = 12 [json_name="http"];
+  Http http = 13 [json_name="http"];
   // A unique ID for a specific instance of this message, typically assigned by the client for tracking purpose. Must be no longer than 63 characters and only lower case letters, digits, '.', '_' and '-' are allowed. If empty, the server may choose to generate one instead.
-  string id = 13 [json_name="id"];
+  string id = 14 [json_name="id"];
   // Logging configuration.
-  Logging logging = 14 [json_name="logging"];
+  Logging logging = 15 [json_name="logging"];
   // Defines the logs used by this service.
-  repeated LogDescriptor logs = 15 [json_name="logs"];
+  repeated LogDescriptor logs = 16 [json_name="logs"];
   // Defines the metrics used by this service.
-  repeated MetricDescriptor metrics = 16 [json_name="metrics"];
+  repeated MetricDescriptor metrics = 17 [json_name="metrics"];
   // Defines the monitored resources used by this service. This is required by the Service.monitoring and Service.logging configurations.
-  repeated MonitoredResourceDescriptor monitored_resources = 17 [json_name="monitoredResources"];
+  repeated MonitoredResourceDescriptor monitored_resources = 18 [json_name="monitoredResources"];
   // Monitoring configuration.
-  Monitoring monitoring = 18 [json_name="monitoring"];
+  Monitoring monitoring = 19 [json_name="monitoring"];
   // The service name, which is a DNS-like logical identifier for the service, such as `calendar.googleapis.com`. The service name typically goes through DNS verification to make sure the owner of the service also owns the DNS name.
-  string name = 19 [json_name="name"];
+  string name = 20 [json_name="name"];
   // The Google project that owns this service.
-  string producer_project_id = 20 [json_name="producerProjectId"];
+  string producer_project_id = 21 [json_name="producerProjectId"];
   // Settings for [Google Cloud Client libraries](https://cloud.google.com/apis/docs/cloud-client-libraries) generated from APIs defined as protocol buffers.
-  Publishing publishing = 21 [json_name="publishing"];
+  Publishing publishing = 22 [json_name="publishing"];
   // Quota configuration.
-  Quota quota = 22 [json_name="quota"];
+  Quota quota = 23 [json_name="quota"];
   // Output only. The source information for this configuration if available.
-  SourceInfo source_info = 23 [json_name="sourceInfo"];
+  SourceInfo source_info = 24 [json_name="sourceInfo"];
   // System parameter configuration.
-  SystemParameters system_parameters = 24 [json_name="systemParameters"];
+  SystemParameters system_parameters = 25 [json_name="systemParameters"];
   // A list of all proto message types included in this API service. It serves similar purpose as [google.api.Service.types], except that these types are not needed by user-defined APIs. Therefore, they will not show up in the generated discovery doc. This field should only be used to define system APIs in ESF.
-  repeated Type system_types = 25 [json_name="systemTypes"];
+  repeated Type system_types = 26 [json_name="systemTypes"];
   // The product title for this service, it is the name displayed in Google Cloud Console.
-  string title = 26 [json_name="title"];
+  string title = 27 [json_name="title"];
   // A list of all proto message types included in this API service. Types referenced directly or indirectly by the `apis` are automatically included. Messages which are not referenced but shall be included, such as types used by the `google.protobuf.Any` type, should be listed here by name by the configuration author. Example: types: - name: google.protobuf.Int32
-  repeated Type types = 27 [json_name="types"];
+  repeated Type types = 28 [json_name="types"];
   // Configuration controlling usage of this service.
-  Usage usage = 28 [json_name="usage"];
+  Usage usage = 29 [json_name="usage"];
 }
 
 // `SourceContext` represents information about the source of a protobuf element, like the file in which it is defined.
@@ -1500,9 +1516,9 @@ message Usage {
   repeated UsageRule rules = 3 [json_name="rules"];
 }
 
-// Usage configuration rules for the service. NOTE: Under development. Use this rule to configure unregistered calls for the service. Unregistered calls are calls that do not contain consumer project identity. (Example: calls that do not contain an API key). By default, API methods do not allow unregistered calls, and each method call must be identified by a consumer project identity. Use this rule to allow/disallow unregistered calls. Example of an API that wants to allow unregistered calls for entire service. usage: rules: - selector: "*" allow_unregistered_calls: true Example of a method that wants to allow unregistered calls. usage: rules: - selector: "google.example.library.v1.LibraryService.CreateBook" allow_unregistered_calls: true
+// Usage configuration rules for the service.
 message UsageRule {
-  // If true, the selected method allows unregistered calls, e.g. calls that don't identify any user or application.
+  //  Use this rule to configure unregistered calls for the service. Unregistered calls are calls that do not contain consumer project identity. (Example: calls that do not contain an API key). WARNING: By default, API methods do not allow unregistered calls, and each method call must be identified by a consumer project identity.
   bool allow_unregistered_calls = 1 [json_name="allowUnregisteredCalls"];
   // Selects the methods to which this rule applies. Use '*' to indicate all methods in all APIs. Refer to selector for syntax details.
   string selector = 2 [json_name="selector"];
