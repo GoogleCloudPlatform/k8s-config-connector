@@ -55,11 +55,11 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	out.StateError = WorkflowsWorkflowStateError_FromProto(mapCtx, in.GetStateError())
 	out.AllKMSKeys = []refs.KMSCryptoKeyRef{}
-	for _, kmsKey := range in.AllKMSKeys {
+	for _, kmsKey := range in.AllKmsKeys {
 		out.AllKMSKeys = append(out.AllKMSKeys, refs.KMSCryptoKeyRef{External: kmsKey})
 	}
 	out.AllKMSKeysVersions = []string{}
-	for _, kmsKeyVersion := range in.AllKMSKeysVersions {
+	for _, kmsKeyVersion := range in.AllKmsKeysVersions {
 		out.AllKMSKeysVersions = append(out.AllKMSKeysVersions, kmsKeyVersion)
 	}
 	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
@@ -77,13 +77,13 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	out.StateError = WorkflowsWorkflowStateError_ToProto(mapCtx, in.StateError)
-	out.AllKMSKeys = []string{}
+	out.AllKmsKeys = []string{}
 	for _, kmsKey := range in.AllKMSKeys {
-		out.AllKMSKeys = append(out.AllKMSKeys, kmsKey.External)
+		out.AllKmsKeys = append(out.AllKmsKeys, kmsKey.External)
 	}
-	out.AllKMSKeysVersions = []string{}
+	out.AllKmsKeysVersions = []string{}
 	for _, kmsKeyVersion := range in.AllKMSKeysVersions {
-		out.AllKMSKeysVersions = append(out.AllKMSKeysVersions, kmsKeyVersion)
+		out.AllKmsKeysVersions = append(out.AllKmsKeysVersions, kmsKeyVersion)
 	}
 	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
 	return out
