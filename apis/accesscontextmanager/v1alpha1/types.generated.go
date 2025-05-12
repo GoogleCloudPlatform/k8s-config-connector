@@ -30,10 +30,12 @@ type AccessPolicy struct {
 	// Required. The parent of this `AccessPolicy` in the Cloud Resource
 	//  Hierarchy. Currently immutable once created. Format:
 	//  `organizations/{organization_id}`
+	//+required
 	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessPolicy.parent
 	Parent *string `json:"parent,omitempty"`
 
 	// Required. Human readable title. Does not affect behavior.
+	//+required
 	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessPolicy.title
 	Title *string `json:"title,omitempty"`
 
