@@ -548,7 +548,7 @@ observedState:
 
 ## Sample YAML(s)
 
-### Typical Use Case
+### Basic Workflow
 ```yaml
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
