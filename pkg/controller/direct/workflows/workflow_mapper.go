@@ -54,13 +54,13 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	out.StateError = WorkflowsWorkflowStateError_FromProto(mapCtx, in.GetStateError())
-	out.AllKmsKeys = []refs.KMSCryptoKeyRef{}
-	for _, kmsKey := range in.AllKmsKeys {
-		out.AllKmsKeys = append(out.AllKmsKeys, refs.KMSCryptoKeyRef{External: kmsKey})
+	out.AllKMSKeys = []refs.KMSCryptoKeyRef{}
+	for _, kmsKey := range in.AllKMSKeys {
+		out.AllKMSKeys = append(out.AllKMSKeys, refs.KMSCryptoKeyRef{External: kmsKey})
 	}
-	out.AllKmsKeysVersions = []string{}
-	for _, kmsKeyVersion := range in.AllKmsKeysVersions {
-		out.AllKmsKeysVersions = append(out.AllKmsKeysVersions, kmsKeyVersion)
+	out.AllKMSKeysVersions = []string{}
+	for _, kmsKeyVersion := range in.AllKMSKeysVersions {
+		out.AllKMSKeysVersions = append(out.AllKMSKeysVersions, kmsKeyVersion)
 	}
 	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
 	return out
@@ -77,13 +77,13 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	out.StateError = WorkflowsWorkflowStateError_ToProto(mapCtx, in.StateError)
-	out.AllKmsKeys = []string{}
-	for _, kmsKey := range in.AllKmsKeys {
-		out.AllKmsKeys = append(out.AllKmsKeys, kmsKey.External)
+	out.AllKMSKeys = []string{}
+	for _, kmsKey := range in.AllKMSKeys {
+		out.AllKMSKeys = append(out.AllKMSKeys, kmsKey.External)
 	}
-	out.AllKmsKeysVersions = []string{}
-	for _, kmsKeyVersion := range in.AllKmsKeysVersions {
-		out.AllKmsKeysVersions = append(out.AllKmsKeysVersions, kmsKeyVersion)
+	out.AllKMSKeysVersions = []string{}
+	for _, kmsKeyVersion := range in.AllKMSKeysVersions {
+		out.AllKMSKeysVersions = append(out.AllKMSKeysVersions, kmsKeyVersion)
 	}
 	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
 	return out
