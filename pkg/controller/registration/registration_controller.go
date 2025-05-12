@@ -17,6 +17,7 @@ package registration
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -238,14 +239,21 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		return nil, nil
 	}
 	cds := controller.Deps{
-		TfProvider:        r.provider,
-		TfLoader:          r.smLoader,
-		DclConfig:         r.dclConfig,
-		DclConverter:      r.dclConverter,
-		JitterGen:         r.jitterGenerator,
-		Defaulters:        r.defaulters,
-		DependencyTracker: r.dependencyTracker,
+		TfProvider:   r.provider,
+		TfLoader:     r.smLoader,
+		DclConfig:    r.dclConfig,
+		DclConverter: r.dclConverter,
+		JitterGen:    r.jitterGenerator,
+		Defaulters:   r.defaulters,
+		//DependencyTracker: r.dependencyTracker,
 	}
+
+	// todo acpana house in KCC mgr flag
+	v := os.Getenv("KCC_RECONCILE_FG")
+	if v == "USE_DT" {
+		cds.DependencyTracker = r.dependencyTracker
+	}
+
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
 		groupKind := gvk.GroupKind()
