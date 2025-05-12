@@ -7,7 +7,7 @@
 
 
 
-Workflows provides low latency custom orchestration of services.
+Workflows provides programmable control for low latency, reliable orchestration of services and events.
 
 <table>
 <thead>
