@@ -148,11 +148,11 @@ type WorkflowsWorkflowObservedState struct {
 
 	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
 	// data associated with the workflow.
-	AllKmsKeys []refs.KMSCryptoKeyRef `json:"allKmsKeys,omitempty"`
+	AllKMSKeys []refs.KMSCryptoKeyRef `json:"allKmsKeys,omitempty"`
 
 	// Output only. A list of all KMS crypto key versions used to encrypt or
 	// decrypt the data associated with the workflow.
-	AllKmsKeysVersions []string `json:"allKmsKeysVersions,omitempty"`
+	AllKMSKeysVersions []string `json:"allKmsKeysVersions,omitempty"`
 
 	// Output only. The resource name of a KMS crypto key version used to encrypt
 	// or decrypt the data associated with the workflow.

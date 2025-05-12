@@ -747,5 +747,6 @@
 [acronyms] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.metadataSchemaUri" should be ".status.observedState.metadataSchemaURI"
 [acronyms] crd=vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com version=v1beta1: field ".spec.ipCidrRange" should be ".spec.ipCIDRRange"
 [acronyms] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.revisionId" should be ".status.observedState.revisionID"
+[acronyms] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.revisionId" should be ".status.observedState.revisionID"
 [acronyms] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.serviceAttachmentUri" should be ".status.observedState.serviceAttachmentURI"
 [acronyms] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.serviceAttachmentUri" should be ".status.observedState.serviceAttachmentURI"
