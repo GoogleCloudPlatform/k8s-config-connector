@@ -116,7 +116,7 @@ var preferredSampleForResource = map[string]string{
 	"vpcaccessconnector":                 "cidr-connector",
 	"vertexaidataset":                    "vertexai-dataset-encryptionkey",
 	"vertexaiendpoint":                   "vertexai-endpoint-network",
-	"workflowsworkflow":				  "basic-workflow",
+	"workflowsworkflow":                  "basic-workflow",
 	"workstationcluster":                 "basic-workstationcluster",
 	"workstationconfig":                  "basic-workstationconfig",
 	"workstation":                        "basic-workstation",
