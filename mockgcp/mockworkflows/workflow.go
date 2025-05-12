@@ -71,9 +71,9 @@ func (s *WorkflowsV1) CreateWorkflow(ctx context.Context, req *pb.CreateWorkflow
 	obj.UpdateTime = timestamppb.New(now)
 	obj.RevisionCreateTime = timestamppb.New(now)
 	if obj.CryptoKeyName != "" {
-		obj.AllKMSKeys = []string{obj.CryptoKeyName}
+		obj.AllKmsKeys = []string{obj.CryptoKeyName}
 		obj.CryptoKeyVersion = obj.CryptoKeyName + "/cryptoKeyVersions/1"
-		obj.AllKMSKeysVersions = []string{obj.CryptoKeyVersion}
+		obj.AllKmsKeysVersions = []string{obj.CryptoKeyVersion}
 	}
 	obj.ServiceAccount = fmt.Sprintf("projects/%s/serviceAccounts/%d-compute@developer.gserviceaccount.com", name.Project.ID, name.Project.Number)
 	obj.RevisionId = "000001-a4d" // TODO: increment
@@ -174,9 +174,9 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 		case "cryptoKeyName":
 			updated.CryptoKeyName = req.GetWorkflow().GetCryptoKeyName()
 			if updated.CryptoKeyName != "" {
-				updated.AllKMSKeys = append(updated.AllKMSKeys, updated.CryptoKeyName)
+				updated.AllKmsKeys = append(updated.AllKmsKeys, updated.CryptoKeyName)
 				updated.CryptoKeyVersion = updated.CryptoKeyName + "/cryptoKeyVersions/1"
-				updated.AllKMSKeysVersions = append(updated.AllKMSKeysVersions, updated.CryptoKeyVersion)
+				updated.AllKmsKeysVersions = append(updated.AllKmsKeysVersions, updated.CryptoKeyVersion)
 			}
 		case "callLogLevel":
 			updated.CallLogLevel = req.GetWorkflow().GetCallLogLevel()
