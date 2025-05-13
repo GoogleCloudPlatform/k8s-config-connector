@@ -210,36 +210,54 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
-
-{}
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles?alt=json&appProfileId=bigtableappprofile-${uniqueId}&ignoreWarnings=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "appProfile": {
-    "description": "Initial description.",
-    "singleClusterRouting": {
-      "allowTransactionalWrites": true,
-      "clusterId": "cluster1-${uniqueId}"
-    },
-    "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
-    }
+  "description": "Initial description.",
+  "singleClusterRouting": {
+    "allowTransactionalWrites": true,
+    "clusterId": "cluster1-${uniqueId}"
   },
-  "appProfileId": "bigtableappprofile-${uniqueId}",
-  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
+  }
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Initial description.",
@@ -255,13 +273,19 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-{
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "description": "Initial description.",
@@ -277,23 +301,29 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=singleClusterRouting
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "appProfile": {
-    "dataBoostIsolationReadOnly": {
-      "computeBillingOwner": "HOST_PAYS"
-    },
-    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-    "singleClusterRouting": {
-      "clusterId": "cluster1-${uniqueId}"
-    }
+  "description": "Initial description.",
+  "singleClusterRouting": {
+    "clusterId": "cluster1-${uniqueId}"
   },
-  "ignoreWarnings": true,
-  "updateMask": "singleClusterRouting,dataBoostIsolationReadOnly"
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
+  }
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -303,9 +333,6 @@ OK
   "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
-    "dataBoostIsolationReadOnly": {
-      "computeBillingOwner": "HOST_PAYS"
-    },
     "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
     "singleClusterRouting": {
       "clusterId": "cluster1-${uniqueId}"
@@ -315,35 +342,46 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-OK
-
-{
-  "dataBoostIsolationReadOnly": {
-    "computeBillingOwner": "HOST_PAYS"
-  },
   "description": "Initial description.",
   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "singleClusterRouting": {
     "clusterId": "cluster1-${uniqueId}"
+  },
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
   }
 }
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteAppProfile
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-{
-  "ignoreWarnings": true,
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
 

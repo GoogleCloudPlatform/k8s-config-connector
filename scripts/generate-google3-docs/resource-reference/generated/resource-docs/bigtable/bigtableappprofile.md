@@ -112,7 +112,7 @@ standardIsolation:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Specifies that this app profile is intended for read-only usage via the Data Boost feature.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies that this app profile is intended for read-only usage via the Data Boost feature. Please opt-in to this feature by setting the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

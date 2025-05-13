@@ -2,10 +2,10 @@ apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableAppProfile
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/ignore-warnings: "true"
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -15,8 +15,6 @@ metadata:
   name: bigtableappprofile-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  dataBoostIsolationReadOnly:
-    computeBillingOwner: HOST_PAYS
   description: Initial description.
   instanceRef:
     name: profiledep${uniqueId}
@@ -24,6 +22,8 @@ spec:
   singleClusterRouting:
     allowTransactionalWrites: false
     clusterId: cluster1-${uniqueId}
+  standardIsolation:
+    priority: PRIORITY_MEDIUM
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -31,5 +31,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
   name: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
   observedGeneration: 3

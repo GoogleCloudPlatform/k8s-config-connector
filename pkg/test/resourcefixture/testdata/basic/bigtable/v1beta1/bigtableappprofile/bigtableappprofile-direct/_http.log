@@ -19,6 +19,12 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
       "encryptionConfig": {},
       "location": "projects/${projectId}/locations/us-central1-a",
       "serveNodes": 3
+    },
+    "cluster2-${uniqueId}": {
+      "defaultStorageType": "SSD",
+      "encryptionConfig": {},
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "serveNodes": 3
     }
   },
   "instance": {
@@ -43,6 +49,11 @@ OK
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 3
+        },
+        "cluster2-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-west1-a",
           "serveNodes": 3
         }
       },
@@ -82,6 +93,11 @@ OK
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 3
+        },
+        "cluster2-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-west1-a",
           "serveNodes": 3
         }
       },
@@ -156,6 +172,13 @@ OK
       "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
     }
   ]
 }
@@ -204,104 +227,55 @@ OK
       "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
     }
   ]
 }
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
 
 {
-  "error": {
-    "code": 404,
-    "message": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found",
-    "status": "NOT_FOUND"
-  }
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
 }
+
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
+
+{}
 
 ---
 
-POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles?alt=json&appProfileId=bigtableappprofile-${uniqueId}&ignoreWarnings=true
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
 
 {
-  "description": "Initial description.",
-  "singleClusterRouting": {
-    "clusterId": "cluster1-${uniqueId}"
-  }
+  "appProfile": {
+    "description": "Initial description.",
+    "singleClusterRouting": {
+      "allowTransactionalWrites": true,
+      "clusterId": "cluster1-${uniqueId}"
+    },
+    "standardIsolation": {
+      "priority": "PRIORITY_MEDIUM"
+    }
+  },
+  "appProfileId": "bigtableappprofile-${uniqueId}",
+  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+OK
 
 {
   "description": "Initial description.",
   "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "singleClusterRouting": {
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_HIGH"
-  }
-}
-
----
-
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_HIGH"
-  }
-}
-
----
-
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true&updateMask=standardIsolation
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "description": "Initial description.",
-  "singleClusterRouting": {
+    "allowTransactionalWrites": true,
     "clusterId": "cluster1-${uniqueId}"
   },
   "standardIsolation": {
@@ -309,15 +283,51 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+
+{
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+}
+
+OK
+
+{
+  "description": "Initial description.",
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+  "singleClusterRouting": {
+    "allowTransactionalWrites": true,
+    "clusterId": "cluster1-${uniqueId}"
+  },
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateAppProfile
+
+{
+  "appProfile": {
+    "description": "Updated description.",
+    "multiClusterRoutingUseAny": {
+      "clusterIds": [
+        "cluster1-${uniqueId}",
+        "cluster2-${uniqueId}"
+      ]
+    },
+    "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+    "standardIsolation": {
+      "priority": "PRIORITY_LOW"
+    }
+  },
+  "ignoreWarnings": true,
+  "updateMask": "description,multiClusterRoutingUseAny,standardIsolation"
+}
+
+OK
 
 {
   "done": true,
@@ -327,55 +337,54 @@ X-Xss-Protection: 0
   "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
+    "description": "Updated description.",
+    "multiClusterRoutingUseAny": {
+      "clusterIds": [
+        "cluster1-${uniqueId}",
+        "cluster2-${uniqueId}"
+      ]
+    },
     "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
     "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
+      "priority": "PRIORITY_LOW"
     }
   }
 }
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
 
 {
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "clusterId": "cluster1-${uniqueId}"
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+}
+
+OK
+
+{
+  "description": "Updated description.",
+  "multiClusterRoutingUseAny": {
+    "clusterIds": [
+      "cluster1-${uniqueId}",
+      "cluster2-${uniqueId}"
+    ]
   },
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
   "standardIsolation": {
-    "priority": "PRIORITY_MEDIUM"
+    "priority": "PRIORITY_LOW"
   }
 }
 
 ---
 
-DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}?alt=json&ignoreWarnings=true
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteAppProfile
 
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+{
+  "ignoreWarnings": true,
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+}
+
+OK
 
 {}
 
@@ -421,6 +430,13 @@ OK
       "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-a",
       "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/profiledep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
