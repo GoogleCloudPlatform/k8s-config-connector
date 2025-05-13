@@ -66,13 +66,13 @@ Workflows provides programmable control for low latency, reliable orchestration 
 ### Spec
 #### Schema
 ```yaml
-KMSCryptoKeyRef:
-  external: string
-  name: string
-  namespace: string
 callLogLevel: string
 description: string
 executionHistoryLevel: string
+kmsCryptoKeyRef:
+  external: string
+  name: string
+  namespace: string
 labels:
   string: string
 location: string
@@ -102,46 +102,6 @@ userEnvVars:
 <tbody>
     <tr>
         <td>
-            <p><code>KMSCryptoKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. Hello{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>KMSCryptoKeyRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>KMSCryptoKeyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>KMSCryptoKeyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>callLogLevel</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -168,6 +128,46 @@ userEnvVars:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Describes the execution history level to apply to this workflow.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsCryptoKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. Hello{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsCryptoKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsCryptoKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>kmsCryptoKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -548,8 +548,50 @@ observedState:
 
 ## Sample YAML(s)
 
-### Basic Workflow
+### Typical Use Case
 ```yaml
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: workflows.cnrm.cloud.google.com/v1beta1
+kind: WorkflowsWorkflow
+metadata:
+  name: workflow-sample
+spec:
+  # Can be one of "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_ERRORS_ONLY", "CALL_LOG_LEVEL_UNSPECIFIED". Consult documentation for more info
+  callLogLevel: "LOG_ALL_CALLS"
+  description: "Definition of a workflow that reads and returns a supplied environment variable, managing data with a cryptography key and access with a service account"
+  # Can be one of "EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED". Consult documentation for more info
+  executionHistoryLevel: "EXECUTION_HISTORY_DETAILED"
+  kmsCryptoKeyRef:
+    name: workflowsworkflow-dep
+  labels:
+    category1: "label1"
+    category2: "label2"
+  location: us-central1
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
+  # If unspecified, metadata.name will be used
+  resourceID: workflow-sample
+  serviceAccountRef:
+    name: workflowsworkflow-dep
+  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: var1\n        result: inputVar\n    - returnOutput:\n        return: '${inputVar}'\n"
+  userEnvVars:
+    var1: variable_value
+    var2: variable_value2
+---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
@@ -592,34 +634,6 @@ spec:
   projectRef:
     external: ${PROJECT_ID?}
   resourceID: workflows.googleapis.com
----
-apiVersion: workflows.cnrm.cloud.google.com/v1beta1
-kind: WorkflowsWorkflow
-metadata:
-  name: workflow-sample
-spec:
-  # Can be one of "LOG_ALL_CALLS", "LOG_ERRORS_ONLY", "LOG_ERRORS_ONLY", "CALL_LOG_LEVEL_UNSPECIFIED". Consult documentation for more info
-  callLogLevel: "LOG_ALL_CALLS"
-  description: "Definition of a workflow that reads and returns a supplied environment variable, managing data with a cryptography key and access with a service account"
-  # Can be one of "EXECUTION_HISTORY_LEVEL_UNSPECIFIED", "EXECUTION_HISTORY_BASIC", "EXECUTION_HISTORY_DETAILED". Consult documentation for more info
-  executionHistoryLevel: "EXECUTION_HISTORY_DETAILED"
-  kmsCryptoKeyRef:
-    name: workflowsworkflow-dep
-  labels:
-    category1: "label1"
-    category2: "label2"
-  location: us-central1
-  projectRef:
-    # Replace ${PROJECT_ID?} with your project ID
-    external: ${PROJECT_ID?}
-  # If unspecified, metadata.name will be used
-  resourceID: workflow-sample
-  serviceAccountRef:
-    name: workflowsworkflow-dep
-  sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: var1\n        result: inputVar\n    - returnOutput:\n        return: '${inputVar}'\n"
-  userEnvVars:
-    var1: variable_value
-    var2: variable_value2
 ```
 
 

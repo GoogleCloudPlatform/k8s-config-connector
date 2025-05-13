@@ -74,7 +74,7 @@ type WorkflowsWorkflowSpec struct {
 	// If not provided, data associated with the workflow will not be
 	// CMEK-encrypted. Hello
 	// +optional
-	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"KMSCryptoKeyRef,omitempty"`
+	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	// Optional. Describes the level of platform logging to apply to calls and
 	// call responses during executions of this workflow. If both the workflow and
