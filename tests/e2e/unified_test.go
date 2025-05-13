@@ -81,7 +81,7 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.Name)
 				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
@@ -183,7 +183,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					t.Skip(skipTestReason)
 				}
 
-				ctx := addTestTimeout(ctx, t, subtestTimeout)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
@@ -1292,7 +1292,7 @@ func isOperationDone(s string) bool {
 }
 
 // addTestTimeout will ensure the test fails if not completed before timeout
-func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
+func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 
 	done := false
@@ -1300,7 +1300,7 @@ func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) co
 	t.Cleanup(func() {
 		done = true
 		if timedOut {
-			t.Fatalf("FAIL: subtest timeout after %v", timeout)
+			t.Fatalf("FAIL: subtest %s timeout after %v", name, timeout)
 		}
 		cancel()
 	})
