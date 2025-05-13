@@ -266,6 +266,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
     }
   },
   "appProfileId": "bigtableappprofile-${uniqueId}",
+  "ignoreWarnings": true,
   "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
 }
 
