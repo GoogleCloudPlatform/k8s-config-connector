@@ -188,7 +188,20 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 			return fmt.Errorf("updating Instance %s: %w", a.id, err)
 		}
 	}
-	if paths.Has("shieldedInstanceConfig") {
+	if paths.HasAny("shielded_instance_config.enable_secure_boot", "shielded_instance_config.enable_vtpm", "shielded_instance_config.enable_integrity_monitoring") {
+		// stops the instance first before update the shielded instance config
+		stopReq := &notebookspb.StopInstanceRequest{
+			Name: a.id.String(),
+		}
+		stopOp, err := a.gcpClient.StopInstance(ctx, stopReq)
+		if err != nil {
+			return fmt.Errorf("stopping Instance %s: %w", a.id, err)
+		}
+		_, err = stopOp.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("instance %s waiting to stop: %w", a.id, err)
+		}
+		// updates the shielded instance config
 		req := &notebookspb.UpdateShieldedInstanceConfigRequest{
 			Name:                   a.id.String(),
 			ShieldedInstanceConfig: desiredPb.ShieldedInstanceConfig,
@@ -197,9 +210,22 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		if err != nil {
 			return fmt.Errorf("updating Instance %s: %w", a.id, err)
 		}
-		updated, err = op.Wait(ctx)
+		_, err = op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("instance %s waiting creation: %w", a.id, err)
+			return fmt.Errorf("instance %s waiting update: %w", a.id, err)
+		}
+
+		// starts the instance first before update the shielded instance config
+		startReq := &notebookspb.StartInstanceRequest{
+			Name: a.id.String(),
+		}
+		startOp, err := a.gcpClient.StartInstance(ctx, startReq)
+		if err != nil {
+			return fmt.Errorf("starting Instance %s: %w", a.id, err)
+		}
+		updated, err = startOp.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("instance %s waiting to start: %w", a.id, err)
 		}
 	}
 
