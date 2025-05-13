@@ -2159,8 +2159,6 @@
 [missing_field] crd=iampolicymembers.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.condition.expression" is not set in unstructured objects
 [missing_field] crd=iampolicymembers.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.condition.title" is not set in unstructured objects
 [missing_field] crd=iamserviceaccountkeys.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.publicKeyData" is not set in unstructured objects
-[missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=iamworkforcepoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.clientSecret.value.plainText.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.domains[]" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.enable" is not set in unstructured objects
