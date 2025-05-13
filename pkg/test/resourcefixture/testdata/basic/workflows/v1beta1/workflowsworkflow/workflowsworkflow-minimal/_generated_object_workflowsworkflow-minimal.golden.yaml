@@ -1,4 +1,4 @@
-apiVersion: workflows.cnrm.cloud.google.com/v1alpha1
+apiVersion: workflows.cnrm.cloud.google.com/v1beta1
 kind: WorkflowsWorkflow
 metadata:
   annotations:
@@ -14,7 +14,7 @@ metadata:
 spec:
   description: Updated Example workflow
   labels:
-    env: dev
+    env: test
   location: us-central1
   projectRef:
     external: ${projectId}
