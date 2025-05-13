@@ -41,7 +41,6 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 	if err != nil {
 		return nil, err
 	}
-	project := name.Project
 
 	fqn := name.String()
 
@@ -61,29 +60,93 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 		}
 	}
 
-	if create {
-		service = &pb.Service{
-			Name:   fqn,
-			Parent: fmt.Sprintf("projects/%d", project.Number),
-			State:  pb.State_ENABLED,
-		}
+	changed := false
+	if service.GetState() != pb.State_ENABLED {
+		changed = true
+		if create {
+			service = &pb.Service{
+				Name:   fqn,
+				Parent: fmt.Sprintf("projects/%d", name.Project.Number),
+				State:  pb.State_ENABLED,
+			}
 
-		if err := s.storage.Create(ctx, fqn, service); err != nil {
-			return nil, err
-		}
-	} else {
-		service.State = pb.State_ENABLED
-		if err := s.storage.Update(ctx, fqn, service); err != nil {
-			return nil, err
+			if err := s.storage.Create(ctx, fqn, service); err != nil {
+				return nil, err
+			}
+		} else {
+			service.State = pb.State_ENABLED
+			if err := s.storage.Update(ctx, fqn, service); err != nil {
+				return nil, err
+			}
 		}
 	}
 
-	prefix := ""
-	metadata := &emptypb.Empty{}
-	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		response := &pb.EnableServiceResponse{
-			Service: service,
+	lroPrefix := ""
+
+	response := &pb.EnableServiceResponse{
+		Service: service,
+	}
+	if !changed {
+		return s.operations.DoneLRO(ctx, lroPrefix, nil, response)
+	} else {
+		return s.operations.StartLRO(ctx, lroPrefix, &emptypb.Empty{}, func() (proto.Message, error) {
+			return response, nil
+		})
+	}
+}
+
+func (s *ServiceUsageV1) BatchEnableServices(ctx context.Context, req *pb.BatchEnableServicesRequest) (*longrunning.Operation, error) {
+	name, err := s.parseServiceName(req.GetParent() + "/services/placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.OperationMetadata{}
+	response := &pb.BatchEnableServicesResponse{}
+	for _, serviceID := range req.GetServiceIds() {
+		name.ServiceName = serviceID
+		fqn := name.String()
+
+		// Verify that this is a known service
+		if !isKnownService(name.ServiceName) {
+			return nil, status.Errorf(codes.PermissionDenied, "Not found or permission denied for service(s): %v", name.ServiceName)
 		}
+
+		exists := true
+		service := &pb.Service{}
+		if err := s.storage.Get(ctx, fqn, service); err != nil {
+			if status.Code(err) == codes.NotFound {
+				exists = false
+			} else {
+				return nil, err
+			}
+		}
+
+		if service.GetState() != pb.State_ENABLED {
+			if !exists {
+				service = &pb.Service{
+					Name:   fqn,
+					Parent: fmt.Sprintf("projects/%d", name.Project.Number),
+					State:  pb.State_ENABLED,
+				}
+
+				if err := s.storage.Create(ctx, fqn, service); err != nil {
+					return nil, err
+				}
+			} else {
+				service.State = pb.State_ENABLED
+				if err := s.storage.Update(ctx, fqn, service); err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		metadata.ResourceNames = append(metadata.ResourceNames, fmt.Sprintf("services/%s/projectSettings/%d", name.ServiceName, name.Project.Number))
+		response.Services = append(response.Services, service)
+	}
+
+	prefix := ""
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		return response, nil
 	})
 }
@@ -131,19 +194,19 @@ func (s *ServiceUsageV1) DisableService(ctx context.Context, req *pb.DisableServ
 }
 
 func (s *ServiceUsageV1) GetService(ctx context.Context, req *pb.GetServiceRequest) (*pb.Service, error) {
-	serviceName, err := s.parseServiceName(req.Name)
+	name, err := s.parseServiceName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	fqn := serviceName.String()
+	fqn := name.String()
 
 	obj := &pb.Service{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			// Mock: everything is enabled
 			obj = &pb.Service{
-				Name:  serviceName.String(),
+				Name:  name.String(),
 				State: pb.State_DISABLED,
 			}
 		} else {
