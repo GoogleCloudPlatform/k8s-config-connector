@@ -348,10 +348,10 @@ type Workflow struct {
 	ExecutionHistoryLevel ExecutionHistoryLevel `protobuf:"varint,15,opt,name=execution_history_level,json=executionHistoryLevel,proto3,enum=mockgcp.cloud.workflows.v1.ExecutionHistoryLevel" json:"execution_history_level,omitempty"`
 	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
 	// data associated with the workflow.
-	AllKMSKeys []string `protobuf:"bytes,16,rep,name=all_kms_keys,json=allKmsKeys,proto3" json:"all_kms_keys,omitempty"`
+	AllKmsKeys []string `protobuf:"bytes,16,rep,name=all_kms_keys,json=allKmsKeys,proto3" json:"all_kms_keys,omitempty"`
 	// Output only. A list of all KMS crypto key versions used to encrypt or
 	// decrypt the data associated with the workflow.
-	AllKMSKeysVersions []string `protobuf:"bytes,17,rep,name=all_kms_keys_versions,json=allKmsKeysVersions,proto3" json:"all_kms_keys_versions,omitempty"`
+	AllKmsKeysVersions []string `protobuf:"bytes,17,rep,name=all_kms_keys_versions,json=allKmsKeysVersions,proto3" json:"all_kms_keys_versions,omitempty"`
 	// Output only. The resource name of a KMS crypto key version used to encrypt
 	// or decrypt the data associated with the workflow.
 	//
@@ -506,16 +506,16 @@ func (x *Workflow) GetExecutionHistoryLevel() ExecutionHistoryLevel {
 	return ExecutionHistoryLevel_EXECUTION_HISTORY_LEVEL_UNSPECIFIED
 }
 
-func (x *Workflow) GetAllKMSKeys() []string {
+func (x *Workflow) GetAllKmsKeys() []string {
 	if x != nil {
-		return x.AllKMSKeys
+		return x.AllKmsKeys
 	}
 	return nil
 }
 
-func (x *Workflow) GetAllKMSKeysVersions() []string {
+func (x *Workflow) GetAllKmsKeysVersions() []string {
 	if x != nil {
-		return x.AllKMSKeysVersions
+		return x.AllKmsKeysVersions
 	}
 	return nil
 }
