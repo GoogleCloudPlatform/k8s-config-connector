@@ -27,71 +27,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const SCRIPT_YAML_PROMPT string = `I am trying to create a test case for mockgcp.
-
-A good test case for mockgcp does the basic operations on a GCP resource by using gcloud to create, list, describe and delete the resource.  It can also do a simple update.
-
-For example, if asked to create a mockgcp test for the gcloud commands under <TICK>gcloud pubsub topics<TICK>, we create the file mockpubsub/testdata/topic/crud/script.yaml with the following contents:
-
-<TICK><TICK><TICK>script.yaml
-- exec: gcloud pubsub topics create test-${uniqueId}
-- exec: gcloud pubsub topics describe test-${uniqueId}
-- exec: gcloud pubsub topics delete test-${uniqueId}
-<TICK><TICK><TICK>
-
-Or to create mockgcp test for the gcloud commands under <TICK>gcloud storage buckets<TICK> we create the file mockstorage/testdata/bucket/crud/script.yaml with the following contents:
-
-<TICK><TICK><TICK>script.yaml
-- exec: gcloud storage buckets create gs://test-${uniqueId}
-- exec: gcloud storage buckets describe gs://test-${uniqueId}
-- exec: gcloud storage buckets delete gs://test-${uniqueId}
-<TICK><TICK><TICK>
-
-Depended resources must be created first and prepended with -pre and cleaned up at the end prepended with -post.  Example pre and post usage:
-<TICK><TICK><TICK>script.yaml
-- pre: gcloud pubsub topics create test-topic-${uniqueId} --project=${projectId}
-- exec: gcloud asset feeds create test-${uniqueId} --pubsub-topic=projects/${projectId}/topics/test-topic-${uniqueId} --project=${projectId}
-- exec: gcloud asset feeds describe test-${uniqueId} --project=${projectId}
-- exec: gcloud asset feeds update test-${uniqueId} --project=${projectId} --content-type=resource
-- exec: gcloud asset feeds delete test-${uniqueId} --project=${projectId}
-- post: gcloud pubsub topics delete test-topic-${uniqueId} --project=${projectId}
-<TICK><TICK><TICK>
-
-Some hints:
-
-* You should use the CreateFile method to create the script.yaml file in the appropriate directory.  You can use ListFilesInWorkspace to make sure that you are creating a test in a new directory.
-
-* You can run the help command to see the available subcommands, for example you might run <TICK>gcloud pubsub topics --help<TICK>.
-If you want to see the flags for any individual commands, you can run the help for them also, for example you might run <TICK>gcloud pubsub topics create --help<TICK>.
-
-* You should run the help command for each command you output, to verify the flags and arguments of the commands.
-
-* If you must specify a project, use the --project flag with this variable ${projectId}, for example <TICK>gcloud pubsub topics create test-${uniqueId} --project=${projectId}<TICK>.
-
-* If you must use project in a resource path, use this variable ${projectId}, for example <TICK>gcloud data-catalog tags create --entry=projects/${projectId}/locations/us-central1/entryGroups/test-entry-group/entries/test-entry-${uniqueId} --tag=test-tag-${uniqueId}<TICK>
-
-* The allowed variables are:
-  * ${projectId} - The project ID to use for the test.
-  * ${uniqueId} - A unique ID to use for the test.
-  * ${BILLING_ACCOUNT_ID} - The billing account ID to use for the test.
-  * ${organizationId} - The organization ID if mandatory in the command.
-  * ${projectNumber} - The project number to use for the test.
-
-* If the resource requires dependent resources, you should create them in the same script.yaml file.
-
-* Depended resources must be created first and prepended with -pre
-
-* Depended resources must be cleaned up at the end prepended with -post
-
-* Most importantly make sure that all required parameters and flags are included in the commands
-
-Please create a test case for the gcloud commands under <TICK><GCLOUD_COMMAND><TICK>
-Please create the test case in the file <TICK>mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml<TICK>
-
-When you have completed, please output the name of the test script you have created, in a JSON format like this:
-
-{ "path_to_created_test": "mock<GROUP>/testdata/<RESOURCE>/crud/script.yaml" }`
-
 // BranchScript represents script data for a branch
 type BranchScript struct {
 	Name        string              `yaml:"name"`           // Branch name
@@ -103,50 +38,6 @@ type BranchScript struct {
 // ScriptData represents the collection of scripts
 type ScriptData struct {
 	Branches []BranchScript `yaml:"branches"`
-}
-
-func createScriptYaml(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
-	var affectedPaths []string
-
-	if branch.Command == "" {
-		return affectedPaths, nil, fmt.Errorf("no gcloud command")
-	}
-
-	// Check to see if the script file already exists
-	scriptFileRelativePath := filepath.Join("mockgcp", fmt.Sprintf("mock%s", branch.Group), "testdata", branch.Resource, "crud", "script.yaml")
-	scriptFilePath := filepath.Join(opts.branchRepoDir, scriptFileRelativePath)
-
-	// Check if file exists and handle force flag
-	if _, err := os.Stat(scriptFilePath); err != nil {
-		if !errors.Is(err, os.ErrNotExist) {
-			log.Printf("ERROR checking file %s: %v", scriptFilePath, err)
-			return affectedPaths, nil, err
-		}
-	} else if opts.force {
-		if err := os.Remove(scriptFilePath); err != nil {
-			log.Printf("ERROR deleting existing file %s: %v", scriptFilePath, err)
-			return affectedPaths, nil, err
-		}
-	} else {
-		log.Printf("SKIPPING %s, %s already exists", branch.Name, scriptFilePath)
-		return affectedPaths, nil, nil
-	}
-
-	// Delete then write the prompt file.
-	promptPath := filepath.Join(opts.loggingDir, branch.Name, "create-script-prompt.txt")
-	writeTemplateToFile(branch, promptPath, SCRIPT_YAML_PROMPT)
-
-	// Run the LLM to generate the file.
-	cfg := CommandConfig{
-		Name:         "Generate script",
-		Cmd:          "codebot",
-		Args:         []string{"--ui-type=prompt", "--prompt=" + promptPath},
-		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),
-		RetryBackoff: GenerativeCommandRetryBackoff,
-	}
-	results, err := executeCommand(opts, cfg)
-	affectedPaths = append(affectedPaths, scriptFileRelativePath)
-	return affectedPaths, &results, err
 }
 
 func enableAPIs(opts *RunnerOptions, branch Branch) {
