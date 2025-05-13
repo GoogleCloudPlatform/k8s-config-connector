@@ -60,6 +60,9 @@ const (
 	COMMIT_MSG_47  = "{{kind}}: Record golden logs for mock GCP tests"
 	COMMIT_MSG_48  = "{{kind}}: Verify and Fix mock GCP tests"
 	COMMIT_MSG_50  = "{{kind}}: Move existing test to subdirectory"
+	COMMIT_MSG_51A = "{{kind}}: Move existing test to subdirectory before creating maximal test"
+	COMMIT_MSG_51B = "{{kind}}: Create maximal test"
+	COMMIT_MSG_51C = "{{kind}}: Enable test with mockgcp"
 )
 
 var REGEX_MSG_9A = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_9A))
@@ -98,6 +101,8 @@ var REGEX_MSG_46 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_46))
 var REGEX_MSG_47 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_47))
 var REGEX_MSG_48 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_48))
 var REGEX_MSG_50 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_50))
+var REGEX_MSG_51A = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_51A))
+var REGEX_MSG_51 = regexp.MustCompile(convertCommitMsgToRegex(COMMIT_MSG_51B, COMMIT_MSG_51C))
 
 func skipPost21A(msg string) bool {
 	return REGEX_MSG_21A.MatchString(msg)
@@ -123,12 +128,25 @@ func skipPost21F(msg string) bool {
 	return skipPost21E(msg) || REGEX_MSG_21A.MatchString(msg)
 }
 
-func convertCommitMsgToRegex(msg string) string {
-	tmp := strings.ReplaceAll(msg, "{{kind}}", "[a-zA-Z]+")
-	tmp = strings.ReplaceAll(tmp, "{{command}}", "") // handled by terminating ".*"
-	tmp = strings.ReplaceAll(tmp, "{{group}}", "[a-zA-Z]+")
-	tmp = strings.ReplaceAll(tmp, "{{resource}}", "[a-zA-Z]+")
-	return "^ *" + tmp + ".*$"
+func skipPost51A(msg string) bool {
+	return REGEX_MSG_50.MatchString(msg) || REGEX_MSG_51A.MatchString(msg)
+}
+
+func convertCommitMsgToRegex(possibleMsgs ...string) string {
+	var result string
+	for i, msg := range possibleMsgs {
+		tmp := strings.ReplaceAll(msg, "{{kind}}", "[a-zA-Z]+")
+		tmp = strings.ReplaceAll(tmp, "{{command}}", "") // handled by terminating ".*"
+		tmp = strings.ReplaceAll(tmp, "{{group}}", "[a-zA-Z]+")
+		tmp = strings.ReplaceAll(tmp, "{{resource}}", "[a-zA-Z]+")
+		// Add grouping for better readability when there are more than one msg template.
+		tmp = "(" + tmp + ")"
+		if i > 0 {
+			tmp = "|" + tmp
+		}
+		result = result + tmp
+	}
+	return "^ *" + result + ".*$"
 }
 
 func createGithubBranch(opts *RunnerOptions, branch Branch) {

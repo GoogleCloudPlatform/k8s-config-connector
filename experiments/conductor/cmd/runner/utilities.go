@@ -65,6 +65,7 @@ var commandMap = map[int64]string{
 	cmdCaptureGoldenMockOutput:      "capturegoldenmockoutput",
 	cmdRunAndFixGoldenMockOutput:    "runandfixgoldenmockoutput",
 	cmdMoveExistingTest:             "moveexistingtest",
+	cmdCreateFullTest:               "createfulltest",
 }
 
 type exitBash func()
@@ -134,7 +135,7 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-func checkLocalChanges(ctx context.Context, branch Branch, workDir string, option string) {
+func handleLocalChanges(ctx context.Context, branch Branch, workDir string, option string) {
 	log.Print("Checking uncommitted changes: git status --porcelain")
 	statusCmd := exec.CommandContext(ctx, "git", "status", "--porcelain")
 	statusCmd.Dir = workDir
@@ -873,7 +874,7 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, skip
 	if opts.handleLocalChange == "" {
 		opts.handleLocalChange = handleLocalChangeOptionCleanUp
 	}
-	checkLocalChanges(ctx, branch, opts.branchRepoDir, opts.handleLocalChange)
+	handleLocalChanges(ctx, branch, opts.branchRepoDir, opts.handleLocalChange)
 	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
 	// Run git diff command
