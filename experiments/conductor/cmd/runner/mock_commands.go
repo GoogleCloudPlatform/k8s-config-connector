@@ -429,6 +429,7 @@ func captureHttpLog(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 		Cmd:  "go",
 		Args: []string{
 			"test", "./mockgcptests",
+			"-v", // verbose
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
@@ -702,6 +703,7 @@ func runMockgcpTests(ctx context.Context, opts *RunnerOptions, branch Branch, ex
 		Cmd:  "go",
 		Args: []string{
 			"test", "./mockgcptests",
+			"-v", // verbose
 			"-run", fmt.Sprintf("TestScripts/mock%s/testdata/%s/crud", branch.Group, branch.Resource),
 			"-timeout", fmt.Sprintf("%s", opts.timeout),
 		},
