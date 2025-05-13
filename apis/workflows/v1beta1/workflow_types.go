@@ -71,9 +71,9 @@ type WorkflowsWorkflowSpec struct {
 	// Optional. The resource name of a KMS crypto key used to encrypt or decrypt
 	// the data associated with the workflow.
 	// If not provided, data associated with the workflow will not be
-	// CMEK-encrypted.
+	// CMEK-encrypted. Hello
 	// +optional
-	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
+	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"KMSCryptoKeyRef,omitempty"`
 
 	// Optional. Describes the level of platform logging to apply to calls and
 	// call responses during executions of this workflow. If both the workflow and
@@ -148,11 +148,11 @@ type WorkflowsWorkflowObservedState struct {
 
 	// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
 	// data associated with the workflow.
-	AllKMSKeys []refs.KMSCryptoKeyRef `json:"allKmsKeys,omitempty"`
+	AllKMSKeys []refs.KMSCryptoKeyRef `json:"allKMSKeys,omitempty"`
 
 	// Output only. A list of all KMS crypto key versions used to encrypt or
 	// decrypt the data associated with the workflow.
-	AllKMSKeysVersions []string `json:"allKmsKeysVersions,omitempty"`
+	AllKMSKeysVersions []string `json:"allKMSKeysVersions,omitempty"`
 
 	// Output only. The resource name of a KMS crypto key version used to encrypt
 	// or decrypt the data associated with the workflow.
