@@ -1147,12 +1147,12 @@ sigs.k8s.io/controller-tools v0.16.5 h1:5k9FNRqziBPwqr17AMEPPV/En39ZBplLAdOwwQHr
 sigs.k8s.io/controller-tools v0.16.5/go.mod h1:8vztuRVzs8IuuJqKqbXCSlXcw+lkAv/M2sTpg55qjMY=
 sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 h1:/Rv+M11QRah1itp8VhT6HoVx1Ray9eB4DBr+K+/sCJ8=
 sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3/go.mod h1:18nIHnGi6636UCz6m8i4DhaJ65T6EruyzmoQqI2BVDo=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1 h1:5rDs6JqJFiLjj5k1lZUmo5o3wU6k5C308P5PZAVvujw=
-sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1/go.mod h1:JCXi+/YN5TSkI1xoAb4zkDgaU57ds6oXPjqft4tGiQQ=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730 h1:ScBLFA+p3cYk39rvECI4S8tfQxlve3MeV29WToScngc=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.20.0-beta.1.0.20250514194322-871029137730/go.mod h1:JCXi+/YN5TSkI1xoAb4zkDgaU57ds6oXPjqft4tGiQQ=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923 h1:5xT48TQEgFjPIehWDhGU76IHEe7aA8+m+3YfrSqbi+I=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923/go.mod h1:tVK41IKmejKA0fzCtV4VOXvbaGrzIadep/i1WKas99A=
-sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20240909164454-57a043fb3ad5 h1:G46XjE6VYdtU5SquJzyFUcnjJeKA0I4y8lY2u3X36Zo=
-sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20240909164454-57a043fb3ad5/go.mod h1:stNLmJyTNH0IdihVwy2uSxSROTO+DgiL0YpQz1ZJYJc=
+sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 h1:oOo9Deqom/QA6mWWEt8G3H7r7JKejkj2HOqlVRZrxiU=
+sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730/go.mod h1:aeapOP1DpzHTxam+EMh/2QKj5brSexc4IDu6g7tuY/w=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b h1:VcgyLj8SawHulvC24SRgI37mnhMmR3hW+ZVqZGBmkbc=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b/go.mod h1:smCBkOX4Z3K9+MUGAscbschHAYgbuRZ+Pri49+x2zTc=
 sigs.k8s.io/kustomize/api v0.18.0 h1:hTzp67k+3NEVInwz5BHyzc9rGxIauoXferXyjv5lWPo=
