@@ -65,6 +65,7 @@ jobs:
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
           version: '520.0.0'
+          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/test-mockgcp"
         run: |
           ./dev/ci/presubmits/test-mockgcp
