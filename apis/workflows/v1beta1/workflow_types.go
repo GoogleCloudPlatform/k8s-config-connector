@@ -43,6 +43,7 @@ type Parent struct {
 // WorkflowsWorkflowSpec defines the desired state of Workflow
 // +kcc:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
+	// +required
 	Parent `json:",inline"`
 
 	// Description of the workflow provided by the user.
