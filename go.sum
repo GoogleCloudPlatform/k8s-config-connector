@@ -43,8 +43,8 @@ cloud.google.com/go/cloudquotas v1.3.2 h1:mTrWHKc5YO/YWNTM0YN8lPG5ThdGlKNR3YYjM7
 cloud.google.com/go/cloudquotas v1.3.2/go.mod h1:RLorUrq9F4/HKW+B7TDM8nJJOIDvID0WWm5a0uyF3bs=
 cloud.google.com/go/cloudtasks v1.13.3 h1:rXdznKjCa7WpzmvR2plrn2KJ+RZC1oYxPiRWNQjjf3k=
 cloud.google.com/go/cloudtasks v1.13.3/go.mod h1:f9XRvmuFTm3VhIKzkzLCPyINSU3rjjvFUsFVGR5wi24=
-cloud.google.com/go/compute v1.34.0 h1:+k/kmViu4TEi97NGaxAATYtpYBviOWJySPZ+ekA95kk=
-cloud.google.com/go/compute v1.34.0/go.mod h1:zWZwtLwZQyonEvIQBuIa0WvraMYK69J5eDCOw9VZU4g=
+cloud.google.com/go/compute v1.37.0 h1:XxtZlXYkZXub3LNaLu90TTemcFqIU1yZ4E4q9VlR39A=
+cloud.google.com/go/compute v1.37.0/go.mod h1:AsK4VqrSyXBo4SMbRtfAO1VfaMjUEjEwv1UB/AwVp5Q=
 cloud.google.com/go/compute/metadata v0.6.0 h1:A6hENjEsCDtC1k8byVsgwvVcioamEHvZ4j01OwKxG9I=
 cloud.google.com/go/compute/metadata v0.6.0/go.mod h1:FjyFAW1MW0C203CEOMDTu3Dk1FlqW3Rga40jzHL4hfg=
 cloud.google.com/go/datacatalog v1.24.3 h1:3bAfstDB6rlHyK0TvqxEwaeOvoN9UgCs2bn03+VXmss=
