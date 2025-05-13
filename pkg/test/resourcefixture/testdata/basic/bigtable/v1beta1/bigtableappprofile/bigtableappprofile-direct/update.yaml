@@ -18,6 +18,7 @@ metadata:
   name: bigtableappprofile-${uniqueId}
   annotations:
     cnrm.cloud.google.com/ignore-warnings: "true"
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   description: Updated description.
   instanceRef:
