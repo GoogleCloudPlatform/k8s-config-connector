@@ -321,7 +321,21 @@ spec:
           spec:
             description: WorkflowsWorkflowSpec defines the desired state of Workflow
             properties:
-              KMSCryptoKeyRef:
+              callLogLevel:
+                description: Optional. Describes the level of platform logging to
+                  apply to calls and call responses during executions of this workflow.
+                  If both the workflow and the execution specify a logging level,
+                  the execution level takes precedence.
+                type: string
+              description:
+                description: Description of the workflow provided by the user. Must
+                  be at most 1000 unicode characters long.
+                type: string
+              executionHistoryLevel:
+                description: Optional. Describes the execution history level to apply
+                  to this workflow.
+                type: string
+              kmsCryptoKeyRef:
                 description: Optional. The resource name of a KMS crypto key used
                   to encrypt or decrypt the data associated with the workflow. If
                   not provided, data associated with the workflow will not be CMEK-encrypted.
@@ -352,20 +366,6 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              callLogLevel:
-                description: Optional. Describes the level of platform logging to
-                  apply to calls and call responses during executions of this workflow.
-                  If both the workflow and the execution specify a logging level,
-                  the execution level takes precedence.
-                type: string
-              description:
-                description: Description of the workflow provided by the user. Must
-                  be at most 1000 unicode characters long.
-                type: string
-              executionHistoryLevel:
-                description: Optional. Describes the execution history level to apply
-                  to this workflow.
-                type: string
               labels:
                 additionalProperties:
                   type: string
