@@ -153,7 +153,6 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "immutable": false,
   "network": "${networkID}",
   "peering": "FOR_SELF",
   "prefixLength": 24,
