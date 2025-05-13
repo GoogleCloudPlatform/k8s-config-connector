@@ -66,13 +66,13 @@ Workflows provides programmable control for low latency, reliable orchestration 
 ### Spec
 #### Schema
 ```yaml
-callLogLevel: string
-description: string
-executionHistoryLevel: string
-kmsCryptoKeyRef:
+KMSCryptoKeyRef:
   external: string
   name: string
   namespace: string
+callLogLevel: string
+description: string
+executionHistoryLevel: string
 labels:
   string: string
 location: string
@@ -102,6 +102,46 @@ userEnvVars:
 <tbody>
     <tr>
         <td>
+            <p><code>KMSCryptoKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted. Hello{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>KMSCryptoKeyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>KMSCryptoKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>KMSCryptoKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>callLogLevel</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -128,46 +168,6 @@ userEnvVars:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Optional. Describes the execution history level to apply to this workflow.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>kmsCryptoKeyRef</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. The resource name of a KMS crypto key used to encrypt or decrypt the data associated with the workflow. If not provided, data associated with the workflow will not be CMEK-encrypted.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>kmsCryptoKeyRef.external</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>kmsCryptoKeyRef.name</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>kmsCryptoKeyRef.namespace</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -337,11 +337,11 @@ conditions:
 externalRef: string
 observedGeneration: integer
 observedState:
-  allKmsKeys:
+  allKMSKeys:
   - external: string
     name: string
     namespace: string
-  allKmsKeysVersions:
+  allKMSKeysVersions:
   - string
   createTime: string
   cryptoKeyVersion: string
@@ -432,49 +432,49 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeys</code></td>
+        <td><code>observedState.allKMSKeys</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
             <p>{% verbatim %}Output only. A list of all KMS crypto keys used to encrypt or decrypt the data associated with the workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeys[]</code></td>
+        <td><code>observedState.allKMSKeys[]</code></td>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeys[].external</code></td>
+        <td><code>observedState.allKMSKeys[].external</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeys[].name</code></td>
+        <td><code>observedState.allKMSKeys[].name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeys[].namespace</code></td>
+        <td><code>observedState.allKMSKeys[].namespace</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeysVersions</code></td>
+        <td><code>observedState.allKMSKeysVersions</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
             <p>{% verbatim %}Output only. A list of all KMS crypto key versions used to encrypt or decrypt the data associated with the workflow.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.allKmsKeysVersions[]</code></td>
+        <td><code>observedState.allKMSKeysVersions[]</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
