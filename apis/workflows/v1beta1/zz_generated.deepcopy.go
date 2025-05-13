@@ -239,8 +239,8 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.KmsCryptoKeyRef != nil {
-		in, out := &in.KmsCryptoKeyRef, &out.KmsCryptoKeyRef
+	if in.KMSCryptoKeyRef != nil {
+		in, out := &in.KMSCryptoKeyRef, &out.KMSCryptoKeyRef
 		*out = new(refsv1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
