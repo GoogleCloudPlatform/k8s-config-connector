@@ -62,6 +62,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '520.0.0'
       - name: "Run dev/ci/presubmits/test-mockgcp"
         run: |
           ./dev/ci/presubmits/test-mockgcp
