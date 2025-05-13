@@ -110,6 +110,10 @@ spec:
               multiClusterRoutingUseAny:
                 description: Use a multi-cluster routing policy.
                 type: boolean
+              multiClusterRoutingUseAnyRowAffinity:
+                description: Use row-affinity sticky routing (only works if using
+                  multi-cluster-routing)
+                type: boolean
               resourceID:
                 description: The BigtableAppProfile name. If not given, the metadata.name
                   will be used.

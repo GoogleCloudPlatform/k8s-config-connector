@@ -45,6 +45,9 @@ type BigtableAppProfileSpec struct {
 	// Use a multi-cluster routing policy.
 	MultiClusterRoutingUseAny *bool `json:"multiClusterRoutingUseAny,omitempty"`
 
+	// Use row-affinity sticky routing (only works if using multi-cluster-routing)
+	MultiClusterRoutingUseAnyRowAffinity *bool `json:"multiClusterRoutingUseAnyRowAffinity,omitempty"`
+
 	// Use a single-cluster routing policy.
 	// +kcc:proto:field=google.bigtable.admin.v2.AppProfile.single_cluster_routing
 	SingleClusterRouting *AppProfile_SingleClusterRouting `json:"singleClusterRouting,omitempty"`
