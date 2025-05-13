@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -99,20 +100,6 @@ func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	location := obj.Spec.Location
-	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
-	}
-
-	collectionID := obj.Spec.Collection
-	if collectionID == "" {
-		return nil, fmt.Errorf("cannot resolve collection")
-	}
 
 	// Get desired ID
 	resourceID := valueOf(obj.Spec.ResourceID)
@@ -126,10 +113,10 @@ func NewDiscoveryEngineDataStoreIDFromObject(ctx context.Context, reader client.
 	id := &DiscoveryEngineDataStoreID{
 		CollectionLink: &CollectionLink{
 			ProjectAndLocation: &ProjectAndLocation{
-				ProjectID: projectID,
-				Location:  location,
+				ProjectID: projectRef.ProjectID,
+				Location:  direct.ValueOf(obj.Spec.Location),
 			},
-			Collection: collectionID,
+			Collection: direct.ValueOf(obj.Spec.Collection),
 		},
 		DataStore: resourceID,
 	}

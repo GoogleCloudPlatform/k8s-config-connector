@@ -75,7 +75,7 @@ var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, err
 		}
 	}
 	if diff && IsFieldBehavior(aField, annotations.FieldBehavior_IMMUTABLE) {
-		return false, fmt.Errorf("change to immutable field %s", fieldName)
+		return false, fmt.Errorf("change to immutable field %q", fieldName)
 	}
 	return diff, nil
 }

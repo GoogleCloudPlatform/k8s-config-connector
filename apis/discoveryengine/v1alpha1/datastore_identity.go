@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -86,8 +87,8 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Location != direct.ValueOf(location) {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,7 +98,7 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 	return &DataStoreIdentity{
 		parent: &DataStoreParent{
 			ProjectID: projectID,
-			Location:  location,
+			Location:  direct.ValueOf(location),
 		},
 		id: resourceID,
 	}, nil

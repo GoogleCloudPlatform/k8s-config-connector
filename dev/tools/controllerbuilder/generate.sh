@@ -25,8 +25,10 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 # DiscoveryEngine
+# TODO: We use service v1alpha instead of v1 because v1 has key feature missing. 
+
 go run . generate-types \
-    --service google.cloud.discoveryengine.v1 \
+    --service google.cloud.discoveryengine.v1alpha \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
     --resource DiscoveryEngineDataStore:DataStore \
     --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
@@ -37,7 +39,7 @@ go run . generate-types \
 # EOF
 
 go run . generate-mapper \
-    --service google.cloud.discoveryengine.v1 \
+    --service google.cloud.discoveryengine.v1alpha \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
 # DataFlow

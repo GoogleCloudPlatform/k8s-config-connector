@@ -1,0 +1,27 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineDataStore
+metadata:
+  name: datastore-${uniqueId}
+spec:
+  aclEnabled: true
+  collection: default_collection
+  contentConfig: NO_CONTENT
+  displayName: My updated data store
+  idpConfig:
+    externalIdpConfig:
+      workforcePoolName: locations/local/workforcePools/${uniqueId}
+    idpType: THIRD_PARTY
+  industryVertical: GENERIC
+  languageInfo:
+    languageCode: fr
+  location: global
+  projectRef:
+    external: ${projectId}
+  solutionTypes:
+  - SOLUTION_TYPE_RECOMMENDATION
+  - SOLUTION_TYPE_SEARCH
+  - SOLUTION_TYPE_RECOMMENDATION
+  - SOLUTION_TYPE_SEARCH
+  workspaceConfig:
+    dasherCustomerID: ${unitId}
+    type: GOOGLE_MAIL
