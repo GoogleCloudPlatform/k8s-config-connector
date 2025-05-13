@@ -50,7 +50,7 @@ require (
 	cloud.google.com/go/networkservices v0.2.4
 	cloud.google.com/go/notebooks v1.12.6
 	cloud.google.com/go/orchestration v1.11.4
-	cloud.google.com/go/privilegedaccessmanager v0.2.1
+	cloud.google.com/go/privilegedaccessmanager v0.2.5
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/pubsub v1.47.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.19.4
