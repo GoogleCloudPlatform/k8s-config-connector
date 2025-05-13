@@ -101,7 +101,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	}
 	out.SourceContents = direct.LazyPtr(in.GetSourceContents())
 	if in.GetCryptoKeyName() != "" {
-		out.KMSCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
+		out.KmsCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
 	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.GetUserEnvVars()
@@ -133,8 +133,8 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	if oneof := WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx, in.SourceContents); oneof != nil {
 		out.SourceCode = oneof
 	}
-	if in.KMSCryptoKeyRef != nil {
-		out.CryptoKeyName = in.KMSCryptoKeyRef.External
+	if in.KmsCryptoKeyRef != nil {
+		out.CryptoKeyName = in.KmsCryptoKeyRef.External
 	}
 	if in.CallLogLevel != nil {
 		out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
