@@ -1,0 +1,106 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: network-${uniqueId}
+spec:
+  description: first network
+  autoCreateSubnetworks: false
+
+---
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: subnetwork-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: "10.0.0.0/16"
+  networkRef:
+    name: network-${uniqueId}
+
+---
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-${uniqueId}
+spec:
+  location: "us-central1"
+
+---
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: merge
+  name: forwardingrule-${uniqueId}
+spec:
+  allowGlobalAccess: true
+  backendServiceRef:
+    name: computebackendservice-${uniqueId}
+  ipAddress:
+    ip: 10.0.1.2
+  ipProtocol: TCP
+  #ipVersion: IPV4 # This field is immutable and we will try to change it with recreation
+  loadBalancingScheme: INTERNAL
+  location: us-central1
+  networkRef:
+    name: network-${uniqueId}
+  networkTier: PREMIUM
+  ports:
+  - "443"
+  subnetworkRef:
+    name: subnetwork-${uniqueId}
+
+
+---
+
+TEST: ABANDON
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: merge
+  name: forwardingrule-${uniqueId}
+
+---
+
+TEST: APPLY-10-SEC # We expect a conflict on the ipVersion field
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: merge
+  name: forwardingrule-${uniqueId}
+spec:
+  allowGlobalAccess: true
+  backendServiceRef:
+    name: computebackendservice-${uniqueId}
+  ipAddress:
+    ip: 10.0.1.2
+  ipProtocol: TCP
+  ipVersion: IPV4
+  loadBalancingScheme: INTERNAL
+  location: us-central1
+  networkRef:
+    name: network-${uniqueId}
+  networkTier: PREMIUM
+  ports:
+  - "443"
+  subnetworkRef:
+    name: subnetwork-${uniqueId}
