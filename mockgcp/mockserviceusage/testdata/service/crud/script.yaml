@@ -1,0 +1,3 @@
+# Test for `gcloud services enable`
+- exec: gcloud services enable serviceusage.googleapis.com --project=${projectId}
+- exec: gcloud services enable compute.googleapis.com storage.googleapis.com --project=${projectId}
