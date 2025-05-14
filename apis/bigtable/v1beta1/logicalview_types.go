@@ -21,11 +21,24 @@ import (
 
 var BigtableLogicalViewGVK = GroupVersion.WithKind("BigtableLogicalView")
 
-// BigtableLogicalViewSpec defines the desired state of BigtableLogicalView
+type BigtableLogicalViewParent struct {
+	// +required
+	InstanceRef *InstanceRef `json:"instanceRef,omitempty"`
+}
+
+// BigtableLogicalViewSpec defines a state of BigtableLogicalView
 // +kcc:proto=google.bigtable.admin.v2.LogicalView
 type BigtableLogicalViewSpec struct {
 	// The BigtableLogicalView name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	Name *string `json:"resourceID,omitempty"`
+
+	BigtableLogicalViewParent `json:",inline"`
+
+	// The BigtableLogicalView's select query.
+	Query *string `json:"query,omitempty"`
+
+	// Optional. Set to true to make the LogicalView protected against deletion.
+	DeletionProtection *bool `json:"deletionProtection,omitempty"`
 }
 
 // BigtableLogicalViewStatus defines the config connector machine state of BigtableLogicalView
@@ -40,6 +53,11 @@ type BigtableLogicalViewStatus struct {
 	// A unique specifier for the BigtableLogicalView resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
+	// The unique name of the BigtableLogicalView. Values are of the form
+	//  `projects/{project}/instances/{instance}/logicalViews/{logicalViewID}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.LogicalView.name
+	Name *string `json:"name,omitempty"`
+
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *BigtableLogicalViewObservedState `json:"observedState,omitempty"`
 }
@@ -47,6 +65,8 @@ type BigtableLogicalViewStatus struct {
 // BigtableLogicalViewObservedState is the state of the BigtableLogicalView resource as most recently observed in GCP.
 // +kcc:proto=google.bigtable.admin.v2.LogicalView
 type BigtableLogicalViewObservedState struct {
+	// The observed state of the LogicalView object.
+	Spec BigtableLogicalViewSpec `json:"spec,omitempty"`
 }
 
 // +genclient

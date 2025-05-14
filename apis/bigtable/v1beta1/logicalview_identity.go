@@ -20,54 +20,53 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // LogicalViewIdentity defines the resource reference to BigtableLogicalView, which "External" field
 // holds the GCP identifier for the KRM object.
 type LogicalViewIdentity struct {
-	parent *LogicalViewParent
+	parent *InstanceIdentity
 	id     string
 }
 
 func (i *LogicalViewIdentity) String() string {
-	return i.parent.String() + "/logicalviews/" + i.id
+	return i.ParentString() + "/logicalViews/" + i.id
 }
 
 func (i *LogicalViewIdentity) ID() string {
 	return i.id
 }
 
-func (i *LogicalViewIdentity) Parent() *LogicalViewParent {
+func (i *LogicalViewIdentity) Parent() *InstanceIdentity {
 	return i.parent
 }
 
-type LogicalViewParent struct {
-	ProjectID string
-	Location  string
+func (i *LogicalViewIdentity) ParentString() string {
+	return i.parent.String()
 }
 
-func (p *LogicalViewParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+func (i *LogicalViewIdentity) ParentInstanceIdString() string {
+	return i.parent.Id
 }
 
 // New builds a LogicalViewIdentity from the Config Connector LogicalView object.
 func NewLogicalViewIdentity(ctx context.Context, reader client.Reader, obj *BigtableLogicalView) (*LogicalViewIdentity, error) {
 
 	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	instanceRef, err := obj.Spec.InstanceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	instanceParent, instanceID, err := ParseInstanceExternal(instanceRef)
+	if err != nil {
+		return nil, err
 	}
-	location := obj.Spec.Location
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	// TODO: validate that the spec _ (which is Instance matches instanceRef)
+	_, resourceID, err := ParseLogicalViewExternal(*obj.Spec.Name)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -83,11 +82,11 @@ func NewLogicalViewIdentity(ctx context.Context, reader client.Reader, obj *Bigt
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if actualParent.Parent.ProjectID != instanceParent.ProjectID {
+			return nil, fmt.Errorf("ProjectID changed, expect %s, got %s", actualParent.Parent.ProjectID, instanceParent.ProjectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Id != instanceID {
+			return nil, fmt.Errorf("InstanceID changed, expect %s, got %s", actualParent.Id, instanceID)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -95,23 +94,18 @@ func NewLogicalViewIdentity(ctx context.Context, reader client.Reader, obj *Bigt
 		}
 	}
 	return &LogicalViewIdentity{
-		parent: &LogicalViewParent{
-			ProjectID: projectID,
-			Location:  location,
+		parent: &InstanceIdentity{
+			Parent: instanceParent,
+			Id:     instanceID,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseLogicalViewExternal(external string) (parent *LogicalViewParent, resourceID string, err error) {
+func ParseLogicalViewExternal(external string) (*InstanceIdentity, string, error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "logicalviews" {
-		return nil, "", fmt.Errorf("format of BigtableLogicalView external=%q was not known (use projects/{{projectID}}/locations/{{location}}/logicalviews/{{logicalviewID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "instances" || tokens[4] != "logicalViews" {
+		return nil, "", fmt.Errorf("format of BigtableLogicalView external=%q was not known (use projects/{{projectID}}/instances/{{instance}}/logicalViews/{{logicalViewID}})", external)
 	}
-	parent = &LogicalViewParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return &InstanceIdentity{Parent: &parent.ProjectParent{ProjectID: tokens[1]}, Id: tokens[3]}, tokens[5], nil
 }
