@@ -61,6 +61,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
+	pb.RegisterAnywhereCachesServerServer(grpcServer, &anywhereCaches{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,6 +71,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterNotificationsServerHandler,
 		pb.RegisterFoldersServerHandler,
 		pb.RegisterManagedFoldersServerHandler,
+		pb.RegisterAnywhereCachesServerHandler,
 	)
 	if err != nil {
 		return nil, err
