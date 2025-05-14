@@ -15,6 +15,8 @@
 package bigtable
 
 import (
+	"fmt"
+
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -34,6 +36,10 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 		*isMultiClusterRouting = true
 		clusterIds := in.GetMultiClusterRoutingUseAny().ClusterIds
 		out.MultiClusterRoutingClusterIds = clusterIds
+		rowAffinity := in.GetMultiClusterRoutingUseAny().GetAffinity()
+		if rowAffinity != nil {
+			*out.MultiClusterRoutingUseAnyRowAffinity = true
+		}
 	}
 	out.MultiClusterRoutingUseAny = isMultiClusterRouting
 	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
@@ -54,10 +60,17 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	out.Description = direct.ValueOf(in.Description)
 	if oneof := in.MultiClusterRoutingUseAny; oneof != nil && *oneof {
 		clusterIds := in.MultiClusterRoutingClusterIds
+		var affinity *pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity_ = nil
+		fmt.Println("CHKPT toProto 1")
+		if rowAffinity := in.MultiClusterRoutingUseAnyRowAffinity; rowAffinity != nil && *rowAffinity {
+			affinity = &pb.AppProfile_MultiClusterRoutingUseAny_RowAffinity_{}
+			fmt.Println("CHKPT toProto 2")
+			fmt.Println(affinity)
+		}
 		out.RoutingPolicy = &pb.AppProfile_MultiClusterRoutingUseAny_{
 			MultiClusterRoutingUseAny: &pb.AppProfile_MultiClusterRoutingUseAny{
 				ClusterIds: clusterIds,
-				Affinity:   nil,
+				Affinity:   affinity,
 			},
 		}
 	}
@@ -71,5 +84,7 @@ func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Bi
 	if oneof := AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
 		out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
 	}
+	fmt.Println("CHKPT toProto 3")
+	fmt.Println(out.RoutingPolicy)
 	return out
 }

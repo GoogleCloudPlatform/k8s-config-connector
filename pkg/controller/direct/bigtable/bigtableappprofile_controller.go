@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	gcp "cloud.google.com/go/bigtable"
+	"cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -136,9 +137,13 @@ func (a *BigtableAppProfileAdapter) Find(ctx context.Context) (bool, error) {
 func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BigtableAppProfile", "name", a.id)
+	fmt.Println("CHKPT0")
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	// fmt.Println(desired)
+	// fmt.Println("\n Affinity=")
+	// fmt.Println(*desired.Spec.MultiClusterRoutingUseAnyRowAffinity)
 	resource := BigtableAppProfileSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -146,8 +151,14 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 
 	var routingConfig gcp.RoutingPolicyConfig
 	if multiClusterRouting := resource.GetMultiClusterRoutingUseAny(); multiClusterRouting != nil {
+		var affinity gcp.MultiClusterRoutingUseAnyAffinity = nil
+		rowAffinity, ok := resource.GetMultiClusterRoutingUseAny().GetAffinity().(*adminpb.AppProfile_MultiClusterRoutingUseAny_RowAffinity_)
+		if ok && rowAffinity != nil && rowAffinity.RowAffinity != nil {
+			affinity = &gcp.RowAffinity{}
+		}
 		routingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
+			Affinity:   affinity,
 		}
 	} else {
 		routingConfig = &gcp.SingleClusterRoutingConfig{
@@ -230,8 +241,14 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 		hasChanges = true
 	}
 	if desired.Spec.MultiClusterRoutingUseAny != nil && !cmp.Equal(resource.GetMultiClusterRoutingUseAny(), a.actual.GetMultiClusterRoutingUseAny(), cmpopts.IgnoreUnexported(bigtablepb.AppProfile_MultiClusterRoutingUseAny{})) {
+		var affinity gcp.MultiClusterRoutingUseAnyAffinity = nil
+		rowAffinity, ok := resource.GetMultiClusterRoutingUseAny().GetAffinity().(*adminpb.AppProfile_MultiClusterRoutingUseAny_RowAffinity_)
+		if ok && rowAffinity != nil && rowAffinity.RowAffinity != nil {
+			affinity = &gcp.RowAffinity{}
+		}
 		fieldsToUpdate.RoutingConfig = &gcp.MultiClusterRoutingUseAnyConfig{
 			ClusterIDs: resource.GetMultiClusterRoutingUseAny().ClusterIds,
+			Affinity:   affinity,
 		}
 		hasChanges = true
 	}

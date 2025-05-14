@@ -283,6 +283,11 @@ func (in *BigtableAppProfileSpec) DeepCopyInto(out *BigtableAppProfileSpec) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.MultiClusterRoutingUseAnyRowAffinity != nil {
+		in, out := &in.MultiClusterRoutingUseAnyRowAffinity, &out.MultiClusterRoutingUseAnyRowAffinity
+		*out = new(bool)
+		**out = **in
+	}
 	if in.SingleClusterRouting != nil {
 		in, out := &in.SingleClusterRouting, &out.SingleClusterRouting
 		*out = new(AppProfile_SingleClusterRouting)
