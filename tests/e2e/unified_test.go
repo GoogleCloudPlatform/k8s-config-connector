@@ -210,7 +210,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					case "bigtable.cnrm.cloud.google.com",
 						"orgpolicy.cnrm.cloud.google.com":
 						// Use SSA
-
+					case "iam.cnrm.cloud.google.com":
 					default:
 						t.Logf("not yet using SSA for create of resources in group %q", group)
 						opt.DoNotUseServerSideApplyForCreate = true
