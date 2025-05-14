@@ -19,8 +19,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
-	"strings"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
 	"k8s.io/klog/v2"
 )
@@ -55,21 +53,8 @@ func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]a
 
 	klog.V(2).Infof("RunTerminalCommand: %+v", t)
 
-	var cmd *exec.Cmd
-
-	tokens := strings.Split(t.Command, " ")
-	switch tokens[0] {
-	case "go":
-		cmd = exec.CommandContext(ctx, "go", tokens[1:]...)
-	case "make":
-		cmd = exec.CommandContext(ctx, "make", tokens[1:]...)
-	case "gcloud":
-		cmd = exec.CommandContext(ctx, "gcloud", tokens[1:]...)
-	default:
-		cmd = exec.CommandContext(ctx, "bash", "-c", t.Command)
-	}
+	cmd := exec.CommandContext(ctx, "/bin/bash", "-c", t.Command + " " + t.Args)
 	cmd.Dir = c.baseDir
-	cmd.Args = append(tokens, strings.Split(t.Args, " ")...)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
