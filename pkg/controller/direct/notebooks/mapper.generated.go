@@ -175,7 +175,6 @@ func NotebookInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.I
 		return nil
 	}
 	out := &krmv1beta1.NotebookInstanceObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
 	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, Instance_Disk_FromProto)
@@ -189,7 +188,6 @@ func NotebookInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1b
 		return nil
 	}
 	out := &pb.Instance{}
-	out.Name = direct.ValueOf(in.Name)
 	out.ProxyUri = direct.ValueOf(in.ProxyURI)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, Instance_Disk_ToProto)

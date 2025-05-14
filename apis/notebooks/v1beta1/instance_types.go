@@ -227,10 +227,6 @@ type NotebookInstanceStatus struct {
 // NotebookInstanceObservedState is the state of the NotebookInstance resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.notebooks.v1.Instance
 type NotebookInstanceObservedState struct {
-	// Output only. The name of this notebook instance. Format:
-	//  `projects/{project_id}/locations/{location}/instances/{instance_id}`
-	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.name
-	Name *string `json:"name,omitempty"`
 
 	// Output only. The proxy endpoint that is used to access the Jupyter notebook.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.proxy_uri
