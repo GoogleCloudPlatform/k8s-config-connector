@@ -25,7 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -81,7 +81,7 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 
 func TestClusterModeManager(t *testing.T) {
 	ctx := context.TODO()
-	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
+	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
 	if err != nil {
 		t.Fatalf("error creating manager: %v", err)
 	}
