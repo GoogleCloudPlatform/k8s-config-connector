@@ -1343,7 +1343,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "allocatedIpRange": "${addressID}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1494,7 +1494,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
@@ -1626,7 +1626,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
@@ -1684,7 +1684,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "allocatedIpRange": "${addressID}",
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1837,7 +1837,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": true,
       "ipv4Enabled": false,
-      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "privateNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },

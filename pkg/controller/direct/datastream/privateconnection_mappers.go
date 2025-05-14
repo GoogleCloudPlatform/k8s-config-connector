@@ -16,9 +16,9 @@ package datastream
 
 import (
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -74,7 +74,7 @@ func VpcPeeringConfig_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeringConf
 	}
 	out := &krm.VpcPeeringConfig{}
 	if in.GetVpc() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpc()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetVpc()}
 	}
 	out.Subnet = direct.LazyPtr(in.GetSubnet())
 	return out

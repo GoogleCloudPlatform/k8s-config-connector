@@ -242,7 +242,7 @@ type ComputeForwardingRuleSpec struct {
 	balanced IP should belong to for this forwarding rule. If this
 	field is not specified, the default network will be used. */
 	// +optional
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. This signifies the networking tier used for configuring
 	this load balancer and can only take the following values:
@@ -349,7 +349,7 @@ type ComputeForwardingRuleSpec struct {
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
 	// +optional
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* The target resource to receive the matched traffic. The forwarded
 	traffic must be of a type appropriate to the target object. For

@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apisk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -303,12 +304,12 @@ func (in *AllocationPolicy_NetworkInterface) DeepCopyInto(out *AllocationPolicy_
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.NoExternalIPAddress != nil {

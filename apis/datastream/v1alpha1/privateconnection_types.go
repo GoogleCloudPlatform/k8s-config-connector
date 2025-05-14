@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -158,7 +159,7 @@ type VpcPeeringConfig struct {
 	// Required. Fully qualified name of the VPC that Datastream will peer to.
 	//  Format: `projects/{project}/global/{networks}/{name}`
 	// +kcc:proto:field=google.cloud.datastream.v1.VpcPeeringConfig.vpc
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Required. A free subnet for peering. (CIDR of /29)
 	// +kcc:proto:field=google.cloud.datastream.v1.VpcPeeringConfig.subnet

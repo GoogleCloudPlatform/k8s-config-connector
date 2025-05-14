@@ -17,6 +17,8 @@ package dataflow
 import (
 	"time"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	pb "cloud.google.com/go/dataflow/apiv1beta3/dataflowpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataflow/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -280,13 +282,13 @@ func DataflowFlexTemplateJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Fle
 	out.AdditionalExperiments = in.AdditionalExperiments
 
 	if in.Network != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{
 			External: in.Network,
 		}
 	}
 
 	if in.Subnetwork != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{
 			External: in.Subnetwork,
 		}
 	}

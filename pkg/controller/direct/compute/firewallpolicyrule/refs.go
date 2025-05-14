@@ -17,6 +17,7 @@ package firewallpolicyrule
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
@@ -28,54 +29,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeNetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeNetwork",
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	return &refs.ComputeNetworkRef{
-		External: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", projectID, resourceID)}, nil
-}
 
 func ResolveIAMServiceAccount(ctx context.Context, reader client.Reader, src client.Object, ref *refs.IAMServiceAccountRef) (*refs.IAMServiceAccountRef, error) {
 	if ref == nil {
@@ -140,15 +93,18 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 
 func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
 	// Get target resources(compute network)
-	var targetResources []*refs.ComputeNetworkRef
 	if obj.Spec.TargetResources != nil {
-		for _, targetResource := range obj.Spec.TargetResources {
-			networkRef, err := ResolveComputeNetwork(ctx, reader, obj, targetResource)
+		targetResources := obj.Spec.TargetResources
+		for i, targetResource := range targetResources {
+			external, err := targetResource.NormalizedExternal(ctx, reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			targetResource.External = networkRef.External
-			targetResources = append(targetResources, targetResource)
+			refined, err := refineComputeNetworkRef(external)
+			if err != nil {
+				return err
+			}
+			targetResources[i].External = refined
 		}
 		obj.Spec.TargetResources = targetResources
 	}
@@ -166,4 +122,23 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 		obj.Spec.TargetServiceAccounts = targetServiceAccounts
 	}
 	return nil
+}
+
+// refineComputeNetworkRef refine the network format because ComputeFirewallPolicyRule has a specific format requirement.
+//
+//	Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/global/networks/NETWORK"
+func refineComputeNetworkRef(external string) (string, error) {
+	if external == "" {
+		return "", fmt.Errorf("ComputeNetworkRef's external is empty")
+	}
+
+	// Validate and refine the target resource network format to full URL. This is required by GCP service.
+	fullURLPrefix := "https://www.googleapis.com/compute/v1/"
+	trimmed := strings.TrimPrefix(external, fullURLPrefix)
+	tokens := strings.Split(trimmed, "/")
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+		return fullURLPrefix + trimmed, nil
+	}
+	return "", fmt.Errorf("format of subnetwork external=%q was not known, use projects/<projectID>/global/networks/<network> or  https://www.googleapis.com/compute/v1/projects/<projectID>/global/networks/<network>", external)
+
 }

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 
@@ -218,7 +219,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/global/networks/{network}
 	//  * global/networks/{network}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.network
-	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The URL of an existing subnetwork resource in the network.
 	//  You can specify the subnetwork as a full or partial URL.
@@ -229,7 +230,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/regions/{region}/subnetworks/{subnetwork}
 	//  * regions/{region}/subnetworks/{subnetwork}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.subnetwork
-	SubnetworkRef *v1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Default is false (with an external IP address). Required if
 	//  no external public IP address is attached to the VM. If no external

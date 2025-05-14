@@ -17,6 +17,7 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -399,10 +400,10 @@ func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.AllocationPolicy_NetworkInterface{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &v1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &v1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.NoExternalIPAddress = direct.LazyPtr(in.GetNoExternalIpAddress())
 	return out

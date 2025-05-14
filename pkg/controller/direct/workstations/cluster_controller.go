@@ -152,7 +152,7 @@ func (m *modelWorkstationCluster) AdapterForObject(ctx context.Context, reader c
 		}
 	}
 
-	if err := NormalizeWorkstationCluster(ctx, reader, obj); err != nil {
+	if err := resolveDependencies(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 
@@ -348,5 +348,37 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	u.Object["status"] = status
 
+	return nil
+}
+
+func resolveDependencies(ctx context.Context, kube client.Reader, obj *krm.WorkstationCluster) error {
+	// Resolve network.
+	networkExternal, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, kube, obj.GetNamespace())
+	if err != nil {
+		return err
+	}
+	obj.Spec.NetworkRef.External = networkExternal
+
+	// Resolve subnetwork.
+	subnetworkExternal, err := obj.Spec.SubnetworkRef.NormalizedExternal(ctx, kube, obj.GetNamespace())
+	if err != nil {
+		return err
+	}
+	obj.Spec.SubnetworkRef.External = subnetworkExternal
+
+	// Resolve projects (in private cluster config).
+	if obj.Spec.PrivateClusterConfig != nil && obj.Spec.PrivateClusterConfig.AllowedProjects != nil {
+		var resolvedProjects []refs.ProjectRef
+		for _, projectRef := range obj.Spec.PrivateClusterConfig.AllowedProjects {
+			resolvedProject, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &projectRef)
+			if err != nil {
+				return err
+			}
+			resolvedProjects = append(resolvedProjects, refs.ProjectRef{
+				External: resolvedProject.ProjectID,
+			})
+		}
+		obj.Spec.PrivateClusterConfig.AllowedProjects = resolvedProjects
+	}
 	return nil
 }

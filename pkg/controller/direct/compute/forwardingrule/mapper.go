@@ -18,8 +18,8 @@ import (
 	"strconv"
 	"strings"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -71,16 +71,16 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapCont
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *computev1beta1.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeNetworkRef{
+	return &computev1beta1.ComputeNetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) *string {
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) *string {
 	if in == nil {
 		return nil
 	}
@@ -90,16 +90,16 @@ func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in 
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeSubnetworkRef {
+func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *computev1beta1.ComputeSubnetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeSubnetworkRef{
+	return &computev1beta1.ComputeSubnetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeSubnetworkRef) *string {
+func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeSubnetworkRef) *string {
 	if in == nil {
 		return nil
 	}

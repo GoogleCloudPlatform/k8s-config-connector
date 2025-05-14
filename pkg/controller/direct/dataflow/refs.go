@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -54,68 +56,66 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		if err := networkRef.Normalize(r.ctx, r.kube, r.src); err != nil {
-			return err
-		}
-	}
-
-	if subnetworkRef, ok := v.(*refs.ComputeSubnetworkRef); ok {
-		resolved, err := RefineComputeSubnetworkRef(r.ctx, r.kube, r.src, subnetworkRef)
+	if networkRef, ok := v.(*computev1beta1.ComputeNetworkRef); ok {
+		external, err := networkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
 		if err != nil {
 			return err
 		}
-		*subnetworkRef = *resolved
+		networkRef.External = external
 	}
 
-	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
+	if subnetworkRef, ok := v.(*computev1beta1.ComputeSubnetworkRef); ok {
+		external, err := subnetworkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
+			return err
+		}
+		refined, err := refineComputeSubnetworkRef(external)
+		if err != nil {
+			return err
+		}
+		subnetworkRef.External = refined
+	}
+
+	if subnetworkRefs, ok := v.([]computev1beta1.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]
-			resolved, err := RefineComputeSubnetworkRef(r.ctx, r.kube, r.src, subnetworkRef)
+			external, err := subnetworkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
 			if err != nil {
 				return err
 			}
-			subnetworkRefs[i] = *resolved
+			refined, err := refineComputeSubnetworkRef(external)
+			if err != nil {
+				return err
+			}
+			subnetworkRefs[i].External = refined
 		}
 	}
 
 	return nil
 }
 
-// RefineComputeSubnetworkRef refine the subnetwork format because DataflowFlexTemplateJob has a specific format requirement:
+// refineComputeSubnetworkRef refine the subnetwork format because DataflowFlexTemplateJob has a specific format requirement:
 // "You can specify a subnetwork using either a complete URL or an abbreviated path.
 //
 //	Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
 //	or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network,
 //	you must use the complete URL.
-func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
-	if ref == nil {
-		return nil, nil
+func refineComputeSubnetworkRef(external string) (string, error) {
+	if external == "" {
+		return "", fmt.Errorf("ComputeSubnetworkRef's external is empty")
 	}
-	// Use common ComputeSubnetwork resolver
-	if ref.External == "" {
-		var err error
-		ref, err = refs.ResolveComputeSubnetwork(ctx, reader, src, ref)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// Validate non-shared-VPC network format. This is not allowed in the common ComputeSubnetwork resolver
-	tokens := strings.Split(ref.External, "/")
+	// Validate if the non shared-VPC network format id abbreviated path. This is required by GCP service.
+	tokens := strings.Split(external, "/")
 	if len(tokens) == 4 && tokens[0] == "regions" && tokens[2] == "subnetworks" {
-		return &refs.ComputeSubnetworkRef{
-			External: ref.External,
-		}, nil
+		return external, nil
 	}
 
-	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
+	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
 	fullURLPrefix := "https://www.googleapis.com/compute/v1/"
-	ref.External = strings.TrimPrefix(ref.External, fullURLPrefix)
+	trimmed := strings.TrimPrefix(external, fullURLPrefix)
+	tokens = strings.Split(trimmed, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
-		return &refs.ComputeSubnetworkRef{
-			External: fullURLPrefix + "projects/" + tokens[1] + "/regions/" + tokens[3] + "/subnetworks/" + tokens[5],
-		}, nil
+		return fullURLPrefix + trimmed, nil
 	}
-	return nil, fmt.Errorf("format of subnetwork external=%q was not known, use regions/<region>/subnetworks/<subnetwork>, projects/<projectID>/regions/<region>/subnetworks/<subnetwork> or  https://www.googleapis.com/compute/v1/projects/<projectID>/regions/<region>/subnetworks/<subnetwork>", ref.External)
+	return "", fmt.Errorf("format of subnetwork external=%q was not known, use regions/<region>/subnetworks/<subnetwork>, projects/<projectID>/regions/<region>/subnetworks/<subnetwork> or  https://www.googleapis.com/compute/v1/projects/<projectID>/regions/<region>/subnetworks/<subnetwork>", external)
 }

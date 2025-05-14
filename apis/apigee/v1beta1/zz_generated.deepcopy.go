@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -1364,7 +1365,7 @@ func (in *ApigeeOrganizationSpec) DeepCopyInto(out *ApigeeOrganizationSpec) {
 	}
 	if in.AuthorizedNetworkRef != nil {
 		in, out := &in.AuthorizedNetworkRef, &out.AuthorizedNetworkRef
-		*out = new(refsv1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Description != nil {

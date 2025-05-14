@@ -179,7 +179,7 @@ runtimeType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{network}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -189,7 +189,7 @@ runtimeType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -199,7 +199,7 @@ runtimeType: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeNetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

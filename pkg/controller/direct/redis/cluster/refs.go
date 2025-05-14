@@ -17,6 +17,8 @@ package cluster
 import (
 	"context"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -52,10 +54,12 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		if err := networkRef.Normalize(r.ctx, r.kube, r.src); err != nil {
+	if networkRef, ok := v.(*computev1beta1.ComputeNetworkRef); ok {
+		external, err := networkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
 			return err
 		}
+		networkRef.External = external
 	}
 
 	return nil

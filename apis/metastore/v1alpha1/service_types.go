@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -38,7 +39,7 @@ type NetworkConfig_Consumer struct {
 	//  hosts in a subnet in the same region and same network. There must
 	//  be at least one IP address available in the subnet's primary range.
 	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
@@ -102,7 +103,7 @@ type MetastoreServiceSpec struct {
 	//  instance can be accessed.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.network
 	// +k8s:config:google.com/references: "ComputeNetwork" // Assuming it references ComputeNetwork, adjust if needed
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The TCP port at which the metastore service is reached. Default: 9083.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.port

@@ -547,22 +547,20 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
 	// Get network
 	if obj.Spec.NetworkRef != nil {
-		networkRef, err := ResolveComputeNetwork(ctx, reader, obj, obj.Spec.NetworkRef)
+		external, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, reader, obj.Namespace)
 		if err != nil {
 			return err
-
 		}
-		obj.Spec.NetworkRef.External = networkRef.External
+		obj.Spec.NetworkRef.External = external
 	}
 
 	// Get subnetwork
 	if obj.Spec.SubnetworkRef != nil {
-		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
+		external, err := obj.Spec.SubnetworkRef.NormalizedExternal(ctx, reader, obj.Namespace)
 		if err != nil {
 			return err
-
 		}
-		obj.Spec.SubnetworkRef.External = subnetworkRef.External
+		obj.Spec.SubnetworkRef.External = external
 	}
 
 	// Get backend service

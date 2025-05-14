@@ -17,6 +17,8 @@ package sql
 import (
 	"fmt"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	api "google.golang.org/api/sqladmin/v1beta4"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -418,7 +420,7 @@ func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*
 	return out
 }
 
-func InstancePrivateNetworkRefKRMToGCP(in *refs.ComputeNetworkRef) string {
+func InstancePrivateNetworkRefKRMToGCP(in *computev1beta1.ComputeNetworkRef) string {
 	if in == nil {
 		return ""
 	}
@@ -923,12 +925,12 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 	return out
 }
 
-func InstancePrivateNetworkRefRefGCPToKRM(in string) *refs.ComputeNetworkRef {
+func InstancePrivateNetworkRefRefGCPToKRM(in string) *computev1beta1.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &refs.ComputeNetworkRef{
+	out := &computev1beta1.ComputeNetworkRef{
 		External: in,
 	}
 

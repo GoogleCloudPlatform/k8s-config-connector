@@ -21,6 +21,7 @@ package notebooks
 
 import (
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -228,10 +229,10 @@ func NotebookInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) 
 	out.NoPublicIP = direct.LazyPtr(in.GetNoPublicIp())
 	out.NoProxyAccess = direct.LazyPtr(in.GetNoProxyAccess())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &v1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnet() != "" {
-		out.SubnetRef = &v1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	out.Labels = in.Labels
 	out.Metadata = in.Metadata

@@ -69,9 +69,11 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, reader client
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+		external, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, reader, obj.Namespace)
+		if err != nil {
 			return nil, err
 		}
+		obj.Spec.NetworkRef.External = external
 	}
 
 	// Get networkconnectivity GCP client

@@ -15,8 +15,8 @@
 package networkconnectivity
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -69,7 +69,7 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 	out.Labels = in.Labels
 	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Overlaps = in.Overlaps
 	out.Peering = direct.LazyPtr(in.GetPeering())

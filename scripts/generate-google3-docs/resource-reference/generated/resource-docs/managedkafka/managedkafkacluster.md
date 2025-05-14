@@ -192,7 +192,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed ComputeSubnetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -202,7 +202,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a ComputeSubnetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -212,7 +212,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a ComputeSubnetwork resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

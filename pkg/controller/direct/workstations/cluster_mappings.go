@@ -16,6 +16,7 @@ package workstations
 
 import (
 	pb "cloud.google.com/go/workstations/apiv1/workstationspb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workstations/v1beta1"
@@ -67,10 +68,10 @@ func WorkstationClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workstat
 		DisplayName: direct.LazyPtr(in.GetDisplayName()),
 		Annotations: WorkstationAnnotations_FromProto(mapCtx, in.GetAnnotations()),
 		Labels:      WorkstationLabels_FromProto(mapCtx, in.GetLabels()),
-		NetworkRef: refs.ComputeNetworkRef{
+		NetworkRef: computev1beta1.ComputeNetworkRef{
 			External: in.GetNetwork(),
 		},
-		SubnetworkRef: refs.ComputeSubnetworkRef{
+		SubnetworkRef: computev1beta1.ComputeSubnetworkRef{
 			External: in.GetSubnetwork(),
 		},
 		PrivateClusterConfig: WorkstationCluster_PrivateClusterConfig_FromProto(mapCtx, in.GetPrivateClusterConfig()),

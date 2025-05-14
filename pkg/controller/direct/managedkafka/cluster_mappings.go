@@ -16,6 +16,7 @@ package managedkafka
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -49,7 +50,7 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	}
 	out := &krm.NetworkConfig{}
 	if in.GetSubnet() != "" {
-		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnet()}
+		out.SubnetworkRef = &computev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
 	return out
 }

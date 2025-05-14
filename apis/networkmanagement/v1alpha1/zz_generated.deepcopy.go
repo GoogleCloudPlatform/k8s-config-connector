@@ -432,7 +432,7 @@ func (in *Endpoint) DeepCopyInto(out *Endpoint) {
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.NetworkType != nil {

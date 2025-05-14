@@ -17,6 +17,7 @@ package alloydb
 import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -107,7 +108,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	// MISSING: DatabaseVersion
 	out.NetworkConfig = Cluster_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Etag
 	// MISSING: Annotations
@@ -346,7 +347,7 @@ func Cluster_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_N
 	}
 	out := &krm.Cluster_NetworkConfig{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
 	return out

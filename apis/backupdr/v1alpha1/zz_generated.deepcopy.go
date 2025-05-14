@@ -1104,7 +1104,7 @@ func (in *NetworkConfig) DeepCopyInto(out *NetworkConfig) {
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refsv1beta1.ComputeNetworkRef)
+		*out = new(v1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.PeeringMode != nil {

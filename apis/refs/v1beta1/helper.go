@@ -41,3 +41,14 @@ func GetLocation(u *unstructured.Unstructured) (string, error) {
 	}
 	return location, nil
 }
+
+func GetRegion(u *unstructured.Unstructured) (string, error) {
+	region, _, err := unstructured.NestedString(u.Object, "spec", "region")
+	if err != nil {
+		return "", fmt.Errorf("reading spec.region from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if region == "" {
+		return "", fmt.Errorf("spec.region not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	return region, nil
+}

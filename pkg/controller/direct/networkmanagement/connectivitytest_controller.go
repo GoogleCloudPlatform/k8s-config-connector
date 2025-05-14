@@ -283,9 +283,11 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 			}
 		}
 		if obj.Spec.Source.ComputeNetworkRef != nil {
-			if err := obj.Spec.Source.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			external, err := obj.Spec.Source.ComputeNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+			if err != nil {
 				return err
 			}
+			obj.Spec.Source.ComputeNetworkRef.External = external
 		}
 		if obj.Spec.Source.ContainerClusterRef != nil {
 			if _, err := obj.Spec.Source.ContainerClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
@@ -320,9 +322,11 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 			}
 		}
 		if obj.Spec.Destination.ComputeNetworkRef != nil {
-			if err := obj.Spec.Destination.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			external, err := obj.Spec.Destination.ComputeNetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+			if err != nil {
 				return err
 			}
+			obj.Spec.Destination.ComputeNetworkRef.External = external
 		}
 		if obj.Spec.Destination.ContainerClusterRef != nil {
 			if _, err := obj.Spec.Destination.ContainerClusterRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {

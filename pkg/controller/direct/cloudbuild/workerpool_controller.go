@@ -366,9 +366,11 @@ func (a *Adapter) resolveDependencies(ctx context.Context, reader client.Reader,
 	// Resolve computeNetwork
 	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
 	if networkSpec != nil {
-		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj); err != nil {
+		external, err := networkSpec.PeeredNetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
 			return err
 		}
+		networkSpec.PeeredNetworkRef.External = external
 
 		if err := networkSpec.PeeredNetworkRef.ConvertToProjectNumber(ctx, a.projectClient); err != nil {
 			return err

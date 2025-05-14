@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -82,7 +83,7 @@ type AlloyDBClusterSpec struct {
 	//  form: `projects/{project}/global/networks/{network_id}`. This is required
 	//  to create a cluster. Deprecated, use network_config.network instead.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* NOTYET
 	// For Resource freshness validation (https://google.aip.dev/154)
@@ -258,7 +259,7 @@ type Cluster_NetworkConfig struct {
 	//  `projects/{project_number}/global/networks/{network_id}`. This is
 	//  required to create a cluster.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.NetworkConfig.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Name of the allocated IP range for the private IP AlloyDB
 	//  cluster, for example: "google-managed-services-default". If set, the
