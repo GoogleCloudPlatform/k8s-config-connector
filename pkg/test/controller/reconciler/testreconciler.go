@@ -43,6 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
@@ -256,7 +257,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
 	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
+	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(r.mgr.GetClient())
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 	// we will actually assert the ReconcileAfter value later on so for dynamic tests
 	// we want to use an actual JitterGenerator for now.
