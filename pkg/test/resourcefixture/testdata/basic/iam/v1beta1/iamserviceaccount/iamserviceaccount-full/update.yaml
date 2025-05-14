@@ -15,9 +15,9 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: iamserviceaccount-${uniqueId}
+  name: gsa-${uniqueId}
 spec:
   displayName: Test Service Account Full Updated
   description: Updated description for the test service account. This tests the description field update.
   disabled: true # This tests updating the disabled field
-  resourceID: iamserviceaccount-custom-id-${uniqueId}
+  resourceID: gsa-${uniqueId}
