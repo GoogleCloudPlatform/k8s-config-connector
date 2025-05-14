@@ -19,5 +19,7 @@ metadata:
 spec:
   displayName: Test Service Account Full Updated
   description: Updated description for the test service account. This tests the description field update.
-  disabled: true # This tests updating the disabled field
+  # This field can only be updated when other fields are not updated. Otherwise,
+  # it returns the "disabled service account cannot be patched" error.
+  disabled: false
   resourceID: gsa-${uniqueId}
