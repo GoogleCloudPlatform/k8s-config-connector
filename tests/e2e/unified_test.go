@@ -206,14 +206,17 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
+					kind := primaryResource.GetObjectKind().GroupVersionKind().Kind
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
 					case "bigtable.cnrm.cloud.google.com",
 						"orgpolicy.cnrm.cloud.google.com":
 						// Use SSA
 					case "iam.cnrm.cloud.google.com":
+						if kind != "IAMServiceAccount" {
+							doNotUseServerSideApplyForCreate(t, group, kind, &opt)
+						}
 					default:
-						t.Logf("not yet using SSA for create of resources in group %q", group)
-						opt.DoNotUseServerSideApplyForCreate = true
+						doNotUseServerSideApplyForCreate(t, group, kind, &opt)
 					}
 
 					return primaryResource, opt
@@ -227,6 +230,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
+}
+
+func doNotUseServerSideApplyForCreate(t *testing.T, group, kind string, opt *create.CreateDeleteTestOptions) {
+	t.Logf("not yet using SSA for create of %q resources in group %q", kind, group)
+	opt.DoNotUseServerSideApplyForCreate = true
 }
 
 func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
