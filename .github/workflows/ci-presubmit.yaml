@@ -112,26 +112,6 @@ jobs:
           path: /tmp/artifacts/
 
 
-  validate-generated-types:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run dev/ci/presubmits/validate-generated-types"
-        run: |
-          ./dev/ci/presubmits/validate-generated-types
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-validate-generated-types
-          path: /tmp/artifacts/
-
-
   tests-e2e-fixtures:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -140,9 +120,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures
+          ./dev/ci/presubmits/tests-e2e-fixtures
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -160,9 +140,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-alloydb"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-alloydb"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-alloydb
+          ./dev/ci/presubmits/tests-e2e-fixtures-alloydb
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -180,9 +160,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-apigee"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigee"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-apigee
+          ./dev/ci/presubmits/tests-e2e-fixtures-apigee
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -200,9 +180,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-backupdr"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-backupdr"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-backupdr
+          ./dev/ci/presubmits/tests-e2e-fixtures-backupdr
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -220,9 +200,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-bigquery"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquery"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-bigquery
+          ./dev/ci/presubmits/tests-e2e-fixtures-bigquery
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -240,9 +220,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-bigtable"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigtable"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-bigtable
+          ./dev/ci/presubmits/tests-e2e-fixtures-bigtable
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -260,9 +240,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-certificatemanager"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-certificatemanager"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-certificatemanager
+          ./dev/ci/presubmits/tests-e2e-fixtures-certificatemanager
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -280,9 +260,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-cloudidentity"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudidentity"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-cloudidentity
+          ./dev/ci/presubmits/tests-e2e-fixtures-cloudidentity
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -300,9 +280,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-compute"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-compute"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-compute
+          ./dev/ci/presubmits/tests-e2e-fixtures-compute
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -320,9 +300,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-gkehub"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkehub"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-gkehub
+          ./dev/ci/presubmits/tests-e2e-fixtures-gkehub
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -340,9 +320,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-monitoring"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-monitoring"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-monitoring
+          ./dev/ci/presubmits/tests-e2e-fixtures-monitoring
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -360,9 +340,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-resourcemanager"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-resourcemanager"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-resourcemanager
+          ./dev/ci/presubmits/tests-e2e-fixtures-resourcemanager
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -380,9 +360,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-secretmanager"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-secretmanager"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-secretmanager
+          ./dev/ci/presubmits/tests-e2e-fixtures-secretmanager
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -400,9 +380,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-spanner"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-spanner"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-spanner
+          ./dev/ci/presubmits/tests-e2e-fixtures-spanner
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -420,9 +400,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-sql"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-sql"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-sql
+          ./dev/ci/presubmits/tests-e2e-fixtures-sql
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -440,9 +420,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-vertexai"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vertexai"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-vertexai
+          ./dev/ci/presubmits/tests-e2e-fixtures-vertexai
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -460,9 +440,9 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-vmwareengine"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-vmwareengine"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-vmwareengine
+          ./dev/ci/presubmits/tests-e2e-fixtures-vmwareengine
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -480,15 +460,35 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run scripts/github-actions/tests-e2e-fixtures-workstations"
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-workstations"
         run: |
-          ./scripts/github-actions/tests-e2e-fixtures-workstations
+          ./dev/ci/presubmits/tests-e2e-fixtures-workstations
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-workstations
+          path: /tmp/artifacts/
+
+
+  validate-generated-types:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/validate-generated-types"
+        run: |
+          ./dev/ci/presubmits/validate-generated-types
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-validate-generated-types
           path: /tmp/artifacts/
 
 
