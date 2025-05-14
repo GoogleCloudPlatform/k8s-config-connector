@@ -34,6 +34,8 @@ const (
 	TimeToLeaseRenewal                   = 20 * time.Minute
 	MeanReconcileReenqueuePeriod         = 10 * time.Minute
 	JitterFactor                         = 2.0
+	Creating                             = "Creating"
+	CreatingMessage                      = "The resource is under creation"
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"

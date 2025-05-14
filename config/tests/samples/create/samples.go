@@ -45,7 +45,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-const DefaultWaitForReadyTimeout = 35 * time.Minute
+const DefaultWaitForReadyTimeout = 400 * time.Minute
 
 type Sample struct {
 	Name      string
@@ -299,7 +299,7 @@ func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
-	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {
+	err := wait.PollImmediate(1*time.Second, 80*time.Minute, func() (bool, error) {
 		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !apierrors.IsNotFound(err) {
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()

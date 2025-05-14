@@ -113,6 +113,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"ManagedKafkaCluster",
 		"ManagedKafkaTopic",
 		"IAPSettings",
+		"StorageAnywhereCache",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
