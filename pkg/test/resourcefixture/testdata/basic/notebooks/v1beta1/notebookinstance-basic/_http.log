@@ -4,7 +4,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
   "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-basic-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/instances/notebookinstance-basic-${uniqueId}' was not found
+error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-basic-${uniqueId}" not found
 
 {}
 
@@ -67,7 +67,7 @@ OK
       "repository": "gcr.io/deeplearning-platform-release/base-cpu"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "xiaoweim@google.com",
+    "creator": "someone@somewhere.com",
     "diskEncryption": "GMEK",
     "disks": [
       {
@@ -264,9 +264,6 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
-  "containerImage": {
-    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "diskEncryption": "GMEK",
@@ -358,9 +355,6 @@ GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
 OK
 
 {
-  "containerImage": {
-    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
-  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "diskEncryption": "GMEK",
@@ -454,6 +448,7 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",
     "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-basic-${uniqueId}",
@@ -476,6 +471,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",

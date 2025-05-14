@@ -34,7 +34,7 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    creator: xiaoweim@google.com
+    creator: someone@somewhere.com
     disks:
     - autoDelete: true
       boot: true
