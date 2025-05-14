@@ -27,7 +27,7 @@ type Parent struct {
 }
 
 // ApigeeEnvgroupSpec defines the desired state of ApigeeEnvgroup
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroup
 type ApigeeEnvgroupSpec struct {
 	Parent `json:",inline"`
 	// The ApigeeEnvgroup name. If not given, the metadata.name will be used.

@@ -31,7 +31,7 @@ type Parent struct {
 }
 
 // DataCatalogTagTemplateSpec defines the desired state of DataCatalogTagTemplate
-// +kcc:proto=google.cloud.datacatalog.v1.TagTemplate
+// +kcc:spec:proto=google.cloud.datacatalog.v1.TagTemplate
 type DataCatalogTagTemplateSpec struct {
 	Parent `json:",inline"`
 	// The DataCatalogTagTemplate name. If not given, the metadata.name will be used.

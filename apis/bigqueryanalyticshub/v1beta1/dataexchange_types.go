@@ -24,7 +24,7 @@ import (
 var BigQueryAnalyticsHubDataExchangeGVK = GroupVersion.WithKind("BigQueryAnalyticsHubDataExchange")
 
 // BigQueryAnalyticsHubDataExchangeSpec defines the desired state of BigQueryAnalyticsHubDataExchange
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
+// +kcc:spec:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
 type BigQueryAnalyticsHubDataExchangeSpec struct {
 	// Required. Human-readable display name of the data exchange. The display
 	//  name must contain only Unicode letters, numbers (0-9), underscores (_),
@@ -94,7 +94,7 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 }
 
 // BigQueryAnalyticsHubDataExchangeSpec defines the desired state of BigQueryAnalyticsHubDataExchange
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.DataExchange
 type BigQueryAnalyticsHubDataExchangeObservedState struct {
 	// This field is in the same format as our externalRef! So it's redundant.
 	// // Output only. The resource name of the data exchange.

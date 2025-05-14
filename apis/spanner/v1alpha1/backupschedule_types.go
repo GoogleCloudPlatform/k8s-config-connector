@@ -23,7 +23,7 @@ import (
 var SpannerBackupScheduleGVK = GroupVersion.WithKind("SpannerBackupSchedule")
 
 // SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
-// +kcc:proto=google.spanner.admin.database.v1.BackupSchedule
+// +kcc:spec:proto=google.spanner.admin.database.v1.BackupSchedule
 type SpannerBackupScheduleSpec struct {
 	// Optional. The schedule specification based on which the backup creations
 	//  are triggered.
@@ -109,7 +109,7 @@ type SpannerBackupScheduleStatus struct {
 }
 
 // SpannerBackupScheduleObservedState is the state of the SpannerBackupSchedule resource as most recently observed in GCP.
-// +kcc:proto=google.spanner.admin.database.v1.BackupSchedule
+// +kcc:observedstate:proto=google.spanner.admin.database.v1.BackupSchedule
 type SpannerBackupScheduleObservedState struct {
 
 	// Output only. The timestamp at which the schedule was last updated.

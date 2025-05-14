@@ -34,7 +34,7 @@ type Parent struct {
 }
 
 // SpeechRecognizerSpec defines the desired state of SpeechRecognizer
-// +kcc:proto=google.cloud.speech.v2.Recognizer
+// +kcc:spec:proto=google.cloud.speech.v2.Recognizer
 type SpeechRecognizerSpec struct {
 	// The SpeechRecognizer name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -113,7 +113,7 @@ type SpeechRecognizerStatus struct {
 }
 
 // SpeechRecognizerObservedState is the state of the SpeechRecognizer resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.speech.v2.Recognizer
+// +kcc:observedstate:proto=google.cloud.speech.v2.Recognizer
 type SpeechRecognizerObservedState struct {
 	// Output only. Identifier. The resource name of the Recognizer.
 	//  Format: `projects/{project}/locations/{location}/recognizers/{recognizer}`.
@@ -277,7 +277,7 @@ type SpeechAdaptation struct {
 	CustomClasses []InlineCustomClass `json:"customClasses,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
+// +kcc:observedstate:proto=google.cloud.speech.v2.SpeechAdaptation
 type SpeechAdaptationObservedState struct {
 	// A list of inline or referenced PhraseSets.
 	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.phrase_sets

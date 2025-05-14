@@ -22,7 +22,7 @@ import (
 var VMwareEngineNetworkPolicyGVK = GroupVersion.WithKind("VMwareEngineNetworkPolicy")
 
 // VMwareEngineNetworkPolicySpec defines the desired state of VMwareEngineNetworkPolicy
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.NetworkPolicy
 type VMwareEngineNetworkPolicySpec struct {
 	// The VMwareEngineNetworkPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -73,7 +73,7 @@ type VMwareEngineNetworkPolicyStatus struct {
 }
 
 // VMwareEngineNetworkPolicyObservedState is the state of the VMwareEngineNetworkPolicy resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPolicy
 type VMwareEngineNetworkPolicyObservedState struct {
 	// Output only. The resource name of this network policy.
 	//  Resource names are schemeless URIs that follow the conventions in

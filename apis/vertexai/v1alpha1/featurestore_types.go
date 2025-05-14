@@ -23,7 +23,7 @@ import (
 
 var VertexAIFeaturestoreGVK = GroupVersion.WithKind("VertexAIFeaturestore")
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
 type EncryptionSpec struct {
 	// Required. The Cloud KMS resource identifier of the customer managed
 	//  encryption key used to protect a resource.
@@ -35,7 +35,7 @@ type EncryptionSpec struct {
 }
 
 // VertexAIFeaturestoreSpec defines the desired state of VertexAIFeaturestore
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.Featurestore
 type VertexAIFeaturestoreSpec struct {
 	// The Project that this resource belongs to.
 	// +required
@@ -107,7 +107,7 @@ type VertexAIFeaturestoreStatus struct {
 }
 
 // VertexAIFeaturestoreObservedState is the state of the VertexAIFeaturestore resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Featurestore
 type VertexAIFeaturestoreObservedState struct {
 	// Output only. Name of the Featurestore. Format:
 	//  `projects/{project}/locations/{location}/featurestores/{featurestore}`

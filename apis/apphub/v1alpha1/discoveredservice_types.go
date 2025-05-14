@@ -22,7 +22,7 @@ import (
 var AppHubDiscoveredServiceGVK = GroupVersion.WithKind("AppHubDiscoveredService")
 
 // AppHubDiscoveredServiceSpec defines the desired state of AppHubDiscoveredService
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
+// +kcc:spec:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceSpec struct {
 	Parent `json:",inline"`
 	// The AppHubDiscoveredService name. If not given, the metadata.name will be used.
@@ -53,7 +53,7 @@ type ServiceProperties struct {
 type ServiceReference struct {
 }
 
-// +kcc:proto=google.cloud.apphub.v1.ServiceProperties
+// +kcc:observedstate:proto=google.cloud.apphub.v1.ServiceProperties
 type ServicePropertiesObservedState struct {
 	// Output only. The service project identifier that the underlying cloud
 	//  resource resides in.
@@ -71,7 +71,7 @@ type ServicePropertiesObservedState struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.ServiceReference
+// +kcc:observedstate:proto=google.cloud.apphub.v1.ServiceReference
 type ServiceReferenceObservedState struct {
 	// Output only. The underlying resource URI (For example, URI of Forwarding
 	//  Rule, URL Map, and Backend Service).
@@ -80,7 +80,7 @@ type ServiceReferenceObservedState struct {
 }
 
 // AppHubDiscoveredServiceObservedState is the state of the AppHubDiscoveredService resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.apphub.v1.DiscoveredService
+// +kcc:observedstate:proto=google.cloud.apphub.v1.DiscoveredService
 type AppHubDiscoveredServiceObservedState struct {
 	// Output only. Reference to an underlying networking resource that can
 	//  comprise a Service. These are immutable.

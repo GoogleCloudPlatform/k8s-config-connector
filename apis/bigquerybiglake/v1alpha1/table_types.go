@@ -23,7 +23,7 @@ import (
 var BigLakeTableGVK = GroupVersion.WithKind("BigLakeTable")
 
 // BigLakeTableSpec defines the desired state of BigLakeTable
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Table
+// +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Table
 type BigLakeTableSpec struct {
 	// The project that this resource belongs to.
 	// +required
@@ -82,7 +82,7 @@ type BigLakeTableStatus struct {
 }
 
 // BigLakeTableObservedState is the state of the BigLakeTable resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.bigquery.biglake.v1.Table
+// +kcc:observedstate:proto=google.cloud.bigquery.biglake.v1.Table
 type BigLakeTableObservedState struct {
 	// Output only. The creation time of the table.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Table.create_time

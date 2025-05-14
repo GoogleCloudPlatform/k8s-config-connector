@@ -24,7 +24,7 @@ import (
 var BatchJobGVK = GroupVersion.WithKind("BatchJob")
 
 // BatchJobSpec defines the desired state of BatchJob
-// +kcc:proto=google.cloud.batch.v1.Job
+// +kcc:spec:proto=google.cloud.batch.v1.Job
 type BatchJobSpec struct {
 
 	// Priority of the Job.
@@ -448,7 +448,7 @@ type BatchJobStatus struct {
 }
 
 // BatchJobObservedState is the state of the BatchJob resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.batch.v1.Job
+// +kcc:observedstate:proto=google.cloud.batch.v1.Job
 type BatchJobObservedState struct {
 	// Output only. Job name.
 	//  For example: "projects/123456/locations/us-central1/jobs/job01".

@@ -25,7 +25,7 @@ var BigQueryDatasetGVK = GroupVersion.WithKind("BigQueryDataset")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // BigQueryDatasetSpec defines the desired state of BigQueryDataset
-// +kcc:proto=google.cloud.bigquery.v2.Dataset
+// +kcc:spec:proto=google.cloud.bigquery.v2.Dataset
 type BigQueryDatasetSpec struct {
 	// The BigQueryDataset name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -141,7 +141,7 @@ type BigQueryDatasetStatus struct {
 }
 
 // BigQueryDatasetObservedState defines the desired state of BigQueryDataset
-// +kcc:proto=google.cloud.bigquery.v2.dataset
+// +kcc:observedstate:proto=google.cloud.bigquery.v2.dataset
 type BigQueryDatasetObservedState struct {
 
 	// Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.

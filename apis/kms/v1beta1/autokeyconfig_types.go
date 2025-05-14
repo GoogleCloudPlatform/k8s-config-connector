@@ -27,7 +27,7 @@ var KMSAutokeyConfigGVK = SchemeGroupVersion.WithKind("KMSAutokeyConfig")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // KMSAutokeyConfigSpec defines the desired state of KMSAutokeyConfig
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
+// +kcc:spec:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigSpec struct {
 
 	// NOTE: ResourceID field is not required for AutokeyConfig as its ID has the format folders/<folderID>/autokeyConfig i.e., it doesnt have any unique ID of its own and relies on folderID for uniqueness.
@@ -57,7 +57,7 @@ type KMSAutokeyConfigStatus struct {
 }
 
 // KMSAutokeyConfigSpec defines the desired state of KMSAutokeyConfig
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
+// +kcc:observedstate:proto=google.cloud.kms.v1.AutokeyConfig
 type KMSAutokeyConfigObservedState struct {
 	// Output only. Current state of this AutokeyConfig.
 	// +optional

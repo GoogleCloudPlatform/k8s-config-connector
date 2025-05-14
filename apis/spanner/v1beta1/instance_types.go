@@ -24,7 +24,7 @@ var SpannerInstanceGVK = GroupVersion.WithKind("SpannerInstance")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // SpannerInstanceSpec defines the desired state of SpannerInstance
-// +kcc:proto=google.spanner.admin.instance.v1.Instance
+// +kcc:spec:proto=google.spanner.admin.instance.v1.Instance
 type SpannerInstanceSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Config field is immutable"
 	/* Immutable. The name of the instance's configuration (similar but not

@@ -24,7 +24,7 @@ import (
 var ApigeeOrganizationGVK = GroupVersion.WithKind("ApigeeOrganization")
 
 // ApigeeOrganizationSpec defines the desired state of ApigeeOrganization
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
 type ApigeeOrganizationSpec struct {
 	// The ApigeeOrganization name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -287,7 +287,7 @@ type ApigeeOrganizationStatus struct {
 }
 
 // ApigeeOrganizationObservedState is the state of the ApigeeOrganization resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
+// +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization
 type ApigeeOrganizationObservedState struct {
 	/* NOTYET: Add this once direct controller is implemented
 	// Output only. Apigee Project ID associated with the organization. Use this project to allowlist Apigee in the Service Attachment when using private service connect with Apigee.

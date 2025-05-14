@@ -139,7 +139,7 @@ type AssetSavedQueryStatus struct {
 }
 
 // AssetSavedQueryObservedState is the state of the AssetSavedQuery resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.asset.v1.SavedQuery
+// +kcc:observedstate:proto=google.cloud.asset.v1.SavedQuery
 type AssetSavedQueryObservedState struct {
 	// Output only. The create time of this saved query.
 	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.create_time

@@ -30,7 +30,7 @@ type Parent struct {
 }
 
 // DataplexLakeSpec defines the desired state of DataplexLake
-// +kcc:proto=google.cloud.dataplex.v1.Lake
+// +kcc:spec:proto=google.cloud.dataplex.v1.Lake
 type DataplexLakeSpec struct {
 	// The DataplexLake name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -82,7 +82,7 @@ type DataplexLakeStatus struct {
 }
 
 // DataplexLakeObservedState is the state of the DataplexLake resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataplex.v1.Lake
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Lake
 type DataplexLakeObservedState struct {
 	// Output only. System generated globally unique ID for the lake. This ID will
 	//  be different if the lake is deleted and re-created with the same name.

@@ -30,7 +30,7 @@ type EncryptionConfiguration struct {
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
+// +kcc:spec:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigSpec struct {
 	// The number of days to look back to automatically refresh the data.
 	//  For example, if `data_refresh_window_days = 10`, then every day
@@ -137,7 +137,7 @@ type BigQueryDataTransferConfigStatus struct {
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigObservedState struct {
 	// Output only. Region in which BigQuery dataset is located.
 	DatasetRegion *string `json:"datasetRegion,omitempty"`

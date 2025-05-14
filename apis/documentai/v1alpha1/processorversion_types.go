@@ -24,7 +24,7 @@ import (
 var DocumentAIProcessorVersionGVK = GroupVersion.WithKind("DocumentAIProcessorVersion")
 
 // DocumentAIProcessorVersionSpec defines the desired state of DocumentAIProcessorVersion
-// +kcc:proto=google.cloud.documentai.v1.ProcessorVersion
+// +kcc:spec:proto=google.cloud.documentai.v1.ProcessorVersion
 type DocumentAIProcessorVersionSpec struct {
 	Parent `json:",inline"`
 
@@ -70,7 +70,7 @@ type DocumentAIProcessorVersionStatus struct {
 }
 
 // DocumentAIProcessorVersionObservedState is the state of the DocumentAIProcessorVersion resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.documentai.v1.ProcessorVersion
+// +kcc:observedstate:proto=google.cloud.documentai.v1.ProcessorVersion
 type DocumentAIProcessorVersionObservedState struct {
 	// Output only. The state of the processor version.
 	State *string `json:"state,omitempty"`

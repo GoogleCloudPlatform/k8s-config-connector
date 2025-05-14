@@ -29,7 +29,7 @@ var (
 )
 
 // ComputeTargetTCPProxySpec defines the desired state of ComputeTargetTCPProxy
-// +kcc:proto=google.cloud.compute.v1.TargetTcpProxy
+// +kcc:spec:proto=google.cloud.compute.v1.TargetTcpProxy
 type ComputeTargetTCPProxySpec struct {
 	// A reference to the ComputeBackendService resource.
 	// +required

@@ -23,7 +23,7 @@ import (
 var DiscoveryEngineDataStoreGVK = GroupVersion.WithKind("DiscoveryEngineDataStore")
 
 // DiscoveryEngineDataStoreSpec defines the desired state of DiscoveryEngineDataStore
-// +kcc:proto=google.cloud.discoveryengine.v1.DataStore
+// +kcc:spec:proto=google.cloud.discoveryengine.v1.DataStore
 type DiscoveryEngineDataStoreSpec struct {
 	// The DiscoveryEngineDataStore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -93,7 +93,7 @@ type DiscoveryEngineDataStoreStatus struct {
 }
 
 // DiscoveryEngineDataStoreObservedState is the state of the DiscoveryEngineDataStore resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.discoveryengine.v1.DataStore
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.DataStore
 type DiscoveryEngineDataStoreObservedState struct {
 	// Output only. The id of the default
 	// [Schema][google.cloud.discoveryengine.v1.Schema] associated to this data

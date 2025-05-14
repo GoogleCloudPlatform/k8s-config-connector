@@ -31,7 +31,7 @@ type EncryptionKey struct {
 	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule
 type BackupPlan_ScheduleObservedState struct {
 	// Output only. Start time of next scheduled backup under this BackupPlan by
 	//  either cron_schedule or rpo config.
@@ -145,7 +145,7 @@ type Parent struct {
 }
 
 // GKEBackupBackupPlanSpec defines the desired state of GKEBackupBackupPlan
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan
+// +kcc:spec:proto=google.cloud.gkebackup.v1.BackupPlan
 type GKEBackupBackupPlanSpec struct {
 	// The GKEBackupBackupPlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -208,7 +208,7 @@ type GKEBackupBackupPlanStatus struct {
 }
 
 // GKEBackupBackupPlanObservedState is the state of the GKEBackupBackupPlan resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.gkebackup.v1.BackupPlan
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.BackupPlan
 type GKEBackupBackupPlanObservedState struct {
 	// Output only. The full name of the BackupPlan resource.
 	//  Format: `projects/*/locations/*/backupPlans/*`

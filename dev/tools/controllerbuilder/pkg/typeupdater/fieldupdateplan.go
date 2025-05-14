@@ -130,7 +130,7 @@ func (s *ProtoPackageSyncer) applyFieldUpdatePlan(plan FieldUpdatePlan) error {
 	docMap := gocode.NewDocMap(fset, file)
 
 	// find the target struct and field by matching the proto name
-	targetMessageAnnotation := fmt.Sprintf("%s=%s", codegen.KCCProtoMessageAnnotation, plan.protoParentName)
+	targetMessageAnnotation := fmt.Sprintf("%s=%s", codegen.KCCProtoMessageAnnotationMisc, plan.protoParentName)
 	targetFieldAnnotation := fmt.Sprintf("%s=%s", codegen.KCCProtoFieldAnnotation, plan.protoName)
 	var fieldNode *ast.Field
 	var found bool
