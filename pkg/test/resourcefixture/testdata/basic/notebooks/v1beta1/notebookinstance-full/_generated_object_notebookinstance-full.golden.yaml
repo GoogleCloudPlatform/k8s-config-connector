@@ -69,12 +69,12 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    creator: xiaoweim@google.com
+    creator: someone@somewhere.com
     disks:
     - autoDelete: true
       boot: true
       deviceName: boot
-      diskSizeGB: 100
+      diskSizeGB: 150
       guestOSFeatures:
       - type: VIRTIO_SCSI_MULTIQUEUE
       - type: UEFI_COMPATIBLE
@@ -90,8 +90,9 @@ status:
       mode: READ_WRITE
       source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot
       type: PERSISTENT
-    - deviceName: data
-      diskSizeGB: 200
+    - autoDelete: true
+      deviceName: data
+      diskSizeGB: 100
       index: 1
       interface: SCSI
       kind: compute#attachedDisk

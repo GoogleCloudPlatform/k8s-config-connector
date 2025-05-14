@@ -47,7 +47,44 @@ func (s *NotebookServiceV1) GetInstance(ctx context.Context, req *pb.GetInstance
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
+	obj.Name = fqn
+	obj.Metadata = map[string]string{
+		"container":                  "gcr.io/deeplearning-platform-release/base-cpu",
+		"disable-swap-binaries":      "true",
+		"enable-guest-attributes":    "TRUE",
+		"notebooks-api":              "PROD",
+		"notebooks-api-version":      "v1",
+		"proxy-mode":                 "service_account",
+		"serial-port-logging-enable": "true",
+		"shutdown-script":            "/opt/deeplearning/bin/shutdown_script.sh",
+		"warmup-libraries":           "matplotlib.pyplot",
+	}
+	obj.Creator = "someone@somewhere.com"
+	obj.DiskEncryption = pb.Instance_GMEK
+	obj.AcceleratorConfig = nil
+	obj.Disks = []*pb.Instance_Disk{
+		createBootDisk(name.Project.ID, name.name),
+		createDataDisk(name.Project.ID, name.name),
+	}
+	obj.ShieldedInstanceConfig = &pb.Instance_ShieldedInstanceConfig{
+		EnableVtpm:                true,
+		EnableIntegrityMonitoring: true,
+	}
+	obj.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+	obj.ServiceAccountScopes = []string{
+		"https://www.googleapis.com/auth/cloud-platform",
+		"https://www.googleapis.com/auth/userinfo.email",
+	}
+	obj.CreateTime = timestamppb.New(time.Now())
+	obj.UpdateTime = timestamppb.New(time.Now())
+	obj.Tags = []string{"deeplearning-vm", "notebook-instance"}
+	obj.Labels = map[string]string{
+		"goog-caip-notebook": "",
+	}
+	obj.State = pb.Instance_PROVISIONING
+	obj.MachineType = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/machineTypes/n1-standard-1", name.Project.ID)
+	obj.Network = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/default", name.Project.ID)
+	obj.Subnet = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/us-central1/subnetworks/default", name.Project.ID)
 	return obj, nil
 }
 
@@ -68,7 +105,7 @@ func createBootDisk(projectID string, instanceName string) *pb.Instance_Disk {
 		Licenses: []string{
 			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
 			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
-			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common",
+			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
 			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
 			"https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm",
 		},
@@ -91,6 +128,68 @@ func createDataDisk(projectID string, instanceName string) *pb.Instance_Disk {
 		Source:     fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/us-central1-a/disks/%s-data", projectID, instanceName),
 		Type:       "PERSISTENT",
 	}
+}
+
+func (s *NotebookServiceV1) StopInstance(ctx context.Context, req *pb.StopInstanceRequest) (*longrunning.Operation, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	obj.State = pb.Instance_STOPPED
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		Endpoint:              "StopInstance",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		return obj, nil
+	})
+}
+
+func (s *NotebookServiceV1) StartInstance(ctx context.Context, req *pb.StartInstanceRequest) (*longrunning.Operation, error) {
+	name, err := s.parseInstanceName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Instance{}
+	obj.State = pb.Instance_ACTIVE
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	metadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(time.Now()),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		Endpoint:              "StartInstance",
+	}
+	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
+		obj.CreateTime = timestamppb.New(time.Now())
+		obj.UpdateTime = timestamppb.New(time.Now())
+		obj.Creator = "someone@somewhere.com"
+		obj.Disks = []*pb.Instance_Disk{
+			createBootDisk(name.Project.ID, name.name),
+			createDataDisk(name.Project.ID, name.name),
+		}
+		obj.Name = fqn
+		return obj, nil
+	})
 }
 
 func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateInstanceRequest) (*longrunning.Operation, error) {
@@ -209,10 +308,38 @@ func (s *NotebookServiceV1) UpdateShieldedInstanceConfig(ctx context.Context, re
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "update",
-		Endpoint:              "UpdateShieldedInstanceConfig",
+		Endpoint:              "UpdateShieldInstanceConfig",
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.EndTime = timestamppb.New(time.Now())
+		updated.Creator = "someone@somewhere.com"
+		updated.DiskEncryption = pb.Instance_GMEK
+		updated.Disks = []*pb.Instance_Disk{
+			createBootDisk(name.Project.ID, name.name),
+			createDataDisk(name.Project.ID, name.name),
+		}
+		updated.Metadata = map[string]string{
+			"container":                  "gcr.io/deeplearning-platform-release/base-cpu",
+			"disable-swap-binaries":      "true",
+			"enable-guest-attributes":    "TRUE",
+			"notebooks-api":              "PROD",
+			"notebooks-api-version":      "v1",
+			"proxy-mode":                 "service_account",
+			"serial-port-logging-enable": "true",
+			"shutdown-script":            "/opt/deeplearning/bin/shutdown_script.sh",
+			"warmup-libraries":           "matplotlib.pyplot",
+		}
+		updated.Tags = append(updated.Tags, "deeplearning-vm", "notebook-instance")
+		updated.Labels = make(map[string]string)
+		updated.Labels["goog-caip-notebook"] = ""
+		updated.Network = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/default", name.Project.ID)
+		updated.ServiceAccountScopes = []string{
+			"https://www.googleapis.com/auth/cloud-platform",
+			"https://www.googleapis.com/auth/userinfo.email",
+		}
+		updated.State = pb.Instance_STOPPED
+		updated.Subnet = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/us-central1/subnetworks/default", name.Project.ID)
+		updated.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
 		return updated, nil
 	})
 }
