@@ -1224,10 +1224,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  name:
-                    description: 'Output only. The name of this notebook instance.
-                      Format: `projects/{project_id}/locations/{location}/instances/{instance_id}`'
-                    type: string
                   proxyURI:
                     description: Output only. The proxy endpoint that is used to access
                       the Jupyter notebook.
