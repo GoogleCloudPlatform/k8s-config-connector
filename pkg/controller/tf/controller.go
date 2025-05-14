@@ -401,8 +401,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		return false, err
 	}
 	// If creating a new resource, turn off RequiresNew in the diff. This is
-	// done to prevent TF from clearing providerMeta (which contains blueprint
-	// attribution information) during Apply() (b/193567082#comment15).
+	// done to prevent TF from clearing providerMeta during Apply() (b/193567082#comment15).
 	if liveState.Empty() {
 		for _, d := range diff.Attributes {
 			d.RequiresNew = false
