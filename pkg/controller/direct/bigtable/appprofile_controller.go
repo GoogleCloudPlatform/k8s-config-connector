@@ -179,6 +179,13 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 		RoutingConfig: routingConfig,
 		Isolation:     isolation,
 	}
+
+	// Support legacy annotation for backwards compatibility
+	annotations := createOp.GetUnstructured().GetAnnotations()
+	if annotations["cnrm.cloud.google.com/ignore-warnings"] == "true" {
+		profileConf.IgnoreWarnings = true
+	}
+
 	// TODO: Make use of returned app profile in ObservedState below
 	_, err := a.gcpClient.CreateAppProfile(ctx, *profileConf)
 	if err != nil {
@@ -222,8 +229,13 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	// updated = a.actual
 	var fieldsToUpdate gcp.ProfileAttrsToUpdate
 	// Several field changes (single -> multi cluster; turning on data boost) require us to ignore warnings if we want the update to go through.
-	fieldsToUpdate.IgnoreWarnings = true
 	hasChanges := false
+
+	// Support legacy annotation for backwards compatibility
+	annotations := updateOp.GetUnstructured().GetAnnotations()
+	if annotations["cnrm.cloud.google.com/ignore-warnings"] == "true" {
+		fieldsToUpdate.IgnoreWarnings = true
+	}
 
 	if desired.Spec.Description != nil && !cmp.Equal(resource.Description, a.actual.Description) {
 		fieldsToUpdate.Description = resource.Description
