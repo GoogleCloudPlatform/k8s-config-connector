@@ -91,42 +91,6 @@ EOF
 done
 
 
-
-for f in $(find scripts/github-actions  -type f -name "tests-e2e-fixtures*" | sort ); do
-    name=$(basename ${f})
-
-    # Skip VCR tests, they don't follow pattern
-    if [[ "${name}" == "tests-e2e-fixtures-vcr.sh" ]]; then
-      continue
-    fi
-
-cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-
-  ${name}:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run ${f}"
-        run: |
-          ./${f}
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-${name}
-          path: /tmp/artifacts/
-
-EOF
-
-done
-
-
-
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<'EOF'
 
 concurrency:
