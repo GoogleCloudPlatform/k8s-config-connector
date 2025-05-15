@@ -50,6 +50,7 @@ require (
 	cloud.google.com/go/networkservices v0.2.4
 	cloud.google.com/go/notebooks v1.12.6
 	cloud.google.com/go/orchestration v1.11.4
+	cloud.google.com/go/orgpolicy v1.14.2
 	cloud.google.com/go/privilegedaccessmanager v0.2.5
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/pubsub v1.47.0
@@ -128,7 +129,6 @@ require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3 // indirect
-	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.3 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
