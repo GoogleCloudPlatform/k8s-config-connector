@@ -3138,26 +3138,6 @@
 [missing_field] crd=privatecacertificates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.pemCsr" is not set in unstructured objects
 [missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=projects.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.dropUnknownFields" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.useTopicSchema" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.avroConfig.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.filenamePrefix" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.filenameSuffix" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxBytes" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxDuration" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.deadLetterTopicRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.maxDeliveryAttempts" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.enableMessageOrdering" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.expirationPolicy.ttl" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.filter" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.noWrapper.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.oidcToken.audience" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.oidcToken.serviceAccountEmail" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.pushEndpoint" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.maximumBackoff" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.minimumBackoff" is not set in unstructured objects
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
