@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+apiVersion: notebooks.cnrm.cloud.google.com/v1beta1
 kind: NotebookInstance
 metadata:
   name: notebookinstance-full-${uniqueId}
@@ -35,7 +35,7 @@ spec:
   noRemoveDataDisk: true
   diskEncryption: GMEK
   shieldedInstanceConfig:
-    enableSecureBoot: false
+    enableSecureBoot: true
     enableVTPM: true
     enableIntegrityMonitoring: true
   postStartupScript: gs://config-connector-samples/notebooks/notebook-instance.sh
@@ -57,11 +57,11 @@ spec:
     - https://www.googleapis.com/auth/trace.append
   labels:
     environment: development
-    team: config-connector
+    team: config-connector-team
   metadata:
     enable-os-config: "true"
   tags:
     - tag1
     - tag2
   reservationAffinity:
-    consumeReservationType: TYPE_UNSPECIFIED
+    consumeReservationType: NO_RESERVATION

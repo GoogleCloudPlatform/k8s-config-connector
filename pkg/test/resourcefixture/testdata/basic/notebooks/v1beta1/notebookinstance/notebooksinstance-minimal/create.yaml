@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+apiVersion: notebooks.cnrm.cloud.google.com/v1beta1
 kind: NotebookInstance
 metadata:
-  name: notebookinstance-basic-${uniqueId}
+  name: notebookinstance-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -23,10 +23,3 @@ spec:
   machineType: n1-standard-1
   containerImage:
     repository: gcr.io/deeplearning-platform-release/base-cpu
-  labels:
-    environment: development
-    team: config-connector-team
-  shieldedInstanceConfig:
-    enableSecureBoot: false
-    enableVTPM: true
-    enableIntegrityMonitoring: true

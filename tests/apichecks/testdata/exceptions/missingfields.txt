@@ -3047,33 +3047,11 @@
 [missing_field] crd=networkservicestlsroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.meshes[].namespace" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.acceleratorConfig.coreCount" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.acceleratorConfig.type" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.bootDiskSizeGB" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.bootDiskType" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.canIPForward" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.containerImage.tag" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.customGpuDriverPath" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.dataDiskSizeGB" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.dataDiskType" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.diskEncryption" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.installGpuDriver" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.instanceOwners[]" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.nicType" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.noProxyAccess" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.noPublicIP" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.noRemoveDataDisk" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.postStartupScript" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.consumeReservationType" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.key" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.values[]" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccountScopes[]" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.shieldedInstanceConfig.enableIntegrityMonitoring" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.shieldedInstanceConfig.enableSecureBoot" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.shieldedInstanceConfig.enableVTPM" is not set in unstructured objects
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.subnetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.tags[]" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].action" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].containerImage" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].createTime" is not set in unstructured objects
