@@ -49,7 +49,7 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.WorkflowsWorkflowObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RevisionId = direct.LazyPtr(in.GetRevisionId())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
@@ -72,7 +72,7 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	}
 	out := &pb.Workflow{}
 	out.State = direct.Enum_ToProto[pb.Workflow_State](mapCtx, in.State)
-	out.RevisionId = direct.ValueOf(in.RevisionId)
+	out.RevisionId = direct.ValueOf(in.RevisionID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)

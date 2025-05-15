@@ -129,7 +129,7 @@ type WorkflowsWorkflowObservedState struct {
 	// The format is "000001-a4d", where the first six characters define
 	// the zero-padded revision ordinal number. They are followed by a hyphen and
 	// three hexadecimal random characters.
-	RevisionId *string `json:"revisionId,omitempty"`
+	RevisionID *string `json:"revisionID,omitempty"`
 
 	// The timestamp for when the workflow was created.
 	CreateTime *string `json:"createTime,omitempty"`
