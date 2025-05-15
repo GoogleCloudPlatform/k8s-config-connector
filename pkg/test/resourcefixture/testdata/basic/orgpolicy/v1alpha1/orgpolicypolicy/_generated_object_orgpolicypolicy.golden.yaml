@@ -24,4 +24,6 @@ status:
     type: Ready
   externalRef: projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}
   observedGeneration: 2
-  observedState: {}
+  observedState:
+    spec:
+      updateTime: "2025-05-15T23:06:17.782081387Z"

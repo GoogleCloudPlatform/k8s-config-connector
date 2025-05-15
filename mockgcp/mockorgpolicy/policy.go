@@ -17,11 +17,14 @@ package mockorgpolicy
 import (
 	"context"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orgpolicy/v2"
 	"github.com/golang/protobuf/ptypes/empty"
 )
@@ -37,7 +40,7 @@ func (s *orgPolicyV2) GetPolicy(ctx context.Context, req *pb.GetPolicyRequest) (
 	obj := &pb.Policy{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
@@ -56,6 +59,15 @@ func (s *orgPolicyV2) CreatePolicy(ctx context.Context, req *pb.CreatePolicyRequ
 
 	obj := proto.Clone(req.Policy).(*pb.Policy)
 	obj.Name = fqn
+	if obj.Spec != nil {
+		obj.Spec.UpdateTime = timestamppb.New(time.Now())
+		obj.Spec.Etag = fields.ComputeWeakEtag(obj.Spec)
+	}
+	if obj.DryRunSpec != nil {
+		obj.DryRunSpec.UpdateTime = timestamppb.New(time.Now())
+		obj.DryRunSpec.Etag = fields.ComputeWeakEtag(obj.DryRunSpec)
+	}
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -77,6 +89,17 @@ func (s *orgPolicyV2) UpdatePolicy(ctx context.Context, req *pb.UpdatePolicyRequ
 		return nil, err
 	}
 
+	// use the new object from update request
+	obj = proto.Clone(req.GetPolicy()).(*pb.Policy)
+	if obj.Spec != nil {
+		obj.Spec.UpdateTime = timestamppb.New(time.Now())
+		obj.Spec.Etag = fields.ComputeWeakEtag(obj.Spec)
+	}
+	if obj.DryRunSpec != nil {
+		obj.DryRunSpec.UpdateTime = timestamppb.New(time.Now())
+		obj.DryRunSpec.Etag = fields.ComputeWeakEtag(obj.DryRunSpec)
+	}
+	obj.Etag = fields.ComputeWeakEtag(obj)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
