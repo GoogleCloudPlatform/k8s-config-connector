@@ -3147,7 +3147,6 @@
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.filenameSuffix" is not set in unstructured objects
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxBytes" is not set in unstructured objects
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxDuration" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.state" is not set in unstructured objects
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.deadLetterTopicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.maxDeliveryAttempts" is not set in unstructured objects
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.enableMessageOrdering" is not set in unstructured objects
