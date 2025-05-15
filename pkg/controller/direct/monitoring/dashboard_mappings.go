@@ -17,12 +17,14 @@ package monitoring
 import (
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -50,7 +52,7 @@ func AlertChart_FromProto(mapCtx *direct.MapContext, in *pb.AlertChart) *krm.Ale
 	}
 	out := &krm.AlertChart{}
 	if in.Name != "" {
-		out.AlertPolicyRef = &refs.MonitoringAlertPolicyRef{
+		out.AlertPolicyRef = &monitoringv1beta1.MonitoringAlertPolicyRef{
 			External: in.Name,
 		}
 	}
@@ -258,7 +260,7 @@ func IncidentList_FromProto(mapCtx *direct.MapContext, in *pb.IncidentList) *krm
 	out := &krm.IncidentList{}
 	out.MonitoredResources = direct.Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
 	for _, policyName := range in.PolicyNames {
-		out.PolicyRefs = append(out.PolicyRefs, refs.MonitoringAlertPolicyRef{External: policyName})
+		out.PolicyRefs = append(out.PolicyRefs, monitoringv1beta1.MonitoringAlertPolicyRef{External: policyName})
 	}
 	return out
 }

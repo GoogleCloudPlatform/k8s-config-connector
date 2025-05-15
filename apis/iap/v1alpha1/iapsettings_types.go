@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	appenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/appengine/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -57,12 +58,12 @@ type ComputeServiceRef struct {
 }
 
 type AppEngineRef struct {
-	ProjectRef     *refs.ProjectRef              `json:"projectRef"`
-	ApplicationRef *refs.AppEngineApplicationRef `json:"applicationRef"`
+	ProjectRef     *refs.ProjectRef                          `json:"projectRef"`
+	ApplicationRef *appenginev1beta1.AppEngineApplicationRef `json:"applicationRef"`
 	// Optional. If specified, settings apply to the service
-	ServiceRef *refs.AppEngineServiceRef `json:"serviceRef,omitempty"`
+	ServiceRef *appenginev1beta1.AppEngineServiceRef `json:"serviceRef,omitempty"`
 	// Optional. If specified, settings apply to the version
-	VersionRef *refs.AppEngineVersionRef `json:"versionRef,omitempty"`
+	VersionRef *appenginev1beta1.AppEngineVersionRef `json:"versionRef,omitempty"`
 }
 
 // IAPSettingsSpec defines the desired state of IAPSettings

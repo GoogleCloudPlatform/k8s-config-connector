@@ -348,7 +348,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}AppEngineApplicationRef defines the resource reference to AppEngineApplication, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -358,7 +358,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Format: projects/{projects_id}/iap_web/appengine-{app_id}{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed AppEngineApplication resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{appID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -428,7 +428,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed AppEngineService resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_ID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -448,7 +448,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed AppEngineVersion resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_id}}/version/{{versionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

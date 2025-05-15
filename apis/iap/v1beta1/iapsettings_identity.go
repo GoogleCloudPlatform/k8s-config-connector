@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	appenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/appengine/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -198,42 +200,35 @@ func (p ComputeServiceParent) buildIAPSettingsID(ctx context.Context, reader cli
 // AppEngineParent represents project-wide App Engine service settings
 type AppEngineParent struct {
 	ProjectRef     *refsv1beta1.ProjectRef
-	ApplicationRef *refsv1beta1.AppEngineApplicationRef
-	ServiceRef     *refsv1beta1.AppEngineServiceRef
-	VersionRef     *refsv1beta1.AppEngineVersionRef
+	ApplicationRef *appenginev1beta1.AppEngineApplicationRef
+	ServiceRef     *appenginev1beta1.AppEngineServiceRef
+	VersionRef     *appenginev1beta1.AppEngineVersionRef
 }
 
 func (p AppEngineParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
-	if err != nil {
-		return "", err
-	}
-
-	appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, namespace, p.ApplicationRef)
+	applicationExternal, err := p.ApplicationRef.NormalizedExternal(ctx, reader, namespace)
 	if err != nil {
 		return "", err
 	}
 
 	if p.ServiceRef != nil {
-		serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, namespace, p.ServiceRef)
+		serviceExternal, err := p.ServiceRef.NormalizedExternal(ctx, reader, namespace)
 		if err != nil {
 			return "", err
 		}
 
 		if p.VersionRef != nil {
-			versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, namespace, p.VersionRef)
+			versionExternal, err := p.VersionRef.NormalizedExternal(ctx, reader, namespace)
 			if err != nil {
 				return "", err
 			}
-			return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s/versions/%s",
-				project.ProjectID, appID, serviceID, versionID), nil
+			return versionExternal, nil
 		}
 
-		return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s",
-			project.ProjectID, appID, serviceID), nil
+		return serviceExternal, nil
 	}
 
-	return fmt.Sprintf("projects/%s/iap_web/appengine-%s", project.ProjectID, appID), nil
+	return applicationExternal, nil
 }
 
 // getParentReference extracts the appropriate parent reference from an IAPSettings object

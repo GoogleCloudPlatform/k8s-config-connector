@@ -107,6 +107,8 @@ spark:
   metastoreService:
     metastoreServiceRef:
       external: string
+      name: string
+      namespace: string
   sparkHistoryServer:
     dataprocClusterRef:
       external: string
@@ -579,11 +581,31 @@ spark:
     <tr>
         <td>
             <p><code>spark.metastoreService.metastoreServiceRef.external</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The self-link of an existing Dataproc Metastore service , when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed MetastoreService resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spark.metastoreService.metastoreServiceRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a MetastoreService resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>spark.metastoreService.metastoreServiceRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a MetastoreService resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -618,7 +640,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The self-link of an existing Dataproc Cluster to act as a Spark History Server for the connection , when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed DataprocCluster resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -628,7 +650,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a Dataproc Cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a DataprocCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -638,7 +660,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a Dataproc Cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a DataprocCluster resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
