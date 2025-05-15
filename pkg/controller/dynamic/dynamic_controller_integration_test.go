@@ -563,6 +563,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 		return hasServerGeneratedId(*rc)
 	} else {
 		// Drift detection tests are enabled by default for direct resources.
+		// Skip drift detection for direct resources with server-generated id (configured in resource context).
 		return false
 	}
 }
