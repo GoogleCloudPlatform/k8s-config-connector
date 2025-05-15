@@ -25,6 +25,5 @@ spec:
   methodTypes:
   - CREATE
   - UPDATE
-  resourceID: custom.orgpolicycustomconstraint${uniqueId}
   resourceTypes:
   - container.googleapis.com/NodePool
