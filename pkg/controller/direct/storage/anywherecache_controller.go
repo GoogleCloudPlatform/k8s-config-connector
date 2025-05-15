@@ -68,7 +68,7 @@ type modelAnywhereCache struct {
 
 func (m *modelAnywhereCache) client(ctx context.Context) (*gcp.StorageControlClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}

@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	controlpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/control/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -61,6 +62,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
+	controlpb.RegisterStorageControlServer(grpcServer, &anywhereCaches{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
