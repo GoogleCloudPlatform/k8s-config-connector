@@ -1,7 +1,7 @@
-GET https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,10 +23,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints?%24alt=json%3Benum-encoding%3Dint
+POST https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=organizations%2F${folderID}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}
 
 {
   "actionType": 1,
@@ -36,7 +36,7 @@ X-Goog-Request-Params: parent=organizations%2F${folderID}
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ]
@@ -60,7 +60,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -124,13 +124,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "CLmCi8EGEMj1sdQD",
+    "etag": "W/\"Gf0mpqwjn+3uLt+PROp0q02Eu7wKwQYf7ACMG048zY0=\"",
     "rules": [
       {
         "enforce": false
       }
     ],
-    "updateTime": "2025-05-13T03:49:13.982285Z"
+    "updateTime": "2025-05-15T23:06:16.775047366Z"
   }
 }
 
@@ -155,13 +155,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "CLmCi8EGEMj1sdQD",
+    "etag": "W/\"Gf0mpqwjn+3uLt+PROp0q02Eu7wKwQYf7ACMG048zY0=\"",
     "rules": [
       {
         "enforce": false
       }
     ],
-    "updateTime": "2025-05-13T03:49:13.982285Z"
+    "updateTime": "2025-05-15T23:06:16.775047366Z"
   }
 }
 
@@ -197,13 +197,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "CLuCi8EGEPjf4MUD",
+    "etag": "W/\"Dk2wtonmAMcD9dVDr6Gb7lCfLohnabaGg7o3fUAYBjo=\"",
     "rules": [
       {
         "enforce": true
       }
     ],
-    "updateTime": "2025-05-13T03:49:15.951595Z"
+    "updateTime": "2025-05-15T23:06:17.782081387Z"
   }
 }
 
@@ -228,13 +228,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "CLuCi8EGEPjf4MUD",
+    "etag": "W/\"Dk2wtonmAMcD9dVDr6Gb7lCfLohnabaGg7o3fUAYBjo=\"",
     "rules": [
       {
         "enforce": true
       }
     ],
-    "updateTime": "2025-05-13T03:49:15.951595Z"
+    "updateTime": "2025-05-15T23:06:17.782081387Z"
   }
 }
 
@@ -259,10 +259,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -282,7 +282,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -291,10 +291,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicypolicy${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
