@@ -65,20 +65,6 @@ func OrgPolicyCustomConstraintSpec_ToProto(mapCtx *direct.MapContext, in *krm.Or
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func OrgPolicyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.OrgPolicyPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.OrgPolicyPolicyObservedState{}
-	return out
-}
-func OrgPolicyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPolicyObservedState) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	return out
-}
 func OrgPolicyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.OrgPolicyPolicySpec {
 	if in == nil {
 		return nil
@@ -97,50 +83,6 @@ func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPol
 	out.Spec = PolicySpec_ToProto(mapCtx, in.Spec)
 	out.DryRunSpec = PolicySpec_ToProto(mapCtx, in.DryRunSpec)
 	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
-func Policy_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Policy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Spec = PolicySpec_FromProto(mapCtx, in.GetSpec())
-	out.DryRunSpec = PolicySpec_FromProto(mapCtx, in.GetDryRunSpec())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func Policy_ToProto(mapCtx *direct.MapContext, in *krm.Policy) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Spec = PolicySpec_ToProto(mapCtx, in.Spec)
-	out.DryRunSpec = PolicySpec_ToProto(mapCtx, in.DryRunSpec)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
-func PolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.PolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PolicyObservedState{}
-	// MISSING: Name
-	out.Spec = PolicySpecObservedState_FromProto(mapCtx, in.GetSpec())
-	// MISSING: Alternate
-	// MISSING: DryRunSpec
-	return out
-}
-func PolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PolicyObservedState) *pb.Policy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Policy{}
-	// MISSING: Name
-	out.Spec = PolicySpecObservedState_ToProto(mapCtx, in.Spec)
-	// MISSING: Alternate
-	// MISSING: DryRunSpec
 	return out
 }
 func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpec {
