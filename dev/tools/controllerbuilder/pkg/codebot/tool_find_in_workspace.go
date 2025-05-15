@@ -22,7 +22,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -63,18 +63,18 @@ func (t *FindInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any)
 	return result, nil
 }
 
-func (t *FindInWorkspace) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *FindInWorkspace) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "FindInWorkspace",
 		Description: `
 Search the code for a particular string.  This returns matches from the workspace, including the filename and a few lines of context for each match.
 `,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"find_text"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"find_text": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 Find files in the workspace that include the specified string.
 `,
