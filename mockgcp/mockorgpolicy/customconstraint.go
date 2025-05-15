@@ -17,10 +17,12 @@ package mockorgpolicy
 import (
 	"context"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orgpolicy/v2"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -42,7 +44,7 @@ func (s *orgPolicyV2) GetCustomConstraint(ctx context.Context, req *pb.GetCustom
 	obj := &pb.CustomConstraint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
 		}
 		return nil, err
 	}
@@ -61,6 +63,7 @@ func (s *orgPolicyV2) CreateCustomConstraint(ctx context.Context, req *pb.Create
 
 	obj := proto.Clone(req.CustomConstraint).(*pb.CustomConstraint)
 	obj.Name = fqn
+	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -81,6 +84,10 @@ func (s *orgPolicyV2) UpdateCustomConstraint(ctx context.Context, req *pb.Update
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	// use the new object from update request
+	obj = proto.Clone(req.GetCustomConstraint()).(*pb.CustomConstraint)
+	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
