@@ -1,7 +1,7 @@
-GET https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -23,10 +23,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints?%24alt=json%3Benum-encoding%3Dint
+POST https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=organizations%2F${folderID}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}
 
 {
   "actionType": 1,
@@ -36,7 +36,7 @@ X-Goog-Request-Params: parent=organizations%2F${folderID}
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ]
@@ -60,7 +60,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -69,10 +69,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -92,7 +92,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -101,10 +101,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: custom_constraint.name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
+X-Goog-Request-Params: custom_constraint.name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
 
 {
   "actionType": 1,
@@ -114,7 +114,7 @@ X-Goog-Request-Params: custom_constraint.name=organizations%2F${folderID}%2Fcust
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ]
@@ -138,7 +138,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -147,10 +147,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -170,7 +170,7 @@ X-Xss-Protection: 0
     1,
     2
   ],
-  "name": "organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
+  "name": "organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}",
   "resourceTypes": [
     "container.googleapis.com/NodePool"
   ],
@@ -179,10 +179,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://orgpolicy.googleapis.com/v2/organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://orgpolicy.googleapis.com/v2/organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=organizations%2F${folderID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2FcustomConstraints%2Fcustom.orgpolicycustomconstraint${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
