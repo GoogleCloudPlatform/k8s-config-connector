@@ -84,12 +84,21 @@ type OrgPolicyPolicyStatus struct {
 // OrgPolicyPolicyObservedState is the state of the OrgPolicyPolicy resource as most recently observed in GCP.
 // +kcc:proto=google.cloud.orgpolicy.v2.Policy
 type OrgPolicyPolicyObservedState struct {
+	// Basic information about the Organization Policy.
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.spec
+	Spec *PolicySpecObservedState `json:"spec,omitempty"`
+
+	// Dry-run policy.
+	//  Audit-only policy, can be used to monitor how the policy would have
+	//  impacted the existing and future resources if it's enforced.
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.dry_run_spec
+	DryRunSpec *PolicySpecObservedState `json:"dryRunSpec,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // TODO(user): make sure the pluralizaiton below is correct
-// +kubebuilder:resource:categories=gcp,shortName=gcporgpolicypolicy;gcporgpolicypolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcporgpolicypolicy;gcporgpolicypolicies
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
