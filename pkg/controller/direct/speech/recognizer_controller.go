@@ -300,16 +300,9 @@ func normalizeRecognizerConfigRefs(ctx context.Context, reader client.Reader, ob
 		return nil
 	}
 	if config.Adaptation != nil {
-		for _, customClassRef := range config.Adaptation.CustomClasses {
-			if customClassRef.CustomClassRef != nil {
-				if _, err := customClassRef.CustomClassRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-					return fmt.Errorf("normalizing CustomClassRef: %w", err)
-				}
-			}
-		}
-		for _, phraseSetRef := range config.Adaptation.PhraseSets {
-			if phraseSetRef.PhraseSetRef != nil {
-				if _, err := phraseSetRef.PhraseSetRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+		for i := range config.Adaptation.PhraseSets {
+			if config.Adaptation.PhraseSets[i].PhraseSetRef != nil {
+				if _, err := config.Adaptation.PhraseSets[i].PhraseSetRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 					return fmt.Errorf("normalizing PhraseSetRef: %w", err)
 				}
 			}

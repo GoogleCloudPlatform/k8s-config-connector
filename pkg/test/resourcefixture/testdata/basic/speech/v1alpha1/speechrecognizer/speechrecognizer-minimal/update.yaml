@@ -19,5 +19,8 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
-  description: "Updated description"
+  location: global
+  displayName: "Updated description"
+  model: long
+  languageCodes:
+    - en-US
