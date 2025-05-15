@@ -5,15 +5,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecog
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Grpc-Status-Details-Bin: CAUSXVVuYWJsZSB0byBmaW5kIFJlY29nbml6ZXIgc3BlZWNocmVjb2duaXplci1taW5pbWFsLWx2dmM3MnZqNm9oY3VtcSBmcm9tIHByb2plY3QgNjAwMTM5NTY2MTE2Lhr9AQokdHlwZS5nb29nbGVhcGlzLmNvbS91dGlsLlN0YXR1c1Byb3RvEtQBCAUSB2dlbmVyaWMaXVVuYWJsZSB0byBmaW5kIFJlY29nbml6ZXIgc3BlZWNocmVjb2duaXplci1taW5pbWFsLWx2dmM3MnZqNm9oY3VtcSBmcm9tIHByb2plY3QgNjAwMTM5NTY2MTE2LipoCxCG1o0nGl8SXVVuYWJsZSB0byBmaW5kIFJlY29nbml6ZXIgc3BlZWNocmVjb2duaXplci1taW5pbWFsLWx2dmM3MnZqNm9oY3VtcSBmcm9tIHByb2plY3QgNjAwMTM5NTY2MTE2Lgw=
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DUE4Gj4VZmbmQA==
-X-Goog-Ext-9650773-Bin: Deb3cEE=
 X-Xss-Protection: 0
 
 {
@@ -41,14 +38,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DWpIFj4VMzPTQA==
-X-Goog-Ext-9650773-Bin: DSXRakE=
 X-Xss-Protection: 0
 
 {
@@ -104,14 +99,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: Dc8kPz4VMzOzQA==
-X-Goog-Ext-9650773-Bin: DcFUlUE=
 X-Xss-Protection: 0
 
 {
@@ -152,14 +145,12 @@ X-Goog-Request-Params: recognizer.name=projects%2F${projectId}%2Flocations%2Fglo
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: Des26z0VmpnJQA==
-X-Goog-Ext-9650773-Bin: DejCN0E=
 X-Xss-Protection: 0
 
 {
@@ -215,14 +206,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DSyZ+j0VMzPTQA==
-X-Goog-Ext-9650773-Bin: DarHQ0E=
 X-Xss-Protection: 0
 
 {
@@ -254,14 +243,12 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: scaffolding on HTTPServer2
+Server: ESF
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
-X-Goog-Ext-27651507-Bin: DYSVFz4VZmbGQA==
-X-Goog-Ext-9650773-Bin: DZ7ZbEE=
 X-Xss-Protection: 0
 
 {
