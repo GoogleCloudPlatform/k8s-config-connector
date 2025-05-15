@@ -1,21 +1,27 @@
-apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+apiVersion: notebooks.cnrm.cloud.google.com/v1beta1
 kind: NotebookInstance
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: notebookinstance-minimal-${uniqueId}
+  name: notebookinstance-basic-${uniqueId}
   namespace: ${uniqueId}
 spec:
   containerImage:
     repository: gcr.io/deeplearning-platform-release/base-cpu
+  labels:
+    environment: development
+    team: config-connector-team
   machineType: n1-standard-1
   projectRef:
     external: ${projectId}
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: true
+    enableSecureBoot: false
+    enableVTPM: true
   zone: us-central1-a
 status:
   conditions:
@@ -24,8 +30,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}
-  observedGeneration: 1
+  externalRef: projects/${projectId}/locations/us-central1-a/instances/notebookinstance-basic-${uniqueId}
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     creator: someone@somewhere.com
@@ -43,11 +49,11 @@ status:
       licenses:
       - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow
       - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic
-      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-cpu-common
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container
       - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11
       - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm
       mode: READ_WRITE
-      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-boot
+      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-basic-${uniqueId}-boot
       type: PERSISTENT
     - autoDelete: true
       deviceName: data
@@ -56,8 +62,7 @@ status:
       interface: SCSI
       kind: compute#attachedDisk
       mode: READ_WRITE
-      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-minimal-${uniqueId}-data
+      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-basic-${uniqueId}-data
       type: PERSISTENT
-    name: projects/${projectId}/locations/us-central1-a/instances/notebookinstance-minimal-${uniqueId}
     state: PROVISIONING
     updateTime: "1970-01-01T00:00:00Z"

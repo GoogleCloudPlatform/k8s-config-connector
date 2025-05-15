@@ -970,7 +970,6 @@ observedState:
     mode: string
     source: string
     type: string
-  name: string
   proxyURI: string
   state: string
   updateTime: string
@@ -1218,13 +1217,6 @@ observedState:
 
  * `PERSISTENT`
  * `SCRATCH`{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Output only. The name of this notebook instance. Format: `projects/{project_id}/locations/{location}/instances/{instance_id}`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
