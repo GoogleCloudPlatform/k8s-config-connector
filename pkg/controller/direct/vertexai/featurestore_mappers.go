@@ -56,7 +56,7 @@ func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featur
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
 	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
-	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
@@ -71,7 +71,7 @@ func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexA
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
 	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)
-	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out

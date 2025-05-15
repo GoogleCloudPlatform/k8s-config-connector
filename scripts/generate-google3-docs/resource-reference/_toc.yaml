@@ -599,6 +599,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md
   - title: "VertexAIIndex"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md
+  - title: "VertexAIMetadataStore"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md
 - title: "VPC Access"
   section:
   - title: "VPCAccessConnector"
