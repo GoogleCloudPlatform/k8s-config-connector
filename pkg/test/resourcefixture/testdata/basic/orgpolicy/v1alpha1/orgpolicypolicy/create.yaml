@@ -19,8 +19,6 @@ metadata:
 spec:
   projectRef:
     external: projects/1070934155037  # kcc-orgpolicy-test-project
-  ResourceID: projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}
   spec:
-    name: projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId} # Name of the policy
     rules:
       - enforce: false
