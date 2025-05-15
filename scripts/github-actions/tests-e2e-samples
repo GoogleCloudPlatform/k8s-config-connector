@@ -35,4 +35,4 @@ E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
 KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule,SpannerInstance" \
 KCC_ENG_GROUP_EMAIL="${MOCK_GROUP_EMAIL}" \
-  go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/samples
+  go test -test.count=1 -timeout 90m -v ./tests/e2e -run TestAllInSeries/samples
