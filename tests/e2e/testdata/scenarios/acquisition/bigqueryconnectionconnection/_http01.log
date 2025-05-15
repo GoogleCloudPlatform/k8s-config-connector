@@ -1,7 +1,7 @@
 GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -27,8 +27,8 @@ X-Xss-Protection: 0
 
 PATCH https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 {
   "cloudResource": {},
@@ -60,8 +60,8 @@ X-Xss-Protection: 0
 
 GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/test-bqcc-acquisition?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager
-x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2Ftest-bqcc-acquisition
 
 200 OK
 Content-Type: application/json; charset=UTF-8

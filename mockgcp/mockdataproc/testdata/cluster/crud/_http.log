@@ -74,7 +74,7 @@ Content-Type: application/json
         "role": "roles/dataproc.worker"
       }
     ],
-    "etag": "1B2M2Y8AsgTpgAmY7PhCfg==",
+    "etag": "abcdef0123A=",
     "version": 3
   }
 }

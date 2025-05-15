@@ -33,8 +33,7 @@ on:
 
 
 jobs:
-
-  scenarios-tests:
+  tests-scenarios:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -42,18 +41,53 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run dev/ci/presubmits/scenarios-tests"
+      - name: "Run scripts/github-actions/tests-scenarios"
         run: |
-          ./dev/ci/presubmits/scenarios-tests
+          ./scripts/github-actions/tests-scenarios
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-scenarios-tests
+          name: artifacts-tests-scenarios
           path: /tmp/artifacts/
 
-
+  tests-scenarios-acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-scenarios-acquisition"
+        run: |
+          ./scripts/github-actions/tests-scenarios-acquisition
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-acquisition
+          path: /tmp/artifacts/
+  tests-scenarios-powertool:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scripts/github-actions/tests-scenarios-powertool"
+        run: |
+          ./scripts/github-actions/tests-scenarios-powertool
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-powertool
+          path: /tmp/artifacts/
   test-mockgcp:
     runs-on: ubuntu-latest
     timeout-minutes: 60
