@@ -1,0 +1,3 @@
+[output_only_spec_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.state" is not set in unstructured objects
+[output_only_spec_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.status[].locked" is not set in unstructured objects
+[output_only_spec_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.status[].passwordExpirationTime" is not set in unstructured objects
