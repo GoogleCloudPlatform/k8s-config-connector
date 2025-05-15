@@ -124,13 +124,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "W/\"Gf0mpqwjn+3uLt+PROp0q02Eu7wKwQYf7ACMG048zY0=\"",
+    "etag": "abcdef0123A=",
     "rules": [
       {
         "enforce": false
       }
     ],
-    "updateTime": "2025-05-15T23:06:16.775047366Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -155,13 +155,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "W/\"Gf0mpqwjn+3uLt+PROp0q02Eu7wKwQYf7ACMG048zY0=\"",
+    "etag": "abcdef0123A=",
     "rules": [
       {
         "enforce": false
       }
     ],
-    "updateTime": "2025-05-15T23:06:16.775047366Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -197,13 +197,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "W/\"Dk2wtonmAMcD9dVDr6Gb7lCfLohnabaGg7o3fUAYBjo=\"",
+    "etag": "abcdef0123A=",
     "rules": [
       {
         "enforce": true
       }
     ],
-    "updateTime": "2025-05-15T23:06:17.782081387Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -228,13 +228,13 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "name": "projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}",
   "spec": {
-    "etag": "W/\"Dk2wtonmAMcD9dVDr6Gb7lCfLohnabaGg7o3fUAYBjo=\"",
+    "etag": "abcdef0123A=",
     "rules": [
       {
         "enforce": true
       }
     ],
-    "updateTime": "2025-05-15T23:06:17.782081387Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 

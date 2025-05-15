@@ -89,7 +89,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
@@ -184,7 +184,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockpubsublite.New(env, storage))
 	services = append(services, mocknetworkconnectivity.New(env, storage))
 	services = append(services, mocknotebooks.New(env, storage))
-	services = append(services, mockorgpolicy.New(env, storage))
 	services = append(services, mockprivilegedaccessmanager.New(env, storage))
 	services = append(services, mockredis.New(env, storage))
 	services = append(services, mocksecuresourcemanager.New(env, storage))

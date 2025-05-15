@@ -18,7 +18,6 @@ spec:
   - UPDATE
   organizationRef:
     external: organizations/${organizationID}
-  resourceID: custom.orgpolicycustomconstraint${uniqueId}
   resourceTypes:
   - container.googleapis.com/NodePool
 status:
