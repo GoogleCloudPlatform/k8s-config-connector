@@ -12,42 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: orgpolicy.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.orgpolicy.v2
+// resource: OrgPolicyPolicy:Policy
+// resource: OrgPolicyCustomConstraint:CustomConstraint
+
 package v1alpha1
 
-// +kcc:proto=google.cloud.orgpolicy.v2.Policy
-type Policy struct {
-	// Immutable. The resource name of the policy. Must be one of the following
-	//  forms, where `constraint_name` is the name of the constraint which this
-	//  policy configures:
-	//
-	//  * `projects/{project_number}/policies/{constraint_name}`
-	//  * `folders/{folder_id}/policies/{constraint_name}`
-	//  * `organizations/{organization_id}/policies/{constraint_name}`
-	//
-	//  For example, `projects/123/policies/compute.disableSerialPortAccess`.
-	//
-	//  Note: `projects/{project_id}/policies/{constraint_name}` is also an
-	//  acceptable name for API requests, but responses will return the name using
-	//  the equivalent project number.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.name
-	Name *string `json:"name,omitempty"`
+// +kcc:proto=google.cloud.orgpolicy.v2.AlternatePolicySpec
+type AlternatePolicySpec struct {
+	// Reference to the launch that will be used while audit logging and to
+	//  control the launch.
+	//  Should be set only in the alternate policy.
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.AlternatePolicySpec.launch
+	Launch *string `json:"launch,omitempty"`
 
-	// Basic information about the Organization Policy.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.spec
+	// Specify constraint for configurations of Google Cloud resources.
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.AlternatePolicySpec.spec
 	Spec *PolicySpec `json:"spec,omitempty"`
-
-	// Dry-run policy.
-	//  Audit-only policy, can be used to monitor how the policy would have
-	//  impacted the existing and future resources if it's enforced.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.dry_run_spec
-	DryRunSpec *PolicySpec `json:"dryRunSpec,omitempty"`
-
-	// Optional. An opaque tag indicating the current state of the policy, used
-	//  for concurrency control. This 'etag' is computed by the server based on the
-	//  value of other fields, and may be sent on update and delete requests to
-	//  ensure the client has an up-to-date value before proceeding.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.etag
-	Etag *string `json:"etag,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec
@@ -170,14 +154,7 @@ type Expr struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// +kcc:proto=google.cloud.orgpolicy.v2.Policy
-type PolicyObservedState struct {
-	// Basic information about the Organization Policy.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.spec
-	Spec *PolicySpecObservedState `json:"spec,omitempty"`
-}
-
-// +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec
+// +kcc:observedstate:proto=google.cloud.orgpolicy.v2.PolicySpec
 type PolicySpecObservedState struct {
 	// Output only. The time stamp this was previously updated. This
 	//  represents the last time a call to `CreatePolicy` or `UpdatePolicy` was
