@@ -346,7 +346,7 @@ observedState:
   createTime: string
   cryptoKeyVersion: string
   revisionCreateTime: string
-  revisionId: string
+  revisionID: string
   state: string
   stateError:
     details: string
@@ -502,7 +502,7 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.revisionId</code></td>
+        <td><code>observedState.revisionID</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The revision of the workflow. A new revision of a workflow is created as a result of updating the following properties of a workflow: - service_account - source_content The format is "000001-a4d", where the first six characters define the zero-padded revision ordinal number. They are followed by a hyphen and three hexadecimal random characters.{% endverbatim %}</p>

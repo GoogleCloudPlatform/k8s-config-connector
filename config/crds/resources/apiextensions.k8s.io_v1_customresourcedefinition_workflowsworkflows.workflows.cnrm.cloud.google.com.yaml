@@ -565,7 +565,7 @@ spec:
                     description: The timestamp for the latest revision of the workflow's
                       creation.
                     type: string
-                  revisionId:
+                  revisionID:
                     description: 'The revision of the workflow. A new revision of
                       a workflow is created as a result of updating the following
                       properties of a workflow: - service_account - source_content

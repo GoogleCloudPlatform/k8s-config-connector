@@ -131,8 +131,8 @@ func (in *WorkflowsWorkflowObservedState) DeepCopyInto(out *WorkflowsWorkflowObs
 		*out = new(string)
 		**out = **in
 	}
-	if in.RevisionId != nil {
-		in, out := &in.RevisionId, &out.RevisionId
+	if in.RevisionID != nil {
+		in, out := &in.RevisionID, &out.RevisionID
 		*out = new(string)
 		**out = **in
 	}
