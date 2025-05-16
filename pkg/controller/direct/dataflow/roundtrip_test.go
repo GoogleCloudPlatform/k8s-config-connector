@@ -52,6 +52,10 @@ func FuzzDataflowFlexTemplateJobSpec(f *testing.F) {
 		unimplementedFields.Insert(".worker_zone")
 		unimplementedFields.Insert(".zone")
 
+		// Fields we can potentially implement now
+		unimplementedFields.Insert(".enable_launcher_vm_serial_port_logging")
+		unimplementedFields.Insert(".streaming_mode")
+
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
 			Paths: unimplementedFields.Union(outputFields),

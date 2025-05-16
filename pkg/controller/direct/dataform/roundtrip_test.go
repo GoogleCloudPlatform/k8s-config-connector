@@ -42,6 +42,12 @@ func FuzzDataformRepositorySpec(f *testing.F) {
 			".git_remote_settings.token_status", // not supported by KCC anymore
 		)
 
+		// Fields added more recently that can potentially be implemented
+		unimplementedFields.Insert(".create_time")
+		unimplementedFields.Insert(".data_encryption_state")
+		unimplementedFields.Insert(".kms_key_name")
+		unimplementedFields.Insert(".internal_metadata")
+
 		// Remove any known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
 			Paths: unimplementedFields,
