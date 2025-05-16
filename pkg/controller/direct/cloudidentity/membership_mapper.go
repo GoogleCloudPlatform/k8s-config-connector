@@ -20,154 +20,136 @@
 package cloudidentity
 
 import (
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	api "google.golang.org/api/cloudidentity/v1beta1"
 )
 
-func CloudIdentityMembershipSpec_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krmv1beta1.CloudIdentityMembershipSpec {
+func CloudIdentityMembershipSpec_FromAPI(mapCtx *direct.MapContext, in *api.Membership) *krm.CloudIdentityMembershipSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.CloudIdentityMembershipSpec{}
+	out := &krm.CloudIdentityMembershipSpec{}
 	// MISSING: CreateTime
 	// MISSING: DeliverySetting
-	out.MemberKey = EntityKey_FromProto(mapCtx, in.GetMemberKey())
+	out.MemberKey = EntityKey_FromAPI(mapCtx, in.MemberKey)
 	// MISSING: Name
-	out.PreferredMemberKey = EntityKey_FromProto(mapCtx, in.GetPreferredMemberKey())
-	out.Roles = direct.Slice_FromProto(mapCtx, in.Roles, MembershipRoles_FromProto)
+	out.PreferredMemberKey = EntityKey_FromAPI(mapCtx, in.PreferredMemberKey)
+	out.Roles = direct.Slice_FromProto(mapCtx, in.Roles, MembershipRoles_FromAPI)
 	// MISSING: Type
 	// MISSING: UpdateTime
 	return out
 }
-func CloudIdentityMembershipSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CloudIdentityMembershipSpec) *pb.Membership {
+func CloudIdentityMembershipSpec_ToAPI(mapCtx *direct.MapContext, in *krm.CloudIdentityMembershipSpec) *api.Membership {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Membership{}
+	out := &api.Membership{}
 	// MISSING: CreateTime
 	// MISSING: DeliverySetting
-	out.MemberKey = EntityKey_ToProto(mapCtx, in.MemberKey)
+	out.MemberKey = EntityKey_ToAPI(mapCtx, in.MemberKey)
 	// MISSING: Name
-	out.PreferredMemberKey = EntityKey_ToProto(mapCtx, in.PreferredMemberKey)
-	out.Roles = direct.Slice_ToProto(mapCtx, in.Roles, MembershipRoles_ToProto)
+	out.PreferredMemberKey = EntityKey_ToAPI(mapCtx, in.PreferredMemberKey)
+	out.Roles = direct.Slice_ToProto(mapCtx, in.Roles, MembershipRoles_ToAPI)
 	// MISSING: Type
 	// MISSING: UpdateTime
 	return out
 }
-func CloudIdentityMembershipStatus_FromProto(mapCtx *direct.MapContext, in *pb.Membership) *krmv1beta1.CloudIdentityMembershipStatus {
+func CloudIdentityMembershipStatus_FromAPI(mapCtx *direct.MapContext, in *api.Membership) *krm.CloudIdentityMembershipStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.CloudIdentityMembershipStatus{}
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.DeliverySetting = in.DeliverySetting
+	out := &krm.CloudIdentityMembershipStatus{}
+	out.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.DeliverySetting = direct.LazyPtr(in.DeliverySetting)
 	// MISSING: MemberKey
 	// MISSING: Name
 	// MISSING: PreferredMemberKey
 	// MISSING: Roles
-	out.Type = in.Type
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Type = direct.LazyPtr(in.Type)
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
 	return out
 }
-func CloudIdentityMembershipStatus_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CloudIdentityMembershipStatus) *pb.Membership {
+func CloudIdentityMembershipStatus_ToAPI(mapCtx *direct.MapContext, in *krm.CloudIdentityMembershipStatus) *api.Membership {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Membership{}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.DeliverySetting = in.DeliverySetting
+	out := &api.Membership{}
+	out.CreateTime = direct.ValueOf(in.CreateTime)
+	out.DeliverySetting = direct.ValueOf(in.DeliverySetting)
 	// MISSING: MemberKey
 	// MISSING: Name
 	// MISSING: PreferredMemberKey
 	// MISSING: Roles
-	out.Type = in.Type
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Type = direct.ValueOf(in.Type)
+	out.UpdateTime = direct.ValueOf(in.UpdateTime)
 	return out
 }
-func MembershipExpiryDetail_FromProto(mapCtx *direct.MapContext, in *pb.ExpiryDetail) *krmv1beta1.MembershipExpiryDetail {
+func MembershipExpiryDetail_FromAPI(mapCtx *direct.MapContext, in *api.ExpiryDetail) *krm.MembershipExpiryDetail {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MembershipExpiryDetail{}
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out := &krm.MembershipExpiryDetail{}
+	out.ExpireTime = direct.LazyPtr(in.ExpireTime)
 	return out
 }
-func MembershipExpiryDetail_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MembershipExpiryDetail) *pb.ExpiryDetail {
+func MembershipExpiryDetail_ToAPI(mapCtx *direct.MapContext, in *krm.MembershipExpiryDetail) *api.ExpiryDetail {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ExpiryDetail{}
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out := &api.ExpiryDetail{}
+	out.ExpireTime = direct.ValueOf(in.ExpireTime)
 	return out
 }
-func MembershipRestrictionEvaluations_FromProto(mapCtx *direct.MapContext, in *pb.RestrictionEvaluations) *krmv1beta1.MembershipRestrictionEvaluations {
+func MembershipRestrictionEvaluations_FromAPI(mapCtx *direct.MapContext, in *api.RestrictionEvaluations) *krm.MembershipRestrictionEvaluations {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MembershipRestrictionEvaluations{}
-	out.MemberRestrictionEvaluation = MembershipRoleRestrictionEvaluation_FromProto(mapCtx, in.GetMemberRestrictionEvaluation())
+	out := &krm.MembershipRestrictionEvaluations{}
+	out.MemberRestrictionEvaluation = MembershipRoleRestrictionEvaluation_FromAPI(mapCtx, in.MemberRestrictionEvaluation)
 	return out
 }
-func MembershipRestrictionEvaluations_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MembershipRestrictionEvaluations) *pb.RestrictionEvaluations {
+func MembershipRestrictionEvaluations_ToAPI(mapCtx *direct.MapContext, in *krm.MembershipRestrictionEvaluations) *api.RestrictionEvaluations {
 	if in == nil {
 		return nil
 	}
-	out := &pb.RestrictionEvaluations{}
-	out.MemberRestrictionEvaluation = MembershipRoleRestrictionEvaluation_ToProto(mapCtx, in.MemberRestrictionEvaluation)
+	out := &api.RestrictionEvaluations{}
+	out.MemberRestrictionEvaluation = MembershipRoleRestrictionEvaluation_ToAPI(mapCtx, in.MemberRestrictionEvaluation)
 	return out
 }
-func MembershipRoleRestrictionEvaluation_FromProto(mapCtx *direct.MapContext, in *pb.MembershipRoleRestrictionEvaluation) *krmv1beta1.MembershipRoleRestrictionEvaluation {
+func MembershipRoleRestrictionEvaluation_FromAPI(mapCtx *direct.MapContext, in *api.MembershipRoleRestrictionEvaluation) *krm.MembershipRoleRestrictionEvaluation {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MembershipRoleRestrictionEvaluation{}
-	out.State = in.State
+	out := &krm.MembershipRoleRestrictionEvaluation{}
+	out.State = direct.LazyPtr(in.State)
 	return out
 }
-func MembershipRoleRestrictionEvaluation_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MembershipRoleRestrictionEvaluation) *pb.MembershipRoleRestrictionEvaluation {
+func MembershipRoleRestrictionEvaluation_ToAPI(mapCtx *direct.MapContext, in *krm.MembershipRoleRestrictionEvaluation) *api.MembershipRoleRestrictionEvaluation {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MembershipRoleRestrictionEvaluation{}
-	out.State = in.State
+	out := &api.MembershipRoleRestrictionEvaluation{}
+	out.State = direct.ValueOf(in.State)
 	return out
 }
-func MembershipRoles_FromProto(mapCtx *direct.MapContext, in *pb.MembershipRole) *krmv1beta1.MembershipRoles {
+func MembershipRoles_FromAPI(mapCtx *direct.MapContext, in *api.MembershipRole) *krm.MembershipRoles {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MembershipRoles{}
-	out.ExpiryDetail = MembershipExpiryDetail_FromProto(mapCtx, in.GetExpiryDetail())
-	out.Name = in.Name
-	out.RestrictionEvaluations = MembershipRestrictionEvaluations_FromProto(mapCtx, in.GetRestrictionEvaluations())
+	out := &krm.MembershipRoles{}
+	out.ExpiryDetail = MembershipExpiryDetail_FromAPI(mapCtx, in.ExpiryDetail)
+	out.Name = direct.LazyPtr(in.Name)
+	out.RestrictionEvaluations = MembershipRestrictionEvaluations_FromAPI(mapCtx, in.RestrictionEvaluations)
 	return out
 }
-func MembershipRoles_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MembershipRoles) *pb.MembershipRole {
+func MembershipRoles_ToAPI(mapCtx *direct.MapContext, in *krm.MembershipRoles) *api.MembershipRole {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MembershipRole{}
-	out.ExpiryDetail = MembershipExpiryDetail_ToProto(mapCtx, in.ExpiryDetail)
-	out.Name = in.Name
-	out.RestrictionEvaluations = MembershipRestrictionEvaluations_ToProto(mapCtx, in.RestrictionEvaluations)
-	return out
-}
-func EntityKey_FromProto(mapCtx *direct.MapContext, in *pb.EntityKey) *krmv1beta1.EntityKey {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.EntityKey{}
-	out.ID = direct.ValueOf(in.Id)
-	out.Namespace = in.Namespace
-	return out
-}
-func EntityKey_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EntityKey) *pb.EntityKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EntityKey{}
-	out.Id = direct.LazyPtr(in.ID)
-	out.Namespace = in.Namespace
+	out := &api.MembershipRole{}
+	out.ExpiryDetail = MembershipExpiryDetail_ToAPI(mapCtx, in.ExpiryDetail)
+	out.Name = direct.ValueOf(in.Name)
+	out.RestrictionEvaluations = MembershipRestrictionEvaluations_ToAPI(mapCtx, in.RestrictionEvaluations)
 	return out
 }
