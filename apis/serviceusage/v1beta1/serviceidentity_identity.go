@@ -14,61 +14,65 @@
 
 package v1beta1
 
-/*
+// +tool:krm-identity
+// proto.service: google.api.serviceusage.v1beta1.ServiceUsage
+// proto.message: google.api.serviceusage.v1beta1.ServiceIdentity
+// crd.kind: ServiceIdentity
+// crd.version: v1beta1
+
 import (
 	"context"
 	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ServiceIdentityIdentity defines the resource reference to ServiceIdentity, which "External" field
-// holds the GCP identifier for the KRM object.
+var _ identity.Identity = &ServiceIdentityIdentity{}
+
 type ServiceIdentityIdentity struct {
-	parent *ServiceIdentityParent
-	id string
+	ParentID *refs.Project
+	Service  string
 }
 
 func (i *ServiceIdentityIdentity) String() string {
-	return  i.parent.String() + "/serviceidentitys/" + i.id
+	return i.ParentID.String() + "/services/" + i.Service
 }
 
-func (i *ServiceIdentityIdentity) ID() string {
-	return i.id
+func (i *ServiceIdentityIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "services" {
+
+		parentID := &refs.Project{}
+		if err := parentID.FromExternal(strings.Join(tokens[:len(tokens)-2], "/")); err != nil {
+			return fmt.Errorf("format of ServiceIdentity ref=%q was not known (use %q)", ref, "projects/<project>/services/<service>")
+		}
+
+		service := tokens[len(tokens)-1]
+
+		i.ParentID = parentID
+		i.Service = service
+
+		return nil
+	}
+
+	return fmt.Errorf("format of ServiceIdentity ref=%q was not known (use %q)", ref, "projects/<project>/services/<service>")
+
 }
 
-func (i *ServiceIdentityIdentity) Parent() *ServiceIdentityParent {
-	return  i.parent
-}
+var _ identity.Resource = &ServiceIdentity{}
 
-type ServiceIdentityParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *ServiceIdentityParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-
-// New builds a ServiceIdentityIdentity from the Config Connector ServiceIdentity object.
-func NewServiceIdentityIdentity(ctx context.Context, reader client.Reader, obj *ServiceIdentity) (*ServiceIdentityIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *ServiceIdentity) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get parent ID
+	parentID, err := obj.GetParentIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	// Get desired ID
+	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -77,44 +81,37 @@ func NewServiceIdentityIdentity(ctx context.Context, reader client.Reader, obj *
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseServiceIdentityExternal(externalRef)
-		if err != nil {
-			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
-		}
+	id := &ServiceIdentityIdentity{
+		ParentID: parentID.(*refs.Project),
+		Service:  resourceID,
 	}
-	return &ServiceIdentityIdentity{
-		parent: &ServiceIdentityParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	// status.externalRef does not exist yet
+	// // Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
+	// externalRef := common.ValueOf(obj.Status.ExternalRef)
+	// if externalRef != "" {
+	// 	previousID := &ServiceIdentityIdentity{}
+	// 	if err := previousID.FromExternal(externalRef); err != nil {
+	// 		return nil, err
+	// 	}
+	// 	if id.String() != previousID.String() {
+	// 		return nil, fmt.Errorf("cannot update ServiceIdentity identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
+	// 	}
+	// }
+
+	return id, nil
 }
 
-func ParseServiceIdentityExternal(external string) (parent *ServiceIdentityParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "serviceidentitys" {
-		return nil, "", fmt.Errorf("format of ServiceIdentity external=%q was not known (use projects/{{projectID}}/locations/{{location}}/serviceidentitys/{{serviceidentityID}})", external)
+func (obj *ServiceIdentity) GetParentIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Normalize parent reference
+	projectRef := *obj.Spec.ProjectRef
+	if err := projectRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
 	}
-	parent = &ServiceIdentityParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	// Get parent identity
+	parentID := &refs.Project{}
+	if err := parentID.FromExternal(obj.Spec.ProjectRef.External); err != nil {
+		return nil, err
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return parentID, nil
 }
-*/
