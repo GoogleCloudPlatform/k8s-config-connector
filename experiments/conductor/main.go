@@ -31,10 +31,15 @@ func BuildRootCommand() *cobra.Command {
 	}
 
 	rootCmd.AddCommand(runner.BuildRunnerCmd())
+	rootCmd.AddCommand(runner.BuildToolsCommand())
 	// rootCmd.AddCommand(summary.BuildSummaryCmd())
 
 	// rootCmd.Version = version.GetVersion()
 	// rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	// We print our own errors
+	rootCmd.SilenceUsage = true
+	rootCmd.SilenceErrors = true
 
 	return rootCmd
 }
