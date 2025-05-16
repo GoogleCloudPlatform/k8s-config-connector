@@ -1,0 +1,1952 @@
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/${networkID} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=${networkID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys?alt=json&cryptoKeyId=${networkID}&skipInitialVersionCreation=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "source": "kcc-notebookinstance-sample"
+  },
+  "purpose": "ENCRYPT_DECRYPT"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "source": "kcc-notebookinstance-sample"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "source": "kcc-notebookinstance-sample"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "${networkID}",
+  "serviceAccount": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "${networkID}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "${networkID}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/${networkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "autoCreateSubnetworks": true,
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ipCidrRange": "10.0.0.0/16",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "region": "projects/${projectId}/global/regions/us-west3"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/16",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/CreateInstance
+
+{
+  "instance": {
+    "bootDiskSizeGb": "100",
+    "bootDiskType": "PD_SSD",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "dataDiskSizeGb": "200",
+    "dataDiskType": "PD_SSD",
+    "diskEncryption": "GMEK",
+    "installGpuDriver": true,
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+    "labels": {
+      "environment": "development",
+      "team": "config-connector"
+    },
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "enable-os-config": "true"
+    },
+    "noProxyAccess": true,
+    "noPublicIp": true,
+    "noRemoveDataDisk": true,
+    "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+    "reservationAffinity": {},
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  },
+  "instanceId": "notebookinstance-full-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "bootDiskSizeGb": "100",
+    "bootDiskType": "PD_SSD",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "dataDiskSizeGb": "200",
+    "dataDiskType": "PD_SSD",
+    "diskEncryption": "GMEK",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "boot",
+        "diskSizeGb": "150",
+        "guestOsFeatures": [
+          {
+            "type": "VIRTIO_SCSI_MULTIQUEUE"
+          },
+          {
+            "type": "UEFI_COMPATIBLE"
+          },
+          {
+            "type": "GVNIC"
+          }
+        ],
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+        ],
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "data",
+        "diskSizeGb": "100",
+        "index": "1",
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+        "type": "PERSISTENT"
+      }
+    ],
+    "installGpuDriver": true,
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+    "labels": {
+      "goog-caip-notebook": ""
+    },
+    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-mode": "service_account",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "warmup-libraries": "matplotlib.pyplot"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "noProxyAccess": true,
+    "noPublicIp": true,
+    "noRemoveDataDisk": true,
+    "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+    "reservationAffinity": {},
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "state": "PROVISIONING",
+    "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "bootDiskSizeGb": "100",
+  "bootDiskType": "PD_SSD",
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "dataDiskSizeGb": "200",
+  "dataDiskType": "PD_SSD",
+  "diskEncryption": "GMEK",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "150",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+      "type": "PERSISTENT"
+    },
+    {
+      "autoDelete": true,
+      "deviceName": "data",
+      "diskSizeGb": "100",
+      "index": "1",
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+      "type": "PERSISTENT"
+    }
+  ],
+  "installGpuDriver": true,
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+  "labels": {
+    "goog-caip-notebook": ""
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
+    "disable-swap-binaries": "true",
+    "enable-guest-attributes": "TRUE",
+    "notebooks-api": "PROD",
+    "notebooks-api-version": "v1",
+    "proxy-mode": "service_account",
+    "serial-port-logging-enable": "true",
+    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+    "warmup-libraries": "matplotlib.pyplot"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "noProxyAccess": true,
+  "noPublicIp": true,
+  "noRemoveDataDisk": true,
+  "postStartupScript": "gs://config-connector-samples/notebooks/notebook-instance.sh",
+  "reservationAffinity": {},
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccountScopes": [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableVtpm": true
+  },
+  "state": "PROVISIONING",
+  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+  "tags": [
+    "deeplearning-vm",
+    "notebook-instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/UpdateInstanceMetadataItems
+
+{
+  "items": {
+    "enable-os-config": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "items": {
+    "enable-os-config": "true"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/StopInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "StopInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "StopInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "state": "STOPPED"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/UpdateShieldedInstanceConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableSecureBoot": true,
+    "enableVtpm": true
+  }
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateShieldInstanceConfig",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateShieldInstanceConfig",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "creator": "someone@somewhere.com",
+    "diskEncryption": "GMEK",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "boot",
+        "diskSizeGb": "150",
+        "guestOsFeatures": [
+          {
+            "type": "VIRTIO_SCSI_MULTIQUEUE"
+          },
+          {
+            "type": "UEFI_COMPATIBLE"
+          },
+          {
+            "type": "GVNIC"
+          }
+        ],
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+        ],
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "data",
+        "diskSizeGb": "100",
+        "index": "1",
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+        "type": "PERSISTENT"
+      }
+    ],
+    "labels": {
+      "goog-caip-notebook": ""
+    },
+    "metadata": {
+      "container": "gcr.io/deeplearning-platform-release/base-cpu",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-mode": "service_account",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "warmup-libraries": "matplotlib.pyplot"
+    },
+    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccountScopes": [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableSecureBoot": true,
+      "enableVtpm": true
+    },
+    "state": "STOPPED",
+    "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/StartInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "StartInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "StartInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "disks": [
+      {
+        "autoDelete": true,
+        "boot": true,
+        "deviceName": "boot",
+        "diskSizeGb": "150",
+        "guestOsFeatures": [
+          {
+            "type": "VIRTIO_SCSI_MULTIQUEUE"
+          },
+          {
+            "type": "UEFI_COMPATIBLE"
+          },
+          {
+            "type": "GVNIC"
+          }
+        ],
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "licenses": [
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+          "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+        ],
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+        "type": "PERSISTENT"
+      },
+      {
+        "autoDelete": true,
+        "deviceName": "data",
+        "diskSizeGb": "100",
+        "index": "1",
+        "interface": "SCSI",
+        "kind": "compute#attachedDisk",
+        "mode": "READ_WRITE",
+        "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+        "type": "PERSISTENT"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "diskEncryption": "GMEK",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "150",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+      "type": "PERSISTENT"
+    },
+    {
+      "autoDelete": true,
+      "deviceName": "data",
+      "diskSizeGb": "100",
+      "index": "1",
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+      "type": "PERSISTENT"
+    }
+  ],
+  "labels": {
+    "goog-caip-notebook": ""
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
+    "disable-swap-binaries": "true",
+    "enable-guest-attributes": "TRUE",
+    "notebooks-api": "PROD",
+    "notebooks-api-version": "v1",
+    "proxy-mode": "service_account",
+    "serial-port-logging-enable": "true",
+    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+    "warmup-libraries": "matplotlib.pyplot"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccountScopes": [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableVtpm": true
+  },
+  "state": "PROVISIONING",
+  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+  "tags": [
+    "deeplearning-vm",
+    "notebook-instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "diskEncryption": "GMEK",
+  "disks": [
+    {
+      "autoDelete": true,
+      "boot": true,
+      "deviceName": "boot",
+      "diskSizeGb": "150",
+      "guestOsFeatures": [
+        {
+          "type": "VIRTIO_SCSI_MULTIQUEUE"
+        },
+        {
+          "type": "UEFI_COMPATIBLE"
+        },
+        {
+          "type": "GVNIC"
+        }
+      ],
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "licenses": [
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11",
+        "https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm"
+      ],
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot",
+      "type": "PERSISTENT"
+    },
+    {
+      "autoDelete": true,
+      "deviceName": "data",
+      "diskSizeGb": "100",
+      "index": "1",
+      "interface": "SCSI",
+      "kind": "compute#attachedDisk",
+      "mode": "READ_WRITE",
+      "source": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data",
+      "type": "PERSISTENT"
+    }
+  ],
+  "labels": {
+    "goog-caip-notebook": ""
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+  "metadata": {
+    "container": "gcr.io/deeplearning-platform-release/base-cpu",
+    "disable-swap-binaries": "true",
+    "enable-guest-attributes": "TRUE",
+    "notebooks-api": "PROD",
+    "notebooks-api-version": "v1",
+    "proxy-mode": "service_account",
+    "serial-port-logging-enable": "true",
+    "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+    "warmup-libraries": "matplotlib.pyplot"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccountScopes": [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/userinfo.email"
+  ],
+  "shieldedInstanceConfig": {
+    "enableIntegrityMonitoring": true,
+    "enableVtpm": true
+  },
+  "state": "PROVISIONING",
+  "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default",
+  "tags": [
+    "deeplearning-vm",
+    "notebook-instance"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v1.NotebookService/DeleteInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.0.0.0/16",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-notebooks.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "${networkID}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/${networkID}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "source": "kcc-notebookinstance-sample"
+  },
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
+  }
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/${networkID}"
+}

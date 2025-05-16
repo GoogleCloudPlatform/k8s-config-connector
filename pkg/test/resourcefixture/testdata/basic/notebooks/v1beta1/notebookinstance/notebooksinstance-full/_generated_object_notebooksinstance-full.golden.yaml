@@ -1,0 +1,103 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1beta1
+kind: NotebookInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: notebookinstance-full-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  bootDiskSizeGB: 100
+  bootDiskType: PD_SSD
+  containerImage:
+    repository: gcr.io/deeplearning-platform-release/base-cpu
+  dataDiskSizeGB: 200
+  dataDiskType: PD_SSD
+  diskEncryption: GMEK
+  installGpuDriver: true
+  instanceOwners:
+  - ${projectNumber}-compute@developer.gserviceaccount.com
+  kmsKeyRef:
+    external: projects/${projectId}/locations/us-central1/keyRings/notebookinstance-dep/cryptoKeys/notebookinstance-dep
+  labels:
+    environment: development
+    team: config-connector-team
+  machineType: n1-standard-1
+  metadata:
+    enable-os-config: "true"
+  networkRef:
+    name: notebookinstance-dep
+  nicType: UNSPECIFIED_NIC_TYPE
+  noProxyAccess: true
+  noPublicIP: true
+  noRemoveDataDisk: true
+  postStartupScript: gs://config-connector-samples/notebooks/notebook-instance.sh
+  projectRef:
+    external: ${projectId}
+  reservationAffinity:
+    consumeReservationType: NO_RESERVATION
+  serviceAccountRef:
+    name: notebookinstance-dep
+  serviceAccountScopes:
+  - https://www.googleapis.com/auth/devstorage.read_only
+  - https://www.googleapis.com/auth/logging.write
+  - https://www.googleapis.com/auth/monitoring.write
+  - https://www.googleapis.com/auth/service.management.readonly
+  - https://www.googleapis.com/auth/servicecontrol
+  - https://www.googleapis.com/auth/trace.append
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: true
+    enableSecureBoot: true
+    enableVTPM: true
+  subnetRef:
+    name: notebookinstance-dep1
+  tags:
+  - tag1
+  - tag2
+  zone: us-central1-a
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1-a/instances/notebookinstance-full-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: someone@somewhere.com
+    disks:
+    - autoDelete: true
+      boot: true
+      deviceName: boot
+      diskSizeGB: 150
+      guestOSFeatures:
+      - type: VIRTIO_SCSI_MULTIQUEUE
+      - type: UEFI_COMPATIBLE
+      - type: GVNIC
+      interface: SCSI
+      kind: compute#attachedDisk
+      licenses:
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-tensorflow
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-gvnic
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-common-container
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-debian-11
+      - https://www.googleapis.com/compute/v1/projects/click-to-deploy-images/global/licenses/c2d-dl-platform-dlvm
+      mode: READ_WRITE
+      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-boot
+      type: PERSISTENT
+    - autoDelete: true
+      deviceName: data
+      diskSizeGB: 100
+      index: 1
+      interface: SCSI
+      kind: compute#attachedDisk
+      mode: READ_WRITE
+      source: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/notebookinstance-full-${uniqueId}-data
+      type: PERSISTENT
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

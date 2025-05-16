@@ -99,6 +99,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"DataformRepository",
 		"FirestoreDatabase",
 		"NetworkConnectivityServiceConnectionPolicy",
+		"NotebookInstance",
 		"PrivilegedAccessManagerEntitlement",
 		"RedisCluster",
 		"BigQueryAnalyticsHubDataExchange",
