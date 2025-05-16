@@ -1,10 +1,5 @@
 main:
   params: [input]
   steps:
-    - getLocation:
-        call: sys.get_env
-        args:
-          name: GOOGLE_CLOUD_LOCATION
-        result: location
     - returnOutput:
-        return: '${location}'
+        return: '${sys.now()}'
