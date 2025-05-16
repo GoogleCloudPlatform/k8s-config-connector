@@ -16,6 +16,7 @@ package mockapigateway
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -24,4 +25,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+}
+
+func (s *MockService) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements mockgcpregistry.NormalizingVisitor) {
 }

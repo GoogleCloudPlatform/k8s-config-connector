@@ -15,7 +15,10 @@
 package mockbackupdr
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -24,4 +27,20 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+}
+
+func (s *MockService) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements mockgcpregistry.NormalizingVisitor) {
+	if u.GetKind() == "BackupDRBackupPlanAssociation" {
+		// normalize "status.observedState.dataSource"
+		replacements.StringTransform(func(path string, s string) string {
+			if strings.HasSuffix(path, ".status.observedState.dataSource") {
+				tokens := strings.Split(s, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+					tokens[len(tokens)-1] = "${dataSourceID}"
+					s = strings.Join(tokens, "/")
+				}
+			}
+			return s
+		})
+	}
 }
