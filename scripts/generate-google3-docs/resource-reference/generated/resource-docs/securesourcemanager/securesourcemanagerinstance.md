@@ -183,7 +183,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed PrivateCACAPool. Should be in the format `projects/{project_id}/locations/{region}/caPools/{caPool}`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed PrivateCACAPool. Should be in the format `projects/{{project_id}}/locations/{{region}}/caPools/{{caPool}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +193,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` of a `PrivateCACAPool` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a PrivateCACAPool resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -203,7 +203,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` of a `PrivateCACAPool` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a PrivateCACAPool resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

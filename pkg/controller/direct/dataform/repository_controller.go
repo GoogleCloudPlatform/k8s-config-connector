@@ -136,7 +136,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 func resolveOptionalRefs(ctx context.Context, reader client.Reader, obj *krm.DataformRepository) error {
 	if ref := obj.Spec.NpmrcEnvironmentVariablesSecretVersionRef; ref != nil {
-		if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+		if _, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return err
 		}
 	}
@@ -149,14 +149,14 @@ func resolveOptionalRefs(ctx context.Context, reader client.Reader, obj *krm.Dat
 
 	if obj.Spec.GitRemoteSettings != nil {
 		if ref := obj.Spec.GitRemoteSettings.AuthenticationTokenSecretVersionRef; ref != nil {
-			if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+			if _, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}
 
 		if obj.Spec.GitRemoteSettings.SSHAuthenticationConfig != nil {
 			if ref := obj.Spec.GitRemoteSettings.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef; ref != nil {
-				if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+				if _, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 					return err
 				}
 			}

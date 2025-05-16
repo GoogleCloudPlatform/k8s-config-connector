@@ -23,6 +23,7 @@ import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	runv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -402,7 +403,7 @@ func (in *Endpoint) DeepCopyInto(out *Endpoint) {
 	}
 	if in.SQLInstanceRef != nil {
 		in, out := &in.SQLInstanceRef, &out.SQLInstanceRef
-		*out = new(v1beta1.SQLInstanceRef)
+		*out = new(sqlv1beta1.SQLInstanceRef)
 		**out = **in
 	}
 	if in.RedisInstance != nil {

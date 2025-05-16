@@ -292,12 +292,11 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 				return err
 			}
 		}
-		if obj.Spec.Source.SQLInstanceRef != nil {
-			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, obj.Spec.Source.SQLInstanceRef)
+		if ref := obj.Spec.Source.SQLInstanceRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			obj.Spec.Source.SQLInstanceRef.External = instance.String()
 		}
 		if obj.Spec.Source.ProjectRef != nil {
 			projectRef, err := refs.ResolveProject(ctx, a.reader, obj.GetNamespace(), obj.Spec.Source.ProjectRef)
@@ -329,12 +328,11 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 				return err
 			}
 		}
-		if obj.Spec.Destination.SQLInstanceRef != nil {
-			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, obj.Spec.Destination.SQLInstanceRef)
+		if ref := obj.Spec.Destination.SQLInstanceRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			obj.Spec.Destination.SQLInstanceRef.External = instance.String()
 		}
 		if obj.Spec.Destination.ProjectRef != nil {
 			projectRef, err := refs.ResolveProject(ctx, a.reader, obj.GetNamespace(), obj.Spec.Destination.ProjectRef)

@@ -290,7 +290,7 @@ func (a *ConnectionProfileAdapter) normalizeReferenceFields(ctx context.Context)
 		}
 	}
 	if obj.Spec.OracleProfile != nil && obj.Spec.OracleProfile.SecreteManagerSecretRef != nil {
-		if _, err := refs.ResolveSecretManagerSecretRef(ctx, a.reader, obj, obj.Spec.OracleProfile.SecreteManagerSecretRef); err != nil {
+		if _, err := obj.Spec.OracleProfile.SecreteManagerSecretRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return err
 		}
 	}
