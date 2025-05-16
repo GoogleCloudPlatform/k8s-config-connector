@@ -122,7 +122,7 @@ func RunGenerateController(ctx context.Context, opts GenerateControllerOptions) 
 	}
 
 	// Create the controller
-	controllerFileName := strings.ToLower(shortNameForProtoService(opts.ProtoMsg)) + "_controller.go"
+	controllerFileName := strings.ToLower(shortNameForProtoMessage(opts.ProtoMsg)) + "_controller.go"
 	outputPath := filepath.Join(opts.RepoRoot, "pkg", "controller", "direct", shortNameForCRDGroup(opts.CRDGroup), controllerFileName)
 
 	// Create the prompt for controllerbuilder
