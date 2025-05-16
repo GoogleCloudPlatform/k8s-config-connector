@@ -108,6 +108,14 @@ func shortNameForProtoService(s string) string {
 	return tokens[len(tokens)-3]
 }
 
+func shortNameForProtoMessage(s string) string {
+	shortName := s
+	if ix := strings.LastIndex(shortName, "."); ix != -1 {
+		shortName = shortName[ix+1:]
+	}
+	return shortName
+}
+
 func RunGenerateController(ctx context.Context, opts GenerateControllerOptions) (*GenerateControllerResults, error) {
 	if err := opts.DefaultAndValidate(); err != nil {
 		return nil, err
