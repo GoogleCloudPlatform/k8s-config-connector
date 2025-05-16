@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -163,7 +164,7 @@ type Replication_UserManaged_Replica struct {
 
 type TopicRef struct {
 	// +required
-	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+	PubSubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.secretmanager.v1.CustomerManagedEncryption

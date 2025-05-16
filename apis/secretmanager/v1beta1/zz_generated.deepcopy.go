@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -970,7 +971,7 @@ func (in *TopicRef) DeepCopyInto(out *TopicRef) {
 	*out = *in
 	if in.PubSubTopicRef != nil {
 		in, out := &in.PubSubTopicRef, &out.PubSubTopicRef
-		*out = new(refsv1beta1.PubSubTopicRef)
+		*out = new(pubsubv1beta1.PubSubTopicRef)
 		**out = **in
 	}
 }

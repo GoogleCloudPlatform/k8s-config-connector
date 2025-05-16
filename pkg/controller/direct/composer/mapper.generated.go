@@ -22,7 +22,7 @@ package composer
 import (
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -440,7 +440,7 @@ func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *k
 	}
 	out := &krm.StorageConfig{}
 	if in.GetBucket() != "" {
-		out.BucketRef = &refs.StorageBucketRef{External: in.GetBucket()}
+		out.BucketRef = &storagev1beta1.StorageBucketRef{External: in.GetBucket()}
 	}
 	return out
 }

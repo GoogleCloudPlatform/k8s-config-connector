@@ -672,15 +672,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The StorageBucket selfLink, when not managed
-                              by Config Connector.
+                            description: A reference to an externally managed SpannerInstance
+                              resource. Should be in the format "projects/{{projectID}}/buckets/{{bucketID}}".
                             type: string
                           name:
-                            description: The `name` field of a `StorageBucket` resource.
+                            description: The name of a SpannerInstance resource.
                             type: string
                           namespace:
-                            description: The `namespace` field of a `StorageBucket`
-                              resource.
+                            description: The namespace of a SpannerInstance resource.
                             type: string
                         type: object
                       retentionInterval:

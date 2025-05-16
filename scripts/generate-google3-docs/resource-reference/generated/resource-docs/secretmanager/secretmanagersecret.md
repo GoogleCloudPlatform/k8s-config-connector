@@ -495,7 +495,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,7 +505,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[project_id]/topics/[topic_id]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +515,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `PubSubTopic` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a PubSubTopic resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,7 +525,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `PubSubTopic` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a PubSubTopic resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

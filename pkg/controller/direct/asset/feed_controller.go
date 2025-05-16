@@ -144,11 +144,11 @@ func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
 func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.FeedOutputConfig.PubsubDestination != nil && obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef != nil {
-		topic, err := refs.ResolvePubSubTopic(ctx, a.reader, obj, obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef)
+		ref := obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
-			return fmt.Errorf("resolving pubsub topic ref: %w", err)
+			return err
 		}
-		obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef.External = topic.String()
 	}
 	return nil
 }

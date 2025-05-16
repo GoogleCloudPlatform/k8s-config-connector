@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -57,16 +58,18 @@ func (p *LinkParent) String() string {
 func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
 
 	// Get Parent
-	bucketRef, err := refsv1beta1.ResolveLoggingLogBucketRef(ctx, reader, obj, obj.Spec.LoggingLogBucketRef)
+	external, err := obj.Spec.LoggingLogBucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	projectID := bucketRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+
+	bucketIdentity, err := loggingv1beta1.ParseLogBucketExternal(external)
+	if err != nil {
+		return nil, err
 	}
-	location := bucketRef.Location
-	bucketID := bucketRef.LoggingLogBucketID
+	projectID := bucketIdentity.Parent().ProjectID
+	location := bucketIdentity.Parent().Location
+	bucketID := bucketIdentity.ID()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -85,8 +88,11 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 		if err != nil {
 			return nil, err
 		}
-		if actualParent.String() != bucketRef.String() {
-			return nil, fmt.Errorf("actualParent changed, expect %s, got %s", actualParent.String(), bucketRef.String())
+		if actualParent.ProjectID != projectID {
+			return nil, fmt.Errorf("projectID changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		}
+		if actualParent.Location != location {
+			return nil, fmt.Errorf("location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s", resourceID, actualResourceID)

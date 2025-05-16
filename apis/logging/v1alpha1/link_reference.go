@@ -17,7 +17,6 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -33,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &LoggingLinkRef{}
 // holds the GCP identifier for the KRM object.
 type LoggingLinkRef struct {
 	// A reference to an externally managed LoggingLink resource.
-	// Should be in the format "projects/<projectID>/locations/<location>/buckets/<bucketID>/links/<linkID>".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a LoggingLink resource.
@@ -41,12 +40,6 @@ type LoggingLinkRef struct {
 
 	// The namespace of a LoggingLink resource.
 	Namespace string `json:"namespace,omitempty"`
-
-	parent *LoggingLinkParent
-}
-
-func (l *LoggingLinkRef) String() string {
-	return l.External
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on LoggingLink.
@@ -58,7 +51,7 @@ func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := parseLoggingLinkExternal(r.External); err != nil {
+		if _, _, err := ParseLinkExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -87,55 +80,4 @@ func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	r.External = actualExternalRef
 	return r.External, nil
-}
-
-func (r *LoggingLinkRef) Parent() (*LoggingLinkParent, error) {
-	if r.parent != nil {
-		return r.parent, nil
-	}
-	if r.External != "" {
-		parent, _, err := parseLoggingLinkExternal(r.External)
-		if err != nil {
-			return nil, err
-		}
-		return parent, nil
-	}
-	return nil, fmt.Errorf("LoggingLinkRef not initialized from `NewLoggingLinkRef` or `NormalizedExternal`")
-}
-
-type LoggingLinkParent struct {
-	ProjectID string
-	Location  string
-	LogBucket string
-}
-
-func (p *LoggingLinkParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/buckets/" + p.LogBucket
-}
-
-func asLoggingLinkExternal(parent *LoggingLinkParent, resourceID string) (external string) {
-	return parent.String() + "/links/" + resourceID
-}
-
-func parseLoggingLinkExternal(external string) (parent *LoggingLinkParent, resourceID string, err error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" || tokens[6] != "links" {
-		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/<projectId>/locations/<location>/buckets/<bucketID>/links/<linkID>)", external)
-	}
-	parent = &LoggingLinkParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-		LogBucket: tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
-}
-
-func valueOf[T any](t *T) T {
-	var zeroVal T
-	if t == nil {
-		return zeroVal
-	}
-	return *t
 }

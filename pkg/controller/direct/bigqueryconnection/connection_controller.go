@@ -122,12 +122,11 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 
 	// Resolve SpannerDatabaseRef
 	if obj.Spec.CloudSpannerSpec != nil {
-		if obj.Spec.CloudSpannerSpec.DatabaseRef != nil {
-			database, err := refs.ResolveSpannerDatabaseRef(ctx, a.reader, obj, obj.Spec.CloudSpannerSpec.DatabaseRef)
+		if ref := obj.Spec.CloudSpannerSpec.DatabaseRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
 			if err != nil {
 				return err
 			}
-			obj.Spec.CloudSpannerSpec.DatabaseRef.External = database.String()
 		}
 	}
 
