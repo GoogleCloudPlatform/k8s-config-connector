@@ -42,5 +42,9 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".alternate")
 	f.UnimplementedFields.Insert(".spec.update_time") // Output only field
+
+	// New fields we could potentially implement
+	f.UnimplementedFields.Insert(".dry_run_spec.rules[].enforce")
+
 	return f
 }
