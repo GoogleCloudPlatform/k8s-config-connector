@@ -258,7 +258,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SQL Database name, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SQLDatabase resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,7 +268,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SQLDatabase` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of an SQLDatabase resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,7 +278,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `SQLDatabase` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of an SQLDatabase resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +298,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SQLInstance resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +308,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -318,7 +318,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

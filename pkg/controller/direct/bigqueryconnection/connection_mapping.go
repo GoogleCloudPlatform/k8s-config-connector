@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -123,10 +124,10 @@ func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSql
 		return nil
 	}
 	out := &krm.CloudSqlPropertiesSpec{}
-	out.InstanceRef = &refs.SQLInstanceRef{
+	out.InstanceRef = &sqlv1beta1.SQLInstanceRef{
 		External: in.InstanceId,
 	}
-	out.DatabaseRef = &refs.SQLDatabaseRef{
+	out.DatabaseRef = &sqlv1beta1.SQLDatabaseRef{
 		External: in.Database,
 	}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())

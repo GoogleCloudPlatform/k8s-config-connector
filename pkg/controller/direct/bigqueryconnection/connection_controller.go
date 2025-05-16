@@ -100,18 +100,16 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 	if obj.Spec.CloudSQLSpec != nil {
 		sql := obj.Spec.CloudSQLSpec
 		if sql.InstanceRef != nil {
-			instance, err := refs.ResolveSQLInstanceRef(ctx, a.reader, obj, sql.InstanceRef)
+			_, err := sql.InstanceRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			sql.InstanceRef.External = instance.ConnectionName()
 		}
 		if sql.DatabaseRef != nil {
-			database, err := refs.ResolveSQLDatabaseRef(ctx, a.reader, obj, sql.DatabaseRef)
+			_, err := sql.DatabaseRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			sql.DatabaseRef.External = database.Name()
 		}
 		if sql.Credential != nil {
 			if err := refsv1beta1secret.NormalizedSecret(ctx, sql.Credential.SecretRef, a.reader, a.namespace); err != nil {

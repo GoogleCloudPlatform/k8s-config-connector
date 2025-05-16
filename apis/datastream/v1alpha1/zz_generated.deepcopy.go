@@ -19,8 +19,9 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -931,7 +932,7 @@ func (in *OracleProfile) DeepCopyInto(out *OracleProfile) {
 	}
 	if in.SecreteManagerSecretRef != nil {
 		in, out := &in.SecreteManagerSecretRef, &out.SecreteManagerSecretRef
-		*out = new(v1beta1.SecretManagerSecretRef)
+		*out = new(v1beta1.SecretRef)
 		**out = **in
 	}
 }
@@ -1011,7 +1012,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 }
@@ -1236,7 +1237,7 @@ func (in *VpcPeeringConfig) DeepCopyInto(out *VpcPeeringConfig) {
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(refsv1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Subnet != nil {

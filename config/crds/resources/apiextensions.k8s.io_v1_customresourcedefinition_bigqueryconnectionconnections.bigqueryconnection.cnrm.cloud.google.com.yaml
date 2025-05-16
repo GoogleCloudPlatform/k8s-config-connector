@@ -135,14 +135,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQL Database name, when not managed by Config
-                          Connector.
+                        description: A reference to an externally managed SQLDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SQLDatabase` resource.
+                        description: The name of an SQLDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SQLDatabase` resource.
+                        description: The namespace of an SQLDatabase resource.
                         type: string
                     type: object
                   instanceRef:
@@ -163,14 +163,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
+                        description: A reference to an externally managed SQLInstance
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SQLInstance` resource.
+                        description: The name of an SQLInstance resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SQLInstance` resource.
+                        description: The namespace of an SQLInstance resource.
                         type: string
                     type: object
                   type:
@@ -632,14 +632,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQL Database name, when not managed by Config
-                          Connector.
+                        description: A reference to an externally managed SQLDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SQLDatabase` resource.
+                        description: The name of an SQLDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SQLDatabase` resource.
+                        description: The namespace of an SQLDatabase resource.
                         type: string
                     type: object
                   instanceRef:
@@ -660,14 +660,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
+                        description: A reference to an externally managed SQLInstance
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SQLInstance` resource.
+                        description: The name of an SQLInstance resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SQLInstance` resource.
+                        description: The namespace of an SQLInstance resource.
                         type: string
                     type: object
                   type:

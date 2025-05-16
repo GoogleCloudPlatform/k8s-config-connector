@@ -16,9 +16,9 @@ package datastream
 
 import (
 	pb "cloud.google.com/go/datastream/apiv1/datastreampb"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datastream/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -149,7 +149,7 @@ func OracleProfile_FromProto(mapCtx *direct.MapContext, in *pb.OracleProfile) *k
 	out.OracleSSLConfig = OracleSSLConfig_FromProto(mapCtx, in.GetOracleSslConfig())
 	out.OracleASMConfig = OracleAsmConfig_FromProto(mapCtx, in.GetOracleAsmConfig())
 	if in.GetSecretManagerStoredPassword() != "" {
-		out.SecreteManagerSecretRef = &refsv1beta1.SecretManagerSecretRef{
+		out.SecreteManagerSecretRef = &secretmanagerv1beta1.SecretRef{
 			External: in.GetSecretManagerStoredPassword(),
 		}
 	}

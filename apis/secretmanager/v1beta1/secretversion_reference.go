@@ -33,7 +33,7 @@ var _ refsv1beta1.ExternalNormalizer = &SecretVersionRef{}
 // holds the GCP identifier for the KRM object.
 type SecretVersionRef struct {
 	// A reference to an externally managed SecretManagerSecretVersion resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
+	// Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecretManagerSecretVersion resource.
@@ -76,10 +76,38 @@ func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
+		return r.External, nil
 	}
-	r.External = actualExternalRef
+
+	resourceID, err := refsv1beta1.GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
+
+	secretName, _, err := unstructured.NestedString(u.Object, "spec", "secretRef", "name")
+	if err != nil {
+		return "", err
+	}
+	if secretName != "" {
+		r.External = fmt.Sprintf("projects/%s/secrets/%s/versions/%s", projectID, secretName, resourceID)
+	} else {
+		// The configured spec.secretRef.external should match the format projects/{projectID}/secrets/{secretID}
+		// otherwise the creation of the resource might fail
+		secretExternal, _, err := unstructured.NestedString(u.Object, "spec", "secretRef", "external")
+		if err != nil {
+			return "", err
+		}
+		if secretExternal != "" {
+			r.External = fmt.Sprintf("%s/versions/%s", secretExternal, resourceID)
+		}
+	}
 	return r.External, nil
 }
 
