@@ -101,13 +101,12 @@ func (a *serviceIdentityAdapter) Find(ctx context.Context) (bool, error) {
 	// If status fields are populated, we consider the identity "found"
 	// as its details are known to KCC.
 	email := direct.ValueOf(a.desired.Status.Email)
-	// uniqueID := direct.ValueOf(a.desired.Status.UniqueID)
-	// if email != "" && uniqueID != "" {
-	if email == "" {
+	uniqueID := ""   //direct.ValueOf(a.desired.Status.UniqueID)
+	if email != "" { // && uniqueID != "" {
 		log.V(2).Info("service identity found in KRM status", "email", email)
 		a.actual = &gcp.ServiceIdentity{
-			Email: email,
-			// UniqueId: uniqueID,
+			Email:    email,
+			UniqueId: uniqueID,
 		}
 		return true, nil
 	}
@@ -138,6 +137,8 @@ func (a *serviceIdentityAdapter) Create(ctx context.Context, createOp *directbas
 	var serviceIdentity *gcp.GoogleApiServiceusageV1beta1ServiceIdentity
 	for {
 		if op.Done {
+			klog.Warningf("RESPONSE IS %v", string(op.Response))
+			klog.Warningf("FULL OPERATION IS %v", op)
 			identity := &gcp.GoogleApiServiceusageV1beta1ServiceIdentity{}
 			if err := json.Unmarshal(op.Response, identity); err != nil {
 				return fmt.Errorf("error parsing response: %w", err)
