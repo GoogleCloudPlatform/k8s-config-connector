@@ -30,20 +30,21 @@ MANUAL_DIR="${BUILD_DIR}/manual-release"
 mkdir -p "${MANUAL_DIR}/operator-system"
 
 # Find the version of the operator image
-FOLDER_PATH="${REPO_ROOT}/operator/channels/packages/configconnector"
+# FOLDER_PATH="${REPO_ROOT}/operator/channels/packages/configconnector"
 
-if [ ! -d "$FOLDER_PATH" ]; then
-    echo "Error: Directory $FOLDER_PATH does not exist"
-    exit 1
-fi
+# if [ ! -d "$FOLDER_PATH" ]; then
+#     echo "Error: Directory $FOLDER_PATH does not exist"
+#     exit 1
+# fi
 
 # List all directories in the specified path and store them in an array
-VERSIONS=($(ls -d "$FOLDER_PATH"/*/ 2>/dev/null | xargs -n 1 basename | sort -V))
+# VERSIONS=($(ls -d "$FOLDER_PATH"/*/ 2>/dev/null | xargs -n 1 basename | sort -V))
 
-if [ ${#VERSIONS[@]} -eq 0 ]; then
-    echo "Error: No version directories found in $FOLDER_PATH"
-    exit 1
-fi
+# if [ ${#VERSIONS[@]} -eq 0 ]; then
+#     echo "Error: No version directories found in $FOLDER_PATH"
+#     exit 1
+# fi
+# LATEST_VERSION="${VERSIONS[-1]}"
 
 # Find the most recent release version
 NEWEST_VERSION=$(git log --oneline | 
