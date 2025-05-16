@@ -207,7 +207,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
-					case "bigtable.cnrm.cloud.google.com":
+					case "bigtable.cnrm.cloud.google.com",
+						"orgpolicy.cnrm.cloud.google.com":
 						// Use SSA
 
 					default:

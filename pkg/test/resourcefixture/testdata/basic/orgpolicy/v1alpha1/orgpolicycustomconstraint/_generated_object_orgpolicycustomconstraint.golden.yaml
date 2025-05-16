@@ -17,8 +17,7 @@ spec:
   - CREATE
   - UPDATE
   organizationRef:
-    external: organizations/${folderID}
-  resourceID: custom.orgpolicycustomconstraint${uniqueId}
+    external: organizations/${organizationID}
   resourceTypes:
   - container.googleapis.com/NodePool
 status:
@@ -28,7 +27,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: organizations/${folderID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}
+  externalRef: organizations/${organizationID}/customConstraints/custom.orgpolicycustomconstraint${uniqueId}
   observedGeneration: 2
   observedState:
     updateTime: "1970-01-01T00:00:00Z"
