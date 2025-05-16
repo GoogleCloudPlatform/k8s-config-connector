@@ -792,6 +792,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Specific to CertificateManager
 					addReplacement("response.dnsResourceRecord.data", uniqueID)
+					addReplacement("response.address", "8.8.8.8")
 					jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
 							// Only run this mutator for sql instance objects.
