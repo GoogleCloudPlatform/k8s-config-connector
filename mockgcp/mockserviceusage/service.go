@@ -66,6 +66,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v1.RegisterServiceUsageHandler,
 		pb_v1beta1.RegisterServiceUsageHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("creating http mux: %w", err)
