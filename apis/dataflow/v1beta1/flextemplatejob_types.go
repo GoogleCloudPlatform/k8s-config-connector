@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -82,7 +83,7 @@ type DataflowFlexTemplateJobSpec struct {
 
 	// Network to which VMs will be assigned.  If empty or unspecified,
 	//  the service will use the network "default".
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Subnetwork to which VMs will be assigned, if desired. You can specify a
 	//  subnetwork using either a complete URL or an abbreviated path. Expected to
@@ -90,7 +91,7 @@ type DataflowFlexTemplateJobSpec struct {
 	//  "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
 	//  or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
 	//  a Shared VPC network, you must use the complete URL.
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* NOTYET
 	// Additional user labels to be specified for the job.

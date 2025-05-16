@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -57,7 +58,7 @@ type NetworkConnectivityInternalRangeSpec struct {
 
 	// The network in which to reserve the internal range. The network cannot be deleted if there are any reserved internal ranges referring to it. Legacy networks are not supported. For example: https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network} projects/{project}/locations/global/networks/{network} {network}
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. Types of resources that are allowed to overlap with the current internal range.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.overlaps

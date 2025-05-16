@@ -147,7 +147,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 
 	req := &computepb.AddRuleFirewallPolicyRequest{
 		FirewallPolicyRuleResource: firewallPolicyRule,
-		FirewallPolicy:             a.id.Parent().FirewallPolicy,
+		FirewallPolicy:             a.id.Parent.ID,
 	}
 	op, err := a.firewallPoliciesClient.AddRule(ctx, req)
 
@@ -172,7 +172,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 	status = ComputeFirewallPolicyRuleStatus_FromProto(mapCtx, created)
 
 	priority := strconv.Itoa(int(*created.Priority))
-	externalRef := a.id.Parent().String() + "/rules/" + priority
+	externalRef := a.id.Parent.String() + "/rules/" + priority
 	status.ExternalRef = &externalRef
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -219,7 +219,7 @@ func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *direct
 
 		updateReq := &computepb.PatchRuleFirewallPolicyRequest{
 			FirewallPolicyRuleResource: firewallPolicyRule,
-			FirewallPolicy:             a.id.Parent().FirewallPolicy,
+			FirewallPolicy:             a.id.Parent.ID,
 			Priority:                   direct.PtrTo(int32(priority)),
 		}
 		op, err := a.firewallPoliciesClient.PatchRule(ctx, updateReq)
@@ -279,7 +279,7 @@ func (a *firewallPolicyRuleAdapter) Delete(ctx context.Context, deleteOp *direct
 		return false, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule %s to an integer: %w", tokens[5], a.id, err)
 	}
 	delReq := &computepb.RemoveRuleFirewallPolicyRequest{
-		FirewallPolicy: a.id.Parent().FirewallPolicy,
+		FirewallPolicy: a.id.Parent.ID,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
 	op, err := a.firewallPoliciesClient.RemoveRule(ctx, delReq)
@@ -311,7 +311,7 @@ func (a *firewallPolicyRuleAdapter) get(ctx context.Context) (*computepb.Firewal
 	}
 
 	getReq := &computepb.GetRuleFirewallPolicyRequest{
-		FirewallPolicy: a.id.Parent().FirewallPolicy,
+		FirewallPolicy: a.id.Parent.ID,
 		Priority:       direct.PtrTo(int32(priority)),
 	}
 	return a.firewallPoliciesClient.GetRule(ctx, getReq)

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
@@ -48,13 +49,13 @@ type NetworkConfig struct {
 	// The network for the TPU node. It must be a preexisting Google
 	//  Compute Engine network. If none is provided, "default" will be used.
 	// +kcc:proto:field=google.cloud.tpu.v2.NetworkConfig.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The subnetwork for the TPU node. It must be a preexisting
 	//  Google Compute Engine subnetwork. If none is provided, "default" will be
 	//  used.
 	// +kcc:proto:field=google.cloud.tpu.v2.NetworkConfig.subnetwork
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Indicates that external IP addresses would be associated with the TPU
 	//  workers. If set to false, the specified subnetwork or network should have

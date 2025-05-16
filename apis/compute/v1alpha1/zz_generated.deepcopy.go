@@ -505,11 +505,11 @@ func (in *ComputeNetworkAttachmentSpec) DeepCopyInto(out *ComputeNetworkAttachme
 	}
 	if in.SubnetworkRefs != nil {
 		in, out := &in.SubnetworkRefs, &out.SubnetworkRefs
-		*out = make([]*v1beta1.ComputeSubnetworkRef, len(*in))
+		*out = make([]*computev1beta1.ComputeSubnetworkRef, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(v1beta1.ComputeSubnetworkRef)
+				*out = new(computev1beta1.ComputeSubnetworkRef)
 				**out = **in
 			}
 		}

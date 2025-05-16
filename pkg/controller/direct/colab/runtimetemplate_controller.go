@@ -152,16 +152,18 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 	obj := a.desired
 	if obj.Spec.NetworkSpec != nil {
 		if obj.Spec.NetworkSpec.NetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
-				return err
-			}
-		}
-		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
-			subnetworkRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, obj.Spec.NetworkSpec.SubnetworkRef)
+			external, err := obj.Spec.NetworkSpec.NetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 			if err != nil {
 				return err
 			}
-			obj.Spec.NetworkSpec.SubnetworkRef = subnetworkRef
+			obj.Spec.NetworkSpec.NetworkRef.External = external
+		}
+		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
+			external, err := obj.Spec.NetworkSpec.SubnetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+			if err != nil {
+				return err
+			}
+			obj.Spec.NetworkSpec.SubnetworkRef.External = external
 		}
 	}
 	if obj.Spec.ServiceAccountRef != nil {

@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -30,7 +30,7 @@ type PeerNetwork struct {
 
 	// Reference to a ComputeNetwork. Exactly one of VMwareEngineNetworkRef or ComputeNetworkRef must be specified.
 	// +optional
-	ComputeNetworkRef *refsv1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
+	ComputeNetworkRef *computev1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
 }
 
 // VMwareEngineNetworkPeeringSpec defines the desired state of VMwareEngineNetworkPeering

@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/kms/v1beta1"
@@ -223,16 +225,17 @@ func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.
 	}
 
 	resRef := obj.Spec.Settings.IpConfiguration.PrivateNetworkRef
-	netRef := &refs.ComputeNetworkRef{
+	netRef := &computev1beta1.ComputeNetworkRef{
 		External:  resRef.External,
 		Name:      resRef.Name,
 		Namespace: resRef.Namespace,
 	}
-	if err := netRef.Normalize(ctx, kube, obj); err != nil {
+	external, err := netRef.NormalizedExternal(ctx, kube, obj.GetNamespace())
+	if err != nil {
 		return err
 	}
 
-	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = netRef.External
+	obj.Spec.Settings.IpConfiguration.PrivateNetworkRef.External = external
 
 	return nil
 }

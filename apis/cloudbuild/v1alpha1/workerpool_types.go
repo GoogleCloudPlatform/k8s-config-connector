@@ -17,6 +17,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -51,7 +52,7 @@ type WorkerConfig struct {
 
 type NetworkConfig struct {
 	// +required
-	PeeredNetworkRef refv1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
+	PeeredNetworkRef computev1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
 	// +optional
 	EgressOption string `json:"egressOption,omitempty"`
 	// +optional

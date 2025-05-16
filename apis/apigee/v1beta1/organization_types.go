@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -58,7 +59,7 @@ type ApigeeOrganizationSpec struct {
 
 	// Compute Engine network used for Service Networking to be peered with Apigee runtime instances. See [Getting started with the Service Networking API](https://cloud.google.com/service-infrastructure/docs/service-networking/getting-started). Valid only when [RuntimeType](#RuntimeType) is set to `CLOUD`. The value must be set before the creation of a runtime instance and can be updated only when there are no runtime instances. For example: `default`. Apigee also supports shared VPC (that is, the host network project is not the same as the one that is peering with Apigee). See [Shared VPC overview](https://cloud.google.com/vpc/docs/shared-vpc). To use a shared VPC network, use the following format: `projects/{host-project-id}/{region}/networks/{network-name}`. For example: `projects/my-sharedvpc-host/global/networks/mynetwork` **Note:** Not supported for Apigee hybrid.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Organization.authorized_network
-	AuthorizedNetworkRef *refs.ComputeNetworkRef `json:"authorizedNetworkRef,omitempty"`
+	AuthorizedNetworkRef *computev1beta1.ComputeNetworkRef `json:"authorizedNetworkRef,omitempty"`
 
 	/* NOTYET: Add this once direct controller is implemented
 	// Cloud KMS key name used for encrypting control plane data that is stored in a multi region. Only used for the data residency region "US" or "EU". If not specified or [BillingType](#BillingType) is `EVALUATION`, a Google-Managed encryption key will be used. Format: `projects/{{projectID}}/locations/{{locationID}}/keyRings/{{keyRingID}}/cryptoKeys/{{cryptoKeyID}}`

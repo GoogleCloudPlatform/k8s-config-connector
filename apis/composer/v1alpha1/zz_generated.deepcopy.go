@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -649,12 +650,12 @@ func (in *NodeConfig) DeepCopyInto(out *NodeConfig) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.DiskSizeGB != nil {
@@ -814,7 +815,7 @@ func (in *PrivateEnvironmentConfig) DeepCopyInto(out *PrivateEnvironmentConfig) 
 	}
 	if in.CloudComposerConnectionSubnetworkRef != nil {
 		in, out := &in.CloudComposerConnectionSubnetworkRef, &out.CloudComposerConnectionSubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 	if in.NetworkingConfig != nil {

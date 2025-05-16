@@ -146,14 +146,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed Compute
-                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        description: The value of an externally managed ComputeNetwork
+                          resource. Should be in the format "projects/{{projectID}}/global/networks/{{network}}".
                         type: string
                       name:
-                        description: The `name` field of a `ComputeNetwork` resource.
+                        description: The name of a ComputeNetwork resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        description: The namespace of a ComputeNetwork resource.
                         type: string
                     type: object
                   queueCount:
@@ -181,15 +181,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                          when not managed by Config Connector.
+                        description: The value of an externally managed ComputeSubnetwork
+                          resource.
                         type: string
                       name:
-                        description: The `name` field of a `ComputeSubnetwork` resource.
+                        description: The name of a ComputeSubnetwork resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `ComputeSubnetwork`
-                          resource.
+                        description: The namespace of a ComputeSubnetwork resource.
                         type: string
                     type: object
                 type: object
@@ -231,15 +230,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: A reference to an externally managed Compute
-                            Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                          description: The value of an externally managed ComputeNetwork
+                            resource. Should be in the format "projects/{{projectID}}/global/networks/{{network}}".
                           type: string
                         name:
-                          description: The `name` field of a `ComputeNetwork` resource.
+                          description: The name of a ComputeNetwork resource.
                           type: string
                         namespace:
-                          description: The `namespace` field of a `ComputeNetwork`
-                            resource.
+                          description: The namespace of a ComputeNetwork resource.
                           type: string
                       type: object
                     queueCount:
@@ -267,15 +265,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
-                            when not managed by Config Connector.
+                          description: The value of an externally managed ComputeSubnetwork
+                            resource.
                           type: string
                         name:
-                          description: The `name` field of a `ComputeSubnetwork` resource.
+                          description: The name of a ComputeSubnetwork resource.
                           type: string
                         namespace:
-                          description: The `namespace` field of a `ComputeSubnetwork`
-                            resource.
+                          description: The namespace of a ComputeSubnetwork resource.
                           type: string
                       type: object
                   type: object

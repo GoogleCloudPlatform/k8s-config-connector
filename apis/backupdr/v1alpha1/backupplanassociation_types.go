@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -28,7 +28,7 @@ const (
 )
 
 type Resource struct {
-	ComputeInstanceRef *compute.InstanceRef `json:"computeInstanceRef,omitempty"`
+	ComputeInstanceRef *computev1beta1.InstanceRef `json:"computeInstanceRef,omitempty"`
 	// TODO: add other resource types
 }
 

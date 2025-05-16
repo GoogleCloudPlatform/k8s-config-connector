@@ -123,9 +123,11 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 	obj := a.desired
 
 	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+		external, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+		if err != nil {
 			return fmt.Errorf("normalizing networkRef: %w", err)
 		}
+		obj.Spec.NetworkRef.External = external
 	}
 
 	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyRef != nil {
@@ -140,11 +142,11 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 		for i := range obj.Spec.NetworkConfig.Consumers {
 			consumer := &obj.Spec.NetworkConfig.Consumers[i]
 			if consumer.SubnetworkRef != nil {
-				resolvedRef, err := refs.ResolveComputeSubnetwork(ctx, a.reader, obj, consumer.SubnetworkRef)
+				external, err := consumer.SubnetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return fmt.Errorf("resolving networkConfig.consumers[%d].subnetworkRef: %w", i, err)
 				}
-				consumer.SubnetworkRef = resolvedRef
+				consumer.SubnetworkRef.External = external
 			}
 		}
 	}

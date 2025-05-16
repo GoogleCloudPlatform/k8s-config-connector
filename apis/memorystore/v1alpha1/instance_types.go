@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -81,7 +82,7 @@ type PscAutoConnectionSpec struct {
 	// Required. The network where the PSC endpoints are created, in the form of
 	//  projects/{project_id}/global/networks/{network_id}.
 	// +required
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 type Parent struct {

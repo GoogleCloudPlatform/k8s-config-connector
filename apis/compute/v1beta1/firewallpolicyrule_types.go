@@ -103,7 +103,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
 	/* Immutable. */
-	FirewallPolicyRef *refs.ComputeFirewallPolicyRef `json:"firewallPolicyRef"`
+	FirewallPolicyRef *ComputeFirewallPolicyRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	Match *FirewallPolicyRuleMatch `json:"match"`
@@ -112,7 +112,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int64 `json:"priority"`
 
 	// +optional
-	TargetResources []*refs.ComputeNetworkRef `json:"targetResources,omitempty"`
+	TargetResources []*ComputeNetworkRef `json:"targetResources,omitempty"`
 
 	// +optional
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`

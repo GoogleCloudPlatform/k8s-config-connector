@@ -17,7 +17,7 @@ limitations under the License.
 package v1beta1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -76,7 +76,7 @@ type PrivatePoolV1Config_NetworkConfigSpec struct {
 	// Immutable. The network definition that the workers are peered
 	//  to. If this section is left empty, the workers will be peered to
 	//  `WorkerPool.project_id` on the service producer network.
-	PeeredNetworkRef refv1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
+	PeeredNetworkRef computev1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
 
 	// Option to configure network egress for the workers.
 	EgressOption *string `json:"egressOption,omitempty"`

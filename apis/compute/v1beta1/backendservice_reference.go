@@ -32,8 +32,6 @@ var ComputeBackendServiceGVK = GroupVersion.WithKind("ComputeBackendService")
 // ComputeBackendServiceRef defines the resource reference to ComputeBackendService, which "External" field
 // holds the GCP identifier for the KRM object.
 type ComputeBackendServiceRef struct {
-	// For backward compatibility, we are not enforcing the external format.
-
 	// The value of an externally managed ComputeBackendService resource.
 	External string `json:"external,omitempty"`
 

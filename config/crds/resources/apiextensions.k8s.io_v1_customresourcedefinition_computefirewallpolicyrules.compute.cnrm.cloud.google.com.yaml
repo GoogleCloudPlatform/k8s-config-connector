@@ -101,14 +101,13 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed ComputeFirewallPolicy
-                      resource. Should be in the format `locations/global/firewallPolicies/{{firewallPolicyID}}`.
+                      resource.
                     type: string
                   name:
-                    description: The `name` field of a `ComputeFirewallPolicy` resource.
+                    description: The name of a ComputeFirewallPolicyRule resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeFirewallPolicy`
-                      resource.
+                    description: The namespace of a ComputeFirewallPolicyRule resource.
                     type: string
                 type: object
               match:
@@ -218,6 +217,9 @@ spec:
                 type: integer
               targetResources:
                 items:
+                  description: ComputeNetworkRef defines the resource reference to
+                    ComputeNetwork, which "External" field holds the GCP identifier
+                    for the KRM object.
                   oneOf:
                   - not:
                       required:
@@ -234,14 +236,14 @@ spec:
                     - external
                   properties:
                     external:
-                      description: A reference to an externally managed Compute Network
-                        resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                      description: The value of an externally managed ComputeNetwork
+                        resource. Should be in the format "projects/{{projectID}}/global/networks/{{network}}".
                       type: string
                     name:
-                      description: The `name` field of a `ComputeNetwork` resource.
+                      description: The name of a ComputeNetwork resource.
                       type: string
                     namespace:
-                      description: The `namespace` field of a `ComputeNetwork` resource.
+                      description: The namespace of a ComputeNetwork resource.
                       type: string
                   type: object
                 type: array

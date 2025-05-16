@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -187,9 +189,11 @@ func (a *ClusterAdapter) resolveNetworkRef(ctx context.Context) error {
 			"'spec.networkConfig' is configured")
 	}
 
-	if err := obj.Spec.NetworkConfig.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+	external, err := obj.Spec.NetworkConfig.NetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
+	if err != nil {
 		return err
 	}
+	obj.Spec.NetworkConfig.NetworkRef.External = external
 	return nil
 }
 
@@ -271,14 +275,14 @@ func (a *ClusterAdapter) resolveKRMDefaultsForUpdate() {
 	// This is needed for only update because the returned actual state has both
 	// fields set to the same value.
 	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig != nil && obj.Spec.NetworkConfig.NetworkRef != nil {
-		obj.Spec.NetworkRef = &refs.ComputeNetworkRef{
+		obj.Spec.NetworkRef = &computev1beta1.ComputeNetworkRef{
 			External: obj.Spec.NetworkConfig.NetworkRef.External,
 		}
 	} else if (obj.Spec.NetworkConfig == nil || obj.Spec.NetworkConfig.NetworkRef == nil) && obj.Spec.NetworkRef != nil {
 		if obj.Spec.NetworkConfig == nil {
 			obj.Spec.NetworkConfig = &krm.Cluster_NetworkConfig{}
 		}
-		obj.Spec.NetworkConfig.NetworkRef = &refs.ComputeNetworkRef{
+		obj.Spec.NetworkConfig.NetworkRef = &computev1beta1.ComputeNetworkRef{
 			External: obj.Spec.NetworkRef.External,
 		}
 	}

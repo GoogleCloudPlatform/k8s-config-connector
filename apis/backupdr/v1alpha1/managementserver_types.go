@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -38,7 +39,7 @@ type NetworkConfig struct {
 	// Optional. The resource name of the Google Compute Engine VPC network to
 	//  which the ManagementServer instance is connected.
 	// +kcc:proto:field=google.cloud.backupdr.v1.NetworkConfig.network
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The network connect mode of the ManagementServer instance. For
 	//  this version, only PRIVATE_SERVICE_ACCESS is supported.

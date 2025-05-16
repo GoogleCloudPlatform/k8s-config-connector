@@ -17,6 +17,8 @@ package networkconnectivity
 import (
 	"context"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -52,28 +54,30 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		if err := networkRef.Normalize(r.ctx, r.kube, r.src); err != nil {
-			return err
-		}
-	}
-
-	if subnetworkRef, ok := v.(*refs.ComputeSubnetworkRef); ok {
-		resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
+	if networkRef, ok := v.(*computev1beta1.ComputeNetworkRef); ok {
+		external, err := networkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
 		if err != nil {
 			return err
 		}
-		*subnetworkRef = *resolved
+		networkRef.External = external
 	}
 
-	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
+	if subnetworkRef, ok := v.(*computev1beta1.ComputeSubnetworkRef); ok {
+		external, err := subnetworkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
+			return err
+		}
+		subnetworkRef.External = external
+	}
+
+	if subnetworkRefs, ok := v.([]computev1beta1.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]
-			resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
+			external, err := subnetworkRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
 			if err != nil {
 				return err
 			}
-			subnetworkRefs[i] = *resolved
+			subnetworkRefs[i].External = external
 		}
 	}
 
