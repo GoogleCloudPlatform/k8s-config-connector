@@ -35,7 +35,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, normalizer mockgcpregistry.Normalizer, project testgcp.GCPProject, folderID string, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
@@ -315,19 +315,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
-	// Specific to BackupPlanDR
-	// normalize "status.observedState.dataSource"
-	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		if strings.HasSuffix(path, ".status.observedState.dataSource") {
-			tokens := strings.Split(s, "/")
-			if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
-				tokens[len(tokens)-1] = "${dataSourceID}"
-				s = strings.Join(tokens, "/")
-			}
-		}
-		return s
-	})
-
 	// Specific to NetworkManagement
 	visitor.replacePaths[".status.observedState.reachabilityDetails.verifyTime"] = "2025-01-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.reachabilityDetails.traces[].endpointInfo.sourcePort"] = "12345"
@@ -557,6 +544,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 
 	})
 
+	// add per-service object normalization
+	if normalizer != nil {
+		normalizer.ConfigureKRMObjectVisitor(u, visitor)
+	}
+
 	return visitor.VisitUnstructured(u)
 }
 
@@ -637,6 +629,10 @@ func (o *objectWalker) RemovePath(path string) {
 
 func (o *objectWalker) SortSlice(path string) {
 	o.sortSlices.Insert(path)
+}
+
+func (o *objectWalker) StringTransform(fn func(path string, value string) string) {
+	o.stringTransforms = append(o.stringTransforms, fn)
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -928,8 +924,8 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
+		if err := normalizeKRMObject(t, u, services, project, folderID, uniqueID); err != nil {
+			t.Fatalf("error from normalizeKRMObject: %v", err)
 		}
 	})
 

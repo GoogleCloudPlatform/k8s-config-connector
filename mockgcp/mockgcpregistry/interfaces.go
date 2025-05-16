@@ -19,6 +19,7 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 // MockService is the interface implemented by all services
@@ -43,6 +44,11 @@ type SupportsNormalization interface {
 	Previsit(event Event, visitor NormalizingVisitor)
 }
 
+type SupportsKRMObjectNormalization interface {
+	// ConfigureKRMObjectVisitor sets up replacements for KRM objects
+	ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements NormalizingVisitor)
+}
+
 type NormalizingVisitor interface {
 	// ReplacePath replaces values at the given path with newValue
 	ReplacePath(path string, newValue any)
@@ -55,6 +61,9 @@ type NormalizingVisitor interface {
 
 	// SortSlice will sort the slice at the given path
 	SortSlice(path string)
+
+	// StringTransform applies a function to the string value at the given path
+	StringTransform(fn func(path string, value string) string)
 }
 
 type Normalizer interface {
@@ -62,6 +71,8 @@ type Normalizer interface {
 
 	// Previsit visits each request, and is used to find placeholder values that may span events
 	Previsit(entry Event, replacements NormalizingVisitor)
+
+	ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements NormalizingVisitor)
 }
 
 type Event interface {

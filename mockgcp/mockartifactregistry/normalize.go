@@ -16,6 +16,7 @@ package mockartifactregistry
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
@@ -30,4 +31,7 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	// No-op for now
+}
+
+func (s *MockService) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements mockgcpregistry.NormalizingVisitor) {
 }
