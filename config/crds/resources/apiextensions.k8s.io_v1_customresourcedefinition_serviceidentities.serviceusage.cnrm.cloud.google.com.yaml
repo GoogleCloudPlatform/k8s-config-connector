@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ServiceIdentity
+    listKind: ServiceIdentityList
     plural: serviceidentities
     shortNames:
     - gcpserviceidentity
@@ -43,23 +44,25 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ServiceIdentity is the Schema for the ServiceIdentity API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ServiceIdentitySpec defines the desired state of ServiceIdentity
             properties:
               projectRef:
-                description: The project that this resource belongs to.
+                description: The project that this service identity belongs to.
                 oneOf:
                 - not:
                     required:
@@ -76,28 +79,34 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The service of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The service name. If not given, the metadata.name will
+                  be used.
                 type: string
             required:
             - projectRef
             type: object
           status:
+            description: ServiceIdentityStatus defines the config connector machine
+              state of ServiceIdentity
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -122,6 +131,8 @@ spec:
                   type: object
                 type: array
               email:
+                description: The email address of the service account that a service
+                  producer would use to access consumer resources.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -129,6 +140,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -138,9 +150,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
