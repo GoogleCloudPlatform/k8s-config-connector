@@ -1,0 +1,13 @@
+# Test for `gcloud alpha apigee organizations`
+
+- exec: gcloud compute networks create apigee-${uniqueId} --bgp-routing-mode=global --description='network for an Apigee trial' --project=${projectId}
+- exec: gcloud compute addresses create apigee-range-${uniqueId}  --global --prefix-length=16 --description="peering range for an Apigee trial" --network=apigee-${uniqueId} --purpose=vpc_peering --project=${projectId}
+- exec: gcloud services vpc-peerings connect --service=servicenetworking.googleapis.com --network=apigee-${uniqueId} --ranges=apigee-range-${uniqueId}  --project=${projectId}
+
+- exec: gcloud alpha apigee organizations provision --authorized-network=apigee-${uniqueId} --analytics-region=us-west1 --runtime-location=us-west1-a --project=${projectId}
+- exec: gcloud alpha apigee organizations list --project=${projectId}
+- exec: gcloud alpha apigee organizations delete ${projectId} --project=${projectId}
+
+- exec: gcloud services vpc-peerings delete --service=servicenetworking.googleapis.com --network=apigee-${uniqueId} --project=${projectId}
+- exec: gcloud compute addresses delete apigee-range-${uniqueId}  --global --quiet --project=${projectId}
+- exec: gcloud compute networks delete apigee-${uniqueId} --quiet --project=${projectId}
