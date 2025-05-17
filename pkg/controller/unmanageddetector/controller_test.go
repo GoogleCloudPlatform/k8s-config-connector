@@ -26,29 +26,69 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/randomid"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
-	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"github.com/google/go-cmp/cmp"
 
 	corev1 "k8s.io/api/core/v1"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 var (
-	mgr manager.Manager
-
-	fakeCRD = newTestKindCRD()
+	fakeCRDGVK = schema.GroupVersionKind{
+		Group:   "test.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "TestKind",
+	}
 )
 
+func runManager(t *testing.T, restConfig *rest.Config) manager.Manager {
+	mgrOpts := manager.Options{}
+	mgrOpts.Metrics.BindAddress = "0" // no metrics
+
+	mgr, err := manager.New(restConfig, mgrOpts)
+	if err != nil {
+		t.Fatalf("error creating manager: %v", err)
+	}
+
+	ctx := context.TODO()
+	ctx, cancel := context.WithCancel(ctx)
+
+	errChan := make(chan error)
+	go func() {
+		err := mgr.Start(ctx)
+		if err != nil {
+			t.Errorf("error from manager: %v", err)
+		}
+		errChan <- err
+	}()
+
+	t.Cleanup(func() {
+		cancel()
+		err := <-errChan
+		if err != nil {
+			t.Fatalf("error from manager: %v", err)
+		}
+	})
+
+	return mgr
+}
+
 func TestReconcile_UnmanagedResource(t *testing.T) {
+	ctx := context.TODO()
+	h := test.NewKubeHarness(ctx, t)
+	client := h.GetClient()
+
+	h.CreateDummyCRD(fakeCRDGVK)
+
+	mgr := runManager(t, h.GetRESTConfig())
+
 	testID := testvariable.NewUniqueID()
-	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
 
@@ -59,22 +99,22 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 	resource := newTestKindUnstructured(resourceNN)
 	test.EnsureObjectExists(t, resource, client)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD.GroupVersionKind())
+	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 	if err != nil {
-		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
+		t.Fatalf("error creating reconciler: %v", err)
 	}
-	res, err := reconciler.Reconcile(context.TODO(), reconcile.Request{NamespacedName: resourceNN})
+	res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
 	if err != nil {
-		t.Fatal(fmt.Errorf("unexpected error during reconciliation: %w", err))
+		t.Fatalf("unexpected error during reconciliation: %v", err)
 	}
 	emptyResult := reconcile.Result{}
 	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
 		t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
 	}
 
-	condition, found, err := getCurrentCondition(context.TODO(), client, resource)
+	condition, found, err := getCurrentCondition(ctx, client, resource)
 	if err != nil {
-		t.Fatal(fmt.Errorf("error getting resource's condition: %w", err))
+		t.Fatalf("error getting resource's condition: %v", err)
 	}
 	if !found {
 		t.Fatalf("got nil condition for resource, want non-nil condition with reason '%v'", k8s.Unmanaged)
@@ -88,8 +128,15 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 }
 
 func TestReconcile_ManagedResource(t *testing.T) {
+	ctx := context.TODO()
+	h := test.NewKubeHarness(ctx, t)
+	client := h.GetClient()
+
+	h.CreateDummyCRD(fakeCRDGVK)
+
+	mgr := runManager(t, h.GetRESTConfig())
+
 	testID := testvariable.NewUniqueID()
-	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
 
@@ -103,48 +150,33 @@ func TestReconcile_ManagedResource(t *testing.T) {
 	controller := newControllerUnstructuredForNamespace(resourceNN.Namespace)
 	test.EnsureObjectExists(t, controller, client)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD.GroupVersionKind())
+	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 	if err != nil {
-		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
+		t.Fatalf("error creating reconciler: %v", err)
 	}
-	res, err := reconciler.Reconcile(context.TODO(), reconcile.Request{NamespacedName: resourceNN})
+	res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
 	if err != nil {
-		t.Fatal(fmt.Errorf("unexpected error during reconciliation: %w", err))
+		t.Fatalf("unexpected error during reconciliation: %v", err)
 	}
 	emptyResult := reconcile.Result{}
 	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
 		t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
 	}
 
-	condition, found, err := getCurrentCondition(context.TODO(), client, resource)
+	condition, found, err := getCurrentCondition(ctx, client, resource)
 	if err != nil {
-		t.Fatal(fmt.Errorf("error getting resource's condition: %w", err))
+		t.Fatalf("error getting resource's condition: %v", err)
 	}
 	if found {
 		t.Fatalf("got non-nil condition '%v' for resource, want nil condition", condition)
 	}
 }
 
-func newTestKindCRD() *apiextensions.CustomResourceDefinition {
-	crd := test.CRDForGVK(metav1.GroupVersionKind{
-		Group:   "test.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "TestKind",
-	})
-	// Enable the status subresource for this CRD. This is needed to allow
-	// UpdateStatus() calls to work on custom resources belonging to this CRD
-	// on the API server.
-	crd.Spec.Versions[0].Subresources = &apiextensions.CustomResourceSubresources{
-		Status: &apiextensions.CustomResourceSubresourceStatus{},
-	}
-	return crd
-}
-
 func newTestKindUnstructured(nn types.NamespacedName) *unstructured.Unstructured {
 	return &unstructured.Unstructured{
 		Object: map[string]interface{}{
-			"apiVersion": fmt.Sprintf("%v/%v", fakeCRD.Spec.Group, k8s.GetVersionFromCRD(fakeCRD)),
-			"kind":       fakeCRD.Spec.Names.Kind,
+			"apiVersion": fmt.Sprintf("%v/%v", fakeCRDGVK.Group, fakeCRDGVK.Version),
+			"kind":       fakeCRDGVK.Kind,
 			"metadata": map[string]interface{}{
 				"namespace": nn.Namespace,
 				"name":      nn.Name,
@@ -201,8 +233,4 @@ func getCurrentCondition(ctx context.Context, c client.Client, u *unstructured.U
 	}
 	condition, found = k8s.GetReadyCondition(resource)
 	return condition, found, nil
-}
-
-func TestMain(m *testing.M) {
-	testmain.ForUnitTestsWithCRDs(m, []*apiextensions.CustomResourceDefinition{fakeCRD}, &mgr)
 }

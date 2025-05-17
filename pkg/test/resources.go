@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -36,43 +37,43 @@ const Namespace = "namespace-1"
 
 func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 	return []*apiextensions.CustomResourceDefinition{
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test1.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test1Foo",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test1.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test1Bar",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			// Unique group
 			Group:   "test2.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test2Baz",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test3.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test3UserSpecifiedResourceIDKind",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test3.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test3ServerGeneratedResourceIDKind",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test4.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test4DCLResourceServerGeneratedResourceIDKind",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test4.cnrm.cloud.google.com",
 			Version: "v1alpha1",
 			Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "test5.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "TestKindWithObservedState",
@@ -85,12 +86,12 @@ func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 // hierarchical resources (e.g. "Project")
 func FakeCRDsWithHierarchicalResources() []*apiextensions.CustomResourceDefinition {
 	return append(FakeCRDs(),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "resourcemanager.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "Project",
 		}),
-		CRDForGVK(metav1.GroupVersionKind{
+		CRDForGVK(schema.GroupVersionKind{
 			Group:   "resourcemanager.cnrm.cloud.google.com",
 			Version: "v1beta1",
 			Kind:    "Folder",
@@ -464,7 +465,7 @@ func EnsureObjectExists(t *testing.T, obj *unstructured.Unstructured, c client.C
 	}
 }
 
-func CRDForGVK(gvk metav1.GroupVersionKind) *apiextensions.CustomResourceDefinition {
+func CRDForGVK(gvk schema.GroupVersionKind) *apiextensions.CustomResourceDefinition {
 	singular := strings.ToLower(gvk.Kind)
 	plural := text.Pluralize(singular)
 	preserveUnknownFields := true
