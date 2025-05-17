@@ -15,6 +15,7 @@
 package create
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -39,6 +40,7 @@ import (
 	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -138,7 +140,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 			}
 		}
 		if opt.CreateInOrder && !opt.SkipWaitForReady {
-			waitForReadySingleResource(t, u, DefaultWaitForReadyTimeout)
+			if err := WaitForReadySingleResource(ctx, t.GetClient(), u, DefaultWaitForReadyTimeout); err != nil {
+				t.Fatalf("error waiting for resource to be ready: %v", err)
+			}
 		}
 	}
 
@@ -153,7 +157,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 				t.Fatalf("error updating resource: %v", err)
 			}
 			if opt.CreateInOrder && !opt.SkipWaitForReady {
-				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
+				if err := WaitForReadySingleResource(ctx, t.GetClient(), updateUnstruct, DefaultWaitForReadyTimeout); err != nil {
+					t.Fatalf("error waiting for resource to be ready: %v", err)
+				}
 			}
 		}
 
@@ -168,40 +174,47 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func WaitForReady(h *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
+func WaitForReady(t *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		u := u
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForReadySingleResource(h, u, timeout)
+			err := WaitForReadySingleResource(t.Ctx, t.GetClient(), u, timeout)
+			if err != nil {
+				t.Error(err)
+			}
 		}()
 	}
 	wg.Wait()
 }
 
-func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeout time.Duration) {
-	logger := log.FromContext(t.Ctx)
+type ObjectGetter interface {
+	Get(ctx context.Context, id types.NamespacedName, dest client.Object, opts ...client.GetOption) error
+}
+
+func WaitForReadySingleResource(ctx context.Context, kube ObjectGetter, u *unstructured.Unstructured, timeout time.Duration) error {
+	logger := log.FromContext(ctx)
 
 	switch u.GroupVersionKind().GroupKind() {
 	case opv1beta1.ConfigConnectorGroupVersionKind.GroupKind():
 		logger.Info("ConfigConnector object does not have status.conditions; assuming ready")
-		return
+		return nil
 	case opv1beta1.ConfigConnectorContextGroupVersionKind.GroupKind():
 		logger.Info("ConfigConnectorContext object does not have status.conditions; assuming ready")
-		return
+		return nil
 	}
 
 	name := k8s.GetNamespacedName(u)
 	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
-		err = t.GetClient().Get(t.Ctx, name, u)
+		err = kube.Get(ctx, name, u)
 		if err != nil {
 			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
-			if t.Ctx.Err() != nil {
-				return false, t.Ctx.Err()
+			if ctx.Err() != nil {
+				return false, ctx.Err()
 			}
 			return false, nil
 		}
@@ -217,7 +230,11 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus, err := dynamic.GetObjectStatus(u)
+		if err != nil {
+			logger.Info("error getting object status", "kind", u.GetKind(), "name", u.GetName(), "error", err)
+			return false, err
+		}
 		if objectStatus.ObservedGeneration == nil {
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
@@ -240,19 +257,20 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 		return false, nil
 	})
 	if err == nil {
-		return
+		return nil
 	}
 	if !wait.Interrupted(err) {
-		t.Error(fmt.Errorf("error while polling for ready on %v with name '%v': %w", u.GetKind(), u.GetName(), err))
-		return
+		return fmt.Errorf("error while polling for ready on %v with name '%v': %w", u.GetKind(), u.GetName(), err)
 	}
 	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", u.GetKind(), u.GetName())
-	if err := t.GetClient().Get(t.Ctx, name, u); err != nil {
-		t.Error(fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err))
-		return
+	if err := kube.Get(ctx, name, u); err != nil {
+		return fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err)
 	}
-	objectStatus := dynamic.GetObjectStatus(t.T, u)
-	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
+	objectStatus, err := dynamic.GetObjectStatus(u)
+	if err != nil {
+		return fmt.Errorf("%v, error getting final status.conditions: %w", baseMsg, err)
+	}
+	return fmt.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 
 func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
