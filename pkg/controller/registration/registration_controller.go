@@ -368,10 +368,12 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 }
 
 func registerUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+	ctx := context.TODO()
+
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := unmanageddetector.Add(r.mgr, crd); err != nil {
+	if err := unmanageddetector.Add(ctx, r.mgr, crd); err != nil {
 		return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
