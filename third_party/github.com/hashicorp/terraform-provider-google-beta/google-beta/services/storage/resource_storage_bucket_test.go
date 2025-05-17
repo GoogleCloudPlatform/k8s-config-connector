@@ -1555,6 +1555,14 @@ resource "google_storage_bucket" "bucket" {
   }
   lifecycle_rule {
     action {
+      type = "Delete"
+    }
+    condition {
+      noncurrent_time_before = "2019-01-01"
+    }
+  }
+  lifecycle_rule {
+    action {
       type          = "SetStorageClass"
       storage_class = "NEARLINE"
     }
@@ -1642,6 +1650,14 @@ resource "google_storage_bucket" "bucket" {
     }
     condition {
       custom_time_before = "2019-01-01"
+    }
+  }
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      noncurrent_time_before = "2019-01-12"
     }
   }
   lifecycle_rule {
