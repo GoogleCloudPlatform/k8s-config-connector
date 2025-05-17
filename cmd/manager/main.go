@@ -147,13 +147,13 @@ func main() {
 func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
-		ManagerOptions: manager.Options{
-			Cache: cache.Options{
-				DefaultNamespaces: map[string]cache.Config{
-					scopedNamespace: {},
-				},
-			},
-		},
+		ManagerOptions: manager.Options{},
+	}
+
+	if scopedNamespace != "" {
+		controllersCfg.ManagerOptions.Cache.DefaultNamespaces = map[string]cache.Config{
+			scopedNamespace: {},
+		}
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride

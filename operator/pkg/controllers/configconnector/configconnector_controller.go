@@ -79,10 +79,10 @@ type Reconciler struct {
 	customizationWatcher *controllers.CustomizationWatcher
 }
 
-func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
+func Add(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
 	r, err := newReconciler(mgr, opt)
 	if err != nil {
-		return err
+		return r, err
 	}
 
 	// Create a new ConfigConnector controller.
@@ -95,10 +95,10 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
-		return err
+		return r, err
 	}
 
-	return nil
+	return r, nil
 }
 
 func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
@@ -133,6 +133,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
+		declarative.WithObjectTransform(r.transformForExperiments()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
