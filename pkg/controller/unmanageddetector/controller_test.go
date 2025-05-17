@@ -47,7 +47,6 @@ var (
 )
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
-	t.Parallel()
 	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
@@ -89,7 +88,6 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 }
 
 func TestReconcile_ManagedResource(t *testing.T) {
-	t.Parallel()
 	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
