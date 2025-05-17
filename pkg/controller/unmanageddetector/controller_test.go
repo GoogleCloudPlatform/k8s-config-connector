@@ -59,7 +59,7 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 	resource := newTestKindUnstructured(resourceNN)
 	test.EnsureObjectExists(t, resource, client)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD)
+	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD.GroupVersionKind())
 	if err != nil {
 		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
 	}
@@ -103,7 +103,7 @@ func TestReconcile_ManagedResource(t *testing.T) {
 	controller := newControllerUnstructuredForNamespace(resourceNN.Namespace)
 	test.EnsureObjectExists(t, controller, client)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD)
+	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD.GroupVersionKind())
 	if err != nil {
 		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
 	}
