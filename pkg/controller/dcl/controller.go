@@ -437,7 +437,7 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resource *dcl.Resource, liveLabels map[string]string) error {
-	conflictPolicy, err := managementconflict.GetManagementConflictPreventionAnnotationValue(resource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionPolicy(resource)
 	if err != nil {
 		return err
 	}
@@ -449,8 +449,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v='%v'", resource.GroupVersionKind(),
-			managementconflict.FullyQualifiedAnnotation, conflictPolicy)
+		return managementconflict.NewLeasingNotSupportedByKindError(resource.GroupVersionKind())
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.

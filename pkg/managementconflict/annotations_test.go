@@ -28,16 +28,16 @@ func TestGetManagementConflictPreventionAnnotationValue(t *testing.T) {
 		ShouldSucceed  bool
 	}{
 		{
-			Name:           "nil annotations should error",
+			Name:           "nil annotations should no longer error",
 			Annotations:    nil,
 			ExpectedPolicy: ManagementConflictPreventionPolicyNone,
-			ShouldSucceed:  false,
+			ShouldSucceed:  true,
 		},
 		{
-			Name:           "missing annotation should error",
+			Name:           "missing annotation should no longer error",
 			Annotations:    make(map[string]string),
 			ExpectedPolicy: ManagementConflictPreventionPolicyNone,
-			ShouldSucceed:  false,
+			ShouldSucceed:  true,
 		},
 		{
 			Name:           "invalid annotation should error",
@@ -56,7 +56,7 @@ func TestGetManagementConflictPreventionAnnotationValue(t *testing.T) {
 		t.Run(tc.Name, func(t *testing.T) {
 			obj := unstructured.Unstructured{}
 			obj.SetAnnotations(tc.Annotations)
-			policy, err := GetManagementConflictPreventionAnnotationValue(&obj)
+			policy, err := GetManagementConflictPreventionPolicy(&obj)
 			if tc.ShouldSucceed != (err == nil) {
 				t.Fatalf("expected success to be '%v', instead got error mismatch: %v", tc.ShouldSucceed, err)
 			}
