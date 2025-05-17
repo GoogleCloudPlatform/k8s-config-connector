@@ -65,6 +65,7 @@ var commandMap = map[int64]string{
 	cmdCaptureGoldenMockOutput:      "capturegoldenmockoutput",
 	cmdRunAndFixGoldenMockOutput:    "runandfixgoldenmockoutput",
 	cmdMoveExistingTest:             "moveexistingtest",
+	cmdCreateFullTest:               "createfulltest",
 }
 
 type exitBash func()
@@ -132,6 +133,30 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	}
 	log.Printf("CD OUT %s", msg)
 	return msg
+}
+
+func checkoutBranchWithoutuncommittedChanges(ctx context.Context, branch Branch, workDir string) {
+	log.Print("Checking uncommitted changes: git status --porcelain")
+	statusCmd := exec.CommandContext(ctx, "git", "status", "--porcelain")
+	statusCmd.Dir = workDir
+
+	results, err := execCommand(statusCmd)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if results.Stdout != "" {
+		currentBranchCmd := exec.CommandContext(ctx, "git", "rev-parse", "--abbrev-ref", "HEAD")
+		currentBranchCmd.Dir = workDir
+
+		currentBranchResult, err := execCommand(currentBranchCmd)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Fatalf("Found uncommitted changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
+	}
+
+	log.Print("The branches are ready for running the command.")
+	checkoutBranch(ctx, branch, workDir)
 }
 
 func checkoutBranch(ctx context.Context, branch Branch, workDir string) {
@@ -801,7 +826,7 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, skip
 	close := setLoggingWriter(opts, branch)
 	defer close()
 
-	checkoutBranch(ctx, branch, opts.branchRepoDir)
+	checkoutBranchWithoutuncommittedChanges(ctx, branch, opts.branchRepoDir)
 
 	// Run git diff command
 	message, found := getLatestGitMessage(opts.branchRepoDir, opts, branch)
