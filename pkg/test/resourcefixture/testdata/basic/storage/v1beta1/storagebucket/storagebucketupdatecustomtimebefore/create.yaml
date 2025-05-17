@@ -1,0 +1,25 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/force-destroy: "true"
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  name: area-uploader-bucket-${uniqueId}
+spec:
+  lifecycleRule:
+  - action:
+      type: Delete
+    condition:
+      age: 180
+      withState: ANY
+  - action:
+      type: Delete
+    condition:
+      customTimeBefore: "2025-04-01"
+      withState: ANY
+  location: US
+  resourceID: area-uploader-bucket-${uniqueId}
+  uniformBucketLevelAccess: true
+  versioning:
+    enabled: false
