@@ -128,10 +128,16 @@ func (a *MembershipAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if err != nil {
 		return fmt.Errorf("creating Membership %s: %w", a.id, err)
 	}
+	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+		return fmt.Errorf("error waiting Membership %s creation: %w", a.id, err)
+	}
 
 	// Get server generated membership name
 	var data interface{}
 	err = json.Unmarshal(op.Response, &data)
+	if err != nil {
+		return err
+	}
 	generatedName := data.(map[string]interface{})["name"].(string)
 
 	created, err := a.gcpClient.Groups.Memberships.Get(generatedName).Context(ctx).Do()
@@ -281,12 +287,15 @@ func (a *MembershipAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Membership", "name", a.id)
 
-	_, err := a.gcpClient.Groups.Memberships.Delete(a.id.String()).Context(ctx).Do()
+	op, err := a.gcpClient.Groups.Memberships.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting Membership %q: %w", a.id, err)
+	}
+	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+		return false, fmt.Errorf("error waiting Membership %s deletion: %w", a.id, err)
 	}
 
 	log.V(2).Info("successfully deleted Membership", "name", a.id)
