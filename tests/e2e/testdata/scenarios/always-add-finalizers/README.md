@@ -1,0 +1,1 @@
+This test is verifying that we always set finalizers on an object, even when we have a conflict on an immutable field.
