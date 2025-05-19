@@ -53,4 +53,3 @@ spec:
     external: "projects/${projectId}"
   loggingLogBucketRef:
     name: logginglogbucket-dep-${uniqueId}
-    kind: LoggingLogBucket

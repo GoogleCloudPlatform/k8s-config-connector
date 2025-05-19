@@ -96,7 +96,6 @@ labelExtractors:
   string: string
 loggingLogBucketRef:
   external: string
-  kind: string
   name: string
   namespace: string
 metricDescriptor:
@@ -305,17 +304,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>loggingLogBucketRef.kind</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Kind of the referent.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed LoggingLogBucket resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -325,7 +314,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a LoggingLogBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -335,7 +324,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a LoggingLogBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

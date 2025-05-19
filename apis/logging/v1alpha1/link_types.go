@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,7 +34,7 @@ type LoggingLinkSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// The LoggingLogBucket that this Link is associated with
-	LoggingLogBucketRef *refs.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *loggingv1beta1.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink

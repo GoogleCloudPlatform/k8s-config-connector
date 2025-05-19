@@ -28,6 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -98,8 +99,11 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
-		return nil, err
+	// resolve LoggingLogBucketRef
+	if ref := obj.Spec.LoggingLogBucketRef; ref != nil {
+		if _, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
+			return nil, err
+		}
 	}
 
 	return &logMetricAdapter{
@@ -192,14 +196,14 @@ func (a *logMetricAdapter) Create(ctx context.Context, createOp *directbase.Crea
 		return fmt.Errorf("filter is empty")
 	}
 	if a.desired.Spec.LoggingLogBucketRef != nil {
-		bucket, err := LogBucketRef_Parse(ctx, a.desired.Spec.LoggingLogBucketRef.External)
+		bucket, err := loggingv1beta1.ParseLogBucketExternal(a.desired.Spec.LoggingLogBucketRef.External)
 		if err != nil {
 			return err
 		}
 
 		// validate that the bucket is in the same project
-		if bucket.ProjectID() != a.projectID {
-			return fmt.Errorf("LoggingLogBucket %q is not in the same project %q", bucket.FQN(), a.projectID)
+		if bucket.Parent().ProjectID != a.projectID {
+			return fmt.Errorf("LoggingLogBucket %q is not in the same project %q", bucket.String(), a.projectID)
 		}
 	}
 
