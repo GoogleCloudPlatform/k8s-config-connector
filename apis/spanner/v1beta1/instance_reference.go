@@ -75,7 +75,7 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err1 := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err1 != nil {
-		err1 = fmt.Errorf("SecretManagerSecret `status.externalRef` not configured: %w", err1)
+		err1 = fmt.Errorf("status.externalRef `status.externalRef` not configured: %w", err1)
 		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
 		var err2 error
 		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
@@ -88,10 +88,6 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 	}
 	r.External = actualExternalRef
 	return r.External, nil
-}
-
-func asSpannerInstanceExternal(parent *SpannerInstanceParent, resourceID string) (external string) {
-	return parent.String() + "/instances/" + resourceID
 }
 
 func ParseSpannerInstanceExternal(external string) (*SpannerInstanceIdentity, error) {
