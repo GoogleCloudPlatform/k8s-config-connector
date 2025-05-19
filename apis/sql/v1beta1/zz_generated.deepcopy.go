@@ -21,6 +21,7 @@ package v1beta1
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -770,7 +771,7 @@ func (in *InstanceSqlServerAuditConfig) DeepCopyInto(out *InstanceSqlServerAudit
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(refsv1beta1.StorageBucketRef)
+		*out = new(storagev1beta1.StorageBucketRef)
 		**out = **in
 	}
 	if in.RetentionInterval != nil {
