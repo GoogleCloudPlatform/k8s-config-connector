@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"reflect"
 
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -400,7 +402,7 @@ type InstanceSettings struct {
 type InstanceSqlServerAuditConfig struct {
 	/* The name of the destination bucket (e.g., gs://mybucket). */
 	// +optional
-	BucketRef *refsv1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
+	BucketRef *storagev1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
 
 	/* How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".. */
 	// +optional
