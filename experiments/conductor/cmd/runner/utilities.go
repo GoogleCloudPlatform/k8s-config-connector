@@ -134,7 +134,11 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-func checkoutBranchWithoutuncommittedChanges(ctx context.Context, branch Branch, workDir string) {
+func checkAndCommitLocalChanges(ctx context.Context, branch Branch, workDir string) {
+	checkUncommittedChanges(ctx, branch, workDir, true)
+}
+
+func checkUncommittedChanges(ctx context.Context, branch Branch, workDir string, commit bool) {
 	log.Print("Checking uncommitted changes: git status --porcelain")
 	statusCmd := exec.CommandContext(ctx, "git", "status", "--porcelain")
 	statusCmd.Dir = workDir
@@ -151,11 +155,20 @@ func checkoutBranchWithoutuncommittedChanges(ctx context.Context, branch Branch,
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Fatalf("Found uncommitted changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
+		if commit {
+			if err := gitAdd(ctx, workDir, "."); err != nil {
+				log.Fatalf("Tried to add changes at branch %q before committing but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), err)
+			}
+			if err := gitCommit(ctx, workDir, "[Warning] Unfinished changes detected by conductor"); err != nil {
+				log.Fatalf("Tried to commit changes at branch %q before checking out to branch %q but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, err)
+			}
+			log.Printf("Successfully committed changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
+		} else {
+			log.Fatalf("Found uncommitted changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
+		}
 	}
 
 	log.Print("The branches are ready for running the command.")
-	checkoutBranch(ctx, branch, workDir)
 }
 
 func checkoutBranch(ctx context.Context, branch Branch, workDir string) {
@@ -825,7 +838,8 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, skip
 	close := setLoggingWriter(opts, branch)
 	defer close()
 
-	checkoutBranchWithoutuncommittedChanges(ctx, branch, opts.branchRepoDir)
+	checkAndCommitLocalChanges(ctx, branch, opts.branchRepoDir)
+	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
 	// Run git diff command
 	message, found := getLatestGitMessage(opts.branchRepoDir, opts, branch)
