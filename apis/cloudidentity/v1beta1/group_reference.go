@@ -77,8 +77,10 @@ func (r *GroupRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	}
 	if actualExternalRef != "" {
 		r.External = actualExternalRef
+		return r.External, nil
 	}
 
+	// Get external from status.name. This ensures backward compatibility for TF/DCL-based resources that lack status.externalRef.
 	name, _, _ := unstructured.NestedString(u.Object, "status", "name")
 	if name == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)

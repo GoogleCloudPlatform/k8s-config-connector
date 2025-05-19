@@ -135,10 +135,16 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	if err != nil {
 		return fmt.Errorf("creating Group %s: %w", a.id, err)
 	}
+	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+		return fmt.Errorf("error waiting Group %s deletion: %w", a.id, err)
+	}
 
 	// Get server generated group name
 	var data interface{}
 	err = json.Unmarshal(op.Response, &data)
+	if err != nil {
+		return err
+	}
 	generatedName := data.(map[string]interface{})["name"].(string)
 
 	created, err := a.gcpClient.Groups.Get(generatedName).Context(ctx).Do()
@@ -196,9 +202,12 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	sort.Strings(paths)
 	updateMask := strings.Join(paths, ",")
 
-	_, err := a.gcpClient.Groups.Patch(a.id.String(), resource).UpdateMask(updateMask).Context(ctx).Do()
+	op, err := a.gcpClient.Groups.Patch(a.id.String(), resource).UpdateMask(updateMask).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("updating Group %s: %w", a.id, err)
+	}
+	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+		return fmt.Errorf("error waiting Group %s update: %w", a.id, err)
 	}
 
 	updated, err := a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
@@ -245,12 +254,15 @@ func (a *GroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Group", "name", a.id)
 
-	_, err := a.gcpClient.Groups.Delete(a.id.String()).Context(ctx).Do()
+	op, err := a.gcpClient.Groups.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting Group %q: %w", a.id, err)
+	}
+	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+		return false, fmt.Errorf("error waiting Group %s deletion: %w", a.id, err)
 	}
 
 	log.V(2).Info("successfully deleted Group", "name", a.id)
