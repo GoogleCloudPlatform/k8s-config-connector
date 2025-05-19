@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -27,7 +26,7 @@ var StorageAnywhereCacheGVK = GroupVersion.WithKind("StorageAnywhereCache")
 type StorageAnywhereCacheSpec struct {
 	// Immutable. The reference to bucket where cache needs to be created.
 	// +required
-	BucketRef *refs.StorageBucketRef `json:"bucketRef"`
+	BucketRef *StorageBucketRef `json:"bucketRef"`
 
 	// Immutable. The zone in which the cache instance needs to be created. For example, us-central1-a.
 	// +required
