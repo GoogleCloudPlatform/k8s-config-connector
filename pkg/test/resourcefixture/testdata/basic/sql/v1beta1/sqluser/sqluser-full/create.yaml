@@ -23,7 +23,7 @@ spec:
   password:
     valueFrom:
       secretKeyRef:
-        name: secret-${uniqueId}
+        name: secret-1-${uniqueId}
         key: password
   type: BUILT_IN # DEFAULT
   passwordPolicy:

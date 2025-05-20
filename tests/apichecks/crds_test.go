@@ -526,6 +526,16 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 					}
 				}
 
+				// Exclude output-only spec fields.
+				switch crd.Name {
+				case "sqlusers.sql.cnrm.cloud.google.com":
+					switch fieldPath {
+					case ".spec.passwordPolicy.status[].locked",
+						".spec.passwordPolicy.status[].passwordExpirationTime":
+						missing = false
+					}
+				}
+
 				if missing {
 					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
 				}
