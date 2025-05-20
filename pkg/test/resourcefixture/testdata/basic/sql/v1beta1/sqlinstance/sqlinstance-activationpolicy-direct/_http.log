@@ -250,6 +250,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-activationpolicy-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],

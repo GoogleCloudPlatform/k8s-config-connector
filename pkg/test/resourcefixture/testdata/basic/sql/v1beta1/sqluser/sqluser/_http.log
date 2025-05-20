@@ -136,6 +136,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -305,6 +306,9 @@ X-Xss-Protection: 0
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
@@ -384,6 +388,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -554,34 +559,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "CREATE_USER",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqluser-dep-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "endTime": "2024-04-01T12:34:56.123456Z",
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
@@ -619,7 +596,9 @@ X-Xss-Protection: 0
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
@@ -650,6 +629,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -819,7 +799,9 @@ X-Xss-Protection: 0
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
@@ -850,6 +832,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1019,7 +1002,9 @@ X-Xss-Protection: 0
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
-      "password": "password",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
@@ -1050,6 +1035,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -1250,6 +1236,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false

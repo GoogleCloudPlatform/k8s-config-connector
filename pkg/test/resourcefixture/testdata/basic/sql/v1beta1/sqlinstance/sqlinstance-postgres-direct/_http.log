@@ -796,6 +796,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-postgres-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
