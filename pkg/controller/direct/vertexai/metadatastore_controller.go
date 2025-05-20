@@ -125,7 +125,7 @@ func (m *modelMetadataStore) AdapterForURL(ctx context.Context, url string) (dir
 func normalizeExternal(ctx context.Context, reader client.Reader, src client.Object, store *krm.VertexAIMetadataStore) error {
 	// Normalize the kmsKeyRef in the encryptionSpec.
 	if store.Spec.EncryptionSpec != nil && store.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, store.Spec.EncryptionSpec.KMSKeyRef)
+		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src.GetNamespace(), store.Spec.EncryptionSpec.KMSKeyRef)
 		if err != nil {
 			return err
 		}

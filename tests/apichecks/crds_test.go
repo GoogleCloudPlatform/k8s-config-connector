@@ -475,7 +475,8 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				}
 
 				// Check for "Ref" fields
-				if strings.HasSuffix(fieldPath, "Ref") {
+				// autoKeyRef is an optional reference, see (pending link to KMSKeyRef_OneOf struct)
+				if strings.HasSuffix(fieldPath, "Ref") && !strings.HasSuffix(fieldPath, "autoKeyRef") {
 					hasExternal := false
 					hasName := false
 

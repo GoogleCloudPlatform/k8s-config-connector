@@ -26,25 +26,25 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// NOTE: If references a KMS Crypto Key, use `BasicCryptoKeyRef_OneOf` instead!
+// NOTE: If references a KMSKey, use `KMSKeyRef_OneOf` instead!
+// todo: use unexported variable kmsCryptoKeyRef to avoid referencing to the KMS crypto key.
+
 type KMSCryptoKeyRef struct {
+	// todo: remove External from KMSCryptoKeyRef. We will use KMSKeyRef_OneOf.External instead.
+
 	// A reference to an externally managed KMSCryptoKey.
 	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
 	External string `json:"external,omitempty"`
 
 	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
+
 	// The `namespace` of a `KMSCryptoKey` resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type KMSCryptoKey struct {
-	Ref        *KMSCryptoKeyRef
-	ResourceID string
-}
-
 // ResolveKMSCryptoKeyRef will resolve a KMSCryptoKeyRef to a KMSCryptoKey.
-func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src client.Object, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
+func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, otherNamespace string, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -73,7 +73,7 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src clien
 		Name:      ref.Name,
 	}
 	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
+		key.Namespace = otherNamespace
 	}
 
 	// Fetch object from k8s cluster to construct the external form
