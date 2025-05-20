@@ -61,8 +61,12 @@ spec:
             description: StorageAnywhereCacheSpec defines the desired state of StorageAnywhereCache
             properties:
               admissionPolicy:
+                default: admit-on-first-miss
                 description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
                   and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
+                enum:
+                - admit-on-first-miss
+                - admit-on-second-miss
                 type: string
               bucketRef:
                 description: Immutable. The reference to bucket where cache needs
@@ -94,6 +98,7 @@ spec:
                     type: string
                 type: object
               desiredState:
+                default: running
                 description: The desired state of the cache. Possible values include
                   "running", "disabled", and "paused". If not specified, the default
                   value is "running". This field controls the runtime behavior of
@@ -101,12 +106,17 @@ spec:
                   over any other updates. For instance, if both the `desiredState`
                   and `ttl` are updated simultaneously, the state would be updated
                   first, followed by `ttl`.
+                enum:
+                - running
+                - paused
+                - disabled
                 type: string
               resourceID:
                 description: The AnywhereCacheID generated via backend, It can be
                   used by users to manage an existing cache.
                 type: string
               ttl:
+                default: 86400s
                 description: Cache entry TTL (ranges between 1h to 7d). This is a
                   cache-level config that defines how long a cache entry can live.
                   Defaults to "86400s" TTL must be in whole seconds.
