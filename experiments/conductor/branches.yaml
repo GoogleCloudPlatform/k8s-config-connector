@@ -44,21 +44,6 @@ branches:
     proto-msg: ""
     host-name: ""
     notes: []
-  - name: ai-customjobs
-    local: resource-ai-customjobs
-    remote: resource-ai-customjobs
-    command: gcloud ai custom-jobs
-    group: ai
-    resource: customjobs
-    controller: Unknown
-    kind: ""
-    package: ""
-    proto: ""
-    proto-path: ""
-    proto-service: ""
-    proto-msg: ""
-    host-name: ""
-    notes: []
   - name: compute-computebackendservice
     local: resource-compute-computebackendservice
     remote: resource-compute-computebackendservice
