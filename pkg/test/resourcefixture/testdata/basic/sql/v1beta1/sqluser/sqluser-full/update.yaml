@@ -13,11 +13,25 @@
 # limitations under the License.
 
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
+kind: SQLUser
 metadata:
-  name: sqlinstance-${uniqueId}
+  name: sqluser-${uniqueId}
 spec:
-  databaseVersion: MYSQL_8_0
-  region: us-central1
-  settings:
-    tier: db-f1-micro
+  instanceRef:
+    name: sqlinstance-${uniqueId}
+  host: "%"
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: secret-2-${uniqueId}
+        key: newpassword
+  type: BUILT_IN # DEFAULT
+  passwordPolicy:
+    allowedFailedAttempts: 5
+    enableFailedAttemptsCheck: false
+    enablePasswordVerification: false
+    passwordExpirationDuration: "1296000s" # 15 days
+    # status is output-only, so we cannot set it in the spec.
+    # status:
+    #   - locked: false
+    #     passwordExpirationTime: "2025-01-01T00:00:00Z"
