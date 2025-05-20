@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/bigquery/datatransfer/apiv1/datatransferpb"
 	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerydatatransfer/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
@@ -71,7 +72,7 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.DataRefreshWindowDays = direct.LazyPtr(in.GetDataRefreshWindowDays())
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	if in.GetNotificationPubsubTopic() != "" {
-		out.PubSubTopicRef = &refv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
+		out.PubSubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetNotificationPubsubTopic()}
 	}
 	out.EmailPreferences = EmailPreferences_FromProto(mapCtx, in.GetEmailPreferences())
 	out.EncryptionConfiguration = EncryptionConfiguration_FromProto(mapCtx, in.GetEncryptionConfiguration())
@@ -177,7 +178,7 @@ func EventDrivenSchedule_FromProto(mapCtx *direct.MapContext, in *pb.EventDriven
 	}
 	out := &krm.EventDrivenSchedule{}
 	if in.GetPubsubSubscription() != "" {
-		out.PubSubSubscriptionRef = &refv1beta1.PubSubSubscriptionRef{External: in.GetPubsubSubscription()}
+		out.PubSubSubscriptionRef = &pubsubv1beta1.PubSubSubscriptionRef{External: in.GetPubsubSubscription()}
 	}
 	return out
 }

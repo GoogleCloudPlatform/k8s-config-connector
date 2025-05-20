@@ -158,11 +158,10 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 	if len(secret.Spec.TopicRefs) != 0 {
 		for _, topicRef := range secret.Spec.TopicRefs {
 			if topicRef.PubSubTopicRef != nil {
-				pubsubRef, err := refs.ResolvePubSubTopic(ctx, reader, src, topicRef.PubSubTopicRef)
+				_, err := topicRef.PubSubTopicRef.NormalizedExternal(ctx, reader, src.GetNamespace())
 				if err != nil {
 					return err
 				}
-				topicRef.PubSubTopicRef.External = pubsubRef.String()
 			}
 		}
 	}

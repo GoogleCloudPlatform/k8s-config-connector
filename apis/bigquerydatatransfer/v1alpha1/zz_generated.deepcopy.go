@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -174,7 +175,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	}
 	if in.PubSubTopicRef != nil {
 		in, out := &in.PubSubTopicRef, &out.PubSubTopicRef
-		*out = new(v1beta1.PubSubTopicRef)
+		*out = new(pubsubv1beta1.PubSubTopicRef)
 		**out = **in
 	}
 	if in.Params != nil {

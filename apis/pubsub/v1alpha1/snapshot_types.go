@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -38,7 +39,7 @@ type PubSubSnapshotSpec struct {
 	// Optional. The name of the topic from which this snapshot is retaining
 	//  messages.
 	// +kcc:proto:field=google.pubsub.v1.Snapshot.topic
-	TopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
 
 	// Optional. The snapshot is guaranteed to exist up until this time.
 	//  A newly-created snapshot expires no later than 7 days from the time of its
@@ -65,7 +66,7 @@ type PubSubSnapshotSpec struct {
 	// subscription's topic following the successful completion of the snapshots.create request.
 	// Format is projects/{project}/subscriptions/{sub}.
 	// +required
-	PubSubSubscriptionRef *refv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef"`
+	PubSubSubscriptionRef *pubsubv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef"`
 }
 
 // PubSubSnapshotStatus defines the config connector machine state of PubSubSnapshot

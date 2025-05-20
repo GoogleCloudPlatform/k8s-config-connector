@@ -92,22 +92,22 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve PubSubTopic Ref
 	if obj.Spec.PubSubTopicRef != nil {
-		topic, err := refv1beta1.ResolvePubSubTopic(ctx, reader, obj, obj.Spec.PubSubTopicRef)
+		ref := obj.Spec.PubSubTopicRef
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.PubSubTopicRef.External = topic.String()
 	}
 
 	// Resolve PubSubSubscription Ref
 	if obj.Spec.ScheduleOptionsV2 != nil &&
 		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule != nil &&
 		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef != nil {
-		subscription, err := refv1beta1.ResolvePubSubSubscription(ctx, reader, obj, obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef)
+		ref := obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef
+		_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.ScheduleOptionsV2.EventDrivenSchedule.PubSubSubscriptionRef.External = subscription.String()
 	}
 
 	// Resolve BigQueryDataSet Ref

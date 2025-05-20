@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -26,32 +26,33 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SnapshotRef{}
+var _ refsv1beta1.ExternalNormalizer = &PubSubTopicRef{}
+var PubSubTopicGVK = GroupVersion.WithKind("PubSubTopic")
 
-// SnapshotRef defines the resource reference to PubSubSnapshot, which "External" field
+// PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field
 // holds the GCP identifier for the KRM object.
-type SnapshotRef struct {
-	// A reference to an externally managed PubSubSnapshot resource.
-	// Should be in the format "projects/{{projectID}}/snapshots/{{snapshotID}}".
+type PubSubTopicRef struct {
+	// A reference to an externally managed PubSubTopic resource.
+	// Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a PubSubSnapshot resource.
+	// The name of a PubSubTopic resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a PubSubSnapshot resource.
+	// The namespace of a PubSubTopic resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on PubSubSnapshot.
-// If the "External" is given in the other resource's spec.PubSubSnapshotRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual PubSubSnapshot object from the cluster.
-func (r *SnapshotRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on PubSubTopic.
+// If the "External" is given in the other resource's spec.PubSubTopicRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual PubSubTopic object from the cluster.
+func (r *PubSubTopicRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", PubSubSnapshotGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", PubSubTopicGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseSnapshotExternal(r.External); err != nil {
+		if _, err := ParseTopicExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,21 +64,33 @@ func (r *SnapshotRef) NormalizedExternal(ctx context.Context, reader client.Read
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(PubSubSnapshotGVK)
+	u.SetGroupVersionKind(PubSubTopicGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", PubSubSnapshotGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", PubSubTopicGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
+		return r.External, nil
 	}
-	r.External = actualExternalRef
+
+	resourceID, err := refsv1beta1.GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
+
+	r.External = fmt.Sprintf("projects/%s/topics/%s", projectID, resourceID)
 	return r.External, nil
 }
