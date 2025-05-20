@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-en
 export WRITE_GOLDEN_OUTPUT=1
 
 # FG for gcptracker usage
-export KCC_RECONCILE_FG=USE_DT
+export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
 
 echo "Running scenario tests for gcptracker..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \

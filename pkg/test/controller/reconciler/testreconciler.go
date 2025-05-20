@@ -277,8 +277,8 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		r.t.Fatalf("creating resource fetcher: %v", err)
 	}
 	var dependencyTracker *gcpwatch.DependencyTracker
-	v := os.Getenv("KCC_RECONCILE_FG")
-	if v == "USE_DT" {
+	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
+	if v == "USE_DEPENDENCY_TRACKER" {
 		dependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
 	}
 

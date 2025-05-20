@@ -160,7 +160,7 @@ type reconcileContext struct {
 	Ctx            context.Context
 	NamespacedName types.NamespacedName
 
-	gcpObjects []*iamv1beta1.IAMPolicy
+	objRef *iamv1beta1.IAMPolicy
 }
 
 func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
@@ -204,8 +204,8 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	}
 
 	// if we can, we will use the GCP watch method to prompt reconcile events via the immediateReconcile channel
-	if r.driftTracker != nil && len(runCtx.gcpObjects) == 1 && r.driftTracker.Add(ctx, policy, runCtx.gcpObjects[0].Spec.Etag) {
-		log.Info("using gcp watcher instead of periodic requeue")
+	if r.driftTracker != nil && runCtx.objRef != nil && r.driftTracker.Add(ctx, policy, runCtx.objRef.Spec.Etag) {
+		log.V(2).Info("using gcp watcher instead of periodic requeue", "resource", request.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
@@ -266,7 +266,13 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		return false, r.handleUpdateFailed(pp, err)
 	}
 
-	r.gcpObjects = append(r.gcpObjects, iamPolicy.DeepCopy())
+	if r.objRef != nil {
+		if k8s.GetNamespacedName(r.objRef) != k8s.GetNamespacedName(iamPolicy) {
+			logger.Error(fmt.Errorf("object reference changed"), "old", r.objRef, "new", iamPolicy)
+		}
+	}
+	r.objRef = iamPolicy.DeepCopy()
+
 	k8s.EnsureFinalizers(pp, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	resolver := IAMMemberIdentityResolver{Iamclient: r.Reconciler.iamClient, Ctx: r.Ctx}
