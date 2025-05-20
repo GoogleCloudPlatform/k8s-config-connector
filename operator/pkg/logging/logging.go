@@ -22,11 +22,11 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
 	"go.uber.org/zap/zapcore"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-var logger = klog.Log
+var logger = log.Log
 
 // BuildLogger constructs a logr.Logger object that matches the standard
 // configuration across cnrm applications, writing to the io.Writer passed.
