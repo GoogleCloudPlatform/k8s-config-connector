@@ -17,6 +17,7 @@ import (
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // ShouldTestRereconiliation determines if we "touch" the primary object after we have run the test.
@@ -26,8 +27,8 @@ func ShouldTestRereconiliation(t *testing.T, primaryResource *unstructured.Unstr
 	gvk := primaryResource.GroupVersionKind()
 
 	switch gvk.GroupKind() {
-	// case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
-	// 	return true
+	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
+		return true
 	}
 
 	switch gvk.Group {
