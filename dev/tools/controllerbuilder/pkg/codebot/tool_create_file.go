@@ -21,7 +21,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -81,24 +81,24 @@ func (t *CreateFile) Run(ctx context.Context, c *Chat, args map[string]any) (any
 	return result, nil
 }
 
-func (t *CreateFile) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *CreateFile) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name:        "CreateFile",
 		Description: `Create a new file in the user's workspace, with the contents specified by contents.  This tool will fail if the file already exists.`,
-		Parameters: &llm.Schema{
-			Type:     llm.TypeObject,
+		Parameters: &gollm.Schema{
+			Type:     gollm.TypeObject,
 			Required: []string{"contents", "filename"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"contents": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: `The text that should be the contents of the new file.`,
 				},
 				"filename": {
-					Type:        llm.TypeString,
+					Type:        gollm.TypeString,
 					Description: "The path to the file you want to create",
 				},
 				"overwrite": {
-					Type:        llm.TypeBoolean,
+					Type:        gollm.TypeBoolean,
 					Description: "Whether to overwrite the file if it already exists",
 				},
 			},

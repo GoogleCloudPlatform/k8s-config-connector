@@ -23,7 +23,7 @@ import (
 var SecureSourceManagerInstanceGVK = GroupVersion.WithKind("SecureSourceManagerInstance")
 
 // SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
-// +kcc:proto=google.cloud.securesourcemanager.v1.Instance
+// +kcc:spec:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
 	// +required
@@ -67,7 +67,7 @@ type SecureSourceManagerInstanceStatus struct {
 }
 
 // SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
-// +kcc:proto=google.cloud.securesourcemanager.v1.Instance
+// +kcc:observedstate:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceObservedState struct {
 	// Output only. Create timestamp.
 	CreateTime *string `json:"createTime,omitempty"`

@@ -41,7 +41,7 @@ type NetworkConfig_Consumer struct {
 	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
+// +kcc:observedstate:proto=google.cloud.metastore.v1.NetworkConfig.Consumer
 type NetworkConfig_ConsumerObservedState struct {
 	// Output only. The URI of the endpoint used to access the metastore
 	//  service.
@@ -54,7 +54,7 @@ type NetworkConfig_ConsumerObservedState struct {
 	EndpointLocation *string `json:"endpointLocation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.metastore.v1.MetadataManagementActivity
+// +kcc:observedstate:proto=google.cloud.metastore.v1.MetadataManagementActivity
 type MetadataManagementActivityObservedState struct {
 	// Output only. The latest metadata exports of the metastore service.
 	// +kcc:proto:field=google.cloud.metastore.v1.MetadataManagementActivity.metadata_exports
@@ -82,7 +82,7 @@ type MetastoreServiceParent struct {
 }
 
 // MetastoreServiceSpec defines the desired state of MetastoreService
-// +kcc:proto=google.cloud.metastore.v1.Service
+// +kcc:spec:proto=google.cloud.metastore.v1.Service
 type MetastoreServiceSpec struct {
 	MetastoreServiceParent `json:",inline"`
 
@@ -168,7 +168,7 @@ type MetastoreServiceStatus struct {
 }
 
 // MetastoreServiceObservedState is the state of the MetastoreService resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.metastore.v1.Service
+// +kcc:observedstate:proto=google.cloud.metastore.v1.Service
 type MetastoreServiceObservedState struct {
 	// Output only. The time when the metastore service was created.
 	// +kcc:proto:field=google.cloud.metastore.v1.Service.create_time

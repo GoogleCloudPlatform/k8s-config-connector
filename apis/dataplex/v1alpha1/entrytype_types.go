@@ -29,7 +29,7 @@ type DataplexEntryTypeParent struct {
 }
 
 // DataplexEntryTypeSpec defines the desired state of DataplexEntryType
-// +kcc:proto=google.cloud.dataplex.v1.EntryType
+// +kcc:spec:proto=google.cloud.dataplex.v1.EntryType
 type DataplexEntryTypeSpec struct {
 	DataplexEntryTypeParent `json:",inline"`
 	// The DataplexEntryType name. If not given, the metadata.name will be used.
@@ -87,7 +87,7 @@ type DataplexEntryTypeStatus struct {
 }
 
 // DataplexEntryTypeObservedState is the state of the DataplexEntryType resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataplex.v1.EntryType
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.EntryType
 type DataplexEntryTypeObservedState struct {
 	// Output only. System generated globally unique ID for the EntryType. This ID
 	//  will be different if the EntryType is deleted and re-created with the same

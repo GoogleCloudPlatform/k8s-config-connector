@@ -74,7 +74,7 @@ type IosKeyRestrictions struct {
 	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
 }
 
-// +kcc:proto=google.api.apikeys.v2.Key
+// +kcc:spec:proto=google.api.apikeys.v2.Key
 type APIKeySpec struct {
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1beta1.ProjectRef `json:"projectRef"`
@@ -98,7 +98,7 @@ type APIKeySpec struct {
 	Restrictions *Restrictions `json:"restrictions,omitempty"`
 }
 
-// +kcc:proto=google.api.apikeys.v2.Key
+// +kcc:observedstate:proto=google.api.apikeys.v2.Key
 type APIKeyObservedState struct {
 	/*NOTYET
 	// Output only. The resource name of the key.

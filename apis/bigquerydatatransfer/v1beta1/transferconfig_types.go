@@ -30,7 +30,7 @@ type EncryptionConfiguration struct {
 	KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
-// +kcc:proto=google.rpc.Status
+// +kcc:status:proto=google.rpc.Status
 type Status struct {
 	// The status code, which should be an enum value of
 	//  [google.rpc.Code][google.rpc.Code].
@@ -60,7 +60,7 @@ type EventDrivenSchedule struct {
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
+// +kcc:spec:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigSpec struct {
 	// The number of days to look back to automatically refresh the data.
 	//  For example, if `data_refresh_window_days = 10`, then every day
@@ -184,7 +184,7 @@ type BigQueryDataTransferConfigStatus struct {
 }
 
 // BigQueryDataTransferConfigSpec defines the desired state of BigQueryDataTransferConfig
-// +kcc:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
+// +kcc:observedstate:proto=google.cloud.bigquery.datatransfer.v1.TransferConfig
 type BigQueryDataTransferConfigObservedState struct {
 	// Output only. Region in which BigQuery dataset is located.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.dataset_region

@@ -23,7 +23,7 @@ import (
 var ContainerAttachedClusterGVK = GroupVersion.WithKind("ContainerAttachedCluster")
 
 // ContainerAttachedClusterSpec defines the desired state of ContainerAttachedCluster
-// +kcc:proto=google.cloud.gkemulticloud.v1.AttachedCluster
+// +kcc:spec:proto=google.cloud.gkemulticloud.v1.AttachedCluster
 type ContainerAttachedClusterSpec struct {
 	/* The ID of the project in which the resource belongs.*/
 	ProjectRef *refs.ProjectRef `json:"projectRef"`

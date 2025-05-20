@@ -35,7 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/kubebuilder-declarative-pattern/commonclient"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/applier"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -163,7 +163,7 @@ func (r *instanceReconciler) reconcileExists(ctx context.Context, dependencies *
 
 	ns := name.Namespace
 
-	parentRef, err := applier.NewParentRef(r.restMapper, instance, instance.GetName(), instance.GetNamespace())
+	parentRef, err := applier.NewParentRef(r.restMapper, instance, instance.GroupVersionKind(), instance.GetName(), instance.GetNamespace())
 	if err != nil {
 		return statusInfo, err
 	}
@@ -273,7 +273,7 @@ func newInstanceReconcilerRunner(mgr ctrl.Manager, watchsets *watchset.Manager, 
 	actsOn.SetKind(r.gvk.Kind)
 
 	// Watch for changes to CompositeDefinition
-	err = c.Watch(commonclient.SourceKind(mgr.GetCache(), actsOn), &handler.EnqueueRequestForObject{})
+	err = c.Watch(source.TypedKind(mgr.GetCache(), actsOn, &handler.TypedEnqueueRequestForObject[*unstructured.Unstructured]{}))
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +303,7 @@ func (r *instanceReconcilerRunner) start() {
 	go func() {
 		err := r.controller.Start(r.ctx)
 		if err != nil {
-			klog.Warningf("error from instance-reconciler controller: %w", err)
+			klog.Warningf("error from instance-reconciler controller: %v", err)
 		}
 		r.result.Set(err)
 	}()

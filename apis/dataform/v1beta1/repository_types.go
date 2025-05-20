@@ -67,7 +67,7 @@ type RepositoryWorkspaceCompilationOverrides struct {
 	TablePrefix *string `json:"tablePrefix,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataform.v1beta1.Repository
+// +kcc:spec:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositorySpec struct {
 	/* Optional. If set, configures this repository to be linked to a Git remote. */
 	// +optional
@@ -134,7 +134,7 @@ type DataformRepositoryStatus struct {
 	ObservedState *DataformRepositoryObservedState `json:"observedState,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataform.v1beta1.Repository
+// +kcc:observedstate:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositoryObservedState struct {
 	// DataEncryptionState is output only! But not part of the proto yet.
 }

@@ -33,7 +33,7 @@ type Parent struct {
 }
 
 // NetworkSecurityAuthorizationPolicySpec defines the desired state of NetworkSecurityAuthorizationPolicy
-// +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+// +kcc:spec:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
 type NetworkSecurityAuthorizationPolicySpec struct {
 	// The NetworkSecurityAuthorizationPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -72,7 +72,7 @@ type NetworkSecurityAuthorizationPolicySpec struct {
 }
 
 // NetworkSecurityAuthorizationPolicyStatus defines the config connector machine state of NetworkSecurityAuthorizationPolicy
-// +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+// +kcc:status:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy
 type NetworkSecurityAuthorizationPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */

@@ -36,7 +36,7 @@ type AccessLoggingConfig struct {
 }
 
 // ApigeeInstanceSpec defines the desired state of ApigeeInstance
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance
 type ApigeeInstanceSpec struct {
 	// Reference to parent Apigee Organization.
 	// +required

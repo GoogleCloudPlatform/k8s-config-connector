@@ -32,7 +32,7 @@ type EntityKey struct {
 }
 
 // CloudIdentityGroupSpec defines the desired state of CloudIdentityGroup
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:spec:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupSpec struct {
 	// An extended description to help users determine the purpose of a `Group`. Must not be longer than 4,096 characters.
 	Description *string `json:"description,omitempty"`
@@ -57,12 +57,12 @@ type CloudIdentityGroupSpec struct {
 	// +required
 	Parent *string `json:"parent,omitempty"`
 
-	// Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID}. Used for acquisition only. Leave unset to create a new resource.
+	// Immutable. Optional. The service-generated name of the resource. Format: groups/{groupID} or {groupID}. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // CloudIdentityGroupStatus defines the config connector machine state of CloudIdentityGroup
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:status:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 
@@ -83,7 +83,7 @@ type CloudIdentityGroupStatus struct {
 }
 
 // CloudIdentityGroupObservedState is the state of the CloudIdentityGroup resource as most recently observed in GCP.
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Group
+// +kcc:observedstate:proto=google.apps.cloudidentity.groups.v1beta1.Group
 type CloudIdentityGroupObservedState struct {
 	// Additional group keys associated with the Group.
 	AdditionalGroupKeys []EntityKey `json:"additionalGroupKeys,omitempty"`

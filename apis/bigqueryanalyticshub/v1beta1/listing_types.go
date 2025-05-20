@@ -71,7 +71,7 @@ type Source struct {
 }
 
 // BigQueryAnalyticsHubListingSpec defines the desired state of BigQueryAnalyticsHubDataExchangeListing
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
+// +kcc:spec:proto=google.cloud.bigquery.analyticshub.v1.Listing
 type BigQueryAnalyticsHubListingSpec struct {
 	// +required
 	Source *Source `json:"source,omitempty"`
@@ -160,7 +160,7 @@ type BigQueryAnalyticsHubListingStatus struct {
 }
 
 // BigQueryAnalyticsHubDataExchangeListingSpec defines the desired state of BigQueryAnalyticsHubDataExchangeListing
-// +kcc:proto=google.cloud.bigquery.analyticshub.v1.Listing
+// +kcc:observedstate:proto=google.cloud.bigquery.analyticshub.v1.Listing
 type BigQueryAnalyticsHubListingObservedState struct {
 	// This field is in the same format as our externalRef! So it's redundant.
 	// // Output only. The resource name of the data exchange.

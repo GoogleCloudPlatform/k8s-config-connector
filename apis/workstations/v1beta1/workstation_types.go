@@ -22,7 +22,7 @@ import (
 var WorkstationGVK = GroupVersion.WithKind("Workstation")
 
 // WorkstationSpec defines the desired state of Workstation
-// +kcc:proto=google.cloud.workstations.v1.Workstation
+// +kcc:spec:proto=google.cloud.workstations.v1.Workstation
 type WorkstationSpec struct {
 	// Parent is a reference to the parent WorkstationConfig for this Workstation.
 	Parent *WorkstationConfigRef `json:"parentRef"`

@@ -84,7 +84,13 @@ X-Xss-Protection: 0
       "managed-by-cnrm": "true"
     },
     "mode": "STANDARD_REPOSITORY",
-    "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
+    "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
+    "satisfiesPzi": true,
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+    }
   }
 }
 
@@ -114,7 +120,13 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -217,6 +229,7 @@ X-Xss-Protection: 0
     },
     "mode": "VIRTUAL_REPOSITORY",
     "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+    "satisfiesPzi": true,
     "virtualRepositoryConfig": {
       "upstreamPolicies": [
         {
@@ -225,6 +238,11 @@ X-Xss-Protection: 0
           "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
         }
       ]
+    },
+    "vulnerabilityScanningConfig": {
+      "enablementState": "SCANNING_DISABLED",
+      "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+      "lastEnableTime": "2024-04-01T12:34:56.123456Z"
     }
   }
 }
@@ -256,6 +274,7 @@ X-Xss-Protection: 0
   },
   "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
@@ -265,6 +284,11 @@ X-Xss-Protection: 0
         "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
       }
     ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -314,6 +338,7 @@ X-Xss-Protection: 0
   },
   "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
@@ -323,6 +348,11 @@ X-Xss-Protection: 0
         "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
       }
     ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -353,6 +383,7 @@ X-Xss-Protection: 0
   },
   "mode": "VIRTUAL_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}",
+  "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "virtualRepositoryConfig": {
     "upstreamPolicies": [
@@ -362,6 +393,11 @@ X-Xss-Protection: 0
         "repository": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2"
       }
     ]
+  },
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -441,7 +477,13 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---

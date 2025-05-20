@@ -23,7 +23,7 @@ import (
 var KMSImportJobGVK = GroupVersion.WithKind("KMSImportJob")
 
 // KMSImportJobSpec defines the desired state of KMSImportJob
-// +kcc:proto=google.cloud.kms.v1.ImportJob
+// +kcc:spec:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobSpec struct {
 	KMSKeyRingRef *refs.KMSKeyRingRef `json:"kmsKeyRingRef"`
 
@@ -62,7 +62,7 @@ type KMSImportJobStatus struct {
 }
 
 // KMSImportJobObservedState is the state of the KMSImportJob resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.kms.v1.ImportJob
+// +kcc:observedstate:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobObservedState struct {
 
 	// Output only. The time at which this
@@ -108,7 +108,7 @@ type KMSImportJobObservedState struct {
 	Attestation *KeyOperationAttestationObservedState `json:"attestation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
+// +kcc:observedstate:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
 type ImportJob_WrappingPublicKeyObservedState struct {
 	// The public key, encoded in PEM format. For more information, see the [RFC
 	//  7468](https://tools.ietf.org/html/rfc7468) sections for [General

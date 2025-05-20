@@ -25,6 +25,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/proto-to-mapper/gocode"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -193,14 +194,9 @@ func (v *visitor) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map
 			if len(s.Comments) != 0 {
 				for _, c := range s.Comments {
 					for _, line := range strings.Split(c, "\n") {
-						line = strings.TrimSpace(line)
-						if strings.HasPrefix(line, "+kcc:proto=") {
-							// if line == "+kcc:proto="+string(msg.Name()) {
-							// 	matches[s.Name] = s
-							// }
-							if line == "+kcc:proto="+string(msg.FullName()) {
-								matches[s.Name] = s
-							}
+						proto, ok := codegen.GetProtoMessageFromAnnotation(line)
+						if ok && proto == string(msg.FullName()) {
+							matches[s.Name] = s
 						}
 					}
 				}

@@ -111,6 +111,11 @@ func (a *GroupAdapter) Find(ctx context.Context) (bool, error) {
 
 	resource, err := a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
+		// uncommon not found error:
+		// Error 403: Error(2017): Permission denied for group resource 'groups/044sinio13vzveo' (or it may not exist).
+		if direct.IsPermissionDenied(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("getting Group %q: %w", a.id, err)
 	}
 

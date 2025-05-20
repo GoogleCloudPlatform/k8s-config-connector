@@ -150,14 +150,17 @@ func (s *instanceAdminServer) UpdateAppProfile(ctx context.Context, req *pb.Upda
 	zone := "us-central1-a" // TODO
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
-	// Don't return isolation in LRO, unless we updated Isolation
 	lroRet := ProtoClone(updated)
 	updatePaths := sets.New(req.GetUpdateMask().GetPaths()...)
+	// Only return in LRO whatever has actually been updated/changed.
 	if !updatePaths.Has("standard_isolation") && !updatePaths.Has("standardIsolation") && !updatePaths.Has("dataBoostIsolationReadOnly") && !updatePaths.Has("data_boost_isolation_read_only") {
 		lroRet.Isolation = nil
 	}
 	if !updatePaths.Has("description") {
 		lroRet.Description = ""
+	}
+	if !updatePaths.Has("single_cluster_routing") && !updatePaths.Has("singleClusterRouting") && !updatePaths.Has("single_cluster_routing.cluster_id") && !updatePaths.Has("singleClusterRouting.clusterId") && !updatePaths.Has("multi_cluster_routing_use_any") && !updatePaths.Has("multiClusterRoutingUseAny") {
+		lroRet.RoutingPolicy = nil
 	}
 
 	if isAsync {

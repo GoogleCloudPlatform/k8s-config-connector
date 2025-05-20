@@ -22,7 +22,7 @@ import (
 var VMwareEngineExternalAddressGVK = GroupVersion.WithKind("VMwareEngineExternalAddress")
 
 // VMwareEngineExternalAddressSpec defines the desired state of VMwareEngineExternalAddress
-// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAddress
+// +kcc:spec:proto=google.cloud.vmwareengine.v1.ExternalAddress
 type VMwareEngineExternalAddressSpec struct {
 	// The VMwareEngineExternalAddress name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -57,7 +57,7 @@ type VMwareEngineExternalAddressStatus struct {
 }
 
 // VMwareEngineExternalAddressObservedState is the state of the VMwareEngineExternalAddress resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.vmwareengine.v1.ExternalAddress
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.ExternalAddress
 type VMwareEngineExternalAddressObservedState struct {
 	// Output only. The resource name of this external IP address.
 	//  Resource names are schemeless URIs that follow the conventions in

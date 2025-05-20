@@ -29,12 +29,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigee"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
@@ -89,6 +89,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
@@ -191,9 +192,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mocksql.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
 	services = append(services, mockedgenetwork.New(env, storage))
-	services = append(services, mockartifactregistry.New(env, storage))
 	services = append(services, mockgkehub.New(env, storage))
-	services = append(services, mockalloydb.New(env, storage))
 
 	services = append(services, mockcloudbuild.New(env, storage))
 	services = append(services, mockcontaineranalysis.New(env, storage))

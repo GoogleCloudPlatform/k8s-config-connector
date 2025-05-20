@@ -42,6 +42,16 @@ func NewGroupIdentity(ctx context.Context, reader client.Reader, obj *CloudIdent
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
+	/*
+	   Special handling for backward compatibility.
+	   Ideally resourceID should be {groupID}, but due to "wrong" configuration in servicemappings:
+	   https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/575f419d12d6967374e7d2fea9871757991060e4/config/servicemappings/cloudidentity.yaml#L31
+	   the TF-based resource's resourceID is groups/{groupID}. Make sure both formats are accepted by direct controller.
+	*/
+	if id, err := ParseGroupExternal(resourceID); err == nil {
+		resourceID = id
+	}
+
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {

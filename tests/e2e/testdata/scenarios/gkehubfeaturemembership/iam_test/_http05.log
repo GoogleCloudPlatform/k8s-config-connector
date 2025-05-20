@@ -1,6 +1,5 @@
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&returnPartialSuccess=true
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -44,17 +43,7 @@ X-Xss-Protection: 0
 
 PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -84,11 +73,30 @@ X-Xss-Protection: 0
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/configmanagement"
+  },
+  "name": "projects/${projectId}/locations/global/features/configmanagement/operations/${operationID}"
+}
+
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -101,29 +109,43 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "labels": {
-    "managed-by-cnrm": "true"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/configmanagement"
   },
-  "membershipSpecs": {
-    "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "configSync": {
-          "git": {
-            "gcpServiceAccountEmail": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-            "httpsProxy": "https://github.com",
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD\"",
-            "syncWaitSecs": "20"
+  "name": "projects/${projectId}/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
+        "configmanagement": {
+          "configSync": {
+            "git": {
+              "gcpServiceAccountEmail": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+              "httpsProxy": "https://github.com",
+              "policyDir": "config-connector",
+              "secretType": "none",
+              "syncBranch": "master",
+              "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
+              "syncRev": "HEAD\"",
+              "syncWaitSecs": "20"
+            },
+            "sourceFormat": "hierarchy"
           },
-          "sourceFormat": "hierarchy"
-        },
-        "version": "1.18.1"
+          "version": "1.18.1"
+        }
       }
-    }
-  },
-  "name": "projects/${projectId}/locations/global/features/configmanagement",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "name": "projects/${projectId}/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }

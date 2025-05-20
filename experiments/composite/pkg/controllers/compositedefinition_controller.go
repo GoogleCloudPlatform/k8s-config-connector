@@ -26,7 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
-	"sigs.k8s.io/kubebuilder-declarative-pattern/commonclient"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon"
 
 	addonsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/composite/api/v1alpha1"
@@ -139,7 +139,7 @@ func (r *CompositeDefinitionReconciler) SetupWithManager(mgr ctrl.Manager) error
 	}
 
 	// Watch for changes to CompositeDefinition
-	err = c.Watch(commonclient.SourceKind(mgr.GetCache(), &addonsv1alpha1.CompositeDefinition{}), &handler.EnqueueRequestForObject{})
+	err = c.Watch(source.TypedKind(mgr.GetCache(), &addonsv1alpha1.CompositeDefinition{}, &handler.TypedEnqueueRequestForObject[*addonsv1alpha1.CompositeDefinition]{}))
 	if err != nil {
 		return err
 	}

@@ -17,6 +17,7 @@ package mockartifactregistry
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -67,7 +68,9 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
-
+	if err := s.populateDefaults(ctx, obj); err != nil {
+		return nil, err
+	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -80,6 +83,26 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 		retObj.UpdateTime = nil
 		return retObj, nil
 	})
+}
+
+func (s *ArtifactRegistryV1) populateDefaults(ctx context.Context, obj *pb.Repository) error {
+	now := time.Now()
+
+	if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
+		obj.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+
+	if obj.VulnerabilityScanningConfig == nil {
+		obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+			EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
+			EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
+			LastEnableTime:        timestamppb.New(now),
+		}
+	}
+
+	obj.SatisfiesPzi = true
+
+	return nil
 }
 
 func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.UpdateRepositoryRequest) (*pb.Repository, error) {

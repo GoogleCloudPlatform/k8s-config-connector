@@ -6,7 +6,9 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
   name: bigtableappprofiles.bigtable.cnrm.cloud.google.com
 spec:
   group: bigtable.cnrm.cloud.google.com
@@ -60,8 +62,10 @@ spec:
             description: BigtableAppProfileSpec defines the desired state of BigtableAppProfile
             properties:
               dataBoostIsolationReadOnly:
-                description: Specifies that this app profile is intended for read-only
-                  usage via the Data Boost feature.
+                description: 'Specifies that this app profile is intended for read-only
+                  usage via the Data Boost feature. Please opt-in to this feature
+                  by setting the `alpha.cnrm.cloud.google.com/reconciler: direct`
+                  annotation.'
                 properties:
                   computeBillingOwner:
                     description: The Compute Billing Owner for this Data Boost App

@@ -25,7 +25,7 @@ var (
 )
 
 // BigtableInstanceSpec defines the desired state of BigtableInstance
-// +kcc:proto=google.bigtable.admin.v2.Instance
+// +kcc:spec:proto=google.bigtable.admin.v2.Instance
 type BigtableInstanceSpec struct {
 	// The Instance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -136,7 +136,7 @@ type BigtableInstanceStatus struct {
 
 /* NOTYET
 // BigtableInstanceSpec defines the desired state of BigtableInstance
-// +kcc:proto=google.bigtable.admin.v2.Instance
+// +kcc:observedstate:proto=google.bigtable.admin.v2.Instance
 type BigtableInstanceObservedState struct {
 
 	// (`OutputOnly`)

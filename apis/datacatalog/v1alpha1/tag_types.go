@@ -31,7 +31,7 @@ type DataCatalogTagParent struct {
 }
 
 // DataCatalogTagSpec defines the desired state of DataCatalogTag
-// +kcc:proto=google.cloud.datacatalog.v1.Tag
+// +kcc:spec:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagSpec struct {
 	// Specifies the parent resource where this DataCatalogTag resides.
 	DataCatalogTagParent `json:",inline"`
@@ -75,7 +75,7 @@ type DataCatalogTagStatus struct {
 }
 
 // DataCatalogTagObservedState is the state of the DataCatalogTag resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datacatalog.v1.Tag
+// +kcc:observedstate:proto=google.cloud.datacatalog.v1.Tag
 type DataCatalogTagObservedState struct {
 	// Output only. The display name of the tag template.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.Tag.template_display_name

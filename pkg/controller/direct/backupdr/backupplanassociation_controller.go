@@ -139,13 +139,6 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 		BackupPlanAssociationId: a.id.ID(),
 		BackupPlanAssociation:   resource,
 	}
-	if desired.Spec.Resource.ComputeInstanceRef != nil {
-		fmt.Printf("[debug] desired.spec.resource.computeInstanceRef: %+v\n", desired.Spec.Resource.ComputeInstanceRef)
-		fmt.Printf("[debug] desired.spec.resource.computeInstanceRef.external: %+v\n", desired.Spec.Resource.ComputeInstanceRef.External)
-	}
-	fmt.Printf("[debug] desired.spec.resource_type: %s\n", *desired.Spec.ResourceType)
-	fmt.Printf("[debug] resource: %+v\n", resource)
-	fmt.Printf("[debug] create request: %+v\n", req)
 	op, err := a.gcpClient.CreateBackupPlanAssociation(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating BackupPlanAssociation %s: %w", a.id, err)
@@ -155,7 +148,6 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 		return fmt.Errorf("BackupPlanAssociation %s waiting creation: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created BackupPlanAssociation", "name", a.id)
-	fmt.Printf("[debug] created: %+v\n", created)
 
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
 	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, created)
