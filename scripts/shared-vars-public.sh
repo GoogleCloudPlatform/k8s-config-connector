@@ -111,6 +111,7 @@ SUPPORTED_SERVICES=(
   vpcaccess.googleapis.com
   vmwareengine.googleapis.com
   workstations.googleapis.com
+  storage.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
