@@ -135,7 +135,7 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 			if secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption != nil {
 				kmsKeyRef := secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef
 
-				kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
+				kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src.GetNamespace(), kmsKeyRef)
 				if err != nil {
 					return err
 				}
@@ -146,7 +146,7 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 			for _, r := range secret.Spec.Replication.UserManaged.Replicas {
 				if r.CustomerManagedEncryption != nil {
 					kmsKeyRef := r.CustomerManagedEncryption.KmsKeyRef
-					kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src, kmsKeyRef)
+					kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src.GetNamespace(), kmsKeyRef)
 					if err != nil {
 						return err
 					}
