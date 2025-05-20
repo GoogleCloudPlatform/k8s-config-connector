@@ -18,14 +18,17 @@ import (
 	"context"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type sqlUsersService struct {
@@ -46,6 +49,9 @@ func (s *sqlUsersService) Get(ctx context.Context, req *pb.SqlUsersGetRequest) (
 		return nil, err
 	}
 	obj.Etag = fields.ComputeWeakEtag(obj)
+	if obj.Password != "" {
+		obj.Password = ""
+	}
 	return obj, nil
 }
 
@@ -69,6 +75,9 @@ func (s *sqlUsersService) List(ctx context.Context, req *pb.SqlUsersListRequest)
 		return nil, err
 	}
 	for _, item := range ret.Items {
+		if item.Password != "" {
+			item.Password = ""
+		}
 		item.Etag = fields.ComputeWeakEtag(item)
 	}
 
@@ -92,6 +101,16 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Project = name.Project.ID
 	obj.Instance = name.Instance
 	obj.Kind = "sql#user"
+	if obj.PasswordPolicy == nil {
+		obj.PasswordPolicy = &pb.UserPasswordValidationPolicy{Status: &pb.PasswordStatus{}}
+	} else {
+		if obj.PasswordPolicy.PasswordExpirationDuration != nil {
+			if obj.PasswordPolicy.Status == nil {
+				obj.PasswordPolicy.Status = &pb.PasswordStatus{}
+			}
+			obj.PasswordPolicy.Status.PasswordExpirationTime = timestamppb.New(time.Now().Add(obj.PasswordPolicy.PasswordExpirationDuration.AsDuration()))
+		}
+	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -102,6 +121,7 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_CREATE_USER,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
@@ -122,6 +142,7 @@ func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequ
 		return nil, err
 	}
 
+	obj = proto.Clone(req.GetBody()).(*pb.User)
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -131,6 +152,7 @@ func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequ
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_UPDATE_USER,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
