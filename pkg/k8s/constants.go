@@ -37,6 +37,8 @@ const (
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"
+	Creating                             = "Creating"
+	CreatingMessage                      = "The resource is under creation"
 	CreatedMessage                       = "Successfully created"
 	CreateFailed                         = "CreateFailed"
 	CreateFailedMessageTmpl              = "Create call failed: %v"
