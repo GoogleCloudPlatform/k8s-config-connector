@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -980,7 +981,7 @@ func (in *SparkHistoryServerConfigSpec) DeepCopyInto(out *SparkHistoryServerConf
 	*out = *in
 	if in.DataprocClusterRef != nil {
 		in, out := &in.DataprocClusterRef, &out.DataprocClusterRef
-		*out = new(v1beta1.DataprocClusterRef)
+		*out = new(dataprocv1beta1.DataprocClusterRef)
 		**out = **in
 	}
 }
