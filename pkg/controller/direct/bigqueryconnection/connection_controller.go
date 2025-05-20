@@ -134,12 +134,11 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 	// Resolve Spark.DataprocClusterRef and Spark.MetastoreServiceRef
 	if obj.Spec.SparkSpec != nil {
 		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
-			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
-				cluster, err := refs.ResolveDataprocClusterRef(ctx, a.reader, obj, obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef)
+			if ref := obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef; ref != nil {
+				_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return err
 				}
-				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
 			}
 		}
 
