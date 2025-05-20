@@ -3160,7 +3160,6 @@
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.maximumBackoff" is not set in unstructured objects
 [missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.minimumBackoff" is not set in unstructured objects
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageRetentionDuration" is not set in unstructured objects
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafService" is not set in unstructured objects
