@@ -159,6 +159,12 @@ func TestE2EScript(t *testing.T) {
 							timeoutChan := time.After(waitTimeout)
 							ticker := time.NewTicker(30 * time.Second)
 
+							// Read configuration for forbidden log messages
+							forbiddenSubstrings, forbiddenSubstringsFound, err := unstructured.NestedStringSlice(obj.Object, "forbiddenLogMessage")
+							if err != nil {
+								h.Fatalf("error getting 'forbiddenLogMessage': %v", err)
+							}
+
 							for {
 								stopWaiting := false
 								select {
@@ -174,8 +180,27 @@ func TestE2EScript(t *testing.T) {
 								}
 							}
 
+							if forbiddenSubstringsFound {
+								// todo acpana these are HTTP events we most likely want/ need the logSink that
+								// the harness spins off and inspect those logs if we go down this route!
+								for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
+									logMsg := h.Events.HTTPEvents[i].Request.Body
+
+									allSubstringsFound := true
+									for _, pattern := range forbiddenSubstrings {
+										if !strings.Contains(logMsg, pattern) {
+											allSubstringsFound = false
+											break
+										}
+									}
+									if allSubstringsFound {
+										h.T.Errorf("found forbidden log message: %s", logMsg)
+										break
+									}
+								}
+							}
 						} else {
-							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+							h.T.Logf("skipping SystemRun command, because not running against mockgcp")
 						}
 
 						captureHTTPLogEvents(true)
