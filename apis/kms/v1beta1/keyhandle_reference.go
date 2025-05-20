@@ -22,20 +22,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	runtime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &KMSKeyHandleRef{}
+var _ refsv1beta1.ExternalNormalizer = &kmsKeyHandleRef{}
 
-// KMSKeyHandleRef defines the resource reference to KMSKeyHandle, which "External" field
-// holds the GCP identifier for the KRM object.
-type KMSKeyHandleRef struct {
-	// A reference to an externally managed KMSKeyHandle resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/keyHandles/{{keyhandleID}}".
-	External string `json:"external,omitempty"`
-
+// kmsKeyHandleRef defines the resource reference to KMSKeyHandle
+type kmsKeyHandleRef struct {
 	// The name of a KMSKeyHandle resource.
 	Name string `json:"name,omitempty"`
 
@@ -44,18 +38,10 @@ type KMSKeyHandleRef struct {
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSKeyHandle.
-// If the "External" is given in the other resource's spec.KMSKeyHandleRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
-func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", KMSKeyHandleGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseKMSKeyHandleExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
+// The "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
+func (r *kmsKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if r.Name == "" {
+		return "", fmt.Errorf("use KMS autokey requires referring to the Config Connector `KMSKeyHanle` object. please provide the `name` of your  `KMSKeyHanle`.")
 	}
 
 	// From the Config Connector object
@@ -71,42 +57,15 @@ func (r *KMSKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyHandleGVK, key, err)
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	// Use status.observedState.kmsKey instead of status.externalRef as the external resourceID of autoKey
+	// status.externalRef: projects/${projectId}/locations/us-central1/keyHandles/1a1a1a-222b-3cc3-d444-e555ee555555
+	// status.observedState.kmsKey: projects/${key_project}/locations/us-central1/keyRings/autokey/cryptoKeys/${projectNumber}-compute-disk-${generated-id}
+	kmsKey, _, err := unstructured.NestedString(u.Object, "status", "observedState", "kmsKey")
 	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+		return "", fmt.Errorf("reading status.observedState.kmsKey: %w", err)
 	}
-	if actualExternalRef == "" {
+	if kmsKey == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
-	r.External = actualExternalRef
-	return r.External, nil
-}
-
-func (r *KMSKeyHandleRef) NormalizedCryptoKey(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.Name == "" {
-		return "", fmt.Errorf("use KMS autokey requries referring to the Config Connector `KMSKeyHanle` object. please provide the `name` of your  `KMSKeyHanle`.")
-	}
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(KMSKeyHandleGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyHandleGVK, key, err)
-	}
-	obj := &KMSKeyHandle{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
-		return "", fmt.Errorf("error converting to %T: %w", obj, err)
-	}
-	if obj.Status.ObservedState != nil {
-		return *obj.Status.ObservedState.KMSKey, nil
-	}
-
-	return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	return kmsKey, nil
 }

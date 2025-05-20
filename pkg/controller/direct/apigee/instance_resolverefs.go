@@ -25,7 +25,7 @@ import (
 func ResolveApigeeInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.ApigeeInstance) error {
 	var err error
 	if obj.Spec.DiskEncryptionKMSCryptoKeyRef != nil {
-		obj.Spec.DiskEncryptionKMSCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.DiskEncryptionKMSCryptoKeyRef)
+		obj.Spec.DiskEncryptionKMSCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj.Namespace, obj.Spec.DiskEncryptionKMSCryptoKeyRef)
 		if err != nil {
 			return err
 		}
