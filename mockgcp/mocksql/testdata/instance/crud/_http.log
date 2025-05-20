@@ -98,14 +98,12 @@ X-Xss-Protection: 0
   "databaseInstalledVersion": "MYSQL_8_0_40",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
-  "gceZone": "us-central1-c",
+  "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": true,
+    "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -118,7 +116,6 @@ X-Xss-Protection: 0
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -132,15 +129,11 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -152,22 +145,19 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "ipConfiguration": {
-      "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
-      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "storageAutoResize": true,
+    "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-2-4096"
   },
@@ -309,14 +299,12 @@ X-Xss-Protection: 0
   "databaseInstalledVersion": "MYSQL_8_4_4",
   "databaseVersion": "MYSQL_8_4",
   "etag": "abcdef0123A=",
-  "gceZone": "us-central1-c",
+  "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": true,
+    "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -329,7 +317,6 @@ X-Xss-Protection: 0
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -343,15 +330,11 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -363,22 +346,19 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "ipConfiguration": {
-      "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
-      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "storageAutoResize": true,
+    "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-2-4096"
   },
@@ -483,14 +463,12 @@ X-Xss-Protection: 0
   "databaseInstalledVersion": "MYSQL_8_4_4",
   "databaseVersion": "MYSQL_8_4",
   "etag": "abcdef0123A=",
-  "gceZone": "us-central1-c",
+  "gceZone": "us-central1-a",
   "geminiConfig": {
-    "activeQueryEnabled": false,
     "entitled": false,
-    "flagRecommenderEnabled": true,
+    "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -503,7 +481,6 @@ X-Xss-Protection: 0
   "name": "mysql-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/mysql-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -517,15 +494,11 @@ X-Xss-Protection: 0
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "ALWAYS",
-    "authorizedGaeApplications": [],
-    "availabilityType": "ZONAL",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -537,22 +510,19 @@ X-Xss-Protection: 0
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "ipConfiguration": {
-      "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
-      "serverCaMode": "GOOGLE_MANAGED_INTERNAL_CA",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
-    "storageAutoResize": true,
+    "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-4-4096"
   },
