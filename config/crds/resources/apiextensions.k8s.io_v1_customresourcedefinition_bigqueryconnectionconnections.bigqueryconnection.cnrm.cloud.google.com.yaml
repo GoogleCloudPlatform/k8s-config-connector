@@ -326,13 +326,31 @@ spec:
                            Example:
 
                            * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Metastore
-                              service , when not managed by Config Connector.
+                            description: A reference to an externally managed MetastoreService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                             type: string
-                        required:
-                        - external
+                          name:
+                            description: The name of a MetastoreService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MetastoreService resource.
+                            type: string
                         type: object
                     type: object
                   sparkHistoryServer:
@@ -822,13 +840,31 @@ spec:
                            Example:
 
                            * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Metastore
-                              service , when not managed by Config Connector.
+                            description: A reference to an externally managed MetastoreService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                             type: string
-                        required:
-                        - external
+                          name:
+                            description: The name of a MetastoreService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MetastoreService resource.
+                            type: string
                         type: object
                     type: object
                   sparkHistoryServer:

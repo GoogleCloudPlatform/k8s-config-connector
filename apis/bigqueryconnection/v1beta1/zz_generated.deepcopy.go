@@ -20,6 +20,7 @@ package v1beta1
 
 import (
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -906,7 +907,7 @@ func (in *MetastoreServiceConfigSpec) DeepCopyInto(out *MetastoreServiceConfigSp
 	*out = *in
 	if in.MetastoreServiceRef != nil {
 		in, out := &in.MetastoreServiceRef, &out.MetastoreServiceRef
-		*out = new(refsv1beta1.MetastoreServiceRef)
+		*out = new(metastorev1alpha1.ServiceRef)
 		**out = **in
 	}
 }
