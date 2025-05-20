@@ -17,6 +17,7 @@ package bigqueryconnection
 import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -206,7 +207,7 @@ func MetastoreServiceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Meta
 		return nil
 	}
 	out := &krm.MetastoreServiceConfigSpec{}
-	out.MetastoreServiceRef = &refs.MetastoreServiceRef{
+	out.MetastoreServiceRef = &metastorev1alpha1.ServiceRef{
 		External: in.MetastoreService,
 	}
 	return out
