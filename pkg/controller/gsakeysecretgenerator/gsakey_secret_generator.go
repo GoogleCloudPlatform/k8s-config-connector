@@ -34,7 +34,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -49,7 +49,7 @@ const controllerName = "gsakeysecretgenerator"
 const createGsaKeySecretAnnotation = "cnrm.cloud.google.com/create-gsa-key-secret"
 const eventMessageTemplate = "secret %v in namespace %v %v"
 
-var logger = klog.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName)
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {

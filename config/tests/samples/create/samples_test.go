@@ -32,7 +32,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 
 	"golang.org/x/sync/semaphore"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
@@ -62,7 +62,7 @@ var (
 	// this manager is only used to get the rest.Config from the test framework
 	unusedManager manager.Manager
 
-	logger = klog.Log
+	logger = log.Log
 )
 
 var testDisabledList = map[string]bool{

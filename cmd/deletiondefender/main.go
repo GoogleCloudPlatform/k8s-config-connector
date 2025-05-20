@@ -35,12 +35,12 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
-var logger = klog.Log.WithName("setup")
+var logger = crlog.Log.WithName("setup")
 
 func main() {
 	stop := signals.SetupSignalHandler()
