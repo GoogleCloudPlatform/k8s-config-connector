@@ -283,6 +283,7 @@ func setDefaultBool(pp **wrapperspb.BoolValue, defaultValue bool) {
 	}
 }
 
+// TODO: Match the data with the latest default values.
 func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 	switch obj.DatabaseVersion {
 	case pb.SqlDatabaseVersion_MYSQL_5_7:
@@ -518,6 +519,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	if obj.GeminiConfig == nil {
 		if isMysql(obj) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
+				ActiveQueryEnabled:     asRef(false),
 				Entitled:               asRef(false),
 				FlagRecommenderEnabled: asRef(false),
 				IndexAdvisorEnabled:    asRef(false),
