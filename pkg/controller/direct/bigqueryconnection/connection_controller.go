@@ -143,12 +143,11 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 		}
 
 		if obj.Spec.SparkSpec.MetastoreService != nil {
-			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
-				service, err := refs.ResolveMetastoreServiceRef(ctx, a.reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
+			if ref := obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef; ref != nil {
+				_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return err
 				}
-				obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef.External = service.String()
 			}
 		}
 	}
