@@ -144,7 +144,7 @@ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWE
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/mattn/go-runewidth v0.0.15 h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZgg3U=
 github.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
-github.com/ollama/ollama v0.5.13 h1:URBx4e6nyAaVhEGXH6AWVqORhebcSQcJ7hLTS0xkAPg=
+github.com/ollama/ollama v0.5.13 h1:QG5e+qDDpTDy+pEps/avWnx79Mv0/57+UNbvr2grjuI=
 github.com/ollama/ollama v0.5.13/go.mod h1:tCNqO/GjOA24FD16QtC8RhI1BNV4SYowhugtIHgFij4=
 github.com/onsi/gomega v1.34.1 h1:EUMJIKUjM8sKjYbtxQI9A4z2o+rruxnzNvpknOXie6k=
 github.com/onsi/gomega v1.34.1/go.mod h1:kU1QgUvBDLXBJq618Xvm2LUX6rSAfRaFRTcdOeDLwwY=
