@@ -129,11 +129,11 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.Namespace, obj.Spec.EncryptionConfig.KMSKeyRef)
+		ref := obj.Spec.EncryptionConfig.KMSKeyRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
-			return fmt.Errorf("resolving kmsKeyRef: %w", err)
+			return err
 		}
-		obj.Spec.EncryptionConfig.KMSKeyRef = kmsKeyRef
 	}
 
 	if obj.Spec.NetworkConfig != nil {

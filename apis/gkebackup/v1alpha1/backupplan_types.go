@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -28,7 +29,7 @@ var GKEBackupBackupPlanGVK = GroupVersion.WithKind("GKEBackupBackupPlan")
 type EncryptionKey struct {
 	// Optional. Google Cloud KMS encryption key.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.EncryptionKey.gcp_kms_encryption_key
-	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.gkebackup.v1.BackupPlan.Schedule

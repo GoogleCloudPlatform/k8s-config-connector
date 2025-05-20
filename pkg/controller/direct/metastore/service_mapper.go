@@ -23,6 +23,8 @@ import (
 	"fmt"
 	"strconv"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -77,7 +79,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 		return nil
 	}
 	out := &krm.EncryptionConfig{}
-	out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.GetKmsKey()}
 	return out
 }
 func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {

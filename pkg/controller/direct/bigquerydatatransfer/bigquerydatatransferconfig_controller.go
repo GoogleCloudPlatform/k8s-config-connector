@@ -128,11 +128,12 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Resolve KMSCryptoKey Ref
 	if obj.Spec.EncryptionConfiguration != nil {
-		kmsCryptoKeyRef, err := refv1beta1.ResolveKMSCryptoKeyRef(ctx, reader, obj.GetNamespace(), obj.Spec.EncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return nil, err
+		if ref := obj.Spec.EncryptionConfiguration.KMSKeyRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
+			if err != nil {
+				return nil, err
+			}
 		}
-		obj.Spec.EncryptionConfiguration.KmsKeyRef = kmsCryptoKeyRef
 	}
 
 	// Resolve ServiceAccount Ref

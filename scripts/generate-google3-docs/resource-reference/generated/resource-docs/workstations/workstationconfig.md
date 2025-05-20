@@ -78,6 +78,9 @@ container:
 displayName: string
 encryptionKey:
   kmsCryptoKeyRef:
+    autoKeyRef:
+      name: string
+      namespace: string
     external: string
     name: string
     namespace: string
@@ -358,12 +361,42 @@ runningTimeout: string
     </tr>
     <tr>
         <td>
+            <p><code>encryptionKey.kmsCryptoKeyRef.autoKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionKey.kmsCryptoKeyRef.autoKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a KMSKeyHandle resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>encryptionKey.kmsCryptoKeyRef.autoKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a KMSKeyHandle resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>encryptionKey.kmsCryptoKeyRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`. For AutoKey, replace {{key_ring_id}} to `autokey`, i.e. `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -133,24 +133,23 @@ func normalizeExternal(ctx context.Context, reader client.Reader, src client.Obj
 	if secret.Spec.Replication != nil {
 		if secret.Spec.Replication.LegacyAutomatic != nil {
 			if secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption != nil {
-				kmsKeyRef := secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef
-
-				kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src.GetNamespace(), kmsKeyRef)
-				if err != nil {
-					return err
+				if ref := secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KMSKeyRef; ref != nil {
+					_, err := ref.NormalizedExternal(ctx, reader, src.GetNamespace())
+					if err != nil {
+						return err
+					}
 				}
-				secret.Spec.Replication.LegacyAutomatic.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
 			}
 		}
 		if secret.Spec.Replication.UserManaged != nil {
 			for _, r := range secret.Spec.Replication.UserManaged.Replicas {
 				if r.CustomerManagedEncryption != nil {
-					kmsKeyRef := r.CustomerManagedEncryption.KmsKeyRef
-					kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, src.GetNamespace(), kmsKeyRef)
-					if err != nil {
-						return err
+					if ref := r.CustomerManagedEncryption.KMSKeyRef; ref != nil {
+						_, err := ref.NormalizedExternal(ctx, reader, src.GetNamespace())
+						if err != nil {
+							return err
+						}
 					}
-					r.CustomerManagedEncryption.KmsKeyRef = kmsKeyRef
 				}
 			}
 		}

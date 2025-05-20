@@ -17,6 +17,7 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -131,7 +132,7 @@ func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environme
 		return nil
 	}
 	out := &krm.Environment_KMSEnvMap{}
-	out.KMSKeyRef = &v1beta1.KMSCryptoKeyRef{
+	out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{
 		External: in.KeyName,
 	}
 	out.CipherText = direct.LazyPtr(in.GetCipherText())

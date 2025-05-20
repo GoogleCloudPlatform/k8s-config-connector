@@ -209,12 +209,11 @@ func (a *googleChannelConfigAdapter) Delete(ctx context.Context, deleteOp *direc
 
 func (a *googleChannelConfigAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.CryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.CryptoKeyRef)
+	if ref := obj.Spec.CryptoKeyRef; ref != nil {
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
 			return err
 		}
-		obj.Spec.CryptoKeyRef = kmsKeyRef
 	}
 	return nil
 }

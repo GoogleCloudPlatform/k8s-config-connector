@@ -30,12 +30,6 @@ import (
 // todo: use unexported variable kmsCryptoKeyRef to avoid referencing to the KMS crypto key.
 
 type KMSCryptoKeyRef struct {
-	// todo: remove External from KMSCryptoKeyRef. We will use KMSKeyRef_OneOf.External instead.
-
-	// A reference to an externally managed KMSCryptoKey.
-	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
-	External string `json:"external,omitempty"`
-
 	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
 
@@ -43,29 +37,10 @@ type KMSCryptoKeyRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// ResolveKMSCryptoKeyRef will resolve a KMSCryptoKeyRef to a KMSCryptoKey.
-func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, otherNamespace string, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
+// NormalizedExternal will resolve a KMSCryptoKeyRef to external.
+func (ref *KMSCryptoKeyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either name or external on KMSCryptoKeyRef")
-	}
-	if ref.Name != "" && ref.External != "" {
-		return nil, fmt.Errorf("cannot specify both name and external on KMSCryptoKeyRef")
-	}
-
-	// External should be in the `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]` format
-	if ref.External != "" {
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
-			ref = &KMSCryptoKeyRef{
-				External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", tokens[1], tokens[3], tokens[5], tokens[7]),
-			}
-			return ref, nil
-		}
-		return nil, fmt.Errorf("format of KMSCryptoKeyRef external=%q was not known (use projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key])", ref.External)
+		return "", nil
 	}
 
 	key := types.NamespacedName{
@@ -85,26 +60,22 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, otherName
 	})
 	if err := reader.Get(ctx, key, kmsKey); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced KMSCryptoKey %v not found", key)
+			return "", fmt.Errorf("referenced KMSCryptoKey %v not found", key)
 		}
-		return nil, fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", key, err)
+		return "", fmt.Errorf("error reading referenced KMSCryptoKey %v: %w", key, err)
 	}
 
 	kmsKeyResourceID, err := GetResourceID(kmsKey)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	kmsRing, err := ResolveKeyRingForObject(ctx, reader, kmsKey)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	ref = &KMSCryptoKeyRef{
-		External: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", kmsRing.ProjectID, kmsRing.Location, kmsRing.ResourceID, kmsKeyResourceID),
-	}
-
-	return ref, nil
+	return fmt.Sprintf("projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s", kmsRing.ProjectID, kmsRing.Location, kmsRing.ResourceID, kmsKeyResourceID), nil
 }
 
 type KMSKeyRingRef struct {

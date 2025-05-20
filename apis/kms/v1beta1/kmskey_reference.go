@@ -61,12 +61,11 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 			return "", fmt.Errorf("must specify either `.name` or `.external`")
 		}
 		// Use KMSCryptoKey
-		// todo: use NormalizedExternal to resolve KMSCryptoKey
-		cryptoKey, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, otherNamespace, r.KMSCryptoKeyRef)
+		cryptoKey, err := r.KMSCryptoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
 			return "", err
 		}
-		r.External = cryptoKey.External
+		r.External = cryptoKey
 	} else {
 		if r.AutoKeyRef.Name == "" {
 			return "", fmt.Errorf("must specify either `.autokeyRef.name` or `.external`")

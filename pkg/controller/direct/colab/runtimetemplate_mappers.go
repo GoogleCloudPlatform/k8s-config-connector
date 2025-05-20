@@ -17,7 +17,7 @@ package colab
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/colab/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -27,7 +27,7 @@ func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) 
 	}
 	out := &krm.EncryptionSpec{}
 	if in.KmsKeyName != "" {
-		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKeyName}
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.KmsKeyName}
 	}
 	return out
 }

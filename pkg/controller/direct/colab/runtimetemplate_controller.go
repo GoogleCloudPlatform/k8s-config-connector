@@ -170,11 +170,11 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 		}
 	}
 	if obj.Spec.EncryptionSpec != nil && obj.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.EncryptionSpec.KMSKeyRef)
+		ref := obj.Spec.EncryptionSpec.KMSKeyRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
 			return err
 		}
-		obj.Spec.EncryptionSpec.KMSKeyRef = kmsKeyRef
 	}
 	return nil
 }

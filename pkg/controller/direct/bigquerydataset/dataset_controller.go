@@ -135,6 +135,15 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log.V(2).Info("creating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
+	// Resolve KMS key reference
+	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
+		ref := a.desired.Spec.DefaultEncryptionConfiguration.KMSKeyRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, a.desired.Namespace)
+		if err != nil {
+			return err
+		}
+	}
+
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
 	desiredDataset.Labels = make(map[string]string)
 	for k, v := range a.desired.GetObjectMeta().GetLabels() {
@@ -142,14 +151,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	desiredDataset.Labels["managed-by-cnrm"] = "true"
 
-	// Resolve KMS key reference
-	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired.Namespace, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-	}
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
 		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
@@ -197,6 +198,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating Dataset", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
+	// Resolve KMS key reference
+	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
+		ref := a.desired.Spec.DefaultEncryptionConfiguration.KMSKeyRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, a.desired.Namespace)
+		if err != nil {
+			return err
+		}
+	}
+
 	// Convert KRM object to proto message
 	desiredKRM := a.desired.DeepCopy()
 	desired := BigQueryDatasetSpec_ToProto(mapCtx, &desiredKRM.Spec)
@@ -232,14 +242,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
 	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
-		// Resolve KMS key reference
-		if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-			kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired.Namespace, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-			if err != nil {
-				return err
-			}
-			desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-		}
 		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}

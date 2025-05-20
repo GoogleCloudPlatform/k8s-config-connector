@@ -200,28 +200,30 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 		return err
 	}
 
-	if obj.Spec.AutomatedBackupPolicy != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
+	if obj.Spec.AutomatedBackupPolicy != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig != nil {
+		if ref := obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
+			if err != nil {
+				return err
+			}
 		}
-		obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef = key
 	}
 
-	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef)
-		if err != nil {
-			return err
+	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig != nil {
+		if ref := obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
+			if err != nil {
+				return err
+			}
 		}
-		obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef = key
 	}
 
 	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.EncryptionConfig.KMSKeyNameRef)
+		ref := obj.Spec.EncryptionConfig.KMSKeyNameRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
 		if err != nil {
 			return err
 		}
-		obj.Spec.EncryptionConfig.KMSKeyNameRef = key
 	}
 
 	if obj.Spec.RestoreBackupSource != nil && obj.Spec.RestoreBackupSource.BackupNameRef != nil {

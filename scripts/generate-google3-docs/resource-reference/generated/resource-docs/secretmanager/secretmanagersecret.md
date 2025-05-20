@@ -110,6 +110,9 @@ replication:
   auto:
     customerManagedEncryption:
       kmsKeyRef:
+        autoKeyRef:
+          name: string
+          namespace: string
         external: string
         name: string
         namespace: string
@@ -118,6 +121,9 @@ replication:
     replicas:
     - customerManagedEncryption:
         kmsKeyRef:
+          autoKeyRef:
+            name: string
+            namespace: string
           external: string
           name: string
           namespace: string
@@ -252,9 +258,37 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
 
  For secrets using the
  [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
- replication policy type, Cloud KMS CryptoKeys must reside in `global`.
-
- The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.{% endverbatim %}</p>
+ replication policy type, Cloud KMS CryptoKeys must reside in `global`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.autoKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.autoKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a KMSKeyHandle resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.auto.customerManagedEncryption.kmsKeyRef.autoKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a KMSKeyHandle resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -264,7 +298,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`. For AutoKey, replace {{key_ring_id}} to `autokey`, i.e. `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -365,9 +399,37 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
 
  For secrets using the
  [Automatic][google.cloud.secretmanager.v1.Replication.Automatic]
- replication policy type, Cloud KMS CryptoKeys must reside in `global`.
-
- The expected format is `projects/*/locations/*/keyRings/*/cryptoKeys/*`.{% endverbatim %}</p>
+ replication policy type, Cloud KMS CryptoKeys must reside in `global`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.userManaged.replicas[].customerManagedEncryption.kmsKeyRef.autoKeyRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.userManaged.replicas[].customerManagedEncryption.kmsKeyRef.autoKeyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of a KMSKeyHandle resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replication.userManaged.replicas[].customerManagedEncryption.kmsKeyRef.autoKeyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The namespace of a KMSKeyHandle resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +439,7 @@ No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`. For AutoKey, replace {{key_ring_id}} to `autokey`, i.e. `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

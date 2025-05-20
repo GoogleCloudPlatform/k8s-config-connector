@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -226,8 +227,8 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.KMSCryptoKeyRef != nil {
 		in, out := &in.KMSCryptoKeyRef, &out.KMSCryptoKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+		*out = new(kmsv1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.CallLogLevel != nil {
 		in, out := &in.CallLogLevel, &out.CallLogLevel

@@ -18,14 +18,12 @@ import (
 	"context"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func ResolveApigeeInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.ApigeeInstance) error {
-	var err error
-	if obj.Spec.DiskEncryptionKMSCryptoKeyRef != nil {
-		obj.Spec.DiskEncryptionKMSCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj.Namespace, obj.Spec.DiskEncryptionKMSCryptoKeyRef)
+	if ref := obj.Spec.DiskEncryptionKMSCryptoKeyRef; ref != nil {
+		_, err := ref.NormalizedExternal(ctx, kube, obj.Namespace)
 		if err != nil {
 			return err
 		}

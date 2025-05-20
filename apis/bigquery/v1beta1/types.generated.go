@@ -14,7 +14,9 @@
 
 package v1beta1
 
-import refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+)
 
 // +kcc:proto=google.cloud.bigquery.v2.Access
 type Access struct {
@@ -114,7 +116,7 @@ type EncryptionConfiguration struct {
 	// Optional. Describes the Cloud KMS encryption key that will be used to
 	//  protect destination BigQuery table. The BigQuery Service Account associated
 	//  with your project requires access to this encryption key.
-	KmsKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"kmsKeyRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.bigquery.v2.ExternalCatalogDatasetOptions

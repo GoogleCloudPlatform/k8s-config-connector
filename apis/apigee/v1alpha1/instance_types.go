@@ -16,7 +16,7 @@ package v1alpha1
 
 import (
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -59,7 +59,7 @@ type ApigeeInstanceSpec struct {
 
 	// Customer Managed Encryption Key (CMEK) used for disk and volume encryption. If not specified, a Google-Managed encryption key will be used.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance.disk_encryption_key_name
-	DiskEncryptionKMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"diskEncryptionKMSCryptoKeyRef,omitempty"`
+	DiskEncryptionKMSCryptoKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"diskEncryptionKMSCryptoKeyRef,omitempty"`
 
 	// Optional. Display name for the instance.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Instance.display_name

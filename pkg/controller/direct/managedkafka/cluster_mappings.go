@@ -16,6 +16,7 @@ package managedkafka
 
 import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -28,7 +29,7 @@ func GcpConfig_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpCo
 	out := &krm.GcpConfig{}
 	out.AccessConfig = AccessConfig_FromProto(mapCtx, in.GetAccessConfig())
 	if in.GetKmsKey() != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.GetKmsKey()}
 	}
 	return out
 }
@@ -38,8 +39,8 @@ func GcpConfig_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConf
 	}
 	out := &pb.GcpConfig{}
 	out.AccessConfig = AccessConfig_ToProto(mapCtx, in.AccessConfig)
-	if in.KmsKeyRef != nil {
-		out.KmsKey = in.KmsKeyRef.External
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
 	}
 	return out
 }

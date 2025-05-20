@@ -22,7 +22,7 @@ package eventarc
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -33,7 +33,7 @@ func EventarcGoogleChannelConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krmv1alpha1.EventarcGoogleChannelConfigSpec{}
 	// MISSING: Name
 	if in.GetCryptoKeyName() != "" {
-		out.CryptoKeyRef = &refs.KMSCryptoKeyRef{
+		out.CryptoKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{
 			External: in.GetCryptoKeyName(),
 		}
 	}

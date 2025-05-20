@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 
@@ -400,7 +401,7 @@ type Runnable_Container struct {
 type Environment_KMSEnvMap struct {
 	// The name of the KMS key that will be used to decrypt the cipher text.
 	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.key_name
-	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"kmsKeyRef,omitempty"`
 
 	// The value of the cipherText response from the `encrypt` method.
 	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.cipher_text

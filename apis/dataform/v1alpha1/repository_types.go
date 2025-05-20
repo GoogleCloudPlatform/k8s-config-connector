@@ -111,7 +111,7 @@ type DataformRepositorySpec struct {
 	// // The reference to a KMS encryption key. If provided, it will be used to encrypt user data in the repository and all child resources.
 	// // It is not possible to add or update the encryption key after the repository is created.
 	// // +optional
-	// KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	// KMSKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"kmsKeyRef,omitempty"`
 
 	// Optional. The service account reference to run workflow invocations under.
 	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`

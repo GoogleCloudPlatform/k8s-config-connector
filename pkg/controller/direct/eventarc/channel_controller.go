@@ -283,12 +283,11 @@ func (a *channelAdapter) normalizeReferenceFields(ctx context.Context) error {
 		}
 		obj.Spec.ProviderRef.External = providerRef
 	}
-	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.KmsKeyRef)
+	if obj.Spec.KMSKeyRef != nil {
+		_, err := obj.Spec.KMSKeyRef.NormalizedExternal(ctx, a.reader, obj.Namespace)
 		if err != nil {
 			return err
 		}
-		obj.Spec.KmsKeyRef = kmsKeyRef
 	}
 	return nil
 }

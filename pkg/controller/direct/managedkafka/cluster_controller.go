@@ -286,13 +286,13 @@ func (a *ClusterAdapter) normalizeReference(ctx context.Context) error {
 		}
 	}
 
-	// Normalize the kmsKeyRef in the gcpConfig
-	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KmsKeyRef != nil {
-		kmsKey, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.Namespace, obj.Spec.GcpConfig.KmsKeyRef)
+	// Normalize the KMSKeyRef in the gcpConfig
+	if obj.Spec.GcpConfig != nil && obj.Spec.GcpConfig.KMSKeyRef != nil {
+		ref := obj.Spec.GcpConfig.KMSKeyRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
 		if err != nil {
 			return err
 		}
-		obj.Spec.GcpConfig.KmsKeyRef = kmsKey
 	}
 
 	return nil
