@@ -249,8 +249,8 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	}
 
 	// todo acpana house in KCC mgr flag
-	v := os.Getenv("KCC_RECONCILE_FG")
-	if v == "USE_DT" {
+	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
+	if v == "USE_DEPENDENCY_TRACKER" {
 		cds.DependencyTracker = r.dependencyTracker
 	}
 

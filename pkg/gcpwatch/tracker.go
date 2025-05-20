@@ -28,10 +28,10 @@ import (
 type DependencyTracker struct {
 	fetcher Fetcher
 
-	mutex        sync.Mutex
 	gcpResources map[gcpResouceKey]*dependenciesByResource
 
-	controllers map[string]*ControllerRegistration
+	controllersMutex sync.Mutex
+	controllers      map[string]*ControllerRegistration
 }
 
 type ControllerRegistration struct {
@@ -41,8 +41,8 @@ type ControllerRegistration struct {
 }
 
 func (t *DependencyTracker) RegisterController(key string, queue chan event.GenericEvent) *ControllerRegistration {
-	t.mutex.Lock()
-	defer t.mutex.Unlock()
+	t.controllersMutex.Lock()
+	defer t.controllersMutex.Unlock()
 
 	if _, exists := t.controllers[key]; exists {
 		klog.Fatalf("multiple controllers with key %q", key)
@@ -65,9 +65,10 @@ type gcpResouceKey struct {
 }
 
 type dependenciesByResource struct {
-	mutex        sync.Mutex
-	etag         string
-	dependencies []dependency
+	etag string
+
+	dependenciesMutex sync.Mutex
+	dependencies      []dependency
 }
 
 type dependency struct {
@@ -117,21 +118,31 @@ func (t *DependencyTracker) PollForever(ctx context.Context, initialDelay time.D
 	}
 }
 
-func (t *DependencyTracker) pollOnce(ctx context.Context) error {
-	log := klog.FromContext(ctx)
+func (t *DependencyTracker) copyKeysUnderLock() []gcpResouceKey {
+	t.controllersMutex.Lock()
+	defer t.controllersMutex.Unlock()
 
-	var keys []gcpResouceKey
-	t.mutex.Lock()
+	keys := make([]gcpResouceKey, 0, len(t.gcpResources))
 	for key := range t.gcpResources {
 		keys = append(keys, key)
 	}
-	t.mutex.Unlock()
+	return keys
+}
+
+func (t *DependencyTracker) getGCPResourcesUnderLock(key gcpResouceKey) *dependenciesByResource {
+	t.controllersMutex.Lock()
+	defer t.controllersMutex.Unlock()
+
+	return t.gcpResources[key]
+}
+
+func (t *DependencyTracker) pollOnce(ctx context.Context) error {
+	log := klog.FromContext(ctx)
+
+	keys := t.copyKeysUnderLock()
 
 	for _, key := range keys {
-		t.mutex.Lock()
-		gcpResource := t.gcpResources[key]
-		t.mutex.Unlock()
-
+		gcpResource := t.getGCPResourcesUnderLock(key)
 		if gcpResource == nil {
 			continue
 		}
@@ -143,35 +154,41 @@ func (t *DependencyTracker) pollOnce(ctx context.Context) error {
 			continue
 		}
 
-		gcpResource.mutex.Lock()
-		log.Info("got iam etag", "newEtag", latest.Etag, "kind", key.Kind, "external", key.External, "oldEtag", gcpResource.etag)
-		if latest.Etag != gcpResource.etag {
-			gcpResource.etag = latest.Etag
-
-			for _, dep := range gcpResource.dependencies {
-				log.Info("triggering notification", "controller", dep.controller.controllerKey, "namespace", dep.namespace, "name", dep.name)
-				genEvent := event.GenericEvent{}
-				genEvent.Object = &unstructured.Unstructured{}
-				genEvent.Object.SetNamespace(dep.namespace)
-				genEvent.Object.SetName(dep.name)
-				dep.controller.queue <- genEvent
-			}
-		}
-		gcpResource.mutex.Unlock()
+		maybeNotifyDependenciesUnderLock(ctx, gcpResource, key, latest)
 	}
 
 	return nil
 }
 
+func maybeNotifyDependenciesUnderLock(ctx context.Context, gcpResource *dependenciesByResource, key gcpResouceKey, latest *ResourceInfo) {
+	log := klog.FromContext(ctx)
+
+	gcpResource.dependenciesMutex.Lock()
+	defer gcpResource.dependenciesMutex.Unlock()
+
+	log.Info("got iam etag", "newEtag", latest.Etag, "kind", key.Kind, "external", key.External, "oldEtag", gcpResource.etag)
+	if latest.Etag != gcpResource.etag {
+		gcpResource.etag = latest.Etag
+
+		for _, dep := range gcpResource.dependencies {
+			log.Info("triggering notification", "controller", dep.controller.controllerKey, "namespace", dep.namespace, "name", dep.name)
+			genEvent := event.GenericEvent{}
+			genEvent.Object = &unstructured.Unstructured{}
+			genEvent.Object.SetNamespace(dep.namespace)
+			genEvent.Object.SetName(dep.name)
+			dep.controller.queue <- genEvent
+		}
+	}
+}
+
 // todo acpana expose reason why not added?
 func (r *ControllerRegistration) Add(ctx context.Context, policy *v1beta1.IAMPartialPolicy, etag string) bool {
 	log := klog.FromContext(ctx)
-
-	if etag == "" {
+	if r == nil {
 		return false
 	}
 
-	if r == nil {
+	if etag == "" {
 		return false
 	}
 
@@ -194,15 +211,15 @@ func (r *ControllerRegistration) Add(ctx context.Context, policy *v1beta1.IAMPar
 
 	log.Info("adding watch on policy", "policy", policy, "kind", kind, "external", external)
 
-	t.add(kind, external, r, policy.GetNamespace(), policy.GetName(), etag)
+	t.addUnderLock(kind, external, r, policy.GetNamespace(), policy.GetName(), etag)
 	return true
 }
 
-func (t *DependencyTracker) add(kind string, external string, controller *ControllerRegistration, namespace string, name string, etag string) {
+func (t *DependencyTracker) addUnderLock(kind string, external string, controller *ControllerRegistration, namespace string, name string, etag string) {
 	target := t.getTarget(kind, external)
 
-	target.mutex.Lock()
-	defer target.mutex.Unlock()
+	target.dependenciesMutex.Lock()
+	defer target.dependenciesMutex.Unlock()
 
 	if target.etag == "" {
 		target.etag = etag
@@ -223,8 +240,8 @@ func (t *DependencyTracker) add(kind string, external string, controller *Contro
 }
 
 func (t *DependencyTracker) getTarget(kind string, external string) *dependenciesByResource {
-	t.mutex.Lock()
-	defer t.mutex.Unlock()
+	t.controllersMutex.Lock()
+	defer t.controllersMutex.Unlock()
 
 	key := gcpResouceKey{
 		Kind:     kind,
