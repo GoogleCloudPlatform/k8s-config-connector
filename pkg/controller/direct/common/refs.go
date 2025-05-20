@@ -22,10 +22,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -95,73 +91,6 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 	return ref, nil
 }
 
-func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project refs.Project, ref *refs.MonitoringAlertPolicyRef) (*refs.MonitoringAlertPolicyRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-	if ref.Name != "" && ref.External != "" {
-		return nil, fmt.Errorf("cannot specify both name and external on reference")
-	}
-
-	if ref.External != "" {
-		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-			ref = &refs.MonitoringAlertPolicyRef{
-				External: fmt.Sprintf("projects/%s/alertPolicies/%s", project.ProjectID, tokens[1]),
-			}
-			return ref, nil
-		}
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "alertPolicies" {
-			ref = &refs.MonitoringAlertPolicyRef{
-				External: fmt.Sprintf("projects/%s/alertPolicies/%s", tokens[1], tokens[3]),
-			}
-			return ref, nil
-		}
-		return nil, fmt.Errorf("format of alertPolicyRef external=%q was not known (use projects/<projectId>/alertPolicies/<alertPolicyId> or alertPolicies/<alertPolicyId>)", ref.External)
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	alertPolicy := &unstructured.Unstructured{}
-	alertPolicy.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "monitoring.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "MonitoringAlertPolicy",
-	})
-	if err := reader.Get(ctx, key, alertPolicy); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced MonitoringAlertPolicy %v not found", key)
-		}
-		return nil, fmt.Errorf("error reading referenced MonitoringAlertPolicy %v: %w", key, err)
-	}
-
-	alertPolicyResourceID, err := refs.GetResourceID(alertPolicy)
-	if err != nil {
-		return nil, err
-	}
-
-	alertPolicyProjectID, err := refs.ResolveProjectID(ctx, reader, alertPolicy)
-	if err != nil {
-		return nil, err
-	}
-
-	ref = &refs.MonitoringAlertPolicyRef{
-		External: fmt.Sprintf("projects/%s/alertPolicies/%s", alertPolicyProjectID, alertPolicyResourceID),
-	}
-
-	return ref, nil
-}
-
 func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ProjectRef) (*refs.ProjectRef, error) {
 	if ref == nil {
 		return nil, nil
@@ -198,10 +127,9 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		if r.project == nil {
 			return fmt.Errorf("must specify project for alertChart references")
 		}
-		if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, *r.project, alertChart.AlertPolicyRef); err != nil {
+		_, err := alertChart.AlertPolicyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
 			return err
-		} else {
-			alertChart.AlertPolicyRef = ref
 		}
 	}
 
@@ -211,15 +139,16 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 				return fmt.Errorf("must specify project for policyRef references")
 			}
 
-			if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, *r.project, &policyRef); err != nil {
+			external, err := policyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+			if err != nil {
 				return err
 			} else {
 				prefix := fmt.Sprintf("projects/%s/", r.project.ProjectID)
-				if !strings.HasPrefix(ref.External, prefix) {
-					return fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", ref.External)
+				if !strings.HasPrefix(external, prefix) {
+					return fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", external)
 				}
-				ref.External = strings.TrimPrefix(ref.External, prefix)
-				alertChart.PolicyRefs[i] = *ref
+				external = strings.TrimPrefix(external, prefix)
+				alertChart.PolicyRefs[i].External = external
 			}
 		}
 	}
