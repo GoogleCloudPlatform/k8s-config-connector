@@ -47,6 +47,7 @@ to disable the secret creation if needed.
 */
 const controllerName = "gsakeysecretgenerator"
 const createGsaKeySecretAnnotation = "cnrm.cloud.google.com/create-gsa-key-secret"
+const gsaKeySecretDataKeyAnnotation = "cnrm.cloud.google.com/gsa-key-secret-data-key"
 const eventMessageTemplate = "secret %v in namespace %v %v"
 
 var logger = klog.Log.WithName(controllerName)
@@ -134,6 +135,10 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error decoding the private key: %w", err)
 	}
+	secretDataKey := "key.json"
+	if val, ok := k8s.GetAnnotation(gsaKeySecretDataKeyAnnotation, u); ok {
+		secretDataKey = val
+	}
 	secret := &corev1.Secret{
 		Type: corev1.SecretTypeOpaque,
 		ObjectMeta: metav1.ObjectMeta{
@@ -150,7 +155,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 			}},
 		},
 		Data: map[string][]byte{
-			"key.json": b,
+			secretDataKey: b,
 		},
 	}
 
