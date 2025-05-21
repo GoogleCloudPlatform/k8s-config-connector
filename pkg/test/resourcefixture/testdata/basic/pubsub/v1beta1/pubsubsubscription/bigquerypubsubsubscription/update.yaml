@@ -24,5 +24,8 @@ spec:
   bigqueryConfig:
     tableRef:
       name: bigquerytable-2-${uniqueId}
+    useTopicSchema: false
+    writeMetadata: false
+    dropUnknownFields: false
   topicRef:
     name: pubsubtopic-${uniqueId}

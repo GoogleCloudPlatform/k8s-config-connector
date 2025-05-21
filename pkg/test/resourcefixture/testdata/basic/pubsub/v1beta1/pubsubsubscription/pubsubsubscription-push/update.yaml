@@ -40,10 +40,9 @@ spec:
       x-goog-version: v1beta2
       new-attr: "new-val"
     oidcToken:
-      serviceAccountEmail: updated-sa-${uniqueId}@test-project-${uniqueId}.iam.gserviceaccount.com
+      serviceAccountEmail: gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
       audience: https://updated.example.com/push-audience
     noWrapper:
       writeMetadata: false # Changed from true
   # bigqueryConfig has been removed to comply with the one-of constraint.
   # cloudStorageConfig has been removed to comply with the one-of constraint.
-  enableExactlyOnceDelivery: false

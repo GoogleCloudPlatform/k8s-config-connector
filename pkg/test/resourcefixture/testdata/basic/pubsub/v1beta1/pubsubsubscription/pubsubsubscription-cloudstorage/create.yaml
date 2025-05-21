@@ -32,28 +32,12 @@ spec:
     deadLetterTopicRef:
       name: pubsubtopic-${uniqueId}
     maxDeliveryAttempts: 100
-  pushConfig:
-    pushEndpoint: https://example.com/push
-    attributes:
-      x-goog-version: v1
-    oidcToken:
-      serviceAccountEmail: test-sa-${uniqueId}@test-project-${uniqueId}.iam.gserviceaccount.com
-      audience: https://example.com/push
-    noWrapper:
-      writeMetadata: true
-  bigqueryConfig:
-    tableRef:
-      name: bigquerytable-${uniqueId}
-    useTopicSchema: true
-    writeMetadata: true
-    dropUnknownFields: true
   cloudStorageConfig:
     bucketRef:
-      name: storagebucket-${uniqueId}
+      name: storagebucket-1-${uniqueId}
     filenamePrefix: test-prefix
     filenameSuffix: test-suffix
     maxBytes: 10240
     maxDuration: "600s"
     avroConfig:
       writeMetadata: true
-  enableExactlyOnceDelivery: true
