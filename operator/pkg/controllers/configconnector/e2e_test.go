@@ -34,7 +34,7 @@ func TestConfigConnectorE2E(t *testing.T) {
 	opt := &ReconcilerOptions{
 		RepoPath: "../../../channels",
 	}
-	if err := Add(mgr, opt); err != nil {
+	if _, err := Add(mgr, opt); err != nil {
 		t.Fatalf("error from Add: %v", err)
 	}
 

@@ -4,6 +4,7 @@ toolchain go1.24.2
 
 use (
 	.
+	../kubebuilder-declarative-pattern
 	./dev/tools/controllerbuilder
 	./experiments/kompanion
 	./experiments/kubectl-plan

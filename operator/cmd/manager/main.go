@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -111,7 +112,7 @@ func main() {
 		RepoPath:       repoPath,
 		ImageTransform: imageTransform,
 	}
-	if err := configconnector.Add(mgr, ccOptions); err != nil {
+	if _, err := configconnector.Add(mgr, ccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
 		os.Exit(1)
 	}
