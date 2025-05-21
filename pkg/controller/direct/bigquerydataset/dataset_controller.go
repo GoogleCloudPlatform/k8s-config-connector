@@ -204,6 +204,15 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return mapCtx.Err()
 	}
 
+	// Resolve KMS key reference
+	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
+		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		if err != nil {
+			return err
+		}
+		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
+	}
+
 	resource := cloneBigQueryDatasetMetadate(a.actual)
 	// Check for immutable fields
 	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
@@ -232,14 +241,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "default_collation")
 	}
 	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
-		// Resolve KMS key reference
-		if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-			kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
-			if err != nil {
-				return err
-			}
-			desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
-		}
 		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
 		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
 	}
