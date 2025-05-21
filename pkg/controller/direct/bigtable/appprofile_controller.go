@@ -201,15 +201,7 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 	// }
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.Name = direct.LazyPtr(a.id.String())
-	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
-		return err
-	}
-
-	// Write resourceID into spec.
-	if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, a.id.ID(), "spec", "resourceID"); err != nil {
-		return fmt.Errorf("error setting spec.resourceID: %w", err)
-	}
-	return nil
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
