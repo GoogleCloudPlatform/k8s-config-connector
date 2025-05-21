@@ -360,55 +360,11 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				Name:         asRef("MYSQL_8_0_37"),
 			},
 		}
+
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		obj.DatabaseInstalledVersion = "MYSQL_8_0_31"
-		obj.MaintenanceVersion = "MYSQL_8_0_31.R20240527.01_00"
+		obj.DatabaseInstalledVersion = "MYSQL_8_0_40"
+		obj.MaintenanceVersion = "MYSQL_8_0_40.R20250304.00_03"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
-			{
-				DisplayName:  asRef("MySQL 8.0.18"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_18"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.26"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_26"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.27"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_27"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.28"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_28"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.29"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_29"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.30"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_30"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.32"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_32"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.33"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_33"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.34"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_34"),
-			},
 			{
 				DisplayName:  asRef("MySQL 8.0.35"),
 				MajorVersion: asRef("MYSQL_8_0"),
@@ -424,10 +380,37 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				MajorVersion: asRef("MYSQL_8_0"),
 				Name:         asRef("MYSQL_8_0_37"),
 			},
+			{
+				DisplayName:  asRef("MySQL 8.0.39"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_39"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.41"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_41"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.42"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_42"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.4"),
+				MajorVersion: asRef("MYSQL_8_4"),
+				Name:         asRef("MYSQL_8_4"),
+			},
 		}
+
+	case pb.SqlDatabaseVersion_MYSQL_8_4:
+		obj.DatabaseInstalledVersion = "MYSQL_8_4_4"
+		obj.MaintenanceVersion = "MYSQL_8_4_4.R20250304.00_03"
+		obj.UpgradableDatabaseVersions = nil
+
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
 		obj.MaintenanceVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02"
+
 	case pb.SqlDatabaseVersion_SQLSERVER_2019_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2019_EXPRESS_CU26"
 		obj.MaintenanceVersion = "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05"
