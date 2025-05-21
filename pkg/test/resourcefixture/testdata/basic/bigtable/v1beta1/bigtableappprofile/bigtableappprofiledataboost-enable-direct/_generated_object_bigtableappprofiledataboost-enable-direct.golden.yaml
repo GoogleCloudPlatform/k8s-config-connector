@@ -9,7 +9,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: bigtableappprofile-${uniqueId}
@@ -20,7 +20,6 @@ spec:
   description: Initial description.
   instanceRef:
     name: profiledep${uniqueId}
-  resourceID: bigtableappprofile-${uniqueId}
   singleClusterRouting:
     allowTransactionalWrites: false
     clusterId: cluster1-${uniqueId}
@@ -33,4 +32,4 @@ status:
     type: Ready
   externalRef: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
   name: projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}
-  observedGeneration: 3
+  observedGeneration: 2
