@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: DataCatalogTaxonomy
+    listKind: DataCatalogTaxonomyList
     plural: datacatalogtaxonomies
     shortNames:
     - gcpdatacatalogtaxonomy
@@ -43,40 +44,40 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: DataCatalogTaxonomy is the Schema for the datacatalog API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
             properties:
               activatedPolicyTypes:
-                description: |-
-                  A list of policy types that are activated for this taxonomy. If not set,
-                  defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"].
+                description: 'A list of policy types that are activated for this taxonomy.
+                  If not set, defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED",
+                  "FINE_GRAINED_ACCESS_CONTROL"].'
                 items:
                   type: string
                 type: array
               description:
-                description: |-
-                  Description of this taxonomy. It must: contain only unicode characters,
-                  tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
-                  long when encoded in UTF-8. If not set, defaults to an empty description.
+                description: 'Description of this taxonomy. It must: contain only
+                  unicode characters, tabs, newlines, carriage returns and page breaks;
+                  and be at most 2000 bytes long when encoded in UTF-8. If not set,
+                  defaults to an empty description.'
                 type: string
               displayName:
-                description: |-
-                  User defined name of this taxonomy.
-                  It must: contain only unicode letters, numbers, underscores, dashes
-                  and spaces; not start or end with spaces; and be at most 200 bytes
-                  long when encoded in UTF-8.
+                description: 'User defined name of this taxonomy. It must: contain
+                  only unicode letters, numbers, underscores, dashes and spaces; not
+                  start or end with spaces; and be at most 200 bytes long when encoded
+                  in UTF-8.'
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -96,13 +97,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               region:
@@ -120,8 +126,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the DataCatalogTaxonomy's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -145,10 +151,12 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the DataCatalogTaxonomy resource
+                  in GCP.
+                type: string
               name:
-                description: |-
-                  Resource name of this taxonomy, whose format is:
-                  "projects/{project}/locations/{region}/taxonomies/{taxonomy}".
+                description: 'Resource name of this taxonomy, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}".'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -156,6 +164,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -165,9 +174,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
