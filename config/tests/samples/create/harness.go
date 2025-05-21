@@ -197,6 +197,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.KubeTarget == "" {
 		h.KubeTarget = os.Getenv("E2E_KUBE_TARGET")
 	}
+
+	fmt.Printf("KUBETARGET...... %w", h.KubeTarget)
 	if h.KubeTarget == "envtest" {
 		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
 		if err != nil {
@@ -347,6 +349,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.Events = eventSink
 	}
 
+	fmt.Printf("HEY BROO>..... I'm HERE...... %w", h.client)
+
 	if h.client == nil {
 		client, err := client.New(h.restConfig, client.Options{})
 		if err != nil {
@@ -357,6 +361,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 	logging.SetupLogger()
 
+	fmt.Printf("HEY BROO>..... I'm HERE...... %w", loadCRDs)
 	if loadCRDs {
 		crds, err := crdloader.LoadAllCRDs()
 		if err != nil {
@@ -375,6 +380,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 						continue
 					}
 				}
+				fmt.Printf("LOADING>........... %s", crd.GetName())
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
 
@@ -399,6 +405,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.GCPTarget == "" {
 		h.GCPTarget = GCPTargetMode(os.Getenv("E2E_GCP_TARGET"))
 	}
+
 	if h.GCPTarget == GCPTargetModeMock {
 		t.Logf("creating mock gcp")
 
@@ -422,6 +429,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 
 		h.registeredServices = mockCloud.(mockgcpregistry.Normalizer)
+
 	} else if h.GCPTarget == GCPTargetModeReal {
 		t.Logf("targeting real GCP")
 
@@ -586,6 +594,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	} else {
 		// Intercept (and log) GRPC requests
 		grpcUnaryInterceptor := func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+			fmt.Printf("METHOD VROOOOOOOOOO %w", method)
 			entry := &test.LogEntry{}
 
 			entry.Request.URL = method
@@ -1036,9 +1045,12 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstanceConfig"}:
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
+			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucketAccessControl"}:
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageNotification"}:
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageManagedFolder"}:
+			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageAnywhereCache"}:
+			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageFolder"}:
 
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:

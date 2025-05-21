@@ -15,6 +15,7 @@
 package mockstorage
 
 import (
+	// "fmt"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -22,8 +23,10 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// Bucket
+	// fmt.Printf("VRX CONFIG PATH... VRO %w", url)
 	replacements.ReplacePath(".softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-	replacements.ReplacePath(".timeCreated", "2024-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".timeCreated", "2025-04-01T12:34:56.123456Z")
+	replacements.ReplacePath(".generation", "786786")
 	replacements.ReplacePath(".updated", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".items[].timeCreated", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".items[].updated", "2024-04-01T12:34:56.123456Z")
@@ -36,4 +39,18 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// No-op for now
+	// fmt.Printf("\n\nIn BUCKET Previsit %w\n\n", event)
+	// fmt.Printf("\n\nevent URL %s\n\n", event.URL())
+	// fmt.Printf("\n\nevent method %s\n\n", event.Method())
+	// event.VisitResponseStringValues(func(path string, value string) {
+	// 	fmt.Printf("event path: %s\n", path)
+	// 	fmt.Printf("event value: %s\n\n", value)
+	// })
+	// fmt.Printf("\n\n----------------------------------\n\n")
+	// event.VisitRequestStringValues(func(path string, value string) {
+	// 	fmt.Printf("event path: %s\n", path)
+	// 	fmt.Printf("event value: %s\n\n", value)
+	// })
+	// fmt.Printf("\n\n----------------------------------\n\n")
 }

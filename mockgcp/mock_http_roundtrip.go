@@ -105,6 +105,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspeech"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstoragecontrol"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
@@ -232,6 +233,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 
 	for _, service := range services {
 		service.Register(server)
+		fmt.Printf("Service Registered... %w \n", service) // Check this printout
 	}
 
 	mockRoundTripper.server = server
@@ -269,6 +271,21 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
+
+	fmt.Printf("--- Registered Services on Mock gRPC Server --- \n")
+	if server != nil {
+		for serviceName, info := range server.GetServiceInfo() {
+			fmt.Printf("  Service: %s\n", serviceName)
+			for _, method := range info.Methods {
+				fmt.Printf("    Method: %s\n", method.Name)
+			}
+			fmt.Printf("---------------------------------------------\n\n")
+		}
+	} else {
+		fmt.Printf("  Mock gRPC server is nil or not started yet.\n")
+	}
+	fmt.Printf("---------------------------------------------\n\n")
+
 
 	return mockRoundTripper, nil
 }

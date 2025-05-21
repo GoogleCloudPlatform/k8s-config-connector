@@ -1,0 +1,3 @@
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 10000s -v ./tests/e2e -run TestAllInSeries/fixtures/storageanywherecache
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 10000s -v ./tests/e2e -run TestAllInSeries/fixtures/storageanywherecache
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_OBJECT_CHECKS=1 GOLDEN_REQUEST_CHECKS=1 go test -test.count=1 -timeout 10000s -v ./tests/e2e -run TestAllInSeries/fixtures/storageanywherecache

@@ -69,6 +69,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -108,7 +109,7 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
     "enabled": false
@@ -129,6 +130,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -168,7 +170,7 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
     "enabled": false
@@ -273,6 +275,7 @@ Vary: X-Origin
     }
   ],
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -303,7 +306,7 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
     "enabled": true
@@ -324,6 +327,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -351,7 +355,7 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z",
   "versioning": {
     "enabled": true
@@ -371,11 +375,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---

@@ -1,6 +1,5 @@
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -28,8 +27,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -59,6 +57,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -87,15 +86,14 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -106,6 +104,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -134,101 +133,7 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-sample-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
-  "updated": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "etag": "abcdef0123A=",
-  "iamConfiguration": {
-    "bucketPolicyOnly": {
-      "enabled": false
-    },
-    "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {
-      "enabled": false
-    }
-  },
-  "id": "000000000000000000000",
-  "kind": "storage#bucket",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "locationType": "multi-region",
-  "metageneration": "1",
-  "name": "storagebucket-sample-${uniqueId}",
-  "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}",
-  "softDeletePolicy": {
-    "effectiveTime": "2024-04-01T12:34:56.123456Z",
-    "retentionDurationSeconds": "604800"
-  },
-  "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -236,7 +141,7 @@ Vary: X-Origin
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -264,7 +169,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -294,30 +199,7 @@ Vary: X-Origin
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "bucket": "storagebucket-sample-${uniqueId}",
-  "entity": "allAuthenticatedUsers",
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "storage#bucketAccessControl",
-  "role": "READER",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers"
-}
-
----
-
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -340,7 +222,7 @@ Vary: X-Origin
 
 PUT https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucket": "storagebucket-sample-${uniqueId}",
@@ -370,7 +252,7 @@ Vary: X-Origin
 
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -391,9 +273,23 @@ Vary: X-Origin
 
 ---
 
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+
+---
+
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -404,6 +300,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "786786",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -422,7 +319,7 @@ Vary: X-Origin
   },
   "location": "US",
   "locationType": "multi-region",
-  "metageneration": "3",
+  "metageneration": "4",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
@@ -432,38 +329,14 @@ Vary: X-Origin
     "retentionDurationSeconds": "604800"
   },
   "storageClass": "STANDARD",
-  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "timeCreated": "2025-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "bucket": "storagebucket-sample-${uniqueId}",
-  "entity": "allAuthenticatedUsers",
-  "etag": "abcdef0123A=",
-  "id": "000000000000000000000",
-  "kind": "storage#bucketAccessControl",
-  "role": "WRITER",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers"
-}
-
----
-
 GET https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -479,8 +352,7 @@ Vary: X-Origin
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json
@@ -489,32 +361,3 @@ Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
-
-
----
-
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}/acl/allAuthenticatedUsers?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The specified bucket does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "The specified bucket does not exist."
-  }
-}

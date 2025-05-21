@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockstorage
+package mockstoragecontrol
 
 import (
 	"context"
@@ -25,7 +25,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	
+	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
+	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/control/v2"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -39,6 +43,11 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+}
+
+type StorageControlService struct {
+	*MockService
+	pb.UnimplementedStorageControlServer
 }
 
 // New creates a MockService.
@@ -56,20 +65,13 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
-	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
-	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
-	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
-	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
+	pb.RegisterStorageControlServer(grpcServer, &StorageControlService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterBucketsServerHandler,
-		pb.RegisterObjectsServerHandler,
-		pb.RegisterNotificationsServerHandler,
-		pb.RegisterFoldersServerHandler,
-		pb.RegisterManagedFoldersServerHandler,
+		// grpcpb.RegisterStorageControlHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err

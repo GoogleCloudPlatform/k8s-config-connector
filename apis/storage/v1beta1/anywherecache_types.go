@@ -41,16 +41,21 @@ type StorageAnywhereCacheSpec struct {
 	// Please note that changes to the `desiredState` are prioritized over any other updates.
 	// For instance, if both the `desiredState` and `ttl` are updated simultaneously, the state would be
 	// updated first, followed by `ttl`.
+	// +kubebuilder:default=running
+	// +kubebuilder:validation:Enum=running;paused;disabled
 	DesiredState *string `json:"desiredState,omitempty"`
 
 	// Cache entry TTL (ranges between 1h to 7d). This is a cache-level config
 	//  that defines how long a cache entry can live. Defaults to 86400s
 	//  TTL must be in whole seconds.
+	// +kubebuilder:default="86400s"
 	Ttl *string `json:"ttl,omitempty"`
 
 	// Cache admission policy. Valid policies includes:
 	//  `admit-on-first-miss` and `admit-on-second-miss`. Defaults to
 	//  `admit-on-first-miss`.
+	// +kubebuilder:default=admit-on-first-miss
+	// +kubebuilder:validation:Enum=admit-on-first-miss;admit-on-second-miss
 	AdmissionPolicy *string `json:"admissionPolicy,omitempty"`
 }
 

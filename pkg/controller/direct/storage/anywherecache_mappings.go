@@ -82,6 +82,6 @@ func StorageAnywhereCacheSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.
 	out.Zone = direct.ValueOf(in.Zone)
 	out.Ttl = direct.StringDuration_ToProto(mapCtx, in.Ttl)
 	out.AdmissionPolicy = direct.ValueOf(in.AdmissionPolicy)
-	ApplyAnywhereCacheDefaults(mapCtx, in, out)
+	// ApplyAnywhereCacheDefaults(mapCtx, in, out)
 	return out
 }

@@ -78,3 +78,49 @@ go run . --file ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/v1/service.proto 
     };
   };
 EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/storage/control/v2/storage_control.proto --service StorageControl --mode "replace" <<EOF
+  
+  option (google.api.default_host) = "storage.googleapis.com";
+  option (google.api.oauth_scopes) =
+      "https://www.googleapis.com/auth/cloud-platform,"
+      "https://www.googleapis.com/auth/cloud-platform.read-only,"
+      "https://www.googleapis.com/auth/devstorage.full_control,"
+      "https://www.googleapis.com/auth/devstorage.read_only,"
+      "https://www.googleapis.com/auth/devstorage.read_write";
+
+  
+  // Creates an Anywhere Cache instance.
+  rpc CreateAnywhereCache(CreateAnywhereCacheRequest)
+      returns (google.longrunning.Operation) {
+    option (google.api.routing) = {
+      routing_parameters { field: "parent" path_template: "{bucket=**}" }
+    };
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/buckets/*}/anywhereCaches"
+      body: "anywhere_cache"
+    };
+    option (google.api.method_signature) = "parent,anywhere_cache";
+    option (google.longrunning.operation_info) = {
+      response_type: "AnywhereCache"
+      metadata_type: "CreateAnywhereCacheMetadata"
+    };
+  }
+
+  // Gets an Anywhere Cache instance.
+  rpc GetAnywhereCache(GetAnywhereCacheRequest) returns (AnywhereCache) {
+    option (google.api.routing) = {
+      routing_parameters {
+        field: "name"
+        path_template: "{bucket=projects/*/buckets/*}/**"
+      }
+    };
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/buckets/*/anywhereCaches/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+EOF
+
+cat ${REPO_ROOT}/mockgcp/third_party/googleapis/google/storage/control/v2/storage_control.proto

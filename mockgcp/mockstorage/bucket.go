@@ -64,7 +64,7 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 		return nil, status.Errorf(codes.InvalidArgument, "invalid projection: %s", projection)
 	}
 
-	httpmux.SetExpiresHeader(ctx, time.Now())
+	// httpmux.SetExpiresHeader(ctx, "Mon, 01 Jan 1990 00:00:00 GMT")
 
 	return ret, nil
 }
