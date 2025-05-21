@@ -11,17 +11,33 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-two
   name: pubsubsubscription-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  bigqueryConfig:
-    dropUnknownFields: false
-    tableRef:
-      name: bigquerytable-2-${uniqueId}
-    useTopicSchema: false
-    writeMetadata: false
+  ackDeadlineSeconds: 300
+  cloudStorageConfig:
+    avroConfig:
+      writeMetadata: false
+    bucketRef:
+      name: storagebucket-2-${uniqueId}
+    filenamePrefix: test-prefix-updated
+    filenameSuffix: test-suffix-updated
+    maxBytes: 102400
+    maxDuration: 400s
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubtopic-${uniqueId}
+    maxDeliveryAttempts: 50
+  enableMessageOrdering: true
+  expirationPolicy:
+    ttl: 1296000s
+  filter: attributes.type = "key"
+  messageRetentionDuration: 302400s
   resourceID: pubsubsubscription-${uniqueId}
+  retainAckedMessages: false
+  retryPolicy:
+    maximumBackoff: 300s
+    minimumBackoff: 5s
   topicRef:
     name: pubsubtopic-${uniqueId}
 status:

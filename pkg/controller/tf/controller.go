@@ -407,6 +407,10 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			d.RequiresNew = false
 		}
 	}
+	if krmResource.Kind == "BigQueryTable" {
+		r.logger.Info("maqiuyu... ", "krmResource", fmt.Sprintf("%+v", krmResource))
+		r.logger.Info("maqiuyu... ", "config", fmt.Sprintf("%+v", config))
+	}
 	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, r.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
