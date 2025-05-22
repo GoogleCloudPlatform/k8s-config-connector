@@ -37,7 +37,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -81,7 +80,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen, deps.DependencyTracker)
+	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
 	if err != nil {
 		return err
 	}
@@ -89,7 +88,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator, dependencyTracker *gcpwatch.DependencyTracker) (*ReconcileIAMPartialPolicy, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*ReconcileIAMPartialPolicy, error) {
 	r := ReconcileIAMPartialPolicy{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -107,10 +106,6 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		},
 		requeueRateLimiter: kccratelimiter.RequeueRateLimiter(),
 		jitterGen:          jg,
-	}
-
-	if r.immediateReconcileRequests != nil && dependencyTracker != nil {
-		r.driftTracker = dependencyTracker.RegisterController(controllerName, r.immediateReconcileRequests)
 	}
 	return &r, nil
 }
@@ -152,20 +147,15 @@ type ReconcileIAMPartialPolicy struct {
 	// rate limit requeues (periodic re-reconciliation), so we don't use the whole rate limit on re-reconciles
 	requeueRateLimiter workqueue.TypedRateLimiter[reconcile.Request]
 	jitterGen          jitter.Generator
-	driftTracker       *gcpwatch.ControllerRegistration
 }
 
 type reconcileContext struct {
 	Reconciler     *ReconcileIAMPartialPolicy
 	Ctx            context.Context
 	NamespacedName types.NamespacedName
-
-	objRef *iamv1beta1.IAMPolicy
 }
 
 func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
-	log := klog.FromContext(ctx)
-
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
@@ -202,14 +192,6 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-
-	// if we can, we will use the GCP watch method to prompt reconcile events via the immediateReconcile channel
-	if r.driftTracker != nil && runCtx.objRef != nil && r.driftTracker.Add(ctx, policy, runCtx.objRef.Spec.Etag) {
-		log.V(2).Info("using gcp watcher instead of periodic requeue", "resource", request.NamespacedName)
-		return reconcile.Result{}, nil
-	}
-
-	// otherwise we use the naive 10 minute + jiiter reconciliation for drift detection
 	jitteredPeriod, err := r.jitterGen.JitteredReenqueue(iamv1beta1.IAMPolicyGVK, policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -265,14 +247,6 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		}
 		return false, r.handleUpdateFailed(pp, err)
 	}
-
-	if r.objRef != nil {
-		if k8s.GetNamespacedName(r.objRef) != k8s.GetNamespacedName(iamPolicy) {
-			logger.Error(fmt.Errorf("object reference changed"), "old", r.objRef, "new", iamPolicy)
-		}
-	}
-	r.objRef = iamPolicy.DeepCopy()
-
 	k8s.EnsureFinalizers(pp, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	resolver := IAMMemberIdentityResolver{Iamclient: r.Reconciler.iamClient, Ctx: r.Ctx}
