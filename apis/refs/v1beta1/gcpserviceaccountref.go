@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -98,20 +99,27 @@ func resolveServiceAccount(ctx context.Context, reader client.Reader, src client
 		key.Namespace = src.GetNamespace()
 	}
 
-	computenetwork := &unstructured.Unstructured{}
-	computenetwork.SetGroupVersionKind(schema.GroupVersionKind{
+	sa := &unstructured.Unstructured{}
+	sa.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "iam.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "IAMServiceAccount",
 	})
-	if err := reader.Get(ctx, key, computenetwork); err != nil {
+	if err := reader.Get(ctx, key, sa); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, fmt.Errorf("referenced IAMServiceAccount %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced IAMServiceAccount %v: %w", key, err)
 	}
+	resource, err := k8s.NewResource(sa)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(sa.GroupVersionKind(), key)
+	}
 
-	email, _, err := unstructured.NestedString(computenetwork.Object, "status", "email")
+	email, _, err := unstructured.NestedString(sa.Object, "status", "email")
 	if err != nil {
 		return nil, fmt.Errorf("reading status.email from IAMServiceAccount %v: %w", key, err)
 	}
