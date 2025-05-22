@@ -37,7 +37,6 @@ func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection")
 
 	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".subset_view.family_subsets")
 
 	return f
 }

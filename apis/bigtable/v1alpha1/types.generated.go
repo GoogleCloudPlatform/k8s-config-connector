@@ -129,7 +129,10 @@ type AuthorizedView_SubsetView struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.SubsetView.row_prefixes
 	RowPrefixes [][]byte `json:"rowPrefixes,omitempty"`
 
-	// TODO: unsupported map type with key string and value message
+	// Map from column family name to the set of columns in that family
+	//  to be included in the AuthorizedView.
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.SubsetView.family_subsets
+	FamilySubsets map[string]*AuthorizedView_FamilySubsets `json:"familySubsets,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.Backup
