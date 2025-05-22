@@ -61,7 +61,7 @@ body:
   attributes:
     label: Config Connector Version
     description: | 
-      kubectl get ns cnrm-system -o jsonpath='{.metadata.annotations.cnrm\\.cloud\\.google\\.com/version}'
+      kubectl get ns cnrm-system -o jsonpath='{.metadata.annotations.cnrm\\.cloud\\.google\\.com/version}{"\\n"}'
   validations:
     required: true
 
