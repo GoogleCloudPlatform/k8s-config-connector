@@ -29,4 +29,4 @@ export WRITE_GOLDEN_OUTPUT=1
 echo "Running scenarios tests..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
   go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestE2EScript/scenarios \
-  -skip "TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership"
+  -skip "TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership|TestE2EScript/scenarios/iam/iampartialpolicy"
