@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: speech.cnrm.cloud.google.com/v1alpha1
-kind: SpeechCustomClass
+apiVersion: speech.cnrm.cloud.google.com/v1beta1
+kind: SpeechRecognizer
 metadata:
-  name: speechcustomclass-minimal-${uniqueId}
+  name: speechrecognizer-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: global # Expected resource location to be global
-  displayName: "Initial description"
-  items: # CustomClass must have at least one item specified
-    - value: "value1"
+  location: global
+  displayName: "Updated description"
+  model: long
+  languageCodes:
+    - en-US
