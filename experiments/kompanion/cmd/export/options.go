@@ -12,22 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package summary
+package export
 
 import (
+	"log"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/utils"
 	"github.com/spf13/pflag"
 )
 
-type SummaryOptions struct {
+const (
+	reportNamePrefixFlag = "report-prefix"
+)
+
+type ExportOptions struct {
 	utils.ClusterCrawlOptions
+
+	ReportNamePrefix string
 }
 
-func (opts *SummaryOptions) AddFlags(flags *pflag.FlagSet) {
+func (opts *ExportOptions) AddFlags(flags *pflag.FlagSet) {
 	opts.ClusterCrawlAddFlags(flags)
+
+	flags.StringVarP(&opts.ReportNamePrefix, reportNamePrefixFlag, "", opts.ReportNamePrefix, "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 }
 
-func (opts *SummaryOptions) validateFlags() error {
+func (opts *ExportOptions) validateFlags() error {
 	if err := opts.ValidateClusterCrawlFlags(); err != nil {
 		return err
 	}
@@ -35,12 +45,15 @@ func (opts *SummaryOptions) validateFlags() error {
 	return nil
 }
 
-func (opts *SummaryOptions) Print() {
+func (opts *ExportOptions) Print() {
 	opts.ClusterCrawlPrint()
+	log.Printf("reportNamePrefix set to %q.\n", opts.ReportNamePrefix)
 }
 
-func NewSummaryOptions() *SummaryOptions {
-	opts := SummaryOptions{}
+func NewExportOptions() *ExportOptions {
+	opts := ExportOptions{
+		ReportNamePrefix: "report",
+	}
 	opts.ClusterCrawlOptions = utils.NewClusterCrawlOptions()
 	return &opts
 }
