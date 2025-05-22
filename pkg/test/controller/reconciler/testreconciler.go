@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"testing"
 	"time"
@@ -39,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
@@ -267,6 +269,19 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 	}
 	jg := jitter.NewDefaultGenerator(r.smLoader, dclML)
 
+	fetcher, err := gcpwatch.NewIAMFetcher(r.t.Context(), &config.ControllerConfig{
+		HTTPClient: r.httpClient,
+		UserAgent:  gcp.KCCUserAgent(),
+	})
+	if err != nil {
+		r.t.Fatalf("creating resource fetcher: %v", err)
+	}
+	var dependencyTracker *gcpwatch.DependencyTracker
+	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
+	if v == "USE_DEPENDENCY_TRACKER" {
+		dependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
+	}
+
 	gvk := u.GroupVersionKind()
 	crd, err := crdloader.GetCRDForGVK(gvk)
 	if err != nil {
@@ -286,7 +301,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		}
 		return reconciler
 	case ReconcilerTypeIAMPartialPolicy:
-		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg, dependencyTracker)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}

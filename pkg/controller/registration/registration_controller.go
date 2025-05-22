@@ -17,6 +17,7 @@ package registration
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -38,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -115,16 +117,17 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 	}
 
 	r := &ReconcileRegistration{
-		Client:           mgr.GetClient(),
-		provider:         rd.TfProvider,
-		smLoader:         rd.TfLoader,
-		dclConfig:        rd.DclConfig,
-		dclConverter:     rd.DclConverter,
-		mgr:              mgr,
-		controllers:      make(map[string]map[string]controllerContext),
-		registrationFunc: regFunc,
-		defaulters:       rd.Defaulters,
-		jitterGenerator:  rd.JitterGen,
+		Client:            mgr.GetClient(),
+		provider:          rd.TfProvider,
+		smLoader:          rd.TfLoader,
+		dclConfig:         rd.DclConfig,
+		dclConverter:      rd.DclConverter,
+		mgr:               mgr,
+		controllers:       make(map[string]map[string]controllerContext),
+		registrationFunc:  regFunc,
+		defaulters:        rd.Defaulters,
+		jitterGenerator:   rd.JitterGen,
+		dependencyTracker: rd.DependencyTracker,
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
@@ -145,15 +148,16 @@ var _ reconcile.Reconciler = &ReconcileRegistration{}
 // ReconcileRegistration reconciles a CRD owned by KCC
 type ReconcileRegistration struct {
 	client.Client
-	provider         *tfschema.Provider
-	smLoader         *servicemappingloader.ServiceMappingLoader
-	dclConfig        *dcl.Config
-	dclConverter     *conversion.Converter
-	mgr              manager.Manager
-	controllers      map[string]map[string]controllerContext
-	registrationFunc registrationFunc
-	defaulters       []k8s.Defaulter
-	jitterGenerator  jitter.Generator
+	provider          *tfschema.Provider
+	smLoader          *servicemappingloader.ServiceMappingLoader
+	dclConfig         *dcl.Config
+	dclConverter      *conversion.Converter
+	mgr               manager.Manager
+	controllers       map[string]map[string]controllerContext
+	registrationFunc  registrationFunc
+	defaulters        []k8s.Defaulter
+	jitterGenerator   jitter.Generator
+	dependencyTracker *gcpwatch.DependencyTracker
 
 	mu sync.Mutex
 }
@@ -241,7 +245,15 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		DclConverter: r.dclConverter,
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
+		//DependencyTracker: r.dependencyTracker,
 	}
+
+	// todo acpana house in KCC mgr flag
+	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
+	if v == "USE_DEPENDENCY_TRACKER" {
+		cds.DependencyTracker = r.dependencyTracker
+	}
+
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
 		groupKind := gvk.GroupKind()
