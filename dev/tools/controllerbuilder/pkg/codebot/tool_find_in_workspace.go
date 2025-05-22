@@ -26,9 +26,9 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func init() {
-	RegisterTool(&FindInWorkspace{})
-}
+// func init() {
+// 	RegisterTool(&FindInWorkspace{})
+// }
 
 type FindInWorkspace struct {
 	FindText string `json:"find_text"`
