@@ -32,8 +32,6 @@ spec:
     deadLetterTopicRef: # Reference, kept same for this update test
       name: pubsubtopic-${uniqueId}
     maxDeliveryAttempts: 50
-  # Per CRD: "Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined."
-  # create.yaml had all three; this update.yaml corrects it by choosing one (pushConfig) and modifying it.
   pushConfig:
     pushEndpoint: https://updated.example.com/push
     attributes:
@@ -44,5 +42,3 @@ spec:
       audience: https://updated.example.com/push-audience
     noWrapper:
       writeMetadata: false # Changed from true
-  # bigqueryConfig has been removed to comply with the one-of constraint.
-  # cloudStorageConfig has been removed to comply with the one-of constraint.
