@@ -1,0 +1,31 @@
+apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+kind: StorageAnywhereCache
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: storageanywherecache-sample-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  admissionPolicy: admit-on-second-miss
+  bucketRef:
+    name: storagebucket-sample-${uniqueId}
+  desiredState: running
+  ttl: 56400s
+  zone: us-central1-a
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: running
+    updateTime: "1970-01-01T00:00:00Z"
