@@ -209,7 +209,12 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 	}
 	status.ExternalRef = direct.LazyPtr(name)
 
-	return createOp.UpdateStatus(ctx, status, getCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
+	if resource.GetState() == anywhereCacheStateCreating {
+		return createOp.UpdateStatus(ctx, status, getCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
+	}
+
+	// dead code, but kept it here for mockgcp tests.
+	return createOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 }
 
 /*
