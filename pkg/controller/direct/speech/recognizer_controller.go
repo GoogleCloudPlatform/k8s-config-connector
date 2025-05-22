@@ -16,7 +16,7 @@
 // proto.service: google.cloud.speech.v2.Speech
 // proto.message: google.cloud.speech.v2.Recognizer
 // crd.type: SpeechRecognizer
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package speech
 
@@ -35,7 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
