@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -16,6 +16,7 @@ metadata:
   name: pubsubtopic-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  messageRetentionDuration: 3600s
   resourceID: pubsubtopic-sample-${uniqueId}
   schemaSettings:
     encoding: JSON
@@ -28,4 +29,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 2
+  observedGeneration: 3

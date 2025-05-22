@@ -170,6 +170,84 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json&updateMask=labels%2CmessageRetentionDuration
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "topic": {
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true",
+      "newkey": "newval"
+    },
+    "messageRetentionDuration": "3600s",
+    "schemaSettings": {
+      "encoding": "JSON",
+      "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true",
+    "newkey": "newval"
+  },
+  "messageRetentionDuration": "3600s",
+  "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+  "schemaSettings": {
+    "encoding": "JSON",
+    "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
+  }
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true",
+    "newkey": "newval"
+  },
+  "messageRetentionDuration": "3600s",
+  "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+  "schemaSettings": {
+    "encoding": "JSON",
+    "schema": "projects/${projectId}/schemas/pubsubschema-${uniqueId}"
+  }
+}
+
+---
+
 DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
