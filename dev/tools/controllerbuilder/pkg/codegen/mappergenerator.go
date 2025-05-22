@@ -191,7 +191,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 			// TODO: Can we figure out a better way here?
 			switch pbPackage {
 			case "cloud.google.com/go/bigtable/admin/apiv2/adminpb":
-				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+				// pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 			}
 
 			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")

@@ -39,11 +39,15 @@ func bigtableAppProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".multi_cluster_routing_use_any")
 	f.SpecFields.Insert(".single_cluster_routing")
 	f.SpecFields.Insert(".standard_isolation")
+	f.SpecFields.Insert(".data_boost_isolation_read_only")
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".etag")
-	f.UnimplementedFields.Insert(".priority")                       // deprecated in favor of standard isolation
-	f.UnimplementedFields.Insert(".data_boost_isolation_read_only") // only applies to online serving feature, doesn't support by kcc
+	f.UnimplementedFields.Insert(".priority") // deprecated in favor of standard isolation
+
+	// The default value of `.data_boost_isolation_read_only.compute_billing_owner` is
+	// COMPUTE_BILLING_OWNER_UNSPECIFIED, which does not roundtrip due to our Enum_FromProto implementation.
+	f.UnimplementedFields.Insert(".data_boost_isolation_read_only.compute_billing_owner")
 
 	return f
 }
