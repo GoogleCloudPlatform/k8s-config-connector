@@ -27,9 +27,10 @@ import (
 	"strings"
 	"time"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	pb "cloud.google.com/go/bigquery"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -275,8 +276,8 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.Encrypti
 		return nil
 	}
 	out := &pb.EncryptionConfig{}
-	if in.KmsKeyRef != nil {
-		out.KMSKeyName = in.KmsKeyRef.External
+	if in.KMSKeyRef != nil {
+		out.KMSKeyName = in.KMSKeyRef.External
 	}
 	return out
 }
@@ -286,7 +287,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 		return nil
 	}
 	out := &krm.EncryptionConfiguration{}
-	out.KmsKeyRef = &v1beta1.KMSCryptoKeyRef{
+	out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{
 		External: in.KMSKeyName,
 	}
 	return out

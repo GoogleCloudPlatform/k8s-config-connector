@@ -94,24 +94,23 @@ spec:
                         description: 'The fully-qualified resource name of the KMS
                           key. Each Cloud KMS key is regionalized and has the following
                           format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
                         properties:
+                          autoKeyRef:
+                            description: A reference to the Autokey `KMSKeyHandle`,
+                              which auto generates a crypto key.
+                            properties:
+                              name:
+                                description: The name of a KMSKeyHandle resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a KMSKeyHandle resource.
+                                type: string
+                            type: object
                           external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            description: A reference to an externally managed KMSCryptoKey
+                              or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                              For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                              `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                             type: string
                           name:
                             description: The `name` of a `KMSCryptoKey` resource.
@@ -218,24 +217,23 @@ spec:
                         description: 'The fully-qualified resource name of the KMS
                           key. Each Cloud KMS key is regionalized and has the following
                           format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
                         properties:
+                          autoKeyRef:
+                            description: A reference to the Autokey `KMSKeyHandle`,
+                              which auto generates a crypto key.
+                            properties:
+                              name:
+                                description: The name of a KMSKeyHandle resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a KMSKeyHandle resource.
+                                type: string
+                            type: object
                           external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            description: A reference to an externally managed KMSCryptoKey
+                              or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                              For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                              `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                             type: string
                           name:
                             description: The `name` of a `KMSCryptoKey` resource.
@@ -278,24 +276,23 @@ spec:
                     description: 'The fully-qualified resource name of the KMS key.
                       Each Cloud KMS key is regionalized and has the following format:
                       projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
                     properties:
+                      autoKeyRef:
+                        description: A reference to the Autokey `KMSKeyHandle`, which
+                          auto generates a crypto key.
+                        properties:
+                          name:
+                            description: The name of a KMSKeyHandle resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a KMSKeyHandle resource.
+                            type: string
+                        type: object
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                          For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                          `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                         type: string
                       name:
                         description: The `name` of a `KMSCryptoKey` resource.
@@ -852,24 +849,23 @@ spec:
                         description: 'The fully-qualified resource name of the KMS
                           key. Each Cloud KMS key is regionalized and has the following
                           format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
                         properties:
+                          autoKeyRef:
+                            description: A reference to the Autokey `KMSKeyHandle`,
+                              which auto generates a crypto key.
+                            properties:
+                              name:
+                                description: The name of a KMSKeyHandle resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a KMSKeyHandle resource.
+                                type: string
+                            type: object
                           external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            description: A reference to an externally managed KMSCryptoKey
+                              or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                              For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                              `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                             type: string
                           name:
                             description: The `name` of a `KMSCryptoKey` resource.
@@ -976,24 +972,23 @@ spec:
                         description: 'The fully-qualified resource name of the KMS
                           key. Each Cloud KMS key is regionalized and has the following
                           format: projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
                         properties:
+                          autoKeyRef:
+                            description: A reference to the Autokey `KMSKeyHandle`,
+                              which auto generates a crypto key.
+                            properties:
+                              name:
+                                description: The name of a KMSKeyHandle resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a KMSKeyHandle resource.
+                                type: string
+                            type: object
                           external:
-                            description: A reference to an externally managed KMSCryptoKey.
-                              Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                            description: A reference to an externally managed KMSCryptoKey
+                              or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                              For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                              `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                             type: string
                           name:
                             description: The `name` of a `KMSCryptoKey` resource.
@@ -1036,24 +1031,23 @@ spec:
                     description: 'The fully-qualified resource name of the KMS key.
                       Each Cloud KMS key is regionalized and has the following format:
                       projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]'
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
                     properties:
+                      autoKeyRef:
+                        description: A reference to the Autokey `KMSKeyHandle`, which
+                          auto generates a crypto key.
+                        properties:
+                          name:
+                            description: The name of a KMSKeyHandle resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a KMSKeyHandle resource.
+                            type: string
+                        type: object
                       external:
-                        description: A reference to an externally managed KMSCryptoKey.
-                          Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                        description: A reference to an externally managed KMSCryptoKey
+                          or KMSKeyHandle(AutoKey). Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
+                          For AutoKey, replace {{key_ring_id}} to `autokey`, i.e.
+                          `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
                         type: string
                       name:
                         description: The `name` of a `KMSCryptoKey` resource.

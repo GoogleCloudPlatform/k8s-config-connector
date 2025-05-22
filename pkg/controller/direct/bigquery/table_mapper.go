@@ -17,8 +17,9 @@ package bigquery
 import (
 	"encoding/json"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/api/bigquery/v2"
 )
@@ -431,7 +432,7 @@ func EncryptionConfiguration_FromProto(mapCtx *direct.MapContext, in *pb.Encrypt
 	}
 	out := &krmv1beta1.TableEncryptionConfiguration{}
 	if in.KmsKeyName != "" {
-		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKeyName}
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.KmsKeyName}
 	}
 	return out
 }
@@ -441,8 +442,8 @@ func EncryptionConfiguration_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.T
 		return nil
 	}
 	out := &pb.EncryptionConfiguration{}
-	if in.KmsKeyRef != nil {
-		out.KmsKeyName = in.KmsKeyRef.External
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
 	}
 	return out
 }

@@ -16,6 +16,7 @@ package workflows
 
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -83,7 +84,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	}
 	out.SourceContents = direct.LazyPtr(in.GetSourceContents())
 	if in.GetCryptoKeyName() != "" {
-		out.KMSCryptoKeyRef = &refs.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
+		out.KMSCryptoKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.GetCryptoKeyName()}
 	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.GetUserEnvVars()
