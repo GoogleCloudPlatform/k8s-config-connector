@@ -1491,6 +1491,7 @@
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.basicAlgorithm.cooldownPeriod" is not set in unstructured objects
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.basicAlgorithm.yarnConfig.scaleDownMinWorkerFraction" is not set in unstructured objects
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.basicAlgorithm.yarnConfig.scaleUpMinWorkerFraction" is not set in unstructured objects
+[missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.id" is not set in unstructured objects
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryWorkerConfig.minInstances" is not set in unstructured objects
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryWorkerConfig.weight" is not set in unstructured objects
 [missing_field] crd=dataprocautoscalingpolicies.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.workerConfig.minInstances" is not set in unstructured objects
