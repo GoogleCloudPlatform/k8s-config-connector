@@ -32,6 +32,16 @@ go run main.go generate-types \
      --resource StorageNotification:Notification
 ```
 
+Note that if there are existing resources under the same API version, you should update the command to include all resources. For example:
+
+```
+go run main.go generate-types \
+     --service google.storage.v1 \
+     --api-version "storage.cnrm.cloud.google.com/v1beta1" \
+     --resource StorageBucket:Bucket \           # assuming this is an existing resource
+     --resource StorageNotification:Notification # assuming this is the new resource you are adding
+```
+
 * `--service`
 
 The proto name of the GCP service, you can find them in [https://github.com/googleapis/googleapis.git](https://github.com/googleapis/googleapis.git). For example, the SQL service is [https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4](https://github.com/googleapis/googleapis/tree/master/google/cloud/sql/v1beta4). The `–service` should be `google.cloud.sql.v1beta4`
