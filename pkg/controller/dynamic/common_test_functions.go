@@ -15,6 +15,7 @@
 package dynamic
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"testing"
@@ -62,7 +63,7 @@ type ObjectStatus struct {
 }
 
 // GetObjectStatus extracts the required fields for computing if an object should be considered ready (fully reconciled).
-func GetObjectStatus(t *testing.T, object runtime.Object) ObjectStatus {
+func GetObjectStatus(object runtime.Object) (ObjectStatus, error) {
 	// Simple types with the fields we care about, so that we can use the libraries
 	type withConditions struct {
 		ObservedGeneration *int64                `json:"observedGeneration,omitempty"`
@@ -78,7 +79,7 @@ func GetObjectStatus(t *testing.T, object runtime.Object) ObjectStatus {
 	if !ok {
 		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(object)
 		if err != nil {
-			t.Errorf("error from runtime.DefaultUnstructuredConverter.ToUnstructured(%T): %v", object, err)
+			return ObjectStatus{}, fmt.Errorf("error from runtime.DefaultUnstructuredConverter.ToUnstructured(%T): %w", object, err)
 		}
 		u = &unstructured.Unstructured{Object: m}
 	}
@@ -86,12 +87,12 @@ func GetObjectStatus(t *testing.T, object runtime.Object) ObjectStatus {
 	generation := u.GetGeneration()
 	var statusConditionsObj withStatusConditions
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.UnstructuredContent(), &statusConditionsObj); err != nil {
-		t.Errorf("error converting to object with status.conditions: %v", err)
+		return ObjectStatus{}, fmt.Errorf("error converting to object with status.conditions: %w", err)
 	}
 
-	return ObjectStatus{
+	return	 ObjectStatus{
 		Generation:         generation,
 		ObservedGeneration: statusConditionsObj.Status.ObservedGeneration,
 		Conditions:         statusConditionsObj.Status.Conditions,
-	}
-}
+	}, nil
+}	
