@@ -195,9 +195,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity"
   }
 }
 
@@ -624,6 +622,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -653,14 +654,12 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "State Code",
         "mode": "REQUIRED",
         "name": "state_code",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -703,6 +702,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -732,14 +734,12 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "State Code",
         "mode": "REQUIRED",
         "name": "state_code",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -976,53 +976,44 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
-        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
-        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
-        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
-            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
-            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1032,7 +1023,6 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
-        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1133,53 +1123,44 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
-        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
-        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
-        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
-            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
-            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1189,7 +1170,6 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
-        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1226,6 +1206,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1426,53 +1407,44 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
-        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
-        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
-        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
-            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
-            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1482,7 +1454,6 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
-        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1533,6 +1504,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1597,53 +1569,44 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
-        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
-        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
-        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
-            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
-            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1653,7 +1616,6 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
-        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1704,6 +1666,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1794,53 +1757,44 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
-        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
-        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
-        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
-        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
-            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
-            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1850,7 +1804,6 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
-        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1901,6 +1854,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1939,6 +1893,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -1968,14 +1925,12 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "State Code",
         "mode": "REQUIRED",
         "name": "state_code",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
