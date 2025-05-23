@@ -14,11 +14,11 @@
 
 // +generated:types
 // krm.group: accesscontextmanager.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.identity.accesscontextmanager.v1
 // resource: AccessContextManagerAccessPolicy:AccessPolicy
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessPolicy struct {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -26,6 +26,10 @@ var AccessContextManagerAccessPolicyGVK = GroupVersion.WithKind("AccessContextMa
 type AccessContextManagerAccessPolicySpec struct {
 	// The AccessContextManagerAccessPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. Human readable title. Does not affect behavior.
+	// +required
+	Title *string `json:"title"`
 }
 
 // AccessContextManagerAccessPolicyStatus defines the config connector machine state of AccessContextManagerAccessPolicy
@@ -34,14 +38,17 @@ type AccessContextManagerAccessPolicyStatus struct {
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
+	// Output only. Time the AccessPolicy was created in UTC.
+	CreateTime string `json:"createTime,omitempty"`
+
+	// Resource name of the AccessPolicy. Format: {policy_id}.
+	Name string `json:"name,omitempty"`
+
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AccessContextManagerAccessPolicy resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *AccessContextManagerAccessPolicyObservedState `json:"observedState,omitempty"`
+	// Output only. Time the AccessPolicy was updated in UTC.
+	UpdateTime string `json:"updateTime,omitempty"`
 }
 
 // AccessContextManagerAccessPolicyObservedState is the state of the AccessContextManagerAccessPolicy resource as most recently observed in GCP.
@@ -51,15 +58,17 @@ type AccessContextManagerAccessPolicyObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesspolicy;gcpaccesscontextmanageraccesspolicys
+// +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesspolicy;gcpaccesscontextmanageraccesspolicies
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // AccessContextManagerAccessPolicy is the Schema for the AccessContextManagerAccessPolicy API
+// As per https://cloud.google.com/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy#annotations
+// the parent is organization which is stored in the cnrm.cloud.google.com/organization-id annotation.
 // +k8s:openapi-gen=true
 type AccessContextManagerAccessPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
