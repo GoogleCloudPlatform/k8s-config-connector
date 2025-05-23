@@ -277,7 +277,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
 
 	// Specific to WorflowsWorkflow
-	// visitor.replacePaths[".status.observedState.revisionID"] = "revision-id-placeholder"
+	visitor.replacePaths[".status.observedState.revisionID"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to DocumentAIProcessor
@@ -1102,8 +1102,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	{
 		visitor.ReplacePath(".revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 		visitor.ReplacePath(".response.revisionCreateTime", "2024-04-01T12:34:56.123456Z")
-		// visitor.ReplacePath(".revisionId", "revision-id-placeholder")
-		// visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
 	}
 
 	// DocumentAI
