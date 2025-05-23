@@ -141,7 +141,6 @@ spec:
                     type: string
                 type: object
             required:
-            - ""
             - tableRef
             type: object
           status:
