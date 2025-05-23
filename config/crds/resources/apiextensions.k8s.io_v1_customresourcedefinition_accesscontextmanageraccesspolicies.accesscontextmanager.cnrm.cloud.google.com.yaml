@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: AccessContextManagerAccessPolicy
+    listKind: AccessContextManagerAccessPolicyList
     plural: accesscontextmanageraccesspolicies
     shortNames:
     - gcpaccesscontextmanageraccesspolicy
@@ -43,37 +44,44 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: AccessContextManagerAccessPolicy is the Schema for the AccessContextManagerAccessPolicy
+          API As per https://cloud.google.com/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy#annotations
+          the parent is organization which is stored in the cnrm.cloud.google.com/organization-id
+          annotation.
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: AccessContextManagerAccessPolicySpec defines the desired
+              state of AccessContextManagerAccessPolicy
             properties:
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The AccessContextManagerAccessPolicy name. If not given,
+                  the metadata.name will be used.
                 type: string
               title:
-                description: Human readable title. Does not affect behavior.
+                description: Required. Human readable title. Does not affect behavior.
                 type: string
             required:
             - title
             type: object
           status:
+            description: AccessContextManagerAccessPolicyStatus defines the config
+              connector machine state of AccessContextManagerAccessPolicy
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -98,7 +106,7 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: Time the AccessPolicy was created in UTC.
+                description: Output only. Time the AccessPolicy was created in UTC.
                 type: string
               name:
                 description: 'Resource name of the AccessPolicy. Format: {policy_id}.'
@@ -109,9 +117,10 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
-                description: Time the AccessPolicy was updated in UTC.
+                description: Output only. Time the AccessPolicy was updated in UTC.
                 type: string
             type: object
         required:
@@ -121,9 +130,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
