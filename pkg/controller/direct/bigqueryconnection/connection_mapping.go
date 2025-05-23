@@ -17,6 +17,7 @@ package bigqueryconnection
 import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -231,7 +232,7 @@ func SparkHistoryServerConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Sp
 		return nil
 	}
 	out := &krm.SparkHistoryServerConfigSpec{}
-	out.DataprocClusterRef = &refs.DataprocClusterRef{
+	out.DataprocClusterRef = &dataprocv1beta1.DataprocClusterRef{
 		External: in.DataprocCluster,
 	}
 	return out
