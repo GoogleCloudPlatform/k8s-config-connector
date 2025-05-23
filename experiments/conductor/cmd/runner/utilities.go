@@ -134,11 +134,7 @@ func cdRepoBranchDirBash(opts *RunnerOptions, subdir string, stdin io.WriteClose
 	return msg
 }
 
-func checkAndCommitLocalChanges(ctx context.Context, branch Branch, workDir string) {
-	checkUncommittedChanges(ctx, branch, workDir, true)
-}
-
-func checkUncommittedChanges(ctx context.Context, branch Branch, workDir string, commit bool) {
+func checkLocalChanges(ctx context.Context, branch Branch, workDir string, option string) {
 	log.Print("Checking uncommitted changes: git status --porcelain")
 	statusCmd := exec.CommandContext(ctx, "git", "status", "--porcelain")
 	statusCmd.Dir = workDir
@@ -155,7 +151,15 @@ func checkUncommittedChanges(ctx context.Context, branch Branch, workDir string,
 		if err != nil {
 			log.Fatal(err)
 		}
-		if commit {
+		switch option {
+		case handleLocalChangeOptionCleanUp:
+			if err := gitStash(ctx, workDir); err != nil {
+				log.Fatalf("Tried to clean up uncommitted changes at branch %q before checking out to branch %q but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, err)
+			}
+			if err := gitStashDrop(ctx, workDir); err != nil {
+				log.Fatalf("Tried to clean up uncommitted changes at branch %q before checking out to branch %q but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, err)
+			}
+		case handleLocalChangeOptionCommit:
 			if err := gitAdd(ctx, workDir, "."); err != nil {
 				log.Fatalf("Tried to add changes at branch %q before committing but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), err)
 			}
@@ -163,8 +167,10 @@ func checkUncommittedChanges(ctx context.Context, branch Branch, workDir string,
 				log.Fatalf("Tried to commit changes at branch %q before checking out to branch %q but failed: %v", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, err)
 			}
 			log.Printf("Successfully committed changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
-		} else {
+		case handleLocalChangeOptionFail:
 			log.Fatalf("Found uncommitted changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
+		default:
+			log.Fatalf("Unknown option to handle uncommitted changes at branch %q before checking out to branch %q:\n%s\n", strings.TrimSuffix(currentBranchResult.Stdout, "\n"), branch.Local, results.Stdout)
 		}
 	}
 
@@ -321,6 +327,32 @@ func gitRevert(ctx context.Context, workDir string, filePath string) error {
 	if results.Stdout != "" {
 		log.Printf("Git checkout output: %s", formatCommandOutput(results.Stdout))
 	}
+	return nil
+}
+
+func gitStash(ctx context.Context, workDir string) error {
+	log.Printf("COMMAND: git stash -u")
+	gitStashAll := exec.CommandContext(ctx, "git", "stash", "-u")
+	gitStashAll.Dir = workDir
+
+	results, err := execCommand(gitStashAll)
+	if err != nil {
+		return fmt.Errorf("git stash -u failed: %w", err)
+	}
+	log.Printf("BRANCH STASH: %v\n", formatCommandOutput(results.Stdout))
+	return nil
+}
+
+func gitStashDrop(ctx context.Context, workDir string) error {
+	log.Printf("COMMAND: git stash drop")
+	gitStashDrop := exec.CommandContext(ctx, "git", "stash", "drop")
+	gitStashDrop.Dir = workDir
+
+	results, err := execCommand(gitStashDrop)
+	if err != nil {
+		return fmt.Errorf("git stash drop failed: %w", err)
+	}
+	log.Printf("BRANCH STASH DROP: %v\n", formatCommandOutput(results.Stdout))
 	return nil
 }
 
@@ -838,7 +870,10 @@ func processBranch(ctx context.Context, opts *RunnerOptions, branch Branch, skip
 	close := setLoggingWriter(opts, branch)
 	defer close()
 
-	checkAndCommitLocalChanges(ctx, branch, opts.branchRepoDir)
+	if opts.handleLocalChange == "" {
+		opts.handleLocalChange = handleLocalChangeOptionCleanUp
+	}
+	checkLocalChanges(ctx, branch, opts.branchRepoDir, opts.handleLocalChange)
 	checkoutBranch(ctx, branch, opts.branchRepoDir)
 
 	// Run git diff command
