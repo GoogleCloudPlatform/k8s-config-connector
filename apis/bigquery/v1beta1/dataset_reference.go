@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &DatasetRef{}
 // holds the GCP identifier for the KRM object.
 type DatasetRef struct {
 	// A reference to an externally managed BigQueryDataset resource.
-	// Should be in the format "projects/<projectID>/datasets/<datasetID>".
+	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryDataset resource.
