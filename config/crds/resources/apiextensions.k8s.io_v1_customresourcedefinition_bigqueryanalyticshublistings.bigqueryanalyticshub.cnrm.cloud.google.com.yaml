@@ -218,7 +218,7 @@ spec:
                         properties:
                           external:
                             description: A reference to an externally managed BigQueryDataset
-                              resource. Should be in the format "projects/<projectID>/datasets/<datasetID>".
+                              resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                             type: string
                           name:
                             description: The name of a BigQueryDataset resource.
@@ -270,15 +270,15 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: If provided must be in the format `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`.
+                                  description: A reference to an externally managed
+                                    BigQueryTable resource. Should be in the format
+                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
                                   type: string
                                 name:
-                                  description: The `metadata.name` field of a `BigQueryTable`
-                                    resource.
+                                  description: The name of a BigQueryTable resource.
                                   type: string
                                 namespace:
-                                  description: The `metadata.namespace` field of a
-                                    `BigQueryTable` resource.
+                                  description: The namespace of a BigQueryTable resource.
                                   type: string
                               type: object
                           type: object
@@ -545,7 +545,7 @@ spec:
                         properties:
                           external:
                             description: A reference to an externally managed BigQueryDataset
-                              resource. Should be in the format "projects/<projectID>/datasets/<datasetID>".
+                              resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                             type: string
                           name:
                             description: The name of a BigQueryDataset resource.
@@ -597,15 +597,15 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: If provided must be in the format `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`.
+                                  description: A reference to an externally managed
+                                    BigQueryTable resource. Should be in the format
+                                    "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
                                   type: string
                                 name:
-                                  description: The `metadata.name` field of a `BigQueryTable`
-                                    resource.
+                                  description: The name of a BigQueryTable resource.
                                   type: string
                                 namespace:
-                                  description: The `metadata.namespace` field of a
-                                    `BigQueryTable` resource.
+                                  description: The namespace of a BigQueryTable resource.
                                   type: string
                               type: object
                           type: object
