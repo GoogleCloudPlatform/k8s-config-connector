@@ -270,6 +270,9 @@ X-Xss-Protection: 0
       "instance": "test-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],

@@ -274,6 +274,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sqlserver-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyEventProcessingLogin##",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "disabled": true
@@ -285,6 +288,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sqlserver-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyTsqlExecutionLogin##",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "disabled": true
@@ -296,6 +302,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-sqlserver-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "sqlserver",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "serverRoles": [

@@ -22,11 +22,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked sql service.
 type MockService struct {
@@ -39,7 +44,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		storage:    storage,
 		projects:   env.Projects,

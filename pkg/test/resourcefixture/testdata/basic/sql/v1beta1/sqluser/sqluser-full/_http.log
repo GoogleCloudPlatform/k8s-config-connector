@@ -1,4 +1,4 @@
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -32,10 +32,10 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "databaseVersion": "MYSQL_5_7",
+  "databaseVersion": "MYSQL_8_0",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "name": "sqlinstance-${uniqueId}",
   "region": "us-central1",
   "settings": {
     "activationPolicy": "ALWAYS",
@@ -48,14 +48,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
-    "locationPreference": {
-      "kind": "sql#locationPreference",
-      "zone": "us-central1-a"
-    },
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -80,8 +76,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -110,15 +106,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -133,10 +129,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -153,18 +149,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -205,7 +201,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -214,11 +210,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -248,11 +239,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -289,7 +275,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -307,7 +293,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
+      "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
       "passwordPolicy": {
@@ -321,7 +307,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -343,110 +329,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Not Found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Not Found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "charset": "utf8",
-  "instance": "sqlinstance-sample-${uniqueId}",
-  "name": "sqldatabase-sample-${uniqueId}"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "CREATE_DATABASE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "charset": "utf8",
-  "collation": "utf8_general_ci",
-  "etag": "abcdef0123A=",
-  "instance": "sqlinstance-sample-${uniqueId}",
-  "kind": "sql#database",
-  "name": "sqldatabase-sample-${uniqueId}",
-  "project": "${projectId}",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -465,7 +356,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -480,10 +371,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -500,18 +391,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -552,7 +443,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -561,11 +452,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -595,11 +481,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -636,15 +517,21 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "host": "10.1.2.3",
-  "instance": "sqlinstance-sample-${uniqueId}",
+  "instance": "sqlinstance-${uniqueId}",
   "name": "sqluser-${uniqueId}",
-  "password": "cGFzc3dvcmQ="
+  "password": "cGFzc3dvcmQ=",
+  "passwordPolicy": {
+    "allowedFailedAttempts": 10,
+    "enableFailedAttemptsCheck": true,
+    "enablePasswordVerification": true,
+    "passwordExpirationDuration": "2592000s"
+  }
 }
 
 200 OK
@@ -666,15 +553,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -692,11 +579,17 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
+      "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 10,
+        "enableFailedAttemptsCheck": true,
+        "enablePasswordVerification": true,
+        "passwordExpirationDuration": "2592000s",
+        "status": {
+          "passwordExpirationTime": "2025-06-19T01:02:03Z"
+        }
       },
       "project": "${projectId}"
     }
@@ -706,7 +599,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -721,10 +614,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -741,18 +634,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -793,7 +686,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -802,11 +695,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -836,11 +724,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -877,7 +760,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -895,11 +778,17 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
+      "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 10,
+        "enableFailedAttemptsCheck": true,
+        "enablePasswordVerification": true,
+        "passwordExpirationDuration": "2592000s",
+        "status": {
+          "passwordExpirationTime": "2025-06-19T01:02:03Z"
+        }
       },
       "project": "${projectId}"
     }
@@ -909,7 +798,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -924,10 +813,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -944,18 +833,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -996,7 +885,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1005,11 +894,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -1039,11 +923,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -1080,98 +959,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
-
-{
-  "cloudSql": {
-    "credential": {
-      "password": "cGFzc3dvcmQ=",
-      "username": "sqluser-${uniqueId}"
-    },
-    "database": "sqldatabase-sample-${uniqueId}",
-    "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
-    "type": 2
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cloudSql": {
-    "database": "sqldatabase-sample-${uniqueId}",
-    "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
-    "serviceAccountId": "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com",
-    "type": 2
-  },
-  "creationTime": "123456789",
-  "hasCredential": true,
-  "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
-}
-
----
-
-GET https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "cloudSql": {
-    "database": "sqldatabase-sample-${uniqueId}",
-    "instanceId": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
-    "serviceAccountId": "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com",
-    "type": 2
-  },
-  "creationTime": "123456789",
-  "hasCredential": true,
-  "lastModifiedTime": "123456789",
-  "name": "projects/${projectNumber}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be"
-}
-
----
-
-DELETE https://bigqueryconnection.googleapis.com/v1/projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconnections%2F71389360-831c-431d-8975-837aee2153be
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1189,11 +977,17 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-sample-${uniqueId}",
+      "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "passwordPolicy": {
-        "status": {}
+        "allowedFailedAttempts": 10,
+        "enableFailedAttemptsCheck": true,
+        "enablePasswordVerification": true,
+        "passwordExpirationDuration": "2592000s",
+        "status": {
+          "passwordExpirationTime": "2025-06-19T01:02:03Z"
+        }
       },
       "project": "${projectId}"
     }
@@ -1203,7 +997,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1218,10 +1012,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -1238,18 +1032,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1290,7 +1084,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1299,11 +1093,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -1333,11 +1122,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -1374,8 +1158,15 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/users?alt=json&host=foo&name=sqluser-${uniqueId}&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&host=%25&name=sqluser-${uniqueId}&prettyPrint=false
+Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "instance": "sqlinstance-${uniqueId}",
+  "name": "sqluser-${uniqueId}",
+  "password": "dXBkYXRlZFBhc3N3b3Jk"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1392,75 +1183,19 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
-  "operationType": "DELETE_USER",
+  "operationType": "UPDATE_USER",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects//instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "charset": "utf8",
-  "collation": "utf8_general_ci",
-  "etag": "abcdef0123A=",
-  "instance": "sqlinstance-sample-${uniqueId}",
-  "kind": "sql#database",
-  "name": "sqldatabase-sample-${uniqueId}",
-  "project": "${projectId}",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}"
-}
-
----
-
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE_DATABASE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
-}
-
----
-
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1474,24 +1209,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "sql#operation",
-  "name": "${operationID}",
-  "operationType": "DELETE_DATABASE",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}/databases/sqldatabase-sample-${uniqueId}",
-  "targetProject": "${projectId}",
-  "user": "user@example.com"
+  "kind": "sql#usersList"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1505,10 +1229,10 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_5_7_44",
-  "databaseVersion": "MYSQL_5_7",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
@@ -1525,18 +1249,18 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "name": "sqlinstance-sample-${uniqueId}",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-sample-${uniqueId}",
+    "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
@@ -1577,7 +1301,7 @@ X-Xss-Protection: 0
     "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
-    "tier": "db-custom-1-3840",
+    "tier": "db-f1-micro",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1586,11 +1310,6 @@ X-Xss-Protection: 0
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
-    {
-      "displayName": "MySQL 8.0",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0"
-    },
     {
       "displayName": "MySQL 8.0.18",
       "majorVersion": "MYSQL_8_0",
@@ -1620,11 +1339,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.30",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.31",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_31"
     },
     {
       "displayName": "MySQL 8.0.32",
@@ -1661,7 +1375,187 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}/users?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "sql#usersList"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseVersion": "MYSQL_8_0",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "PRIMARY"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "name": "sqlinstance-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": true,
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-a"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-f1-micro",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
+}
+
+---
+
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1681,8 +1575,8 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -1711,8 +1605,8 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-sample-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetId": "sqlinstance-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
