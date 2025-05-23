@@ -1,4 +1,4 @@
-apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
 kind: VertexAIMetadataStore
 metadata:
   finalizers:
