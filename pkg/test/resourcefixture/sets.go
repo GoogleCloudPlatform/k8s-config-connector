@@ -114,6 +114,9 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"ManagedKafkaCluster",
 		"ManagedKafkaTopic",
 		"IAPSettings",
+		"SpeechCustomClass",
+		"SpeechPhraseSet",
+		"SpeechRecognizer",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
