@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -51,7 +51,7 @@ func (r *AccessPolicyRef) NormalizedExternal(ctx context.Context, reader client.
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseAccessPolicyExternal(r.External); err != nil {
+		if _, err := ParseAccessPolicyExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
