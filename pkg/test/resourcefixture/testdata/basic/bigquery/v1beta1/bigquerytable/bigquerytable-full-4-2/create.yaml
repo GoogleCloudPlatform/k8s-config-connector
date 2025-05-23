@@ -82,7 +82,7 @@ spec:
     query: SELECT COUNT(*) FROM `my-project.my_dataset.my_source_table`
     enableRefresh: true
     refreshIntervalMs: 1800000 # 30 minutes
-  maxStaleness: "INTERVAL 1 HOUR"
+  maxStaleness: "INTERVAL 5 MINUTES"
   tableConstraints:
     primaryKey:
       columns:
