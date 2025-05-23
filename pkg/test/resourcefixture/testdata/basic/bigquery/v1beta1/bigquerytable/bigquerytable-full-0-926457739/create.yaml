@@ -1,0 +1,129 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-0-926457739
+  labels:
+    label-one: "value-one"
+spec:
+  resourceID: bigquerytable-0-926457739
+  friendlyName: "BigQueryTable Full"
+  description: "A full BigQueryTable definition for testing"
+  datasetRef:
+    name: bigquerydataset-0-926457739 # Name of the BigQueryDataset
+  schema: >
+    [
+      {"name": "name", "type": "STRING", "mode": "REQUIRED"},
+      {"name": "age", "type": "INTEGER"},
+      {"name": "score", "type": "FLOAT"},
+      {"name": "is_active", "type": "BOOLEAN"},
+      {"name": "created_at", "type": "TIMESTAMP"}
+    ]
+  timePartitioning:
+    type: DAY
+    expirationMs: 86400000 # 1 day
+    field: "created_at"
+  rangePartitioning:
+    field: "age"
+    range:
+      start: 0
+      end: 100
+      interval: 10
+  clustering:
+    - "name"
+    - "is_active"
+  requirePartitionFilter: false
+  expirationTime: 1735689600000 # Example: 2025-01-01T00:00:00Z
+  labels:
+    environment: "test"
+    billing-code: "tst-123"
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-0-926457739
+  externalDataConfiguration:
+    autodetect: true
+    sourceFormat: CSV
+    sourceUris:
+      - "gs://gcs-bucket-0-926457739/external_data.csv"
+    compression: GZIP
+    ignoreUnknownValues: true
+    maxBadRecords: 5
+    csvOptions:
+      quote: '"'
+      allowJaggedRows: true
+      allowQuotedNewlines: true
+      encoding: UTF-8
+      fieldDelimiter: ","
+      skipLeadingRows: 1
+    # Using a schema for external data when autodetect is true might be redundant
+    # but including for field coverage if needed. Generally, one or the other.
+    schema: >
+      [
+        {"name": "external_col1", "type": "STRING"},
+        {"name": "external_col2", "type": "INTEGER"}
+      ]
+    connectionId: "projects/project-id/locations/us-central1/connections/connection-0-926457739"
+    avroOptions:
+      useAvroLogicalTypes: true
+    googleSheetsOptions:
+      skipLeadingRows: 1
+      range: "Sheet1!A1:Z100"
+    hivePartitioningOptions:
+      mode: "AUTO"
+      sourceUriPrefix: "gs://gcs-bucket-0-926457739/hive_data/"
+      requirePartitionFilter: false # For external hive partitioned tables
+    jsonOptions:
+      encoding: "UTF-8"
+    parquetOptions:
+      enumAsString: true
+      enableListInference: true
+    metadataCacheMode: "AUTOMATIC"
+    # objectMetadata and sourceFormat are typically mutually exclusive.
+    # Only one should be used. Commenting out objectMetadata for a valid CSV external table.
+    # objectMetadata: "SIMPLE"
+    referenceFileSchemaUri: "gs://gcs-bucket-0-926457739/schema.json"
+    fileSetSpecType: "FILE_SYSTEM_MATCH"
+
+  # View and MaterializedView are mutually exclusive with each other,
+  # and with schema/externalDataConfiguration for a standard table.
+  # Choose one type of table. For a "full" example, we might show one.
+  # Here, we are defining a standard table with schema, so view/materializedView are commented out.
+
+  # view:
+  #   query: "SELECT name, age FROM \`project-id.dataset-id.source_table\` WHERE age > 18"
+  #   useLegacySql: false
+
+  # materializedView:
+  #   query: "SELECT name, COUNT(*) as count FROM \`project-id.dataset-id.base_table\` GROUP BY name"
+  #   enableRefresh: true
+  #   refreshIntervalMs: 1800000 # 30 minutes
+  #   allowNonIncrementalDefinition: false
+
+  tableConstraints:
+    primaryKey:
+      columns:
+        - "name"
+    foreignKeys:
+      - name: "fk_example_constraint"
+        columnReferences:
+          referencingColumn: "name" # Assuming 'name' in this table references 'parent_name' in another
+          referencedColumn: "parent_name"
+        referencedTable:
+          projectId: "${projectId}" # This will be substituted by test framework
+          datasetId: "referenced_dataset_0_926457739"
+          tableId: "parent_table_0_926457739"
+  maxStaleness: "INTERVAL 1 HOUR"
+

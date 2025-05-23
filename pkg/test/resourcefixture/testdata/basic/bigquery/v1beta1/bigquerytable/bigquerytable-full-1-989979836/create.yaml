@@ -1,0 +1,86 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    label_one: "value_one"
+spec:
+  friendlyName: BigQuery Table
+  description: "A BigQuery table."
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  timePartitioning:
+    type: DAY
+    expirationMs: 2592000000 # 30 days
+    field: date_column
+  rangePartitioning:
+    field: int_column
+    range:
+      start: 0
+      end: 1000
+      interval: 100
+  clustering:
+    - string_column
+    - bool_column
+  schema: >
+    [
+      {"name": "string_column", "type": "STRING", "mode": "NULLABLE", "description": "String column"},
+      {"name": "int_column", "type": "INTEGER", "mode": "REQUIRED", "description": "Integer column"},
+      {"name": "date_column", "type": "DATE", "mode": "NULLABLE", "description": "Date column"},
+      {"name": "bool_column", "type": "BOOLEAN", "mode": "NULLABLE", "description": "Boolean column"}
+    ]
+  expirationTime: 1609459200000 # 2021-01-01 00:00:00 UTC
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmskey-${uniqueId}
+  externalDataConfiguration:
+    autodetect: true
+    sourceUris:
+      - "gs://test-bucket-${uniqueId}/path/*"
+    sourceFormat: CSV
+    csvOptions:
+      quote: '"'
+      allowJaggedRows: false
+      allowQuotedNewlines: false
+      encoding: UTF-8
+      fieldDelimiter: ","
+      skipLeadingRows: 0
+    compression: NONE
+    ignoreUnknownValues: false
+    maxBadRecords: 0
+  view:
+    query: "SELECT * FROM another_table-${uniqueId}"
+    useLegacySql: false
+  materializedView:
+    query: "SELECT COUNT(*) FROM source_table-${uniqueId}"
+    enableRefresh: true
+    refreshIntervalMs: 1800000 # 30 minutes
+  requirePartitionFilter: true
+  maxStaleness: "INTERVAL 1 HOUR"
+  tableConstraints:
+    primaryKey:
+      columns:
+        - string_column
+    foreignKeys:
+      - name: fk_name
+        columnReferences:
+          referencingColumn: string_column
+          referencedColumn: primary_key_column
+        referencedTable:
+          projectId: ${projectId}
+          datasetId: another_dataset-${uniqueId}
+          tableId: another_table-${uniqueId}
