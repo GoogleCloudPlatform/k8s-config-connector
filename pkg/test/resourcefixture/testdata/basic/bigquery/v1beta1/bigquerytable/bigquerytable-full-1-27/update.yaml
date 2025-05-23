@@ -1,0 +1,107 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    labelkey: updatedlabelvalue
+spec:
+  resourceID: bigquerytable-${uniqueId}
+  friendlyName: Updated BigQuery Table
+  description: An updated BigQuery table.
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  timePartitioning:
+    type: DAY
+    expirationMs: 3000000000 # Updated expiration
+    field: dateField # Immutable
+  rangePartitioning:
+    field: intField # Immutable if set
+    range:
+      start: 0 # Immutable
+      end: 100 # Not explicitly immutable, but changing range partitioning definition can be complex. Kept same.
+      interval: 20 # Updated interval
+  clustering:
+    - stringField1 # Updated clustering
+  schema: >
+    [
+      {"name": "stringField1", "type": "STRING", "mode": "NULLABLE", "description": "String Field 1"},
+      {"name": "stringField2", "type": "STRING", "mode": "NULLABLE", "description": "String Field 2"},
+      {"name": "dateField", "type": "DATE", "mode": "NULLABLE", "description": "Date Field"},
+      {"name": "intField", "type": "INTEGER", "mode": "NULLABLE", "description": "Integer Field"},
+      {"name": "newFloatField", "type": "FLOAT", "mode": "NULLABLE", "description": "New Float Field"}
+    ]
+  expirationTime: 1700000000000 # Updated expiration time
+  requirePartitionFilter: false # Updated value
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}-updated # Updated KMS key
+  externalDataConfiguration:
+    autodetect: false # Updated autodetect
+    sourceUris:
+      - gs://bucket/newpath # Updated source URIs
+    sourceFormat: CSV
+    compression: NONE # Updated compression
+    ignoreUnknownValues: false # Updated ignoreUnknownValues
+    maxBadRecords: 5 # Updated maxBadRecords
+    csvOptions:
+      quote: "'" # Updated quote
+      allowJaggedRows: true # Updated allowJaggedRows
+      allowQuotedNewlines: true # Updated allowQuotedNewlines
+      encoding: ISO-8859-1 # Updated encoding
+      fieldDelimiter: ";" # Updated fieldDelimiter
+      skipLeadingRows: 1 # Updated skipLeadingRows
+    hivePartitioningOptions:
+      mode: CUSTOM # Updated mode
+      sourceUriPrefix: gs://bucket/new_path_to_table/{dt:DATE} # Updated sourceUriPrefix
+      requirePartitionFilter: true # Updated requirePartitionFilter
+    referenceFileSchemaUri: gs://bucket/new_schema.json # Updated referenceFileSchemaUri
+    connectionId: "new_project.new_location.new_connection" # Updated connectionId
+    avroOptions:
+      useAvroLogicalTypes: false # Updated avroOptions
+    googleSheetsOptions:
+      skipLeadingRows: 2 # Updated skipLeadingRows
+      range: "sheet2!C1:D30" # Updated range
+    jsonOptions:
+      encoding: ISO-8859-1 # Updated encoding
+    parquetOptions:
+      enumAsString: false # Updated enumAsString
+      enableListInference: false # Updated enableListInference
+    metadataCacheMode: MANUAL # Updated metadataCacheMode
+    objectMetadata: "" # Cleared objectMetadata as it might conflict with other externalDataConfiguration settings
+    fileSetSpecType: FILE_SYSTEM_MATCH # Kept as is, can be updated if needed
+  view:
+    query: SELECT col1, col2 FROM another_table_v2 # Updated query
+    useLegacySql: true # Updated useLegacySql
+  materializedView:
+    query: SELECT MAX(value) FROM base_table_v2 # Updated query
+    enableRefresh: false # Updated enableRefresh
+    refreshIntervalMs: 3600000 # Updated refreshIntervalMs (1 hour)
+    allowNonIncrementalDefinition: true # Updated allowNonIncrementalDefinition
+  tableConstraints:
+    primaryKey:
+      columns: # Assuming primary key itself cannot be easily changed, keeping columns.
+        - stringField1
+    foreignKeys:
+      - name: fk_name_updated # Updated foreign key name
+        referencedTable:
+          projectId: ${projectId}
+          datasetId: bigquerydataset-${uniqueId} # Assuming referenced table fixed for simplicity
+          tableId: bigquerytable-${uniqueId}    # Assuming referenced table fixed for simplicity
+        columnReferences:
+          referencingColumn: stringField2
+          referencedColumn: stringField1
+  maxStaleness: "INTERVAL 2 HOUR" # Updated maxStaleness

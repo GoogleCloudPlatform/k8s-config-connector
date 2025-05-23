@@ -1,0 +1,96 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    update-scenario: "true"
+    environment: "testing"
+spec:
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  description: An updated user-friendly description of this table.
+  friendlyName: "My Updated BigQuery Table"
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}-updated
+    kmsKeyVersion: kmsKeyVersion-${uniqueId}-updated
+  expirationTime: 1735689600000 # Example: Jan 1, 2025 00:00:00 GMT
+  externalDataConfiguration:
+    autodetect: false # Changed from true
+    avroOptions:
+      useAvroLogicalTypes: false # Changed from true
+    compression: NONE # Changed from GZIP
+    connectionId: connection-${uniqueId}-updated
+    csvOptions:
+      allowJaggedRows: false # Changed from true
+      allowQuotedNewlines: false # Changed from true
+      encoding: ISO-8859-1 # Changed from UTF-8
+      fieldDelimiter: '|' # Changed from ','
+      quote: "'" # Changed from '"'
+      skipLeadingRows: 1 # Changed from 0
+    fileSetSpecType: FILE_SET_SPEC_TYPE_NEW_LINE_DELIMITED_MANIFEST # Changed
+    googleSheetsOptions:
+      range: sheet_updated!A1:C30 # Changed
+      skipLeadingRows: 1 # Changed from 0
+    hivePartitioningOptions:
+      mode: STRINGS # Changed from AUTO
+      requirePartitionFilter: false # Changed from true
+      sourceUriPrefix: gs://updated-bucket/new_path_to_table/ # Changed
+    ignoreUnknownValues: false # Changed from true
+    jsonOptions:
+      encoding: ISO-8859-1 # Changed from UTF-8
+    maxBadRecords: 10 # Changed from 0
+    metadataCacheMode: MANUAL # Changed from AUTOMATIC
+    objectMetadata: SIMPLE # Kept as is, only SIMPLE is supported
+    parquetOptions:
+      enableListInference: false # Changed from true
+      enumAsString: false # Changed from true
+    referenceFileSchemaUri: gs://updated-bucket/new_path_to_schema_file # Changed
+    schema: |- # Changed schema
+      [
+        {"name": "name", "type": "STRING"},
+        {"name": "age", "type": "INTEGER"},
+        {"name": "city", "type": "STRING"}
+      ]
+    sourceUris: # Changed URIs
+      - gs://updated-bucket/new_path_to_data_file_1
+      - gs://updated-bucket/new_path_to_data_file_2
+  materializedView:
+    allowNonIncrementalDefinition: false # Changed from true
+    query: SELECT SUM(age) FROM bigquerydataset-${uniqueId}.bigquerytable-${uniqueId} # Changed query
+    refreshIntervalMs: 3600000 # Changed from 1800000
+    enableRefresh: false # Added new mutable field
+  maxStaleness: "0-0 0 1:0:0.0" # Changed value (1 hour)
+  rangePartitioning:
+    field: age # Kept as is (assuming valid & immutable part of partitioning config)
+    range:
+      end: 200 # Changed from 100
+      interval: 20 # Changed from 10
+      start: 0 # Kept as is (immutable)
+  view:
+    query: SELECT name, age FROM bigquerydataset-${uniqueId}.bigquerytable-${uniqueId} WHERE age > 21 # Changed query
+    useLegacySql: true # Changed from false
+  clustering: # Added new field
+    - name # Assuming 'name' is a valid column from the schema
+  requirePartitionFilter: true # Added top-level field
+  timePartitioning: # Added new field
+    type: DAY
+    expirationMs: 2592000000 # 30 days in ms
+  tableConstraints: # Added new field
+    primaryKey:
+      columns:
+        - "name"
