@@ -1,0 +1,107 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    labelkey: labelvalue
+spec:
+  resourceID: bigquerytable-${uniqueId}
+  friendlyName: BigQuery Table
+  description: A BigQuery table.
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  timePartitioning:
+    type: DAY
+    expirationMs: 2592000000 # 30 days
+    field: dateField
+  rangePartitioning:
+    field: intField
+    range:
+      start: 0
+      end: 100
+      interval: 10
+  clustering:
+    - stringField1
+    - stringField2
+  schema: >
+    [
+      {"name": "stringField1", "type": "STRING", "mode": "NULLABLE", "description": "String Field 1"},
+      {"name": "stringField2", "type": "STRING", "mode": "NULLABLE", "description": "String Field 2"},
+      {"name": "dateField", "type": "DATE", "mode": "NULLABLE", "description": "Date Field"},
+      {"name": "intField", "type": "INTEGER", "mode": "NULLABLE", "description": "Integer Field"}
+    ]
+  expirationTime: 1600000000000
+  requirePartitionFilter: true
+  encryptionConfiguration:
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
+  externalDataConfiguration:
+    autodetect: true
+    sourceUris:
+      - gs://bucket/path
+    sourceFormat: CSV
+    compression: GZIP
+    ignoreUnknownValues: true
+    maxBadRecords: 0
+    csvOptions:
+      quote: '"'
+      allowJaggedRows: false
+      allowQuotedNewlines: false
+      encoding: UTF-8
+      fieldDelimiter: ","
+      skipLeadingRows: 0
+    hivePartitioningOptions:
+      mode: AUTO
+      sourceUriPrefix: gs://bucket/path_to_table
+      requirePartitionFilter: false
+    referenceFileSchemaUri: gs://bucket/schema.json
+    connectionId: "project.location.connection"
+    avroOptions:
+      useAvroLogicalTypes: true
+    googleSheetsOptions:
+      skipLeadingRows: 1
+      range: "sheet1!A1:B20"
+    jsonOptions:
+      encoding: UTF-8
+    parquetOptions:
+      enumAsString: true
+      enableListInference: true
+    metadataCacheMode: AUTOMATIC
+    objectMetadata: SIMPLE
+    fileSetSpecType: FILE_SYSTEM_MATCH
+  view:
+    query: SELECT * FROM another_table
+    useLegacySql: false
+  materializedView:
+    query: SELECT COUNT(*) FROM base_table
+    enableRefresh: true
+    refreshIntervalMs: 1800000 # 30 minutes
+    allowNonIncrementalDefinition: false
+  tableConstraints:
+    primaryKey:
+      columns:
+        - stringField1
+    foreignKeys:
+      - name: fk_name
+        referencedTable:
+          projectId: ${projectId}
+          datasetId: bigquerydataset-${uniqueId}
+          tableId: bigquerytable-${uniqueId}
+        columnReferences:
+          referencingColumn: stringField2
+          referencedColumn: stringField1
+  maxStaleness: "INTERVAL 1 HOUR"
