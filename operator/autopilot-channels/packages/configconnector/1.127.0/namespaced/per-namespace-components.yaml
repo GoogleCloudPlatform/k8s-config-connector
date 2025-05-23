@@ -131,7 +131,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.129.2
+    cnrm.cloud.google.com/version: 1.127.0
   labels:
     cnrm.cloud.google.com/component: cnrm-controller-manager
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
@@ -148,7 +148,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.129.2
+        cnrm.cloud.google.com/version: 1.127.0
       labels:
         cnrm.cloud.google.com/component: cnrm-controller-manager
         cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
@@ -160,7 +160,7 @@ spec:
         - --prometheus-scrape-endpoint=:8888
         command:
         - /configconnector/manager
-        image: gcr.io/gke-release/cnrm/controller:1.129.2
+        image: gcr.io/gke-release/cnrm/controller:1.127.0
         imagePullPolicy: Always
         name: manager
         ports:

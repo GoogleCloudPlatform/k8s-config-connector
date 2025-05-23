@@ -131,7 +131,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.129.2
+    cnrm.cloud.google.com/version: 1.127.0
   labels:
     cnrm.cloud.google.com/component: cnrm-controller-manager
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
@@ -148,7 +148,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.129.2
+        cnrm.cloud.google.com/version: 1.127.0
       labels:
         cnrm.cloud.google.com/component: cnrm-controller-manager
         cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
@@ -160,7 +160,7 @@ spec:
         - --prometheus-scrape-endpoint=:8888
         command:
         - /configconnector/manager
-        image: gcr.io/gke-release/cnrm/controller:1.129.2
+        image: gcr.io/gke-release/cnrm/controller:1.127.0
         imagePullPolicy: Always
         name: manager
         ports:
@@ -182,6 +182,24 @@ spec:
           privileged: false
           runAsNonRoot: true
           runAsUser: 1000
+      - command:
+        - /monitor
+        - --source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]=$(POD_NAMESPACE)&customLabels[pod_name]=$(POD_NAME)
+        - --stackdriver-prefix=kubernetes.io/internal/addons
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: gcr.io/gke-release/prometheus-to-sd:v0.11.12-gke.11
+        name: prom-to-sd
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
       enableServiceLinks: false
       serviceAccountName: cnrm-controller-manager-${NAMESPACE?}
       terminationGracePeriodSeconds: 10
