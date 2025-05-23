@@ -64,30 +64,108 @@ func FuzzCloudIdentityGroupSpec(f *testing.F) {
 	})
 }
 
-func FuzzCloudIdentityGroupObservedState(f *testing.F) {
+func FuzzCloudIdentityGroupStatus(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		stream := rand.New(rand.NewSource(seed))
 		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
 
 		// To KRM
-		k1 := &krm.CloudIdentityGroupObservedState{}
+		k1 := &krm.CloudIdentityGroupStatus{}
 		filler.Fill(t, k1)
 
 		// To API
 		ctx := &direct.MapContext{}
-		apiObj := CloudIdentityGroupObservedState_ToAPI(ctx, k1)
+		apiObj := CloudIdentityGroupStatus_ToAPI(ctx, k1)
 		if ctx.Err() != nil {
 			t.Fatalf("error converting from KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
 		// Back to KRM
-		k2 := CloudIdentityGroupObservedState_FromAPI(ctx, apiObj)
+		k2 := CloudIdentityGroupStatus_FromAPI(ctx, apiObj)
 		if ctx.Err() != nil {
 			t.Fatalf("error converting from API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
 		}
 
+		opts := cmp.Options{
+			cmpopts.IgnoreFields(krm.CloudIdentityGroupStatus{}, "CommonStatus"),
+		}
+
 		// Compare
-		if diff := cmp.Diff(k1, k2); diff != "" {
+		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+
+	})
+}
+
+func FuzzCloudIdentityMembershipSpec(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
+
+		// To KRM
+		k1 := &krm.CloudIdentityMembershipSpec{}
+		filler.Fill(t, k1)
+
+		// To API
+		ctx := &direct.MapContext{}
+		apiObj := CloudIdentityMembershipSpec_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, k1))
+		}
+
+		// Back to KRM
+		k2 := CloudIdentityMembershipSpec_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
+		}
+
+		opts := cmp.Options{
+			cmpopts.IgnoreFields(krm.CloudIdentityMembershipSpec{}, "ResourceID"),
+			cmpopts.IgnoreFields(krm.CloudIdentityMembershipSpec{}, "GroupRef"), // not an api field
+		}
+
+		// Compare
+		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
+			t.Logf("k1 = %v", k1)
+			t.Logf("k2 = %v", k2)
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+
+	})
+}
+
+func FuzzCloudIdentityMembershipStatus(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		stream := rand.New(rand.NewSource(seed))
+		filler := fuzz.NewRandomFiller(&fuzz.FillerConfig{Stream: stream})
+
+		// To KRM
+		k1 := &krm.CloudIdentityMembershipStatus{}
+		filler.Fill(t, k1)
+
+		// To API
+		ctx := &direct.MapContext{}
+		apiObj := CloudIdentityMembershipStatus_ToAPI(ctx, k1)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting from KRM to API obj: %v \n KRM: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
+		}
+
+		// Back to KRM
+		k2 := CloudIdentityMembershipStatus_FromAPI(ctx, apiObj)
+		if ctx.Err() != nil {
+			t.Fatalf("error converting from API obj to KRM: %v \n API: %s", ctx.Err(), test.PrettyPrintJSON(t, apiObj))
+		}
+
+		opts := cmp.Options{
+			cmpopts.IgnoreFields(krm.CloudIdentityMembershipStatus{}, "CommonStatus"),
+			cmpopts.IgnoreFields(krm.CloudIdentityMembershipStatus{}, "DisplayName"), // not an api field
+		}
+
+		// Compare
+		if diff := cmp.Diff(k1, k2, opts...); diff != "" {
 			t.Logf("k1 = %v", k1)
 			t.Logf("k2 = %v", k2)
 			t.Errorf("roundtrip failed; diff:\n%s", diff)

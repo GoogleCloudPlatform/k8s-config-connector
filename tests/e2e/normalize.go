@@ -498,6 +498,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, groupId, "${groupID}")
 				})
+			case "memberships":
+				// e.g. "groups/194f77d03ad/memberships/196a3927214"
+				if n >= 3 {
+					groupId := tokens[len(tokens)-3]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, groupId, "${groupID}")
+					})
+					membershipId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, membershipId, "${membershipID}")
+					})
+				}
 			}
 		}
 
