@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
@@ -19,11 +20,19 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
----
-apiVersion: kms.cnrm.cloud.google.com/v1beta1
-kind: KMSCryptoKey
-metadata:
-  name: kmscryptokey-${uniqueId}
-spec:
-  keyRingRef:
-    name: kmskeyring-${uniqueId}
+  resourceID: bigquerydataset${uniqueId}
+#---
+#apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#kind: KMSKeyRing
+#metadata:
+#  name: kmskeyring-${uniqueId}
+#spec:
+#  location: us-central1
+#---
+#apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#kind: KMSCryptoKey
+#metadata:
+#  name: kmscryptokey-${uniqueId}
+#spec:
+#  keyRingRef:
+#    name: kmskeyring-${uniqueId}
