@@ -158,7 +158,7 @@ func (in *WorkflowsWorkflowObservedState) DeepCopyInto(out *WorkflowsWorkflowObs
 	}
 	if in.AllKMSKeys != nil {
 		in, out := &in.AllKMSKeys, &out.AllKMSKeys
-		*out = make([]refsv1beta1.KMSCryptoKeyRef, len(*in))
+		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
 	if in.AllKMSKeysVersions != nil {

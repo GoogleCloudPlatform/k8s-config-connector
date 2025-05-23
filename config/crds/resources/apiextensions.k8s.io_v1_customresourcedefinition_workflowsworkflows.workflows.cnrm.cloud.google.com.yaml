@@ -520,32 +520,7 @@ spec:
                     description: Output only. A list of all KMS crypto keys used to
                       encrypt or decrypt the data associated with the workflow.
                     items:
-                      oneOf:
-                      - not:
-                          required:
-                          - external
-                        required:
-                        - name
-                      - not:
-                          anyOf:
-                          - required:
-                            - name
-                          - required:
-                            - namespace
-                        required:
-                        - external
-                      properties:
-                        external:
-                          description: A reference to an externally managed KMSCryptoKey.
-                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
-                          type: string
-                        name:
-                          description: The `name` of a `KMSCryptoKey` resource.
-                          type: string
-                        namespace:
-                          description: The `namespace` of a `KMSCryptoKey` resource.
-                          type: string
-                      type: object
+                      type: string
                     type: array
                   allKMSKeysVersions:
                     description: Output only. A list of all KMS crypto key versions
