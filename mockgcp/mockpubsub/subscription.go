@@ -64,10 +64,30 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 		}
 	}()
 
-	return obj, nil
+	ret := ProtoClone(obj)
+	// If the original subscription contains PushConfig then add the version attribute.
+	if req.PushConfig != nil {
+		if ret.PushConfig.Attributes == nil {
+			ret.PushConfig.Attributes = make(map[string]string)
+		}
+		if ret.PushConfig.Attributes["x-goog-version"] == "" {
+			ret.PushConfig.Attributes["x-goog-version"] = "v1"
+		}
+	} else {
+		ret.PushConfig = &pb.PushConfig{}
+	}
+
+	return ret, nil
 }
 
 func (s *subscriberService) populateDefaultsForSubscription(obj *pb.Subscription) {
+	if obj.BigqueryConfig != nil {
+		obj.BigqueryConfig.State = pb.BigQueryConfig_ACTIVE
+	}
+	if obj.CloudStorageConfig != nil {
+		obj.CloudStorageConfig.State = pb.CloudStorageConfig_ACTIVE
+	}
+
 	if obj.ExpirationPolicy == nil {
 		obj.ExpirationPolicy = &pb.ExpirationPolicy{
 			Ttl: &durationpb.Duration{
@@ -79,7 +99,6 @@ func (s *subscriberService) populateDefaultsForSubscription(obj *pb.Subscription
 	if obj.PushConfig == nil {
 		obj.PushConfig = &pb.PushConfig{}
 	}
-
 }
 
 func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.UpdateSubscriptionRequest) (*pb.Subscription, error) {
@@ -106,6 +125,19 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 		updated.EnableExactlyOnceDelivery = req.GetSubscription().EnableExactlyOnceDelivery
 		updated.Labels = req.GetSubscription().Labels
 		updated.PushConfig = req.GetSubscription().PushConfig
+		updated.BigqueryConfig = req.GetSubscription().BigqueryConfig
+		updated.CloudStorageConfig = req.GetSubscription().CloudStorageConfig
+		if updated.CloudStorageConfig != nil {
+			updated.CloudStorageConfig.OutputFormat = &pb.CloudStorageConfig_TextConfig_{}
+			if updated.CloudStorageConfig.MaxDuration != nil && int64(updated.AckDeadlineSeconds) < updated.CloudStorageConfig.MaxDuration.Seconds {
+				updated.AckDeadlineSeconds = int32(updated.CloudStorageConfig.MaxDuration.Seconds)
+			}
+		}
+		updated.DeadLetterPolicy = req.GetSubscription().DeadLetterPolicy
+		updated.ExpirationPolicy = req.GetSubscription().ExpirationPolicy
+		updated.RetryPolicy = req.GetSubscription().RetryPolicy
+		updated.RetainAckedMessages = req.GetSubscription().RetainAckedMessages
+		updated.MessageRetentionDuration = req.GetSubscription().MessageRetentionDuration
 	}
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
@@ -157,6 +189,10 @@ func (s *subscriberService) GetSubscription(ctx context.Context, req *pb.GetSubs
 			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.ID)
 		}
 		return nil, err
+	}
+	// API doesn't return attributes even if it is set.
+	if obj.PushConfig != nil && obj.PushConfig.Attributes != nil {
+		obj.PushConfig.Attributes = nil
 	}
 
 	return obj, nil

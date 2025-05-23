@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,21 +11,33 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSubscription
 metadata:
-  labels:
-    label-one: "value-one"
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
   name: pubsubsubscription-${uniqueId}
 spec:
-  bigqueryConfig:
-    tableRef:
-      name: bigquerytable-1-${uniqueId}
-    useTopicSchema: false
-    writeMetadata: false
-    dropUnknownFields: true
   topicRef:
     name: pubsubtopic-${uniqueId}
+  ackDeadlineSeconds: 600
+  messageRetentionDuration: "604800s"
+  retainAckedMessages: true
+  enableMessageOrdering: true
+  filter: attributes.type = "key"
+  expirationPolicy:
+    ttl: "2592000s" # 30 days
+  retryPolicy:
+    minimumBackoff: "10s"
+    maximumBackoff: "600s"
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubtopic-${uniqueId}
+    maxDeliveryAttempts: 100
+  cloudStorageConfig:
+    bucketRef:
+      name: storagebucket-1-${uniqueId}
+    filenamePrefix: test-prefix
+    filenameSuffix: test-suffix
+    maxBytes: 10240
+    maxDuration: "600s"
+    avroConfig:
+      writeMetadata: true

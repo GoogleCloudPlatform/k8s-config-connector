@@ -11,17 +11,34 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-two
   name: pubsubsubscription-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  bigqueryConfig:
-    dropUnknownFields: false
-    tableRef:
-      name: bigquerytable-2-${uniqueId}
-    useTopicSchema: false
-    writeMetadata: false
+  ackDeadlineSeconds: 300
+  deadLetterPolicy:
+    deadLetterTopicRef:
+      name: pubsubtopic-${uniqueId}
+    maxDeliveryAttempts: 50
+  enableMessageOrdering: true
+  expirationPolicy:
+    ttl: 1296000s
+  filter: attributes.type = "key"
+  messageRetentionDuration: 302400s
+  pushConfig:
+    attributes:
+      new-attr: new-val
+      x-goog-version: v1beta2
+    noWrapper:
+      writeMetadata: false
+    oidcToken:
+      audience: https://updated.example.com/push-audience
+      serviceAccountEmail: gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    pushEndpoint: https://updated.example.com/push
   resourceID: pubsubsubscription-${uniqueId}
+  retainAckedMessages: false
+  retryPolicy:
+    maximumBackoff: 300s
+    minimumBackoff: 5s
   topicRef:
     name: pubsubtopic-${uniqueId}
 status:
