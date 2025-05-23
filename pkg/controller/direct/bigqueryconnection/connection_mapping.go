@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -161,7 +162,7 @@ func CloudSpannerPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out.UseParallelism = direct.LazyPtr(in.UseParallelism)
 	out.MaxParallelism = direct.LazyPtr(in.MaxParallelism)
 	out.DatabaseRole = direct.LazyPtr(in.DatabaseRole)
-	out.DatabaseRef = &refs.SpannerDatabaseRef{
+	out.DatabaseRef = &spannerv1beta1.SpannerDatabaseRef{
 		External: in.Database,
 	}
 	return out
