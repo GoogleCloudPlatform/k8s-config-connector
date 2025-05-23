@@ -100,6 +100,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -301,6 +302,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -465,6 +467,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
