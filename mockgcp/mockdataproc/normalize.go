@@ -16,6 +16,7 @@ package mockdataproc
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
@@ -49,4 +50,7 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			replacements.ReplaceStringValue(value, "${dataStoreClusterUUID}")
 		}
 	})
+}
+
+func (s *MockService) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, replacements mockgcpregistry.NormalizingVisitor) {
 }
