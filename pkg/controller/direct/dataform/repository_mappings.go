@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -33,7 +34,7 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
 
 	if in.GetNpmrcEnvironmentVariablesSecretVersion() != "" {
-		out.NpmrcEnvironmentVariablesSecretVersionRef = &refs.SecretManagerSecretVersionRef{
+		out.NpmrcEnvironmentVariablesSecretVersionRef = &secretmanagerv1beta1.SecretVersionRef{
 			External: in.GetNpmrcEnvironmentVariablesSecretVersion(),
 		}
 	}
@@ -80,7 +81,7 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	out.Url = in.GetUrl()
 	out.DefaultBranch = in.GetDefaultBranch()
 	if in.GetAuthenticationTokenSecretVersion() != "" {
-		out.AuthenticationTokenSecretVersionRef = &refs.SecretManagerSecretVersionRef{
+		out.AuthenticationTokenSecretVersionRef = &secretmanagerv1beta1.SecretVersionRef{
 			External: in.GetAuthenticationTokenSecretVersion(),
 		}
 	}
@@ -88,7 +89,7 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	if inSshConfig := in.GetSshAuthenticationConfig(); inSshConfig != nil {
 		out.SSHAuthenticationConfig = &krm.SSHAuthenticationConfig{}
 		if inSshConfig.GetUserPrivateKeySecretVersion() != "" {
-			out.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef = &refs.SecretManagerSecretVersionRef{
+			out.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef = &secretmanagerv1beta1.SecretVersionRef{
 				External: inSshConfig.GetUserPrivateKeySecretVersion(),
 			}
 		}

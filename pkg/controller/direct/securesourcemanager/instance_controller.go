@@ -83,11 +83,12 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	}
 
 	if obj.Spec.PrivateConfig != nil {
-		caPoolRef, err := refs.ResolvePrivateCACAPoolRef(ctx, reader, u, obj.Spec.PrivateConfig.CaPoolRef)
+		ref := obj.Spec.PrivateConfig.CaPoolRef
+		external, err := ref.NormalizedExternal(ctx, reader, u.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.PrivateConfig.CaPoolRef = caPoolRef
+		obj.Spec.PrivateConfig.CaPoolRef.External = external
 	}
 
 	mapCtx := &direct.MapContext{}

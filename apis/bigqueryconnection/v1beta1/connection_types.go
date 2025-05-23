@@ -17,6 +17,7 @@ package v1beta1
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -144,11 +145,11 @@ type CloudResourcePropertiesSpec struct{}
 type CloudSqlPropertiesSpec struct {
 	// Reference to the Cloud SQL instance ID.
 	// +required
-	InstanceRef *refv1beta1.SQLInstanceRef `json:"instanceRef,omitempty"`
+	InstanceRef *sqlv1beta1.SQLInstanceRef `json:"instanceRef,omitempty"`
 
 	// Reference to the SQL Database.
 	// +required
-	DatabaseRef *refv1beta1.SQLDatabaseRef `json:"databaseRef,omitempty"`
+	DatabaseRef *sqlv1beta1.SQLDatabaseRef `json:"databaseRef,omitempty"`
 
 	// Type of the Cloud SQL database.
 	// +required

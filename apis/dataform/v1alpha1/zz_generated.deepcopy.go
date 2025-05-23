@@ -19,7 +19,8 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -113,12 +114,12 @@ func (in *DataformRepositorySpec) DeepCopyInto(out *DataformRepositorySpec) {
 	}
 	if in.NpmrcEnvironmentVariablesSecretVersionRef != nil {
 		in, out := &in.NpmrcEnvironmentVariablesSecretVersionRef, &out.NpmrcEnvironmentVariablesSecretVersionRef
-		*out = new(v1beta1.SecretManagerSecretVersionRef)
+		*out = new(v1beta1.SecretVersionRef)
 		**out = **in
 	}
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -133,7 +134,7 @@ func (in *DataformRepositorySpec) DeepCopyInto(out *DataformRepositorySpec) {
 	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
-		*out = new(v1beta1.IAMServiceAccountRef)
+		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 }
@@ -188,7 +189,7 @@ func (in *RepositoryGitRemoteSettings) DeepCopyInto(out *RepositoryGitRemoteSett
 	*out = *in
 	if in.AuthenticationTokenSecretVersionRef != nil {
 		in, out := &in.AuthenticationTokenSecretVersionRef, &out.AuthenticationTokenSecretVersionRef
-		*out = new(v1beta1.SecretManagerSecretVersionRef)
+		*out = new(v1beta1.SecretVersionRef)
 		**out = **in
 	}
 	if in.SSHAuthenticationConfig != nil {
@@ -243,7 +244,7 @@ func (in *SSHAuthenticationConfig) DeepCopyInto(out *SSHAuthenticationConfig) {
 	*out = *in
 	if in.UserPrivateKeySecretVersionRef != nil {
 		in, out := &in.UserPrivateKeySecretVersionRef, &out.UserPrivateKeySecretVersionRef
-		*out = new(v1beta1.SecretManagerSecretVersionRef)
+		*out = new(v1beta1.SecretVersionRef)
 		**out = **in
 	}
 }

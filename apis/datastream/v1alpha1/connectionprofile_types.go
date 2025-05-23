@@ -15,8 +15,8 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -321,7 +321,7 @@ type OracleProfile struct {
 	// Optional. A reference to a Secret Manager resource name storing the Oracle
 	//  connection password. Mutually exclusive with the `secretRef` field.
 	// +kcc:proto:field=google.cloud.datastream.v1.OracleProfile.secret_manager_stored_password
-	SecreteManagerSecretRef *refsv1beta1.SecretManagerSecretRef `json:"secretManagerSecretRef,omitempty"`
+	SecreteManagerSecretRef *secretmanagerv1beta1.SecretRef `json:"secretManagerSecretRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.datastream.v1.PostgresqlProfile
