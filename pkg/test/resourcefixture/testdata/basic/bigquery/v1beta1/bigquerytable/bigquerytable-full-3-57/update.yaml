@@ -1,0 +1,82 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    label_key: "updated_label_value"
+spec:
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  description: "An updated user-friendly description of this table."
+  friendlyName: "bigquerytable-${uniqueId}-updated"
+  resourceID: "bigquerytable-${uniqueId}"
+  clustering:
+    - "updated_column1"
+    - "new_clustering_col"
+  expirationTime: 1900000000000
+  # encryptionConfiguration has been removed to test update behavior.
+  externalDataConfiguration:
+    autodetect: false
+    sourceUris:
+      - "gs://updated-bucket/new-path*"
+    sourceFormat: "JSON"
+    compression: "NONE"
+    ignoreUnknownValues: false
+    maxBadRecords: 5
+    jsonOptions:
+      encoding: "UTF-16LE"
+    hivePartitioningOptions:
+      mode: "STRINGS"
+      sourceUriPrefix: "gs://updated-bucket/new_path_to_table/"
+      requirePartitionFilter: false
+    schema: '''[{"name":"ext_field1","type":"STRING"},{"name":"ext_field2","type":"INTEGER"}]'''
+  schema: '''[{"name":"new_name_top_schema","type":"INTEGER"},{"name":"updated_post_abbr_top_schema","type":"BOOLEAN"}]'''
+  timePartitioning:
+    type: "MONTH"
+    expirationMs: 3000000000
+    field: "dateField" # Immutable once set, kept from create.yaml
+  rangePartitioning:
+    field: "anotherIntField"
+    range:
+      start: 0 # Immutable, kept from create.yaml
+      end: 2000
+      interval: 200
+  view:
+    query: "SELECT new_name FROM `new_project.new_dataset.new_table` WHERE status = 'active'"
+    useLegacySql: true
+  materializedView:
+    query: "SELECT mv_new_name, status FROM `mv_project.mv_dataset.mv_table` WHERE active_flag = true"
+    enableRefresh: false
+    refreshIntervalMs: 3600000
+  tableConstraints:
+    primaryKey:
+      columns:
+        - "new_id_col1"
+        - "new_id_col2"
+    foreignKeys:
+      - name: "fk_updated_name"
+        referencedTable:
+          projectId: "updated_project_id"
+          datasetId: "updated_dataset_id"
+          tableId: "updated_referenced_table_id"
+        columnReferences:
+          referencingColumn: "new_fk_col"
+          referencedColumn: "new_ref_pk_col"
+  requirePartitionFilter: false
+  maxStaleness: "INTERVAL 2 HOUR"
+  labels:
+    spec_label_key_updated: "spec_label_value_updated"
