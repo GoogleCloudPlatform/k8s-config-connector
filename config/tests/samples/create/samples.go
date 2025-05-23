@@ -304,7 +304,7 @@ func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	timeout := 30 * time.Minute
-	if u.GetKind() == "StorageAnywhereCache" {
+	if u.GetKind() == "StorageBucket" {
 		timeout = 100 * time.Minute
 	}
 
