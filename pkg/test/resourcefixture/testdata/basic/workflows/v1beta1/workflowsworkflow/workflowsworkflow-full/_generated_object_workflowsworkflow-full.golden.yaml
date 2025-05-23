@@ -61,6 +61,6 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     cryptoKeyVersion: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated/cryptoKeyVersions/1
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
-    revisionID: 000002-a4d
+    revisionID: revision-id-placeholder
     state: ACTIVE
     updateTime: "1970-01-01T00:00:00Z"
