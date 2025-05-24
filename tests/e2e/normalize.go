@@ -125,6 +125,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
 	visitor.replacePaths[".status.publicIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.privateIpAddress"] = "10.10.20.30"
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	visitor.replacePaths[".status.serverCaCert.cert"] = "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
 	visitor.replacePaths[".status.serverCaCert.commonName"] = "common-name"
