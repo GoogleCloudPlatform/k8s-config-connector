@@ -180,7 +180,6 @@ func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: Name
 	// MISSING: Etag
 	// MISSING: Priority
-	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
 func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileObservedState) *pb.AppProfile {
@@ -191,7 +190,6 @@ func BigtableAppProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krmv
 	// MISSING: Name
 	// MISSING: Etag
 	// MISSING: Priority
-	// MISSING: DataBoostIsolationReadOnly
 	return out
 }
 func BigtableAuthorizedViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmv1alpha1.BigtableAuthorizedViewObservedState {
