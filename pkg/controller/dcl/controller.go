@@ -204,10 +204,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		r.logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", req.NamespacedName)
 		return reconcile.Result{}, nil
 	}
-	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
-	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
-	}
+	// u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
+	// if err != nil {
+	// 	return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
+	// }
 
 	resource, err := dcl.NewResource(u, r.schema)
 	if err != nil {

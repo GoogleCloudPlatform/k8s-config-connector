@@ -26,7 +26,6 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -221,40 +220,40 @@ func ContainerTypes(containers []corekccv1alpha1.Container) []corekccv1alpha1.Co
 	return types
 }
 
-// TriggerManagedFieldsMetadata ensures that managed fields metadata is present on the given
-// resource for Server-Side Apply (SSA) compatible clusters.
-func TriggerManagedFieldsMetadata(ctx context.Context, c client.Client, u *unstructured.Unstructured) (
-	*unstructured.Unstructured, error) {
-	if len(u.GetManagedFields()) > 0 {
-		// Managed fields metadata is present already; no action necessary.
-		return u, nil
-	}
-	// Attempt an SSA patch to trigger the initial SSA metadata on the resource. Construct an
-	// unstructured object that only specified the information we care about: a temporary SSA
-	// annotation in the annotations map.
-	patchSkeleton := &unstructured.Unstructured{}
-	patchSkeleton.SetGroupVersionKind(u.GroupVersionKind())
-	patchSkeleton.SetName(u.GetName())
-	patchSkeleton.SetNamespace(u.GetNamespace())
+// // TriggerManagedFieldsMetadata ensures that managed fields metadata is present on the given
+// // resource for Server-Side Apply (SSA) compatible clusters.
+// func TriggerManagedFieldsMetadata(ctx context.Context, c client.Client, u *unstructured.Unstructured) (
+// 	*unstructured.Unstructured, error) {
+// 	if len(u.GetManagedFields()) > 0 {
+// 		// Managed fields metadata is present already; no action necessary.
+// 		return u, nil
+// 	}
+// 	// Attempt an SSA patch to trigger the initial SSA metadata on the resource. Construct an
+// 	// unstructured object that only specified the information we care about: a temporary SSA
+// 	// annotation in the annotations map.
+// 	patchSkeleton := &unstructured.Unstructured{}
+// 	patchSkeleton.SetGroupVersionKind(u.GroupVersionKind())
+// 	patchSkeleton.SetName(u.GetName())
+// 	patchSkeleton.SetNamespace(u.GetNamespace())
 
-	patchU := patchSkeleton.DeepCopy()
-	patchU.SetAnnotations(map[string]string{SupportsSSAAnnotation: "true"})
-	if err := c.Patch(ctx, patchU, client.Apply, client.FieldOwner(SupportsSSAManager)); err != nil {
-		if strings.Contains(err.Error(), string(types.MergePatchType)) {
-			// The patch was rejected due to the API server not supporting the Apply patch type.
-			// No action required.
-			return u, nil
-		}
-		return nil, fmt.Errorf("error patching SSA metadata annotation: %w", err)
-	}
-	// Now that the SSA metadata has been triggered, remove the annotation. The SSA metadata
-	// will persist.
-	patchU = patchSkeleton.DeepCopy()
-	if err := c.Patch(ctx, patchU, client.Apply, client.FieldOwner(SupportsSSAManager)); err != nil {
-		return nil, fmt.Errorf("error removing SSA metadata annotation: %w", err)
-	}
-	return patchU, nil
-}
+// 	patchU := patchSkeleton.DeepCopy()
+// 	patchU.SetAnnotations(map[string]string{SupportsSSAAnnotation: "true"})
+// 	if err := c.Patch(ctx, patchU, client.Apply, client.FieldOwner(SupportsSSAManager)); err != nil {
+// 		if strings.Contains(err.Error(), string(types.MergePatchType)) {
+// 			// The patch was rejected due to the API server not supporting the Apply patch type.
+// 			// No action required.
+// 			return u, nil
+// 		}
+// 		return nil, fmt.Errorf("error patching SSA metadata annotation: %w", err)
+// 	}
+// 	// Now that the SSA metadata has been triggered, remove the annotation. The SSA metadata
+// 	// will persist.
+// 	patchU = patchSkeleton.DeepCopy()
+// 	if err := c.Patch(ctx, patchU, client.Apply, client.FieldOwner(SupportsSSAManager)); err != nil {
+// 		return nil, fmt.Errorf("error removing SSA metadata annotation: %w", err)
+// 	}
+// 	return patchU, nil
+// }
 
 // KindWithoutServicePrefix returns the kind without the
 // service prefix (e.g. "ComputeBackendBucket => "BackendBucket").

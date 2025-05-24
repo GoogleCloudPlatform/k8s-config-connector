@@ -198,10 +198,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
-	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
-	}
+	// u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Client, u)
+	// if err != nil {
+	// 	return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
+	// }
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
