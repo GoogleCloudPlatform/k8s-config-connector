@@ -111,11 +111,13 @@ SUPPORTED_SERVICES=(
   vpcaccess.googleapis.com
   vmwareengine.googleapis.com
   workstations.googleapis.com
+  storage.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
-LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
+LONG_RUNNING_CRUD_TESTS_REGEX="storageanywherecache|\
+basicalloydbbackup|\
 basicalloydbinstance|\
 basicalloydbsecondarycluster|\
 basicalloydbsecondaryinstance|\

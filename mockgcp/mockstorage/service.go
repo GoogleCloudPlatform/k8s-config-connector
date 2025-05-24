@@ -22,6 +22,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 
+	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
+	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -61,6 +64,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
 	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
+	grpcpb.RegisterStorageControlServer(grpcServer, &StorageControlService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -70,6 +74,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterNotificationsServerHandler,
 		pb.RegisterFoldersServerHandler,
 		pb.RegisterManagedFoldersServerHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
 	)
 	if err != nil {
 		return nil, err
