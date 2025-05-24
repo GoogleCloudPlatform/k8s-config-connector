@@ -838,6 +838,18 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md">SourceRepoRepository</a></td>
 </tr>
 <tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechcustomclass.md">SpeechCustomClass</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechphraseset.md">SpeechPhraseSet</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechrecognizer.md">SpeechRecognizer</a></td>
+</tr>
+<tr>
   <td><a href="/spanner/docs/">{{spanner_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/spanner/spannerdatabase.md">SpannerDatabase</a></td>
 </tr>

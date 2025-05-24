@@ -16,7 +16,7 @@ package speech
 
 import (
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
