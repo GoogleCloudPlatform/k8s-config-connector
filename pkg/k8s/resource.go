@@ -172,7 +172,12 @@ func MarshalObjectAsUnstructured(o metav1.Object) (*unstructured.Unstructured, e
 	u := &unstructured.Unstructured{}
 	if err := json.Unmarshal(b, u); err != nil {
 		return nil, fmt.Errorf("error unmarshalling object %v to unstructured.Unstructured: %w", o.GetName(), err)
+		return nil, fmt.Errorf("error unmarshalling object %v to unstructured.Unstructured: %w", o.GetName(), err)
 	}
 	removeNilCreationTimestamp(u.Object)
 	return u, nil
+}
+
+func IsDirectByAnnotation(r *Resource) bool {
+	return r.Annotations[AlphaReconcilerAnnotation] == "direct"
 }
