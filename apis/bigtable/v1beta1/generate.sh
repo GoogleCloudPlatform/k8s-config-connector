@@ -26,6 +26,11 @@ go run . generate-types \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
   --resource BigtableAppProfile:AppProfile
 
+go run . generate-types \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1beta1 \
+  --resource BigtableLogicalView:LogicalView
+
 go run . generate-mapper \
   --service google.bigtable.admin.v2 \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1
