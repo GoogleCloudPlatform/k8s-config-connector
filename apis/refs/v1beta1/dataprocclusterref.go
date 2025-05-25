@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -90,6 +91,13 @@ func ResolveDataprocClusterRef(ctx context.Context, reader client.Reader, obj cl
 			return nil, fmt.Errorf("referenced DataprocCluster %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced DataprocCluster %v: %w", key, err)
+	}
+	resource, err := k8s.NewResource(cluster)
+	if err != nil {
+		return nil, fmt.Errorf("error converting unstructured to resource: %w", err)
+	}
+	if !k8s.IsResourceReady(resource) {
+		return nil, k8s.NewReferenceNotReadyError(cluster.GroupVersionKind(), key)
 	}
 
 	resourceID, _, err := unstructured.NestedString(cluster.Object, "spec", "resourceID")
