@@ -34,7 +34,9 @@ func StorageAnywhereCacheObservedState_FromProto(mapCtx *direct.MapContext, in *
 	out.State = direct.LazyPtr(in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.PendingUpdate = direct.LazyPtr(in.GetPendingUpdate())
+
+	pendingUpdate := in.GetPendingUpdate()
+	out.PendingUpdate = &pendingUpdate
 	return out
 }
 func StorageAnywhereCacheObservedState_ToProto(mapCtx *direct.MapContext, in *krm.StorageAnywhereCacheObservedState) *pb.AnywhereCache {

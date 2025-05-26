@@ -161,8 +161,8 @@ func (a *AnywhereCacheAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// getCondition is a helper to create a KRM condition for resource status.
-func getCondition(status v1.ConditionStatus, reason string, message string) *v1alpha1.Condition {
+// getReadyCondition is a helper to create a KRM condition for resource status.
+func getReadyCondition(status v1.ConditionStatus, reason string, message string) *v1alpha1.Condition {
 	return &v1alpha1.Condition{
 		Type:    v1alpha1.ReadyConditionType,
 		Status:  status,
@@ -210,11 +210,11 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 	status.ExternalRef = direct.LazyPtr(name)
 
 	if resource.GetState() == anywhereCacheStateCreating {
-		return createOp.UpdateStatus(ctx, status, getCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
+		return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
 	}
 
-	// dead code, but kept it here for mockgcp tests.
-	return createOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
+	// dead code, but kept it here in case if cache creation become instantaneous in future.
+	return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 }
 
 /*
@@ -243,7 +243,7 @@ func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.
 	currentState := a.GetCurrentState()
 	if currentState == anywhereCacheStateCreating {
 		log.V(2).Info("Delaying update as AnywhereCache is in 'creating' state.", "name", a.id.String())
-		return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
 	}
 
 	// Compute the metadata changes (Note: This doesn't include state changes, which are handled separately below).
@@ -279,23 +279,23 @@ func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.
 			// There are still metadata updates or a previous update is pending.
 			// These updates will be handled in the next reconcile cycle.
 			log.V(2).Info("State change completed, but metadata updates pending or in progress. Requeuing.", "name", a.id.String())
-			return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.Updating, k8s.UpdatingMessage))
+			return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage))
 		}
 		// No other updates pending.
 		log.V(2).Info("State change completed, no further updates pending.", "name", a.id.String())
-		return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 	}
 
 	// With no state changes requested, we proceed to check for metadata changes.
 	if len(paths) == 0 {
 		// Nothing remains to update for metadata.
 		log.V(2).Info("No metadata fields need update.", "name", a.id.String())
-		return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 	} else if a.actual.GetPendingUpdate() {
 		// A previous metadata update is currently in progress. Attempting another update would result in failure.
 		// Therefore, this update must be delayed until the previous request is fulfilled.
 		log.V(2).Info("Delaying metadata update, as a previous update is already in progress.", "name", a.id.String())
-		return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.Updating, k8s.UpdatingMessage))
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage))
 	} else if currentState == anywhereCacheStatePaused || currentState == anywhereCacheStateDisabled {
 		// This update cannot be delayed by requeueing, as it requires the user to modify the cache state.
 		// Therefore, an error is thrown to inform the user about the unmodifiable state.
@@ -327,11 +327,11 @@ func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.
 
 	if status.ObservedState.PendingUpdate != nil && *status.ObservedState.PendingUpdate {
 		// Metadata updates are performed via LROs, hence the status is 'Updating' instead of 'UpToDate' immediately.
-		return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.Updating, k8s.UpdatingMessage))
+		return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage))
 	}
 
 	// dead code, as updates are not instantaneous.
-	return updateOp.UpdateStatus(ctx, status, getCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
+	return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

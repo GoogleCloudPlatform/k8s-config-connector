@@ -29,8 +29,15 @@ import (
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+const (
+	// AnywhereCache States (lowercase representation from GCP API).
+	anywhereCacheStateCreating = "creating"
+	anywhereCacheStateRunning  = "running"
+	anywhereCacheStatePaused   = "paused"
+	anywhereCacheStateDisabled = "disabled"
 )
 
 type StorageControlService struct {
@@ -57,24 +64,21 @@ func (s *StorageControlService) CreateAnywhereCache(ctx context.Context, req *pb
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = "running"
+	obj.State = anywhereCacheStateCreating
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	op, err := s.operations.StartLRO(ctx, fqn, &pb.CreateAnywhereCacheMetadata{AnywhereCacheId: &zone}, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.AnywhereCache)
+		result.State = anywhereCacheStateRunning
+		if err := s.storage.Update(ctx, fqn, result); err != nil {
+			return nil, err
+		}
 		return result, nil
 	})
 	if err != nil {
 		return op, err
-	}
-	response, err := anypb.New(obj)
-	if err != nil {
-		return op, err
-	}
-	op.Result = &longrunningpb.Operation_Response{
-		Response: response,
 	}
 	return op, err
 
@@ -106,17 +110,13 @@ func (s *StorageControlService) UpdateAnywhereCache(ctx context.Context, req *pb
 
 	op, err := s.operations.StartLRO(ctx, fqn, &pb.AnywhereCache{}, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.AnywhereCache)
+		if err := s.storage.Update(ctx, fqn, result); err != nil {
+			return nil, err
+		}
 		return result, nil
 	})
 	if err != nil {
 		return op, err
-	}
-	response, err := anypb.New(obj)
-	if err != nil {
-		return op, err
-	}
-	op.Result = &longrunningpb.Operation_Response{
-		Response: response,
 	}
 	return op, err
 }
@@ -149,7 +149,7 @@ func (s *StorageControlService) PauseAnywhereCache(ctx context.Context, req *pb.
 
 	now := time.Now()
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = "paused"
+	obj.State = anywhereCacheStatePaused
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -168,7 +168,7 @@ func (s *StorageControlService) ResumeAnywhereCache(ctx context.Context, req *pb
 
 	now := time.Now()
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = "running"
+	obj.State = anywhereCacheStateRunning
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -187,7 +187,7 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 
 	now := time.Now()
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = "disabled"
+	obj.State = anywhereCacheStateDisabled
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
