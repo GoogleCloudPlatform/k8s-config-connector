@@ -138,8 +138,8 @@ GRPC /google.storage.control.v2.StorageControl/CreateAnywhereCache
 
 {
   "anywhereCache": {
-    "admissionPolicy": "admit-on-first-miss",
-    "ttl": "86400s",
+    "admissionPolicy": "admit-on-second-miss",
+    "ttl": "56400s",
     "zone": "us-central1-a"
   },
   "parent": "projects/_/buckets/storagebucket-sample-${uniqueId}"
@@ -152,17 +152,7 @@ OK
     "@type": "type.googleapis.com/google.storage.control.v2.CreateAnywhereCacheMetadata",
     "anywhereCacheId": "us-central1-a"
   },
-  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.storage.control.v2.AnywhereCache",
-    "admissionPolicy": "admit-on-first-miss",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
-    "state": "running",
-    "ttl": "86400s",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "zone": "us-central1-a"
-  }
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -177,11 +167,11 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-first-miss",
+  "admissionPolicy": "admit-on-second-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
-  "ttl": "86400s",
+  "ttl": "56400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
@@ -198,11 +188,11 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-first-miss",
+  "admissionPolicy": "admit-on-second-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
-  "ttl": "86400s",
+  "ttl": "56400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
@@ -213,9 +203,9 @@ GRPC /google.storage.control.v2.StorageControl/UpdateAnywhereCache
 
 {
   "anywhereCache": {
-    "admissionPolicy": "admit-on-second-miss",
+    "admissionPolicy": "admit-on-first-miss",
     "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
-    "ttl": "56400s",
+    "ttl": "75400s",
     "zone": "us-central1-a"
   },
   "updateMask": "admissionPolicy,ttl"
@@ -227,17 +217,7 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.storage.control.v2.AnywhereCache"
   },
-  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.storage.control.v2.AnywhereCache",
-    "admissionPolicy": "admit-on-second-miss",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
-    "state": "running",
-    "ttl": "56400s",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "zone": "us-central1-a"
-  }
+  "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -252,11 +232,11 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
-  "ttl": "56400s",
+  "ttl": "75400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
@@ -273,11 +253,11 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
-  "ttl": "56400s",
+  "ttl": "75400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
@@ -294,11 +274,11 @@ GRPC /google.storage.control.v2.StorageControl/GetAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "running",
-  "ttl": "56400s",
+  "ttl": "75400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
@@ -315,11 +295,11 @@ GRPC /google.storage.control.v2.StorageControl/DisableAnywhereCache
 OK
 
 {
-  "admissionPolicy": "admit-on-second-miss",
+  "admissionPolicy": "admit-on-first-miss",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/_/buckets/storagebucket-sample-${uniqueId}/anywhereCaches/us-central1-a",
   "state": "disabled",
-  "ttl": "56400s",
+  "ttl": "75400s",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "zone": "us-central1-a"
 }
