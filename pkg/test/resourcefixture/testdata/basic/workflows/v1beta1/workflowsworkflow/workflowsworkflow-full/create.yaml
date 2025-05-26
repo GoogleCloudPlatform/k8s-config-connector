@@ -35,3 +35,5 @@ spec:
     locationEnvVar: "wonderful-world"
   projectRef:
     external: ${projectId}
+  tags:
+    ${projectId}/keyname${uniqueId}: valuename
