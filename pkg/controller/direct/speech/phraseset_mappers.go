@@ -63,7 +63,7 @@ func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) 
 	out := &krmv1beta1.SpeechPhraseSetSpec{}
 	// MISSING: Name
 	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
-	out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost()))
+	/* NOTYET out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost())) */
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Annotations = in.Annotations
 	return out
@@ -75,7 +75,7 @@ func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Speec
 	out := &pb.PhraseSet{}
 	// MISSING: Name
 	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
-	out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost))
+	/* NOTYET out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost)) */
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Annotations = in.Annotations
 	return out

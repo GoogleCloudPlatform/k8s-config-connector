@@ -1306,16 +1306,6 @@ func (in *SpeechRecognizerSpec) DeepCopyInto(out *SpeechRecognizerSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Model != nil {
-		in, out := &in.Model, &out.Model
-		*out = new(string)
-		**out = **in
-	}
-	if in.LanguageCodes != nil {
-		in, out := &in.LanguageCodes, &out.LanguageCodes
-		*out = make([]string, len(*in))
-		copy(*out, *in)
-	}
 	if in.DefaultRecognitionConfig != nil {
 		in, out := &in.DefaultRecognitionConfig, &out.DefaultRecognitionConfig
 		*out = new(RecognitionConfig)

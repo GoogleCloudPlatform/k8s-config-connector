@@ -10,11 +10,13 @@ metadata:
   name: speechrecognizer-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  defaultRecognitionConfig:
+    languageCodes:
+    - en-US
+    - fr-FR
+    model: chirp
   displayName: Updated description
-  languageCodes:
-  - en-US
   location: global
-  model: long
   projectRef:
     external: ${projectId}
 status:

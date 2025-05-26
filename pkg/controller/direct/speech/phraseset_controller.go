@@ -169,9 +169,11 @@ func (a *phraseSetAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if !reflect.DeepEqual(resource.Phrases, a.actual.Phrases) {
 		paths = append(paths, "phrases")
 	}
+	/* NOTYET
 	if !reflect.DeepEqual(resource.Boost, a.actual.Boost) {
 		paths = append(paths, "boost")
 	}
+	*/
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
 		paths = append(paths, "display_name")
 	}

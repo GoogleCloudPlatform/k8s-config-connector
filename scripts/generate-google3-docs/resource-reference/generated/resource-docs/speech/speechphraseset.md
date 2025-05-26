@@ -68,7 +68,6 @@ A brief introduction to SpeechPhraseSet.
 ```yaml
 annotations:
   string: string
-boost: string
 displayName: string
 location: string
 phrases:
@@ -97,16 +96,6 @@ resourceID: string
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
             <p>{% verbatim %}Allows users to store small amounts of arbitrary data. Both the key and the value must be 63 characters or less each. At most 100 annotations.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>boost</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Hint Boost. Positive value will increase the probability that a specific phrase will be recognized over other similar sounding phrases. The higher the boost, the higher the chance of false positive recognition as well. Valid `boost` values are between 0 (exclusive) and 20. We recommend using a binary search approach to finding the optimal value for your use case as well as adding phrases both with and without boost to your requests.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

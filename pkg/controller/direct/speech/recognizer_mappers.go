@@ -149,9 +149,9 @@ func InlineCustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) 
 		return nil
 	}
 	out := &krm.InlineCustomClass{}
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto)
-	out.Annotations = in.Annotations
+	/* NOTYET out.DisplayName = direct.LazyPtr(in.GetDisplayName()) */
+	/* NOTYET out.Items = direct.Slice_FromProto(mapCtx, in.Items, CustomClass_ClassItem_FromProto) */
+	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
 func InlineCustomClass_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomClass) *pb.CustomClass {
@@ -159,9 +159,9 @@ func InlineCustomClass_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomCl
 		return nil
 	}
 	out := &pb.CustomClass{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto)
-	out.Annotations = in.Annotations
+	/* NOTYET out.DisplayName = direct.ValueOf(in.DisplayName) */
+	/* NOTYET out.Items = direct.Slice_ToProto(mapCtx, in.Items, CustomClass_ClassItem_ToProto) */
+	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
 func SpeechAdaptation_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptation {
@@ -205,10 +205,10 @@ func InlinePhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm
 		return nil
 	}
 	out := &krm.InlinePhraseSet{}
-	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
-	out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost()))
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Annotations = in.Annotations
+	/* NOTYET out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto) */
+	/* NOTYET out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost())) */
+	/* NOTYET out.DisplayName = direct.LazyPtr(in.GetDisplayName()) */
+	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
 func InlinePhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet) *pb.PhraseSet {
@@ -217,10 +217,10 @@ func InlinePhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet)
 	}
 	out := &pb.PhraseSet{}
 
-	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
-	out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost))
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Annotations = in.Annotations
+	/* NOTYET out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto) */
+	/* NOTYET out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost)) */
+	/* NOTYET out.DisplayName = direct.ValueOf(in.DisplayName) */
+	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
 func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
@@ -228,11 +228,11 @@ func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &krm.SpeechAdaptation_AdaptationPhraseSet{}
-	if in.GetPhraseSet() != "" {
+	/* NOTYET if in.GetPhraseSet() != "" {
 		out.PhraseSetRef = &krm.PhraseSetRef{
 			External: in.GetPhraseSet(),
 		}
-	}
+	} */
 	out.InlinePhraseSet = InlinePhraseSet_FromProto(mapCtx, in.GetInlinePhraseSet())
 	return out
 }
@@ -241,9 +241,9 @@ func SpeechAdaptation_AdaptationPhraseSet_ToProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
-	if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx, in.PhraseSetRef); oneof != nil {
+	/* NOTYET if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx, in.PhraseSetRef); oneof != nil {
 		out.Value = oneof
-	}
+	} */
 	if oneof := InlinePhraseSet_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
 		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
 	}
