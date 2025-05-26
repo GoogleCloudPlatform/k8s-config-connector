@@ -21,6 +21,8 @@ spec:
     external: ${projectId}
   location: global
   displayName: "Updated description"
-  model: long
-  languageCodes:
+  defaultRecognitionConfig:
+    model: chirp
+    languageCodes:
     - en-US
+    - fr-FR

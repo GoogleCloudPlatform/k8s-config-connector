@@ -46,42 +46,6 @@ type SpeechRecognizerSpec struct {
 	// +kcc:proto:field=google.cloud.speech.v2.Recognizer.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	// Optional. This field is now deprecated. Prefer the
-	//  [`model`][google.cloud.speech.v2.RecognitionConfig.model] field in the
-	//  [`RecognitionConfig`][google.cloud.speech.v2.RecognitionConfig] message.
-	//
-	//  Which model to use for recognition requests. Select the model best suited
-	//  to your domain to get best results.
-	//
-	//  Guidance for choosing which model to use can be found in the [Transcription
-	//  Models
-	//  Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
-	//  and the models supported in each region can be found in the [Table Of
-	//  Supported
-	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
-	// +kcc:proto:field=google.cloud.speech.v2.Recognizer.model
-	Model *string `json:"model,omitempty"`
-
-	// Optional. This field is now deprecated. Prefer the
-	//  [`language_codes`][google.cloud.speech.v2.RecognitionConfig.language_codes]
-	//  field in the
-	//  [`RecognitionConfig`][google.cloud.speech.v2.RecognitionConfig] message.
-	//
-	//  The language of the supplied audio as a
-	//  [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
-	//
-	//  Supported languages for each model are listed in the [Table of Supported
-	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
-	//
-	//  If additional languages are provided, recognition result will contain
-	//  recognition in the most likely language detected. The recognition result
-	//  will include the language tag of the language detected in the audio.
-	//  When you create or update a Recognizer, these values are
-	//  stored in normalized BCP-47 form. For example, "en-us" is stored as
-	//  "en-US".
-	// +kcc:proto:field=google.cloud.speech.v2.Recognizer.language_codes
-	LanguageCodes []string `json:"languageCodes,omitempty"`
-
 	// Default configuration to use for requests with this Recognizer.
 	//  This can be overwritten by inline configuration in the
 	//  [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]

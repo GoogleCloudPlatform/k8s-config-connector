@@ -21,6 +21,7 @@ spec:
     external: ${projectId}
   location: global
   displayName: "Initial description"
-  model: long
-  languageCodes:
+  defaultRecognitionConfig:
+    model: long
+    languageCodes:
     - en-US

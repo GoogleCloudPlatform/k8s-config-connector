@@ -33,66 +33,6 @@ type CustomClass_ClassItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.cloud.speech.v2.RecognitionConfig
-type RecognitionConfig struct {
-	// Automatically detect decoding parameters.
-	//  Preferred for supported formats.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.auto_decoding_config
-	AutoDecodingConfig *AutoDetectDecodingConfig `json:"autoDecodingConfig,omitempty"`
-
-	// Explicitly specified decoding parameters.
-	//  Required if using headerless PCM audio (linear16, mulaw, alaw).
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.explicit_decoding_config
-	ExplicitDecodingConfig *ExplicitDecodingConfig `json:"explicitDecodingConfig,omitempty"`
-
-	// Optional. Which model to use for recognition requests. Select the model
-	//  best suited to your domain to get best results.
-	//
-	//  Guidance for choosing which model to use can be found in the [Transcription
-	//  Models
-	//  Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
-	//  and the models supported in each region can be found in the [Table Of
-	//  Supported
-	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.model
-	Model *string `json:"model,omitempty"`
-
-	// Optional. The language of the supplied audio as a
-	//  [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
-	//  Language tags are normalized to BCP-47 before they are used eg "en-us"
-	//  becomes "en-US".
-	//
-	//  Supported languages for each model are listed in the [Table of Supported
-	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
-	//
-	//  If additional languages are provided, recognition result will contain
-	//  recognition in the most likely language detected. The recognition result
-	//  will include the language tag of the language detected in the audio.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.language_codes
-	LanguageCodes []string `json:"languageCodes,omitempty"`
-
-	// Speech recognition features to enable.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.features
-	Features *RecognitionFeatures `json:"features,omitempty"`
-
-	// Speech adaptation context that weights recognizer predictions for specific
-	//  words and phrases.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
-	Adaptation *SpeechAdaptation `json:"adaptation,omitempty"`
-
-	// Optional. Use transcription normalization to automatically replace parts of
-	//  the transcript with phrases of your choosing. For StreamingRecognize, this
-	//  normalization only applies to stable partial transcripts (stability > 0.8)
-	//  and final transcripts.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.transcript_normalization
-	TranscriptNormalization *TranscriptNormalization `json:"transcriptNormalization,omitempty"`
-
-	// Optional. Optional configuration used to automatically run translation on
-	//  the given audio to the desired language for supported models.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.translation_config
-	TranslationConfig *TranslationConfig `json:"translationConfig,omitempty"`
-}
-
 // +kcc:proto=google.cloud.speech.v2.RecognitionFeatures
 type RecognitionFeatures struct {
 	// If set to `true`, the server will attempt to filter out profanities,
@@ -100,25 +40,25 @@ type RecognitionFeatures struct {
 	//  asterisks, for instance, "f***". If set to `false` or omitted, profanities
 	//  won't be filtered out.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.profanity_filter
-	ProfanityFilter *bool `json:"profanityFilter,omitempty"`
+	/* NOTYET ProfanityFilter *bool `json:"profanityFilter,omitempty"` */
 
 	// If `true`, the top result includes a list of words and the start and end
 	//  time offsets (timestamps) for those words. If `false`, no word-level time
 	//  offset information is returned. The default is `false`.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets
-	EnableWordTimeOffsets *bool `json:"enableWordTimeOffsets,omitempty"`
+	/* NOTYET EnableWordTimeOffsets *bool `json:"enableWordTimeOffsets,omitempty"` */
 
 	// If `true`, the top result includes a list of words and the confidence for
 	//  those words. If `false`, no word-level confidence information is returned.
 	//  The default is `false`.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_word_confidence
-	EnableWordConfidence *bool `json:"enableWordConfidence,omitempty"`
+	/* NOTYET EnableWordConfidence *bool `json:"enableWordConfidence,omitempty"` */
 
 	// If `true`, adds punctuation to recognition result hypotheses. This feature
 	//  is only available in select languages. The default `false` value does not
 	//  add punctuation to result hypotheses.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_automatic_punctuation
-	EnableAutomaticPunctuation *bool `json:"enableAutomaticPunctuation,omitempty"`
+	/* NOTYET EnableAutomaticPunctuation *bool `json:"enableAutomaticPunctuation,omitempty"` */
 
 	// The spoken punctuation behavior for the call. If `true`, replaces spoken
 	//  punctuation with the corresponding symbols in the request. For example,
@@ -126,18 +66,18 @@ type RecognitionFeatures struct {
 	//  https://cloud.google.com/speech-to-text/docs/spoken-punctuation for
 	//  support. If `false`, spoken punctuation is not replaced.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_spoken_punctuation
-	EnableSpokenPunctuation *bool `json:"enableSpokenPunctuation,omitempty"`
+	/* NOTYET EnableSpokenPunctuation *bool `json:"enableSpokenPunctuation,omitempty"` */
 
 	// The spoken emoji behavior for the call. If `true`, adds spoken emoji
 	//  formatting for the request. This will replace spoken emojis with the
 	//  corresponding Unicode symbols in the final transcript. If `false`, spoken
 	//  emojis are not replaced.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_spoken_emojis
-	EnableSpokenEmojis *bool `json:"enableSpokenEmojis,omitempty"`
+	/* NOTYET EnableSpokenEmojis *bool `json:"enableSpokenEmojis,omitempty"` */
 
 	// Mode for recognizing multi-channel audio.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.multi_channel_mode
-	MultiChannelMode *string `json:"multiChannelMode,omitempty"`
+	/* NOTYET MultiChannelMode *string `json:"multiChannelMode,omitempty"` */
 
 	// Configuration to enable speaker diarization and set additional
 	//  parameters to make diarization better suited for your application.
@@ -155,7 +95,7 @@ type RecognitionFeatures struct {
 	//  Valid values are `0`-`30`. A value of `0` or `1` will return a maximum of
 	//  one. If omitted, will return a maximum of one.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.max_alternatives
-	MaxAlternatives *int32 `json:"maxAlternatives,omitempty"`
+	/* NOTYET MaxAlternatives *int32 `json:"maxAlternatives,omitempty"` */
 }
 
 // +kcc:proto=google.cloud.speech.v2.TranscriptNormalization
@@ -172,15 +112,15 @@ type TranscriptNormalization struct {
 type TranscriptNormalization_Entry struct {
 	// What to replace. Max length is 100 characters.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.search
-	Search *string `json:"search,omitempty"`
+	/* NOTYET Search *string `json:"search,omitempty"` */
 
 	// What to replace with. Max length is 100 characters.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.replace
-	Replace *string `json:"replace,omitempty"`
+	/* NOTYET Replace *string `json:"replace,omitempty"` */
 
 	// Whether the search is case sensitive.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.case_sensitive
-	CaseSensitive *bool `json:"caseSensitive,omitempty"`
+	/* NOTYET CaseSensitive *bool `json:"caseSensitive,omitempty"` */
 }
 
 // +kcc:proto=google.cloud.speech.v2.RecognitionConfig

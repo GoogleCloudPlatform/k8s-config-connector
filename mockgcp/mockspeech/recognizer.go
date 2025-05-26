@@ -115,6 +115,10 @@ func (s *SpeechV2) CreateRecognizer(ctx context.Context, req *pb.CreateRecognize
 			Model:         obj.Model,
 			LanguageCodes: obj.LanguageCodes,
 		}
+	} else {
+		// Ensure the default recognition config has the model and language codes set.
+		obj.Model = obj.DefaultRecognitionConfig.GetModel()
+		obj.LanguageCodes = obj.DefaultRecognitionConfig.GetLanguageCodes()
 	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
@@ -179,8 +183,17 @@ func (s *SpeechV2) UpdateRecognizer(ctx context.Context, req *pb.UpdateRecognize
 			obj.Model = updatedRecognizerFromRequest.GetModel()
 		case "language_codes":
 			obj.LanguageCodes = updatedRecognizerFromRequest.GetLanguageCodes()
-		case "default_recognition_config":
+		case "default_recognition_config", "defaultRecognitionConfig":
 			obj.DefaultRecognitionConfig = updatedRecognizerFromRequest.GetDefaultRecognitionConfig()
+			// Normalize to snake_case for consistency with how displayName is handled
+			// and to potentially avoid issues with FieldMask validation later.
+			if path == "defaultRecognitionConfig" {
+				req.UpdateMask.Paths[i] = "default_recognition_config"
+			}
+			// HACK: This is a GCP special behavior. The model and language codes are deprecated, but GCP still assigns value to them.
+			obj.Model = obj.DefaultRecognitionConfig.GetModel()
+			obj.LanguageCodes = obj.DefaultRecognitionConfig.GetLanguageCodes()
+
 		case "annotations":
 			obj.Annotations = updatedRecognizerFromRequest.GetAnnotations()
 		default:
