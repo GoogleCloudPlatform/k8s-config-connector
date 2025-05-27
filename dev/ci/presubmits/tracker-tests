@@ -33,6 +33,6 @@ echo "Running scenario tests for gcptracker..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
   go test -test.count=1 -timeout 600s -v ./tests/e2e -run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
 
-echo "Running some fixtures tests for iam tests with the gcptracker..."
+echo "Running fixture and sample iam tests with the gcptracker..."
 export RUN_TESTS='TestAllInSeries/fixtures/iam|TestAllInSeries/fixtures/fullalloydbcluster|TestAllInSeries/fixtures/noteboolinstance-full|TestAllInSeries/samples/alloydbbackup|TestAllInSeries/samples/alloydbcluster|TestAllInSeries/samples/iampartialpolicy|TestAllInSeries/samples/notebookinstance'
 ${REPO_ROOT}/dev/tasks/run-e2e
