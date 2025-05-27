@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apisk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -786,8 +787,8 @@ func (in *Environment_KMSEnvMap) DeepCopyInto(out *Environment_KMSEnvMap) {
 	*out = *in
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+		*out = new(kmsv1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.CipherText != nil {
 		in, out := &in.CipherText, &out.CipherText

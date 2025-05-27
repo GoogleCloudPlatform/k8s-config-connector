@@ -21,6 +21,7 @@ package notebooks
 
 import (
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -220,7 +221,7 @@ func NotebookInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) 
 	out.NoRemoveDataDisk = direct.LazyPtr(in.GetNoRemoveDataDisk())
 	out.DiskEncryption = direct.Enum_FromProto(mapCtx, in.GetDiskEncryption())
 	if in.GetKmsKey() != "" {
-		out.KMSKeyRef = &v1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		out.KMSKeyRef = &kmsv1beta1.KMSKeyRef_OneOf{External: in.GetKmsKey()}
 	}
 	out.ShieldedInstanceConfig = Instance_ShieldedInstanceConfig_FromProto(mapCtx, in.GetShieldedInstanceConfig())
 	out.NoPublicIP = direct.LazyPtr(in.GetNoPublicIp())

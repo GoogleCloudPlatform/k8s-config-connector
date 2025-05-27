@@ -21,7 +21,7 @@
 package v1alpha1
 
 import (
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -37,7 +37,7 @@ type EventarcGoogleChannelConfigSpec struct {
 	//  encrypt/decrypt their event data.
 	//
 	// +kcc:proto:field=google.cloud.eventarc.v1.GoogleChannelConfig.crypto_key_name
-	CryptoKeyRef *refv1beta1.KMSCryptoKeyRef `json:"cryptoKeyRef,omitempty"`
+	CryptoKeyRef *kmsv1beta1.KMSKeyRef_OneOf `json:"cryptoKeyRef,omitempty"`
 
 	// The user-provided name of the EventarcGoogleChannelConfig. If not specified, the name of the KRM resource will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

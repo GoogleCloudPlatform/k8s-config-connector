@@ -20,7 +20,8 @@ package v1alpha1
 
 import (
 	containerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -352,8 +353,8 @@ func (in *EncryptionKey) DeepCopyInto(out *EncryptionKey) {
 	*out = *in
 	if in.KMSKeyRef != nil {
 		in, out := &in.KMSKeyRef, &out.KMSKeyRef
-		*out = new(v1beta1.KMSCryptoKeyRef)
-		**out = **in
+		*out = new(v1beta1.KMSKeyRef_OneOf)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -1402,7 +1403,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.ProjectRef != nil {
 		in, out := &in.ProjectRef, &out.ProjectRef
-		*out = new(v1beta1.ProjectRef)
+		*out = new(refsv1beta1.ProjectRef)
 		**out = **in
 	}
 }
