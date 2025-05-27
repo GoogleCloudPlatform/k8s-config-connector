@@ -261,8 +261,10 @@ func (a *GroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOp
 
 	op, err := a.gcpClient.Groups.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
+		// uncommon not found error:
+		// Error 403: Error(2017): Permission denied for group resource 'groups/044sinio13vzveo' (or it may not exist).
+		if direct.IsPermissionDenied(err) {
+			return true, nil
 		}
 		return false, fmt.Errorf("deleting Group %q: %w", a.id, err)
 	}

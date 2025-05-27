@@ -25,5 +25,19 @@ func init() {
 		// direct resource with server-generated id
 		SkipDriftDetection: true,
 	}
-	// todo: Add CloudIdentityMembership tests here once it's migrated to direct
+	resourceContextMap["addexpirydatecloudidentitymembership-direct"] = ResourceContext{
+		ResourceKind: "CloudIdentityMembership",
+		// direct resource with server-generated id
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["addrolecloudidentitymembership-direct"] = ResourceContext{
+		ResourceKind: "CloudIdentityMembership",
+		// direct resource with server-generated id
+		SkipDriftDetection: true,
+	}
+	resourceContextMap["removerolecloudidentitymembership-direct"] = ResourceContext{
+		ResourceKind: "CloudIdentityMembership",
+		// direct resource with server-generated id
+		SkipDriftDetection: true,
+	}
 }
