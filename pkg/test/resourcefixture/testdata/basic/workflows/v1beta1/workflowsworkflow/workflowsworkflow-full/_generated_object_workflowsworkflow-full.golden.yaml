@@ -41,7 +41,8 @@ spec:
         - returnOutput:
             return: '${searchTerm}'
   tags:
-    mock-project/keynamehwgakkdwjtut5gy: valuename
+    ${projectId}/keyname${uniqueId}: tagstagvalue-${uniqueId}
+    ${projectId}/keyname${uniqueId}-updated: tagstagvalue-${uniqueId}-updated
   userEnvVars:
     locationEnvVar: over-the-rainbow
 status:

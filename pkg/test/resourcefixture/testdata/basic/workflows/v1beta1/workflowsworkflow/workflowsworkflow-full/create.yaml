@@ -36,4 +36,4 @@ spec:
   projectRef:
     external: ${projectId}
   tags:
-    ${projectId}/keyname${uniqueId}: valuename
+    ${projectId}/keyname${uniqueId}: tagstagvalue-${uniqueId}

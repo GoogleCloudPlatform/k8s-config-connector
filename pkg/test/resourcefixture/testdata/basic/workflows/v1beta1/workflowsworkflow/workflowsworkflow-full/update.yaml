@@ -36,3 +36,5 @@ spec:
     locationEnvVar: "over-the-rainbow"
   projectRef:
     external: ${projectId}
+  tags:
+    ${projectId}/keyname${uniqueId}-updated: tagstagvalue-${uniqueId}-updated

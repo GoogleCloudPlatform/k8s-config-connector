@@ -359,6 +359,15 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
 	})
 
+	// Replace uniqueId and projectId in resource manager tags
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		switch path {
+		// Specific to Workflows
+		case ".spec.tags":
+			normalizeResourceManagerTags(m, project, folderID, uniqueID)
+		}
+	})
+
 	// TODO: Only for some objects?
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		r := regexp.MustCompile(regexp.QuoteMeta(`deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=`) + `.*`)
@@ -588,6 +597,18 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 		return err
 	}
 	return nil
+}
+
+func normalizeResourceManagerTags(tagsMap map[string]any, project testgcp.GCPProject, folderID string, uniqueID string) {
+	for k, v := range tagsMap {
+		newKey := k
+		newKey = strings.ReplaceAll(newKey, uniqueID, "${uniqueId}")
+		newKey = strings.ReplaceAll(newKey, project.ProjectID, "${projectId}")
+		if k != newKey {
+			delete(tagsMap, k)
+			tagsMap[newKey] = v
+		}
+	}
 }
 
 type objectWalker struct {
