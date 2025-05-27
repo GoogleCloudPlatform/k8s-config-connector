@@ -26,9 +26,11 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error applying desired state: summary: Error updating
+      CryptoKey "projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}":
+      googleapi: Error 501: method UpdateCryptoKey not implemented'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
   observedGeneration: 2
   selfLink: projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}

@@ -45,8 +45,8 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: Update in progress
+    reason: Updating
+    status: "False"
     type: Ready
   observedGeneration: 2
