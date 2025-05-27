@@ -30,11 +30,11 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 )
 
-func (s *configService) GetView(ctx context.Context, req *pb.GetViewRequest) (*pb.LogView, error) {
+func (s *configServiceV2) GetView(ctx context.Context, req *pb.GetViewRequest) (*pb.LogView, error) {
 	name, err := s.parseLogViewName(req.Name)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (s *configService) GetView(ctx context.Context, req *pb.GetViewRequest) (*p
 	return obj, nil
 }
 
-func (s *configService) CreateView(ctx context.Context, req *pb.CreateViewRequest) (*pb.LogView, error) {
+func (s *configServiceV2) CreateView(ctx context.Context, req *pb.CreateViewRequest) (*pb.LogView, error) {
 	reqName := fmt.Sprintf("%s/views/%s", req.GetParent(), req.GetViewId())
 	name, err := s.parseLogViewName(reqName)
 	if err != nil {
@@ -69,7 +69,7 @@ func (s *configService) CreateView(ctx context.Context, req *pb.CreateViewReques
 	return obj, nil
 }
 
-func (s *configService) UpdateView(ctx context.Context, req *pb.UpdateViewRequest) (*pb.LogView, error) {
+func (s *configServiceV2) UpdateView(ctx context.Context, req *pb.UpdateViewRequest) (*pb.LogView, error) {
 	reqName := req.Name
 	name, err := s.parseLogViewName(reqName)
 	if err != nil {
@@ -108,7 +108,7 @@ func (s *configService) UpdateView(ctx context.Context, req *pb.UpdateViewReques
 	return updated, nil
 }
 
-func (s *configService) DeleteView(ctx context.Context, req *pb.DeleteViewRequest) (*empty.Empty, error) {
+func (s *configServiceV2) DeleteView(ctx context.Context, req *pb.DeleteViewRequest) (*empty.Empty, error) {
 	name, err := s.parseLogViewName(req.Name)
 	if err != nil {
 		return nil, err
