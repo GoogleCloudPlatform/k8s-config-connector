@@ -90,9 +90,11 @@ type WorkflowsWorkflowSpec struct {
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
 
 	// Optional. Describes the execution history level to apply to this workflow.
+	// +optional
 	ExecutionHistoryLevel *string `json:"executionHistoryLevel,omitempty"`
 
 	// Optional. Input only. Immutable. Tags associated with this workflow.
+	// +optional
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
