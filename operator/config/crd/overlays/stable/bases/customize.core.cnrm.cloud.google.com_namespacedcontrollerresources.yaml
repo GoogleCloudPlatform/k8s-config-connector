@@ -1,0 +1,244 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  name: namespacedcontrollerresources.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: NamespacedControllerResource
+    listKind: NamespacedControllerResourceList
+    plural: namespacedcontrollerresources
+    singular: namespacedcontrollerresource
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NamespacedControllerResource is the Schema for resource customization
+          API for namespaced config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              NamespacedControllerResourceSpec is the specification of the resource customization for containers of
+              a namespaced config connector controller.
+            properties:
+              containers:
+                description: |-
+                  The list of containers whose resource requirements to be customized.
+                  Required
+                items:
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
+                      enum:
+                      - manager
+                      - webhook
+                      - deletiondefender
+                      - prom-to-sd
+                      - recorder
+                      - unmanageddetector
+                      type: string
+                    resources:
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
+                      properties:
+                        limits:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                        requests:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  - resources
+                  type: object
+                type: array
+            required:
+            - containers
+            type: object
+          status:
+            description: NamespacedControllerResourceStatus defines the observed state
+              of NamespacedControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: NamespacedControllerResource is the Schema for resource customization
+          API for namespaced config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              NamespacedControllerResourceSpec is the specification of the resource customization for containers of
+              a namespaced config connector controller.
+            properties:
+              containers:
+                description: |-
+                  The list of containers whose resource requirements to be customized.
+                  Required
+                items:
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
+                      enum:
+                      - manager
+                      - webhook
+                      - deletiondefender
+                      - prom-to-sd
+                      - recorder
+                      - unmanageddetector
+                      type: string
+                    resources:
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
+                      properties:
+                        limits:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                        requests:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  - resources
+                  type: object
+                type: array
+            required:
+            - containers
+            type: object
+          status:
+            description: NamespacedControllerResourceStatus defines the observed state
+              of NamespacedControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

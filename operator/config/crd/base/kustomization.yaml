@@ -12,19 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Adds namespace to all resources.
-namespace: configconnector-operator-system
+# This kustomization.yaml is not intended to be run by itself,
+# since it depends on service name and namespace that are out of this kustomize package.
+# It should be run by config/default
+resources:
+- bases/core.cnrm.cloud.google.com_configconnectors.yaml
+- bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
 
-# Labels to add to all resources and selectors.
-commonLabels:
-  cnrm.cloud.google.com/operator-system: "true"
-
-commonAnnotations:
-  # Given our weekly release schedule, the version of the operator should remain the same of ConfigConnector Core,
-  # if we have to release the operator independently with the KCC core, append extension e.g. 1.6.0-operator.x
-  cnrm.cloud.google.com/operator-version: "1.131.0"
-
-bases:
-- ../crd/overlays/full
-- ../rbac
-- ../manager
+patchesJson6902:
+- target:
+    group: apiextensions.k8s.io
+    version: v1
+    kind: CustomResourceDefinition
+    name: configconnectors.core.cnrm.cloud.google.com
+  path: crd_patch.yaml

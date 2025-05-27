@@ -12,12 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Adds namespace to all resources.
+namespace: configconnector-operator-system
+
 # Labels to add to all resources and selectors.
 commonLabels:
   # This is required by GKE addon manager
   addonmanager.kubernetes.io/mode: Reconcile
+  cnrm.cloud.google.com/operator-system: "true"
+
+commonAnnotations:
+  cnrm.cloud.google.com/operator-version: "1.131.0"
+
 bases:
-- ../default
+- ../crd/overlays/stable
+- ../rbac
+- ../manager
 
 patchesJson6902:
 - target:

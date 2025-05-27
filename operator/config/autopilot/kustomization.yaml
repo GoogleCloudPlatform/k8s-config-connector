@@ -25,6 +25,6 @@ commonAnnotations:
   cnrm.cloud.google.com/operator-version: "1.131.0"
 
 bases:
-- ../crd
+- ../crd/overlays/full
 - ../rbac
 - ../autopilot-manager
