@@ -676,3 +676,21 @@ func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfi
 	}
 	return nil
 }
+
+const delimiter = "-"
+
+func ReplaceNamespaceSuffix(namespace, suffix string) string {
+	if suffix == "" {
+		return namespace
+	}
+
+	lastDelimiterIndex := strings.LastIndexAny(namespace, delimiter)
+
+	// If no delimiter is found, there's no suffix to replace.
+	// Return the original string.
+	if lastDelimiterIndex == -1 {
+		return namespace
+	}
+
+	return namespace[0:lastDelimiterIndex+1] + suffix
+}
