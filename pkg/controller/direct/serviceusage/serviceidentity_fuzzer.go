@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,33 +13,29 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.iap.v1.IapSettings
+// proto.message: google.api.serviceusage.v1beta1.ServiceIdentity
+// api.group: serviceusage.cnrm.cloud.google.com
+// crd.kind: ServiceIdentity
 
-package iap
+package serviceusage
 
 import (
-	pb "cloud.google.com/go/iap/apiv1/iappb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsFuzzer())
+	fuzztesting.RegisterKRMFuzzer(serviceIdentityFuzzer())
 }
 
-func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.IapSettings{},
-		IAPSettingsSpec_FromProto, IAPSettingsSpec_ToProto,
+func serviceIdentityFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.ServiceIdentity{},
+		ServiceIdentitySpec_FromProto, ServiceIdentitySpec_ToProto,
+		ServiceIdentityObservedState_FromProto, ServiceIdentityObservedState_ToProto,
 	)
 
-	// Spec fields
-	f.SpecFields.Insert(".access_settings")
-	f.SpecFields.Insert(".application_settings")
-
-	// Identity fields
-	f.UnimplementedFields.Insert(".name")
-
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".access_settings.identity_sources")
+	f.StatusFields.Insert(".email")
+	f.StatusFields.Insert(".unique_id")
 
 	return f
 }

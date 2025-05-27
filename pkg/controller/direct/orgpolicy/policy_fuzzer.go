@@ -44,5 +44,9 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".alternate")          // deprecated field
 	f.UnimplementedFields.Insert(".dry_run_spec.rules") // skip fuzzer on "oneof" boolean fields
 	f.UnimplementedFields.Insert(".spec.rules")         // skip fuzzer on "oneof" boolean fields
+
+	// New fields we could potentially implement
+	f.UnimplementedFields.Insert(".dry_run_spec.rules[].enforce")
+
 	return f
 }
