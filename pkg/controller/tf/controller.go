@@ -487,9 +487,19 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 }
 
 func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, u); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil

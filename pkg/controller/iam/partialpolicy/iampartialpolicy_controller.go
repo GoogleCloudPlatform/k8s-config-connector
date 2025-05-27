@@ -222,9 +222,19 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 }
 
 func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv1beta1.IAMPartialPolicy) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPartialPolicy, pp); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPartialPolicy, pp)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, pp); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil

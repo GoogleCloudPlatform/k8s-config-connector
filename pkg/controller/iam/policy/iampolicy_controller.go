@@ -193,9 +193,19 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 }
 
 func (r *ReconcileIAMPolicy) handleDefaults(ctx context.Context, policy *iamv1beta1.IAMPolicy) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPolicy, policy); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPolicy, policy)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, policy); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
