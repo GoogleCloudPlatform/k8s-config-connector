@@ -463,9 +463,19 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 }
 
 func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u); err != nil {
-			return err
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u)
+		if err != nil {
+			return fmt.Errorf("applying defaults: %w", err)
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, u); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil

@@ -285,15 +285,19 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	// Apply defaulters
 	{
+		changeCount := 0
 		for _, defaulter := range r.Reconciler.defaulters {
 			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
 			if err != nil {
 				return false, fmt.Errorf("applying defaults: %w", err)
 			}
 			if changed {
-				if err := r.Reconciler.Update(ctx, u); err != nil {
-					return false, fmt.Errorf("applying update after setting defaults: %w", err)
-				}
+				changeCount++
+			}
+		}
+		if changeCount > 0 {
+			if err := r.Reconciler.Update(ctx, u); err != nil {
+				return false, fmt.Errorf("applying update after setting defaults: %w", err)
 			}
 		}
 	}
