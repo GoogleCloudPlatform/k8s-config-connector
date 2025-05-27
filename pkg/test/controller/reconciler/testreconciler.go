@@ -76,6 +76,7 @@ const (
 var (
 	ExpectedUnsuccessfulReconcileResult = reconcile.Result{Requeue: false, RequeueAfter: 0 * time.Minute}
 	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
+	ExpectedDefaultReconcileStruct      = reconcile.Result{}
 )
 
 type TestReconciler struct {
