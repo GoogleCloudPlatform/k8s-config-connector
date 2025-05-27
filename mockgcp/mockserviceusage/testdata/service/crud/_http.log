@@ -1,0 +1,139 @@
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/serviceusage.googleapis.com:enable?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services:batchEnable?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "serviceIds": [
+    "compute.googleapis.com",
+    "storage.googleapis.com"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.OperationMetadata",
+    "resourceNames": [
+      "services/compute.googleapis.com/projectSettings/${projectNumber}",
+      "services/storage.googleapis.com/projectSettings/${projectNumber}"
+    ]
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.OperationMetadata",
+    "resourceNames": [
+      "services/compute.googleapis.com/projectSettings/${projectNumber}",
+      "services/storage.googleapis.com/projectSettings/${projectNumber}"
+    ]
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.BatchEnableServicesResponse",
+    "services": [
+      {
+        "name": "projects/${projectNumber}/services/compute.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      },
+      {
+        "name": "projects/${projectNumber}/services/storage.googleapis.com",
+        "parent": "projects/${projectNumber}",
+        "state": "ENABLED"
+      }
+    ]
+  }
+}
