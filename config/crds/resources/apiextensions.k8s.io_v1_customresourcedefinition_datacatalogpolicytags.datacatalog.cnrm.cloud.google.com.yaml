@@ -6,7 +6,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: datacatalogpolicytags.datacatalog.cnrm.cloud.google.com
@@ -16,6 +15,7 @@ spec:
     categories:
     - gcp
     kind: DataCatalogPolicyTag
+    listKind: DataCatalogPolicyTagList
     plural: datacatalogpolicytags
     shortNames:
     - gcpdatacatalogpolicytag
@@ -43,35 +43,40 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: DataCatalogPolicyTag is the Schema for the DataCatalogPolicyTag
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DataCatalogPolicyTagSpec defines the desired state of DataCatalogPolicyTag
             properties:
               description:
-                description: |-
-                  Description of this policy tag. It must: contain only unicode characters, tabs,
-                  newlines, carriage returns and page breaks; and be at most 2000 bytes long when
-                  encoded in UTF-8. If not set, defaults to an empty description.
-                  If not set, defaults to an empty description.
+                description: 'Description of this policy tag. It must: contain only
+                  unicode characters, tabs, newlines, carriage returns and page breaks;
+                  and be at most 2000 bytes long when encoded in UTF-8. If not set,
+                  defaults to an empty description. If not set, defaults to an empty
+                  description.'
                 type: string
               displayName:
-                description: |-
-                  User defined name of this policy tag. It must: be unique within the parent
-                  taxonomy; contain only unicode letters, numbers, underscores, dashes and spaces;
-                  not start or end with spaces; and be at most 200 bytes long when encoded in UTF-8.
+                description: 'User defined name of this policy tag. It must: be unique
+                  within the parent taxonomy; contain only unicode letters, numbers,
+                  underscores, dashes and spaces; not start or end with spaces; and
+                  be at most 200 bytes long when encoded in UTF-8.'
                 type: string
               parentPolicyTagRef:
+                description: PolicyTagRef defines the resource reference to DataCatalogPolicyTag,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -88,14 +93,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `DataCatalogPolicyTag`
-                      resource.'
+                    description: A reference to an externally managed DataCatalogPolicyTag
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policytags/{{policytagID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a DataCatalogPolicyTag resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a DataCatalogPolicyTag resource.
                     type: string
                 type: object
               resourceID:
@@ -104,6 +109,8 @@ spec:
                   resource.
                 type: string
               taxonomyRef:
+                description: TaxonomyRef defines the resource reference to DataCatalogTaxonomy,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -120,14 +127,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `DataCatalogTaxonomy`
-                      resource.'
+                    description: A reference to an externally managed DataCatalogTaxonomy
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a DataCatalogTaxonomy resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a DataCatalogTaxonomy resource.
                     type: string
                 type: object
             required:
@@ -135,6 +142,8 @@ spec:
             - taxonomyRef
             type: object
           status:
+            description: DataCatalogPolicyTagStatus defines the config connector machine
+              state of DataCatalogPolicyTag
             properties:
               childPolicyTags:
                 description: Resource names of child policy tags of this policy tag.
@@ -142,8 +151,8 @@ spec:
                   type: string
                 type: array
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -167,10 +176,12 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the DataCatalogPolicyTag resource
+                  in GCP.
+                type: string
               name:
-                description: |-
-                  Resource name of this policy tag, whose format is:
-                  "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}".
+                description: 'Resource name of this policy tag, whose format is: "projects/{project}/locations/{region}/taxonomies/{taxonomy}/policyTags/{policytag}".'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -178,7 +189,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -187,9 +203,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
