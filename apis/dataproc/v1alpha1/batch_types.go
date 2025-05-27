@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -434,7 +435,7 @@ type SparkHistoryServerConfig struct {
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
-	DataprocClusterRef *v1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.UsageMetrics
