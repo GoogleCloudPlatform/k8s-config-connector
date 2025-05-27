@@ -40,6 +40,8 @@ spec:
               - searchTerm: '${text.split(location, "-")[0]}'
         - returnOutput:
             return: '${searchTerm}'
+  tags:
+    mock-project/keynamehwgakkdwjtut5gy: valuename
   userEnvVars:
     locationEnvVar: over-the-rainbow
 status:
