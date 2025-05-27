@@ -488,7 +488,7 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 
 func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, u); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u); err != nil {
 			return err
 		}
 	}

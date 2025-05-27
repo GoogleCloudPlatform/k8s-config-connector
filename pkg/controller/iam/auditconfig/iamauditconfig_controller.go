@@ -184,7 +184,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 
 func (r *Reconciler) handleDefaults(ctx context.Context, auditConfig *iamv1beta1.IAMAuditConfig) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, auditConfig); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMAuditConfig, auditConfig); err != nil {
 			return err
 		}
 	}

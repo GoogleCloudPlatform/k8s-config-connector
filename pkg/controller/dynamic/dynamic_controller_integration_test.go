@@ -289,7 +289,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
-	if rt != testreconciler.ReconcilerTypeDirect {
+	if rt != k8s.ReconcilerTypeDirect {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 
@@ -483,7 +483,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
-	if rt != testreconciler.ReconcilerTypeDirect {
+	if rt != k8s.ReconcilerTypeDirect {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 	// Check if condition is ready and update event was recorded
@@ -546,7 +546,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 	}
 
 	// Skip drift detection test for dcl-based resources with server-generated id.
-	if rt == testreconciler.ReconcilerTypeDCL {
+	if rt == k8s.ReconcilerTypeDCL {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -557,7 +557,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		return isServerGenerated
-	} else if rt == testreconciler.ReconcilerTypeTerraform {
+	} else if rt == k8s.ReconcilerTypeTerraform {
 		// Skip drift detection test for tf-based resources with server-generated id.
 		rc := testservicemapping.GetResourceConfig(t, smLoader, u)
 		return hasServerGeneratedId(*rc)
@@ -769,7 +769,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
 
-	if rt == testreconciler.ReconcilerTypeDCL {
+	if rt == k8s.ReconcilerTypeDCL {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -780,7 +780,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		verifyResourceID(t, isServerGeneratedID, reconciledUnstruct, appliedUnstruct)
-	} else if rt == testreconciler.ReconcilerTypeTerraform {
+	} else if rt == k8s.ReconcilerTypeTerraform {
 		rc, err := systemContext.SMLoader.GetResourceConfig(reconciledUnstruct)
 		if err != nil {
 			t.Fatalf("error getting resource config for Kind '%s', "+
