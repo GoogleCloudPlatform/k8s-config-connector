@@ -206,6 +206,10 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 		paths = append(paths, "description")
 	}
 
+	if !reflect.DeepEqual(desiredPb.ExecutionHistoryLevel, a.actual.ExecutionHistoryLevel) {
+		paths = append(paths, "execution_history_level")
+	}
+
 	if !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
