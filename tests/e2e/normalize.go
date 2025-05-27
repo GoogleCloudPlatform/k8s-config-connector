@@ -275,7 +275,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
 
 	// Specific to WorflowsWorkflow
-	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
+	visitor.replacePaths[".status.observedState.revisionID"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to DocumentAIProcessor
@@ -954,6 +954,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	visitor.removePaths.Insert(".error.details[].stackEntries")
 
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"

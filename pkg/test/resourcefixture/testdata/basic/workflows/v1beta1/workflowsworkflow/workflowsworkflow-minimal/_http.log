@@ -137,7 +137,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2CserviceAccount%2CsourceContents
+PATCH https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CserviceAccount%2CsourceContents
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fworkflows%2Fworkflow-${uniqueId}
@@ -145,7 +145,7 @@ X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-ce
 {
   "description": "Updated Example workflow",
   "labels": {
-    "env": "dev"
+    "env": "test"
   },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'"
@@ -205,11 +205,12 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Example workflow",
     "labels": {
-      "env": "dev"
+      "env": "test"
     },
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
+    "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
     "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -237,11 +238,12 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated Example workflow",
   "labels": {
-    "env": "dev"
+    "env": "test"
   },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
+  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
   "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"

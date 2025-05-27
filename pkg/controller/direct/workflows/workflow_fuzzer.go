@@ -38,6 +38,8 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".crypto_key_name")
 	f.SpecFields.Insert(".call_log_level")
 	f.SpecFields.Insert(".user_env_vars")
+	f.SpecFields.Insert(".execution_history_level")
+	f.SpecFields.Insert(".tags")
 
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".revision_id")
@@ -47,5 +49,8 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_error")
 	f.StatusFields.Insert(".state_error.details")
 	f.StatusFields.Insert(".state_error.type")
+	f.StatusFields.Insert(".all_kms_keys")
+	f.StatusFields.Insert(".all_kms_keys_versions")
+	f.StatusFields.Insert(".crypto_key_version")
 	return f
 }
