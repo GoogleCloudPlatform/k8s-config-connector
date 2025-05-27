@@ -223,7 +223,7 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 
 func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv1beta1.IAMPartialPolicy) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, pp); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPartialPolicy, pp); err != nil {
 			return err
 		}
 	}

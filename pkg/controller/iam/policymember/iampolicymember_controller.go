@@ -195,7 +195,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 
 func (r *Reconciler) handleDefaults(ctx context.Context, policyMember *iamv1beta1.IAMPolicyMember) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, policyMember); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPolicyMember, policyMember); err != nil {
 			return err
 		}
 	}

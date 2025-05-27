@@ -78,19 +78,6 @@ var (
 	ExpectedRequeueReconcileStruct      = reconcile.Result{Requeue: true}
 )
 
-type ReconcilerType string
-
-const (
-	ReconcilerTypeTerraform        ReconcilerType = "tf"
-	ReconcilerTypeDCL              ReconcilerType = "dcl"
-	ReconcilerTypeDirect           ReconcilerType = "direct"
-	ReconcilerTypeIAMPolicy        ReconcilerType = "iampolicy"
-	ReconcilerTypeIAMPartialPolicy ReconcilerType = "iampartialpolicy"
-	ReconcilerTypeIAMPolicyMember  ReconcilerType = "iampolicymember"
-	ReconcilerTypeIAMAuditConfig   ReconcilerType = "iamauditconfig"
-	ReconcilerTypeUnknown          ReconcilerType = "unknown"
-)
-
 type TestReconciler struct {
 	mgr          manager.Manager
 	t            *testing.T
@@ -191,27 +178,27 @@ func ExpectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Uns
 	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
 
-func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, error) {
+func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	if !k8s.IsManagedByKCC(u.GroupVersionKind()) {
 		// It is only valid to call this function for KCC-managed objects.
-		return ReconcilerTypeUnknown, fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
+		return "", fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
 	}
 
 	objectGVK := u.GroupVersionKind()
 	gvkMetadata, ok := supportedgvks.SupportedGVKs[objectGVK]
 	if !ok {
-		return ReconcilerTypeUnknown, fmt.Errorf("%v is not recognized as a supported GVK; cannot determine reconciler type", objectGVK)
+		return "", fmt.Errorf("%v is not recognized as a supported GVK; cannot determine reconciler type", objectGVK)
 	}
 
 	switch objectGVK.Kind {
 	case "IAMPolicy":
-		return ReconcilerTypeIAMPolicy, nil
+		return k8s.ReconcilerTypeIAMPolicy, nil
 	case "IAMPartialPolicy":
-		return ReconcilerTypeIAMPartialPolicy, nil
+		return k8s.ReconcilerTypeIAMPartialPolicy, nil
 	case "IAMPolicyMember":
-		return ReconcilerTypeIAMPolicyMember, nil
+		return k8s.ReconcilerTypeIAMPolicyMember, nil
 	case "IAMAuditConfig":
-		return ReconcilerTypeIAMAuditConfig, nil
+		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
 		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
 		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true"
@@ -227,7 +214,7 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 			if reconcileGate := registry.GetReconcileGate(objectGVK.GroupKind()); reconcileGate != nil {
 				useDirectReconciler = reconcileGate.ShouldReconcile(u)
 			} else {
-				return ReconcilerTypeUnknown, fmt.Errorf("no predicate for gvk %v where we have multiple controllers", objectGVK)
+				return "", fmt.Errorf("no predicate for gvk %v where we have multiple controllers", objectGVK)
 			}
 		} else if hasDirectController {
 			// Otherwise, if direct controller is available, use direct.
@@ -235,15 +222,15 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (ReconcilerType, erro
 		}
 
 		if useDirectReconciler {
-			return ReconcilerTypeDirect, nil
+			return k8s.ReconcilerTypeDirect, nil
 		} else if hasDCLController {
-			return ReconcilerTypeDCL, nil
+			return k8s.ReconcilerTypeDCL, nil
 		} else if hasTerraformController {
-			return ReconcilerTypeTerraform, nil
+			return k8s.ReconcilerTypeTerraform, nil
 		}
 	}
 
-	return ReconcilerTypeUnknown, fmt.Errorf("no reconciler type found for: %v", objectGVK)
+	return "", fmt.Errorf("no reconciler type found for: %v", objectGVK)
 }
 
 func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) reconcile.Reconciler {
@@ -294,44 +281,44 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 	}
 
 	switch rt {
-	case ReconcilerTypeIAMPolicy:
+	case k8s.ReconcilerTypeIAMPolicy:
 		reconciler, err := policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeIAMPartialPolicy:
+	case k8s.ReconcilerTypeIAMPartialPolicy:
 		reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg, dependencyTracker)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeIAMPolicyMember:
+	case k8s.ReconcilerTypeIAMPolicyMember:
 		reconciler, err := policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeIAMAuditConfig:
+	case k8s.ReconcilerTypeIAMAuditConfig:
 		reconciler, err := auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeTerraform:
+	case k8s.ReconcilerTypeTerraform:
 		reconciler, err := tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeDCL:
+	case k8s.ReconcilerTypeDCL:
 		// Create DCL reconciler.
 		reconciler, err := dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		if err != nil {
 			r.t.Fatalf("error creating reconciler: %v", err)
 		}
 		return reconciler
-	case ReconcilerTypeDirect:
+	case k8s.ReconcilerTypeDirect:
 		gk := gvk.GroupKind()
 		model, err := registry.GetModel(gk)
 		if err != nil {

@@ -286,7 +286,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	// Apply defaulters
 	{
 		for _, defaulter := range r.Reconciler.defaulters {
-			changed, err := defaulter.ApplyDefaults(ctx, u)
+			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
 			if err != nil {
 				return false, fmt.Errorf("applying defaults: %w", err)
 			}
