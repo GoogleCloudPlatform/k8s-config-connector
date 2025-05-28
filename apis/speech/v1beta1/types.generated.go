@@ -20,7 +20,7 @@
 // resource: SpeechCustomClass:CustomClass
 // resource: SpeechPhraseSet:PhraseSet
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.cloud.speech.v2.AutoDetectDecodingConfig
 type AutoDetectDecodingConfig struct {

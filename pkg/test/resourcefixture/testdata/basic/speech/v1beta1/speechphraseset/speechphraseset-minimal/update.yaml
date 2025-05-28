@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: speech.cnrm.cloud.google.com/v1alpha1
+apiVersion: speech.cnrm.cloud.google.com/v1beta1
 kind: SpeechPhraseSet
 metadata:
   name: speechphraseset-minimal-${uniqueId}

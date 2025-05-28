@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -141,6 +141,7 @@ type SpeechPhraseSetObservedState struct {
 
 // SpeechPhraseSet is the Schema for the SpeechPhraseSet API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type SpeechPhraseSet struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

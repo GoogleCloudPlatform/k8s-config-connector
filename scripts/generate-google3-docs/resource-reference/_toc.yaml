@@ -249,6 +249,14 @@ toc:
   section:
   - title: "SourceRepoRepository"
     path: /config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md
+- title: "Speech-to-Text"
+  section:
+  - title: "SpeechCustomClass"
+    path: /config-connector/docs/reference/resource-docs/speech/speechcustomclass.md
+  - title: "SpeechPhraseSet"
+    path: /config-connector/docs/reference/resource-docs/speech/speechphraseset.md
+  - title: "SpeechRecognizer"
+    path: /config-connector/docs/reference/resource-docs/speech/speechrecognizer.md
 - title: "Cloud Spanner"
   section:
   - title: "SpannerDatabase"

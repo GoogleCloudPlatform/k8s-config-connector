@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -214,6 +214,7 @@ type SpeechRecognizerObservedState struct {
 
 // SpeechRecognizer is the Schema for the SpeechRecognizer API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type SpeechRecognizer struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

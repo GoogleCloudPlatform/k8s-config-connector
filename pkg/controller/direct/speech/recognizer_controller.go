@@ -16,7 +16,7 @@
 // proto.service: google.cloud.speech.v2.Speech
 // proto.message: google.cloud.speech.v2.Recognizer
 // crd.type: SpeechRecognizer
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package speech
 
@@ -35,7 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -299,15 +299,15 @@ func normalizeRecognizerConfigRefs(ctx context.Context, reader client.Reader, ob
 	if config == nil {
 		return nil
 	}
-	if config.Adaptation != nil {
-		for i := range config.Adaptation.PhraseSets {
+	/* NOTYET if config.Adaptation != nil {
+		for range config.Adaptation.PhraseSets {
 			if config.Adaptation.PhraseSets[i].PhraseSetRef != nil {
 				if _, err := config.Adaptation.PhraseSets[i].PhraseSetRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 					return fmt.Errorf("normalizing PhraseSetRef: %w", err)
 				}
 			}
 		}
-	}
+	} */
 	return nil
 }
 
@@ -335,12 +335,14 @@ func recognizerConfigsEqual(a, b *pb.RecognitionConfig) bool {
 	}
 
 	// Compare simple fields
-	if a.Model != b.Model {
+	if a.GetModel() != b.GetModel() {
 		return false
 	}
-	if !reflect.DeepEqual(a.LanguageCodes, b.LanguageCodes) {
+	if !reflect.DeepEqual(a.GetLanguageCodes(), b.GetLanguageCodes()) {
 		return false
 	}
+	// Model and LanguageCodes are deprecated and have been removed from RecognizerSpec.
+	// Their comparison is no longer needed here as they are part of DefaultRecognitionConfig.
 
 	// Compare nested messages (excluding Adaptation for now)
 	if !reflect.DeepEqual(a.GetFeatures(), b.GetFeatures()) {

@@ -29,11 +29,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
-  "displayName": "Initial description",
-  "languageCodes": [
-    "en-US"
-  ],
-  "model": "long"
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US"
+    ],
+    "model": "long"
+  },
+  "displayName": "Initial description"
 }
 
 200 OK
@@ -53,11 +55,13 @@ X-Xss-Protection: 0
     "createRecognizerRequest": {
       "parent": "projects/${projectNumber}/locations/global",
       "recognizer": {
-        "displayName": "Initial description",
-        "languageCodes": [
-          "en-US"
-        ],
-        "model": "long"
+        "defaultRecognitionConfig": {
+          "languageCodes": [
+            "en-US"
+          ],
+          "model": "long"
+        },
+        "displayName": "Initial description"
       },
       "recognizerId": "speechrecognizer-minimal-${uniqueId}"
     },
@@ -129,17 +133,20 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CdefaultRecognitionConfig
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: recognizer.name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
 
 {
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US",
+      "fr-FR"
+    ],
+    "model": "chirp"
+  },
   "displayName": "Updated description",
-  "languageCodes": [
-    "en-US"
-  ],
-  "model": "long",
   "name": "projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}"
 }
 
@@ -163,14 +170,17 @@ X-Xss-Protection: 0
     "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
     "updateRecognizerRequest": {
       "recognizer": {
+        "defaultRecognitionConfig": {
+          "languageCodes": [
+            "en-US",
+            "fr-FR"
+          ],
+          "model": "chirp"
+        },
         "displayName": "Updated description",
-        "languageCodes": [
-          "en-US"
-        ],
-        "model": "long",
         "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}"
       },
-      "updateMask": "displayName"
+      "updateMask": "displayName,defaultRecognitionConfig"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -180,16 +190,18 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultRecognitionConfig": {
       "languageCodes": [
-        "en-US"
+        "en-US",
+        "fr-FR"
       ],
-      "model": "long"
+      "model": "chirp"
     },
     "displayName": "Updated description",
     "etag": "abcdef0123A=",
     "languageCodes": [
-      "en-US"
+      "en-US",
+      "fr-FR"
     ],
-    "model": "long",
+    "model": "chirp",
     "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
     "state": 2,
     "uid": "111111111111111111111",
@@ -218,16 +230,18 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultRecognitionConfig": {
     "languageCodes": [
-      "en-US"
+      "en-US",
+      "fr-FR"
     ],
-    "model": "long"
+    "model": "chirp"
   },
   "displayName": "Updated description",
   "etag": "abcdef0123A=",
   "languageCodes": [
-    "en-US"
+    "en-US",
+    "fr-FR"
   ],
-  "model": "long",
+  "model": "chirp",
   "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
   "state": 2,
   "uid": "111111111111111111111",
@@ -270,18 +284,20 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultRecognitionConfig": {
       "languageCodes": [
-        "en-US"
+        "en-US",
+        "fr-FR"
       ],
-      "model": "long"
+      "model": "chirp"
     },
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Updated description",
     "etag": "abcdef0123A=",
     "expireTime": "2024-04-01T12:34:56.123456Z",
     "languageCodes": [
-      "en-US"
+      "en-US",
+      "fr-FR"
     ],
-    "model": "long",
+    "model": "chirp",
     "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
     "state": 4,
     "uid": "111111111111111111111",

@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: speech.cnrm.cloud.google.com/v1alpha1
-kind: SpeechCustomClass
+apiVersion: speech.cnrm.cloud.google.com/v1beta1
+kind: SpeechPhraseSet
 metadata:
-  name: speechcustomclass-minimal-${uniqueId}
+  name: speechphraseset-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: global
-  displayName: "Updated description"
-  items:
-    - value: "value1"
-    - value: "value2"
+  location: global # Expected resource location to be global
+  displayName: "Initial description"
+  phrases:
+    - value: "initial phrase"
+      boost: "1.0"

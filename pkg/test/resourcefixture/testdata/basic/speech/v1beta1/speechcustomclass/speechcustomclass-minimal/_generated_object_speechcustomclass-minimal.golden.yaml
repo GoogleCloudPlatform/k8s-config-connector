@@ -1,5 +1,5 @@
-apiVersion: speech.cnrm.cloud.google.com/v1alpha1
-kind: SpeechPhraseSet
+apiVersion: speech.cnrm.cloud.google.com/v1beta1
+kind: SpeechCustomClass
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -7,14 +7,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: speechphraseset-minimal-${uniqueId}
+  name: speechcustomclass-minimal-${uniqueId}
   namespace: ${uniqueId}
 spec:
   displayName: Updated description
+  items:
+  - value: value1
+  - value: value2
   location: global
-  phrases:
-  - boost: "2.0"
-    value: updated phrase
   projectRef:
     external: ${projectId}
 status:
@@ -24,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/phraseSets/speechphraseset-minimal-${uniqueId}
+  externalRef: projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
