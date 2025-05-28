@@ -62,7 +62,7 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 		return fmt.Errorf("model is nil for gvk %s", gvk)
 	}
 
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps)
 	if err != nil {
 		return err
 	}
@@ -71,11 +71,13 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
+	gvk schema.GroupVersionKind, model Model, deps Deps) (*DirectReconciler, error) {
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
-	if jg == nil {
+
+	if deps.JitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}
+
 	r := DirectReconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -93,7 +95,8 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: jg,
+		jitterGenerator: deps.JitterGenerator,
+		defaulters:      deps.Defaulters,
 	}
 	return &r, nil
 }
@@ -150,6 +153,7 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 var _ reconcile.Reconciler = &DirectReconciler{}
 
 type Deps struct {
+	Defaulters         []k8s.Defaulter
 	JitterGenerator    jitter.Generator
 	ReconcilePredicate predicate.Predicate
 }
@@ -169,6 +173,8 @@ type DirectReconciler struct {
 	jitterGenerator            jitter.Generator
 
 	controllerName string
+
+	defaulters []k8s.Defaulter
 }
 
 type reconcileContext struct {
@@ -275,6 +281,25 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, nil
 	default:
 		return false, fmt.Errorf("unknown actuation mode %v", am)
+	}
+
+	// Apply defaulters
+	{
+		changeCount := 0
+		for _, defaulter := range r.Reconciler.defaulters {
+			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
+			if err != nil {
+				return false, fmt.Errorf("applying defaults: %w", err)
+			}
+			if changed {
+				changeCount++
+			}
+		}
+		if changeCount > 0 {
+			if err := r.Reconciler.Update(ctx, u); err != nil {
+				return false, fmt.Errorf("applying update after setting defaults: %w", err)
+			}
+		}
 	}
 
 	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
