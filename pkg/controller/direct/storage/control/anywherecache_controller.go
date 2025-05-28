@@ -366,6 +366,12 @@ func (a *AnywhereCacheAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("attempting to disable (delete) AnywhereCache", "name", a.id.String())
 
+	// If the cache is already disabled
+	if a.GetCurrentState() == anywhereCacheStateDisabled {
+		log.V(2).Info("AnywhereCache is already disabled", "name", a.id.String())
+		return true, nil
+	}
+
 	req := &pb.DisableAnywhereCacheRequest{Name: a.id.String()}
 	_, err := a.gcpClient.DisableAnywhereCache(ctx, req)
 	if err != nil {
