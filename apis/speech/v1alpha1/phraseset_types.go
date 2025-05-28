@@ -40,7 +40,7 @@ type SpeechPhraseSetSpec struct {
 	//  binary search approach to finding the optimal value for your use case as
 	//  well as adding phrases both with and without boost to your requests.
 	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.boost
-	Boost *string `json:"boost,omitempty"`
+	/* NOTYET Boost *string `json:"boost,omitempty"` */
 
 	// User-settable, human-readable name for the PhraseSet. Must be 63
 	//  characters or less.
