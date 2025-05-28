@@ -105,6 +105,9 @@ func (a *MembershipAdapter) Find(ctx context.Context) (bool, error) {
 
 	resource, err := a.gcpClient.Groups.Memberships.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("getting Membership %q: %w", a.id, err)
 	}
 
@@ -290,7 +293,7 @@ func (a *MembershipAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	op, err := a.gcpClient.Groups.Memberships.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
-			return false, nil
+			return true, nil
 		}
 		return false, fmt.Errorf("deleting Membership %q: %w", a.id, err)
 	}
