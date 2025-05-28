@@ -60,6 +60,66 @@ type SpeechRecognizerSpec struct {
 	Annotations map[string]string `json:"annotations,omitempty"`
 }
 
+// +kcc:proto=google.cloud.speech.v2.RecognitionConfig
+type RecognitionConfig struct {
+	// Automatically detect decoding parameters.
+	//  Preferred for supported formats.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.auto_decoding_config
+	/* NOTYET AutoDecodingConfig *AutoDetectDecodingConfig `json:"autoDecodingConfig,omitempty"` */
+
+	// Explicitly specified decoding parameters.
+	//  Required if using headerless PCM audio (linear16, mulaw, alaw).
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.explicit_decoding_config
+	/* NOTYET ExplicitDecodingConfig *ExplicitDecodingConfig `json:"explicitDecodingConfig,omitempty"`*/
+
+	// Optional. Which model to use for recognition requests. Select the model
+	//  best suited to your domain to get best results.
+	//
+	//  Guidance for choosing which model to use can be found in the [Transcription
+	//  Models
+	//  Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
+	//  and the models supported in each region can be found in the [Table Of
+	//  Supported
+	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.model
+	Model *string `json:"model,omitempty"`
+
+	// Optional. The language of the supplied audio as a
+	//  [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+	//  Language tags are normalized to BCP-47 before they are used eg "en-us"
+	//  becomes "en-US".
+	//
+	//  Supported languages for each model are listed in the [Table of Supported
+	//  Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+	//
+	//  If additional languages are provided, recognition result will contain
+	//  recognition in the most likely language detected. The recognition result
+	//  will include the language tag of the language detected in the audio.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.language_codes
+	LanguageCodes []string `json:"languageCodes,omitempty"`
+
+	// Speech recognition features to enable.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.features
+	/* NOTYET Features *RecognitionFeatures `json:"features,omitempty"`*/
+
+	// Speech adaptation context that weights recognizer predictions for specific
+	//  words and phrases.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
+	/* NOTYET Adaptation *SpeechAdaptation `json:"adaptation,omitempty"`*/
+
+	// Optional. Use transcription normalization to automatically replace parts of
+	//  the transcript with phrases of your choosing. For StreamingRecognize, this
+	//  normalization only applies to stable partial transcripts (stability > 0.8)
+	//  and final transcripts.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.transcript_normalization
+	/* NOTYET TranscriptNormalization *TranscriptNormalization `json:"transcriptNormalization,omitempty"`*/
+
+	// Optional. Optional configuration used to automatically run translation on
+	//  the given audio to the desired language for supported models.
+	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.translation_config
+	/* NOTYET TranslationConfig *TranslationConfig `json:"translationConfig,omitempty"`*/
+}
+
 // SpeechRecognizerStatus defines the config connector machine state of SpeechRecognizer
 type SpeechRecognizerStatus struct {
 	/* Conditions represent the latest available observations of the
@@ -180,7 +240,7 @@ type TranslationConfig struct {
 	// Required. The language code to translate to.
 	// +kcc:proto:field=google.cloud.speech.v2.TranslationConfig.target_language
 	// +required
-	TargetLanguage *string `json:"targetLanguage,omitempty"`
+	/* NOTYET TargetLanguage *string `json:"targetLanguage,omitempty"` */
 }
 
 // +kcc:proto=google.cloud.speech.v2.ExplicitDecodingConfig
@@ -188,7 +248,7 @@ type ExplicitDecodingConfig struct {
 	// Required. Encoding of the audio data sent for recognition.
 	// +kcc:proto:field=google.cloud.speech.v2.ExplicitDecodingConfig.encoding
 	// +required
-	Encoding *string `json:"encoding,omitempty"`
+	/* NOTYET Encoding *string `json:"encoding,omitempty"` */
 
 	// Optional. Sample rate in Hertz of the audio data sent for recognition.
 	//  Valid values are: 8000-48000. 16000 is optimal. For best results, set the
@@ -197,7 +257,7 @@ type ExplicitDecodingConfig struct {
 	//  Note that this field is marked as OPTIONAL for backward compatibility
 	//  reasons. It is (and has always been) effectively REQUIRED.
 	// +kcc:proto:field=google.cloud.speech.v2.ExplicitDecodingConfig.sample_rate_hertz
-	SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"`
+	/* NOTYET SampleRateHertz *int32 `json:"sampleRateHertz,omitempty"` */
 
 	// Optional. Number of channels present in the audio data sent for
 	//  recognition. Note that this field is marked as OPTIONAL for backward
@@ -205,7 +265,7 @@ type ExplicitDecodingConfig struct {
 	//
 	//  The maximum allowed value is 8.
 	// +kcc:proto:field=google.cloud.speech.v2.ExplicitDecodingConfig.audio_channel_count
-	AudioChannelCount *int32 `json:"audioChannelCount,omitempty"`
+	/* NOTYET AudioChannelCount *int32 `json:"audioChannelCount,omitempty"` */
 }
 
 // +kcc:proto=google.cloud.speech.v2.SpeakerDiarizationConfig
@@ -218,7 +278,7 @@ type SpeakerDiarizationConfig struct {
 	//  `min_speaker_count` = `max_speaker_count`.
 	// +kcc:proto:field=google.cloud.speech.v2.SpeakerDiarizationConfig.min_speaker_count
 	// +required
-	MinSpeakerCount *int32 `json:"minSpeakerCount,omitempty"`
+	/* NOTYET MinSpeakerCount *int32 `json:"minSpeakerCount,omitempty"` */
 
 	// Required. Maximum number of speakers in the conversation. Valid values are:
 	//  1-6. Must be >= `min_speaker_count`. This range gives you more flexibility
@@ -226,7 +286,7 @@ type SpeakerDiarizationConfig struct {
 	//  speakers.
 	// +kcc:proto:field=google.cloud.speech.v2.SpeakerDiarizationConfig.max_speaker_count
 	// +required
-	MaxSpeakerCount *int32 `json:"maxSpeakerCount,omitempty"`
+	/* NOTYET MaxSpeakerCount *int32 `json:"maxSpeakerCount,omitempty"` */
 }
 
 // +kcc:proto=google.cloud.speech.v2.SpeechAdaptation
@@ -261,11 +321,15 @@ type InlineCustomClass struct {
 	// Optional. User-settable, human-readable name for the CustomClass. Must be
 	//  63 characters or less.
 	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.display_name
+	/* NOTYET
 	DisplayName *string `json:"displayName,omitempty"`
+	*/
 
 	// A collection of class items.
 	// +kcc:proto:field=google.cloud.speech.v2.CustomClass.items
+	/* NOTYET
 	Items []CustomClass_ClassItem `json:"items,omitempty"`
+	*/
 
 	// Optional. Allows users to store small amounts of arbitrary data.
 	//  Both the key and the value must be 63 characters or less each.
@@ -336,7 +400,7 @@ type SpeechAdaptation_AdaptationPhraseSet struct {
 	// The name of an existing PhraseSet resource. The user must have read
 	//  access to the resource and it must not be deleted.
 	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet.phrase_set
-	PhraseSetRef *PhraseSetRef `json:"phraseSetRef,omitempty"`
+	/* NOTYET PhraseSetRef *PhraseSetRef `json:"phraseSetRef,omitempty"` */
 
 	// An inline defined PhraseSet.
 	// +kcc:proto:field=google.cloud.speech.v2.SpeechAdaptation.AdaptationPhraseSet.inline_phrase_set
@@ -367,12 +431,16 @@ type InlinePhraseSet struct {
 	//  binary search approach to finding the optimal value for your use case as
 	//  well as adding phrases both with and without boost to your requests.
 	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.boost
+	/* NOTYET
 	Boost *string `json:"boost,omitempty"`
+	*/
 
 	// User-settable, human-readable name for the PhraseSet. Must be 63
 	//  characters or less.
 	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.display_name
+	/* NOTYET
 	DisplayName *string `json:"displayName,omitempty"`
+	*/
 
 	// Allows users to store small amounts of arbitrary data.
 	//  Both the key and the value must be 63 characters or less each.
