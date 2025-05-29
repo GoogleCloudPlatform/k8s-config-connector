@@ -170,8 +170,8 @@ repo to quickly set up a local dev environment.
     1.  We need to install the following two CRDs as they are hard dependencies
         to reconcile all the other supported CRDs:
         ```shell
-        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
-        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+        kubectl apply -f operator/config/crd/base/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+        kubectl apply -f operator/config/crd/base/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
         ```
 
     1.  Then we build/push the locally built images and deploy the workloads
@@ -257,8 +257,8 @@ Make sure that the `cnrm.cloud.google.com/project-id` annotation is replaced wit
 #### Error getting ConfigConnectorContext object
 
 ```
-kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
-kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+kubectl apply -f operator/config/crd/base/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+kubectl apply -f operator/config/crd/base/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
 make deploy-controller && kubectl delete pods --namespace cnrm-system --all
 ```
 
