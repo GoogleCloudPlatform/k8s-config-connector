@@ -22,5 +22,7 @@ spec:
   encryptionSpec:
     kmsKeyRef: 
       name: kmscryptokey-${uniqueId}
+  dataplexConfig:
+    enabledPipelinesLineage: false
   projectRef:
       external: ${projectId}

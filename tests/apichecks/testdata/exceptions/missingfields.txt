@@ -3379,7 +3379,6 @@
 [missing_field] crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.webhooks[].name" is not set in unstructured objects
 [missing_field] crd=validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.webhooks[].timeoutSeconds" is not set in unstructured objects
 [missing_field] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com version=v1beta1: field ".spec.metadata.config.featureNormType" is not set in unstructured objects
-[missing_field] crd=vertexaimetadatastores.vertexai.cnrm.cloud.google.com version=v1beta1: field ".spec.dataplexConfig.enabledPipelinesLineage" is not set in unstructured objects
 [missing_field] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.allowedProjects[].kind" is not set in unstructured objects
 [missing_field] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.allowedProjects[].name" is not set in unstructured objects
 [missing_field] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.allowedProjects[].namespace" is not set in unstructured objects
