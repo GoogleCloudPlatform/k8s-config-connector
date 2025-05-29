@@ -116,8 +116,7 @@ SUPPORTED_SERVICES=(
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
-LONG_RUNNING_CRUD_TESTS_REGEX="storageanywherecache|\
-basicalloydbbackup|\
+LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
 basicalloydbinstance|\
 basicalloydbsecondarycluster|\
 basicalloydbsecondaryinstance|\
@@ -146,6 +145,8 @@ securesourcemanagerinstancecmek|\
 securesourcemanagerrepositorybasic|\
 securesourcemanagerrepositoryfull|\
 sqlinstanceencryptionkey|\
+storageanywherecache-base|\
+storageanywherecache-full|\
 subnetconnector|\
 vertexaidatasetencryptionkey|\
 vertexaiendpointencryptionkey|\
