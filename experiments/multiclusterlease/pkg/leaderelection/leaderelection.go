@@ -50,14 +50,20 @@ func NewLeaderElector(client *storage.Client, bucketName, identity, leaseKey str
 	}
 }
 
+// LeaseInfo contains the current state of a lease from the backend
+type LeaseInfo struct {
+	// Acquired indicates whether this identity successfully acquired or renewed the lease
+	Acquired bool
+	// HolderIdentity is the identity of the current lease holder (may be empty if no holder)
+	HolderIdentity *string
+	// RenewTime is when the lease was last renewed (may be nil if no lease exists)
+	RenewTime *time.Time
+	// LeaseTransitions is the number of times leadership has changed (may be nil if no lease exists)
+	LeaseTransitions *int32
+}
+
 // AcquireOrRenew attempts to acquire or renew the lease in GCS
-// Returns:
-// - acquired: true if this instance is the leader
-// - holderIdentity: the identity of the current leader (may be empty if no leader)
-// - renewTime: the time when the lease was last renewed
-// - leaseTransitions: the number of lease transitions
-// - error: any error that occurred
-func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (bool, string, *time.Time, *int32, error) {
+func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error) {
 	// Try to get the current lease state
 	data, err := le.readLease(ctx)
 	if err == storage.ErrObjectNotExist {
@@ -65,7 +71,7 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (bool, string, *tim
 		return le.createNewLease(ctx)
 	}
 	if err != nil {
-		return false, "", nil, nil, err
+		return &LeaseInfo{Acquired: false}, err
 	}
 
 	// Determine lease duration
@@ -94,17 +100,37 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (bool, string, *tim
 		if err := le.updateLease(ctx, updatedLeaseData, data.Generation); err != nil {
 			if isGCSPreconditionError(err) {
 				// Someone else modified the object since we read it
-				return false, data.HolderIdentity, &data.RenewTime, &data.LeaseTransitions, nil
+				return &LeaseInfo{
+					Acquired:         false,
+					HolderIdentity:   &data.HolderIdentity,
+					RenewTime:        &data.RenewTime,
+					LeaseTransitions: &data.LeaseTransitions,
+				}, nil
 			}
-			return false, data.HolderIdentity, &data.RenewTime, &data.LeaseTransitions, err
+			return &LeaseInfo{
+				Acquired:         false,
+				HolderIdentity:   &data.HolderIdentity,
+				RenewTime:        &data.RenewTime,
+				LeaseTransitions: &data.LeaseTransitions,
+			}, fmt.Errorf("failed to update lease: %w", err)
 		}
 
 		// Successfully acquired/renewed the lease
-		return true, le.identity, &now, &updatedLeaseData.LeaseTransitions, nil
+		return &LeaseInfo{
+			Acquired:         true,
+			HolderIdentity:   &le.identity,
+			RenewTime:        &now,
+			LeaseTransitions: &updatedLeaseData.LeaseTransitions,
+		}, nil
 	}
 
 	// We're not the leader
-	return false, data.HolderIdentity, &data.RenewTime, &data.LeaseTransitions, nil
+	return &LeaseInfo{
+		Acquired:         false,
+		HolderIdentity:   &data.HolderIdentity,
+		RenewTime:        &data.RenewTime,
+		LeaseTransitions: &data.LeaseTransitions,
+	}, nil
 }
 
 // leaseData represents the data stored in the GCS lease object
@@ -195,7 +221,7 @@ func (le *LeaderElector) updateLease(ctx context.Context, data *leaseData, gener
 
 // createNewLease creates a new lease object in GCS with this instance as the holder
 // Uses a precondition to ensure the object doesn't exist (preventing race conditions)
-func (le *LeaderElector) createNewLease(ctx context.Context) (bool, string, *time.Time, *int32, error) {
+func (le *LeaderElector) createNewLease(ctx context.Context) (*LeaseInfo, error) {
 	obj := le.getObjectHandle()
 	now := time.Now()
 	leaseTransitions := int32(0)
@@ -210,7 +236,7 @@ func (le *LeaderElector) createNewLease(ctx context.Context) (bool, string, *tim
 	// Marshal the lease data to JSON
 	content, err := json.Marshal(data)
 	if err != nil {
-		return false, "", nil, nil, fmt.Errorf("marshalling new lease data: %w", err)
+		return &LeaseInfo{Acquired: false}, fmt.Errorf("marshalling new lease data: %w", err)
 	}
 
 	// Use a precondition that the object doesn't exist
@@ -223,22 +249,27 @@ func (le *LeaderElector) createNewLease(ctx context.Context) (bool, string, *tim
 		w.Close()
 		if isGCSPreconditionError(err) {
 			// Someone else created the object since we checked
-			return false, "", nil, nil, nil
+			return &LeaseInfo{Acquired: false}, nil
 		}
-		return false, "", nil, nil, fmt.Errorf("writing new lease data: %w", err)
+		return &LeaseInfo{Acquired: false}, fmt.Errorf("writing new lease data: %w", err)
 	}
 
 	// Close the writer to complete the operation
 	if err := w.Close(); err != nil {
 		if isGCSPreconditionError(err) {
 			// Someone else created the object since we checked
-			return false, "", nil, nil, nil
+			return &LeaseInfo{Acquired: false}, nil
 		}
-		return false, "", nil, nil, fmt.Errorf("failed to create new lease: %w", err)
+		return &LeaseInfo{Acquired: false}, fmt.Errorf("failed to create new lease: %w", err)
 	}
 
 	// Successfully created and acquired the lease
-	return true, le.identity, &now, &leaseTransitions, nil
+	return &LeaseInfo{
+		Acquired:         true,
+		HolderIdentity:   &le.identity,
+		RenewTime:        &now,
+		LeaseTransitions: &leaseTransitions,
+	}, nil
 }
 
 // isGCSPreconditionError checks if an error is a GCS precondition failure
