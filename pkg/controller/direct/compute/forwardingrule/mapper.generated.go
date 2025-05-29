@@ -42,7 +42,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.IsMirroringCollector = in.IsMirroringCollector
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
-	// MISSING: Labels
+	out.Labels = in.Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
 	// MISSING: Name
@@ -84,7 +84,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.IsMirroringCollector = in.IsMirroringCollector
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
-	// MISSING: Labels
+	out.Labels = in.Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_ToProto)
 	// MISSING: Name
