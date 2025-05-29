@@ -110,6 +110,7 @@ config/installbundle/components/deletiondefender/deletiondefender_image_patch.ya
 config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 operator/config/manager/manager_image_patch.yaml
 operator/config/autopilot-manager/manager_image_patch.yaml
+operator/config/crd/generated/
 
 ### Go ###
 # Binaries for programs and plugins

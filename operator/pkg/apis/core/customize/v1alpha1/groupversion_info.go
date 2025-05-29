@@ -66,4 +66,10 @@ var (
 		Version: GroupVersion.Version,
 		Kind:    "ControllerReconciler",
 	}
+
+	APIGroupInstallationGroupVersionKind = schema.GroupVersionKind{
+		Group:   GroupVersion.Group,
+		Version: GroupVersion.Version,
+		Kind:    "APIGroupInstallation",
+	}
 )

@@ -60,7 +60,7 @@ func init() {
 // this function do not require an external API server to execute.
 func startTestEnv() (*rest.Config, func()) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths:        []string{paths.GetOperatorCRDsPath()},
+		CRDDirectoryPaths:        paths.GetOperatorCRDsPaths(),
 		ControlPlaneStartTimeout: time.Minute,
 		ControlPlaneStopTimeout:  time.Minute,
 	}

@@ -41,10 +41,39 @@ test: generate fmt vet manifests
 manager: generate fmt vet
 	go build -o bin/manager cmd/manager/main.go
 
+# Generate all CRDs to temporary location
+.PHONY: generate-crds
+generate-crds:
+	rm -rf config/crd/generated
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) \
+		paths="./pkg/apis/core/..." \
+		output:crd:artifacts:config=config/crd/generated
+
+# Build full overlay (all CRDs including alpha)
+.PHONY: manifests-full
+manifests-full: generate-crds
+	rm -f config/crd/base/bases/*.yaml
+	rm -f config/crd/overlays/full/bases/*.yaml
+	
+	cp config/crd/generated/core.cnrm.cloud.google.com_*.yaml config/crd/base/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_*.yaml config/crd/overlays/full/bases/
+
+# Build stable overlay (manually picked CRDs)
+.PHONY: manifests-stable
+manifests-stable: generate-crds
+	rm -f config/crd/base/bases/*.yaml
+	rm -f config/crd/overlays/stable/bases/*.yaml
+
+	cp config/crd/generated/core.cnrm.cloud.google.com_*.yaml config/crd/base/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_controllerresources.yaml config/crd/overlays/stable/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_namespacedcontrollerresources.yaml config/crd/overlays/stable/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_controllerreconcilers.yaml config/crd/overlays/stable/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_namespacedcontrollerreconcilers.yaml config/crd/overlays/stable/bases/
+	cp config/crd/generated/customize.core.cnrm.cloud.google.com_*webhook*.yaml config/crd/overlays/stable/bases/
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+manifests: manifests-full manifests-stable
 	go run scripts/generate-image-configmap/main.go
 
 # Run go fmt against code
@@ -65,12 +94,12 @@ generate:
 # Install CRDs into a cluster
 .PHONY: install
 install: manifests
-	kustomize build config/crd | kubectl apply -f -
+	kustomize build config/crd/overlays/full | kubectl apply -f -
 
 # Uninstall CRDs from a cluster
 .PHONY: uninstall
 uninstall: manifests
-	kustomize build config/crd | kubectl delete -f -
+	kustomize build config/crd/overlays/full | kubectl delete -f -
 
 # Build the docker image
 .PHONY: docker-build

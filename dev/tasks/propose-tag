@@ -50,6 +50,7 @@ EOF
 sed -i -e "s@cnrm.cloud.google.com/operator-version:.*@cnrm.cloud.google.com/operator-version: \"${VERSION}\"@g" \
   operator/config/autopilot/kustomization.yaml \
   operator/config/default/kustomization.yaml \
+  operator/config/gke-addon/kustomization.yaml \
   config/installbundle/release-manifests/standard/kustomization.yaml \
   config/installbundle/release-manifests/autopilot/kustomization.yaml
 
