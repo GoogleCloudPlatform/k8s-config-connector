@@ -16,7 +16,7 @@ package spanner
 
 import (
 	pb "cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -38,15 +38,15 @@ func BackupScheduleSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupSchedul
 	}
 	return out
 }
-func BackupScheduleSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupScheduleSpec) *krm.BackupScheduleSpecObservedState {
+func BackupScheduleSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupScheduleSpec) *krm.SpannerBackupScheduleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupScheduleSpecObservedState{}
+	out := &krm.SpannerBackupScheduleObservedState{}
 	out.CronSpec = CrontabSpecObservedState_FromProto(mapCtx, in.GetCronSpec())
 	return out
 }
-func BackupScheduleSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupScheduleSpecObservedState) *pb.BackupScheduleSpec {
+func BackupScheduleSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpannerBackupScheduleObservedState) *pb.BackupScheduleSpec {
 	if in == nil {
 		return nil
 	}

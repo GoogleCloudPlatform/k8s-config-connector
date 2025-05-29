@@ -117,6 +117,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"SpeechCustomClass",
 		"SpeechPhraseSet",
 		"SpeechRecognizer",
+		"SpannerBackupSchedule",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
