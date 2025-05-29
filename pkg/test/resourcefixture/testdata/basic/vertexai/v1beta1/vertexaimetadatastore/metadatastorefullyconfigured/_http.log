@@ -347,6 +347,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
+  "dataplexConfig": {},
   "description": "An encrypted metadata store",
   "encryptionSpec": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
@@ -403,6 +404,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/us-central1/metadataStores/metadatastore${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.MetadataStore",
+    "dataplexConfig": {},
     "description": "An encrypted metadata store",
     "encryptionSpec": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
@@ -430,6 +432,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataplexConfig": {},
   "description": "An encrypted metadata store",
   "encryptionSpec": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
@@ -485,6 +488,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataplexConfig": {},
   "description": "An encrypted metadata store",
   "encryptionSpec": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
@@ -540,6 +544,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataplexConfig": {},
   "description": "An encrypted metadata store",
   "encryptionSpec": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"

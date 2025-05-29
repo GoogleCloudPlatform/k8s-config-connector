@@ -10,6 +10,8 @@ metadata:
   name: metadatastore${uniqueId}
   namespace: ${uniqueId}
 spec:
+  dataplexConfig:
+    enabledPipelinesLineage: false
   description: An encrypted metadata store
   encryptionSpec:
     kmsKeyRef:
