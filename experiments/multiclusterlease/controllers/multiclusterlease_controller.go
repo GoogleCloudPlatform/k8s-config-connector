@@ -102,11 +102,11 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 	}
 
 	// Try to acquire or renew the lease in GCS
-	acquired, holderIdentity, renewTime, leaseTransitions, err := leaderElector.AcquireOrRenew(ctx)
+	leaseInfo, err := leaderElector.AcquireOrRenew(ctx)
 	if err != nil {
 		log.Error(err, "failed to acquire or renew lease",
 			"identity", r.Identity,
-			"currentHolder", holderIdentity)
+			"currentHolder", leaseInfo.HolderIdentity)
 
 		// Update condition to indicate backend is unhealthy
 		r.setBackendHealthyCondition(&mcl, false, err)
@@ -114,7 +114,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		// Update status
 		if updateErr := r.Status().Update(ctx, &mcl); updateErr != nil {
 			log.Error(updateErr, "failed to update status with backend error")
-			// Don't return the error to avoid immediate reconciliation
+			return ctrl.Result{}, updateErr
 		}
 
 		requeueAfter := r.calculateRequeueAfter(&mcl)
@@ -122,20 +122,22 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 	}
 
 	// Log lease status
-	if acquired {
+	if leaseInfo.Acquired {
 		log.Info("successfully acquired lease",
 			"identity", r.Identity,
-			"renewTime", renewTime)
+			"renewTime", leaseInfo.RenewTime)
 	} else {
 		log.Info("lease held by another identity",
-			"holderIdentity", holderIdentity,
-			"renewTime", renewTime)
+			"holderIdentity", leaseInfo.HolderIdentity,
+			"renewTime", leaseInfo.RenewTime)
 	}
 
 	// Update status based on lease state
-	r.setMCLStatus(&mcl, acquired, holderIdentity, renewTime, leaseTransitions)
+	r.setMCLStatus(&mcl, leaseInfo)
 	// Set backend healthy condition
 	r.setBackendHealthyCondition(&mcl, true, nil)
+	// Set lock acquired condition
+	r.setLockAcquiredCondition(&mcl, leaseInfo.HolderIdentity)
 
 	// Update status
 	if err := r.Status().Update(ctx, &mcl); err != nil {
@@ -175,30 +177,24 @@ func (r *MultiClusterLeaseReconciler) handleDeletion(ctx context.Context, mcl *v
 }
 
 // setMCLStatus updates the status of the MultiClusterLease
-func (r *MultiClusterLeaseReconciler) setMCLStatus(
-	mcl *v1alpha1.MultiClusterLease,
-	acquired bool,
-	holderIdentity string,
-	renewTime *time.Time,
-	leaseTransitions *int32,
-) {
+func (r *MultiClusterLeaseReconciler) setMCLStatus(mcl *v1alpha1.MultiClusterLease, leaseInfo *leaderelection.LeaseInfo) {
 	// Set leading cluster status
-	mcl.Status.IsLeadingCluster = acquired && holderIdentity == r.Identity
+	mcl.Status.IsLeadingCluster = leaseInfo.Acquired && *leaseInfo.HolderIdentity == r.Identity
 
 	// Set observed generation
 	generation := mcl.Generation
 	mcl.Status.ObservedGeneration = &generation
 
 	// Update holder identity
-	if holderIdentity != "" {
-		mcl.Status.GlobalHolderIdentity = &holderIdentity
+	if leaseInfo.HolderIdentity != nil {
+		mcl.Status.GlobalHolderIdentity = leaseInfo.HolderIdentity
 	} else {
 		mcl.Status.GlobalHolderIdentity = nil
 	}
 
 	// Update renew time as a string with second precision
-	if renewTime != nil {
-		timeStr := renewTime.Format(time.RFC3339)
+	if leaseInfo.RenewTime != nil {
+		timeStr := leaseInfo.RenewTime.Format(time.RFC3339)
 		mcl.Status.GlobalRenewTime = &timeStr
 	} else {
 		mcl.Status.GlobalRenewTime = nil
@@ -210,8 +206,8 @@ func (r *MultiClusterLeaseReconciler) setMCLStatus(
 	}
 
 	// Update lease transitions
-	if leaseTransitions != nil {
-		mcl.Status.GlobalLeaseTransitions = leaseTransitions
+	if leaseInfo.LeaseTransitions != nil {
+		mcl.Status.GlobalLeaseTransitions = leaseInfo.LeaseTransitions
 	}
 }
 
@@ -241,24 +237,22 @@ func (r *MultiClusterLeaseReconciler) setBackendHealthyCondition(
 }
 
 // setLockAcquiredCondition sets the LockAcquiredInBackend condition
-func (r *MultiClusterLeaseReconciler) setLockAcquiredCondition(mcl *v1alpha1.MultiClusterLease, holderIdentity string) {
-	status := metav1.ConditionFalse
-	reason := "LockNotAcquired"
-	message := "No cluster currently holds the lock in the backend"
+func (r *MultiClusterLeaseReconciler) setLockAcquiredCondition(mcl *v1alpha1.MultiClusterLease, holderIdentity *string) {
+	var condition metav1.Condition
+	condition.Type = string(v1alpha1.ConditionTypeLockAcquiredInBackend)
+	condition.ObservedGeneration = mcl.Generation
 
-	if holderIdentity != "" {
-		status = metav1.ConditionTrue
-		reason = "LockAcquired"
-		message = fmt.Sprintf("Lock is held by %s", holderIdentity)
+	if holderIdentity != nil {
+		condition.Status = metav1.ConditionTrue
+		condition.Reason = "LockAcquired"
+		condition.Message = fmt.Sprintf("Lock is held by %s", *holderIdentity)
+	} else {
+		condition.Status = metav1.ConditionFalse
+		condition.Reason = "LockNotAcquired"
+		condition.Message = "No cluster currently holds the lock in the backend"
 	}
 
-	meta.SetStatusCondition(&mcl.Status.Conditions, metav1.Condition{
-		Type:               string(v1alpha1.ConditionTypeLockAcquiredInBackend),
-		Status:             status,
-		Reason:             reason,
-		Message:            message,
-		ObservedGeneration: mcl.Generation,
-	})
+	meta.SetStatusCondition(&mcl.Status.Conditions, condition)
 }
 
 // calculateRequeueAfter determines how long to wait before the next reconciliation

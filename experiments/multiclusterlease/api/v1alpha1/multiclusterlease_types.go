@@ -43,23 +43,23 @@ type MultiClusterLeaseStatus struct {
 	// Used by clients to determine if the status reflects their latest spec changes.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// IsLeadingCluster is true if the candidate is holding the global lease.
+	// IsLeadingCluster is true if the local cluster is holding the global lease.
 	// This is the source of truth for leadership.
 	IsLeadingCluster bool `json:"isLeadingCluster,omitempty"`
 
 	// GlobalHolderIdentity is the globally unique identifier of the candidate
-	// currently confirmed as holding the global lock for this lease scope.
+	// last observed as holding the global lock for this lease scope.
 	GlobalHolderIdentity *string `json:"globalHolderIdentity,omitempty"`
 
 	// GlobalRenewTime is the timestamp when the GlobalHolderIdentity
-	// is last renewed.
+	// was last observed to renew the lease.
 	GlobalRenewTime *string `json:"globalRenewTime,omitempty"`
 
 	// GlobalLeaseDurationSeconds is the lease duration (in seconds) currently
 	// being enforced by the global leader.
 	GlobalLeaseDurationSeconds *int32 `json:"globalLeaseDurationSeconds,omitempty"`
 
-	// GlobalLeaseTransitions is the number of times the global leader has changed.
+	// GlobalLeaseTransitions is the total number of times the global leader has changed.
 	GlobalLeaseTransitions *int32 `json:"globalLeaseTransitions,omitempty"`
 }
 
