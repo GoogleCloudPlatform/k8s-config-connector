@@ -18,10 +18,11 @@ import (
 	"reflect"
 	"sort"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance) bool {
+func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance, diff *structuredreporting.Diff) bool {
 	if desired == nil && actual == nil {
 		return true
 	}
@@ -29,36 +30,45 @@ func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance)
 		return false
 	}
 	if desired.DatabaseVersion != actual.DatabaseVersion {
+		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 		return false
 	}
 	if !DiskEncryptionConfigurationsMatch(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration) {
+		diff.AddField(".diskEncryptionConfiguration", actual.DiskEncryptionConfiguration, desired.DiskEncryptionConfiguration)
 		return false
 	}
 	// Ignore GeminiConfig. It is not supported in KRM API.
 	if desired.InstanceType != actual.InstanceType {
+		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
 		return false
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.MaintenanceVersion != actual.MaintenanceVersion {
+		diff.AddField(".maintenanceVersion", actual.MaintenanceVersion, desired.MaintenanceVersion)
 		return false
 	}
 	if desired.MasterInstanceName != actual.MasterInstanceName {
+		diff.AddField(".masterInstanceName", actual.MasterInstanceName, desired.MasterInstanceName)
 		return false
 	}
 	// Ignore MaxDiskSize. It is not supported in KRM API.
 	if desired.Name != actual.Name {
+		diff.AddField(".name", actual.Name, desired.Name)
 		return false
 	}
 	// Ignore OnPremisesConfiguration. It is not supported in KRM API.
 	if desired.Region != actual.Region {
+		diff.AddField(".region", actual.Region, desired.Region)
 		return false
 	}
 	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
+		diff.AddField(".replicaConfiguration", actual.ReplicaConfiguration, desired.ReplicaConfiguration)
 		return false
 	}
 	// Ignore ReplicationCluster. It is not supported in KRM API.
 	// Ignore RootPassword. It is not exported.
 	if !SettingsMatch(desired.Settings, actual.Settings) {
+		diff.AddField(".settings", actual.Settings, desired.Settings)
 		return false
 	}
 	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
