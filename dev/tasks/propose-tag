@@ -135,6 +135,43 @@ echo "stale version: ${STALE_VERSION}"
 rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
 rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}
 
+# Update the latest CRD and RBAC manifests to previous KCC versions
+echo "Update the latest CRD and RBAC manifests to previous KCC versions"
+for version in "${versions[@]}"; do
+  # Skip if version is the same as VERSION
+  if [ "${version}" = "${VERSION}" ]; then
+    continue
+  fi
+  # Update autopilot manifests
+  cp ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}/crds.yaml ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/crds.yaml
+  cp ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/cluster/gcp-identity/0-cnrm-system.yaml
+  cp ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/cluster/workload-identity/0-cnrm-system.yaml
+  cp ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/0-cnrm-system.yaml
+  
+  # Keep the controller version and update the rest of the manifest
+  yq 'select(.kind == "StatefulSet")' ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml > temp_statefulset.yaml
+  cp ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  yq 'select(.kind != "StatefulSet")' -i ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml 
+  echo "---" >> ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  cat temp_statefulset.yaml >> ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  rm temp_statefulset.yaml
+  
+  # Update standard manifests
+  cp ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/crds.yaml ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/crds.yaml
+  cp ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/cluster/gcp-identity/0-cnrm-system.yaml
+  cp ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/cluster/workload-identity/0-cnrm-system.yaml
+  cp ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/0-cnrm-system.yaml
+
+    # Keep the controller version and update the rest of the manifest
+  yq 'select(.kind == "StatefulSet")' ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml > temp_statefulset.yaml
+  cp ${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  yq 'select(.kind != "StatefulSet")' -i ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml 
+  echo "---" >> ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  cat temp_statefulset.yaml >> ${REPO_ROOT}/operator/channels/packages/configconnector/${version}/namespaced/per-namespace-components.yaml
+  rm temp_statefulset.yaml
+
+done
+
 # Format
 GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector
 GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ${REPO_ROOT}/operator/channels/packages/configconnector
