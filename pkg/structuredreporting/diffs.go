@@ -39,6 +39,11 @@ type DiffField struct {
 	New any
 }
 
+// AddField adds the data for a changed field
+func (d *Diff) AddField(id string, old any, new any) {
+	d.Fields = append(d.Fields, DiffField{ID: id, Old: old, New: new})
+}
+
 // ReportDiff should be called by a controller when it detects diffs
 func ReportDiff(ctx context.Context, diff *Diff) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
