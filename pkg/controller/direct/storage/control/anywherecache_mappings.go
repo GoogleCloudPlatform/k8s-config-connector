@@ -65,10 +65,6 @@ func StorageAnywhereCacheSpec_FromProto(mapCtx *direct.MapContext, in *pb.Anywhe
 
 		out.BucketRef = &refs.StorageBucketRef{External: parent.String()}
 		out.ResourceID = &resourceID
-	} else {
-		// dead code, here to make fuzzer test happy.
-		// Fuzzer test sends empty values, and we can't throw error.
-		// As throwing the same, would cause fuzzer test to fail.
 	}
 	out.Zone = direct.LazyPtr(in.GetZone())
 	out.Ttl = direct.StringDuration_FromProto(mapCtx, in.GetTtl())

@@ -106,6 +106,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"BigQueryAnalyticsHubListing",
 		"WorkstationCluster",
 		"WorkstationConfig",
+		"StorageAnywhereCache",
 		"Workstation",
 		"KMSAutokeyConfig",
 		"KMSKeyHandle",
@@ -117,7 +118,6 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"SpeechCustomClass",
 		"SpeechPhraseSet",
 		"SpeechRecognizer",
-		"StorageAnywhereCache",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }

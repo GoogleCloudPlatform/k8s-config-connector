@@ -213,7 +213,6 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 		return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
 	}
 
-	// dead code, but kept it here in case if cache creation become instantaneous in future.
 	return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 }
 
