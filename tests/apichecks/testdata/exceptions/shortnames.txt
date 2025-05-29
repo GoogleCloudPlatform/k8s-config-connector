@@ -1,3 +1,5 @@
+[shortnames] crd=apigroupinstallations.customize.core.cnrm.cloud.google.com: shortname "apigroupinstallation" does not start with gcp
+[shortnames] crd=apigroupinstallations.customize.core.cnrm.cloud.google.com: shortname "apigroupinstallations" does not start with gcp
 [shortnames] crd=configconnectorcontexts.core.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=configconnectors.core.cnrm.cloud.google.com: missing shortnames
 [shortnames] crd=controllerreconcilers.customize.core.cnrm.cloud.google.com: missing shortnames
