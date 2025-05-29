@@ -15,9 +15,6 @@
 package v1beta1
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
@@ -34,13 +31,4 @@ func (i *AlertPolicyIdentity) String() string {
 
 func (i *AlertPolicyIdentity) ID() string {
 	return i.id
-}
-
-func ParseAlertPolicyExternal(external string) (id *AlertPolicyIdentity, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "alertPolicies" {
-		return nil, fmt.Errorf("format of DataprocCluster external=%q was not known (use projects/<projectID>/alertPolicies/<alertPolicyID>)", external)
-	}
-
-	return &AlertPolicyIdentity{parent: &parent.ProjectParent{ProjectID: tokens[1]}, id: tokens[3]}, nil
 }

@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -52,11 +53,14 @@ func (r *MonitoringAlertPolicyRef) NormalizedExternal(ctx context.Context, reade
 	}
 	// From given External
 	if r.External != "" {
-		_, err := ParseAlertPolicyExternal(r.External)
-		if err != nil {
-			return "", err
+		tokens := strings.Split(r.External, "/")
+		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
+			return r.External, nil
 		}
-		return r.External, nil
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "alertPolicies" {
+			return r.External, nil
+		}
+		return "", fmt.Errorf("format of alertPolicyRef external=%q was not known (use projects/{{projectId}}/alertPolicies/{{alertPolicyId}} or alertPolicies/{{alertPolicyId}})", r.External)
 	}
 
 	// From the Config Connector object
