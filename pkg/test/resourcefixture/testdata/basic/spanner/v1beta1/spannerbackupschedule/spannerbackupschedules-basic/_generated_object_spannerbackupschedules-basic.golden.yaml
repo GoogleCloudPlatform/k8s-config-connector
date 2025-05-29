@@ -1,4 +1,4 @@
-apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerBackupSchedule
 metadata:
   finalizers:
@@ -10,10 +10,6 @@ metadata:
   name: spannerbackupschedule-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  encryptionConfig:
-    encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-    kmsKeyRef:
-      name: kmscryptokey-${uniqueId}
   fullBackupSpec: {}
   retentionDuration: 1000000s
   spannerDatabaseRef:
