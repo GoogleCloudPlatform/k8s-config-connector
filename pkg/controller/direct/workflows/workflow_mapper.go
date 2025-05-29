@@ -15,6 +15,9 @@
 package workflows
 
 import (
+	"fmt"
+	"strings"
+
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
@@ -106,7 +109,24 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.GetUserEnvVars()
 	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
-	out.Tags = in.GetTags()
+	out.TagValueRefs = make([]*refs.TagValueRef, 0)
+	for k, v := range in.GetTags() {
+		tagValueRef := &refs.TagValueRef{}
+		keyTokens := strings.Split(k, "/")
+		valueTokens := strings.Split(v, "/")
+		if len(keyTokens) == 2 && keyTokens[0] == "tagKeys" && len(valueTokens) == 2 && valueTokens[0] == "tagValues" {
+			// For `tagKeys/[tag_key_id]` mapped to `tagValues/[tag_value_id]`
+			tagValueRef.External = fmt.Sprintf("%s/%s", k, valueTokens[1])
+			continue
+		} else if len(keyTokens) == 2 {
+			// For `[org id, project id, or project number]/[tag_key_shortname]` mapped to `[value_shortname]`
+			tagValueRef.Parent = k
+			tagValueRef.ShortName = v
+		} else {
+			// Shouldn't be possible to reach here if tags were well formed
+		}
+		out.TagValueRefs = append(out.TagValueRefs, tagValueRef)
+	}
 	return out
 }
 
@@ -143,6 +163,22 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	if in.ExecutionHistoryLevel != nil {
 		out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
 	}
-	out.Tags = in.Tags
+	out.Tags = make(map[string]string)
+	for _, v := range in.TagValueRefs {
+		if v.External != "" {
+			// For `tagKeys/[tag_key_id]` mapped to `tagValues/[tag_value_id]`, stored as `tagKeys/[tag_key_id]/[tag_value_id]`
+			tokens := strings.Split(v.External, "/")
+			if len(tokens) == 3 {
+				key := strings.Join(tokens[:2], "/")
+				value := tokens[2]
+				out.Tags[key] = "tagValues/" + value
+			}
+		} else if v.Parent != "" && v.ShortName != "" {
+			// For `[org id, project id, or project number]/[tag_key_shortname]` mapped to `[value_shortname]`
+			out.Tags[v.Parent] = v.ShortName
+		} else {
+			// Shouldn't be possible to reach here if tags were well formed
+		}
+	}
 	return out
 }

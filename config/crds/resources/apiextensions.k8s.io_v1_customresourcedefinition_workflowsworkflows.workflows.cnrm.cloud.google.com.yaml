@@ -452,12 +452,38 @@ spec:
                 description: Required. Workflow code to be executed. The size limit
                   is 128KB.
                 type: string
-              tags:
-                additionalProperties:
-                  type: string
-                description: Optional. Input only. Immutable. Tags associated with
-                  this workflow.
-                type: object
+              tagValueRefs:
+                description: Optional. Input only. Immutable. Value of tags associated
+                  with this workflow. Note that KCC names are unique for tagValues,
+                  but GCP tagValue shortNames are not.
+                items:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: Should be in the format `[CONTAINER_ID]/[tag_key_id]/[tag_value_id]`,
+                        where `CONTAINER_ID` is `[project_id]` or `[org_id]`.
+                      type: string
+                    name:
+                      description: The `metadata.name` field of a `TagValue` resource.
+                      type: string
+                    namespace:
+                      description: The k8s `namespace` of a `TagValue` resource.
+                      type: string
+                  type: object
+                type: array
               userEnvVars:
                 additionalProperties:
                   type: string

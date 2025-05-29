@@ -93,9 +93,10 @@ type WorkflowsWorkflowSpec struct {
 	// +optional
 	ExecutionHistoryLevel *string `json:"executionHistoryLevel,omitempty"`
 
-	// Optional. Input only. Immutable. Tags associated with this workflow.
+	// Optional. Input only. Immutable. Value of tags associated with this workflow.
+	// Note that KCC names are unique for tagValues, but GCP tagValue shortNames are not.
 	// +optional
-	Tags map[string]string `json:"tags,omitempty"`
+	TagValueRefs []*refs.TagValueRef `json:"tagValueRefs,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
