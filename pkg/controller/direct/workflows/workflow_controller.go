@@ -206,6 +206,7 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 		paths = append(paths, "description")
 	}
 
+	log.Info("executionhistorylevel desired: %s vs actual: %s", desiredPb.ExecutionHistoryLevel, a.actual.ExecutionHistoryLevel)
 	if !reflect.DeepEqual(desiredPb.ExecutionHistoryLevel, a.actual.ExecutionHistoryLevel) {
 		paths = append(paths, "execution_history_level")
 	}

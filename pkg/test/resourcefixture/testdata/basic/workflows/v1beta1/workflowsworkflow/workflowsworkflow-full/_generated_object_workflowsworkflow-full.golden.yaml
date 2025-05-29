@@ -40,9 +40,8 @@ spec:
               - searchTerm: '${text.split(location, "-")[0]}'
         - returnOutput:
             return: '${searchTerm}'
-  tags:
-    ${projectId}/keyname${uniqueId}: tagstagvalue-${uniqueId}
-    ${projectId}/keyname${uniqueId}-updated: tagstagvalue-${uniqueId}-updated
+  tagValueRefs:
+  - name: tagstagvalue-${uniqueId}-updated
   userEnvVars:
     locationEnvVar: over-the-rainbow
 status:
