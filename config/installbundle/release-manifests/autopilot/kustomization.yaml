@@ -20,4 +20,4 @@ commonAnnotations:
 resources:
   - ../../../../operator/config/rbac
   - ../../../../operator/config/crd
-  - ../../../../operator/config/manager
+  - ../../../../operator/config/autopilot-manager
