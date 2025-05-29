@@ -593,7 +593,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	// Direct-base controller no longer re-queue waiting for deletion-defender finalizer.
 	// See https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4512
 	// todo: shall we apply this feature to dcl, tf and iam controllers?
-	if rt != testreconciler.ReconcilerTypeDirect {
+	if rt != k8s.ReconcilerTypeDirect {
 		testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	} else {
 		testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedDefaultReconcileStruct, nil)
