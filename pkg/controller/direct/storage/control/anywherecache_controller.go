@@ -145,6 +145,22 @@ var _ directbase.Adapter = &AnywhereCacheAdapter{}
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *AnywhereCacheAdapter) Find(ctx context.Context) (bool, error) {
+	/*
+			The resourceID for an AnywhereCache resource is
+			backend-generated. We first check if resourceID field
+			exists in Adapter.
+
+			1. If a resourceID exists, we check for existence of
+			   cache with that ID. If found, we proceed with update
+			   path; otherwise, we create a new one.
+
+			2. If no resourceID is provided, we create a new cache.
+
+		    During creation, we'll populate the externalRef in the
+			status. This externalRef will be used in subsequent
+			reconciliations to extract the resourceID, leading to
+			follow update path next time.
+	*/
 	if !(a.id.HasKnownId()) {
 		return false, nil
 	}
@@ -196,8 +212,8 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 		return fmt.Errorf("Failed to GET anywhere cache metadata: %w", err)
 	}
 
-	name := fmt.Sprintf("%s/anywhereCaches/%s", a.id.Parent().String(), metadata.GetAnywhereCacheId())
-	resource, err := a.gcpClient.GetAnywhereCache(ctx, &pb.GetAnywhereCacheRequest{Name: name})
+	a.id.SetResourceID(metadata.GetAnywhereCacheId())
+	resource, err := a.gcpClient.GetAnywhereCache(ctx, &pb.GetAnywhereCacheRequest{Name: a.id.String()})
 	if err != nil {
 		return fmt.Errorf("Failed to get anywhere cache metadata: %w", err)
 	}
@@ -207,7 +223,7 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(name)
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 
 	if resource.GetState() == anywhereCacheStateCreating {
 		return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Creating, k8s.CreatingMessage))
