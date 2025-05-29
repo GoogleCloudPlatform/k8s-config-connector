@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/googleapis/gax-go/v2"
 )
 
@@ -234,6 +235,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		newVersionDb := &api.DatabaseInstance{
 			DatabaseVersion: direct.ValueOf(a.desired.Spec.DatabaseVersion),
 		}
+
+		{
+			report := &structuredreporting.Diff{}
+			report.AddField(".databaseVersion", a.actual.DatabaseVersion, a.desired.Spec.DatabaseVersion)
+			structuredreporting.ReportDiff(ctx, report)
+		}
+
 		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newVersionDb).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("patching SQLInstance %s version failed: %w", a.resourceID, err)
@@ -263,6 +271,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 				Tier: a.desired.Spec.Settings.Tier,
 			},
 		}
+
+		{
+			report := &structuredreporting.Diff{}
+			report.AddField(".settings.edition", a.actual.Settings.Edition, a.desired.Spec.Settings)
+			structuredreporting.ReportDiff(ctx, report)
+		}
+
 		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
@@ -287,8 +302,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
-	if !InstancesMatch(desiredGCP, a.actual) {
+	instanceDiff := &structuredreporting.Diff{}
+	if !InstancesMatch(desiredGCP, a.actual, instanceDiff) {
 		updateOp.RecordUpdatingEvent()
+
+		{
+			structuredreporting.ReportDiff(ctx, instanceDiff)
+		}
 
 		op, err := a.sqlInstancesClient.Update(a.projectID, desiredGCP.Name, desiredGCP).Context(ctx).Do()
 		if err != nil {
