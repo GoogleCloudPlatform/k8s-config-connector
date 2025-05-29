@@ -576,6 +576,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -618,13 +619,11 @@ X-Xss-Protection: 0
       "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
-      "templateVariable": "iid",
-      "valueType": 1
+      "templateVariable": "iid"
     },
     {
       "filterType": 1,
-      "labelKey": "zone",
-      "valueType": 1
+      "labelKey": "zone"
     }
   ],
   "displayName": "monitoringdashboard-full",
@@ -812,6 +811,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -854,13 +854,11 @@ X-Xss-Protection: 0
       "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
-      "templateVariable": "iid",
-      "valueType": 1
+      "templateVariable": "iid"
     },
     {
       "filterType": 1,
-      "labelKey": "zone",
-      "valueType": 1
+      "labelKey": "zone"
     }
   ],
   "displayName": "monitoringdashboard-full",
@@ -1264,6 +1262,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1306,13 +1305,11 @@ X-Xss-Protection: 0
       "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
-      "templateVariable": "iid",
-      "valueType": 1
+      "templateVariable": "iid"
     },
     {
       "filterType": 1,
-      "labelKey": "zone",
-      "valueType": 1
+      "labelKey": "zone"
     }
   ],
   "displayName": "monitoringdashboard-full",
@@ -1500,6 +1497,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1542,13 +1540,11 @@ X-Xss-Protection: 0
       "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
-      "templateVariable": "iid",
-      "valueType": 1
+      "templateVariable": "iid"
     },
     {
       "filterType": 1,
-      "labelKey": "zone",
-      "valueType": 1
+      "labelKey": "zone"
     }
   ],
   "displayName": "monitoringdashboard-full",
