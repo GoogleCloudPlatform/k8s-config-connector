@@ -180,6 +180,8 @@ func (s *WorkflowsV1) UpdateWorkflow(ctx context.Context, req *pb.UpdateWorkflow
 			}
 		case "callLogLevel":
 			updated.CallLogLevel = req.GetWorkflow().GetCallLogLevel()
+		case "executionHistoryLevel":
+			updated.ExecutionHistoryLevel = req.GetWorkflow().GetExecutionHistoryLevel()
 		case "userEnvVars":
 			updated.UserEnvVars = req.GetWorkflow().GetUserEnvVars()
 		default:
