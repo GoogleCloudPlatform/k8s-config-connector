@@ -64,7 +64,8 @@ func startTestEnvironment(testType test.Type, crds []*apiextensions.CustomResour
 	case testType == test.UnitTestType:
 		env.CRDs = test.FakeCRDs()
 	case testType == test.IntegrationTestType:
-		env.CRDDirectoryPaths = []string{repo.GetCRDsPath(), paths.GetOperatorCRDsPath()}
+		env.CRDDirectoryPaths = []string{repo.GetCRDsPath()}
+		env.CRDDirectoryPaths = append(env.CRDDirectoryPaths, paths.GetOperatorCRDsPaths()...)
 	}
 	if testType == test.IntegrationTestType {
 		ConfigureWebhookInstallOptions(env, whCfgs)

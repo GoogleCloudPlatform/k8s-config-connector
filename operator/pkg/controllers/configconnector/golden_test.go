@@ -19,6 +19,7 @@ import (
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -30,14 +31,13 @@ import (
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 )
 
 func TestGoldenConfigConnector(t *testing.T) {
 	env := &envtest.Environment{
 		CRDInstallOptions: envtest.CRDInstallOptions{
-			Paths: []string{
-				"../../../config/crd/bases",
-			},
+			Paths:              paths.GetOperatorCRDsPaths(),
 			ErrorIfPathMissing: true,
 		},
 	}
@@ -68,7 +68,14 @@ func TestGoldenConfigConnector(t *testing.T) {
 			Metrics: metricsserver.Options{BindAddress: "0"},
 		},
 	}
-	goldenOptions.WithSchema(v1beta1.AddToScheme, customizev1alpha1.AddToScheme, customizev1beta1.AddToScheme, corev1.AddToScheme, appsv1.AddToScheme)
+	goldenOptions.WithSchema(
+		v1beta1.AddToScheme,
+		customizev1alpha1.AddToScheme,
+		customizev1beta1.AddToScheme,
+		corev1.AddToScheme,
+		appsv1.AddToScheme,
+		apiextensionsv1.AddToScheme,
+	)
 
 	v := golden.NewValidator(t, goldenOptions)
 
