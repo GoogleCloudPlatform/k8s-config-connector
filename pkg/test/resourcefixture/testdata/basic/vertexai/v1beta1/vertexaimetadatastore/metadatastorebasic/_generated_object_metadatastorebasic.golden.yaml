@@ -1,4 +1,4 @@
-apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
 kind: VertexAIMetadataStore
 metadata:
   finalizers:
@@ -10,10 +10,7 @@ metadata:
   name: metadatastore${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: An encrypted metadata store
-  encryptionSpec:
-    kmsKeyRef:
-      name: kmscryptokey-${uniqueId}
+  description: Metadata Store
   projectRef:
     external: ${projectId}
   region: us-central1
