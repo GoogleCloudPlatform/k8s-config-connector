@@ -35,6 +35,10 @@ func (i *AnywhereCacheIdentity) String() string {
 	return i.parent.String() + "/anywhereCaches/" + i.id
 }
 
+func (i *AnywhereCacheIdentity) SetResourceID(resourceID string) {
+	i.id = resourceID
+}
+
 func (i *AnywhereCacheIdentity) ID() string {
 	return i.id
 }
