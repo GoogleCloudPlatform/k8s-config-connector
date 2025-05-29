@@ -18,8 +18,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -234,15 +232,16 @@ func resolveTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interf
 }
 
 func resolveDefaultTargetFieldValue(r *Resource, tc corekccv1alpha1.TypeConfig) (interface{}, error) {
+	// todo: uncomment below code after b/420945170(missing status.externalRef in direct resources)
 	// When resolving default target field from direct resources, get the value(resourceID) from externalRef
-	if supportedgvks.IsDirectByGVK(r.Resource.GroupVersionKind()) || k8s.IsDirectByAnnotation(&r.Resource) {
-		val, _, err := unstructured.NestedString(r.Status, "externalRef")
-		if err != nil {
-			return "", err
-		}
-		tokens := strings.Split(val, "/")
-		return tokens[len(tokens)-1], nil
-	}
+	//if supportedgvks.IsDirectByGVK(r.Resource.GroupVersionKind()) || k8s.IsDirectByAnnotation(&r.Resource) {
+	//	val, _, err := unstructured.NestedString(r.Status, "externalRef")
+	//	if err != nil {
+	//		return "", err
+	//	}
+	//	tokens := strings.Split(val, "/")
+	//	return tokens[len(tokens)-1], nil
+	//}
 	if !tc.DCLBasedResource && !SupportsResourceIDField(&r.ResourceConfig) {
 		return r.GetName(), nil
 	}
