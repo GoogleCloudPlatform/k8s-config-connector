@@ -36,4 +36,5 @@ spec:
   projectRef:
     external: ${projectId}
   tagValueRefs:
-    - name: tagstagvalue-${uniqueId}
+    - parent: ${projectId}/keyname${uniqueId}
+      shortName: valuename
