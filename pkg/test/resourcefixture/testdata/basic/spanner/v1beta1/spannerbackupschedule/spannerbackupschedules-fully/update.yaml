@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerBackupSchedule
 metadata:
   name: spannerbackupschedule-${uniqueId}
@@ -24,4 +24,8 @@ spec:
     cronSpec: 
       text: 0 3 * * *
   retentionDuration: "1000000s"
+  encryptionConfig:
+    encryptionType: "GOOGLE_DEFAULT_ENCRYPTION"
+    kmsKeyRef:
+      name: kmscryptokey-${uniqueId}
 
