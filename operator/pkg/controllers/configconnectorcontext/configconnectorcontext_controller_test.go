@@ -1027,6 +1027,7 @@ func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager)
 	}
 	r.customizationWatcher = controllers.NewWithDynamicClient(
 		dynamic.NewForConfigOrDie(m.GetConfig()),
+		m.GetClient(),
 		controllers.CustomizationWatcherOptions{
 			TriggerGVRs: controllers.NamespacedCustomizationCRsToWatch,
 			Log:         logr.Discard(),

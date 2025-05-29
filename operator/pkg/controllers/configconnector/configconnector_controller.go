@@ -120,6 +120,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
 		dynamic.NewForConfigOrDie(mgr.GetConfig()),
+		mgr.GetClient(),
 		controllers.CustomizationWatcherOptions{
 			TriggerGVRs: controllers.CustomizationCRsToWatch,
 			Log:         r.log,
@@ -597,6 +598,16 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 // If no APIGroupInstallation CRs exist, all resource CRDs are selected (default behavior).
 // If any APIGroupInstallation CRs exist, only resource CRDs from the specified API groups are kept.
 func (r *Reconciler) selectCRDsByAPIGroups(ctx context.Context, m *manifest.Objects) error {
+	gvr := corekcck8s.ToGVR(customizev1alpha1.APIGroupInstallationGroupVersionKind)
+	exists, err := controllers.CRDExists(ctx, r.client, gvr)
+	if err != nil {
+		return fmt.Errorf("error checking if CRD %s exists: %w", gvr.String(), err)
+	}
+	if !exists {
+		r.log.Info("APIGroupInstallation CRD not installed, skipping selection by API groups", "gvr", gvr.String())
+		return nil
+	}
+
 	crList := &customizev1alpha1.APIGroupInstallationList{}
 	if err := r.client.List(ctx, crList); err != nil {
 		return fmt.Errorf("error listing APIGroupInstallation resources: %w", err)

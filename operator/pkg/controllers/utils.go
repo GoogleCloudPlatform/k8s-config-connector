@@ -24,6 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	appsv1 "k8s.io/api/apps/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -675,4 +677,16 @@ func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfi
 		return fmt.Errorf("error setting args in container: %w", err)
 	}
 	return nil
+}
+
+func CRDExists(ctx context.Context, client client.Client, gvr schema.GroupVersionResource) (bool, error) {
+	crd := &apiextensionsv1.CustomResourceDefinition{}
+	err := client.Get(ctx, types.NamespacedName{Name: gvr.Resource + "." + gvr.Group}, crd)
+	if err != nil {
+		if errors.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("failed to get CRD %s: %w", gvr.String(), err)
+	}
+	return true, nil
 }

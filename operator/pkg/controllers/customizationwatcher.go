@@ -30,6 +30,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/dynamic"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 )
 
@@ -73,6 +74,7 @@ type CustomizationWatcher struct {
 	// receives a watch event on the triggerGVRs it is watching.
 	events        chan event.GenericEvent
 	dynamicClient dynamic.Interface
+	client        client.Client
 	log           logr.Logger
 }
 
@@ -81,9 +83,10 @@ type CustomizationWatcherOptions struct {
 	Log         logr.Logger
 }
 
-func NewWithDynamicClient(dc dynamic.Interface, opts CustomizationWatcherOptions) *CustomizationWatcher {
+func NewWithDynamicClient(dc dynamic.Interface, c client.Client, opts CustomizationWatcherOptions) *CustomizationWatcher {
 	return &CustomizationWatcher{
 		dynamicClient:   dc,
+		client:          c,
 		triggerGVRs:     opts.TriggerGVRs,
 		log:             opts.Log.WithName("customization-watcher"),
 		watchRegistered: make(map[string]struct{}),
@@ -100,6 +103,15 @@ func (w *CustomizationWatcher) Events() chan event.GenericEvent {
 // EnsureWatchStarted starts watches on triggerGVRs if not already done so.
 func (w *CustomizationWatcher) EnsureWatchStarted(ctx context.Context, targetNN types.NamespacedName) error {
 	for _, gvr := range w.triggerGVRs {
+		exists, err := CRDExists(ctx, w.client, gvr)
+		if err != nil {
+			return fmt.Errorf("failed to check if CRD %s exists: %w", gvr.String(), err)
+		}
+		if !exists {
+			w.log.Info("CRD does not exist, skipping watch", "gvr", gvr.String())
+			continue
+		}
+
 		go w.startWatch(ctx, gvr, targetNN)
 	}
 	return nil

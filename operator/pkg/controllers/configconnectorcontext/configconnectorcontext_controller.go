@@ -118,6 +118,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
 		dynamic.NewForConfigOrDie(mgr.GetConfig()),
+		mgr.GetClient(),
 		controllers.CustomizationWatcherOptions{
 			TriggerGVRs: controllers.NamespacedCustomizationCRsToWatch,
 			Log:         r.log,
