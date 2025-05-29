@@ -8,10 +8,9 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-two
   name: computeforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -20,6 +19,8 @@ spec:
   ipAddress:
     addressRef:
       external: https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/addresses/computeaddress-${uniqueId}
+  labels:
+    label-one: value-two
   loadBalancingScheme: ""
   location: us-central1
   networkRef:
@@ -37,5 +38,5 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/computeforwardingrule-${uniqueId}
   labelFingerprint: abcdef0123A=
-  observedGeneration: 1
+  observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeforwardingrule-${uniqueId}

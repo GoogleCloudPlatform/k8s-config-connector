@@ -15,13 +15,13 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
-  labels:
-    label-one: "value-two"
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeforwardingrule-${uniqueId}
 spec:
   description: "A VPC private service connect forwarding rule"
+  labels:
+    label-one: "value-two"
   target:
     serviceAttachmentRef:
       name: computeserviceattachment-${uniqueId}

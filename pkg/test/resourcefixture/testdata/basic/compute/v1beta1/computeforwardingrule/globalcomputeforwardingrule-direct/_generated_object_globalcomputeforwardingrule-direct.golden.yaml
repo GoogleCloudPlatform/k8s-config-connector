@@ -11,13 +11,14 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
   name: computeglobalforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
   description: A global forwarding rule
   ipAddress:
     ip: 0.0.0.0
+  labels:
+    label-one: value-one
   loadBalancingScheme: INTERNAL_SELF_MANAGED
   location: global
   networkRef:

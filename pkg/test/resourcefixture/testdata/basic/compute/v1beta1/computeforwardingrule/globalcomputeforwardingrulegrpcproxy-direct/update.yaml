@@ -15,13 +15,13 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
-  labels:
-    label-one: "value-two"
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeregionalforwardingrule-${uniqueId}
 spec:
   description: "A global forwarding rule"
+  labels:
+    label-one: "value-two"
   target:
     targetGRPCProxyRef:
       name: computetargetgrpcproxy-2-${uniqueId}
