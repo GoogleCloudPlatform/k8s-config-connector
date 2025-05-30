@@ -61,9 +61,10 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 	if !shortNameAvailable && ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either parent and shortName, name or external on TagValueRef")
 	}
-	if shortNameAvailable && ref.ShortName != "" && ref.Name != "" && ref.External != "" {
-		return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagValueRef")
-	}
+	// TODO Add check for only allowing a single identifier for ref
+	// if shortNameAvailable && ref.Name != "" && ref.External != "" {
+	// 	return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagValueRef")
+	// }
 
 	// External should be in the `tagKeys/[tag_key_id]/[tag_value_id]` format
 	if ref.External != "" {
@@ -159,9 +160,10 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 	if !shortNameAvailable && ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either parent and shortName, name or external on TagKeyRef")
 	}
-	if shortNameAvailable && ref.Name != "" && ref.External != "" {
-		return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagKeyRef")
-	}
+	// TODO Add check for only allowing a single identifier for ref
+	// if shortNameAvailable && ref.Name != "" && ref.External != "" {
+	// 	return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagKeyRef")
+	// }
 
 	// External should be in the `tagKeys/[tag_key_id]` format
 	if ref.External != "" {
