@@ -155,10 +155,10 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, nil
 	}
 
-	shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
+	// shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
 
-	if !shortNameAvailable && ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either parent and shortName, name or external on TagKeyRef")
+	if ref.Name == "" && ref.External == "" {
+		return nil, fmt.Errorf("must specify either name or external on TagKeyRef")
 	}
 	// TODO Add check for only allowing a single identifier for ref
 	// if shortNameAvailable && ref.Name != "" && ref.External != "" {
@@ -178,17 +178,20 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 	}
 
 	// Parent should be in the `[CONTAINER]` format
-	if shortNameAvailable {
-		tokens := strings.Split(ref.Parent, "/")
-		if len(tokens) == 1 {
-			ref = &TagValueRef{
-				Parent: tokens[0],
-				ShortName: ref.ShortName,
-			}
-			return ref, nil
-		}
-		return nil, fmt.Errorf("format of TagKeyRef parent=%q was not known (use  [org_id], [project_id], or [project_number].)", ref.Parent)
-	}
+	// if shortNameAvailable {
+	// 	tokens := strings.Split(ref.Parent, "/")
+	// 	if len(tokens) == 1 {
+	// 		ref = &TagKeyRef{
+	// 			Parent: tokens[0],
+	// 			ShortName: ref.ShortName,
+	// 		}
+	// 		return &TagKey{
+	// 			Ref: ref,
+	// 			ResourceID: tokens[1], // TODO Where do we get the ResourceID? KCC metadata.name, and shortName, aren't the ID given by GCP
+	// 		}, nil
+	// 	}
+	// 	return nil, fmt.Errorf("format of TagKeyRef parent=%q was not known (use  [org_id], [project_id], or [project_number].)", ref.Parent)
+	// }
 
 	key := types.NamespacedName{
 		Namespace: ref.Namespace,
