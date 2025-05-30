@@ -11,94 +11,94 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: ServiceIdentity
-metadata:
-  name: serviceidentity-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-spec:
-  projectRef:
-    external: ${projectId}
-  resourceID: workflows.googleapis.com
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMServiceAccount
-metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: "${projectId}"
-  name: gsa-${uniqueId}
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMServiceAccount
-metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: "${projectId}"
-  name: gsa-${uniqueId}-updated
----
-apiVersion: kms.cnrm.cloud.google.com/v1beta1
-kind: KMSKeyRing
-metadata:
-  name: kmskeyring-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-spec:
-  location: us-central1
----
-apiVersion: kms.cnrm.cloud.google.com/v1beta1
-kind: KMSCryptoKey
-metadata:
-  labels:
-    key-one: value-one
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-  name: kmscryptokey-${uniqueId}
-spec:
-  keyRingRef:
-    name: kmskeyring-${uniqueId}
-  purpose: ENCRYPT_DECRYPT
----
-apiVersion: kms.cnrm.cloud.google.com/v1beta1
-kind: KMSCryptoKey
-metadata:
-  labels:
-    key-one: value-one
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-  name: kmscryptokey-${uniqueId}-updated
-spec:
-  keyRingRef:
-    name: kmskeyring-${uniqueId}
-  purpose: ENCRYPT_DECRYPT
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
-metadata:
-  name: iampolicymember-${uniqueId}-updated
-spec:
-  memberFrom:
-    serviceIdentityRef:
-      name: serviceidentity-${uniqueId}
-  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
-  resourceRef:
-    apiVersion: kms.cnrm.cloud.google.com/v1beta1
-    kind: KMSCryptoKey
-    name: kmscryptokey-${uniqueId}
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
-metadata:
-  name: iampolicymember-${uniqueId}
-spec:
-  memberFrom:
-    serviceIdentityRef:
-      name: serviceidentity-${uniqueId}
-  role: roles/cloudkms.cryptoKeyEncrypterDecrypter
-  resourceRef:
-    apiVersion: kms.cnrm.cloud.google.com/v1beta1
-    kind: KMSCryptoKey
-    name: kmscryptokey-${uniqueId}-updated
----
+# apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+# kind: ServiceIdentity
+# metadata:
+#   name: serviceidentity-${uniqueId}
+#   annotations:
+#     cnrm.cloud.google.com/deletion-policy: "abandon"
+# spec:
+#   projectRef:
+#     external: ${projectId}
+#   resourceID: workflows.googleapis.com
+# ---
+# apiVersion: iam.cnrm.cloud.google.com/v1beta1
+# kind: IAMServiceAccount
+# metadata:
+#   annotations:
+#     cnrm.cloud.google.com/project-id: "${projectId}"
+#   name: gsa-${uniqueId}
+# ---
+# apiVersion: iam.cnrm.cloud.google.com/v1beta1
+# kind: IAMServiceAccount
+# metadata:
+#   annotations:
+#     cnrm.cloud.google.com/project-id: "${projectId}"
+#   name: gsa-${uniqueId}-updated
+# ---
+# apiVersion: kms.cnrm.cloud.google.com/v1beta1
+# kind: KMSKeyRing
+# metadata:
+#   name: kmskeyring-${uniqueId}
+#   annotations:
+#     cnrm.cloud.google.com/project-id: ${projectId}
+# spec:
+#   location: us-central1
+# ---
+# apiVersion: kms.cnrm.cloud.google.com/v1beta1
+# kind: KMSCryptoKey
+# metadata:
+#   labels:
+#     key-one: value-one
+#   annotations:
+#     cnrm.cloud.google.com/project-id: ${projectId}
+#   name: kmscryptokey-${uniqueId}
+# spec:
+#   keyRingRef:
+#     name: kmskeyring-${uniqueId}
+#   purpose: ENCRYPT_DECRYPT
+# ---
+# apiVersion: kms.cnrm.cloud.google.com/v1beta1
+# kind: KMSCryptoKey
+# metadata:
+#   labels:
+#     key-one: value-one
+#   annotations:
+#     cnrm.cloud.google.com/project-id: ${projectId}
+#   name: kmscryptokey-${uniqueId}-updated
+# spec:
+#   keyRingRef:
+#     name: kmskeyring-${uniqueId}
+#   purpose: ENCRYPT_DECRYPT
+# ---
+# apiVersion: iam.cnrm.cloud.google.com/v1beta1
+# kind: IAMPolicyMember
+# metadata:
+#   name: iampolicymember-${uniqueId}-updated
+# spec:
+#   memberFrom:
+#     serviceIdentityRef:
+#       name: serviceidentity-${uniqueId}
+#   role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+#   resourceRef:
+#     apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#     kind: KMSCryptoKey
+#     name: kmscryptokey-${uniqueId}
+# ---
+# apiVersion: iam.cnrm.cloud.google.com/v1beta1
+# kind: IAMPolicyMember
+# metadata:
+#   name: iampolicymember-${uniqueId}
+# spec:
+#   memberFrom:
+#     serviceIdentityRef:
+#       name: serviceidentity-${uniqueId}
+#   role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+#   resourceRef:
+#     apiVersion: kms.cnrm.cloud.google.com/v1beta1
+#     kind: KMSCryptoKey
+#     name: kmscryptokey-${uniqueId}-updated
+# ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagKey
 metadata:
