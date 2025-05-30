@@ -56,9 +56,9 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		return nil, nil
 	}
 
-	shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
+	// shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
 
-	if !shortNameAvailable && ref.Name == "" && ref.External == "" {
+	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either parent and shortName, name or external on TagValueRef")
 	}
 	// TODO Add check for only allowing a single identifier for ref
@@ -79,17 +79,19 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 	}
 
 	// Parent should be in the `[CONTAINER]/[tag_key_shortname]` format
-	if shortNameAvailable {
-		tokens := strings.Split(ref.Parent, "/")
-		if len(tokens) == 2 {
-			ref = &TagValueRef{
-				Parent: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
-				ShortName: ref.ShortName,
-			}
-			return ref, nil
-		}
-		return nil, fmt.Errorf("format of TagValueRef parent=%q was not known (use [org_id, project_id, or project_number]/[tag_key_shortname])", ref.Parent)
-	}
+	// if shortNameAvailable {
+	// 	tokens := strings.Split(ref.Parent, "/")
+	// 	fmt.Printf("Splitting Parent. name: %s, parent: %s, Shortname:%s", ref.Name, ref.Parent, ref.ShortName)
+	// 	if len(tokens) == 2 {
+	// 		ref = &TagValueRef{
+	// 			Parent: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
+	// 			ShortName: ref.ShortName,
+	// 		}
+	// 		return ref, nil
+	// 	}
+	// 	return nil, fmt.Errorf("format of TagValueRef parent=%q was not known (use [org_id, project_id, or project_number]/[tag_key_shortname])", ref.Parent)
+	// }
+	fmt.Printf("Using name: %s, parent: %s, Shortname:%s", ref.Name, ref.Parent, ref.ShortName)
 
 	// Namespace is referring to k8s namespace, not tags namespace
 	key := types.NamespacedName{
