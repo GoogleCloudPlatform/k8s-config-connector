@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1alpha1"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -79,10 +79,6 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	if err := normalizeExternal(ctx, reader, u, obj); err != nil {
-		return nil, err
-	}
-
 	// Get spannerbackupschedules GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -93,18 +89,6 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, reader clien
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
-}
-
-func normalizeExternal(ctx context.Context, reader client.Reader, src client.Object, backupSchedule *krm.SpannerBackupSchedule) error {
-	// Resolve spanner database reference
-	if backupSchedule.Spec.DatabaseRef != nil {
-		dbRef, err := refs.ResolveSpannerDatabaseRef(ctx, reader, src, backupSchedule.Spec.DatabaseRef)
-		if err != nil {
-			return err
-		}
-		backupSchedule.Spec.DatabaseRef.External = dbRef.String()
-	}
-	return nil
 }
 
 func (m *modelBackupSchedule) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -237,7 +221,7 @@ func (a *BackupScheduleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.DatabaseRef = &refs.SpannerDatabaseRef{External: a.id.Parent().ProjectID}
+	obj.Spec.DatabaseRef = &spannerv1beta1.SpannerDatabaseRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -57,14 +58,19 @@ func (p *BackupScheduleParent) String() string {
 func NewBackupScheduleIdentity(ctx context.Context, reader client.Reader, obj *SpannerBackupSchedule) (*BackupScheduleIdentity, error) {
 
 	// Get Parent
-	databaseRef, err := refsv1beta1.ResolveSpannerDatabaseRef(ctx, reader, obj, obj.Spec.DatabaseRef)
+	external, err := obj.Spec.DatabaseRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
 
-	databaseID := databaseRef.DatabaseID
-	projectID := databaseRef.ProjectID
-	instanceID := databaseRef.InstanceID
+	parent, err := spannerv1beta1.ParseSpannerDatabaseExternal(external)
+	if err != nil {
+		return nil, err
+	}
+
+	databaseID := parent.ID()
+	projectID := parent.Parent().Parent().ProjectID
+	instanceID := parent.Parent().ID()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
