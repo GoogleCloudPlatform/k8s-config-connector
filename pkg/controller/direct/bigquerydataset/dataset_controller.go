@@ -144,7 +144,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired.Namespace, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
 		if err != nil {
 			return err
 		}
@@ -206,7 +206,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
+		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired.Namespace, a.desired.Spec.DefaultEncryptionConfiguration.KmsKeyRef)
 		if err != nil {
 			return err
 		}
