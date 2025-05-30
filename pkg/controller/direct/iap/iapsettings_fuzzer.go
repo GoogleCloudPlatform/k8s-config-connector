@@ -40,6 +40,7 @@ func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
 
 	// New fields that could potentially be added
 	f.UnimplementedFields.Insert(".access_settings.identity_sources")
+	f.UnimplementedFields.Insert(".access_settings.workforce_identity_settings")
 
 	return f
 }
