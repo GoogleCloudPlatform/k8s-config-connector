@@ -1,0 +1,153 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: monitoringdashboard-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  columnLayout:
+    columns:
+    - weight: 2
+      widgets:
+      - title: Widget 1
+        xyChart:
+          dataSets:
+          - plotType: LINE
+            targetAxis: Y2
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+              unitOverride: "1"
+          timeshiftDuration: 600.500s
+          y2Axis:
+            label: y2Axis
+            scale: LOG10
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - text:
+          content: Widget 2
+          format: MARKDOWN
+          style:
+            backgroundColor: '#000'
+            fontSize: FS_LARGE
+            horizontalAlignment: H_CENTER
+            padding: P_MEDIUM
+            pointerLocation: PL_TOP_LEFT
+            textColor: '#fff'
+            verticalAlignment: V_CENTER
+      - id: widget3
+        title: Widget 3
+        xyChart:
+          dataSets:
+          - plotType: STACKED_BAR
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+              unitOverride: "1"
+          thresholds:
+          - label: Important
+            targetAxis: Y1
+            value: 1.2
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - logsPanel:
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+          resourceNames:
+          - external: projects/${projectId}
+        title: Widget 4
+      - scorecard:
+          blankView: {}
+          timeSeriesQuery:
+            outputFullDuration: true
+            prometheusQuery: sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}}
+              / 60)
+        title: Scorecard Widget
+      - alertChart:
+          alertPolicyRef:
+            external: projects/${projectId}/alertPolicies/${alertPolicyID}
+        title: AlertChart Widget
+      - pieChart:
+          chartType: DONUT
+          dataSets:
+          - minAlignmentPeriod: 60s
+            sliceNameTemplate: ${resource.labels.zone}
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
+                  resource.type="gce_instance"
+                secondaryAggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_MEAN
+          showLabels: true
+        title: PieChart Widget
+      - errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+          - v2
+        title: ErrorReporting Widget
+      - timeSeriesTable:
+          columnSettings:
+          - column: column1
+            visible: true
+          - column: column2
+            visible: false
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
+                  resource.type="gce_instance"
+          metricVisualization: NUMBER
+        title: TimeSeriesTable Widget
+      - incidentList:
+          monitoredResources:
+          - labels:
+              instance_id: "12345678901234"
+              project_id: my-project
+              zone: us-central1-a
+            type: gce_instance
+          policyRefs:
+          - external: projects/${projectId}/alertPolicies/${alertPolicyID}
+        title: IncidentList Widget
+  dashboardFilters:
+  - filterType: RESOURCE_LABEL
+    labelKey: instance_id
+    stringValue: "3133577226154888113"
+    templateVariable: iid
+  - filterType: RESOURCE_LABEL
+    labelKey: zone
+  displayName: monitoringdashboard-full
+  projectRef:
+    external: ${projectId}
+  resourceID: monitoringdashboard-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  etag: abcdef123456
+  observedGeneration: 2

@@ -1,0 +1,155 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-${uniqueId}
+spec:
+  dashboardFilters:
+  - filterType: RESOURCE_LABEL
+    labelKey: instance_id
+    stringValue: "3133577226154888113"
+    templateVariable: iid
+  - filterType: RESOURCE_LABEL
+    labelKey: zone
+  displayName: "monitoringdashboard-full"
+  columnLayout:
+    columns:
+    - weight: 2
+      widgets:
+      - title: "Widget 1"
+        xyChart:
+          dataSets:
+          - targetAxis: Y2
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+                aggregation:
+                  perSeriesAligner: "ALIGN_RATE"
+              unitOverride: "1"
+            plotType: LINE
+          timeshiftDuration: 600.500s
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+          y2Axis:
+            label: y2Axis
+            scale: LOG10
+      - text:
+          content: "Widget 2"
+          format: "MARKDOWN"
+          style:
+            backgroundColor: "#000"
+            textColor: "#fff"
+            horizontalAlignment: H_CENTER
+            verticalAlignment: V_CENTER
+            fontSize: FS_LARGE
+            padding: P_MEDIUM
+            pointerLocation: PL_TOP_LEFT
+      - title: "Widget 3"
+        id: widget3
+        xyChart:
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+              unitOverride: "1"
+            plotType: "STACKED_BAR"
+          thresholds:
+          - label: "Important"
+            targetAxis: Y1
+            value: 1.2
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - title: "Widget 4"
+        logsPanel:
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+          resourceNames:
+            - external: "projects/${projectId}"
+      - title: "Scorecard Widget"
+        scorecard:
+          blankView: {}
+          timeSeriesQuery:
+            outputFullDuration: true
+            prometheusQuery: "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
+      - title: "AlertChart Widget"
+        alertChart:
+          alertPolicyRef:
+            external: alertPolicies/monitoringalertpolicy-${uniqueId}
+      - title: "PieChart Widget"
+        pieChart:
+          chartType: DONUT
+          showLabels: true
+          dataSets:
+          - sliceNameTemplate: "${resource.labels.zone}"
+            minAlignmentPeriod: 60s
+            # dimensions:
+            # - column: location
+            #   columnType: STRING
+            #   maxBinCount: 5
+            #   sortColumn: location
+            #   sortOrder: SORT_ORDER_ASCENDING
+            # measures:
+            # - column: mymeasure
+            #   aggregationFunction:
+            #     type: count
+            timeSeriesQuery:
+              timeSeriesFilter:
+                filter: "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                aggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_RATE"
+                secondaryAggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_MEAN"
+      - title: "ErrorReporting Widget"
+        errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+          - v2
+      - title: "TimeSeriesTable Widget"
+        timeSeriesTable:
+          columnSettings:
+          - column: column1
+            visible: true
+          - column: column2
+            visible: false
+          metricVisualization: NUMBER
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                aggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_RATE"
+      - title: "IncidentList Widget"
+        incidentList:
+          monitoredResources:
+          - type: "gce_instance"
+            labels:
+              project_id: my-project
+              instance_id: "12345678901234"
+              zone: "us-central1-a"
+          policyRefs:
+          - external: alertPolicies/monitoringalertpolicy-${uniqueId}

@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,21 @@
 
 package v1beta1
 
-type MonitoringAlertPolicyRef struct {
-	/* The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `MonitoringAlertPolicy` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `MonitoringAlertPolicy` resource. */
-	Namespace string `json:"namespace,omitempty"`
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+)
+
+// AlertPolicyIdentity defines the resource reference to AlertPolicy, which "External" field
+// holds the GCP identifier for the KRM object.
+type AlertPolicyIdentity struct {
+	parent *parent.ProjectParent
+	id     string
+}
+
+func (i *AlertPolicyIdentity) String() string {
+	return i.parent.String() + "/alertPolicies/" + i.id
+}
+
+func (i *AlertPolicyIdentity) ID() string {
+	return i.id
 }
