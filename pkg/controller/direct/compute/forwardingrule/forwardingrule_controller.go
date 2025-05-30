@@ -64,7 +64,7 @@ func (r *ForwardingRuleReconcileGate) ShouldReconcile(o *unstructured.Unstructur
 		return false
 	}
 	// Run the direct reconciler only when spec.Target.GoogleAPIsBundle is specified
-	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
+	return (obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil) || obj.Spec.Labels != nil
 }
 
 type forwardingRuleModel struct {
@@ -105,9 +105,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 
 	// Get location
 	location := obj.Spec.Location
-
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
 
 	// Handle TF default values
 	if obj.Spec.LoadBalancingScheme == nil {
@@ -220,7 +217,6 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
 
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
@@ -268,7 +264,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	// Set labels for the created forwarding rule
 	// Add labels back for psc forwarding rule
 	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
-		forwardingRule.Labels = desired.Labels
+		forwardingRule.Labels = desired.Spec.Labels
 	}
 	if forwardingRule.Labels != nil {
 		op, err := a.setLabels(ctx, created.LabelFingerprint, forwardingRule.Labels)
@@ -322,7 +318,6 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
