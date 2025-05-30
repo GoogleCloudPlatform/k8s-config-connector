@@ -123,15 +123,8 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		return nil, err
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, tagValue)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO Support organizations that hold tags and not just projects
-
 	ref = &TagValueRef{
-		External: fmt.Sprintf("%s/%s/%s", projectID, tagKey.ResourceID, tagValueResourceID),
+		External: fmt.Sprintf("tagKeys/%s/%s", tagKey.ResourceID, tagValueResourceID),
 	}
 
 	return ref, nil
@@ -222,15 +215,8 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, err
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, tagKey)
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO Support organizations that hold tags and not just projects
-
 	ref = &TagKeyRef{
-		External: fmt.Sprintf("%s/%s", projectID, tagKeyResourceID),
+		External: fmt.Sprintf("tagKeys/%s", tagKeyResourceID),
 	}
 
 	return &TagKey{Ref: ref, ResourceID: tagKeyResourceID}, nil
