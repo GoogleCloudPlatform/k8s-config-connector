@@ -32,11 +32,19 @@ type AnywhereCacheIdentity struct {
 }
 
 func (i *AnywhereCacheIdentity) String() string {
-	return i.parent.String() + "/anywherecaches/" + i.id
+	return i.parent.String() + "/anywhereCaches/" + i.id
+}
+
+func (i *AnywhereCacheIdentity) SetResourceID(resourceID string) {
+	i.id = resourceID
 }
 
 func (i *AnywhereCacheIdentity) ID() string {
 	return i.id
+}
+
+func (i *AnywhereCacheIdentity) HasKnownId() bool {
+	return i.id != ""
 }
 
 func (i *AnywhereCacheIdentity) Parent() *AnywhereCacheParent {
