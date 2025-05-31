@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -26,32 +26,33 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &LoggingLinkRef{}
+var _ refsv1beta1.ExternalNormalizer = &LoggingLogBucketRef{}
+var LoggingLogBucketGVK = GroupVersion.WithKind("LoggingLogBucket")
 
-// LoggingLinkRef defines the resource reference to LoggingLink, which "External" field
+// LoggingLogBucketRef defines the resource reference to LoggingLogBucket, which "External" field
 // holds the GCP identifier for the KRM object.
-type LoggingLinkRef struct {
-	// A reference to an externally managed LoggingLink resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}}".
+type LoggingLogBucketRef struct {
+	// A reference to an externally managed LoggingLogBucket resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a LoggingLink resource.
+	// The name of a LoggingLogBucket resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a LoggingLink resource.
+	// The namespace of a LoggingLogBucket resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on LoggingLink.
-// If the "External" is given in the other resource's spec.LoggingLinkRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual LoggingLink object from the cluster.
-func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on LoggingLogBucket.
+// If the "External" is given in the other resource's spec.LoggingLogBucketRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual LoggingLogBucket object from the cluster.
+func (r *LoggingLogBucketRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", LoggingLinkGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", LoggingLogBucketGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseLinkExternal(r.External); err != nil {
+		if _, err := ParseLogBucketExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,21 +64,38 @@ func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.R
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(LoggingLinkGVK)
+	u.SetGroupVersionKind(LoggingLogBucketGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", LoggingLinkGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", LoggingLogBucketGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
+		return r.External, nil
 	}
-	r.External = actualExternalRef
+
+	resourceID, err := refsv1beta1.GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+
+	location, err := refsv1beta1.GetLocation(u)
+	if err != nil {
+		return "", err
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
+
+	r.External = fmt.Sprintf("projects/%s/locations/%s/buckets/%s", projectID, location, resourceID)
 	return r.External, nil
 }

@@ -23,7 +23,6 @@ spec:
     mass: EXTRACT(jsonPayload.request)
     sku: EXTRACT(jsonPayload.id)
   loggingLogBucketRef:
-    kind: LoggingLogBucket
     name: logginglogbucket-dep-${uniqueId}
   metricDescriptor:
     displayName: updated-sample-descriptor
