@@ -37,7 +37,7 @@ type KMSAutokeyConfigSpec struct {
 	FolderRef *refs.FolderRef `json:"folderRef"`
 
 	// +optional
-	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`
+	KeyProjectRef *refs.ProjectRef `json:"keyProjectRef,omitempty"`
 }
 
 // KMSAutokeyConfigStatus defines the config connector machine state of KMSAutokeyConfig
