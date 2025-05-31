@@ -78,6 +78,30 @@ spec:
                 description: An AuthorizedView permitting access to an explicit subset
                   of a Table.
                 properties:
+                  familySubsets:
+                    additionalProperties:
+                      properties:
+                        qualifierPrefixes:
+                          description: Prefixes for qualifiers to be included in the
+                            AuthorizedView. Every qualifier starting with one of these
+                            prefixes is included in the AuthorizedView. To provide
+                            access to all qualifiers, include the empty string as
+                            a prefix ("").
+                          items:
+                            format: byte
+                            type: string
+                          type: array
+                        qualifiers:
+                          description: Individual exact column qualifiers to be included
+                            in the AuthorizedView.
+                          items:
+                            format: byte
+                            type: string
+                          type: array
+                      type: object
+                    description: Map from column family name to the set of columns
+                      in that family to be included in the AuthorizedView.
+                    type: object
                   rowPrefixes:
                     description: Row prefixes to be included in the AuthorizedView.
                       To provide access to all rows, include the empty string as a
@@ -117,7 +141,6 @@ spec:
                     type: string
                 type: object
             required:
-            - ""
             - tableRef
             type: object
           status:
