@@ -24,6 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 // GKNN is the canonical identity for a kube object; it is short for Group-Kind-Namespaced-Name
@@ -33,6 +34,10 @@ type GKNN struct {
 	Kind      string
 	Namespace string
 	Name      string
+}
+
+func (gknn GKNN) GroupKind() GroupKind {
+	return GroupKind{Group: gknn.Group, Kind: gknn.Kind}
 }
 
 // Recorder holds the information from reconciling the objects
@@ -70,6 +75,7 @@ type EventType string
 
 const (
 	EventTypeReconcileStart EventType = "reconcileStart"
+	EventTypeReconcileEnd   EventType = "reconcileEnd"
 	EventTypeDiff           EventType = "diff"
 	EventTypeKubeAction     EventType = "kubeAction"
 	EventTypeGCPAction      EventType = "gcpAction"
@@ -123,6 +129,11 @@ func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *u
 	l.recorder.recordReconcileStart(ctx, u)
 }
 
+// OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err)
+}
+
 // OnDiff is called by the structured reporting subsystem when a diff occurs.
 func (l *structuredReportingListener) OnDiff(ctx context.Context, diff *structuredreporting.Diff) {
 	l.recorder.recordDiff(ctx, diff)
@@ -168,6 +179,17 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	})
 }
 
+// recordReconcileEnd captures the reconcile end into our recorder.
+func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	gknn := gknnFromUnstructured(u)
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType: EventTypeReconcileEnd,
+		object:    u.DeepCopy(),
+	})
+}
+
 func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
 	return GKNN{
 		Group:     u.GroupVersionKind().Group,
@@ -204,6 +226,19 @@ func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []a
 
 		case []client.UpdateOption:
 			// ignore
+
+		case []client.PatchOption:
+			// ignore
+			for _, patchOption := range arg {
+				switch patchOption := patchOption.(type) {
+				// case *client.RawPatchOption:
+				// 	// ignore
+				case client.FieldOwner:
+					// ignore
+				default:
+					klog.Fatalf("unhandled patch option type %T", patchOption)
+				}
+			}
 
 		default:
 			klog.Fatalf("unhandled arg type %T", arg)
