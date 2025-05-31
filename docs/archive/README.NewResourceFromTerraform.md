@@ -887,7 +887,7 @@ Config Connector used to handle
 [locational resources](https://docs.google.com/document/d/1YNVQpBLRtSXF9hi8FK3R5qQLdO1-6J8EpcZ7bQ0ZCTQ/edit?usp=sharing),
 e.g. compute addresses, forwarding rules, disks differently than other
 non-locational resources. This special handling/configuration of resources is
-now discouraged as we want the KRM resources reflect underlying TF rsources as
+now discouraged as we want the KRM resources reflect underlying TF resources as
 much as possible, which will also ease the learnings from contributors when
 adding new resources.
 

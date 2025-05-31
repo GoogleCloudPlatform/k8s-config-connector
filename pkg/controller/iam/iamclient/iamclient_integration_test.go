@@ -757,7 +757,7 @@ func testConflictPreventionWithEtags(ctx context.Context, t *testing.T, iamClien
 		t.Fatalf("error setting iam policy: %v", err)
 	}
 	if noChangePolicy.Spec.Etag != etag {
-		t.Fatalf("expect no change of etag since there is no realy IAM policy change")
+		t.Fatalf("expect no change of etag since there is no real IAM policy change")
 	}
 
 	// Set a new IAM policy

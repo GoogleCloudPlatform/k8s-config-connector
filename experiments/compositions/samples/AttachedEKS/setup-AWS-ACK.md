@@ -7,7 +7,7 @@ Here is an overview of the ACK setup process:
 
 1. Create a GCP service account.
 1. Create an AWS role.
-   1. Grant this role the permissions to manage the AWS resouces.
+   1. Grant this role the permissions to manage the AWS resources.
    1. Allow the GCP service account to impersonate the AWS role.
 1. Create ACK controller(s) with the GCP service account.
 
@@ -40,8 +40,8 @@ gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
 ## Create an AWS role and allow the GCP service account to impersonate it
 
 ```
-# In this example we use the AdministratorAccess policy to manage AWS resouces.
-# The user can use a different policy to manage the resouces.
+# In this example we use the AdministratorAccess policy to manage AWS resources.
+# The user can use a different policy to manage the resources.
 AWS_POLICY=arn:aws:iam::aws:policy/AdministratorAccess
 
 # Get the subject of the GSA
