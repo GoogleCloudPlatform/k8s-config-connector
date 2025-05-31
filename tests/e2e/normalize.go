@@ -113,6 +113,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	//Specific to Dataproc
 	visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.stateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.status.stateStartTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
 
 	// Specific to Firestore
