@@ -25,9 +25,9 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func init() {
-	RegisterTool(&ListFilesInWorkspace{})
-}
+// func init() {
+// 	RegisterTool(&ListFilesInWorkspace{})
+// }
 
 type ListFilesInWorkspace struct {
 	FindFileName string `json:"find_file_name"`
