@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +24,7 @@ import (
 type SSHAuthenticationConfig struct {
 	// The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/*/secrets/*/versions/* .
 	// +required
-	UserPrivateKeySecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"userPrivateKeySecretVersionRef,omitempty"`
+	UserPrivateKeySecretVersionRef *secretmanagerv1beta1.SecretVersionRef `json:"userPrivateKeySecretVersionRef,omitempty"`
 
 	// Content of a public SSH key to verify an identity of a remote Git host.
 	// +required
@@ -33,7 +34,7 @@ type SSHAuthenticationConfig struct {
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
-	AuthenticationTokenSecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"authenticationTokenSecretVersionRef,omitempty"`
+	AuthenticationTokenSecretVersionRef *secretmanagerv1beta1.SecretVersionRef `json:"authenticationTokenSecretVersionRef,omitempty"`
 
 	/* The Git remote's default branch name. */
 	// +required
@@ -81,7 +82,7 @@ type DataformRepositorySpec struct {
 	// interpolate variables into the .npmrc file for package installation
 	// operations.
 	// +optional
-	NpmrcEnvironmentVariablesSecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
+	NpmrcEnvironmentVariablesSecretVersionRef *secretmanagerv1beta1.SecretVersionRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	// +required

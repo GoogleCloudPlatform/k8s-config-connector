@@ -19,6 +19,7 @@ import (
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -161,7 +162,7 @@ type Endpoint struct {
 
 	// A [Cloud SQL](https://cloud.google.com/sql) instance URI.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.cloud_sql_instance
-	SQLInstanceRef *refsv1beta1.SQLInstanceRef `json:"sqlInstance,omitempty"`
+	SQLInstanceRef *sqlv1beta1.SQLInstanceRef `json:"sqlInstance,omitempty"`
 
 	// TODO: Should be reference.
 

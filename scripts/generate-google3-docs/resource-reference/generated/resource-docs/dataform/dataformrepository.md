@@ -143,7 +143,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} If provided must be in the format `projects/*/secrets/*/versions/*`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -163,7 +163,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -213,7 +213,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} If provided must be in the format `projects/*/secrets/*/versions/*`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -233,7 +233,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -263,7 +263,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} If provided must be in the format `projects/*/secrets/*/versions/*`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecretVersion resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -273,7 +273,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -283,7 +283,7 @@ workspaceCompilationOverrides:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `SecretManagerSecretVersion` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecretVersion resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

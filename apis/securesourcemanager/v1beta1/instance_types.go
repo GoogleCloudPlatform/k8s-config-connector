@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -102,7 +103,7 @@ type Instance_PrivateConfig struct {
 	// Required. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ca_pool
-	CaPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
+	CaPoolRef *privatecav1beta1.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
 }
 
 // +genclient

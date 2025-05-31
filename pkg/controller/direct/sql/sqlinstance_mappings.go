@@ -23,6 +23,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
@@ -71,7 +72,7 @@ func InstanceEncryptionKMSCryptoKeyRefKRMToGCP(in *refs.KMSCryptoKeyRef) *api.Di
 	return out
 }
 
-func InstanceMasterInstanceRefKRMToGCP(in *refs.SQLInstanceRef) string {
+func InstanceMasterInstanceRefKRMToGCP(in *sqlv1beta1.SQLInstanceRef) string {
 	if in == nil {
 		return ""
 	}
@@ -654,12 +655,12 @@ func InstanceEncryptionKMSCryptoKeyRefGCPToKRM(in *api.DiskEncryptionConfigurati
 	return out
 }
 
-func InstanceMasterInstanceRefGCPToKRM(in string) *refs.SQLInstanceRef {
+func InstanceMasterInstanceRefGCPToKRM(in string) *sqlv1beta1.SQLInstanceRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &refs.SQLInstanceRef{
+	out := &sqlv1beta1.SQLInstanceRef{
 		External: in,
 	}
 

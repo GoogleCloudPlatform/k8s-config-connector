@@ -313,7 +313,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SQLInstance resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -323,7 +323,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -333,7 +333,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -413,7 +413,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}InstanceRef defines the resource reference to SQLInstance, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -423,7 +423,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The SQLInstance selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SQLInstance resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -433,7 +433,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -443,7 +443,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `SQLInstance` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of an SQLInstance resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
