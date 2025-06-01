@@ -79,6 +79,15 @@ func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error
 		}
 		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
 	}
+	if len(obj.Spec.TagValueRefs) > 0 {
+		for i, ref := range obj.Spec.TagValueRefs {
+			tagValueRef, err := refs.ResolveTagValueRef(ctx, a.reader, obj, ref)
+			if err != nil {
+				return err
+			}
+			obj.Spec.TagValueRefs[i] = tagValueRef
+		}
+	}
 	return nil
 }
 
