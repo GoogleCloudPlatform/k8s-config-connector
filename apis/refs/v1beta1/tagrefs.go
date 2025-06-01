@@ -27,6 +27,7 @@ import (
 )
 
 // TODO Support organization level tags
+// TODO Support using Parent and ShortName in refs, if it is possible
 
 // Tags can be assigned as `tagKeys/[tag_key_id]` mapped to `tagValues/[tag_value_id]`,
 // or `[org id, project id, or project number]/[tag_key_shortname]` mapped to `[value_shortname]`
@@ -57,15 +58,12 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		return nil, nil
 	}
 
-	// shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
-
 	if ref.Name == "" && ref.External == "" {
-		return nil, fmt.Errorf("must specify either parent and shortName, name or external on TagValueRef")
+		return nil, fmt.Errorf("must specify either name or external on TagValueRef")
 	}
-	// TODO Add check for only allowing a single identifier for ref
-	// if shortNameAvailable && ref.Name != "" && ref.External != "" {
-	// 	return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagValueRef")
-	// }
+	if ref.Name != "" && ref.External != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on TagValueRef")
+	}
 
 	// External should be in the `tagKeys/[tag_key_id]/[tag_value_id]` format
 	if ref.External != "" {
@@ -78,21 +76,6 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		}
 		return nil, fmt.Errorf("format of TagValueRef external=%q was not known (use tagKeys/[tag_key_id]/[tag_value_id])", ref.External)
 	}
-
-	// Parent should be in the `[CONTAINER]/[tag_key_shortname]` format
-	// if shortNameAvailable {
-	// 	tokens := strings.Split(ref.Parent, "/")
-	// 	fmt.Printf("Splitting Parent. name: %s, parent: %s, Shortname:%s", ref.Name, ref.Parent, ref.ShortName)
-	// 	if len(tokens) == 2 {
-	// 		ref = &TagValueRef{
-	// 			Parent: fmt.Sprintf("%s/%s", tokens[0], tokens[1]),
-	// 			ShortName: ref.ShortName,
-	// 		}
-	// 		return ref, nil
-	// 	}
-	// 	return nil, fmt.Errorf("format of TagValueRef parent=%q was not known (use [org_id, project_id, or project_number]/[tag_key_shortname])", ref.Parent)
-	// }
-	fmt.Printf("Using namespace: %s, name: %s, parent: %s, Shortname:%s\n", ref.Namespace, ref.Name, ref.Parent, ref.ShortName)
 
 	// Namespace is referring to k8s namespace, not tags namespace
 	key := types.NamespacedName{
@@ -112,9 +95,9 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 	})
 	if err := reader.Get(ctx, key, tagValue); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced TagsTagValue %v not found. Using namespace: %s, name: %s, parent: %s, Shortname:%s", key, ref.Namespace, ref.Name, ref.Parent, ref.ShortName)
+			return nil, fmt.Errorf("referenced TagsTagValue %v not found.", key)
 		}
-		return nil, fmt.Errorf("error reading referenced TagsTagValue %v: %w. Using namespace: %s, name: %s, parent: %s, Shortname:%s", key, err, ref.Namespace, ref.Name, ref.Parent, ref.ShortName)
+		return nil, fmt.Errorf("error reading referenced TagsTagValue %v: %w.", key, err)
 	}
 
 	tagValueResourceID, err := GetResourceID(tagValue)
@@ -158,15 +141,12 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, nil
 	}
 
-	// shortNameAvailable := ref.Parent != "" && ref.ShortName != ""
-
 	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either name or external on TagKeyRef")
 	}
-	// TODO Add check for only allowing a single identifier for ref
-	// if shortNameAvailable && ref.Name != "" && ref.External != "" {
-	// 	return nil, fmt.Errorf("cannot specify combination of parent and shortName, name or external on TagKeyRef")
-	// }
+	if ref.Name != "" && ref.External != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on TagKeyRef")
+	}
 
 	// External should be in the `tagKeys/[tag_key_id]` format
 	if ref.External != "" {
@@ -179,22 +159,6 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		}
 		return nil, fmt.Errorf("format of TagKeyRef external=%q was not known (use tagKeys/[tag_key_id])", ref.External)
 	}
-
-	// Parent should be in the `[CONTAINER]` format
-	// if shortNameAvailable {
-	// 	tokens := strings.Split(ref.Parent, "/")
-	// 	if len(tokens) == 1 {
-	// 		ref = &TagKeyRef{
-	// 			Parent: tokens[0],
-	// 			ShortName: ref.ShortName,
-	// 		}
-	// 		return &TagKey{
-	// 			Ref: ref,
-	// 			ResourceID: tokens[1], // TODO Where do we get the ResourceID? KCC metadata.name, and shortName, aren't the ID given by GCP
-	// 		}, nil
-	// 	}
-	// 	return nil, fmt.Errorf("format of TagKeyRef parent=%q was not known (use  [org_id], [project_id], or [project_number].)", ref.Parent)
-	// }
 
 	key := types.NamespacedName{
 		Namespace: ref.Namespace,
