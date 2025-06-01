@@ -27,7 +27,7 @@ import (
 )
 
 // TODO Support organization level tags
-// TODO Support using Parent and ShortName in refs, if it is possible
+// TODO Support identifying by Parent and ShortName in refs, if it is possible
 
 // Tags can be assigned as `tagKeys/[tag_key_id]` mapped to `tagValues/[tag_value_id]`,
 // or `[org id, project id, or project number]/[tag_key_shortname]` mapped to `[value_shortname]`
