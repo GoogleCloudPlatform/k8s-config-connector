@@ -86,6 +86,10 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
 	typeMockGo     = "mockgo"
+
+	handleLocalChangeOptionCleanUp = "CLEANUP"
+	handleLocalChangeOptionCommit  = "COMMIT"
+	handleLocalChangeOptionFail    = "FAIL"
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -135,6 +139,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
 	cmd.Flags().StringVarP(&opts.controllerFilter, controllerFilterFlag,
 		"", "", "Type of controller to filter for. (Eg terraform-v1beta1)")
+	cmd.Flags().StringVarP(&opts.handleLocalChange, "handle-local-change",
+		"", "", "Option to handle uncommitted local changes before switching to a different branch, available values: 'CLEANUP', 'COMMIT', 'FAIL'.")
 
 	return cmd
 }
@@ -157,11 +163,20 @@ type RunnerOptions struct {
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 	processors        string // Comma-separated list of processor function names to run
 	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
+	handleLocalChange string // Option to handle uncommitted local changes before switching to a different branch
 }
 
 func (opts *RunnerOptions) validateFlags() error {
 	if opts.defaultRetries < 0 {
 		return fmt.Errorf("retries flag cannot be negative, got %d", opts.defaultRetries)
+	}
+	switch opts.handleLocalChange {
+	case "":
+		// When the handle local change option is unset, each command will handle it differently.
+	case handleLocalChangeOptionCleanUp, handleLocalChangeOptionCommit, handleLocalChangeOptionFail:
+	default:
+		return fmt.Errorf("handle-local-change flag must be set with one of %q, %q, %q but it is set to %q",
+			handleLocalChangeOptionCleanUp, handleLocalChangeOptionCommit, handleLocalChangeOptionFail, opts.handleLocalChange)
 	}
 	return nil
 }
