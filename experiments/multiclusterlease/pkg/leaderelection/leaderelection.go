@@ -74,15 +74,11 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 		return &LeaseInfo{Acquired: false}, err
 	}
 
-	// Determine lease duration
-	leaseDuration := int32(15) // Default lease duration in seconds
-	if le.lease.Spec.LeaseDurationSeconds != nil {
-		leaseDuration = *le.lease.Spec.LeaseDurationSeconds
-	}
-
 	// Check if the lease is expired
-	leaseExpired := data.HolderIdentity == "" ||
-		time.Since(data.RenewTime) > time.Duration(leaseDuration)*time.Second
+	leaseDuration := le.lease.Spec.GetLeaseDuration()
+	gracePeriod := le.lease.Spec.GetGracePeriod()
+	totalLeaseTime := leaseDuration + gracePeriod
+	leaseExpired := data.HolderIdentity == "" || time.Since(data.RenewTime) > totalLeaseTime
 
 	// If we're the current holder or the lease is expired, try to acquire/renew
 	if data.HolderIdentity == le.identity || leaseExpired {

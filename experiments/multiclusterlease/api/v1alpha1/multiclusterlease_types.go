@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	"time"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -26,11 +28,11 @@ type MultiClusterLeaseSpec struct {
 
 	// RenewDeadlineSeconds is the duration that a leader candidate will
 	// wait to renew its leadership.
-	RenewDeadlineSeconds *int32 `json:"renewDeadlineSeconds,omitempty"`
+	// RenewDeadlineSeconds *int32 `json:"renewDeadlineSeconds,omitempty"`
 
 	// RetryPeriodSeconds is the period between attempts to acquire or renew
 	// leadership.
-	RetryPeriodSeconds *int32 `json:"retryPeriodSeconds,omitempty"`
+	// RetryPeriodSeconds *int32 `json:"retryPeriodSeconds,omitempty"`
 }
 
 // MultiClusterLeaseStatus defines the observed state of MultiClusterLease
@@ -107,4 +109,21 @@ type MultiClusterLeaseList struct {
 
 func init() {
 	SchemeBuilder.Register(&MultiClusterLease{}, &MultiClusterLeaseList{})
+}
+
+func (s *MultiClusterLeaseSpec) GetLeaseDuration() time.Duration {
+	if s.LeaseDurationSeconds != nil {
+		return time.Duration(*s.LeaseDurationSeconds) * time.Second
+	}
+	return 60 * time.Second // Default
+}
+
+// GetGracePeriod returns the grace period for force-breaking leases
+func (s *MultiClusterLeaseSpec) GetGracePeriod() time.Duration {
+	return 30 * time.Second // TODO: make configurable if needed
+}
+
+// GetRenewInterval returns the renewal interval (80% of lease duration)
+func (s *MultiClusterLeaseSpec) GetRenewInterval() time.Duration {
+	return time.Duration(float64(s.GetLeaseDuration()) * 0.8)
 }
