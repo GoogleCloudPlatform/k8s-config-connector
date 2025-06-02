@@ -579,7 +579,7 @@ func isOperationDone(s string) bool {
 
 // addTestTimeout will ensure the test fails if not completed before timeout
 func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
-	if name == "storageanywherecache" {
+	if name == "storageanywherecache" || name == "storageanywherecache-base" || name == "storageanywherecache-full" {
 		// Special timeouts for anywherecache resource.
 		if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 			timeout = 3 * time.Minute

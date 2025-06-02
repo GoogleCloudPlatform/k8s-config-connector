@@ -75,7 +75,7 @@ if [[ "${E2E_GCP_TARGET}" == "real" ]]; then
 fi
 
 if [[ -z "${TEST_TIMEOUT:-}" ]]; then
-  TEST_TIMEOUT=120m
+  TEST_TIMEOUT=300m
 fi
 echo "Using TEST_TIMEOUT=${TEST_TIMEOUT}"
 
