@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -185,8 +187,20 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
 
+	pollInterval := 10 * time.Minute
+	if interval := os.Getenv("DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+		intInterval, err := strconv.Atoi(interval)
+		if err != nil {
+			return nil, fmt.Errorf("parsing DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		}
+		pollInterval = time.Duration(intInterval) * time.Second
+	}
 	go func() {
-		rd.DependencyTracker.PollForever(ctx, time.Second, time.Second)
+		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+			InitialDelay: time.Second,
+			MinInterval:  time.Second,
+			PollInterval: pollInterval,
+		})
 	}()
 
 	// Register the registration controller, which will dynamically create controllers for

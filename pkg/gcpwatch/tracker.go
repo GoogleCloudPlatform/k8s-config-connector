@@ -96,21 +96,27 @@ func NewDependencyTracker(fetcher Fetcher) *DependencyTracker {
 	return tracker
 }
 
-func (t *DependencyTracker) PollForever(ctx context.Context, initialDelay time.Duration, minInterval time.Duration) {
-	nextPoll := time.Now().Add(initialDelay)
+type PollConfig struct {
+	InitialDelay time.Duration
+	MinInterval  time.Duration
+	PollInterval time.Duration
+}
+
+func (t *DependencyTracker) PollForever(ctx context.Context, pc *PollConfig) {
+	nextPoll := time.Now().Add(pc.InitialDelay)
 	for {
 		if ctx.Err() != nil {
 			return
 		}
 
-		// todo acpana jitter and configurable interval
-		time.Sleep(10 * time.Minute)
+		// todo acpana jitter
+		time.Sleep(pc.PollInterval)
 
 		if time.Now().Before(nextPoll) {
 			continue
 		}
 
-		nextPoll = time.Now().Add(minInterval)
+		nextPoll = time.Now().Add(pc.MinInterval)
 
 		if err := t.pollOnce(ctx); err != nil {
 			klog.Warningf("error during drift-correction polling: %v", err)
