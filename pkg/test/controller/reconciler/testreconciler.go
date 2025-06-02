@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -332,6 +333,15 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		deps := directbase.Deps{
 			Defaulters:      defaulters,
 			JitterGenerator: jg,
+			AdapterDeps: &directbase.IAMAdapterDeps{
+				KubeClient: r.mgr.GetClient(),
+				ControllerDeps: &controller.Deps{
+					TfProvider:   r.provider,
+					TfLoader:     r.smLoader,
+					DclConfig:    r.dclConfig,
+					DclConverter: r.dclConverter,
+				},
+			},
 		}
 		reconciler, err := directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps)
 		if err != nil {
