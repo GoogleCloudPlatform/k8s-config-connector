@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
@@ -28,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -138,9 +140,19 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	if err != nil {
 		return false, fmt.Errorf("error parsing '%v' as a label selector: %w", stsLabelSelectorRaw, err)
 	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(corev1beta1.ConfigConnectorGroupVersionKind)
+	err = c.Get(ctx, types.NamespacedName{Name: corev1beta1.ConfigConnectorAllowedName}, u)
+	if err != nil {
+		return false, err
+	}
+	podNamespace := k8s.SystemNamespace
+	if managerNamespaceSuffix, namespacedManager := u.GetLabels()[k8s.ManagerNamespaceSuffixLabel]; namespacedManager {
+		podNamespace = replaceNamespaceSuffix(namespace, managerNamespaceSuffix)
+	}
 	stsList := &v1.StatefulSetList{}
 	stsOpts := &client.ListOptions{
-		Namespace:     k8s.SystemNamespace,
+		Namespace:     podNamespace,
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
 	}
@@ -148,4 +160,22 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)
 	}
 	return len(stsList.Items) > 0, nil
+}
+
+const delimiter = "-"
+
+func replaceNamespaceSuffix(namespace, suffix string) string {
+	if suffix == "" {
+		return namespace
+	}
+
+	lastDelimiterIndex := strings.LastIndexAny(namespace, delimiter)
+
+	// If no delimiter is found, there's no suffix to replace.
+	// Return the original string.
+	if lastDelimiterIndex == -1 {
+		return namespace
+	}
+
+	return namespace[0:lastDelimiterIndex+1] + suffix
 }

@@ -231,7 +231,16 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 		}
-		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
+		var managerNamespaceSuffix string
+		cc, err := controllers.GetConfigConnector(ctx, r.client, controllers.ValidConfigConnectorNamespacedName)
+		if err != nil {
+			if !apierrors.IsNotFound(err) {
+				return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
+			}
+		} else {
+			managerNamespaceSuffix = cc.Labels[k8s.ManagerNamespaceSuffixLabel]
+		}
+		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, managerNamespaceSuffix)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
 		}
