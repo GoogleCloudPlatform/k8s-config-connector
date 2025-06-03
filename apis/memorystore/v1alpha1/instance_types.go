@@ -26,6 +26,70 @@ var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 type MemorystoreInstanceSpec struct {
 	// The MemorystoreInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Identifier. Unique name of the instance.
+	//  Format: projects/{project}/locations/{location}/instances/{instance}
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.name
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Labels to represent user-provided metadata.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Number of replica nodes per shard. If omitted the default is 0
+	//  replicas.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.replica_count
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+
+	// Optional. Immutable. Authorization mode of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.authorization_mode
+	AuthorizationMode *string `json:"authorizationMode,omitempty"`
+
+	// Optional. Immutable. In-transit encryption mode of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.transit_encryption_mode
+	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
+
+	// Optional. Number of shards for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.shard_count
+	ShardCount *int32 `json:"shardCount,omitempty"`
+
+	// Optional. Immutable. Machine type for individual nodes of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_type
+	NodeType *string `json:"nodeType,omitempty"`
+
+	// Optional. Persistence configuration of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.persistence_config
+	PersistenceConfig *PersistenceConfig `json:"persistenceConfig,omitempty"`
+
+	// Optional. Immutable. Engine version of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.engine_version
+	EngineVersion *string `json:"engineVersion,omitempty"`
+
+	// Optional. User-provided engine configurations for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.engine_configs
+	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
+
+	// Optional. Immutable. Zone distribution configuration of the instance for
+	//  node allocation.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.zone_distribution_config
+	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
+
+	// Optional. If set to true deletion of the instance will fail.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.deletion_protection_enabled
+	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Required. Immutable. User inputs and resource details of the auto-created
+	//  PSC connections.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
+	PSCAutoConnections []PSCAutoConnection `json:"pscAutoConnections,omitempty"`
+
+	// Optional. Endpoints for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
+	Endpoints []Instance_InstanceEndpoint `json:"endpoints,omitempty"`
+
+	// Optional. The mode config for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.mode
+	Mode *string `json:"mode,omitempty"`
 }
 
 // MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
@@ -47,6 +111,43 @@ type MemorystoreInstanceStatus struct {
 // MemorystoreInstanceObservedState is the state of the MemorystoreInstance resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance
 type MemorystoreInstanceObservedState struct {
+	// Output only. Creation timestamp of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Latest update timestamp of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Current state of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. Additional information about the state of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state_info
+	StateInfo *Instance_StateInfo `json:"stateInfo,omitempty"`
+
+	// Output only. System assigned, unique identifier for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. Endpoints clients can connect to the instance through.
+	//  Currently only one discovery endpoint is supported.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.discovery_endpoints
+	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
+
+	// Output only. Configuration of individual nodes of the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
+	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
+
+	// Required. Immutable. User inputs and resource details of the auto-created
+	//  PSC connections.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
+	PSCAutoConnections []PSCAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
+
+	// Optional. Endpoints for the instance.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
+	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
 }
 
 // +genclient
