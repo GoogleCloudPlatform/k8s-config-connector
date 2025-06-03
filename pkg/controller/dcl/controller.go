@@ -167,7 +167,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
 		defaulters:                 defaulters,
 		schema:                     dclSchema,
-		logger:                     logger.WithName(controllerName),
+		logger:                     logger.WithName(controllerName).WithValues("controllerType", "dcl"),
 		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
 		converter:                  converter,
 		serviceMappingLoader:       serviceMappingLoader,
