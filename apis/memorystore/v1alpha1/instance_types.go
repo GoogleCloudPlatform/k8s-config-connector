@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,83 +15,17 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
 // +kcc:spec:proto=google.cloud.memorystore.v1beta.Instance
 type MemorystoreInstanceSpec struct {
-	// Optional. Immutable. The MemorystoreInstance name. If not given, the metadata.name will be used.
+	// The MemorystoreInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	Parent `json:",inline"`
-
-	// Optional. Number of replica nodes per shard. If omitted the default is 0
-	//  replicas.
-	ReplicaCount *int32 `json:"replicaCount,omitempty"`
-
-	// Optional. Immutable. Authorization mode of the instance.
-	AuthorizationMode *string `json:"authorizationMode,omitempty"`
-
-	// Optional. Immutable. In-transit encryption mode of the instance.
-	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
-
-	// Optional. Number of shards for the instance.
-	ShardCount *int32 `json:"shardCount,omitempty"`
-
-	// Optional. Immutable. Machine type for individual nodes of the instance.
-	NodeType *string `json:"nodeType,omitempty"`
-
-	// Optional. Persistence configuration of the instance.
-	PersistenceConfig *PersistenceConfig `json:"persistenceConfig,omitempty"`
-
-	// Optional. Immutable. Engine version of the instance.
-	EngineVersion *string `json:"engineVersion,omitempty"`
-
-	// Optional. User-provided engine configurations for the instance.
-	EngineConfigs map[string]string `json:"engineConfigs,omitempty"`
-
-	// Optional. Immutable. Zone distribution configuration of the instance for
-	//  node allocatiteon.
-	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
-
-	// Optional. If set to true deletion of the instance will fail.
-	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
-
-	// Required. Immutable. User inputs for the auto-created PSC connections.
-	PscAutoConnectionsSpec []PscAutoConnectionSpec `json:"pscAutoConnections,omitempty"`
-}
-
-// kcc specific struct to separate input and output fields in
-// google.cloud.memorystore.v1beta.PscAutoConnection
-type PscAutoConnectionSpec struct {
-
-	// Required. The consumer project_id where PSC connections are established.
-	//  This should be the same project_id that the cluster is being created in.
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// Required. The network where the PSC endpoints are created, in the form of
-	//  projects/{project_id}/global/networks/{network_id}.
-	// +required
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
-}
-
-type Parent struct {
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
-	// +required
-	Location string `json:"location"`
 }
 
 // MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
@@ -111,52 +45,8 @@ type MemorystoreInstanceStatus struct {
 }
 
 // MemorystoreInstanceObservedState is the state of the MemorystoreInstance resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance
 type MemorystoreInstanceObservedState struct {
-	// Identifier. Unique name of the instance.
-	//  Format: projects/{project}/locations/{location}/instances/{instance}
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Creation timestamp of the instance.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Latest update timestamp of the instance.
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Current state of the instance.
-	State *string `json:"state,omitempty"`
-
-	// Output only. Additional information about the state of the instance.
-	StateInfo *Instance_StateInfo `json:"stateInfo,omitempty"`
-
-	// Output only. System assigned, unique identifier for the instance.
-	Uid *string `json:"uid,omitempty"`
-
-	// Optional. Immutable. Authorization mode of the instance.
-	AuthorizationMode *string `json:"authorizationMode,omitempty"`
-
-	// Optional. Immutable. In-transit encryption mode of the instance.
-	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
-
-	// Output only. Endpoints clients can connect to the instance through.
-	//  Currently only one discovery endpoint is supported.
-	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
-
-	// Optional. Immutable. Machine type for individual nodes of the instance.
-	NodeType *string `json:"nodeType,omitempty"`
-
-	// Optional. Immutable. Engine version of the instance.
-	// https://cloud.google.com/memorystore/docs/valkey/supported-versions
-	EngineVersion *string `json:"engineVersion,omitempty"`
-
-	// Output only. Configuration of individual nodes of the instance.
-	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
-
-	// Optional. Immutable. Zone distribution configuration of the instance for
-	//  node allocation.
-	ZoneDistributionConfig *ZoneDistributionConfig `json:"zoneDistributionConfig,omitempty"`
-
-	// Output only. Resource details of the auto-created PSC connections.
-	PscAutoConnections []PscAutoConnection `json:"pscAutoConnections,omitempty"`
 }
 
 // +genclient
