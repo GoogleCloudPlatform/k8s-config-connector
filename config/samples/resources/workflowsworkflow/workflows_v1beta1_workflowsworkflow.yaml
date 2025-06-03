@@ -39,3 +39,5 @@ spec:
   userEnvVars:
     var1: variable_value
     var2: variable_value2
+  tagValueRefs:
+    - name: workflowsworkflow-dep
