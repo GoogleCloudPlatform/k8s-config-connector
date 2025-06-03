@@ -103,7 +103,7 @@ spec:
                   instance.
                 properties:
                   caPoolRef:
-                    description: Required. Immutable. CA pool resource, resource must
+                    description: Optional. Immutable. CA pool resource, resource must
                       in the format of `projects/{project}/locations/{location}/caPools/{ca_pool}`.
                     oneOf:
                     - not:

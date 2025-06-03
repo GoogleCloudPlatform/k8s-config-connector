@@ -95,7 +95,7 @@ type Instance_PrivateConfig struct {
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.is_private
 	IsPrivate *bool `json:"isPrivate,omitempty"`
 
-	// Required. Immutable. CA pool resource, resource must in the format of
+	// Optional. Immutable. CA pool resource, resource must in the format of
 	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
 	// +kcc:proto:field=google.cloud.securesourcemanager.v1.Instance.PrivateConfig.ca_pool
 	CaPoolRef *refs.PrivateCACAPoolRef `json:"caPoolRef,omitempty"`
