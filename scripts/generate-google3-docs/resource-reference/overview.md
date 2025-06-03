@@ -946,6 +946,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md">VertexAIIndex</a></td>
 </tr>
 <tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md">VertexAIMetadataStore</a></td>
+</tr>
+<tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md">VPCAccessConnector</a></td>
 </tr>
