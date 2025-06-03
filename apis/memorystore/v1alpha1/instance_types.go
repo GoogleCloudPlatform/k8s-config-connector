@@ -27,6 +27,8 @@ type MemorystoreInstanceSpec struct {
 	// The MemorystoreInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	Parent `json:",inline"`
+
 	// Identifier. Unique name of the instance.
 	//  Format: projects/{project}/locations/{location}/instances/{instance}
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.name
@@ -81,15 +83,86 @@ type MemorystoreInstanceSpec struct {
 	// Required. Immutable. User inputs and resource details of the auto-created
 	//  PSC connections.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PSCAutoConnections []PSCAutoConnection `json:"pscAutoConnections,omitempty"`
+	PSCAutoConnectionsSpec []PSCAutoConnectionSpec `json:"pscAutoConnections,omitempty"`
 
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
-	Endpoints []Instance_InstanceEndpoint `json:"endpoints,omitempty"`
+	Endpoints []Instance_InstanceEndpointSpec `json:"endpoints,omitempty"`
 
 	// Optional. The mode config for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.mode
 	Mode *string `json:"mode,omitempty"`
+}
+
+type Parent struct {
+	// +required
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string `json:"location"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint
+type Instance_InstanceEndpointSpec struct {
+	// Optional. A group of PSC connections. They are created in the same VPC
+	//  network, one for each service attachment in the cluster.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.InstanceEndpoint.connections
+	Connections []Instance_ConnectionDetailSpec `json:"connections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
+type Instance_ConnectionDetailSpec struct {
+	// Detailed information of a PSC connection that is created through
+	//  service connectivity automation.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_auto_connection
+	PSCAutoConnectionSpec *PSCAutoConnectionSpec `json:"pscAutoConnection,omitempty"`
+
+	// Detailed information of a PSC connection that is created by the user.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_connection
+	PSCConnectionSpec *PSCConnectionSpec `json:"pscConnection,omitempty"`
+}
+
+// kcc specific struct to separate input and output fields in
+// +kcc:proto=google.cloud.memorystore.v1beta.PscAutoConnection
+type PscAutoConnectionSpec struct {
+
+	// Required. The consumer project_id where PSC connections are established.
+	//  This should be the same project_id that the instance is being created in.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.project_id
+	ProjectRef *refs.ProjectRef `json:"projectRef"`
+
+	// Required. The network where the PSC endpoints are created, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.network
+	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+}
+
+// google.cloud.memorystore.v1beta.PscConnection
+type PSCConnectionSpec struct {
+
+	// Required. The IP allocated on the consumer network for the PSC forwarding
+	//  rule.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Required. The URI of the consumer side forwarding rule.
+	//  Format:
+	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.forwarding_rule
+	ForwardingRule *string `json:"forwardingRule,omitempty"`
+
+	// Required. The consumer network where the IP address resides, in the form of
+	//  projects/{project_id}/global/networks/{network_id}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.network
+	NetworkRef *string `json:"network,omitempty"`
+
+	// Required. The service attachment which is the target of the PSC connection,
+	//  in the form of
+	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.service_attachment
+	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
 
 // MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
