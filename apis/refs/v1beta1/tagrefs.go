@@ -24,6 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"k8s.io/klog/v2"
 )
 
 // TODO Support organization level tags
@@ -57,6 +58,8 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 	if ref == nil {
 		return nil, nil
 	}
+
+	klog.Infof("ResolveTagValueRef name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
 
 	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either name or external on TagValueRef")
@@ -114,6 +117,8 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		External: fmt.Sprintf("tagKeys/%s/%s", tagKey.ResourceID, tagValueResourceID),
 	}
 
+	klog.Infof("ResolveTagValueRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+
 	return ref, nil
 }
 
@@ -140,6 +145,8 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 	if ref == nil {
 		return nil, nil
 	}
+
+	klog.Infof("ResolveTagKeyRef name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
 
 	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either name or external on TagKeyRef")
@@ -191,6 +198,8 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		External: fmt.Sprintf("tagKeys/%s", tagKeyResourceID),
 	}
 
+	klog.Infof("ResolveTagKeyRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+
 	return &TagKey{Ref: ref, ResourceID: tagKeyResourceID}, nil
 }
 
@@ -199,6 +208,7 @@ func ResolveTagKeyForObject(ctx context.Context, reader client.Reader, obj *unst
 	if err != nil {
 		return nil, fmt.Errorf("error fetching parentRef.external %w", err)
 	}
+	klog.Infof("ResolveTagKeyForObject External: %s", tagKeyRefExternal)
 	if tagKeyRefExternal != "" {
 		return ResolveTagKeyRef(ctx, reader, obj, &TagKeyRef{External: tagKeyRefExternal})
 	}
@@ -207,6 +217,7 @@ func ResolveTagKeyForObject(ctx context.Context, reader client.Reader, obj *unst
 	if err != nil {
 		return nil, fmt.Errorf("error fetching parentRef.name %w", err)
 	}
+	klog.Infof("ResolveTagKeyForObject Name: %s", tagKeyRefName)
 	if tagKeyRefName != "" {
 		tagKeyRefNamespace, _, err := unstructured.NestedString(obj.Object, "spec", "parentRef", "namespace")
 		if err != nil {

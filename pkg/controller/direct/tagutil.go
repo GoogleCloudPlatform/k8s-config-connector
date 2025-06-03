@@ -19,6 +19,7 @@ import (
 	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/klog/v2"
 )
 
 // TODO If need support for identifying TagValueRef by Name, need to do apis/refs/v1beta1/tagrefs.go ResolveTagValueRef with a client.Reader
@@ -44,9 +45,9 @@ func Tags_ToProto(mapCtx *MapContext, in []*refs.TagValueRef) map[string]string 
 		} else {
 			// Shouldn't reach here if tags were well formed
 			if v.Name != "" {
-				mapCtx.Errorf("Skipping TagValueRef %v because we cannot handle identification by Name.", k)
+				klog.Warningf("Skipping TagValueRef %v because we cannot handle identification by Name.", k)
 			} else {
-				mapCtx.Errorf("Skipping TagValueRef %v because it is not well formed. External token count is %v but wanted %v, or Parent or ShortName are empty.", k, len(tokens), WantedExternalTokenCount)
+				klog.Warningf("Skipping TagValueRef %v because it is not well formed. External token count is %v but wanted %v, or Parent or ShortName are empty.", k, len(tokens), WantedExternalTokenCount)
 			}
 		}
 	}
@@ -76,7 +77,7 @@ func Tags_FromProto(mapCtx *MapContext, in map[string]string) []*refs.TagValueRe
 			tagValueRef.ShortName = v
 		} else {
 			// Shouldn't reach here if tags were well formed
-			mapCtx.Errorf("Skipping Tag because it is not well formed. Key token count is %v but wanted %v, value token count is %v but wanted %v. Consult Resource Manager Tags Overview for more info", len(keyTokens), WantedKeyTokenCount, len(valueTokens), WantedValueTokenCount)
+			klog.Warningf("Skipping Tag because it is not well formed. Key token count is %v but wanted %v, value token count is %v but wanted %v. Consult Resource Manager Tags Overview for more info", len(keyTokens), WantedKeyTokenCount, len(valueTokens), WantedValueTokenCount)
 			continue
 		}
 		out = append(out, tagValueRef)
