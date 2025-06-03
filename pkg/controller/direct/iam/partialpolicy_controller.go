@@ -104,9 +104,10 @@ func (m *modelIAMPartialPolicy) AdapterForObject(ctx context.Context, reader cli
 }
 
 func (m *modelIAMPartialPolicy) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// IAMPartialPolicy is not identified or managed via a direct GCP URL in the same way
-	// other resources are.
-	return nil, fmt.Errorf("AdapterForURL not supported for IAMPartialPolicy")
+	// // IAMPartialPolicy is not identified or managed via a direct GCP URL in the same way
+	// // other resources are.
+	// return nil, fmt.Errorf("AdapterForURL not supported for IAMPartialPolicy")
+	return nil, nil
 }
 
 type IAMPartialPolicyAdapter struct {
