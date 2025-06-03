@@ -103,18 +103,14 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		return nil, fmt.Errorf("error reading referenced TagsTagValue %v: %w.", key, err)
 	}
 
-	tagValueResourceID, err := GetResourceID(tagValue)
-	if err != nil {
-		return nil, err
-	}
-
 	tagKey, err := ResolveTagKeyForObject(ctx, reader, tagValue)
 	if err != nil {
 		return nil, err
 	}
 
 	ref = &TagValueRef{
-		External: fmt.Sprintf("tagKeys/%s/%s", tagKey.ResourceID, tagValueResourceID),
+		// `[CONTAINER]/[key_shortname]/[value_shortname]` format
+		External: fmt.Sprintf("%s/%s", tagKey.Ref.External, key.Name),
 	}
 
 	klog.Infof("ResolveTagValueRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
@@ -189,13 +185,20 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, fmt.Errorf("error reading referenced TagsTagKey %v: %w", key, err)
 	}
 
+	// TODO: Gives the Name back when running e2e samples tests. Should give the GCP resource ID. Or we completely ignore it in favor of using shortName
 	tagKeyResourceID, err := GetResourceID(tagKey)
 	if err != nil {
 		return nil, err
 	}
 
+	projectID, err := ResolveProjectID(ctx, reader, tagKey)
+	if err != nil {
+		return nil, err
+	}
+
 	ref = &TagKeyRef{
-		External: fmt.Sprintf("tagKeys/%s", tagKeyResourceID),
+		// `[CONTAINER]/[key_shortname]` format`
+		External: fmt.Sprintf("%s/%s", projectID, key.Name),
 	}
 
 	klog.Infof("ResolveTagKeyRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
