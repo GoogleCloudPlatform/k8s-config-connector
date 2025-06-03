@@ -53,7 +53,7 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		return nil, nil
 	}
 
-	klog.Infof("ResolveTagValueRef name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+	klog.Infof("ResolveTagValueRef name: %s, External: %s", ref.Name, ref.External)
 
 	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either name or external on TagValueRef")
@@ -107,7 +107,7 @@ func ResolveTagValueRef(ctx context.Context, reader client.Reader, src client.Ob
 		External: fmt.Sprintf("%s/%s", tagKey.Ref.External, key.Name),
 	}
 
-	klog.Infof("ResolveTagValueRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+	klog.Infof("ResolveTagValueRef 2 name: %s, External: %s", ref.Name, ref.External)
 
 	return ref, nil
 }
@@ -132,7 +132,7 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, nil
 	}
 
-	klog.Infof("ResolveTagKeyRef name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+	klog.Infof("ResolveTagKeyRef name: %s, External: %s", ref.Name, ref.External)
 
 	if ref.Name == "" && ref.External == "" {
 		return nil, fmt.Errorf("must specify either name or external on TagKeyRef")
@@ -175,6 +175,12 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, fmt.Errorf("error reading referenced TagsTagKey %v: %w", key, err)
 	}
 
+	// TODO: Gives the Name back when running e2e samples tests. Should give the GCP resource ID. Or we completely ignore it in favor of using key shortname
+	tagKeyResourceID, err := GetResourceID(tagKey)
+	if err != nil {
+		return nil, err
+	}
+
 	projectID, err := ResolveProjectID(ctx, reader, tagKey)
 	if err != nil {
 		return nil, err
@@ -185,7 +191,7 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		External: fmt.Sprintf("%s/%s", projectID, key.Name),
 	}
 
-	klog.Infof("ResolveTagKeyRef 2 name: %s, External: %s, Parent: %s, Shortname: %s", ref.Name, ref.External, ref.Parent, ref.ShortName)
+	klog.Infof("ResolveTagKeyRef 2 name: %s, External: %s", ref.Name, ref.External)
 
 	return &TagKey{Ref: ref, ResourceID: tagKeyResourceID}, nil
 }
