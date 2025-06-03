@@ -327,7 +327,7 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	if err != nil {
 		// TODO: Samples should also be required for direct CRDs.
 		if isDirectGVK &&
-			strings.Contains(err.Error(), fmt.Sprintf("k8s-config-connector/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
+			strings.Contains(err.Error(), fmt.Sprintf("/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
 			log.Printf("direct GK '%v' doesn't have samples", gvk.GroupKind().String())
 		} else {
 			return nil, fmt.Errorf("error building samples: %w", err)
