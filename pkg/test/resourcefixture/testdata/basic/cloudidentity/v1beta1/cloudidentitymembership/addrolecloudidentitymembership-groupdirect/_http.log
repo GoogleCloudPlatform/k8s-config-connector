@@ -1,0 +1,336 @@
+POST https://cloudidentity.googleapis.com/v1beta1/groups?alt=json&initialGroupConfig=EMPTY&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "This is a test dependent CloudIdentityGroup with direct reconciliation.",
+  "displayName": "Cloud Identity Group Name",
+  "groupKey": {
+    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  },
+  "parent": "customers/C00qzcxfe"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.apps.cloudidentity.v1beta1.Group",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "This is a test dependent CloudIdentityGroup with direct reconciliation.",
+    "displayName": "Cloud Identity Group Name",
+    "groupKey": {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "labels": {
+      "cloudidentity.googleapis.com/groups.discussion_forum": ""
+    },
+    "name": "groups/${groupID}",
+    "parent": "customers/C00qzcxfe",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additionalGroupKeys": [
+    {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is a test dependent CloudIdentityGroup with direct reconciliation.",
+  "displayName": "Cloud Identity Group Name",
+  "groupKey": {
+    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  },
+  "name": "groups/${groupID}",
+  "parent": "customers/C00qzcxfe",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "preferredMemberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "roles": [
+    {
+      "name": "MEMBER"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.apps.cloudidentity.v1beta1.Membership",
+    "memberKey": {
+      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "name": "groups/${groupID}/memberships/${membershipID}",
+    "preferredMemberKey": {
+      "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+    },
+    "roles": [
+      {
+        "name": "MEMBER"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "memberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "name": "groups/${groupID}/memberships/${membershipID}",
+  "preferredMemberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "roles": [
+    {
+      "name": "MEMBER"
+    }
+  ],
+  "type": "USER",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}:modifyMembershipRoles?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "addRoles": [
+    {
+      "expiryDetail": null,
+      "name": "MANAGER",
+      "restrictionEvaluations": null
+    }
+  ],
+  "removeRoles": [],
+  "updateRolesParams": []
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "membership": {
+    "name": "groups/${groupID}/memberships/${membershipID}",
+    "roles": [
+      {
+        "name": "MANAGER"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "memberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "name": "groups/${groupID}/memberships/${membershipID}",
+  "preferredMemberKey": {
+    "id": "test2@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "roles": [
+    {
+      "name": "MEMBER"
+    },
+    {
+      "name": "MANAGER"
+    }
+  ],
+  "type": "USER",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Error(4006): Membership does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "additionalGroupKeys": [
+    {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+    },
+    {
+      "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}.test-google-a.com"
+    }
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is a test dependent CloudIdentityGroup with direct reconciliation.",
+  "displayName": "Cloud Identity Group Name",
+  "groupKey": {
+    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
+  },
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": ""
+  },
+  "name": "groups/${groupID}",
+  "parent": "customers/C00qzcxfe",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true
+}

@@ -176,3 +176,7 @@ func MarshalObjectAsUnstructured(o metav1.Object) (*unstructured.Unstructured, e
 	removeNilCreationTimestamp(u.Object)
 	return u, nil
 }
+
+func IsDirectByAnnotation(r *Resource) bool {
+	return r.Annotations[AlphaReconcilerAnnotation] == "direct"
+}
