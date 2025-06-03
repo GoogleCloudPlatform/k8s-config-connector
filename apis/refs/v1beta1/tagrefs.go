@@ -181,14 +181,20 @@ func ResolveTagKeyRef(ctx context.Context, reader client.Reader, src client.Obje
 		return nil, err
 	}
 
-	projectID, err := ResolveProjectID(ctx, reader, tagKey)
+	parent, err := ResolveParentForObject(ctx, reader, tagKey)
 	if err != nil {
 		return nil, err
 	}
+	tokens := strings.Split(parent, "/")
+	if len(tokens) != 2 {
+		return nil, fmt.Errorf("Incorrect number of tokens in parent %s of TagsTagKey %v", parent, key)
+	}
+	// Omit the "projects" and "organizations" prefixing the ID
+	containerId := tokens[1]
 
 	ref = &TagKeyRef{
 		// `[CONTAINER]/[key_shortname]` format`
-		External: fmt.Sprintf("%s/%s", projectID, key.Name),
+		External: fmt.Sprintf("%s/%s", containerId, key.Name),
 	}
 
 	klog.Infof("ResolveTagKeyRef 2 name: %s, External: %s", ref.Name, ref.External)
@@ -229,4 +235,12 @@ func ResolveTagKeyForObject(ctx context.Context, reader client.Reader, obj *unst
 	}
 
 	return nil, fmt.Errorf("cannot find tagKeyRef for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+}
+
+func ResolveParentForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
+	parent, _, err := unstructured.NestedString(obj.Object, "spec", "parent")
+	if err != nil {
+		return "", fmt.Errorf("error fetching parent %w", err)
+	}
+	return parent, nil
 }
