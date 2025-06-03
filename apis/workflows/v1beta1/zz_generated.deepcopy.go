@@ -264,7 +264,13 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	if in.TagValueRefs != nil {
 		in, out := &in.TagValueRefs, &out.TagValueRefs
 		*out = make([]*refsv1beta1.TagValueRef, len(*in))
-		copy(*out, *in)
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(refsv1beta1.TagValueRef)
+				**out = **in
+			}
+		}
 	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
