@@ -106,7 +106,7 @@ metadata:
 spec:
   description: For keyname resources.
   parent: projects/${projectId}
-  shortName: keyname${uniqueId}
+  shortName: tagstagkey-${uniqueId}
 ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagKey
@@ -115,7 +115,7 @@ metadata:
 spec:
   description: For keyname resources.
   parent: projects/${projectId}
-  shortName: keyname${uniqueId}-updated
+  shortName: tagstagkey-${uniqueId}-updated
 ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagValue
@@ -125,7 +125,7 @@ spec:
   description: For workflows KCC testing
   parentRef:
     name: tagstagkey-${uniqueId}
-  shortName: valuename
+  shortName: tagstagvalue-${uniqueId}
 ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagValue
@@ -135,4 +135,5 @@ spec:
   description: For workflows KCC testing updated
   parentRef:
     name: tagstagkey-${uniqueId}-updated
-  shortName: valuename-updated
+  shortName: tagstagvalue-${uniqueId}-updated
+# TODO Use metadata.name as spec.shortName, or use KCC name to find shortName. GCP only uses shortName and the ID it gives us
