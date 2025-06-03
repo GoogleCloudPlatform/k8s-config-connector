@@ -25,6 +25,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 )
 
+const (
+	DefaultPollInterval = 10 * time.Minute
+	DefaultMinInterval  = time.Second
+	DefaultInitialDelay = time.Second
+)
+
 type DependencyTracker struct {
 	fetcher Fetcher
 
