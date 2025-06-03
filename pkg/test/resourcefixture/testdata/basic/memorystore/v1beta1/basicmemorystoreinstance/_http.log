@@ -1,0 +1,1688 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "description": "Test network for the project",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.128.0.0/20",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies?alt=json&prettyPrint=false&serviceConnectionPolicyId=scp-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+
+{
+  "description": "Service Connection Policy for Memorystore",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+
+{
+  "description": "Service Connection Policy for Memorystore",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=memorystoreinstance-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "pscAutoConnections": [
+    {
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "projectId": "${projectId}"
+    }
+  ],
+  "shardCount": 3
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "pscConnections": [
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-156057ba-4e39-4f4d-9674-22dda5fe75b2",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1748907572295-6369f46977631-219c27a4-53ddbeed",
+      "ipVersion": "IP_VERSION_UNSPECIFIED",
+      "pscConnectionId": "${pscConnectionID}",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+      "serviceClass": "gcp-memorystore",
+      "state": "ACTIVE"
+    },
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-25f0c79e-5c63-425c-80d5-b0b3620e5bc3",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1748907572537-6369f469b2827-0cfc7245-bda0656f",
+      "ipVersion": "IP_VERSION_UNSPECIFIED",
+      "pscConnectionId": "${pscConnectionID}",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+      "serviceClass": "gcp-memorystore",
+      "state": "ACTIVE"
+    }
+  ],
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379
+      }
+    ],
+    "endpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+              "ipAddress": "10.128.0.2",
+              "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 13
+    },
+    "nodeType": "HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+      }
+    ],
+    "pscAutoConnections": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+        "ipAddress": "10.128.0.2",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379,
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+      },
+      {
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+        "ipAddress": "10.128.0.3",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379,
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "shardCount": 3,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "MULTI_ZONE"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379
+    }
+  ],
+  "endpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+            "ipAddress": "10.128.0.2",
+            "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+            "ipAddress": "10.128.0.3",
+            "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "engineVersion": "VALKEY_7_2",
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 13
+  },
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+    }
+  ],
+  "pscAutoConnections": [
+    {
+      "connectionType": 1,
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+      "ipAddress": "10.128.0.2",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379,
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+    },
+    {
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+      "ipAddress": "10.128.0.3",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379,
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "shardCount": 3,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+PATCH https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=shardCount
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: instance.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-${uniqueId}
+
+{
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+  "pscAutoConnections": [
+    {
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "projectId": "${projectId}"
+    }
+  ],
+  "shardCount": 10
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "pscConnections": [
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-156057ba-4e39-4f4d-9674-22dda5fe75b2",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1748907572295-6369f46977631-219c27a4-53ddbeed",
+      "ipVersion": "IP_VERSION_UNSPECIFIED",
+      "pscConnectionId": "${pscConnectionID}",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+      "serviceClass": "gcp-memorystore",
+      "state": "ACTIVE"
+    },
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-25f0c79e-5c63-425c-80d5-b0b3620e5bc3",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1748907572537-6369f469b2827-0cfc7245-bda0656f",
+      "ipVersion": "IP_VERSION_UNSPECIFIED",
+      "pscConnectionId": "${pscConnectionID}",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+      "serviceClass": "gcp-memorystore",
+      "state": "ACTIVE"
+    }
+  ],
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.Instance",
+    "authorizationMode": "AUTH_DISABLED",
+    "automatedBackupConfig": {
+      "automatedBackupMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletionProtectionEnabled": false,
+    "discoveryEndpoints": [
+      {
+        "address": "10.11.12.13",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379
+      }
+    ],
+    "endpoints": [
+      {
+        "connections": [
+          {
+            "pscAutoConnection": {
+              "connectionType": "CONNECTION_TYPE_DISCOVERY",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+              "ipAddress": "10.128.0.2",
+              "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+            }
+          },
+          {
+            "pscAutoConnection": {
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+              "ipAddress": "10.128.0.3",
+              "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+              "port": 6379,
+              "projectId": "${projectId}",
+              "pscConnectionId": "${pscConnectionID}",
+              "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+            }
+          }
+        ]
+      }
+    ],
+    "engineVersion": "VALKEY_7_2",
+    "mode": "CLUSTER",
+    "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "nodeConfig": {
+      "sizeGb": 13
+    },
+    "nodeType": "HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "pscAttachmentDetails": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+      },
+      {
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+      }
+    ],
+    "pscAutoConnections": [
+      {
+        "connectionType": "CONNECTION_TYPE_DISCOVERY",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+        "ipAddress": "10.128.0.2",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379,
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+      },
+      {
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+        "ipAddress": "10.128.0.3",
+        "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "port": 6379,
+        "projectId": "${projectId}",
+        "pscConnectionId": "${pscConnectionID}",
+        "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+      }
+    ],
+    "replicaCount": 0,
+    "shardCount": 10,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "zoneDistributionConfig": {
+      "mode": "MULTI_ZONE"
+    }
+  }
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 1,
+  "automatedBackupConfig": {
+    "automatedBackupMode": 1
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletionProtectionEnabled": false,
+  "discoveryEndpoints": [
+    {
+      "address": "10.11.12.13",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379
+    }
+  ],
+  "endpoints": [
+    {
+      "connections": [
+        {
+          "pscAutoConnection": {
+            "connectionType": 1,
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+            "ipAddress": "10.128.0.2",
+            "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+          }
+        },
+        {
+          "pscAutoConnection": {
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+            "ipAddress": "10.128.0.3",
+            "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+            "port": 6379,
+            "projectId": "${projectId}",
+            "pscConnectionId": "${pscConnectionID}",
+            "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+          }
+        }
+      ]
+    }
+  ],
+  "engineVersion": "VALKEY_7_2",
+  "mode": 2,
+  "name": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+  "nodeConfig": {
+    "sizeGb": 13
+  },
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "pscAttachmentDetails": [
+    {
+      "connectionType": 1,
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+    },
+    {
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+    }
+  ],
+  "pscAutoConnections": [
+    {
+      "connectionType": 1,
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-4e6e72ac-2198-4a2b-a510-7d35f24c0f40",
+      "ipAddress": "10.128.0.2",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379,
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa"
+    },
+    {
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2d328120-a196-4390-8d26-7f64565d374b",
+      "ipAddress": "10.128.0.3",
+      "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "port": 6379,
+      "projectId": "${projectId}",
+      "pscConnectionId": "${pscConnectionID}",
+      "serviceAttachment": "projects/164442760779/regions/us-central1/serviceAttachments/gcp-memorystore-auto-5813a07d-8275-4f-psc-sa-2"
+    }
+  ],
+  "replicaCount": 0,
+  "shardCount": 10,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "zoneDistributionConfig": {
+    "mode": 1
+  }
+}
+
+---
+
+DELETE https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fmemorystoreinstance-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://memorystore.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.memorystore.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/instances/memorystoreinstance-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for Memorystore",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "computesubnetwork-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "bgpBestPathSelectionMode": "LEGACY",
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
