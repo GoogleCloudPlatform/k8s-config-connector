@@ -238,7 +238,7 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 				return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
 			}
 		} else {
-			managerNamespaceSuffix = cc.Labels[k8s.ManagerNamespaceSuffixLabel]
+			managerNamespaceSuffix = cc.Spec.ManagerNamespaceSuffix
 		}
 		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, managerNamespaceSuffix)
 		if err != nil {

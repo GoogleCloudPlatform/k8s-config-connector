@@ -324,14 +324,14 @@ func newConfigConnectorPerNamespaceUnstructured() *unstructured.Unstructured {
 			"metadata": map[string]interface{}{
 				"name": "configconnector.core.cnrm.cloud.google.com",
 				"labels": map[string]interface{}{
-					"tenancy.gke.io/access-level":                    "supervisor",
-					"tenancy.gke.io/project":                         "no-project",
-					"tenancy.gke.io/tenant":                          "no-tenant",
-					"cnrm.cloud.google.com/manager-namespace-suffix": "supervisor",
+					"tenancy.gke.io/access-level": "supervisor",
+					"tenancy.gke.io/project":      "no-project",
+					"tenancy.gke.io/tenant":       "no-tenant",
 				},
 			},
 			"spec": map[string]interface{}{
-				"mode": "namespaced",
+				"mode":                   "namespaced",
+				"managerNamespaceSuffix": "supervisor",
 			},
 		},
 	}

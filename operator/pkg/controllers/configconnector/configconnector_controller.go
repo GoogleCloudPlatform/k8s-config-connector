@@ -266,22 +266,13 @@ func (r *Reconciler) handleConfigConnectorLifecycle() declarative.ObjectTransfor
 			}
 			r.managerNamespaceSuffix = ""
 		} else {
-			if managerNamespaceSuffix, namespacedManager := cc.Labels[k8s.ManagerNamespaceSuffixLabel]; namespacedManager {
-				if r.managerNamespaceSuffix != managerNamespaceSuffix {
-					// Veriy that all old per-namespace controller manager pods are removed, then continue the reconciliation.
-					if err := r.verifyPerNamespaceControllerManagerPodsAreDeleted(ctx, r.client); err != nil {
-						return fmt.Errorf("error waiting for all per-namespace controller manager pods to be removed: %w", err)
-					}
-				}
-				r.managerNamespaceSuffix = managerNamespaceSuffix
-			} else {
-				// Manager namespace suffix is removed or was not configured.
+			if r.managerNamespaceSuffix != cc.Spec.ManagerNamespaceSuffix {
 				// Veriy that all old per-namespace controller manager pods are removed, then continue the reconciliation.
 				if err := r.verifyPerNamespaceControllerManagerPodsAreDeleted(ctx, r.client); err != nil {
 					return fmt.Errorf("error waiting for all per-namespace controller manager pods to be removed: %w", err)
 				}
-				r.managerNamespaceSuffix = ""
 			}
+			r.managerNamespaceSuffix = cc.Spec.ManagerNamespaceSuffix
 
 			if err := r.removeClusterModeOnlySharedComponents(ctx, r.client); err != nil {
 				return err

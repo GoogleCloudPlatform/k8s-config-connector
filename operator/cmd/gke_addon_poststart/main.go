@@ -40,20 +40,6 @@ spec:
   mode: namespaced
 `
 
-const defaultConfigConnectorNamespaceSeparated = `
-apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnector
-metadata:
-  name: configconnector.core.cnrm.cloud.google.com
-  labels:
-    tenancy.gke.io/access-level: supervisor
-    tenancy.gke.io/project: no-project
-    tenancy.gke.io/tenant: no-tenant
-    cnrm.cloud.google.com/manager-namespace-suffix: %s  
-spec:
-  mode: namespaced
-`
-
 var configConnectorResource = schema.GroupVersionResource{
 	Group:    "core.cnrm.cloud.google.com",
 	Version:  "v1beta1",
@@ -83,14 +69,14 @@ func main() {
 // object created for them upon enabling the GKE add-on.
 func createDefaultConfigConnector(ctx context.Context, dynamicClient dynamic.Interface, managerNamespaceSuffix string) error {
 	u := &unstructured.Unstructured{}
-	var b []byte
-	if managerNamespaceSuffix == "" {
-		b = []byte(defaultConfigConnector)
-	} else {
-		b = []byte(fmt.Sprintf(defaultConfigConnectorNamespaceSeparated, managerNamespaceSuffix))
-	}
+	b := []byte(defaultConfigConnector)
 	if err := yaml.Unmarshal(b, u); err != nil {
 		return fmt.Errorf("error unmarshalling bytes to unstruct: %w", err)
+	}
+	if managerNamespaceSuffix != "" {
+		if err := unstructured.SetNestedField(u.Object, managerNamespaceSuffix, "spec", "managerNamespaceSuffix"); err != nil {
+			return err
+		}
 	}
 
 	// Create the ConfigConnector object. Retry on error just in case the

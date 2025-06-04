@@ -52,7 +52,6 @@ const (
 	UserProjectOverrideFlag            = "--user-project-override"
 	BillingProjectFlag                 = "--billing-project"
 	CNRMManagerContainerName           = "manager"
-	ManagerNamespaceSuffixLabel        = "cnrm.cloud.google.com/manager-namespace-suffix"
 	PerNamespaceAccessLevelLabel       = "tenancy.gke.io/access-level"
 	PerNamespaceAccessLevelValue       = "supervisor"
 	PerNamespaceProjectLabel           = "tenancy.gke.io/project"

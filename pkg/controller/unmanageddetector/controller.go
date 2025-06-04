@@ -147,7 +147,8 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		return false, err
 	}
 	podNamespace := k8s.SystemNamespace
-	if managerNamespaceSuffix, namespacedManager := u.GetLabels()[k8s.ManagerNamespaceSuffixLabel]; namespacedManager {
+	managerNamespaceSuffix, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespaceSuffix")
+	if err == nil && found && managerNamespaceSuffix != "" {
 		podNamespace = replaceNamespaceSuffix(namespace, managerNamespaceSuffix)
 	}
 	stsList := &v1.StatefulSetList{}

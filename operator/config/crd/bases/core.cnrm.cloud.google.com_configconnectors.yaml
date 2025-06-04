@@ -72,6 +72,26 @@ spec:
                   See Google Kubernetes Engine (GKE) workload-identity (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for details. This field cannot be specified together with `credentialSecretName`.
                   For namespaced mode, use `googleServiceAccount` in ConfigConnectorContext CRD to specify the Google Service Account to be used to authenticate with Google Cloud APIs per namespace.
                 type: string
+              managerNamespaceSuffix:
+                description: |-
+                  ManagerNamespaceSuffix instructs Config Connector to deploy
+                  controller managers and related resources in a dedicated namespace
+                  instead of standard 'cnrm-system'
+                  The name of the dedicated target namespace is derived programmatically
+                  based on the namespace of the associated ConfigConnectorContext resource:
+                  - The namespace of the relevant ConfigConnectorContext is identified.
+                  - The suffix of this namespace name (the part after the last hyphen,
+                  assuming a convention like project-tenant-type) is replaced
+                  with the value specified in the field managerNamespaceSuffix.
+                  The dedicated manager namespace must exist before the corresponding
+                  ConfigConnectorContext is created.
+                  Example: Consider a ConfigConnectorContext resource located in
+                  the namespace t1234-tenant0-provider. If the corresponding
+                  ConfigConnector resource includes the specification field
+                  'managerNamespaceSuffix: supervisor', then the controller manager
+                  StatefulSet and its ServiceAccount will be created within
+                  the t1234-tenant0-supervisor namespace.
+                type: string
               mode:
                 description: |-
                   The mode that Config Connector will run in. This can be either 'cluster' or 'namespaced'. The default is 'namespaced'.
