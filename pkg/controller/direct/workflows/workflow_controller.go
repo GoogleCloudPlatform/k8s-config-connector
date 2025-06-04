@@ -20,7 +20,7 @@ import (
 	"reflect"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -78,6 +78,15 @@ func (a *WorkflowsWorkflowAdapter) normalizeReference(ctx context.Context) error
 			return err
 		}
 		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
+	}
+	if len(obj.Spec.TagValueRefs) > 0 {
+		for i, ref := range obj.Spec.TagValueRefs {
+			tagValueRef, err := refs.ResolveTagValueRef(ctx, a.reader, obj, ref)
+			if err != nil {
+				return err
+			}
+			obj.Spec.TagValueRefs[i] = tagValueRef
+		}
 	}
 	return nil
 }
@@ -204,6 +213,10 @@ func (a *WorkflowsWorkflowAdapter) Update(ctx context.Context, updateOp *directb
 	paths := []string{}
 	if !reflect.DeepEqual(desiredPb.Description, a.actual.Description) {
 		paths = append(paths, "description")
+	}
+
+	if !reflect.DeepEqual(desiredPb.ExecutionHistoryLevel, a.actual.ExecutionHistoryLevel) {
+		paths = append(paths, "execution_history_level")
 	}
 
 	if !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {

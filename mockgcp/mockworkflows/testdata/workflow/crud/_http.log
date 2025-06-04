@@ -132,7 +132,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - returnOutput:\n        return: '${sys.now()}'\n"
 }
 
 200 OK
@@ -191,7 +191,7 @@ X-Xss-Protection: 0
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
     "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
-    "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+    "sourceContents": "main:\n  params: [input]\n  steps:\n    - returnOutput:\n        return: '${sys.now()}'\n",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -220,7 +220,7 @@ X-Xss-Protection: 0
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
   "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
-  "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
+  "sourceContents": "main:\n  params: [input]\n  steps:\n    - returnOutput:\n        return: '${sys.now()}'\n",
   "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

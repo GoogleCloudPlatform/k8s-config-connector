@@ -17,7 +17,7 @@ package workflows
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -49,11 +49,20 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.WorkflowsWorkflowObservedState{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.RevisionId = direct.LazyPtr(in.GetRevisionId())
+	out.RevisionID = direct.LazyPtr(in.GetRevisionId())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	out.StateError = WorkflowsWorkflowStateError_FromProto(mapCtx, in.GetStateError())
+	out.AllKMSKeys = []string{}
+	for _, kmsKey := range in.AllKmsKeys {
+		out.AllKMSKeys = append(out.AllKMSKeys, kmsKey)
+	}
+	out.AllKMSKeysVersions = []string{}
+	for _, kmsKeyVersion := range in.AllKmsKeysVersions {
+		out.AllKMSKeysVersions = append(out.AllKMSKeysVersions, kmsKeyVersion)
+	}
+	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
 	return out
 }
 
@@ -63,11 +72,20 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	}
 	out := &pb.Workflow{}
 	out.State = direct.Enum_ToProto[pb.Workflow_State](mapCtx, in.State)
-	out.RevisionId = direct.ValueOf(in.RevisionId)
+	out.RevisionId = direct.ValueOf(in.RevisionID)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	out.StateError = WorkflowsWorkflowStateError_ToProto(mapCtx, in.StateError)
+	out.AllKmsKeys = []string{}
+	for _, kmsKey := range in.AllKMSKeys {
+		out.AllKmsKeys = append(out.AllKmsKeys, kmsKey)
+	}
+	out.AllKmsKeysVersions = []string{}
+	for _, kmsKeyVersion := range in.AllKMSKeysVersions {
+		out.AllKmsKeysVersions = append(out.AllKmsKeysVersions, kmsKeyVersion)
+	}
+	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
 	return out
 }
 
@@ -87,6 +105,8 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.GetUserEnvVars()
+	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
+	out.TagValueRefs = direct.Tags_FromProto(mapCtx, in.GetTags())
 	return out
 }
 
@@ -116,11 +136,13 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	if in.KMSCryptoKeyRef != nil {
 		out.CryptoKeyName = in.KMSCryptoKeyRef.External
 	}
-
 	if in.CallLogLevel != nil {
 		out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	}
-
 	out.UserEnvVars = in.UserEnvVars
+	if in.ExecutionHistoryLevel != nil {
+		out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
+	}
+	out.Tags = direct.Tags_ToProto(mapCtx, in.TagValueRefs)
 	return out
 }
