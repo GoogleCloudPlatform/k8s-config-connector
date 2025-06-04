@@ -15,28 +15,10 @@
 package v1beta1
 
 import (
-	"reflect"
-
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
-)
-
-var (
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
-
-	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
-
-	SQLInstanceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SQLInstance{}).Name(),
-	}
 )
 
 type InstanceActiveDirectoryConfig struct {
@@ -434,7 +416,7 @@ type CloneSource struct {
 	PointInTime *string `json:"pointInTime,omitempty"`
 
 	/* The source SQLInstance to clone */
-	SQLInstanceRef refsv1beta1.SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
+	SQLInstanceRef SQLInstanceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {
@@ -458,7 +440,7 @@ type SQLInstanceSpec struct {
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	// +optional
-	MasterInstanceRef *refsv1beta1.SQLInstanceRef `json:"masterInstanceRef,omitempty"`
+	MasterInstanceRef *SQLInstanceRef `json:"masterInstanceRef,omitempty"`
 
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	// +optional

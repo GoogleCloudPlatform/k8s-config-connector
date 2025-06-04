@@ -23,6 +23,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -752,12 +753,12 @@ func (in *CloudSqlPropertiesSpec) DeepCopyInto(out *CloudSqlPropertiesSpec) {
 	*out = *in
 	if in.InstanceRef != nil {
 		in, out := &in.InstanceRef, &out.InstanceRef
-		*out = new(refsv1beta1.SQLInstanceRef)
+		*out = new(sqlv1beta1.SQLInstanceRef)
 		**out = **in
 	}
 	if in.DatabaseRef != nil {
 		in, out := &in.DatabaseRef, &out.DatabaseRef
-		*out = new(refsv1beta1.SQLDatabaseRef)
+		*out = new(sqlv1beta1.SQLDatabaseRef)
 		**out = **in
 	}
 	if in.Type != nil {

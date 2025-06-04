@@ -105,14 +105,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The SQLInstance selfLink, when not managed by
-                          Config Connector.
+                        description: A reference to an externally managed SQLInstance
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SQLInstance` resource.
+                        description: The name of an SQLInstance resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SQLInstance` resource.
+                        description: The namespace of an SQLInstance resource.
                         type: string
                     type: object
                 type: object
@@ -159,6 +159,8 @@ spec:
                 description: Maintenance version.
                 type: string
               masterInstanceRef:
+                description: InstanceRef defines the resource reference to SQLInstance,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -175,14 +177,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The SQLInstance selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed SQLInstance
+                      resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `SQLInstance` resource.
+                    description: The name of an SQLInstance resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `SQLInstance` resource.
+                    description: The namespace of an SQLInstance resource.
                     type: string
                 type: object
               region:

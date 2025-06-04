@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -27,32 +26,33 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
+var _ refsv1beta1.ExternalNormalizer = &SQLDatabaseRef{}
+var SQLDatabaseGVK = GroupVersion.WithKind("SQLDatabase")
 
-// SecretRef defines the resource reference to SecretManagerSecret, which "External" field
+// SQLDatabaseRef defines the resource reference to SQLDatabase, which "External" field
 // holds the GCP identifier for the KRM object.
-type SecretRef struct {
-	// A reference to an externally managed SecretManagerSecret resource.
-	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
+type SQLDatabaseRef struct {
+	// A reference to an externally managed SQLDatabase resource.
+	// Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a SecretManagerSecret resource.
+	// The name of an SQLDatabase resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a SecretManagerSecret resource.
+	// The namespace of an SQLDatabase resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on SecretManagerSecret.
-// If the "External" is given in the other resource's spec.SecretManagerSecretRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual SecretManagerSecret object from the cluster.
-func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for another resource that depends on SQLDatabase.
+// If the "External" is given in the other resource's spec.DatabaseRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual SQLDatabase object from the cluster.
+func (r *SQLDatabaseRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", SecretManagerSecretGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", SQLDatabaseGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, err := ParseSecretExternal(r.External); err != nil {
+		if _, err := ParseDatabaseExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -64,12 +64,12 @@ func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(SecretManagerSecretGVK)
+	u.SetGroupVersionKind(SQLDatabaseGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", SecretManagerSecretGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", SQLDatabaseGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
@@ -91,21 +91,22 @@ func (r *SecretRef) NormalizedExternal(ctx context.Context, reader client.Reader
 		return "", err
 	}
 
-	r.External = fmt.Sprintf("projects/%s/secrets/%s", projectID, resourceID)
+	instanceName, _, err := unstructured.NestedString(u.Object, "spec", "instanceRef", "name")
+	if err != nil {
+		return "", err
+	}
+	if instanceName != "" {
+		r.External = fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectID, instanceName, resourceID)
+	} else {
+		// The configured spec.instanceRef.external should match the format projects/{projectID}/instances/{instanceID}
+		// otherwise the creation of the resource might fail
+		instanceExternal, _, err := unstructured.NestedString(u.Object, "spec", "instanceRef", "external")
+		if err != nil {
+			return "", err
+		}
+		if instanceExternal != "" {
+			r.External = fmt.Sprintf("%s/databases/%s", instanceExternal, resourceID)
+		}
+	}
 	return r.External, nil
-}
-
-func ParseSecretExternal(external string) (*SecretIdentity, error) {
-	if external == "" {
-		return nil, fmt.Errorf("missing external value")
-	}
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "secrets" {
-		return nil, fmt.Errorf("format of SecretManagerSecret external=%q was not known (use projects/{{projectId}}/secrets/{{secretID}})", external)
-	}
-	return &SecretIdentity{
-		parent: &SecretParent{ProjectID: tokens[1]},
-		id:     tokens[3],
-	}, nil
 }

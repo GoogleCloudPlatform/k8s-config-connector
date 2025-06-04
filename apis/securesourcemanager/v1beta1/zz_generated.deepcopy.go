@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	privatecav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -69,7 +70,7 @@ func (in *Instance_PrivateConfig) DeepCopyInto(out *Instance_PrivateConfig) {
 	}
 	if in.CaPoolRef != nil {
 		in, out := &in.CaPoolRef, &out.CaPoolRef
-		*out = new(refsv1beta1.PrivateCACAPoolRef)
+		*out = new(privatecav1beta1.PrivateCACAPoolRef)
 		**out = **in
 	}
 }

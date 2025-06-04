@@ -203,7 +203,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -86,14 +86,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                        description: A reference to an externally managed SecretManagerSecretVersion
+                          resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SecretManagerSecretVersion`
-                          resource.
+                        description: The name of a SecretManagerSecretVersion resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                        description: The namespace of a SecretManagerSecretVersion
                           resource.
                         type: string
                     type: object
@@ -127,14 +127,15 @@ spec:
                           - external
                         properties:
                           external:
-                            description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                            description: A reference to an externally managed SecretManagerSecretVersion
+                              resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                             type: string
                           name:
-                            description: The `name` field of a `SecretManagerSecretVersion`
+                            description: The name of a SecretManagerSecretVersion
                               resource.
                             type: string
                           namespace:
-                            description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                            description: The namespace of a SecretManagerSecretVersion
                               resource.
                             type: string
                         type: object
@@ -169,15 +170,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                    description: A reference to an externally managed SecretManagerSecretVersion
+                      resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                     type: string
                   name:
-                    description: The `name` field of a `SecretManagerSecretVersion`
-                      resource.
+                    description: The name of a SecretManagerSecretVersion resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
-                      resource.
+                    description: The namespace of a SecretManagerSecretVersion resource.
                     type: string
                 type: object
               projectRef:
@@ -389,14 +389,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                        description: A reference to an externally managed SecretManagerSecretVersion
+                          resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SecretManagerSecretVersion`
-                          resource.
+                        description: The name of a SecretManagerSecretVersion resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                        description: The namespace of a SecretManagerSecretVersion
                           resource.
                         type: string
                     type: object
@@ -430,14 +430,15 @@ spec:
                           - external
                         properties:
                           external:
-                            description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                            description: A reference to an externally managed SecretManagerSecretVersion
+                              resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                             type: string
                           name:
-                            description: The `name` field of a `SecretManagerSecretVersion`
+                            description: The name of a SecretManagerSecretVersion
                               resource.
                             type: string
                           namespace:
-                            description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
+                            description: The namespace of a SecretManagerSecretVersion
                               resource.
                             type: string
                         type: object
@@ -472,15 +473,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: ' If provided must be in the format `projects/*/secrets/*/versions/*`.'
+                    description: A reference to an externally managed SecretManagerSecretVersion
+                      resource. Should be in the format "projects/{{projectID}}/secretversions/{{secretversionID}}".
                     type: string
                   name:
-                    description: The `name` field of a `SecretManagerSecretVersion`
-                      resource.
+                    description: The name of a SecretManagerSecretVersion resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `SecretManagerSecretVersion`
-                      resource.
+                    description: The namespace of a SecretManagerSecretVersion resource.
                     type: string
                 type: object
               projectRef:

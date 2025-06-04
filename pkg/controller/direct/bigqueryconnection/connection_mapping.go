@@ -20,6 +20,7 @@ import (
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	sqlv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -125,10 +126,10 @@ func CloudSqlPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.CloudSql
 		return nil
 	}
 	out := &krm.CloudSqlPropertiesSpec{}
-	out.InstanceRef = &refs.SQLInstanceRef{
+	out.InstanceRef = &sqlv1beta1.SQLInstanceRef{
 		External: in.InstanceId,
 	}
-	out.DatabaseRef = &refs.SQLDatabaseRef{
+	out.DatabaseRef = &sqlv1beta1.SQLDatabaseRef{
 		External: in.Database,
 	}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())

@@ -267,14 +267,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: ' If provided must be in the format `projects/*/secrets/*`.'
+                        description: A reference to an externally managed SecretManagerSecret
+                          resource. Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SecretManagerSecret` resource.
+                        description: The name of a SecretManagerSecret resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `SecretManagerSecret`
-                          resource.
+                        description: The namespace of a SecretManagerSecret resource.
                         type: string
                     type: object
                   secretRef:
