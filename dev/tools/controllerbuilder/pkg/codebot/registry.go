@@ -35,3 +35,16 @@ type Tool interface {
 func GetAllTools() []Tool {
 	return tools
 }
+
+func GetFilteredTools(filter Filter) []Tool {
+	filtered := make([]Tool, 0, len(tools))
+	for _, tool := range tools {
+		if filter.Exclude(tool) {
+			continue
+		}
+		if filter.Include(tool) {
+			filtered = append(filtered, tool)
+		}
+	}
+	return filtered
+}
