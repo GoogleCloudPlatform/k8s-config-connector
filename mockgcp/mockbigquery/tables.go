@@ -100,6 +100,23 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	obj := proto.Clone(req.GetTable()).(*pb.Table)
 
+	datasetServer := &datasetsServer{MockService: s.MockService}
+	datasetName, err := datasetServer.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
+	if err != nil {
+		return nil, err
+	}
+	dataset := &pb.Dataset{}
+	if err := s.storage.Get(ctx, datasetName.String(), dataset); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Dataset %s:%s", name.Project.ID, name.DatasetID)
+		}
+		return nil, err
+	}
+
+	if dataset.DefaultEncryptionConfiguration != nil && obj.EncryptionConfiguration == nil {
+		obj.EncryptionConfiguration = dataset.DefaultEncryptionConfiguration
+	}
+
 	if obj.TableReference == nil {
 		obj.TableReference = &pb.TableReference{}
 	}
@@ -265,11 +282,18 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	obj.Etag = PtrTo(computeEtag(obj))
 
+	ret := CloneProto(obj)
+
+	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
+	// but will be returned after the table is created.
+	if obj.RequirePartitionFilter != nil && obj.TimePartitioning != nil {
+		obj.TimePartitioning.RequirePartitionFilter = obj.RequirePartitionFilter
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating Table: %v", err)
 	}
 
-	ret := CloneProto(obj)
 	// Return value has empty schema populated, even though other methods do not
 	if ret.Schema == nil {
 		ret.Schema = &pb.TableSchema{}
@@ -298,7 +322,10 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.FriendlyName = req.GetTable().FriendlyName
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+		updated.ExternalDataConfiguration = req.GetTable().ExternalDataConfiguration
 	}
+	updated.Schema = req.GetTable().Schema
+	updated.ExpirationTime = req.GetTable().ExpirationTime
 
 	updated.Etag = PtrTo(computeEtag(updated))
 
