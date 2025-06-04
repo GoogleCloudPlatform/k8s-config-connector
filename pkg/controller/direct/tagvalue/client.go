@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package resourcemanager
+package tagvalue
 
 import (
 	"context"
@@ -33,14 +33,14 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newTagKeysClient(ctx context.Context) (*api.TagKeysClient, error) {
+func (m *gcpClient) newTagValuesClient(ctx context.Context) (*api.TagValuesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewTagKeysRESTClient(ctx, opts...)
+	client, err := api.NewTagValuesRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building tag keys client: %w", err)
+		return nil, fmt.Errorf("building tag values client: %w", err)
 	}
 	return client, err
 }

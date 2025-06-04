@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package resourcemanager
+package tagvalue
 
 import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -106,6 +108,8 @@ func (a *tagValueAdapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetTagValueRequest{
 		Name: a.fullyQualifiedName(),
 	}
+	log := klog.FromContext(ctx)
+	log.Info(fmt.Sprintf("tagValue Find Name %s", req.GetName()))
 	tagValue, err := a.tagValuesClient.GetTagValue(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -199,6 +203,14 @@ func tagValueStatusToKRM(in *pb.TagValue, out *krm.TagsTagValueStatus) error {
 	return nil
 }
 
+func timeToKRMString(t *timestamppb.Timestamp) *string {
+	if t == nil {
+		return nil
+	}
+	s := t.AsTime().Format(time.RFC3339Nano)
+	return &s
+}
+
 // Update implements the Adapter interface.
 func (a *tagValueAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	// TODO: Skip updates at the higher level if no changes?
@@ -241,4 +253,16 @@ func (a *tagValueAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 func (a *tagValueAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("tagValues/%s", a.resourceID)
+}
+
+func setStatus(u *unstructured.Unstructured, typedStatus any) error {
+	// TODO: Just fetch this object?
+	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	if err != nil {
+		return fmt.Errorf("error converting status to unstructured: %w", err)
+	}
+	// TODO: Merge to avoid overwriting conditions?
+	u.Object["status"] = status
+
+	return nil
 }
