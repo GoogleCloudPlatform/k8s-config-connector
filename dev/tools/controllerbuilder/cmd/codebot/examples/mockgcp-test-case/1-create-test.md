@@ -20,7 +20,7 @@ Or to create mockgcp test for the gcloud commands under `gcloud storage buckets`
 
 Some hints:
 
-* You should use the CreateFile method to create the script.yaml file in the appropriate directory.  You can use ListFilesInWorkspace to make sure that you are creating a test in a new directory.
+* You should use the CreateFile method to create the script.yaml file in the appropriate directory.  You can use ListInWorkspace to make sure that you are creating a test in a new directory.
 
 * You can run the help command to see the available subcommands, for example you might run `gcloud pubsub topics --help`.  If you want to see the flags for any individual commands, you can run the help for them also, for example you might run `gcloud pubsub topics create --help`.
 
