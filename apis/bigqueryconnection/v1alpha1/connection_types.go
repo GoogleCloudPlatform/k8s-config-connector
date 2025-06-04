@@ -19,6 +19,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -164,7 +165,7 @@ type CloudSqlPropertiesSpec struct {
 type CloudSpannerPropertiesSpec struct {
 	// Reference to a spanner database ID.
 	// +required
-	DatabaseRef *refv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
+	DatabaseRef *spannerv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
 
 	// If parallelism should be used when reading from Cloud Spanner
 	UseParallelism *bool `json:"useParallelism,omitempty"`

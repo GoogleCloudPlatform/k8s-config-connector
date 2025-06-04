@@ -23,6 +23,7 @@ import (
 	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -647,7 +648,7 @@ func (in *CloudSpannerPropertiesSpec) DeepCopyInto(out *CloudSpannerPropertiesSp
 	*out = *in
 	if in.DatabaseRef != nil {
 		in, out := &in.DatabaseRef, &out.DatabaseRef
-		*out = new(refsv1beta1.SpannerDatabaseRef)
+		*out = new(spannerv1beta1.SpannerDatabaseRef)
 		**out = **in
 	}
 	if in.UseParallelism != nil {

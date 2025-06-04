@@ -360,7 +360,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Spanner Database selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SpannerDatabase resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -370,7 +370,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `SpannerDatabase` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SpannerDatabase resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -380,7 +380,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `SpannerDatabase` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SpannerDatabase resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

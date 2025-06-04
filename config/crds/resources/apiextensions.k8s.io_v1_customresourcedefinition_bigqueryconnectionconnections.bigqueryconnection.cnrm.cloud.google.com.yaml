@@ -203,15 +203,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The Spanner Database selfLink, when not managed
-                          by Config Connector.
+                        description: A reference to an externally managed SpannerDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SpannerDatabase` resource.
+                        description: The name of a SpannerDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SpannerDatabase`
-                          resource.
+                        description: The namespace of a SpannerDatabase resource.
                         type: string
                     type: object
                   databaseRole:
@@ -717,15 +716,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The Spanner Database selfLink, when not managed
-                          by Config Connector.
+                        description: A reference to an externally managed SpannerDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SpannerDatabase` resource.
+                        description: The name of a SpannerDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SpannerDatabase`
-                          resource.
+                        description: The namespace of a SpannerDatabase resource.
                         type: string
                     type: object
                   databaseRole:
