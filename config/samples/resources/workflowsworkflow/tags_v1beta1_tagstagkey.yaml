@@ -18,4 +18,4 @@ metadata:
 spec:
   description: For keyname resources.
   parent: projects/${PROJECT_ID?}
-  shortName: workflows-sample-tag-key
+  shortName: workflowsworkflow-dep

@@ -19,4 +19,4 @@ spec:
   description: For workflows KCC sample
   parentRef:
     name: workflowsworkflow-dep
-  shortName: workflows-sample-tag-value
+  shortName: workflowsworkflow-dep
