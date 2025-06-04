@@ -310,21 +310,25 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "dateField",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "mode": "REQUIRED",
         "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -404,21 +408,25 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "dateField",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "mode": "REQUIRED",
         "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -567,26 +575,31 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "dateField",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "mode": "REQUIRED",
         "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField3",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -663,26 +676,31 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "dateField",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "mode": "REQUIRED",
         "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField3",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -785,26 +803,31 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "dateField",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "mode": "REQUIRED",
         "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "stringField3",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
