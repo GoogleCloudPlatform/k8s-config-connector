@@ -19,6 +19,7 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
  * `OrgPolicyPolicy`
  * `OrgPolicyCustomConstraint`
  * `SpeechRecognizer`
+ * `StorageAnywhereCache`
 
 ## New Fields:
 * [SpannerInstance](https://cloud.google.com/config-connector/docs/reference/resource-docs/spanner/spannerinstance). For opt-in direct controller,
