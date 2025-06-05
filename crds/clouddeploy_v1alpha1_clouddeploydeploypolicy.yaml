@@ -1,0 +1,472 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.132.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: clouddeploydeploypolicies.clouddeploy.cnrm.cloud.google.com
+spec:
+  group: clouddeploy.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudDeployDeployPolicy
+    listKind: CloudDeployDeployPolicyList
+    plural: clouddeploydeploypolicies
+    shortNames:
+    - gcpcodedeploydeploypolicy
+    - gcpcodedeploydeploypolicies
+    singular: clouddeploydeploypolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudDeployDeployPolicy is the Schema for the CloudDeployDeployPolicy
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DeployPolicySpec defines the desired state of DeployDeployPolicy
+            properties:
+              description:
+                description: Description of the `DeployPolicy`. Max length is 255
+                  characters.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DeployDeployPolicy name. If not given, the metadata.name
+                  will be used.
+                type: string
+              rules:
+                description: Required. Rules to apply. At least one rule must be present.
+                items:
+                  properties:
+                    rolloutRestriction:
+                      description: Rollout restrictions.
+                      properties:
+                        actions:
+                          description: Optional. Rollout actions to be restricted
+                            as part of the policy. If left empty, all actions will
+                            be restricted.
+                          items:
+                            type: string
+                          type: array
+                        id:
+                          description: Required. Restriction rule ID. Required and
+                            must be unique within a DeployPolicy. The format is `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`.
+                          type: string
+                        invokers:
+                          description: Optional. What invoked the action. If left
+                            empty, all invoker types will be restricted.
+                          items:
+                            type: string
+                          type: array
+                        timeWindows:
+                          description: Required. Time window within which actions
+                            are restricted.
+                          properties:
+                            oneTimeWindows:
+                              description: Optional. One-time windows within which
+                                actions are restricted.
+                              items:
+                                properties:
+                                  endDate:
+                                    description: Required. End date.
+                                    properties:
+                                      day:
+                                        description: Day of a month. Must be from
+                                          1 to 31 and valid for the year and month,
+                                          or 0 to specify a year by itself or a year
+                                          and month where the day isn't significant.
+                                        format: int32
+                                        type: integer
+                                      month:
+                                        description: Month of a year. Must be from
+                                          1 to 12, or 0 to specify a year without
+                                          a month and day.
+                                        format: int32
+                                        type: integer
+                                      year:
+                                        description: Year of the date. Must be from
+                                          1 to 9999, or 0 to specify a date without
+                                          a year.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  endTime:
+                                    description: Required. End time (exclusive). You
+                                      may use 24:00 for the end of the day.
+                                    properties:
+                                      hours:
+                                        description: Hours of day in 24 hour format.
+                                          Should be from 0 to 23. An API may choose
+                                          to allow the value "24:00:00" for scenarios
+                                          like business closing time.
+                                        format: int32
+                                        type: integer
+                                      minutes:
+                                        description: Minutes of hour of day. Must
+                                          be from 0 to 59.
+                                        format: int32
+                                        type: integer
+                                      nanos:
+                                        description: Fractions of seconds in nanoseconds.
+                                          Must be from 0 to 999,999,999.
+                                        format: int32
+                                        type: integer
+                                      seconds:
+                                        description: Seconds of minutes of the time.
+                                          Must normally be from 0 to 59. An API may
+                                          allow the value 60 if it allows leap-seconds.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  startDate:
+                                    description: Required. Start date.
+                                    properties:
+                                      day:
+                                        description: Day of a month. Must be from
+                                          1 to 31 and valid for the year and month,
+                                          or 0 to specify a year by itself or a year
+                                          and month where the day isn't significant.
+                                        format: int32
+                                        type: integer
+                                      month:
+                                        description: Month of a year. Must be from
+                                          1 to 12, or 0 to specify a year without
+                                          a month and day.
+                                        format: int32
+                                        type: integer
+                                      year:
+                                        description: Year of the date. Must be from
+                                          1 to 9999, or 0 to specify a date without
+                                          a year.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  startTime:
+                                    description: Required. Start time (inclusive).
+                                      Use 00:00 for the beginning of the day.
+                                    properties:
+                                      hours:
+                                        description: Hours of day in 24 hour format.
+                                          Should be from 0 to 23. An API may choose
+                                          to allow the value "24:00:00" for scenarios
+                                          like business closing time.
+                                        format: int32
+                                        type: integer
+                                      minutes:
+                                        description: Minutes of hour of day. Must
+                                          be from 0 to 59.
+                                        format: int32
+                                        type: integer
+                                      nanos:
+                                        description: Fractions of seconds in nanoseconds.
+                                          Must be from 0 to 999,999,999.
+                                        format: int32
+                                        type: integer
+                                      seconds:
+                                        description: Seconds of minutes of the time.
+                                          Must normally be from 0 to 59. An API may
+                                          allow the value 60 if it allows leap-seconds.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                type: object
+                              type: array
+                            timeZone:
+                              description: Required. The time zone in IANA format
+                                [IANA Time Zone Database](https://www.iana.org/time-zones)
+                                (e.g. America/New_York).
+                              type: string
+                            weeklyWindows:
+                              description: Optional. Recurring weekly windows within
+                                which actions are restricted.
+                              items:
+                                properties:
+                                  daysOfWeek:
+                                    description: Optional. Days of week. If left empty,
+                                      all days of the week will be included.
+                                    items:
+                                      type: string
+                                    type: array
+                                  endTime:
+                                    description: Optional. End time (exclusive). Use
+                                      24:00 to indicate midnight. If you specify end_time
+                                      you must also specify start_time. If left empty,
+                                      this will block for the entire day for the days
+                                      specified in days_of_week.
+                                    properties:
+                                      hours:
+                                        description: Hours of day in 24 hour format.
+                                          Should be from 0 to 23. An API may choose
+                                          to allow the value "24:00:00" for scenarios
+                                          like business closing time.
+                                        format: int32
+                                        type: integer
+                                      minutes:
+                                        description: Minutes of hour of day. Must
+                                          be from 0 to 59.
+                                        format: int32
+                                        type: integer
+                                      nanos:
+                                        description: Fractions of seconds in nanoseconds.
+                                          Must be from 0 to 999,999,999.
+                                        format: int32
+                                        type: integer
+                                      seconds:
+                                        description: Seconds of minutes of the time.
+                                          Must normally be from 0 to 59. An API may
+                                          allow the value 60 if it allows leap-seconds.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                  startTime:
+                                    description: Optional. Start time (inclusive).
+                                      Use 00:00 for the beginning of the day. If you
+                                      specify start_time you must also specify end_time.
+                                      If left empty, this will block for the entire
+                                      day for the days specified in days_of_week.
+                                    properties:
+                                      hours:
+                                        description: Hours of day in 24 hour format.
+                                          Should be from 0 to 23. An API may choose
+                                          to allow the value "24:00:00" for scenarios
+                                          like business closing time.
+                                        format: int32
+                                        type: integer
+                                      minutes:
+                                        description: Minutes of hour of day. Must
+                                          be from 0 to 59.
+                                        format: int32
+                                        type: integer
+                                      nanos:
+                                        description: Fractions of seconds in nanoseconds.
+                                          Must be from 0 to 999,999,999.
+                                        format: int32
+                                        type: integer
+                                      seconds:
+                                        description: Seconds of minutes of the time.
+                                          Must normally be from 0 to 59. An API may
+                                          allow the value 60 if it allows leap-seconds.
+                                        format: int32
+                                        type: integer
+                                    type: object
+                                type: object
+                              type: array
+                          type: object
+                      type: object
+                  type: object
+                type: array
+              selectors:
+                description: Required. Selected resources to which the policy will
+                  be applied. At least one selector is required. If one selector matches
+                  the resource the policy applies. For example, if there are two selectors
+                  and the action being attempted matches one of them, the policy will
+                  apply to that action.
+                items:
+                  properties:
+                    deliveryPipeline:
+                      description: Optional. Contains attributes about a delivery
+                        pipeline.
+                      properties:
+                        id:
+                          description: |-
+                            ID of the `DeliveryPipeline`. The value of this field could be one of the
+                             following:
+
+                             * The last segment of a pipeline name
+                             * "*", all delivery pipelines in a location
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: DeliveryPipeline labels.
+                          type: object
+                      type: object
+                    target:
+                      description: Optional. Contains attributes about a target.
+                      properties:
+                        id:
+                          description: |-
+                            ID of the `Target`. The value of this field could be one of the
+                             following:
+
+                             * The last segment of a target name
+                             * "*", all targets in a location
+                          type: string
+                        labels:
+                          additionalProperties:
+                            type: string
+                          description: Target labels.
+                          type: object
+                      type: object
+                  type: object
+                type: array
+              suspended:
+                description: When suspended, the policy will not prevent actions from
+                  occurring, even if the action violates the policy.
+                type: boolean
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: DeployPolicyStatus defines the config connector machine state
+              of DeployDeployPolicy
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DeployDeployPolicy resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Time at which the deploy policy was
+                      created.
+                    type: string
+                  name:
+                    description: Output only. Name of the `DeployPolicy`. Format is
+                      `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+                      The `deployPolicy` component must match `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
+                    type: string
+                  uid:
+                    description: Output only. Unique identifier of the `DeployPolicy`.
+                    type: string
+                  updateTime:
+                    description: Output only. Most recent time at which the deploy
+                      policy was updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

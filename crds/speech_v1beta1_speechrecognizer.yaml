@@ -1,0 +1,746 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.132.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: speechrecognizers.speech.cnrm.cloud.google.com
+spec:
+  group: speech.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: SpeechRecognizer
+    listKind: SpeechRecognizerList
+    plural: speechrecognizers
+    shortNames:
+    - gcpspeechrecognizer
+    - gcpspeechrecognizers
+    singular: speechrecognizer
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: SpeechRecognizer is the Schema for the SpeechRecognizer API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SpeechRecognizerSpec defines the desired state of SpeechRecognizer
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Allows users to store small amounts of arbitrary data.
+                  Both the key and the value must be 63 characters or less each. At
+                  most 100 annotations.
+                type: object
+              defaultRecognitionConfig:
+                description: Default configuration to use for requests with this Recognizer.
+                  This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
+                  field.
+                properties:
+                  languageCodes:
+                    description: |-
+                      Optional. The language of the supplied audio as a
+                       [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+                       Language tags are normalized to BCP-47 before they are used eg "en-us"
+                       becomes "en-US".
+
+                       Supported languages for each model are listed in the [Table of Supported
+                       Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+
+                       If additional languages are provided, recognition result will contain
+                       recognition in the most likely language detected. The recognition result
+                       will include the language tag of the language detected in the audio.
+                    items:
+                      type: string
+                    type: array
+                  model:
+                    description: |-
+                      Optional. Which model to use for recognition requests. Select the model
+                       best suited to your domain to get best results.
+
+                       Guidance for choosing which model to use can be found in the [Transcription
+                       Models
+                       Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
+                       and the models supported in each region can be found in the [Table Of
+                       Supported
+                       Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+                    type: string
+                type: object
+              displayName:
+                description: User-settable, human-readable name for the Recognizer.
+                  Must be 63 characters or less.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The SpeechRecognizer name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: SpeechRecognizerStatus defines the config connector machine
+              state of SpeechRecognizer
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SpeechRecognizer resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time.
+                    type: string
+                  defaultRecognitionConfig:
+                    description: Default configuration to use for requests with this
+                      Recognizer. This can be overwritten by inline configuration
+                      in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
+                      field.
+                    properties:
+                      adaptation:
+                        description: Speech adaptation context that weights recognizer
+                          predictions for specific words and phrases.
+                        properties:
+                          customClasses:
+                            description: A list of inline CustomClasses. Existing
+                              CustomClass resources can be referenced directly in
+                              a PhraseSet.
+                            items:
+                              properties:
+                                createTime:
+                                  description: Output only. Creation time.
+                                  type: string
+                                deleteTime:
+                                  description: Output only. The time at which this
+                                    resource was requested for deletion.
+                                  type: string
+                                etag:
+                                  description: Output only. This checksum is computed
+                                    by the server based on the value of other fields.
+                                    This may be sent on update, undelete, and delete
+                                    requests to ensure the client has an up-to-date
+                                    value before proceeding.
+                                  type: string
+                                expireTime:
+                                  description: Output only. The time at which this
+                                    resource will be purged.
+                                  type: string
+                                kmsKeyName:
+                                  description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                                    with which the CustomClass is encrypted. The expected
+                                    format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                                  type: string
+                                kmsKeyVersionName:
+                                  description: Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                                    with which the CustomClass is encrypted. The expected
+                                    format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                                  type: string
+                                name:
+                                  description: 'Output only. Identifier. The resource
+                                    name of the CustomClass. Format: `projects/{project}/locations/{location}/customClasses/{custom_class}`.'
+                                  type: string
+                                reconciling:
+                                  description: Output only. Whether or not this CustomClass
+                                    is in the process of being updated.
+                                  type: boolean
+                                state:
+                                  description: Output only. The CustomClass lifecycle
+                                    state.
+                                  type: string
+                                uid:
+                                  description: Output only. System-assigned unique
+                                    identifier for the CustomClass.
+                                  type: string
+                                updateTime:
+                                  description: Output only. The most recent time this
+                                    resource was modified.
+                                  type: string
+                              type: object
+                            type: array
+                          phraseSets:
+                            description: A list of inline or referenced PhraseSets.
+                            items:
+                              properties:
+                                inlinePhraseSet:
+                                  description: An inline defined PhraseSet.
+                                  properties:
+                                    createTime:
+                                      description: Output only. Creation time.
+                                      type: string
+                                    deleteTime:
+                                      description: Output only. The time at which
+                                        this resource was requested for deletion.
+                                      type: string
+                                    etag:
+                                      description: Output only. This checksum is computed
+                                        by the server based on the value of other
+                                        fields. This may be sent on update, undelete,
+                                        and delete requests to ensure the client has
+                                        an up-to-date value before proceeding.
+                                      type: string
+                                    expireTime:
+                                      description: Output only. The time at which
+                                        this resource will be purged.
+                                      type: string
+                                    kmsKeyName:
+                                      description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                                        with which the PhraseSet is encrypted. The
+                                        expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                                      type: string
+                                    kmsKeyVersionName:
+                                      description: Output only. The [KMS key version
+                                        name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                                        with which the PhraseSet is encrypted. The
+                                        expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                                      type: string
+                                    name:
+                                      description: 'Output only. Identifier. The resource
+                                        name of the PhraseSet. Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`.'
+                                      type: string
+                                    reconciling:
+                                      description: Output only. Whether or not this
+                                        PhraseSet is in the process of being updated.
+                                      type: boolean
+                                    state:
+                                      description: Output only. The PhraseSet lifecycle
+                                        state.
+                                      type: string
+                                    uid:
+                                      description: Output only. System-assigned unique
+                                        identifier for the PhraseSet.
+                                      type: string
+                                    updateTime:
+                                      description: Output only. The most recent time
+                                        this resource was modified.
+                                      type: string
+                                  type: object
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  deleteTime:
+                    description: Output only. The time at which this Recognizer was
+                      requested for deletion.
+                    type: string
+                  etag:
+                    description: Output only. This checksum is computed by the server
+                      based on the value of other fields. This may be sent on update,
+                      undelete, and delete requests to ensure the client has an up-to-date
+                      value before proceeding.
+                    type: string
+                  expireTime:
+                    description: Output only. The time at which this Recognizer will
+                      be purged.
+                    type: string
+                  kmsKeyName:
+                    description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                      with which the Recognizer is encrypted. The expected format
+                      is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                    type: string
+                  kmsKeyVersionName:
+                    description: Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                      with which the Recognizer is encrypted. The expected format
+                      is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                    type: string
+                  reconciling:
+                    description: Output only. Whether or not this Recognizer is in
+                      the process of being updated.
+                    type: boolean
+                  state:
+                    description: Output only. The Recognizer lifecycle state.
+                    type: string
+                  uid:
+                    description: Output only. System-assigned unique identifier for
+                      the Recognizer.
+                    type: string
+                  updateTime:
+                    description: Output only. The most recent time this Recognizer
+                      was modified.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: SpeechRecognizer is the Schema for the SpeechRecognizer API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: SpeechRecognizerSpec defines the desired state of SpeechRecognizer
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Allows users to store small amounts of arbitrary data.
+                  Both the key and the value must be 63 characters or less each. At
+                  most 100 annotations.
+                type: object
+              defaultRecognitionConfig:
+                description: Default configuration to use for requests with this Recognizer.
+                  This can be overwritten by inline configuration in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
+                  field.
+                properties:
+                  languageCodes:
+                    description: |-
+                      Optional. The language of the supplied audio as a
+                       [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+                       Language tags are normalized to BCP-47 before they are used eg "en-us"
+                       becomes "en-US".
+
+                       Supported languages for each model are listed in the [Table of Supported
+                       Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+
+                       If additional languages are provided, recognition result will contain
+                       recognition in the most likely language detected. The recognition result
+                       will include the language tag of the language detected in the audio.
+                    items:
+                      type: string
+                    type: array
+                  model:
+                    description: |-
+                      Optional. Which model to use for recognition requests. Select the model
+                       best suited to your domain to get best results.
+
+                       Guidance for choosing which model to use can be found in the [Transcription
+                       Models
+                       Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
+                       and the models supported in each region can be found in the [Table Of
+                       Supported
+                       Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+                    type: string
+                type: object
+              displayName:
+                description: User-settable, human-readable name for the Recognizer.
+                  Must be 63 characters or less.
+                type: string
+              location:
+                description: Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The SpeechRecognizer name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: SpeechRecognizerStatus defines the config connector machine
+              state of SpeechRecognizer
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the SpeechRecognizer resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Creation time.
+                    type: string
+                  defaultRecognitionConfig:
+                    description: Default configuration to use for requests with this
+                      Recognizer. This can be overwritten by inline configuration
+                      in the [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
+                      field.
+                    properties:
+                      adaptation:
+                        description: Speech adaptation context that weights recognizer
+                          predictions for specific words and phrases.
+                        properties:
+                          customClasses:
+                            description: A list of inline CustomClasses. Existing
+                              CustomClass resources can be referenced directly in
+                              a PhraseSet.
+                            items:
+                              properties:
+                                createTime:
+                                  description: Output only. Creation time.
+                                  type: string
+                                deleteTime:
+                                  description: Output only. The time at which this
+                                    resource was requested for deletion.
+                                  type: string
+                                etag:
+                                  description: Output only. This checksum is computed
+                                    by the server based on the value of other fields.
+                                    This may be sent on update, undelete, and delete
+                                    requests to ensure the client has an up-to-date
+                                    value before proceeding.
+                                  type: string
+                                expireTime:
+                                  description: Output only. The time at which this
+                                    resource will be purged.
+                                  type: string
+                                kmsKeyName:
+                                  description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                                    with which the CustomClass is encrypted. The expected
+                                    format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                                  type: string
+                                kmsKeyVersionName:
+                                  description: Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                                    with which the CustomClass is encrypted. The expected
+                                    format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                                  type: string
+                                name:
+                                  description: 'Output only. Identifier. The resource
+                                    name of the CustomClass. Format: `projects/{project}/locations/{location}/customClasses/{custom_class}`.'
+                                  type: string
+                                reconciling:
+                                  description: Output only. Whether or not this CustomClass
+                                    is in the process of being updated.
+                                  type: boolean
+                                state:
+                                  description: Output only. The CustomClass lifecycle
+                                    state.
+                                  type: string
+                                uid:
+                                  description: Output only. System-assigned unique
+                                    identifier for the CustomClass.
+                                  type: string
+                                updateTime:
+                                  description: Output only. The most recent time this
+                                    resource was modified.
+                                  type: string
+                              type: object
+                            type: array
+                          phraseSets:
+                            description: A list of inline or referenced PhraseSets.
+                            items:
+                              properties:
+                                inlinePhraseSet:
+                                  description: An inline defined PhraseSet.
+                                  properties:
+                                    createTime:
+                                      description: Output only. Creation time.
+                                      type: string
+                                    deleteTime:
+                                      description: Output only. The time at which
+                                        this resource was requested for deletion.
+                                      type: string
+                                    etag:
+                                      description: Output only. This checksum is computed
+                                        by the server based on the value of other
+                                        fields. This may be sent on update, undelete,
+                                        and delete requests to ensure the client has
+                                        an up-to-date value before proceeding.
+                                      type: string
+                                    expireTime:
+                                      description: Output only. The time at which
+                                        this resource will be purged.
+                                      type: string
+                                    kmsKeyName:
+                                      description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                                        with which the PhraseSet is encrypted. The
+                                        expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                                      type: string
+                                    kmsKeyVersionName:
+                                      description: Output only. The [KMS key version
+                                        name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                                        with which the PhraseSet is encrypted. The
+                                        expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                                      type: string
+                                    name:
+                                      description: 'Output only. Identifier. The resource
+                                        name of the PhraseSet. Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`.'
+                                      type: string
+                                    reconciling:
+                                      description: Output only. Whether or not this
+                                        PhraseSet is in the process of being updated.
+                                      type: boolean
+                                    state:
+                                      description: Output only. The PhraseSet lifecycle
+                                        state.
+                                      type: string
+                                    uid:
+                                      description: Output only. System-assigned unique
+                                        identifier for the PhraseSet.
+                                      type: string
+                                    updateTime:
+                                      description: Output only. The most recent time
+                                        this resource was modified.
+                                      type: string
+                                  type: object
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  deleteTime:
+                    description: Output only. The time at which this Recognizer was
+                      requested for deletion.
+                    type: string
+                  etag:
+                    description: Output only. This checksum is computed by the server
+                      based on the value of other fields. This may be sent on update,
+                      undelete, and delete requests to ensure the client has an up-to-date
+                      value before proceeding.
+                    type: string
+                  expireTime:
+                    description: Output only. The time at which this Recognizer will
+                      be purged.
+                    type: string
+                  kmsKeyName:
+                    description: Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys)
+                      with which the Recognizer is encrypted. The expected format
+                      is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+                    type: string
+                  kmsKeyVersionName:
+                    description: Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions)
+                      with which the Recognizer is encrypted. The expected format
+                      is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+                    type: string
+                  reconciling:
+                    description: Output only. Whether or not this Recognizer is in
+                      the process of being updated.
+                    type: boolean
+                  state:
+                    description: Output only. The Recognizer lifecycle state.
+                    type: string
+                  uid:
+                    description: Output only. System-assigned unique identifier for
+                      the Recognizer.
+                    type: string
+                  updateTime:
+                    description: Output only. The most recent time this Recognizer
+                      was modified.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
