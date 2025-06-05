@@ -1,0 +1,100 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1 # Immutable
+  # Modified binaryAuthorization
+  binaryAuthorization:
+    enabled: false # Changed from true
+    evaluationMode: "PROJECT_SINGLETON_POLICY_ENFORCE" # Added
+  # Modified clusterAutoscaling
+  clusterAutoscaling:
+    autoProvisioningDefaults:
+      management:
+        upgradeOptions:
+        - autoUpgradeStartTime: "2026-02-02T00:00:00Z" # Changed
+          description: "updated test description" # Changed
+    autoscalingProfile: OPTIMIZE_UTILIZATION # Added new mutable field
+  # Modified clusterTelemetry
+  clusterTelemetry:
+    type: WORKLOADS # Changed from SYSTEM_COMPONENTS
+  dnsConfig: # Immutable
+    clusterDns: CLOUD_DNS
+    clusterDnsDomain: "test-cluster-dns-domain"
+    clusterDnsScope: VPC_SCOPE
+  enableAutopilot: true # Immutable
+  # enableBinaryAuthorization: true # Removed deprecated field
+  # Modified masterAuth
+  masterAuth:
+    clientCertificateConfig: # Immutable part
+      issueClientCertificate: true
+    clientKey: # Changed secret name
+      valueFrom:
+        secretKeyRef:
+          name: secret-updated-${uniqueId} # Changed
+          key: clientKey
+    # clusterCaCertificate: ... # Removed output-only field from spec
+  nodeConfig: # Immutable
+    bootDiskKMSCryptoKeyRef:
+      name: kmscryptokey-${uniqueId}
+    ephemeralStorageLocalSsdConfig:
+      localSsdCount: 1
+    nodeGroupRef:
+      name: computenodegroup-${uniqueId}
+    soleTenantConfig:
+      nodeAffinity:
+      - key: "test-key"
+        operator: "IN"
+        values:
+        - "test-value"
+    workloadMetadataConfig:
+      nodeMetadata: GKE_METADATA
+  # Modified privateClusterConfig
+  privateClusterConfig:
+    peeringName: "updated-test-peering" # Changed
+    privateEndpointSubnetworkRef: # Immutable
+      name: computesubnetwork-${uniqueId}
+    publicEndpoint: "10.0.0.2" # Changed
+    masterGlobalAccessConfig: # Added new mutable field block
+      enabled: true
+  # Modified workloadIdentityConfig
+  workloadIdentityConfig:
+    identityNamespace: "updated-test-identity-namespace" # Changed
+    workloadPool: "${projectId}.svc.id.goog" # Added, preferred over identityNamespace
+  # Adding some more top-level mutable fields for broader update testing
+  loggingService: "logging.googleapis.com/kubernetes" 
+  monitoringService: "monitoring.googleapis.com/kubernetes"
+  minMasterVersion: "1.27" 
+  nodeVersion: "1.27" 
+  nodeLocations: # Added/Modified
+  - "us-central1-a"
+  - "us-central1-b"
+  addonsConfig: # Added new mutable field block
+    httpLoadBalancing:
+      disabled: true 
+    dnsCacheConfig:
+      enabled: true
+  networkPolicy: # Added new mutable field block
+    enabled: true
+    provider: CALICO
+  verticalPodAutoscaling: # Added new mutable field block
+    enabled: true
+  releaseChannel: # Added new mutable field block
+    channel: REGULAR
