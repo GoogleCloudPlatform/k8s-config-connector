@@ -133,7 +133,7 @@ func (m *modelAnywhereCache) AdapterForURL(ctx context.Context, url string) (dir
 
 type AnywhereCacheAdapter struct {
 	id        *krm.AnywhereCacheIdentity
-	gcpClient *gcp.StorageControlClient
+	gcpClient AnywhereCacheAPI
 	desired   *krm.StorageAnywhereCache
 	actual    *pb.AnywhereCache
 }
@@ -232,13 +232,17 @@ func (a *AnywhereCacheAdapter) Create(ctx context.Context, createOp *directbase.
 	return createOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionTrue, k8s.UpToDate, k8s.UpToDateMessage))
 }
 
+func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	return a.UpdateCache(ctx, updateOp)
+}
+
 /*
 We primarily receive two types of updates: state changes and metadata changes. To maintain simplicity,
 these are kept separate, with state changes prioritized. This means that if an update involves both
 the cache state and metadata changes, the cache state is updated first, followed by the metadata fields.
 */
 // Update updates the resource in GCP based on `spec` and updates the Config Connector object `status` based on the GCP response.
-func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *AnywhereCacheAdapter) UpdateCache(ctx context.Context, updateOp DirectBaseUpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("attempting to update AnywhereCache", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
@@ -294,6 +298,9 @@ func (a *AnywhereCacheAdapter) Update(ctx context.Context, updateOp *directbase.
 			// There are still metadata updates or a previous update is pending.
 			// These updates will be handled in the next reconcile cycle.
 			log.V(2).Info("State change completed, but metadata updates pending or in progress. Requeuing.", "name", a.id.String())
+
+			// Do not wait for next reconcile, instead use RequestReque()
+			updateOp.RequestRequeue()
 			return updateOp.UpdateStatus(ctx, status, getReadyCondition(v1.ConditionFalse, k8s.Updating, k8s.UpdatingMessage))
 		}
 		// No other updates pending.
