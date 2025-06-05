@@ -44,13 +44,17 @@ import (
 
 func TestRemovingStaleComponents(t *testing.T) {
 	t.Parallel()
-	ctx := context.Background()
-	mgr, stop := testmain.StartTestManagerFromNewTestEnv()
-	defer stop()
-	c := mgr.GetClient()
-	testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.OperatorSystemNamespace)
-	testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.CNRMSystemNamespace)
-	staleComponents := []string{`
+	tests := []struct {
+		name                   string
+		managerNamespaceSuffix string
+		cccNamespace           string
+		staleComponents        []string
+	}{
+		{
+			name:                   "namespaced mode",
+			managerNamespaceSuffix: "",
+			cccNamespace:           "foo-ns",
+			staleComponents: []string{`
 apiVersion: v1
 kind: Service
 metadata:
@@ -93,44 +97,110 @@ spec:
        cnrm.cloud.google.com/component: cnrm-controller-manager
        cnrm.cloud.google.com/scoped-namespace: foo-ns
        cnrm.cloud.google.com/system: "true"
-`}
-
-	for _, str := range staleComponents {
-		u := testcontroller.ToUnstructured(t, str)
-		if err := c.Create(ctx, u); err != nil {
-			t.Fatalf("error creating object %v/%v: %v", u.GetNamespace(), u.GetName(), err)
-		}
-	}
-	ccc := &corev1beta1.ConfigConnectorContext{
-		TypeMeta: metav1.TypeMeta{},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      corev1beta1.ConfigConnectorContextAllowedName,
-			Namespace: "foo-ns",
+`},
 		},
-		Spec: corev1beta1.ConfigConnectorContextSpec{
-			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+		{
+			name:                   "per namespace mode",
+			managerNamespaceSuffix: "supervisor",
+			cccNamespace:           "t1234-tenant0-provider",
+			staleComponents: []string{`
+apiVersion: v1
+kind: Service
+metadata:
+ labels:
+   cnrm.cloud.google.com/monitored: "true"
+   cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
+   cnrm.cloud.google.com/system: "true"
+ name: cnrm-manager-foo
+ namespace: t1234-tenant0-supervisor
+spec:
+ ports:
+ - name: controller-manager
+   port: 443
+ - name: metrics
+   port: 8888
+ selector:
+   cnrm.cloud.google.com/component: cnrm-controller-manager
+   cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
+   cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ labels:
+   cnrm.cloud.google.com/component: cnrm-controller-manager
+   cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
+   cnrm.cloud.google.com/system: "true"
+ name: cnrm-controller-manager-foo
+ namespace: t1234-tenant0-supervisor
+spec:
+ selector:
+   matchLabels:
+     cnrm.cloud.google.com/component: cnrm-controller-manager
+     cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
+     cnrm.cloud.google.com/system: "true"
+ serviceName: cnrm-manager-foo
+ template:
+   metadata:
+     labels:
+       cnrm.cloud.google.com/component: cnrm-controller-manager
+       cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
+       cnrm.cloud.google.com/system: "true"
+`},
 		},
 	}
 
-	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
-	_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), ccc, m.Items)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
 
-	for _, str := range staleComponents {
-		u := testcontroller.ToUnstructured(t, str)
-		key := client.ObjectKey{
-			Namespace: u.GetNamespace(),
-			Name:      u.GetName(),
-		}
-		err := c.Get(ctx, key, u)
-		if err == nil {
-			t.Fatalf("expect object %v/%v: to be not found", u.GetNamespace(), u.GetName())
-		}
-		if !apierrors.IsNotFound(err) {
-			t.Fatalf("unexpected error: %v", err)
-		}
+			ctx := context.Background()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.OperatorSystemNamespace)
+			testcontroller.EnsureNamespaceExists(mgr.GetClient(), k8s.CNRMSystemNamespace)
+
+			for _, str := range tc.staleComponents {
+				u := testcontroller.ToUnstructured(t, str)
+				testcontroller.EnsureNamespaceExists(mgr.GetClient(), u.GetNamespace())
+				if err := c.Create(ctx, u); err != nil {
+					t.Fatalf("error creating object %v/%v: %v", u.GetNamespace(), u.GetName(), err)
+				}
+			}
+			ccc := &corev1beta1.ConfigConnectorContext{
+				TypeMeta: metav1.TypeMeta{},
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: tc.cccNamespace,
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+				},
+			}
+
+			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
+			_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), ccc, m.Items, tc.managerNamespaceSuffix)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			for _, str := range tc.staleComponents {
+				u := testcontroller.ToUnstructured(t, str)
+				key := client.ObjectKey{
+					Namespace: u.GetNamespace(),
+					Name:      u.GetName(),
+				}
+				err := c.Get(ctx, key, u)
+				if err == nil {
+					t.Fatalf("expect object %v/%v: to be not found", u.GetNamespace(), u.GetName())
+				}
+				if !apierrors.IsNotFound(err) {
+					t.Fatalf("unexpected error: %v", err)
+				}
+			}
+		})
 	}
 }
 

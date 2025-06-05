@@ -66,6 +66,26 @@ type ConfigConnectorSpec struct {
 	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
+
+	// ManagerNamespaceSuffix instructs Config Connector to deploy
+	// controller managers and related resources in a dedicated namespace
+	// instead of standard 'cnrm-system'
+	// The name of the dedicated target namespace is derived programmatically
+	// based on the namespace of the associated ConfigConnectorContext resource:
+	// - The namespace of the relevant ConfigConnectorContext is identified.
+	// - The suffix of this namespace name (the part after the last hyphen,
+	// assuming a convention like project-tenant-type) is replaced
+	// with the value specified in the field managerNamespaceSuffix.
+	// The dedicated manager namespace must exist before the corresponding
+	// ConfigConnectorContext is created.
+	// Example: Consider a ConfigConnectorContext resource located in
+	// the namespace t1234-tenant0-provider. If the corresponding
+	// ConfigConnector resource includes the specification field
+	// 'managerNamespaceSuffix: supervisor', then the controller manager
+	// StatefulSet and its ServiceAccount will be created within
+	// the t1234-tenant0-supervisor namespace.
+	//+kubebuilder:validation:Optional
+	ManagerNamespaceSuffix string `json:"managerNamespaceSuffix,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector
