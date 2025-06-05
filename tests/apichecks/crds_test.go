@@ -17,7 +17,11 @@ package lint
 import (
 	"bufio"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
@@ -31,12 +35,310 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protodesc"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/descriptorpb"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
+
+// TestHasDirectIAMImplementation checks that direct resources with IAM in their proto
+// have GetIAMPolicy and SetIAMPolicy methods in their Go implementation.
+func TestHasDirectIAMImplementation(t *testing.T) {
+	kccRepoPath := os.Getenv("REPO_ROOT")
+	if kccRepoPath == "" {
+		t.Fatalf("REPO_ROOT environment variable not set")
+	}
+
+	// 1. Find all "true" direct resources, excluding TF/DCL-based ones.
+	directResources := findDirectResources(t)
+
+	// 2. Load all proto services from the .pb file.
+	pbFilePath := filepath.Join(kccRepoPath, "./.build", "googleapis.pb")
+	protoServices, err := findProtoServicesFromPB(pbFilePath)
+	if err != nil {
+		t.Fatalf("Error processing .pb file: %v", err)
+	}
+
+	// 3. Map KCC Kinds to the Go files that implement their models.
+	directControllerDir := filepath.Join(kccRepoPath, "pkg", "controller", "direct")
+	kindToImplFile, err := mapKindsToImplementationFiles(t, directControllerDir)
+	if err != nil {
+		t.Fatalf("Error mapping kinds to implementation files: %v", err)
+	}
+
+	// 4. Check that direct controllers implement IAM methods if they exist in the respective proto.
+	var errs []string
+	// looping over direct resources here
+	// for kind := range directResources {
+
+	//     serviceName := kind + "Service"
+	//     service, protoHasService := protoServices[serviceName]
+
+	//     hasGetIamPolicyProto := false
+	//     hasSetIamPolicyProto := false
+	//     if protoHasService {
+	//         for _, method := range service.Methods {
+	//             if method == "GetIamPolicy" {
+	//                 hasGetIamPolicyProto = true
+	//             }
+	//             if method == "SetIamPolicy" {
+	//                 hasSetIamPolicyProto = true
+	//             }
+	//         }
+	//     } else {
+	// 		errs = append(errs, fmt.Sprintf("proto service '%s' not found for kind %s", serviceName, kind))
+	// 	}
+
+	//     // If the proto doesn't have IAM methods, there's nothing for us to check.
+	//     // The Go implementation is not required to have them.
+	//     if !hasGetIamPolicyProto && !hasSetIamPolicyProto {
+	//         continue
+	//     }
+
+	//     implFile, ok := kindToImplFile[kind]
+	//     if !ok {
+	//         // This is an error: a direct resource with IAM in its proto should have a Go file.
+	//         errs = append(errs, fmt.Sprintf("direct resource '%s' has IAM in its proto but no Go implementation file was found", kind))
+	//         continue
+	//     }
+
+	//     hasGetIAMPolicyGo, hasSetIAMPolicyGo, err := goFileImplementsIAM(implFile)
+	//     if err != nil {
+	//         errs = append(errs, fmt.Sprintf("error parsing Go file %s for resource '%s': %v", implFile, kind, err))
+	//         continue
+	//     }
+
+	//     if hasGetIamPolicyProto && !hasGetIAMPolicyGo {
+	//         errs = append(errs, fmt.Sprintf("direct resource '%s' has 'GetIamPolicy' in its proto but is missing the 'GetIAMPolicy' method in its Go implementation (%s)", kind, implFile))
+	//     }
+	//     if hasSetIamPolicyProto && !hasSetIAMPolicyGo {
+	//         errs = append(errs, fmt.Sprintf("direct resource '%s' has 'SetIamPolicy' in its proto but is missing the 'SetIAMPolicy' method in its Go implementation (%s)", kind, implFile))
+	//     }
+	// }
+	// might be slightly easier to loop over protoservices
+	// todo acpana: a proto service likely contains more than one KCC resource
+	// there has to be some double looping over the service values too
+	// the types generator has some logic for this that we can re-use
+	for serviceName, service := range protoServices {
+		hasGetIamPolicyProto := false
+		hasSetIamPolicyProto := false
+		for _, method := range service.Methods {
+			if method == "GetIamPolicy" {
+				hasGetIamPolicyProto = true
+			}
+			if method == "SetIamPolicy" {
+				hasSetIamPolicyProto = true
+			}
+		}
+		if !hasGetIamPolicyProto && !hasSetIamPolicyProto {
+			continue
+		}
+
+		// Map proto service name back to KCC Kind.
+		kind := strings.TrimSuffix(serviceName, "Service")
+		if _, ok := directResources[kind]; !ok {
+			// This service with IAM methods does not correspond to a "true" direct resource.
+			// This is expected for non-direct or TF/DCL-based resources.
+			continue
+		}
+
+		// Find the Go implementation file for this direct resource Kind.
+		implFile, ok := kindToImplFile[kind]
+		if !ok {
+			errs = append(errs, fmt.Sprintf("direct resource '%s' has IAM in its proto but no Go implementation file was found", kind))
+			continue
+		}
+
+		// Check the Go file for GetIAMPolicy and SetIAMPolicy methods.
+		hasGetIAMPolicyGo, hasSetIAMPolicyGo, err := goFileImplementsIAM(implFile)
+		if err != nil {
+			errs = append(errs, fmt.Sprintf("error parsing Go file %s for resource '%s': %v", implFile, kind, err))
+			continue
+		}
+
+		if hasGetIamPolicyProto && !hasGetIAMPolicyGo {
+			errs = append(errs, fmt.Sprintf("direct resource '%s' has 'GetIamPolicy' in its proto but is missing the 'GetIAMPolicy' method in its Go implementation (%s)", kind, implFile))
+		}
+		if hasSetIamPolicyProto && !hasSetIAMPolicyGo {
+			errs = append(errs, fmt.Sprintf("direct resource '%s' has 'SetIamPolicy' in its proto but is missing the 'SetIAMPolicy' method in its Go implementation (%s)", kind, implFile))
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/missingiamimplementations.txt", want)
+}
+
+// mapKindsToImplementationFiles walks the direct controller directories, parses Go files,
+// and looks for `registry.RegisterModel` calls to map a KCC Kind to its implementation file.
+func mapKindsToImplementationFiles(t *testing.T, directControllerDir string) (map[string]string, error) {
+	kindToFile := make(map[string]string)
+	fset := token.NewFileSet()
+
+	err := filepath.Walk(directControllerDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !strings.HasSuffix(info.Name(), ".go") || strings.HasSuffix(info.Name(), "_test.go") {
+			return nil
+		}
+
+		node, err := parser.ParseFile(fset, path, nil, 0)
+		if err != nil {
+			return fmt.Errorf("failed to parse %s: %w", path, err)
+		}
+
+		ast.Inspect(node, func(n ast.Node) bool {
+			call, ok := n.(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+			sel, ok := call.Fun.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+			if sel.Sel.Name == "RegisterModel" {
+				if len(call.Args) > 0 {
+					// Argument is likely `krm.SomeKindGVK`
+					if gvkExpr, ok := call.Args[0].(*ast.SelectorExpr); ok {
+						kind := strings.TrimSuffix(gvkExpr.Sel.Name, "GVK")
+						kindToFile[kind] = path
+					}
+				}
+			}
+			return true
+		})
+		return nil
+	})
+
+	return kindToFile, err
+}
+
+// goFileImplementsIAM parses a single Go source file and checks for the
+// presence of GetIAMPolicy and SetIAMPolicy methods.
+func goFileImplementsIAM(filePath string) (hasGet bool, hasSet bool, err error) {
+	fset := token.NewFileSet()
+	node, err := parser.ParseFile(fset, filePath, nil, 0)
+	if err != nil {
+		return false, false, err
+	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		fn, ok := n.(*ast.FuncDecl)
+		if !ok {
+			return true
+		}
+		// We only care about methods, which have a receiver.
+		if fn.Recv == nil || len(fn.Recv.List) == 0 {
+			return true
+		}
+
+		switch fn.Name.Name {
+		case "GetIAMPolicy":
+			hasGet = true
+		case "SetIAMPolicy":
+			hasSet = true
+		}
+		return true
+	})
+
+	return hasGet, hasSet, nil
+}
+
+// KCCResource holds simplified information about a KCC Custom Resource Definition.
+type KCCResource struct {
+	Kind     string
+	IsDirect bool
+}
+
+// ProtoService holds the name of a Protobuf service and its methods.
+type ProtoService struct {
+	Name    string
+	Methods []string
+}
+
+// findDirectResources scans a directory of CRD files and identifies resources
+// that are purely direct, excluding those generated from TF or DCL.
+// (This function is unchanged)
+func findDirectResources(t *testing.T) map[string]KCCResource {
+	// ... implementation from the previous answer remains the same
+	resources := make(map[string]KCCResource)
+
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	for _, crd := range crds {
+		anon := crd.GetAnnotations()
+		isDirectCRD := true
+
+		if isTF, ok := anon["cnrm.cloud.google.com/tf2crd"]; ok && isTF == "true" {
+			isDirectCRD = false
+		}
+
+		if isDCL, ok := anon["cnrm.cloud.google.com/dcl2crd"]; ok && isDCL == "true" {
+			isDirectCRD = false
+		}
+
+		kind := crd.Spec.Names.Kind
+		if isDirectCRD {
+			resources[kind] = KCCResource{
+				Kind:     kind,
+				IsDirect: true,
+			}
+		}
+	}
+
+	return resources
+}
+
+// findProtoServicesFromPB reads a binary .pb file and returns a map of services.
+func findProtoServicesFromPB(pbPath string) (map[string]ProtoService, error) {
+	services := make(map[string]ProtoService)
+	pbBytes, err := os.ReadFile(pbPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read .pb file %q: %w", pbPath, err)
+	}
+
+	var fds descriptorpb.FileDescriptorSet
+	if err := proto.Unmarshal(pbBytes, &fds); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal FileDescriptorSet: %w", err)
+	}
+
+	files, err := protodesc.NewFiles(&fds)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert FileDescriptorSet to files: %w", err)
+	}
+
+	files.RangeFiles(func(fd protoreflect.FileDescriptor) bool {
+		serviceDescriptors := fd.Services()
+		for i := 0; i < serviceDescriptors.Len(); i++ {
+			serviceDesc := serviceDescriptors.Get(i)
+			serviceName := string(serviceDesc.Name())
+			var methods []string
+			methodDescriptors := serviceDesc.Methods()
+			for j := 0; j < methodDescriptors.Len(); j++ {
+				methodDesc := methodDescriptors.Get(j)
+				methods = append(methods, string(methodDesc.Name()))
+			}
+			services[serviceName] = ProtoService{
+				Name:    serviceName,
+				Methods: methods,
+			}
+		}
+		return true
+	})
+
+	return services, nil
+}
 
 // Looks for fields that looks like refs, but are not
 func TestMissingRefs(t *testing.T) {
