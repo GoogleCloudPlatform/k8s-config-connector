@@ -95,18 +95,3 @@ spec:
 #    query: SELECT COUNT(*) FROM my-project.my_dataset.my_source_table
 #    enableRefresh: true
 #    refreshIntervalMs: 1800000 # 30 minutes
-#  # covered already
-#  tableConstraints:
-#    primaryKey:
-#      columns:
-#        - dateField
-#        - intField
-#    foreignKeys:
-#      - name: fk_another_table
-#        columnReferences:
-#          referencingColumn: stringField1
-#          referencedColumn: otherTableColumn
-#        referencedTable:
-#          projectId: ${projectId}
-#          datasetId: bigquerydataset-${uniqueId}
-#          tableId: bigquerytable-${uniqueId}-other
