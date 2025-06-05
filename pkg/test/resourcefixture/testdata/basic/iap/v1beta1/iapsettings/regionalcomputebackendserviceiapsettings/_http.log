@@ -341,7 +341,7 @@ X-Goog-Request-Params: iap_settings.name=projects%2F${projectId}%2Fiap_web%2Fcom
     }
   },
   "applicationSettings": {
-    "cookieDomain": "test.abc.com"
+    "cookieDomain": ".example.com"
   },
   "name": "projects/${projectId}/iap_web/compute-us-central1/services/${serviceId}"
 }
@@ -368,7 +368,7 @@ X-Xss-Protection: 0
     }
   },
   "applicationSettings": {
-    "cookieDomain": "test.abc.com"
+    "cookieDomain": ".example.com"
   },
   "name": "projects/${projectNumber}/iap_web/compute-us-central1/services/${serviceId}"
 }
@@ -402,7 +402,7 @@ X-Xss-Protection: 0
     }
   },
   "applicationSettings": {
-    "cookieDomain": "test.abc.com"
+    "cookieDomain": ".example.com"
   },
   "name": "projects/${projectNumber}/iap_web/compute-us-central1/services/${serviceId}"
 }

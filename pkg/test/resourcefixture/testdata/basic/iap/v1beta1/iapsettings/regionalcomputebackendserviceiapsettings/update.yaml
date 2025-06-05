@@ -31,5 +31,5 @@ spec:
       maxAge: "600s"  # 305s -> 600s
       policyType: "DEFAULT"  # MINIMUM -> DEFAULT
   applicationSettings:
-    cookieDomain: ".updated-example.com"  # test.abc.com -> .updated-example.com
+    cookieDomain: ".updated-example.com"  # .example.com -> .updated-example.com
 
