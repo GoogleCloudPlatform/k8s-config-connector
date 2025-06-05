@@ -18,11 +18,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -35,7 +35,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "datasetReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}"
+    "datasetId": "bigquerydataset${uniqueId}"
   },
   "labels": {
     "cnrm-test": "true",
@@ -75,7 +75,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
 
@@ -128,7 +128,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -141,13 +141,13 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -166,11 +166,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
         "reason": "notFound"
       }
     ],
-    "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -182,24 +182,70 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
+  "description": "A BigQuery table.",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "allowJaggedRows": true,
+      "allowQuotedNewlines": true,
+      "encoding": "UTF-8",
+      "fieldDelimiter": ",",
+      "quote": "\"",
+      "skipLeadingRows": "1"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample",
+  "friendlyName": "BigQuery Table",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "requirePartitionFilter": true,
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "dateField",
+        "policyTags": {},
+        "type": "DATE"
+      },
+      {
+        "mode": "REQUIRED",
+        "name": "intField",
+        "policyTags": {},
+        "type": "INTEGER"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "stringField1",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "stringField2",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   }
 }
 
@@ -215,16 +261,35 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "description": "A BigQuery table.",
   "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "allowJaggedRows": true,
+      "allowQuotedNewlines": true,
+      "encoding": "UTF-8",
+      "fieldDelimiter": ",",
+      "quote": "\"",
+      "skipLeadingRows": "1"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample",
+  "friendlyName": "BigQuery Table",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
@@ -239,93 +304,47 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": true,
+  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
+        "mode": "REQUIRED",
+        "name": "dateField",
+        "policyTags": {},
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
   },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   },
   "type": "EXTERNAL"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -340,16 +359,35 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "description": "A BigQuery table.",
   "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "allowJaggedRows": true,
+      "allowQuotedNewlines": true,
+      "encoding": "UTF-8",
+      "fieldDelimiter": ",",
+      "quote": "\"",
+      "skipLeadingRows": "1"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample",
+  "friendlyName": "BigQuery Table",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
@@ -364,106 +402,76 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": true,
+  "requirePartitionFilter": false,
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
+        "mode": "REQUIRED",
+        "name": "dateField",
+        "policyTags": {},
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
+        "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField2",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
   },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   },
   "type": "EXTERNAL"
 }
 
 ---
 
-PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
+  "description": "An updated BigQuery table.",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "encoding": "ISO-8859-1",
+      "fieldDelimiter": ";",
+      "quote": "'",
+      "skipLeadingRows": "2"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample-updated",
+  "friendlyName": "BigQuery Table Updated",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -471,95 +479,41 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
+        "mode": "REQUIRED",
+        "name": "dateField",
         "policyTags": {},
-        "type": "STRING"
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
         "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
         "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
+        "name": "stringField2",
         "policyTags": {},
-        "type": "INTEGER"
+        "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField3",
         "policyTags": {},
         "type": "STRING"
       }
     ]
   },
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   }
 }
 
@@ -575,16 +529,32 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "description": "An updated BigQuery table.",
   "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "encoding": "ISO-8859-1",
+      "fieldDelimiter": ";",
+      "quote": "'",
+      "skipLeadingRows": "2"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample-updated",
+  "friendlyName": "BigQuery Table Updated",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
@@ -603,103 +573,49 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
+        "mode": "REQUIRED",
+        "name": "dateField",
         "policyTags": {},
-        "type": "STRING"
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
         "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
         "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
+        "name": "stringField2",
         "policyTags": {},
-        "type": "INTEGER"
+        "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField3",
         "policyTags": {},
         "type": "STRING"
       }
     ]
   },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   },
   "type": "EXTERNAL"
 }
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -714,16 +630,32 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "description": "An updated BigQuery table.",
   "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "encoding": "ISO-8859-1",
+      "fieldDelimiter": ";",
+      "quote": "'",
+      "skipLeadingRows": "2"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample-updated",
+  "friendlyName": "BigQuery Table Updated",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
@@ -742,103 +674,49 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
+        "mode": "REQUIRED",
+        "name": "dateField",
         "policyTags": {},
-        "type": "STRING"
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
         "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
         "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
+        "name": "stringField2",
         "policyTags": {},
-        "type": "INTEGER"
+        "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField3",
         "policyTags": {},
         "type": "STRING"
       }
     ]
   },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   },
   "type": "EXTERNAL"
 }
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}:getIamPolicy?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -864,7 +742,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -879,16 +757,32 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "description": "An updated BigQuery table.",
   "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
+    "csvOptions": {
+      "encoding": "ISO-8859-1",
+      "fieldDelimiter": ";",
+      "quote": "'",
+      "skipLeadingRows": "2"
+    },
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
     ]
   },
-  "friendlyName": "bigquerytable-sample-updated",
+  "friendlyName": "BigQuery Table Updated",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
@@ -907,103 +801,49 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
+        "mode": "REQUIRED",
+        "name": "dateField",
         "policyTags": {},
-        "type": "STRING"
+        "type": "DATE"
       },
       {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
+        "mode": "REQUIRED",
+        "name": "intField",
         "policyTags": {},
         "type": "INTEGER"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
+        "name": "stringField1",
         "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_11",
+        "name": "stringField2",
         "policyTags": {},
-        "type": "INTEGER"
+        "type": "STRING"
       },
       {
         "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
+        "name": "stringField3",
         "policyTags": {},
         "type": "STRING"
       }
     ]
   },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
+    "tableId": "bigquerytable-${uniqueId}"
   },
   "type": "EXTERNAL"
 }
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
@@ -1054,7 +894,7 @@ X-Xss-Protection: 0
   ],
   "creationTime": "123456789",
   "datasetReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
@@ -1067,7 +907,7 @@ X-Xss-Protection: 0
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "maxTimeTravelHours": "168",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
 
