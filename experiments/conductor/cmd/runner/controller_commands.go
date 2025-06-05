@@ -345,7 +345,6 @@ Respond only with the YAML content, no explanations.`,
 		WorkDir:      opts.branchRepoDir,
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
-
 	_, err := executeCommand(opts, cfg)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to generate create.yaml: %w", err)
@@ -465,6 +464,81 @@ func moveTestToSubDir(ctx context.Context, opts *RunnerOptions, branch Branch, e
 	return changedPaths, nil, nil
 }
 
+const CreateFullTestCreatePrompt string = `Generate a ${TEST_DIR}/create.yaml file for testing a Kubernetes controller.
+
+First, read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.${GROUP}.cnrm.cloud.google.com.yaml to understand the schema.
+Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in the filename.
+
+The file should follow these requirements:
+- Add an Apache 2.0 license header with Copyright ${CURRENT_YEAR} Google LLC
+- Use apiVersion: ${CRD_GROUP}/${CRD_VERSION}
+- Use kind: ${KIND}
+- Include metadata.name: ${KIND_LOWERCASE}-${uniqueId}
+- If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}
+- If the CRD has a "spec.location" field, use location: us-central1
+- If the CRD has any field name end with "Ref", it's a reference field. Use its subfield ".name" and set value to be <kind>-${uniqueId}. Replace <kind> with the kind of the reference field. The kind is indicated in the description of the reference field's subfield, "external" field.
+- If any field under the CRD has both subfields "value" and "valueFrom", it's a sensitive field. Use its subfield ".valueFrom" and set value of ".valueFrom.secretKeyRef.name" to "secret-${uniqueId}" and set value of ".valueFrom.secretKeyRef.key" to the field name of the sensitive field.
+- Use as many spec fields in the following list as possible to achieve full coverage: ${MISSING_FIELDS}; if the list is empty, use as many fields under spec as possible to try to reach full coverage
+- Follow the schema defined in the CRD file
+- Do not use any field not defined in the CRD
+- If the value of a field contains any " (double quote), quote it with single quotes
+
+Use ReadFile to read the CRD file.
+Use CreateFile to write the YAML content to the ${TEST_DIR}/create.yaml file if it doesn't exist; or overwrite the existing file.
+Respond only with the YAML content, no explanations.`
+
+const CreateFullTestUpdatePrompt string = `Generate an ${TEST_DIR}/update.yaml file for testing a Kubernetes controller by modifying the create.yaml file.
+
+First, read the ${TEST_DIR}/create.yaml file that was just generated.
+Then modify all the mutable fields to create a valid update scenario.
+Read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.${GROUP}.cnrm.cloud.google.com.yaml to understand the what fields are mutable.
+Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in the filename.
+
+The file should follow these requirements:
+- Keep the same license header, apiVersion, kind and metadata.name
+- Modify as many fields as possibleb in the spec section to test updates
+- Ensure the changes are valid according to the CRD schema
+- Keep other fields unchanged from create.yaml
+
+Use ReadFile to read the ${TEST_DIR}/create.yaml file.
+Use ReadFile to read the CRD file.
+Use CreateFile to write the YAML content to the ${TEST_DIR}/update.yaml file if it doesn't exist; or overwrite the existing file.
+Respond only with the YAML content, no explanations.`
+
+const CreateFullTestDependenciesPrompt string = `Generate a ${TEST_DIR}/dependencies.yaml file based on the information in the ${TEST_DIR}/create.yaml file and the ${TEST_DIR}/update.yaml.
+
+First, read the ${TEST_DIR}/create.yaml and ${TEST_DIR}/update.yaml file that was just generated.
+If any spec field name ends with "Ref", or if any field value ends with "${uniqueId}", then read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.${GROUP}.cnrm.cloud.google.com.yaml to understand the schema.
+Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in the filename. If not, do nothing and leave.
+Identify field with subfields "name", "namespace" and "external" in the CRD file. These fields are reference fields.
+Identify the kinds of the reference fields. The kind is indicated in the description of the reference field's subfield, "external" field in the CRD file.
+For each identified kind, read the CRD files with names ending with "<kind>.yaml" under crds/ folder.
+
+Second, generate a ${TEST_DIR}/dependencies.yaml file. The file should follow these requirements:
+- Add an Apache 2.0 license header with Copyright ${CURRENT_YEAR} Google LLC.
+- Identify reference fields and their values in ${TEST_DIR}/create.yaml and ${TEST_DIR}/update.yaml.
+- Create one resource for each reference field that specifies subfield "name" and has a different value of "name".
+- Split each resource with "---" and a new line.
+- For each resource,
+    - The <kind> should be the kind of the reference field.
+    - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file, whose name ends with "<kind>.yaml".
+    - Use kind: <kind>.
+    - Use metadata.name: <referencedResourceName>, where <referencedResourceName> is the value of the subfield "name" under the reference field.
+    - If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}.
+    - If the CRD has a "spec.location" field, use location: us-central1.
+    - Only include required fields from the CRD of <kind>.
+    - Follow the schema defined in the CRD file of <kind>.
+    - Do not add any field not defined in the CRD file of <kind>.
+
+Use ReadFile to read the ${TEST_DIR}/create.yaml file.
+Use ReadFile to read the ${TEST_DIR}/update.yaml file.
+Use ReadFile to read all the CRD files.
+Check all the spec fields including the nested fields in the ${TEST_DIR}/create.yaml file and the ${TEST_DIR}/update.yaml file.
+If any field value in ${TEST_DIR}/create.yaml or ${TEST_DIR}/update.yaml ends with "${uniqueId}", then there must be a ${TEST_DIR}/dependencies.yaml.
+If there is no field name in ${TEST_DIR}/create.yaml or ${TEST_DIR}/update.yaml other than "spec.projectRef" ending with "Ref", do nothing and leave.
+Use CreateFile to write the YAML content to the ${TEST_DIR}/dependencies.yaml file if it doesn't exist; or overwrite the existing file.
+Respond only with the YAML content, no explanations.`
+
 // createFullCoverageTest creates test files aiming for full coverage for the branch.
 func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
 	log.Printf("Creating test cases for branch %s", branch.Name)
@@ -555,41 +629,26 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		if err == nil {
 			// TODO: Add an option to not override the existing test.
 			log.Printf("Overriding test under %s", fullTestDir)
-		}
-		if err != nil && !errors.Is(err, os.ErrNotExist) {
-			return nil, nil, fmt.Errorf("error checking whether test directory %s exists: %w", fullTestDir, err)
 		} else {
-			if err := os.MkdirAll(fullTestDir, 0755); err != nil {
-				return nil, nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
+			if !errors.Is(err, os.ErrNotExist) {
+				return nil, nil, fmt.Errorf("error checking whether test directory %s exists: %w", fullTestDir, err)
+			} else {
+				if err := os.MkdirAll(fullTestDir, 0755); err != nil {
+					return nil, nil, fmt.Errorf("failed to create test directory %s: %w", fullTestDir, err)
+				}
 			}
 		}
 
 		// 3. Generate testdata.
 		// Use codebot to generate the initial create.yaml content.
-		createPrompt := fmt.Sprintf(`Generate a %s/create.yaml file for testing a Kubernetes controller.
-
-First, read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the schema.
-Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename.
-
-The file should follow these requirements:
-- Add an Apache 2.0 license header with Copyright %d Google LLC
-- Use apiVersion: %s/%s
-- Use kind: %s
-- Include metadata.name: %s-${uniqueId}
-- If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}
-- If the CRD has a "spec.location" field, use location: us-central1
-- If the CRD has any field name end with "Ref", it's a reference field. Use its subfield ".name" and set value to be <kind>-${uniqueId}. Replace <kind> with the kind of the reference field. The kind is indicated in the description of the reference field's subfield, "external" field.
-- If any field under the CRD has both subfields "value" and "valueFrom", it's a sensitive field. Use its subfield ".valueFrom" and set value of ".valueFrom.secretKeyRef.name" to "secret-${uniqueId}" and set value of ".valueFrom.secretKeyRef.key" to the field name of the sensitive field.
-- Use as many spec fields in the following list as possible to achieve full coverage: %+v; if the list is empty, use as many fields under spec as possible to try to reach full coverage
-- Follow the schema defined in the CRD file
-- Do not use any field not defined in the CRD
-- If the value of a field contains any " (double quote), quote it with single quotes
-
-Use ReadFile to read the CRD file.
-Use CreateFile to write the YAML content to the %s/create.yaml file if it doesn't exist; or overwrite the existing file.
-Respond only with the YAML content, no explanations.`,
-			testDir, branch.Group, branch.Kind, currentYear, crdGroup, crdVersion, branch.Kind, strings.ToLower(branch.Kind), missingFields, testDir)
-
+		createPrompt := strings.ReplaceAll(CreateFullTestCreatePrompt, "${TEST_DIR}", testDir)
+		createPrompt = strings.ReplaceAll(createPrompt, "${GROUP}", branch.Group)
+		createPrompt = strings.ReplaceAll(createPrompt, "${KIND}", branch.Kind)
+		createPrompt = strings.ReplaceAll(createPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
+		createPrompt = strings.ReplaceAll(createPrompt, "${CRD_GROUP}", crdGroup)
+		createPrompt = strings.ReplaceAll(createPrompt, "${CRD_VERSION}", crdVersion)
+		createPrompt = strings.ReplaceAll(createPrompt, "${KIND_LOWERCASE}", strings.ToLower(branch.Kind))
+		createPrompt = strings.ReplaceAll(createPrompt, "${MISSING_FIELDS}", fmt.Sprintf("%+v", missingFields))
 		cfg = CommandConfig{
 			Name:         "Generate Create YAML",
 			Cmd:          "codebot",
@@ -598,32 +657,15 @@ Respond only with the YAML content, no explanations.`,
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
-
 		_, err = executeCommand(opts, cfg)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate create.yaml: %w", err)
 		}
 
 		// Use codebot to generate the update.yaml content by modifying create.yaml
-		updatePrompt := fmt.Sprintf(`Generate an %s/update.yaml file for testing a Kubernetes controller by modifying the create.yaml file.
-
-First, read the %s/create.yaml file that was just generated.
-Then modify all the mutable fields to create a valid update scenario.
-Read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the what fields are mutable.
-Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename.
-
-The file should follow these requirements:
-- Keep the same license header, apiVersion, kind and metadata.name
-- Modify as many fields as possibleb in the spec section to test updates
-- Ensure the changes are valid according to the CRD schema
-- Keep other fields unchanged from create.yaml
-
-Use ReadFile to read the %s/create.yaml file.
-Use ReadFile to read the CRD file.
-Use CreateFile to write the YAML content to the %s/update.yaml file if it doesn't exist; or overwrite the existing file.
-Respond only with the YAML content, no explanations.`,
-			testDir, testDir, branch.Group, branch.Kind, testDir, testDir)
-
+		updatePrompt := strings.ReplaceAll(CreateFullTestUpdatePrompt, "${TEST_DIR}", testDir)
+		updatePrompt = strings.ReplaceAll(updatePrompt, "${GROUP}", branch.Group)
+		updatePrompt = strings.ReplaceAll(updatePrompt, "${KIND}", branch.Kind)
 		cfg = CommandConfig{
 			Name:         "Generate Update YAML",
 			Cmd:          "codebot",
@@ -632,48 +674,16 @@ Respond only with the YAML content, no explanations.`,
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
-
 		_, err = executeCommand(opts, cfg)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate update.yaml: %w", err)
 		}
 
 		// Use codebot to generate the dependencies.yaml content based on create.yaml and update.yaml.
-		dependenciesPrompt := fmt.Sprintf(`Generate a %s/dependencies.yaml file based on the information in the %s/create.yaml file and the %s/update.yaml.
-
-First, read the %s/create.yaml and %s/update.yaml file that was just generated.
-If any spec field name ends with "Ref", or if any field value ends with "${uniqueId}", then read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.%s.cnrm.cloud.google.com.yaml to understand the schema.
-Replace <pluralized-kind> with the pluralized version of the kind: %s in the filename. If not, do nothing and leave.
-Identify field with subfields "name", "namespace" and "external" in the CRD file. These fields are reference fields.
-Identify the kinds of the reference fields. The kind is indicated in the description of the reference field's subfield, "external" field in the CRD file.
-For each identified kind, read the CRD files with names ending with "<kind>.yaml" under crds/ folder.
-
-Second, generate a %s/dependencies.yaml file. The file should follow these requirements:
-- Add an Apache 2.0 license header with Copyright %d Google LLC.
-- Identify reference fields and their values in %s/create.yaml and %s/update.yaml.
-- Create one resource for each reference field that specifies subfield "name" and has a different value of "name".
-- Split each resource with "---" and a new line.
-- For each resource,
-    - The <kind> should be the kind of the reference field.
-    - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file, whose name ends with "<kind>.yaml".
-    - Use kind: <kind>.
-    - Use metadata.name: <referencedResourceName>, where <referencedResourceName> is the value of the subfield "name" under the reference field.
-    - If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}.
-    - If the CRD has a "spec.location" field, use location: us-central1.
-    - Only include required fields from the CRD of <kind>.
-    - Follow the schema defined in the CRD file of <kind>.
-    - Do not add any field not defined in the CRD file of <kind>.
-
-Use ReadFile to read the %s/create.yaml file.
-Use ReadFile to read the %s/update.yaml file.
-Use ReadFile to read all the CRD files.
-Check all the spec fields including the nested fields in the %s/create.yaml file and the %s/update.yaml file.
-If any field value in %s/create.yaml or %s/update.yaml ends with "${uniqueId}", then there must be a %s/dependencies.yaml.
-If there is no field name in %s/create.yaml or %s/update.yaml other than "spec.projectRef" ending with "Ref", do nothing and leave.
-Use CreateFile to write the YAML content to the %s/dependencies.yaml file if it doesn't exist; or overwrite the existing file.
-Respond only with the YAML content, no explanations.`,
-			testDir, testDir, testDir, testDir, testDir, branch.Group, branch.Kind, testDir, currentYear, testDir, testDir, testDir, testDir, testDir, testDir, testDir, testDir, testDir, testDir, testDir, testDir)
-
+		dependenciesPrompt := strings.ReplaceAll(CreateFullTestDependenciesPrompt, "${TEST_DIR}", testDir)
+		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${GROUP}", branch.Group)
+		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${KIND}", branch.Kind)
+		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
 		cfg = CommandConfig{
 			Name:         "Generate Dependencies YAML",
 			Cmd:          "codebot",
@@ -682,7 +692,6 @@ Respond only with the YAML content, no explanations.`,
 			WorkDir:      opts.branchRepoDir,
 			RetryBackoff: GenerativeCommandRetryBackoff,
 		}
-
 		_, err = executeCommand(opts, cfg)
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to generate dependencies.yaml: %w", err)
@@ -738,9 +747,6 @@ func matchLineInFileByPrefix(path, prefix string) ([]string, error) {
 }
 
 func pluralOf(word string) string {
-	if strings.HasSuffix(word, "f") {
-		return replaceLast(word, "f", "ves")
-	}
 	if strings.HasSuffix(word, "fe") {
 		return replaceLast(word, "fe", "ves")
 	}

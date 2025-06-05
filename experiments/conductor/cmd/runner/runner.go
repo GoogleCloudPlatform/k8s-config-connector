@@ -201,6 +201,9 @@ func (opts *RunnerOptions) validateAndDefaultFlags() error {
 		case cmdCreateFullTest:
 			opts.testDirSuffix = "full"
 		}
+	} else {
+		// Ensure the suffix is in lowercase.
+		opts.testDirSuffix = strings.ToLower(opts.testDirSuffix)
 	}
 	return nil
 }
