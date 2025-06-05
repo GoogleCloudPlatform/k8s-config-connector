@@ -13,7 +13,8 @@ TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk
 <!-- ### SAMPLE_Simplified and More Reliable Resource Development -->
 
 ## New Beta Resources (Direct Reconciler):
-
+ * `VertexAINotebooksInstance`
+ * `VertexAIMetadataStore`
 
 ## New Alpha Resources (Direct Reconciler):
  * `OrgPolicyPolicy`
