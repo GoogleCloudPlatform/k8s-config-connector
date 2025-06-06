@@ -1,0 +1,376 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.132.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computenetworkattachments.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeNetworkAttachment
+    listKind: ComputeNetworkAttachmentList
+    plural: computenetworkattachments
+    shortNames:
+    - gcpcomputenetworkattachment
+    - gcpcomputenetworkattachments
+    singular: computenetworkattachment
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ComputeNetworkAttachment is the Schema for the ComputeNetworkAttachment
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeNetworkAttachmentSpec defines the desired state of
+              ComputeNetworkAttachment
+            properties:
+              connectionPreference:
+                description: Check the ConnectionPreference enum for the list of possible
+                  values.
+                type: string
+              description:
+                description: An optional description of this resource. Provide this
+                  property when you create the resource.
+                type: string
+              fingerprint:
+                description: Fingerprint of this resource. A hash of the contents
+                  stored in this object. This field is used in optimistic locking.
+                  An up-to-date fingerprint must be provided in order to patch.
+                type: string
+              location:
+                type: string
+              producerAcceptLists:
+                description: Projects that are allowed to connect to this network
+                  attachment. The project can be specified using its id or number.
+                items:
+                  description: The Project that this resource belongs to.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                    - kind
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                      - required:
+                        - kind
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The `projectID` field of a project, when not managed
+                        by Config Connector.
+                      type: string
+                    kind:
+                      description: The kind of the Project resource; optional but
+                        must be `Project` if provided.
+                      type: string
+                    name:
+                      description: The `name` field of a `Project` resource.
+                      type: string
+                    namespace:
+                      description: The `namespace` field of a `Project` resource.
+                      type: string
+                  type: object
+                type: array
+              producerRejectLists:
+                description: Projects that are not allowed to connect to this network
+                  attachment. The project can be specified using its id or number.
+                items:
+                  description: The Project that this resource belongs to.
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                    - kind
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                      - required:
+                        - kind
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The `projectID` field of a project, when not managed
+                        by Config Connector.
+                      type: string
+                    kind:
+                      description: The kind of the Project resource; optional but
+                        must be `Project` if provided.
+                      type: string
+                    name:
+                      description: The `name` field of a `Project` resource.
+                      type: string
+                    namespace:
+                      description: The `namespace` field of a `Project` resource.
+                      type: string
+                  type: object
+                type: array
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeNetworkAttachment name. If not given, the
+                  metadata.name will be used.
+                type: string
+              subnetworkRefs:
+                description: An array of URLs where each entry is the URL of a subnet
+                  provided by the service consumer to use for endpoints in the producers
+                  that connect to this network attachment.
+                items:
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}",
+                        when not managed by Config Connector.
+                      type: string
+                    name:
+                      description: The `name` field of a `ComputeSubnetwork` resource.
+                      type: string
+                    namespace:
+                      description: The `namespace` field of a `ComputeSubnetwork`
+                        resource.
+                      type: string
+                  type: object
+                type: array
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: ComputeNetworkAttachmentStatus defines the config connector
+              machine state of ComputeNetworkAttachment
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeNetworkAttachment resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  connectionEndpoints:
+                    description: '[Output Only] An array of connections for all the
+                      producers connected to this network attachment.'
+                    items:
+                      properties:
+                        ipAddress:
+                          description: The IPv4 address assigned to the producer instance
+                            network interface. This value will be a range in case
+                            of Serverless.
+                          type: string
+                        ipv6Address:
+                          description: The IPv6 address assigned to the producer instance
+                            network interface. This is only assigned when the stack
+                            types of both the instance network interface and the consumer
+                            subnet are IPv4_IPv6.
+                          type: string
+                        projectIDOrNum:
+                          description: The project id or number of the interface to
+                            which the IP was assigned.
+                          type: string
+                        secondaryIPCIDRRanges:
+                          description: Alias IP ranges from the same subnetwork.
+                          items:
+                            type: string
+                          type: array
+                        status:
+                          description: The status of a connected endpoint to this
+                            network attachment. Check the Status enum for the list
+                            of possible values.
+                          type: string
+                        subnetwork:
+                          description: The subnetwork used to assign the IP to the
+                            producer instance network interface.
+                          type: string
+                        subnetworkCIDRRange:
+                          description: '[Output Only] The CIDR range of the subnet
+                            from which the IPv4 internal IP was allocated from.'
+                          type: string
+                      type: object
+                    type: array
+                  creationTimestamp:
+                    description: '[Output Only] Creation timestamp in RFC3339 text
+                      format.'
+                    type: string
+                  id:
+                    description: '[Output Only] The unique identifier for the resource
+                      type. The server generates this identifier.'
+                    format: int64
+                    type: integer
+                  kind:
+                    description: '[Output Only] Type of the resource.'
+                    type: string
+                  network:
+                    description: '[Output Only] The URL of the network which the Network
+                      Attachment belongs to. Practically it is inferred by fetching
+                      the network of the first subnetwork associated. Because it is
+                      required that all the subnetworks must be from the same network,
+                      it is assured that the Network Attachment belongs to the same
+                      network as all the subnetworks.'
+                    type: string
+                  region:
+                    description: '[Output Only] URL of the region where the network
+                      attachment resides. This field applies only to the region resource.
+                      You must specify this field as part of the HTTP request URL.
+                      It is not settable as a field in the request body.'
+                    type: string
+                  selfLink:
+                    description: '[Output Only] Server-defined URL for the resource.'
+                    type: string
+                  selfLinkWithID:
+                    description: '[Output Only] Server-defined URL for this resource''s
+                      resource id.'
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
