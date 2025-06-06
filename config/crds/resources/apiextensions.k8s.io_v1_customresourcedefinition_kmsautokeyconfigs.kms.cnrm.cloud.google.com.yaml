@@ -254,7 +254,7 @@ spec:
                       resource.
                     type: string
                 type: object
-              keyProject:
+              keyProjectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
                 - not:
