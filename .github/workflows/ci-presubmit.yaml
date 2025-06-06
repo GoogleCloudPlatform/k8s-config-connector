@@ -437,6 +437,24 @@ jobs:
           name: artifacts-tests-e2e-fixtures-sql
           path: /tmp/artifacts/
 
+  tests-e2e-fixtures-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-storage"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-storage
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-storage
+          path: /tmp/artifacts/
 
   tests-e2e-fixtures-vertexai:
     runs-on: ubuntu-latest
