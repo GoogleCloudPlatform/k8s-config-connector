@@ -53,7 +53,7 @@ func (p *CustomTargetTypeParent) String() string {
 }
 
 // New builds a CustomTargetTypeIdentity from the Config Connector CustomTargetType object.
-func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *DeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
+func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
