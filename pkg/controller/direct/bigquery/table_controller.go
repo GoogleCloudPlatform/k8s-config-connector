@@ -56,7 +56,14 @@ type TableReconcileGate struct {
 var _ kccpredicate.ReconcileGate = &TableReconcileGate{}
 
 func (r *TableReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	return r.optIn.ShouldReconcile(o)
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+	obj := &krm.BigQueryTable{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
+		return false
+	}
+	return obj.Spec.Labels != nil
 }
 
 var _ directbase.Model = &model{}
@@ -65,7 +72,7 @@ type model struct {
 	config config.ControllerConfig
 }
 
-func (m *model) service(ctx context.Context, projectID string) (*bigquery.TablesService, error) {
+func (m *model) tableService(ctx context.Context) (*bigquery.TablesService, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
@@ -94,8 +101,8 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve project ID")
 	}
 
-	// Get bigquery GCP client
-	gcpService, err := m.service(ctx, projectID)
+	// Create bigquery GCP client for BQ Table.
+	gcpService, err := m.tableService(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +133,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting BigQueryTable", "name", a.id.String())
 	parent := a.id.Parent()
-	getCall := a.gcpService.Get(parent.ProjectID, parent.ProjectID, a.id.ID())
+	getCall := a.gcpService.Get(parent.ProjectID, parent.DatasetID, a.id.ID())
 	table, err := getCall.Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -142,6 +149,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing reference for creation: %w", err)
+	}
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
 
@@ -161,14 +172,14 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		log.V(2).Info("Creating BigQuery without schema", "name", table.TableReference.TableId)
 		res, err := a.gcpService.Insert(parent.ProjectID, parent.DatasetID, table).Do()
 		if err != nil {
-			return fmt.Errorf("Error creating Table %s: %w", a.id.ID(), err)
+			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully created Table", "name", res.Id)
 		table.Schema = schemaBack
 		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.Id)
 		res, err = a.gcpService.Update(parent.ProjectID, parent.DatasetID, res.Id, table).Do()
 		if err != nil {
-			return fmt.Errorf("Error updating Table %s: %w", a.id.ID(), err)
+			return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully updated Table with schema", "name", res.Id)
 		if err := a.UpdateStatusForCreate(ctx, createOp, res); err != nil {
@@ -178,7 +189,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		insertCall := a.gcpService.Insert(parent.ProjectID, parent.DatasetID, table)
 		created, err := insertCall.Do()
 		if err != nil {
-			return fmt.Errorf("Error creating Table %s: %w", a.id.ID(), err)
+			return fmt.Errorf("error creating Table %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully created Table", "name", a.id.String())
 		if err := a.UpdateStatusForCreate(ctx, createOp, created); err != nil {
@@ -207,13 +218,18 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating Table", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
+
+	if err := a.normalizeReferences(ctx); err != nil {
+		return fmt.Errorf("normalizing reference for update: %w", err)
+	}
+
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
 	a.customTableLogic(table)
 	parent := a.id.Parent()
 
 	if mapCtx.Err() != nil {
-		return fmt.Errorf("Error updating Table %s: %w", a.id.ID(), mapCtx.Err())
+		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), mapCtx.Err())
 	}
 	if a.desired.ObjectMeta.Annotations != nil {
 		unmanaged, ok := a.desired.ObjectMeta.Annotations["cnrm.cloud.google.com/unmanaged"]
@@ -228,14 +244,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			// Make PATCH call with nil schema to avoid schema being updated.
 			res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 			if err != nil {
-				return fmt.Errorf("Error updating Table %s: %w", a.id.ID(), err)
+				return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 			}
 			return a.UpdateStatusForUpdate(ctx, updateOp, res)
 		}
 	}
 	res, err := a.gcpService.Update(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 	if err != nil {
-		fmt.Errorf("Error updating Table %s: %w", a.id.ID(), err)
+		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 	}
 	return a.UpdateStatusForUpdate(ctx, updateOp, res)
 }
@@ -289,9 +305,9 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func (a *Adapter) customTableLogic(table *bigquery.Table) error {
+func (a *Adapter) customTableLogic(table *bigquery.Table) {
 	if table == nil {
-		return nil
+		return
 	}
 	parent := a.id.Parent()
 	table.TableReference = &bigquery.TableReference{
@@ -299,26 +315,16 @@ func (a *Adapter) customTableLogic(table *bigquery.Table) error {
 		DatasetId: parent.DatasetID,
 		TableId:   a.id.ID(),
 	}
-	managePolicyTags := table.View != nil && table.MaterializedView != nil
-	if managePolicyTags {
-		for _, field := range table.Schema.Fields {
-			setEmptyPolicyTagsInSchema(field)
-		}
-	}
-	return nil
 }
 
-// Explicitly set empty PolicyTags unless the PolicyTags field is specified in the schema.
-func setEmptyPolicyTagsInSchema(field *bigquery.TableFieldSchema) {
-	// Field has children fields.
-	if len(field.Fields) > 0 {
-		for _, subField := range field.Fields {
-			setEmptyPolicyTagsInSchema(subField)
+func (a *Adapter) normalizeReferences(ctx context.Context) error {
+	obj := a.desired
+	if obj.Spec.EncryptionConfiguration != nil && obj.Spec.EncryptionConfiguration.KmsKeyRef != nil {
+		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfiguration.KmsKeyRef)
+		if err != nil {
+			return err
 		}
-		return
+		obj.Spec.EncryptionConfiguration.KmsKeyRef = key
 	}
-	// Field is a leaf.
-	if field.PolicyTags == nil {
-		field.PolicyTags = &bigquery.TableFieldSchemaPolicyTags{Names: []string{}}
-	}
+	return nil
 }
