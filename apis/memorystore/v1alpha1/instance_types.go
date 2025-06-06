@@ -126,7 +126,7 @@ type Instance_ConnectionDetailSpec struct {
 }
 
 // kcc specific struct to separate input and output fields in
-// +kcc:proto=google.cloud.memorystore.v1beta.PscAutoConnection
+// google.cloud.memorystore.v1beta.PscAutoConnection
 type PscAutoConnectionSpec struct {
 
 	// Required. The consumer project_id where PSC connections are established.
@@ -140,6 +140,7 @@ type PscAutoConnectionSpec struct {
 	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
+// kcc specific struct to separate input and output fields in
 // google.cloud.memorystore.v1beta.PscConnection
 type PSCConnectionSpec struct {
 
