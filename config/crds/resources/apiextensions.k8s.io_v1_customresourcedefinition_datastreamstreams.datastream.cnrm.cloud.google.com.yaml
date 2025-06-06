@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: datastreamstreams.datastream.cnrm.cloud.google.com
 spec:
   group: datastream.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: DatastreamStream
+    listKind: DatastreamStreamList
     plural: datastreamstreams
     shortNames:
     - gcpdatastreamstream
@@ -43,41 +42,43 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: DatastreamStream is the Schema for the DatastreamStream API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: DatastreamStreamSpec defines the desired state of DatastreamStream
             properties:
               backfillAll:
-                description: Backfill strategy to automatically backfill the Stream's
-                  objects. Specific objects can be excluded.
+                description: Automatically backfill objects included in the stream
+                  source configuration. Specific objects can be excluded.
                 properties:
-                  mysqlExcludedObjects:
+                  mySQLExcludedObjects:
                     description: MySQL data source objects to avoid backfilling.
                     properties:
-                      mysqlDatabases:
-                        description: MySQL databases on the server.
+                      mySQLDatabases:
+                        description: Mysql databases on the server
                         items:
                           properties:
                             database:
                               description: Database name.
                               type: string
-                            mysqlTables:
+                            mySQLTables:
                               description: Tables in the database.
                               items:
                                 properties:
-                                  mysqlColumns:
-                                    description: MySQL columns in the schema. When
+                                  mySQLColumns:
+                                    description: MySQL columns in the database. When
                                       unspecified as part of include/exclude objects,
                                       includes/excludes everything.
                                     items:
@@ -89,12 +90,12 @@ spec:
                                           description: Column name.
                                           type: string
                                         dataType:
-                                          description: |-
-                                            The MySQL data type. Full data types list can be found here:
-                                            https://dev.mysql.com/doc/refman/8.0/en/data-types.html.
+                                          description: 'The MySQL data type. Full
+                                            data types list can be found here: https://dev.mysql.com/doc/refman/8.0/en/data-types.html'
                                           type: string
                                         length:
                                           description: Column length.
+                                          format: int32
                                           type: integer
                                         nullable:
                                           description: Whether or not the column can
@@ -103,36 +104,39 @@ spec:
                                         ordinalPosition:
                                           description: The ordinal position of the
                                             column in the table.
+                                          format: int32
+                                          type: integer
+                                        precision:
+                                          description: Column precision.
+                                          format: int32
                                           type: integer
                                         primaryKey:
                                           description: Whether or not the column represents
                                             a primary key.
                                           type: boolean
+                                        scale:
+                                          description: Column scale.
+                                          format: int32
+                                          type: integer
                                       type: object
                                     type: array
                                   table:
                                     description: Table name.
                                     type: string
-                                required:
-                                - table
                                 type: object
                               type: array
-                          required:
-                          - database
                           type: object
                         type: array
-                    required:
-                    - mysqlDatabases
                     type: object
                   oracleExcludedObjects:
-                    description: PostgreSQL data source objects to avoid backfilling.
+                    description: Oracle data source objects to avoid backfilling.
                     properties:
                       oracleSchemas:
                         description: Oracle schemas/databases in the database server.
                         items:
                           properties:
                             oracleTables:
-                              description: Tables in the database.
+                              description: Tables in the schema.
                               items:
                                 properties:
                                   oracleColumns:
@@ -145,15 +149,14 @@ spec:
                                           description: Column name.
                                           type: string
                                         dataType:
-                                          description: |-
-                                            The Oracle data type. Full data types list can be found here:
-                                            https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/Data-Types.html.
+                                          description: The Oracle data type.
                                           type: string
                                         encoding:
                                           description: Column encoding.
                                           type: string
                                         length:
                                           description: Column length.
+                                          format: int32
                                           type: integer
                                         nullable:
                                           description: Whether or not the column can
@@ -162,9 +165,11 @@ spec:
                                         ordinalPosition:
                                           description: The ordinal position of the
                                             column in the table.
+                                          format: int32
                                           type: integer
                                         precision:
                                           description: Column precision.
+                                          format: int32
                                           type: integer
                                         primaryKey:
                                           description: Whether or not the column represents
@@ -172,38 +177,33 @@ spec:
                                           type: boolean
                                         scale:
                                           description: Column scale.
+                                          format: int32
                                           type: integer
                                       type: object
                                     type: array
                                   table:
                                     description: Table name.
                                     type: string
-                                required:
-                                - table
                                 type: object
                               type: array
                             schema:
                               description: Schema name.
                               type: string
-                          required:
-                          - schema
                           type: object
                         type: array
-                    required:
-                    - oracleSchemas
                     type: object
-                  postgresqlExcludedObjects:
+                  postgreSQLExcludedObjects:
                     description: PostgreSQL data source objects to avoid backfilling.
                     properties:
-                      postgresqlSchemas:
-                        description: PostgreSQL schemas on the server.
+                      postgreSQLSchemas:
+                        description: PostgreSQL schemas in the database server.
                         items:
                           properties:
-                            postgresqlTables:
+                            postgreSQLTables:
                               description: Tables in the schema.
                               items:
                                 properties:
-                                  postgresqlColumns:
+                                  postgreSQLColumns:
                                     description: PostgreSQL columns in the schema.
                                       When unspecified as part of include/exclude
                                       objects, includes/excludes everything.
@@ -213,12 +213,11 @@ spec:
                                           description: Column name.
                                           type: string
                                         dataType:
-                                          description: |-
-                                            The PostgreSQL data type. Full data types list can be found here:
-                                            https://www.postgresql.org/docs/current/datatype.html.
+                                          description: The PostgreSQL data type.
                                           type: string
                                         length:
                                           description: Column length.
+                                          format: int32
                                           type: integer
                                         nullable:
                                           description: Whether or not the column can
@@ -227,9 +226,11 @@ spec:
                                         ordinalPosition:
                                           description: The ordinal position of the
                                             column in the table.
+                                          format: int32
                                           type: integer
                                         precision:
                                           description: Column precision.
+                                          format: int32
                                           type: integer
                                         primaryKey:
                                           description: Whether or not the column represents
@@ -237,103 +238,231 @@ spec:
                                           type: boolean
                                         scale:
                                           description: Column scale.
+                                          format: int32
                                           type: integer
                                       type: object
                                     type: array
                                   table:
                                     description: Table name.
                                     type: string
-                                required:
-                                - table
                                 type: object
                               type: array
                             schema:
-                              description: Database name.
+                              description: Schema name.
                               type: string
-                          required:
-                          - schema
                           type: object
                         type: array
-                    required:
-                    - postgresqlSchemas
+                    type: object
+                  sqlServerExcludedObjects:
+                    description: SQLServer data source objects to avoid backfilling
+                    properties:
+                      schemas:
+                        description: SQLServer schemas in the database server.
+                        items:
+                          properties:
+                            schema:
+                              description: Schema name.
+                              type: string
+                            tables:
+                              description: Tables in the schema.
+                              items:
+                                properties:
+                                  columns:
+                                    description: SQLServer columns in the schema.
+                                      When unspecified as part of include/exclude
+                                      objects, includes/excludes everything.
+                                    items:
+                                      properties:
+                                        column:
+                                          description: Column name.
+                                          type: string
+                                        dataType:
+                                          description: The SQLServer data type.
+                                          type: string
+                                        length:
+                                          description: Column length.
+                                          format: int32
+                                          type: integer
+                                        nullable:
+                                          description: Whether or not the column can
+                                            accept a null value.
+                                          type: boolean
+                                        ordinalPosition:
+                                          description: The ordinal position of the
+                                            column in the table.
+                                          format: int32
+                                          type: integer
+                                        precision:
+                                          description: Column precision.
+                                          format: int32
+                                          type: integer
+                                        primaryKey:
+                                          description: Whether or not the column represents
+                                            a primary key.
+                                          type: boolean
+                                        scale:
+                                          description: Column scale.
+                                          format: int32
+                                          type: integer
+                                      type: object
+                                    type: array
+                                  table:
+                                    description: Table name.
+                                    type: string
+                                type: object
+                              type: array
+                          type: object
+                        type: array
                     type: object
                 type: object
               backfillNone:
-                description: Backfill strategy to disable automatic backfill for the
-                  Stream's objects.
+                description: Do not automatically backfill any objects.
                 type: object
-                x-kubernetes-preserve-unknown-fields: true
               customerManagedEncryptionKey:
-                description: |-
-                  Immutable. A reference to a KMS encryption key. If provided, it will be used to encrypt the data. If left blank, data
-                  will be encrypted using an internal Stream-specific encryption key provisioned through KMS.
-                type: string
-              desiredState:
-                description: Desired state of the Stream. Set this field to 'RUNNING'
-                  to start the stream, and 'PAUSED' to pause the stream.
+                description: Immutable. A reference to a KMS encryption key. If provided,
+                  it will be used to encrypt the data. If left blank, data will be
+                  encrypted using an internal Stream-specific encryption key provisioned
+                  through KMS.
                 type: string
               destinationConfig:
-                description: Destination connection profile configuration.
+                description: Required. Destination connection profile configuration.
                 properties:
                   bigqueryDestinationConfig:
-                    description: A configuration for how data should be loaded to
-                      Cloud Storage.
+                    description: BigQuery destination configuration.
                     properties:
+                      appendOnly:
+                        description: Append only mode
+                        type: object
                       dataFreshness:
-                        description: |-
-                          The guaranteed data freshness (in seconds) when querying tables created by the stream.
-                          Editing this field will only affect new tables created in the future, but existing tables
-                          will not be impacted. Lower values mean that queries will return fresher data, but may result in higher cost.
-                          A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". Defaults to 900s.
+                        description: The guaranteed data freshness (in seconds) when
+                          querying tables created by the stream. Editing this field
+                          will only affect new tables created in the future, but existing
+                          tables will not be impacted. Lower values mean that queries
+                          will return fresher data, but may result in higher cost.
                         type: string
+                      merge:
+                        description: The standard mode
+                        type: object
                       singleTargetDataset:
-                        description: A single target dataset to which all data will
-                          be streamed.
+                        description: Single destination dataset.
                         properties:
-                          datasetId:
-                            description: |-
-                              Dataset ID in the format projects/{project}/datasets/{dataset_id} or
-                              {project}:{dataset_id}.
-                            type: string
-                        required:
-                        - datasetId
+                          datasetRef:
+                            description: 'The dataset ID of the target dataset. DatasetIds
+                              allowed characters: https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets#datasetreference.'
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  BigQueryDataset resource. Should be in the format
+                                  "projects/<projectID>/datasets/<datasetID>".
+                                type: string
+                              name:
+                                description: The name of a BigQueryDataset resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a BigQueryDataset resource.
+                                type: string
+                            type: object
                         type: object
                       sourceHierarchyDatasets:
-                        description: Destination datasets are created so that hierarchy
-                          of the destination data objects matches the source hierarchy.
+                        description: Source hierarchy datasets.
                         properties:
                           datasetTemplate:
-                            description: Dataset template used for dynamic dataset
+                            description: The dataset template to use for dynamic dataset
                               creation.
                             properties:
-                              datasetIdPrefix:
-                                description: |-
-                                  If supplied, every created dataset will have its name prefixed by the provided value.
-                                  The prefix and name will be separated by an underscore. i.e. _.
+                              datasetIDPrefix:
+                                description: If supplied, every created dataset will
+                                  have its name prefixed by the provided value. The
+                                  prefix and name will be separated by an underscore.
+                                  i.e. <prefix>_<dataset_name>.
                                 type: string
-                              kmsKeyName:
-                                description: |-
-                                  Immutable. Describes the Cloud KMS encryption key that will be used to protect destination BigQuery
-                                  table. The BigQuery Service Account associated with your project requires access to this
-                                  encryption key. i.e. projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{cryptoKey}.
-                                  See https://cloud.google.com/bigquery/docs/customer-managed-encryption for more information.
-                                type: string
+                              kmsKeyRef:
+                                description: Describes the Cloud KMS encryption key
+                                  that will be used to protect destination BigQuery
+                                  table. The BigQuery Service Account associated with
+                                  your project requires access to this encryption
+                                  key. See https://cloud.google.com/bigquery/docs/customer-managed-encryption
+                                  for more information.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                                    type: string
+                                  name:
+                                    description: The `name` of a `KMSCryptoKey` resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` of a `KMSCryptoKey`
+                                      resource.
+                                    type: string
+                                type: object
                               location:
-                                description: |-
-                                  The geographic location where the dataset should reside.
-                                  See https://cloud.google.com/bigquery/docs/locations for supported locations.
+                                description: Required. The geographic location where
+                                  the dataset should reside. See https://cloud.google.com/bigquery/docs/locations
+                                  for supported locations.
                                 type: string
                             required:
                             - location
                             type: object
-                        required:
-                        - datasetTemplate
                         type: object
                     type: object
-                  destinationConnectionProfile:
-                    description: 'Immutable. Destination connection profile resource.
-                      Format: projects/{project}/locations/{location}/connectionProfiles/{name}.'
-                    type: string
+                  destinationConnectionProfileRef:
+                    description: Required. Destination connection profile resource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DatastreamConnectionProfile
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionprofileID}}".
+                        type: string
+                      name:
+                        description: The name of a DatastreamConnectionProfile resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DatastreamConnectionProfile
+                          resource.
+                        type: string
+                    type: object
                   gcsDestinationConfig:
                     description: A configuration for how data should be loaded to
                       Cloud Storage.
@@ -341,25 +470,23 @@ spec:
                       avroFileFormat:
                         description: AVRO file format configuration.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       fileRotationInterval:
-                        description: |-
-                          The maximum duration for which new events are added before a file is closed and a new file is created.
-                          A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". Defaults to 900s.
+                        description: The maximum duration for which new events are
+                          added before a file is closed and a new file is created.
+                          Values within the range of 15-60 seconds are allowed.
                         type: string
                       fileRotationMb:
                         description: The maximum file size to be saved in the bucket.
+                        format: int32
                         type: integer
                       jsonFileFormat:
                         description: JSON file format configuration.
                         properties:
                           compression:
-                            description: 'Compression of the loaded JSON file. Possible
-                              values: ["NO_COMPRESSION", "GZIP"].'
+                            description: Compression of the loaded JSON file.
                             type: string
                           schemaFileFormat:
-                            description: 'The schema file format along JSON data files.
-                              Possible values: ["NO_SCHEMA_FILE", "AVRO_SCHEMA_FILE"].'
+                            description: The schema file format along JSON data files.
                             type: string
                         type: object
                       path:
@@ -368,17 +495,24 @@ spec:
                         type: string
                     type: object
                 required:
-                - destinationConnectionProfile
+                - destinationConnectionProfileRef
                 type: object
               displayName:
-                description: Display name.
+                description: Required. Display name.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels.
+                type: object
               location:
-                description: Immutable. The name of the location this stream is located
-                  in.
+                description: Immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -395,42 +529,49 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The streamId of the resource. Used
-                  for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The DatastreamStream name. If not given, the metadata.name
+                  will be used.
                 type: string
               sourceConfig:
-                description: Source connection profile configuration.
+                description: Required. Source connection profile configuration.
                 properties:
-                  mysqlSourceConfig:
+                  mySQLSourceConfig:
                     description: MySQL data source configuration.
                     properties:
+                      binaryLogPosition:
+                        description: Use Binary log position based replication.
+                        type: object
                       excludeObjects:
                         description: MySQL objects to exclude from the stream.
                         properties:
-                          mysqlDatabases:
-                            description: MySQL databases on the server.
+                          mySQLDatabases:
+                            description: Mysql databases on the server
                             items:
                               properties:
                                 database:
                                   description: Database name.
                                   type: string
-                                mysqlTables:
+                                mySQLTables:
                                   description: Tables in the database.
                                   items:
                                     properties:
-                                      mysqlColumns:
-                                        description: MySQL columns in the schema.
+                                      mySQLColumns:
+                                        description: MySQL columns in the database.
                                           When unspecified as part of include/exclude
                                           objects, includes/excludes everything.
                                         items:
@@ -442,12 +583,13 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The MySQL data type. Full data types list can be found here:
-                                                https://dev.mysql.com/doc/refman/8.0/en/data-types.html.
+                                              description: 'The MySQL data type. Full
+                                                data types list can be found here:
+                                                https://dev.mysql.com/doc/refman/8.0/en/data-types.html'
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -456,43 +598,49 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
                                                 represents a primary key.
                                               type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
-                              required:
-                              - database
                               type: object
                             type: array
-                        required:
-                        - mysqlDatabases
+                        type: object
+                      gtid:
+                        description: Use GTID based replication.
                         type: object
                       includeObjects:
                         description: MySQL objects to retrieve from the source.
                         properties:
-                          mysqlDatabases:
-                            description: MySQL databases on the server.
+                          mySQLDatabases:
+                            description: Mysql databases on the server
                             items:
                               properties:
                                 database:
                                   description: Database name.
                                   type: string
-                                mysqlTables:
+                                mySQLTables:
                                   description: Tables in the database.
                                   items:
                                     properties:
-                                      mysqlColumns:
-                                        description: MySQL columns in the schema.
+                                      mySQLColumns:
+                                        description: MySQL columns in the database.
                                           When unspecified as part of include/exclude
                                           objects, includes/excludes everything.
                                         items:
@@ -504,12 +652,13 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The MySQL data type. Full data types list can be found here:
-                                                https://dev.mysql.com/doc/refman/8.0/en/data-types.html.
+                                              description: 'The MySQL data type. Full
+                                                data types list can be found here:
+                                                https://dev.mysql.com/doc/refman/8.0/en/data-types.html'
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -518,45 +667,71 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
                                                 represents a primary key.
                                               type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
-                              required:
-                              - database
                               type: object
                             type: array
-                        required:
-                        - mysqlDatabases
                         type: object
                       maxConcurrentBackfillTasks:
-                        description: |-
-                          Maximum number of concurrent backfill tasks. The number should be non negative.
-                          If not set (or set to 0), the system's default value will be used.
+                        description: Maximum number of concurrent backfill tasks.
+                          The number should be non negative. If not set (or set to
+                          0), the system's default value will be used.
+                        format: int32
                         type: integer
                       maxConcurrentCdcTasks:
-                        description: |-
-                          Maximum number of concurrent CDC tasks. The number should be non negative.
-                          If not set (or set to 0), the system's default value will be used.
+                        description: Maximum number of concurrent CDC tasks. The number
+                          should be non negative. If not set (or set to 0), the system's
+                          default value will be used.
+                        format: int32
                         type: integer
                     type: object
                   oracleSourceConfig:
-                    description: MySQL data source configuration.
+                    description: Oracle data source configuration.
                     properties:
-                      dropLargeObjects:
-                        description: Configuration to drop large object values.
+                      binaryLogParser:
+                        description: Use Binary Log Parser.
+                        properties:
+                          logFileDirectories:
+                            description: Use Oracle directories.
+                            properties:
+                              archivedLogDirectory:
+                                description: Required. Oracle directory for archived
+                                  logs.
+                                type: string
+                              onlineLogDirectory:
+                                description: Required. Oracle directory for online
+                                  logs.
+                                type: string
+                            required:
+                            - archivedLogDirectory
+                            - onlineLogDirectory
+                            type: object
+                          oracleAsmLogFileAccess:
+                            description: Use Oracle ASM.
+                            type: object
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
+                      dropLargeObjects:
+                        description: Drop large object values.
+                        type: object
                       excludeObjects:
                         description: Oracle objects to exclude from the stream.
                         properties:
@@ -566,7 +741,7 @@ spec:
                             items:
                               properties:
                                 oracleTables:
-                                  description: Tables in the database.
+                                  description: Tables in the schema.
                                   items:
                                     properties:
                                       oracleColumns:
@@ -579,15 +754,14 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The Oracle data type. Full data types list can be found here:
-                                                https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/Data-Types.html.
+                                              description: The Oracle data type.
                                               type: string
                                             encoding:
                                               description: Column encoding.
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -596,9 +770,11 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
                                               type: integer
                                             precision:
                                               description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
@@ -606,28 +782,23 @@ spec:
                                               type: boolean
                                             scale:
                                               description: Column scale.
+                                              format: int32
                                               type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
                                 schema:
                                   description: Schema name.
                                   type: string
-                              required:
-                              - schema
                               type: object
                             type: array
-                        required:
-                        - oracleSchemas
                         type: object
                       includeObjects:
-                        description: Oracle objects to retrieve from the source.
+                        description: Oracle objects to include in the stream.
                         properties:
                           oracleSchemas:
                             description: Oracle schemas/databases in the database
@@ -635,7 +806,7 @@ spec:
                             items:
                               properties:
                                 oracleTables:
-                                  description: Tables in the database.
+                                  description: Tables in the schema.
                                   items:
                                     properties:
                                       oracleColumns:
@@ -648,15 +819,14 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The Oracle data type. Full data types list can be found here:
-                                                https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/Data-Types.html.
+                                              description: The Oracle data type.
                                               type: string
                                             encoding:
                                               description: Column encoding.
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -665,9 +835,11 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
                                               type: integer
                                             precision:
                                               description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
@@ -675,56 +847,55 @@ spec:
                                               type: boolean
                                             scale:
                                               description: Column scale.
+                                              format: int32
                                               type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
                                 schema:
                                   description: Schema name.
                                   type: string
-                              required:
-                              - schema
                               type: object
                             type: array
-                        required:
-                        - oracleSchemas
+                        type: object
+                      logMiner:
+                        description: Use LogMiner.
                         type: object
                       maxConcurrentBackfillTasks:
-                        description: |-
-                          Maximum number of concurrent backfill tasks. The number should be non negative.
-                          If not set (or set to 0), the system's default value will be used.
+                        description: Maximum number of concurrent backfill tasks.
+                          The number should be non-negative. If not set (or set to
+                          0), the system's default value is used.
+                        format: int32
                         type: integer
                       maxConcurrentCdcTasks:
-                        description: |-
-                          Maximum number of concurrent CDC tasks. The number should be non negative.
-                          If not set (or set to 0), the system's default value will be used.
+                        description: Maximum number of concurrent CDC tasks. The number
+                          should be non-negative. If not set (or set to 0), the system's
+                          default value is used.
+                        format: int32
                         type: integer
                       streamLargeObjects:
-                        description: Configuration to drop large object values.
+                        description: Stream large object values.
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                     type: object
-                  postgresqlSourceConfig:
+                  postgreSQLSourceConfig:
                     description: PostgreSQL data source configuration.
                     properties:
                       excludeObjects:
                         description: PostgreSQL objects to exclude from the stream.
                         properties:
-                          postgresqlSchemas:
-                            description: PostgreSQL schemas on the server.
+                          postgreSQLSchemas:
+                            description: PostgreSQL schemas in the database server.
                             items:
                               properties:
-                                postgresqlTables:
+                                postgreSQLTables:
                                   description: Tables in the schema.
                                   items:
                                     properties:
-                                      postgresqlColumns:
+                                      postgreSQLColumns:
                                         description: PostgreSQL columns in the schema.
                                           When unspecified as part of include/exclude
                                           objects, includes/excludes everything.
@@ -734,12 +905,11 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The PostgreSQL data type. Full data types list can be found here:
-                                                https://www.postgresql.org/docs/current/datatype.html.
+                                              description: The PostgreSQL data type.
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -748,9 +918,11 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
                                               type: integer
                                             precision:
                                               description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
@@ -758,38 +930,33 @@ spec:
                                               type: boolean
                                             scale:
                                               description: Column scale.
+                                              format: int32
                                               type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
                                 schema:
-                                  description: Database name.
+                                  description: Schema name.
                                   type: string
-                              required:
-                              - schema
                               type: object
                             type: array
-                        required:
-                        - postgresqlSchemas
                         type: object
                       includeObjects:
-                        description: PostgreSQL objects to retrieve from the source.
+                        description: PostgreSQL objects to include in the stream.
                         properties:
-                          postgresqlSchemas:
-                            description: PostgreSQL schemas on the server.
+                          postgreSQLSchemas:
+                            description: PostgreSQL schemas in the database server.
                             items:
                               properties:
-                                postgresqlTables:
+                                postgreSQLTables:
                                   description: Tables in the schema.
                                   items:
                                     properties:
-                                      postgresqlColumns:
+                                      postgreSQLColumns:
                                         description: PostgreSQL columns in the schema.
                                           When unspecified as part of include/exclude
                                           objects, includes/excludes everything.
@@ -799,12 +966,11 @@ spec:
                                               description: Column name.
                                               type: string
                                             dataType:
-                                              description: |-
-                                                The PostgreSQL data type. Full data types list can be found here:
-                                                https://www.postgresql.org/docs/current/datatype.html.
+                                              description: The PostgreSQL data type.
                                               type: string
                                             length:
                                               description: Column length.
+                                              format: int32
                                               type: integer
                                             nullable:
                                               description: Whether or not the column
@@ -813,9 +979,11 @@ spec:
                                             ordinalPosition:
                                               description: The ordinal position of
                                                 the column in the table.
+                                              format: int32
                                               type: integer
                                             precision:
                                               description: Column precision.
+                                              format: int32
                                               type: integer
                                             primaryKey:
                                               description: Whether or not the column
@@ -823,52 +991,214 @@ spec:
                                               type: boolean
                                             scale:
                                               description: Column scale.
+                                              format: int32
                                               type: integer
                                           type: object
                                         type: array
                                       table:
                                         description: Table name.
                                         type: string
-                                    required:
-                                    - table
                                     type: object
                                   type: array
                                 schema:
-                                  description: Database name.
+                                  description: Schema name.
                                   type: string
-                              required:
-                              - schema
                               type: object
                             type: array
-                        required:
-                        - postgresqlSchemas
                         type: object
                       maxConcurrentBackfillTasks:
-                        description: |-
-                          Maximum number of concurrent backfill tasks. The number should be non
-                          negative. If not set (or set to 0), the system's default value will be used.
+                        description: Maximum number of concurrent backfill tasks.
+                          The number should be non negative. If not set (or set to
+                          0), the system's default value will be used.
+                        format: int32
                         type: integer
                       publication:
-                        description: |-
-                          The name of the publication that includes the set of all tables
-                          that are defined in the stream's include_objects.
+                        description: Required. The name of the publication that includes
+                          the set of all tables that are defined in the stream's include_objects.
                         type: string
                       replicationSlot:
-                        description: |-
-                          The name of the logical replication slot that's configured with
-                          the pgoutput plugin.
+                        description: Required. Immutable. The name of the logical
+                          replication slot that's configured with the pgoutput plugin.
                         type: string
                     required:
                     - publication
                     - replicationSlot
                     type: object
-                  sourceConnectionProfile:
-                    description: 'Immutable. Source connection profile resource. Format:
-                      projects/{project}/locations/{location}/connectionProfiles/{name}.'
-                    type: string
+                  sourceConnectionProfileRef:
+                    description: Required. Source connection profile resoource.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed DatastreamConnectionProfile
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/connectionProfiles/{{connectionprofileID}}".
+                        type: string
+                      name:
+                        description: The name of a DatastreamConnectionProfile resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a DatastreamConnectionProfile
+                          resource.
+                        type: string
+                    type: object
+                  sqlServerSourceConfig:
+                    description: SQLServer data source configuration.
+                    properties:
+                      changeTables:
+                        description: CDC reader reads from change tables.
+                        type: object
+                      excludeObjects:
+                        description: SQLServer objects to exclude from the stream.
+                        properties:
+                          schemas:
+                            description: SQLServer schemas in the database server.
+                            items:
+                              properties:
+                                schema:
+                                  description: Schema name.
+                                  type: string
+                                tables:
+                                  description: Tables in the schema.
+                                  items:
+                                    properties:
+                                      columns:
+                                        description: SQLServer columns in the schema.
+                                          When unspecified as part of include/exclude
+                                          objects, includes/excludes everything.
+                                        items:
+                                          properties:
+                                            column:
+                                              description: Column name.
+                                              type: string
+                                            dataType:
+                                              description: The SQLServer data type.
+                                              type: string
+                                            length:
+                                              description: Column length.
+                                              format: int32
+                                              type: integer
+                                            nullable:
+                                              description: Whether or not the column
+                                                can accept a null value.
+                                              type: boolean
+                                            ordinalPosition:
+                                              description: The ordinal position of
+                                                the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
+                                              type: integer
+                                            primaryKey:
+                                              description: Whether or not the column
+                                                represents a primary key.
+                                              type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
+                                          type: object
+                                        type: array
+                                      table:
+                                        description: Table name.
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
+                            type: array
+                        type: object
+                      includeObjects:
+                        description: SQLServer objects to include in the stream.
+                        properties:
+                          schemas:
+                            description: SQLServer schemas in the database server.
+                            items:
+                              properties:
+                                schema:
+                                  description: Schema name.
+                                  type: string
+                                tables:
+                                  description: Tables in the schema.
+                                  items:
+                                    properties:
+                                      columns:
+                                        description: SQLServer columns in the schema.
+                                          When unspecified as part of include/exclude
+                                          objects, includes/excludes everything.
+                                        items:
+                                          properties:
+                                            column:
+                                              description: Column name.
+                                              type: string
+                                            dataType:
+                                              description: The SQLServer data type.
+                                              type: string
+                                            length:
+                                              description: Column length.
+                                              format: int32
+                                              type: integer
+                                            nullable:
+                                              description: Whether or not the column
+                                                can accept a null value.
+                                              type: boolean
+                                            ordinalPosition:
+                                              description: The ordinal position of
+                                                the column in the table.
+                                              format: int32
+                                              type: integer
+                                            precision:
+                                              description: Column precision.
+                                              format: int32
+                                              type: integer
+                                            primaryKey:
+                                              description: Whether or not the column
+                                                represents a primary key.
+                                              type: boolean
+                                            scale:
+                                              description: Column scale.
+                                              format: int32
+                                              type: integer
+                                          type: object
+                                        type: array
+                                      table:
+                                        description: Table name.
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
+                            type: array
+                        type: object
+                      maxConcurrentBackfillTasks:
+                        description: Max concurrent backfill tasks.
+                        format: int32
+                        type: integer
+                      maxConcurrentCdcTasks:
+                        description: Max concurrent CDC tasks.
+                        format: int32
+                        type: integer
+                      transactionLogs:
+                        description: CDC reader reads from transaction logs.
+                        type: object
+                    type: object
                 required:
-                - sourceConnectionProfile
+                - sourceConnectionProfileRef
                 type: object
+              state:
+                description: The state of the stream.
+                type: string
             required:
             - destinationConfig
             - displayName
@@ -877,10 +1207,12 @@ spec:
             - sourceConfig
             type: object
           status:
+            description: DatastreamStreamStatus defines the config connector machine
+              state of DatastreamStream
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -904,8 +1236,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: The stream's name.
+              externalRef:
+                description: A unique specifier for the DatastreamStream resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -913,10 +1246,49 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              state:
-                description: The state of the stream.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The creation time of the stream.
+                    type: string
+                  errors:
+                    description: Output only. Errors on the Stream.
+                    items:
+                      properties:
+                        details:
+                          additionalProperties:
+                            type: string
+                          description: Additional information about the error.
+                          type: object
+                        errorTime:
+                          description: The time when the error occurred.
+                          type: string
+                        errorUUID:
+                          description: A unique identifier for this specific error,
+                            allowing it to be traced throughout the system in logs
+                            and API responses.
+                          type: string
+                        message:
+                          description: A message containing more information about
+                            the error that occurred.
+                          type: string
+                        reason:
+                          description: A title that explains the reason for the error.
+                          type: string
+                      type: object
+                    type: array
+                  lastRecoveryTime:
+                    description: 'Output only. If the stream was recovered, the time
+                      of the last recovery. Note: This field is currently experimental.'
+                    type: string
+                  updateTime:
+                    description: Output only. The last update time of the stream.
+                    type: string
+                type: object
             type: object
         required:
         - spec
@@ -925,9 +1297,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
