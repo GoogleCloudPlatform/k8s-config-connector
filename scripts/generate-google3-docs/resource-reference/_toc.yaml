@@ -510,7 +510,7 @@ toc:
 - title: "Notebooks"
   section:
   - title: "NotebooksInstance"
-    path: "/config-connector/docs/reference/resource-docs/notebooks/notebooksinstance.md"
+    path: "/config-connector/docs/reference/resource-docs/notebooks/notebookinstance.md"
 - title: "Private CA"
   section:
   - title: "PrivateCACAPool"
