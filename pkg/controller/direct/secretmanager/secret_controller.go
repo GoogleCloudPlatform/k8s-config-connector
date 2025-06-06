@@ -44,8 +44,8 @@ const (
 )
 
 func init() {
-	rg := &SecretReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.SecretManagerSecretGVK, NewModel, rg)
+	reconcileGate := &SecretReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.SecretManagerSecretGVK, NewModel, reconcileGate)
 }
 
 type SecretReconcileGate struct {
