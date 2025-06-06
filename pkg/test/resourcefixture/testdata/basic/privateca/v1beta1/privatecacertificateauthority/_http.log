@@ -604,11 +604,20 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&ignoreActiveCertificates=true
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
-200 OK
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -619,23 +628,28 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
 }
 
 ---
 
-GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
-200 OK
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -646,17 +660,392 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthoritiesprivatecacertificateauthority-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
+  }
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+501 Not Implemented
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 501,
+    "message": "method UpdateCertificateAuthority not implemented"
   }
 }
