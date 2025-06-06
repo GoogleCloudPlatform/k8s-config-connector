@@ -75,7 +75,8 @@ All beta resource can have a Google Reference documentation Connector
     [scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md)
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](./../../../scripts/generate-google3-docs/resource-reference/overview.md)
-    by adding a row for your resource to the resource table.
+    by adding a row for your resource to the resource table. Note that {{spanner_name}} is the template variable for Cloud Spanner. 
+    The template variables for gcp product names can be found [here](https://source.corp.google.com/piper///depot/google3/third_party/devsite/cloud/en/_shared/_product_names.html).
     
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](./../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)
