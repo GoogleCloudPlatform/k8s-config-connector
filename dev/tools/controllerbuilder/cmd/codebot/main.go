@@ -73,7 +73,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 	flag.StringVar(&o.BaseDir, "base-dir", o.BaseDir, "base directory for the project code")
 	flag.StringVar(&o.Prompt, "prompt", o.Prompt, "prompt to be passed in non-interactive mode")
 	flag.StringVar(&o.UIType, "ui-type", o.UIType, "available value is terminal, tview, prompt or bash.")
-	flag.StringVar(&o.ToolFilterInclude, "tool-filter-include", o.ToolFilterInclude, "Include specific tools. If not set, default to include all tools. e.g. `File` to include al file related oprations but not tools. `Workspace` to include Workspace operations. `File|Workspace` to include both.")
+	flag.StringVar(&o.ToolFilterInclude, "tool-filter-include", o.ToolFilterInclude, "Include specific tools. If not set, default to include all tools. e.g. `File` to include all file related oprations but not tools. `Workspace` to include Workspace operations. `File|Workspace` to include both.")
 	flag.StringVar(&o.ToolFilterExclude, "tool-filter-exclude", o.ToolFilterExclude, "Exclude specific tools. If not set, all tools are included. This can be used together with `tool-filter-include` to filter out specific tools. e.g. `--tool-filter-include=File --tool-filter-exclude=Edit` to include all File operations except `EditFile`.")
 
 	o.AddFlags(flag.CommandLine)
@@ -120,6 +120,7 @@ func (cb *CodeBot) run(ctx context.Context) error {
 	}
 
 	llmClient, err := o.NewLLMClient(ctx)
+
 	if err != nil {
 		return fmt.Errorf("initializing LLM: %w", err)
 	}

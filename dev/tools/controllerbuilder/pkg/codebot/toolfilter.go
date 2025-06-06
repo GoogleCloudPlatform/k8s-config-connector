@@ -20,8 +20,11 @@ import (
 	"strings"
 )
 
+// Filter interface for tools to be included or excluded based on regex patterns.
 type Filter interface {
+	// Exclude methods determine if a tool should be excluded based on regex patterns.
 	Exclude(tool Tool) bool
+	// Include methods determine if a tool should be included based on regex patterns.
 	Include(tool Tool) bool
 }
 
@@ -52,6 +55,9 @@ func NewCustomRegexFilter(includeRegex, excludeRegex string) (*CustomRegexFilter
 	}, nil
 }
 
+// CustomRegexFilter implements the Filter interface.
+// It allows for inclusion and exclusion of tools based on regex patterns.
+// Note: If excludeRegex is not give, it will not exclude any tools.
 type CustomRegexFilter struct {
 	includeRegex *regexp.Regexp
 	excludeRegex *regexp.Regexp
