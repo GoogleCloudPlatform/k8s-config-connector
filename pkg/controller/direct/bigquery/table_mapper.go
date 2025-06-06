@@ -43,8 +43,18 @@ func MaterializedViewDefinition_ToProto(mapCtx *direct.MapContext, in *krmv1beta
 	out := &pb.MaterializedViewDefinition{}
 	out.Query = direct.ValueOf(in.Query)
 	// MISSING: LastRefreshTime
-	out.EnableRefresh = direct.ValueOf(in.EnableRefresh)
-	out.RefreshIntervalMs = direct.ValueOf(in.RefreshIntervalMs)
+	// if spec.materialized_view.enable_refresh is not set. Default to true.
+	if in.EnableRefresh == nil {
+		out.EnableRefresh = true
+	} else {
+		out.EnableRefresh = direct.ValueOf(in.EnableRefresh)
+	}
+	// if spec.materialized_view.refresh_interval_ms is not set. Default to 1800000 (30 mins).
+	if in.RefreshIntervalMs == nil {
+		out.RefreshIntervalMs = 1800000
+	} else {
+		out.RefreshIntervalMs = direct.ValueOf(in.RefreshIntervalMs)
+	}
 	out.AllowNonIncrementalDefinition = direct.ValueOf(in.AllowNonIncrementalDefinition)
 	return out
 }
@@ -110,10 +120,10 @@ func TimePartitioning_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.TimePart
 }
 
 func Table_Schema_FromProto(mapCtx *direct.MapContext, in *pb.TableSchema) *string {
-	if in == nil {
+	if in == nil || len(in.Fields) == 0 {
 		return nil
 	}
-	jsonDataBytes, err := json.Marshal(in)
+	jsonDataBytes, err := json.Marshal(in.Fields)
 	if err != nil {
 		mapCtx.Errorf("failed to marshal json: %v", err)
 		return nil
@@ -121,17 +131,37 @@ func Table_Schema_FromProto(mapCtx *direct.MapContext, in *pb.TableSchema) *stri
 	return direct.LazyPtr(string(jsonDataBytes))
 }
 
-func Table_Schema_ToProto(mapCtx *direct.MapContext, in *string) *pb.TableSchema {
+// Explicitly set empty PolicyTags unless the PolicyTags field is specified in the schema.
+func setEmptyPolicyTagsInSchema(field *pb.TableFieldSchema) {
+	// Field has children fields.
+	if len(field.Fields) > 0 {
+		for _, subField := range field.Fields {
+			setEmptyPolicyTagsInSchema(subField)
+		}
+		return
+	}
+	// Field is a leaf.
+	if field.PolicyTags == nil {
+		field.PolicyTags = &pb.TableFieldSchemaPolicyTags{Names: []string{}}
+	}
+}
+
+func Table_Schema_ToProto(mapCtx *direct.MapContext, in *string, managePolicyTags bool) *pb.TableSchema {
 	if in == nil {
 		return nil
 	}
-	out := &pb.TableSchema{}
-	err := json.Unmarshal([]byte(direct.ValueOf(in)), out)
+	var fields []*pb.TableFieldSchema
+	err := json.Unmarshal([]byte(direct.ValueOf(in)), &fields)
 	if err != nil {
 		mapCtx.Errorf("failed to unmarshal json: %v", err)
 		return nil
 	}
-	return out
+	if managePolicyTags {
+		for _, field := range fields {
+			setEmptyPolicyTagsInSchema(field)
+		}
+	}
+	return &pb.TableSchema{Fields: fields}
 }
 
 func ViewDefinition_FromProto(mapCtx *direct.MapContext, in *pb.ViewDefinition) *krmv1beta1.ViewDefinition {
@@ -141,8 +171,7 @@ func ViewDefinition_FromProto(mapCtx *direct.MapContext, in *pb.ViewDefinition) 
 	out := &krmv1beta1.ViewDefinition{}
 	out.Query = direct.LazyPtr(in.Query)
 	// MISSING: UserDefinedFunctionResources
-	// MISSING: UseLegacySQL
-	// (near miss): "UseLegacySQL" vs "UseLegacySql"
+	out.UseLegacySql = direct.LazyPtr(in.UseLegacySql)
 	// MISSING: UseExplicitColumnNames
 	// MISSING: PrivacyPolicy
 	// MISSING: ForeignDefinitions
@@ -156,8 +185,12 @@ func ViewDefinition_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ViewDefini
 	out := &pb.ViewDefinition{}
 	out.Query = direct.ValueOf(in.Query)
 	// MISSING: UserDefinedFunctionResources
-	// MISSING: UseLegacySQL
-	// (near miss): "UseLegacySQL" vs "UseLegacySql"
+	// if spec.view.useLegacySql is not set. Default to true.
+	if in.UseLegacySql == nil {
+		out.UseLegacySql = true
+	} else {
+		out.UseLegacySql = direct.ValueOf(in.UseLegacySql)
+	}
 	// MISSING: UseExplicitColumnNames
 	// MISSING: PrivacyPolicy
 	// MISSING: ForeignDefinitions
@@ -288,12 +321,18 @@ func ExternalDataConfiguration_ToProto(mapCtx *direct.MapContext, in *krmv1beta1
 	out := &pb.ExternalDataConfiguration{}
 	out.SourceUris = in.SourceUris
 	out.FileSetSpecType = direct.ValueOf(in.FileSetSpecType)
-	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema)
+	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema, true)
 	out.SourceFormat = direct.ValueOf(in.SourceFormat)
 	out.MaxBadRecords = direct.ValueOf(in.MaxBadRecords)
 	out.Autodetect = direct.ValueOf(in.Autodetect)
 	out.IgnoreUnknownValues = direct.ValueOf(in.IgnoreUnknownValues)
-	out.Compression = direct.ValueOf(in.Compression)
+	// if spec.externalDataConfiguration.compression is not set. Default to "NONE".
+	if in.Compression == nil {
+		out.Compression = "NONE"
+
+	} else {
+		out.Compression = direct.ValueOf(in.Compression)
+	}
 	out.CsvOptions = CsvOptions_ToProto(mapCtx, in.CsvOptions)
 	out.JsonOptions = JsonOptions_ToProto(mapCtx, in.JsonOptions)
 	// MISSING: BigtableOptions
@@ -333,12 +372,29 @@ func CsvOptions_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.CsvOptions) *p
 		return nil
 	}
 	out := &pb.CsvOptions{}
-	out.FieldDelimiter = direct.ValueOf(in.FieldDelimiter)
-	out.SkipLeadingRows = direct.ValueOf(in.SkipLeadingRows)
+	// if spec.externalDataConfiguration.csvOptions.fieldDelimiter is not set. Default to `,`.
+	if in.FieldDelimiter == nil {
+		out.FieldDelimiter = ","
+
+	} else {
+		out.FieldDelimiter = direct.ValueOf(in.FieldDelimiter)
+	}
+	// if spec.externalDataConfiguration.csvOptions.SkipLeadingRows is not set. Default to 0.
+	if in.SkipLeadingRows == nil {
+		out.SkipLeadingRows = 0
+	} else {
+		out.SkipLeadingRows = direct.ValueOf(in.SkipLeadingRows)
+	}
 	out.Quote = in.Quote
 	out.AllowQuotedNewlines = direct.ValueOf(in.AllowQuotedNewlines)
 	out.AllowJaggedRows = direct.ValueOf(in.AllowJaggedRows)
-	out.Encoding = direct.ValueOf(in.Encoding)
+	// if spec.externalDataConfiguration.csvOptions.encoding is not set. Default to UTF8.
+	if in.Encoding == nil {
+		out.Encoding = "UTF8"
+
+	} else {
+		out.Encoding = direct.ValueOf(in.Encoding)
+	}
 	// MISSING: PreserveAsciiControlCharacters
 	// MISSING: NullMarker
 	return out
@@ -358,7 +414,12 @@ func JsonOptions_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.JsonOptions) 
 		return nil
 	}
 	out := &pb.JsonOptions{}
-	out.Encoding = direct.ValueOf(in.Encoding)
+	// if spec.externalDataConfiguration.jsonOptions.encoding is not set. Default to `UTF-8`.
+	if in.Encoding == nil {
+		out.Encoding = "UTF8"
+	} else {
+		out.Encoding = direct.ValueOf(in.Encoding)
+	}
 	return out
 }
 
@@ -618,6 +679,7 @@ func BigQueryTableSpec_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krmv1
 	// MISSING: ExternalCatalogTableOptions
 	return out
 }
+
 func BigQueryTableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigQueryTableSpec) *pb.Table {
 	if in == nil {
 		return nil
@@ -631,7 +693,7 @@ func BigQueryTableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigQuer
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema)
+	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema, in.View == nil && in.MaterializedView == nil)
 	out.TimePartitioning = TimePartitioning_ToProto(mapCtx, in.TimePartitioning)
 	out.RangePartitioning = RangePartitioning_ToProto(mapCtx, in.RangePartitioning)
 	if len(in.Clustering) > 0 {
