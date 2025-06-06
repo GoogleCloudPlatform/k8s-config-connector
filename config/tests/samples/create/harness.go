@@ -223,6 +223,14 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			}
 		})
 
+		// controllerUser, err := env.AddUser(envtest.User{
+		// 	Name: "system:serviceaccount:fakenamespace:cnrm-controller-manager",
+		// }, nil)
+		// if err != nil {
+		// 	h.Fatalf("creating cnrm-controller-manager user: %v", err)
+		// }
+		// restConfig = controllerUser.Config()
+
 		h.restConfig = restConfig
 
 		webhookOptions := webhook.Options{
