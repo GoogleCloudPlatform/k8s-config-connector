@@ -103,7 +103,7 @@ func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigQueryTa
 
 func ParseTableExternal(external string) (parent *TableParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "tables" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "datasets" || tokens[4] != "tables" {
 		return nil, "", fmt.Errorf("format of BigQueryTable external=%q was not known (use projects/{{projectID}}/datasets/{{datasetID}}/tables/{{tableID}})", external)
 	}
 	parent = &TableParent{
