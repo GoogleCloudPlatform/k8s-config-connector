@@ -36,6 +36,8 @@ func GetAllTools() []Tool {
 	return tools
 }
 
+// GetFilteredTools returns a list of tools that match the filter criteria.
+// It excludes tools that are marked for exclusion and includes those that are marked for inclusion.
 func GetFilteredTools(filter Filter) []Tool {
 	filtered := make([]Tool, 0, len(tools))
 	for _, tool := range tools {
