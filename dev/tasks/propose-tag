@@ -128,8 +128,63 @@ fi
 echo "Found versions:"
 printf '%s\n' "${versions[@]}"
 
-# STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
-echo "stale version: ${STALE_VERSION}"
+# Find the stale version to remove.
+version_gt() {
+    [ "$(printf '%s\n' "$1" "$2" | sort -V | tail -n 1)" = "$1" ]
+}
+
+get_major_minor() {
+    echo "$1" | cut -d'.' -f1-2
+}
+
+get_patch() {
+    echo "$1" | cut -d'.' -f3
+}
+
+has_duplicate_major_minor() {
+    local versions=("$@")
+    local seen=""
+    
+    for version in "${versions[@]}"; do
+        local major_minor=$(get_major_minor "$version")
+        if [[ $seen == *" $major_minor "* ]]; then
+            return 0
+        fi
+        seen="$seen $major_minor "
+    done
+    return 1
+}
+
+if has_duplicate_major_minor "${versions[@]}"; then
+  # If patch versions exist, find the latest major.minor
+  latest_major_minor=""
+  target_version=""
+  
+  # First find the latest major.minor version
+  for version in "${versions[@]}"; do
+      major_minor=$(get_major_minor "$version")
+      if [ -z "$latest_major_minor" ] || version_gt "$major_minor" "$latest_major_minor"; then
+          latest_major_minor=$major_minor
+      fi
+  done
+  
+  # Then find the first patch version for that major.minor
+  for version in "${versions[@]}"; do
+      if [ "$(get_major_minor "$version")" = "$latest_major_minor" ]; then
+          if [ -z "$target_version" ] || version_gt "$target_version" "$version"; then
+              target_version=$version
+          fi
+      fi
+  done
+    
+  STALE_VERSION=$target_version
+else
+  STALE_VERSION=$(printf "%s\n" "${versions[@]}" | sort -V | tail -n 4 | head -n 1)
+fi
+
+
+echo "stale version $STALE_VERSION"
+
 
 # Remove the STALE_VERSION package for standard and autopilot
 rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
