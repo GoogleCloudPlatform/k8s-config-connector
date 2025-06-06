@@ -260,10 +260,24 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 
 		model, err := registry.GetModel(groupKind)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("error getting model for %v: %w", groupKind, err)
 		}
 
-		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator, Defaulters: r.defaulters}); err != nil {
+		if err := directbase.AddController(r.mgr, gvk, model,
+			directbase.Deps{
+				JitterGenerator: r.jitterGenerator,
+				Defaulters:      r.defaulters,
+				// for iam controllers
+				AdapterDeps: &directbase.IAMAdapterDeps{
+					KubeClient: r.Client,
+					ControllerDeps: &controller.Deps{
+						TfProvider:   r.provider,
+						TfLoader:     r.smLoader,
+						DclConfig:    r.dclConfig,
+						DclConverter: r.dclConverter,
+					},
+				},
+			}); err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
 		return schemaUpdater, nil
@@ -327,6 +341,17 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				Defaulters:         r.defaulters,
 				JitterGenerator:    r.jitterGenerator,
 				ReconcilePredicate: useDirectReconcilerPredicate,
+
+				// for iam controllers
+				AdapterDeps: &directbase.IAMAdapterDeps{
+					KubeClient: r.Client,
+					ControllerDeps: &controller.Deps{
+						TfProvider:   r.provider,
+						TfLoader:     r.smLoader,
+						DclConfig:    r.dclConfig,
+						DclConverter: r.dclConverter,
+					},
+				},
 			}
 			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)

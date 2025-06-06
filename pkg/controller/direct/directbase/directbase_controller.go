@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -97,6 +98,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		},
 		jitterGenerator: deps.JitterGenerator,
 		defaulters:      deps.Defaulters,
+		iamDeps:         deps.AdapterDeps,
 	}
 	return &r, nil
 }
@@ -152,10 +154,22 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 
 var _ reconcile.Reconciler = &DirectReconciler{}
 
+// Reconciler dependencies.
 type Deps struct {
 	Defaulters         []k8s.Defaulter
 	JitterGenerator    jitter.Generator
 	ReconcilePredicate predicate.Predicate
+
+	// There are Dependencies for Adapters in particular (not the reconcilers)
+	AdapterDeps *IAMAdapterDeps
+}
+
+// TODO(kcc-team): we want to remove these in the future
+// In a world where there are no TF or DCL based IAM resources, we don't need
+// these dependencies and the "special" IAM model.
+type IAMAdapterDeps struct {
+	ControllerDeps *controller.Deps
+	KubeClient     client.Client
 }
 
 // DirectReconciler is a reconciler for reconciling resources that support the Model/Adapter pattern.
@@ -175,6 +189,8 @@ type DirectReconciler struct {
 	controllerName string
 
 	defaulters []k8s.Defaulter
+	// For IAM controllers
+	iamDeps *IAMAdapterDeps
 }
 
 type reconcileContext struct {
@@ -302,13 +318,19 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 	}
 
-	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
-	if err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+	var adapter Adapter
+	var adapteErr error
+	if iamModel, ok := r.Reconciler.model.(IAMModel); ok {
+		adapter, adapteErr = iamModel.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
+	} else {
+		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
+	}
+	if adapteErr != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
+		return false, r.handleUpdateFailed(ctx, u, adapteErr)
 	}
 
 	// To create, update or delete the GCP object, we need to get the GCP object first.
@@ -318,9 +340,21 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+
+			// if we have failed to "FIND" the resource and that is caused by an error deemed to be about its unresolved
+			// dependencies BUT the object is being deleted right now AND its dependecies have been deleted, then we will
+			// never encounter a "ready" condition for its dependencies
+			if !u.GetDeletionTimestamp().IsZero() {
+				resource, err := toK8sResource(u)
+				if err != nil {
+					return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
+				}
+
+				return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+			}
+
+			return false, r.handleUpdateFailed(ctx, u, err)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
 	defer execution.RecoverWithInternalError(&err)
