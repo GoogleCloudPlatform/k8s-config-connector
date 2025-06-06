@@ -6,15 +6,18 @@
 
 
 * Special shout-outs to acpana@, anhdle-sso@, barney-s@, cheftako@, ericpang777@, gemmahou@, jingyih@, justinsb@, maqiuyujoyce@, xiaoweim@, yuwenma@ for their contributions to this release.
-TODO: list contributors with `git log v1.128.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`.
 
 ## Announcement
 
 <!-- ### SAMPLE_Simplified and More Reliable Resource Development -->
 
 ## New Beta Resources (Direct Reconciler):
+ * [`SpeechCustomClass`](https://cloud.google.com/dotnet/docs/reference/Google.Cloud.Speech.V2/latest/Google.Cloud.Speech.V2.CustomClass)
+ * [`SpeechPhraseSet`](https://cloud.google.com/dotnet/docs/reference/Google.Cloud.Speech.V2/latest/Google.Cloud.Speech.V2.PhraseSet)
+ * [`SpeechRecognizer`](https://cloud.google.com/speech-to-text/v2/docs/recognizers)
  * `VertexAINotebooksInstance`
  * `VertexAIMetadataStore`
+
 
 ## New Alpha Resources (Direct Reconciler):
  * `OrgPolicyPolicy`
