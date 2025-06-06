@@ -39,6 +39,7 @@ SKIP_TEST_APIGROUPS=(
     "secretmanager.cnrm.cloud.google.com"
     "spanner.cnrm.cloud.google.com"
     "sql.cnrm.cloud.google.com"
+    "storage.cnrm.cloud.google.com"
     "vertexai.cnrm.cloud.google.com"
     "vmwareengine.cnrm.cloud.google.com"
     "workstations.cnrm.cloud.google.com"
