@@ -22,7 +22,7 @@ spec:
   description: "A global forwarding rule"
   location: global
   labels:
-    label-one: "value-one"
+    label-one: "value-two"
   target:
     targetHTTPProxyRef:
       name: computetargethttpproxy-2-${uniqueId}
