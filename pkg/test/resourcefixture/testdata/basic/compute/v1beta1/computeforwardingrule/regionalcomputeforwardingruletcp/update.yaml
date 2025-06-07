@@ -15,6 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
+  # non-direct resource should still set labels in metadata.labels
   labels:
     label-one: "value-two"
   name: computeregionalforwardingrule-${uniqueId}

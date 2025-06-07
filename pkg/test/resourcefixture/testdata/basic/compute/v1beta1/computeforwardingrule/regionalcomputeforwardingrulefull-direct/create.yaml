@@ -15,14 +15,14 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
-  labels:
-    label-one: "value-one"
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeregionalforwardingrule-${uniqueId}
 spec:
   description: "A regional forwarding rule"
   allowGlobalAccess: true
+  labels:
+    label-one: "value-one"
   loadBalancingScheme: INTERNAL
   isMirroringCollector: true
   allPorts: true
