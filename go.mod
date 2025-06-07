@@ -7,6 +7,7 @@ toolchain go1.24.2
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
+	cloud.google.com/go/accesscontextmanager v1.9.3
 	cloud.google.com/go/aiplatform v1.86.0
 	cloud.google.com/go/alloydb v1.14.0
 	cloud.google.com/go/apigateway v1.7.6
@@ -132,6 +133,7 @@ require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.6 // indirect
+	cloud.google.com/go/orgpolicy v1.14.2 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect

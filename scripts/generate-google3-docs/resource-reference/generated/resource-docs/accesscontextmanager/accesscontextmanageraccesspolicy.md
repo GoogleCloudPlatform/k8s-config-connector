@@ -111,7 +111,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The AccessContextManagerAccessPolicy name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -121,7 +121,7 @@ title: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Human readable title. Does not affect behavior.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Human readable title. Does not affect behavior.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -155,7 +155,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -204,7 +204,7 @@ updateTime: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Time the AccessPolicy was created in UTC.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Time the AccessPolicy was created in UTC.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -225,7 +225,7 @@ updateTime: string
         <td><code>updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Time the AccessPolicy was updated in UTC.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. Time the AccessPolicy was updated in UTC.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
