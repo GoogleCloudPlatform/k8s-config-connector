@@ -1120,7 +1120,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "networkconnectivityhub":
 		case "networkservicesgrpcroute":
 		case "osconfigguestpolicy":
-		case "basicpubsubsubscription":
 		case "pubsublitereservation":
 		case "androidrecaptchaenterprisekey":
 		case "redisinstance":
