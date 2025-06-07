@@ -318,9 +318,21 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+
+			// if we have failed to "FIND" the resource and that is caused by an error deemed to be about its unresolved
+			// dependencies BUT the object is being deleted right now AND its dependecies have been deleted, then we will
+			// never encounter a "ready" condition for its dependencies
+			if !u.GetDeletionTimestamp().IsZero() {
+				resource, err := toK8sResource(u)
+				if err != nil {
+					return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
+				}
+
+				return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+			} else {
+				return false, r.handleUpdateFailed(ctx, u, err)
+			}
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
 	defer execution.RecoverWithInternalError(&err)
