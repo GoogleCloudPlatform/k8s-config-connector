@@ -325,8 +325,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
+		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
 		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
 			// Resource has no controller finalizer; no finalization necessary
+			logger.Info("no controller finalizer; no finalization necessary",
+				"resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
@@ -334,21 +337,29 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
-		if !k8s.HasAbandonAnnotation(u) {
-			deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
-			if _, err := adapter.Delete(ctx, deleteOp); err != nil {
-				if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
-					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-						resource, err := toK8sResource(u)
-						if err != nil {
-							return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
-						}
-						// Requeue resource for reconciliation with exponential backoff applied
-						return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+		if k8s.HasAbandonAnnotation(u) {
+			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+		if !existsAlready {
+			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+
+		logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(u))
+		deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
+		if _, err := adapter.Delete(ctx, deleteOp); err != nil {
+			if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
+				if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+					logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+					resource, err := toK8sResource(u)
+					if err != nil {
+						return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
 					}
-					return false, r.handleDeleteFailed(ctx, u, err)
+					// Requeue resource for reconciliation with exponential backoff applied
+					return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
 				}
+				return false, r.handleDeleteFailed(ctx, u, err)
 			}
 		}
 		return false, r.handleDeleted(ctx, u)
