@@ -84,7 +84,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/speech"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/sql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storage/control"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tagvalue"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
