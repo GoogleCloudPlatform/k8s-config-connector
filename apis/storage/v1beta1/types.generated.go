@@ -14,11 +14,11 @@
 
 // +generated:types
 // krm.group: storage.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.storage.control.v2
 // resource: StorageAnywhereCache:AnywhereCache
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.storage.control.v2.AnywhereCache
 type AnywhereCache struct {

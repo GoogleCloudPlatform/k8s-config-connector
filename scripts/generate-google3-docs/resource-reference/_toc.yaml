@@ -277,6 +277,8 @@ toc:
   section:
   - title: "StorageBucket"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucket.md
+  - title: "StorageAnywhereCache"
+    path: /config-connector/docs/reference/resource-docs/storage/storageanywherecache.md
   - title: "StorageBucketAccessControl"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucketaccesscontrol.md
   - title: "StorageDefaultObjectAccessControl"

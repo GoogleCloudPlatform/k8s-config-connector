@@ -1,4 +1,4 @@
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   finalizers:
@@ -10,11 +10,11 @@ metadata:
   name: storageanywherecache-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  admissionPolicy: admit-on-first-miss
+  admissionPolicy: admit-on-second-miss
   bucketRef:
     name: storagebucket-sample-${uniqueId}
   desiredState: running
-  ttl: 75400s
+  ttl: 56400s
   zone: us-central1-a
 status:
   conditions:
