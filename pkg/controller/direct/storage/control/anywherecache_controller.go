@@ -22,7 +22,7 @@ import (
 	gcp "cloud.google.com/go/storage/control/apiv2"
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

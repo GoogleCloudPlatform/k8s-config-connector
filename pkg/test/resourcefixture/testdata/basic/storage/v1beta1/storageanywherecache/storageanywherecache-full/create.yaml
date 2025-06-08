@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
@@ -20,6 +20,6 @@ spec:
   bucketRef:
     name: storagebucket-sample-${uniqueId}
   zone: us-central1-a
-  ttl: 75400s
-  admissionPolicy: admit-on-first-miss
-  desiredState: running
+  ttl: 56400s
+  admissionPolicy: admit-on-second-miss
+  desiredState: paused

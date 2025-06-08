@@ -4980,7 +4980,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "storage.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "StorageAnywhereCache",
 	}: {
 		Labels: map[string]string{

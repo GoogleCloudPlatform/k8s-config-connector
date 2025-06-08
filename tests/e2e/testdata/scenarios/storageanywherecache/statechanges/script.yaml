@@ -20,7 +20,7 @@ metadata:
 
 ---
 # 01 should create a cache
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
@@ -33,7 +33,7 @@ spec:
 ---
 # 02 should change the state to disabled
 # _http02.log should consist a DisableAnywhereCache call.
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
@@ -47,7 +47,7 @@ spec:
 ---
 # 03 should change the state to paused
 # _http03.log should consist ResumeAnywhereCache, PauseAnywhereCache call in sequence.
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
@@ -62,7 +62,7 @@ spec:
 # 04 should change the state to running
 # _http04.log should consist ResumeAnywhereCache call.
 # _http04.log should consist UpdateAnywhereCache call.
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
@@ -77,7 +77,7 @@ spec:
 ---
 # 05 should change the state to disabled
 # _http05.log should consist DisableAnywhereCache call.
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
   name: storageanywherecache-sample-${uniqueId}
