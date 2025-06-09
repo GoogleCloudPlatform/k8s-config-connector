@@ -38,6 +38,7 @@ type APIGatewayAPISpec struct {
 	// +kcc:proto:field=google.cloud.apigateway.v1.Api.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Optional. Immutable. The name of a Google Managed Service (
 	//  https://cloud.google.com/service-infrastructure/docs/glossary#managed). If
 	//  not specified, a new Service will automatically be created in the same
