@@ -35,7 +35,9 @@
         `BigtableAppProfile` resource.
     *   Added support for `spec.dataBoostIsolationReadOnly` field for resources
         reconciled by the direct controller.
-*   [CloudIdentityGroup](https://cloud.google.com/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup) and [CloudIdentityMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership)
+*   [CloudIdentityGroup](https://cloud.google.com/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup)
+    and
+    [CloudIdentityMembership](https://cloud.google.com/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership)
     *   You can opt-in the direct controller by adding the
         `alpha.cnrm.cloud.google.com/reconciler: direct` annotation to the
         `CloudIdentityGroup` and `CloudIdentityMembership` resources.
