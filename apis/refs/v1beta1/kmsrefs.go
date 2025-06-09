@@ -30,8 +30,6 @@ import (
 // todo: use unexported variable kmsCryptoKeyRef to avoid referencing to the KMS crypto key.
 
 type KMSCryptoKeyRef struct {
-	// todo: remove External from KMSCryptoKeyRef. We will use KMSKeyRef_OneOf.External instead.
-
 	// A reference to an externally managed KMSCryptoKey.
 	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
 	External string `json:"external,omitempty"`

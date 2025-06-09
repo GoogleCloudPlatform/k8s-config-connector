@@ -28,7 +28,7 @@ var _ refs.ExternalNormalizer = &KMSKeyRef_OneOf{}
 // A reference to the KMSCryptoKey(manual management), or the AutoKey(automated management)
 type KMSKeyRef_OneOf struct {
 	// Default KMS crypto key. This is for API backward compatibility and cannot be changed.
-	*refs.KMSCryptoKeyRef `json:",inline"`
+	*KMSCryptoKeyRef `json:",inline"`
 
 	// A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.
 	AutoKeyRef *kmsKeyHandleRef `json:"autoKeyRef,omitempty"`
@@ -61,12 +61,11 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 			return "", fmt.Errorf("must specify either `.name` or `.external`")
 		}
 		// Use KMSCryptoKey
-		// todo: use NormalizedExternal to resolve KMSCryptoKey
-		cryptoKey, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, otherNamespace, r.KMSCryptoKeyRef)
+		cryptoKey, err := r.KMSCryptoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
 			return "", err
 		}
-		r.External = cryptoKey.External
+		r.External = cryptoKey
 	} else {
 		if r.AutoKeyRef.Name == "" {
 			return "", fmt.Errorf("must specify either `.autokeyRef.name` or `.external`")
