@@ -33,7 +33,6 @@ type BigtableAuthorizedViewSpec struct {
 	// The BigtableAuthorizedView name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// +required
 	BigtableAuthorizedViewParent `json:",inline"`
 
 	// An AuthorizedView permitting access to an explicit subset of a Table.
