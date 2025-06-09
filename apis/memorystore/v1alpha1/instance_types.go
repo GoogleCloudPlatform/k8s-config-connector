@@ -127,7 +127,7 @@ type Instance_ConnectionDetailSpec struct {
 
 // kcc specific struct to separate input and output fields in
 // google.cloud.memorystore.v1beta.PscAutoConnection
-type PscAutoConnectionSpec struct {
+type PSCAutoConnectionSpec struct {
 
 	// Required. The consumer project_id where PSC connections are established.
 	//  This should be the same project_id that the instance is being created in.
