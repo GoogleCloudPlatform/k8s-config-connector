@@ -16,7 +16,7 @@ package apphub
 
 import (
 	pb "cloud.google.com/go/apphub/apiv1/apphubpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
