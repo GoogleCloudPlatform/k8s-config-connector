@@ -40,6 +40,12 @@ spec:
   mode: namespaced
 `
 
+var perNamespaceLabels = map[string]string{
+	"tenancy.gke.io/access-level": "supervisor",
+	"tenancy.gke.io/project":      "no-project",
+	"tenancy.gke.io/tenant":       "no-tenant",
+}
+
 var configConnectorResource = schema.GroupVersionResource{
 	Group:    "core.cnrm.cloud.google.com",
 	Version:  "v1beta1",
@@ -75,6 +81,10 @@ func createDefaultConfigConnector(ctx context.Context, dynamicClient dynamic.Int
 	}
 	if managerNamespaceSuffix != "" {
 		if err := unstructured.SetNestedField(u.Object, managerNamespaceSuffix, "spec", "managerNamespaceSuffix"); err != nil {
+			return err
+		}
+		u.SetLabels(perNamespaceLabels)
+		if err := unstructured.SetNestedField(u.Object, managerNamespaceSuffix, "metadata", "labels"); err != nil {
 			return err
 		}
 	}
