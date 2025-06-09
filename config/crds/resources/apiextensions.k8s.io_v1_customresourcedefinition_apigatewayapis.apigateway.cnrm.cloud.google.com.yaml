@@ -231,6 +231,9 @@ spec:
                   If not specified, a new Service will automatically be created in
                   the same project as this API.
                 type: string
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               projectRef:
                 description: ' Optional. The project that this resource belongs to.'
                 oneOf:
