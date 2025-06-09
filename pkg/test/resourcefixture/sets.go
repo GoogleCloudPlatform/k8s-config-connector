@@ -95,6 +95,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"ApigeeInstanceAttachment",
 		"BigQueryConnectionConnection",
 		"BigQueryDataTransferConfig",
+		"BigQueryReservationReservation",
+		"BigQueryReservationAssignment",
 		"CloudBuildWorkerPool",
 		"DataformRepository",
 		"FirestoreDatabase",
