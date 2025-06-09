@@ -30,6 +30,8 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 		WorkflowsWorkflowObservedState_FromProto, WorkflowsWorkflowObservedState_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
+	// TODO Exempt for now since tagutil.go converts tags to and from proto and skips badly formed keys and values
+	f.UnimplementedFields.Insert(".tags")
 
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
@@ -38,6 +40,7 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".crypto_key_name")
 	f.SpecFields.Insert(".call_log_level")
 	f.SpecFields.Insert(".user_env_vars")
+	f.SpecFields.Insert(".execution_history_level")
 
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".revision_id")
@@ -47,13 +50,8 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_error")
 	f.StatusFields.Insert(".state_error.details")
 	f.StatusFields.Insert(".state_error.type")
-
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".tags")
-	f.UnimplementedFields.Insert(".all_kms_keys")
-	f.UnimplementedFields.Insert(".all_kms_keys_versions")
-	f.UnimplementedFields.Insert(".crypto_key_version")
-	f.UnimplementedFields.Insert(".execution_history_level")
-
+	f.StatusFields.Insert(".all_kms_keys")
+	f.StatusFields.Insert(".all_kms_keys_versions")
+	f.StatusFields.Insert(".crypto_key_version")
 	return f
 }
