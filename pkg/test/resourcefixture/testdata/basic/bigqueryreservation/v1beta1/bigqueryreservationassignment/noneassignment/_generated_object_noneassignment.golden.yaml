@@ -1,4 +1,4 @@
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationAssignment
 metadata:
   finalizers:
