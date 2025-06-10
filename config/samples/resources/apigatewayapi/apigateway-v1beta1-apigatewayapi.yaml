@@ -1,0 +1,10 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
+kind: APIGatewayAPI
+metadata:
+  name: apigatewayapi-sample
+spec:
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  labels:
+    name: "wrench"
+  displayName: "Initial displayName"
