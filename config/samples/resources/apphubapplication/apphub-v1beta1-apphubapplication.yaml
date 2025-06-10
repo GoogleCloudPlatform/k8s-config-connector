@@ -1,0 +1,11 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
+kind: AppHubApplication
+metadata:
+  name: apphubapplication-sample
+spec:
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  location: us-west2
+  description: "Initial description"
+  scope:
+    type: REGIONAL
