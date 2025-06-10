@@ -75,7 +75,7 @@ func (m *secureSourceManagerInstanceModel) AdapterForObject(ctx context.Context,
 	}
 
 	if obj.Spec.KmsKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u.GetNamespace(), obj.Spec.KmsKeyRef)
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, u, obj.Spec.KmsKeyRef)
 		if err != nil {
 			return nil, err
 		}

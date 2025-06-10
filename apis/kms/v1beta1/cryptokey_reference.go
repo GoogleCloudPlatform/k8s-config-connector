@@ -29,8 +29,7 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &KMSCryptoKeyRef{}
 var KMSCryptoKeyGVK = SchemeGroupVersion.WithKind("KMSCryptoKey")
 
-// KMSCryptoKeyRef defines the resource reference to KMSCryptoKey, which "External" field
-// holds the GCP identifier for the KRM object.
+// KMSCryptoKeyRef defines the resource reference to KMSCryptoKey.
 type KMSCryptoKeyRef struct {
 	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
@@ -39,11 +38,10 @@ type KMSCryptoKeyRef struct {
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSCryptoKeyRef.
-// If the "External" is given in the other resource's spec.KMSCryptoKeyRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual KMSCryptoKeyRef object from the cluster.
+// The "Name" and "Namespace" will be used to query the actual KMSCryptoKeyRef object from the cluster.
 func (r *KMSCryptoKeyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.Name == "" {
-		return "", fmt.Errorf("use KMS cryptokey requires referring to the Config Connector `KMSCryptoKey` object. please provide the `name` of your  `KMSCryptoKey`.")
+		return "", fmt.Errorf("`name` of `KMSCryptoKey` must be set")
 	}
 
 	// From the Config Connector object

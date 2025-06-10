@@ -337,7 +337,7 @@ func (a *backupPlanAdapter) normalizeReferenceFields(ctx context.Context) error 
 	if obj.Spec.BackupConfig != nil &&
 		obj.Spec.BackupConfig.EncryptionKey != nil &&
 		obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef != nil {
-		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.Namespace, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
+		if _, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.BackupConfig.EncryptionKey.KMSKeyRef); err != nil {
 			return err
 		}
 	}

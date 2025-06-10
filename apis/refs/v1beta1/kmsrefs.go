@@ -42,7 +42,7 @@ type KMSCryptoKeyRef struct {
 }
 
 // ResolveKMSCryptoKeyRef will resolve a KMSCryptoKeyRef to a KMSCryptoKey.
-func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, otherNamespace string, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
+func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, src client.Object, ref *KMSCryptoKeyRef) (*KMSCryptoKeyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -71,7 +71,7 @@ func ResolveKMSCryptoKeyRef(ctx context.Context, reader client.Reader, otherName
 		Name:      ref.Name,
 	}
 	if key.Namespace == "" {
-		key.Namespace = otherNamespace
+		key.Namespace = src.GetNamespace()
 	}
 
 	// Fetch object from k8s cluster to construct the external form

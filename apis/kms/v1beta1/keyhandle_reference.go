@@ -41,7 +41,7 @@ type kmsKeyHandleRef struct {
 // The "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
 func (r *kmsKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.Name == "" {
-		return "", fmt.Errorf("use KMS autokey requires referring to the Config Connector `KMSKeyHanle` object. please provide the `name` of your  `KMSKeyHanle`.")
+		return "", fmt.Errorf("name` of `KMSKeyHandle` must be set")
 	}
 
 	// From the Config Connector object
