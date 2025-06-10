@@ -20,7 +20,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.cloud.memorystore.v1beta.DiscoveryEndpoint
 type DiscoveryEndpoint struct {
 }
