@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
@@ -26,16 +27,12 @@ spec:
 # Updating autodetect doesn't seem to take any effect.
     autodetect: false
     sourceUris:
-      - gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv
+      - gs://cloud-samples-data/bigquery/us-states/us-states.avro
+    # Updating sourceFormat to CSV doesn't return an error.
     sourceFormat: CSV
     compression: NONE
     ignoreUnknownValues: true
     maxBadRecords: 100
-# Updating csvOptions doesn't seem to take any effect.
-    csvOptions:
-      quote: "'"
-      allowJaggedRows: false
-      allowQuotedNewlines: false
-      encoding: ISO-8859-1
-      fieldDelimiter: ";"
-      skipLeadingRows: 2
+    avroOptions:
+      # Updating useAvroLogicalTypes makes the test fail re-reconciliation.
+      useAvroLogicalTypes: true

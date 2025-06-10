@@ -35,13 +35,15 @@ spec:
   #  clustering:
   #    - stringField1
   #    - stringField2
-  schema: >
-    [
-      {"name": "dateField", "type": "DATE", "mode": "REQUIRED"},
-      {"name": "intField", "type": "INTEGER", "mode": "REQUIRED"},
-      {"name": "stringField1", "type": "STRING", "mode": "NULLABLE"},
-      {"name": "stringField2", "type": "STRING", "mode": "NULLABLE"}
-    ]
+# Schema is not used when externalDataConfiguration is set but somehow the API
+# still takes the value and updates it.
+#  schema: >
+#    [
+#      {"name": "dateField", "type": "DATE", "mode": "REQUIRED"},
+#      {"name": "intField", "type": "INTEGER", "mode": "REQUIRED"},
+#      {"name": "stringField1", "type": "STRING", "mode": "NULLABLE"},
+#      {"name": "stringField2", "type": "STRING", "mode": "NULLABLE"}
+#    ]
   expirationTime: 2064441632000 # Some time in 2035
   # Error: require_partition_filter has been set for a hive-partitioned table without using the HivePartitioningOptions.
   #  requirePartitionFilter: true
@@ -76,11 +78,24 @@ spec:
     #    googleSheetsOptions:
     #      skipLeadingRows: 1
     #      range: "Sheet1!A1:B20"
-    avroOptions:
-      useAvroLogicalTypes: true
-    parquetOptions:
-      enumAsString: true
-      enableListInference: true
+# The avroOptions and parquetOptions will not be used when the source file is csv. But the API doesn't return any errors.
+#    avroOptions:
+#      useAvroLogicalTypes: true
+#    parquetOptions:
+#      enumAsString: true
+#      enableListInference: true
+    # Error during update with no change: Update call failed: cannot make changes to immutable field(s):
+    # [Field Name: externalDataConfiguration.0.Schema,
+    # Got: [{\"mode\":\"REQUIRED\",\"name\":\"dateField\",\"type\":\"DATE\"},{\"mode\":\"REQUIRED\",\"name\":\"intField\",\"type\":\"INTEGER\"},{\"mode\":\"NULLABLE\",\"name\":\"stringField1\",\"type\":\"STRING\"},{\"mode\":\"NULLABLE\",\"name\":\"stringField2\",\"type\":\"STRING\"}],
+    # Wanted: [\n  {\"name\": \"dateField\", \"type\": \"DATE\", \"mode\": \"REQUIRED\"},\n  {\"name\": \"intField\", \"type\": \"INTEGER\", \"mode\": \"REQUIRED\"},\n  {\"name\": \"stringField1\", \"type\": \"STRING\", \"mode\": \"NULLABLE\"},\n  {\"name\": \"stringField2\", \"type\": \"STRING\", \"mode\": \"NULLABLE\"}\n]\n];
+    # please refer to our troubleshooting doc: https://cloud.google.com/config-connector/docs/troubleshooting"}
+    #    schema: >
+    #      [
+    #        {"name": "dateField", "type": "DATE", "mode": "REQUIRED"},
+    #        {"name": "intField", "type": "INTEGER", "mode": "REQUIRED"},
+    #        {"name": "stringField1", "type": "STRING", "mode": "NULLABLE"},
+    #        {"name": "stringField2", "type": "STRING", "mode": "NULLABLE"}
+    #      ]
     # Error: metadataCacheMode provided for non BigLake external table.
     #    metadataCacheMode: AUTOMATIC
     # Error: Request invalidated by conflicting fields. Fields 'source_format' and 'object_metadata' can not be used at the same time.
