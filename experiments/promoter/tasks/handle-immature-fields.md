@@ -1,0 +1,2 @@
+Run `go test ./tests/apichecks/...` to verify the Beta CRDs
+    * If hit `[missing_field]` error, comment out the field from "pkg/test/resourcefixture/testdata/basic/${SERVICE}/" using "/* NOTYET " commenter, then comment out the field from "pkg/controller/direct/{SERVICE}/*", and eventually "apis/${SERVICE}/v1beta1/". The order should not change.
