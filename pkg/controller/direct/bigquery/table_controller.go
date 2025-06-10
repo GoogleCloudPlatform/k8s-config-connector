@@ -225,6 +225,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
+
+	eq, err := TableEq(a.actual, table)
+	if err != nil {
+		return err
+	}
+	// No diff detected.
+	if eq {
+		return nil
+	}
+
 	a.customTableLogic(table)
 	parent := a.id.Parent()
 
