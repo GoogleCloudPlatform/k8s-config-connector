@@ -28,11 +28,11 @@ import (
 // holds the GCP identifier for the KRM object.
 type InstanceIdentity struct {
 	parent *InstanceParent
-	id string
+	id     string
 }
 
 func (i *InstanceIdentity) String() string {
-	return  i.parent.String() + "/instances/" + i.id
+	return i.parent.String() + "/instances/" + i.id
 }
 
 func (i *InstanceIdentity) ID() string {
@@ -40,7 +40,7 @@ func (i *InstanceIdentity) ID() string {
 }
 
 func (i *InstanceIdentity) Parent() *InstanceParent {
-	return  i.parent
+	return i.parent
 }
 
 type InstanceParent struct {
@@ -51,7 +51,6 @@ type InstanceParent struct {
 func (p *InstanceParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
-
 
 // New builds a InstanceIdentity from the Config Connector Instance object.
 func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *MemorystoreInstance) (*InstanceIdentity, error) {
