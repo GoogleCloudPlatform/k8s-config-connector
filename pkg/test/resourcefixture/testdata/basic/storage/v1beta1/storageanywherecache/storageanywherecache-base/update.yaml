@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: storage.cnrm.cloud.google.com/v1alpha1
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageAnywhereCache
 metadata:
-  name: storageanywherecache-sample
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "20"
+  name: storageanywherecache-sample-${uniqueId}
 spec:
   bucketRef:
-    name: ${PROJECT_ID?}-storageanywherecache-dep
+    name: storagebucket-sample-${uniqueId}
   zone: us-central1-a
   admissionPolicy: admit-on-second-miss
   desiredState: running
