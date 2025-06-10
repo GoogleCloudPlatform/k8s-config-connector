@@ -187,19 +187,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "externalDataConfiguration": {
     "autodetect": true,
     "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
+    "sourceFormat": "PARQUET",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -232,19 +228,15 @@ X-Xss-Protection: 0
   "externalDataConfiguration": {
     "autodetect": true,
     "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
+    "sourceFormat": "PARQUET",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -274,11 +266,6 @@ X-Xss-Protection: 0
         "mode": "NULLABLE",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -314,19 +301,15 @@ X-Xss-Protection: 0
   "externalDataConfiguration": {
     "autodetect": true,
     "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
+    "sourceFormat": "PARQUET",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -356,11 +339,6 @@ X-Xss-Protection: 0
         "mode": "NULLABLE",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -384,17 +362,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -415,12 +391,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "name": "post_abbr",
         "policyTags": {},
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
       }
     ]
   },
@@ -448,17 +418,15 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -488,11 +456,6 @@ X-Xss-Protection: 0
         "mode": "NULLABLE",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -527,17 +490,15 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -567,11 +528,6 @@ X-Xss-Protection: 0
         "mode": "NULLABLE",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -632,17 +588,15 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
-    },
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
+    "parquetOptions": {
+      "enableListInference": true,
+      "enumAsString": true
+    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -672,11 +626,6 @@ X-Xss-Protection: 0
         "mode": "NULLABLE",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },

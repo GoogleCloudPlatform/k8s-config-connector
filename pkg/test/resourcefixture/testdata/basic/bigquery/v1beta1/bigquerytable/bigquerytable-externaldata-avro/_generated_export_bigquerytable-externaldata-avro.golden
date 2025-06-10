@@ -14,17 +14,15 @@ spec:
   expirationTime: 2064442632000
   externalDataConfiguration:
     autodetect: false
+    avroOptions:
+      useAvroLogicalTypes: true
     compression: NONE
-    csvOptions:
-      encoding: ISO-8859-1
-      fieldDelimiter: ;
-      quote: ''''
-      skipLeadingRows: 2
     ignoreUnknownValues: true
     maxBadRecords: 100
     sourceFormat: CSV
     sourceUris:
-    - gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv
+    - gs://cloud-samples-data/bigquery/us-states/us-states.avro
   friendlyName: BigQuery Table Updated
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"NULLABLE","name":"name","type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","type":"STRING"},{"mode":"NULLABLE","name":"date","type":"DATE"}]'
+  schema: '[{"description":"The common name of the state.","mode":"REQUIRED","name":"name","type":"STRING"},{"description":"The
+    postal code abbreviation of the state.","mode":"REQUIRED","name":"post_abbr","type":"STRING"}]'

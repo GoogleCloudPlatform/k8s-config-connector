@@ -186,20 +186,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
-    "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -231,20 +226,15 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
-    "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -266,19 +256,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -313,20 +300,15 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
-    "compression": "NONE",
-    "csvOptions": {
-      "allowJaggedRows": true,
-      "allowQuotedNewlines": true,
-      "encoding": "UTF-8",
-      "fieldDelimiter": ",",
-      "quote": "\"",
-      "skipLeadingRows": "1"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "sourceFormat": "CSV",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
@@ -348,19 +330,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -383,18 +362,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "description": "An updated BigQuery table.",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -405,22 +381,18 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "policyTags": {},
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "policyTags": {},
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
       }
     ]
   },
@@ -447,18 +419,15 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -480,19 +449,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -526,18 +492,15 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -559,19 +522,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },
@@ -631,18 +591,15 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
-    "compression": "NONE",
-    "csvOptions": {
-      "encoding": "ISO-8859-1",
-      "fieldDelimiter": ";",
-      "quote": "'",
-      "skipLeadingRows": "2"
+    "avroOptions": {
+      "useAvroLogicalTypes": true
     },
+    "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
@@ -664,19 +621,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "date",
-        "type": "DATE"
       }
     ]
   },

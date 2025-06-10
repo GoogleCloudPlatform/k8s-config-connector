@@ -20,19 +20,14 @@ spec:
   expirationTime: 2064442632000
   externalDataConfiguration:
     autodetect: false
+    avroOptions:
+      useAvroLogicalTypes: true
     compression: NONE
-    csvOptions:
-      allowJaggedRows: false
-      allowQuotedNewlines: false
-      encoding: ISO-8859-1
-      fieldDelimiter: ;
-      quote: ''''
-      skipLeadingRows: 2
     ignoreUnknownValues: true
     maxBadRecords: 100
     sourceFormat: CSV
     sourceUris:
-    - gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv
+    - gs://cloud-samples-data/bigquery/us-states/us-states.avro
   friendlyName: BigQuery Table Updated
   resourceID: bigquerytable-${uniqueId}
 status:

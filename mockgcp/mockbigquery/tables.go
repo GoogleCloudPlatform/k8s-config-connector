@@ -169,79 +169,131 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		if obj.Schema == nil {
 			if obj.GetExternalDataConfiguration().GetAutodetect() {
 				obj.Schema = &pb.TableSchema{}
-
-				// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
-				obj.Schema.Fields = []*pb.TableFieldSchema{
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_0"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_1"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_2"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_3"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_4"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_5"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_6"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_7"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_8"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_9"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_10"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_11"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_12"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_13"),
-						Type: PtrTo("STRING"),
-					},
+				sourceURI := ""
+				if len(obj.GetExternalDataConfiguration().SourceUris) == 1 {
+					sourceURI = obj.GetExternalDataConfiguration().SourceUris[0]
+				}
+				switch sourceURI {
+				case "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("name"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("post_abbr"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("date"),
+							Type: PtrTo("DATE"),
+						},
+					}
+				case "gs://cloud-samples-data/bigquery/us-states/us-states.avro":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode:        PtrTo("REQUIRED"),
+							Name:        PtrTo("name"),
+							Type:        PtrTo("STRING"),
+							Description: PtrTo("The common name of the state."),
+						},
+						{
+							Mode:        PtrTo("REQUIRED"),
+							Name:        PtrTo("post_abbr"),
+							Type:        PtrTo("STRING"),
+							Description: PtrTo("The postal code abbreviation of the state."),
+						},
+					}
+				case "gs://cloud-samples-data/bigquery/us-states/us-states.parquet":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("name"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("post_abbr"),
+							Type: PtrTo("STRING"),
+						},
+					}
+				default:
+					// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_0"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_1"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_2"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_3"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_4"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_5"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_6"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_7"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_8"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_9"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_10"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_11"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_12"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_13"),
+							Type: PtrTo("STRING"),
+						},
+					}
 				}
 			}
 		}
