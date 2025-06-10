@@ -18,6 +18,9 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
@@ -31,8 +34,10 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
@@ -147,7 +152,8 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
+	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
 		BillingProject:             cfg.BillingProject,
@@ -170,8 +176,33 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		TfLoader:     smLoader,
 		DclConfig:    dclConfig,
 		DclConverter: dclConverter,
-		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+		Defaulters: []k8s.Defaulter{
+			stateIntoSpecDefaulter,
+		},
 	}
+
+	fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
+	if err != nil {
+		return nil, fmt.Errorf("creating resource fetcher: %w", err)
+	}
+	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
+
+	pollInterval := gcpwatch.DefaultPollInterval
+	if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+		intInterval, err := strconv.Atoi(interval)
+		if err != nil {
+			return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		}
+		pollInterval = time.Duration(intInterval) * time.Second
+	}
+	go func() {
+		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+			InitialDelay: gcpwatch.DefaultInitialDelay,
+			MinInterval:  gcpwatch.DefaultMinInterval,
+			PollInterval: pollInterval,
+		})
+	}()
+
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
 	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {

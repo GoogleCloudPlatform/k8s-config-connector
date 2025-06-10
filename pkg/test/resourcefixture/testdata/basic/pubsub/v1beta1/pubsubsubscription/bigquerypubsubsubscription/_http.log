@@ -1167,6 +1167,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "bigqueryConfig": {
+    "dropUnknownFields": true,
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
   "deadLetterPolicy": null,
@@ -1193,6 +1194,8 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
+    "dropUnknownFields": true,
+    "state": "ACTIVE",
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
   "expirationPolicy": {
@@ -1253,6 +1256,8 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
+    "dropUnknownFields": true,
+    "state": "ACTIVE",
     "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
   },
   "expirationPolicy": {
@@ -1308,7 +1313,8 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
-    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+    "state": "ACTIVE",
+    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
   },
   "expirationPolicy": {
     "ttl": "2678400s"
@@ -1348,7 +1354,8 @@ X-Xss-Protection: 0
 {
   "ackDeadlineSeconds": 10,
   "bigqueryConfig": {
-    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable1${uniqueId}"
+    "state": "ACTIVE",
+    "table": "${projectId}.bigquerydataset${uniqueId}.bigquerytable2${uniqueId}"
   },
   "expirationPolicy": {
     "ttl": "2678400s"

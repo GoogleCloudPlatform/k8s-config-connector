@@ -16,6 +16,7 @@ package storage
 
 import (
 	"context"
+	"sort"
 	"strings"
 	"sync"
 
@@ -144,7 +145,14 @@ func (s *typeStorage) List(ctx context.Context, options ListOptions, callback fu
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	for fqn, obj := range s.byKey {
+	var keys []string
+	for fqn := range s.byKey {
+		keys = append(keys, fqn)
+	}
+	sort.Strings(keys)
+
+	for _, fqn := range keys {
+		obj := s.byKey[fqn]
 		if options.Prefix != "" && !strings.HasPrefix(fqn, options.Prefix) {
 			continue
 		}

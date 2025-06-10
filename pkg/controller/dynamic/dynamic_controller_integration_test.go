@@ -289,7 +289,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
-	if rt != testreconciler.ReconcilerTypeDirect {
+	if rt != k8s.ReconcilerTypeDirect {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 
@@ -483,7 +483,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
-	if rt != testreconciler.ReconcilerTypeDirect {
+	if rt != k8s.ReconcilerTypeDirect {
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 	// Check if condition is ready and update event was recorded
@@ -546,7 +546,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 	}
 
 	// Skip drift detection test for dcl-based resources with server-generated id.
-	if rt == testreconciler.ReconcilerTypeDCL {
+	if rt == k8s.ReconcilerTypeDCL {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -557,12 +557,13 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		return isServerGenerated
-	} else if rt == testreconciler.ReconcilerTypeTerraform {
+	} else if rt == k8s.ReconcilerTypeTerraform {
 		// Skip drift detection test for tf-based resources with server-generated id.
 		rc := testservicemapping.GetResourceConfig(t, smLoader, u)
 		return hasServerGeneratedId(*rc)
 	} else {
 		// Drift detection tests are enabled by default for direct resources.
+		// Skip drift detection for direct resources with server-generated id (configured in resource context).
 		return false
 	}
 }
@@ -585,7 +586,18 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	// Test that the deletion defender finalizer causes the resource to requeue
 	// and still exist on the underlying API
 	reconciledUnstruct := testContext.CreateUnstruct.DeepCopy()
-	testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	rt, err := testreconciler.ReconcilerTypeForObject(reconciledUnstruct)
+	if err != nil {
+		t.Fatalf("error getting reconciler type: %v", err)
+	}
+	// Direct-base controller no longer re-queue waiting for deletion-defender finalizer.
+	// See https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4512
+	// todo: shall we apply this feature to dcl, tf and iam controllers?
+	if rt != k8s.ReconcilerTypeDirect {
+		testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	} else {
+		testReconciler.Reconcile(ctx, reconciledUnstruct, testreconciler.ExpectedDefaultReconcileStruct, nil)
+	}
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, reconciledUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -768,7 +780,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
 
-	if rt == testreconciler.ReconcilerTypeDCL {
+	if rt == k8s.ReconcilerTypeDCL {
 		s, found := dclextension.GetNameFieldSchema(resourceContext.DCLSchema)
 		if !found {
 			// The resource doesn't have a 'resourceID' field.
@@ -779,7 +791,7 @@ func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemCo
 			t.Fatalf("error parsing `resourceID` field schema: %v", err)
 		}
 		verifyResourceID(t, isServerGeneratedID, reconciledUnstruct, appliedUnstruct)
-	} else if rt == testreconciler.ReconcilerTypeTerraform {
+	} else if rt == k8s.ReconcilerTypeTerraform {
 		rc, err := systemContext.SMLoader.GetResourceConfig(reconciledUnstruct)
 		if err != nil {
 			t.Fatalf("error getting resource config for Kind '%s', "+

@@ -46,7 +46,7 @@ type NetworkConfig struct {
 	PeeringMode *string `json:"peeringMode,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID
 type WorkforceIdentityBasedOAuth2ClientIDObservedState struct {
 	// Output only. First party OAuth Client ID for Google Identities.
 	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedOAuth2ClientID.first_party_oauth2_client_id
@@ -57,7 +57,7 @@ type WorkforceIdentityBasedOAuth2ClientIDObservedState struct {
 	ThirdPartyOAuth2ClientID *string `json:"thirdPartyOAuth2ClientID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.ManagementURI
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.ManagementURI
 type ManagementURIObservedState struct {
 	// Output only. The ManagementServer AGM/RD WebUI URL.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementURI.web_ui
@@ -69,7 +69,7 @@ type ManagementURIObservedState struct {
 }
 
 // BackupDRManagementServerSpec defines the desired state of BackupDRManagementServer
-// +kcc:proto=google.cloud.backupdr.v1.ManagementServer
+// +kcc:spec:proto=google.cloud.backupdr.v1.ManagementServer
 type BackupDRManagementServerSpec struct {
 	Parent `json:",inline"`
 
@@ -121,7 +121,7 @@ type BackupDRManagementServerStatus struct {
 }
 
 // BackupDRManagementServerObservedState is the state of the BackupDRManagementServer resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.backupdr.v1.ManagementServer
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.ManagementServer
 type BackupDRManagementServerObservedState struct {
 	// Output only. Identifier. The resource name.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.name

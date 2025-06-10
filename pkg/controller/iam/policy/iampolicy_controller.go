@@ -54,7 +54,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
@@ -62,7 +62,7 @@ import (
 
 const controllerName = "iampolicy-controller"
 
-var logger = klog.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName)
 
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
@@ -193,9 +193,19 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 }
 
 func (r *ReconcileIAMPolicy) handleDefaults(ctx context.Context, policy *iamv1beta1.IAMPolicy) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, policy); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPolicy, policy)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, policy); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil

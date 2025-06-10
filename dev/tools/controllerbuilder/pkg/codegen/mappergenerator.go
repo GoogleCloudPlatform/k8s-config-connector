@@ -75,8 +75,8 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 				for _, c := range s.Comments {
 					for _, line := range strings.Split(c, "\n") {
 						line = strings.TrimSpace(line)
-						if strings.HasPrefix(line, "+kcc:proto=") {
-							protoName := protoreflect.FullName(strings.TrimPrefix(line, "+kcc:proto="))
+						if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+							protoName := protoreflect.FullName(proto)
 							if _, ok := v.precomputedMappings[protoName]; !ok {
 								v.precomputedMappings[protoName] = make(map[string]*gocode.GoStruct)
 							}
@@ -191,7 +191,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 			// TODO: Can we figure out a better way here?
 			switch pbPackage {
 			case "cloud.google.com/go/bigtable/admin/apiv2/adminpb":
-				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+				// pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 			}
 
 			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")

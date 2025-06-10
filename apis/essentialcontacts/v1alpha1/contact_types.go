@@ -32,7 +32,7 @@ type Parent struct {
 }
 
 // EssentialContactsContactSpec defines the desired state of EssentialContactsContact
-// +kcc:proto=google.cloud.essentialcontacts.v1.Contact
+// +kcc:spec:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactSpec struct {
 	Parent `json:",inline"`
 	// The EssentialContactsContact name. If not given, the metadata.name will be used.
@@ -81,7 +81,7 @@ type EssentialContactsContactStatus struct {
 }
 
 // EssentialContactsContactObservedState is the state of the EssentialContactsContact resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.essentialcontacts.v1.Contact
+// +kcc:observedstate:proto=google.cloud.essentialcontacts.v1.Contact
 type EssentialContactsContactObservedState struct {
 
 	// Output only. The validity of the contact. A contact is considered valid if

@@ -56,14 +56,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-var logger = klog.Log
+var logger = log.Log
 
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
@@ -203,12 +202,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
+
+	if err := r.handleDefaults(ctx, u); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(u), err)
+	}
+
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
-	}
-	if err := r.handleDefaults(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -485,10 +486,20 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
-func (r *Reconciler) handleDefaults(ctx context.Context, resource *krmtotf.Resource) error {
+func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, u); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
@@ -514,7 +525,7 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmResource *krmtotf.Resource, liveState *terraform.InstanceState) error {
-	conflictPolicy, err := managementconflict.GetManagementConflictPreventionAnnotationValue(krmResource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionPolicy(krmResource)
 	if err != nil {
 		return err
 	}
@@ -526,8 +537,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmReso
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v='%v'", krmResource.GroupVersionKind(),
-			managementconflict.FullyQualifiedAnnotation, conflictPolicy)
+		return managementconflict.NewLeasingNotSupportedByKindError(krmResource.GroupVersionKind())
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.

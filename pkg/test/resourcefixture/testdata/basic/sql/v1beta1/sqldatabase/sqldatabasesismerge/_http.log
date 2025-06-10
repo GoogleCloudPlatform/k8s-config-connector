@@ -132,11 +132,12 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseInstalledVersion": "MYSQL_8_0_40",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -149,7 +150,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "maintenanceVersion": "MYSQL_8_0_40.R20250304.00_03",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -212,51 +213,6 @@ X-Xss-Protection: 0
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
     {
-      "displayName": "MySQL 8.0.18",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_18"
-    },
-    {
-      "displayName": "MySQL 8.0.26",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_26"
-    },
-    {
-      "displayName": "MySQL 8.0.27",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_27"
-    },
-    {
-      "displayName": "MySQL 8.0.28",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_28"
-    },
-    {
-      "displayName": "MySQL 8.0.29",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_29"
-    },
-    {
-      "displayName": "MySQL 8.0.30",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.32",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_32"
-    },
-    {
-      "displayName": "MySQL 8.0.33",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_33"
-    },
-    {
-      "displayName": "MySQL 8.0.34",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_34"
-    },
-    {
       "displayName": "MySQL 8.0.35",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_35"
@@ -270,6 +226,26 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.4",
+      "majorVersion": "MYSQL_8_4",
+      "name": "MYSQL_8_4"
     }
   ]
 }
@@ -297,6 +273,9 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
+      "passwordPolicy": {
+        "status": {}
+      },
       "project": "${projectId}"
     }
   ],
@@ -600,11 +579,12 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "MYSQL_8_0_31",
+  "databaseInstalledVersion": "MYSQL_8_0_40",
   "databaseVersion": "MYSQL_8_0",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
   "geminiConfig": {
+    "activeQueryEnabled": false,
     "entitled": false,
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
@@ -617,7 +597,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_8_0_31.R20240527.01_00",
+  "maintenanceVersion": "MYSQL_8_0_40.R20250304.00_03",
   "name": "sqlinstance-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -680,51 +660,6 @@ X-Xss-Protection: 0
   "state": "RUNNABLE",
   "upgradableDatabaseVersions": [
     {
-      "displayName": "MySQL 8.0.18",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_18"
-    },
-    {
-      "displayName": "MySQL 8.0.26",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_26"
-    },
-    {
-      "displayName": "MySQL 8.0.27",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_27"
-    },
-    {
-      "displayName": "MySQL 8.0.28",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_28"
-    },
-    {
-      "displayName": "MySQL 8.0.29",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_29"
-    },
-    {
-      "displayName": "MySQL 8.0.30",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_30"
-    },
-    {
-      "displayName": "MySQL 8.0.32",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_32"
-    },
-    {
-      "displayName": "MySQL 8.0.33",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_33"
-    },
-    {
-      "displayName": "MySQL 8.0.34",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_34"
-    },
-    {
       "displayName": "MySQL 8.0.35",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_35"
@@ -738,6 +673,26 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.4",
+      "majorVersion": "MYSQL_8_4",
+      "name": "MYSQL_8_4"
     }
   ]
 }

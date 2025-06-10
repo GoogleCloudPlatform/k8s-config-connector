@@ -22,16 +22,16 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
 	"go.uber.org/zap/zapcore"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-var logger = klog.Log
+var logger = log.Log
 
 // SetupLogger configures the controller-runtime/pkg/log Logger to the
 // standard configuration across cnrm applications, writing to os.Stdout.
 func SetupLogger() {
-	klog.SetLogger(BuildLogger(os.Stdout))
+	log.SetLogger(BuildLogger(os.Stdout))
 }
 
 // BuildLogger constructs a logr.Logger object that matches the standard

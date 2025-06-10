@@ -15,7 +15,9 @@
 package lint
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"testing"
@@ -28,12 +30,12 @@ import (
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
-	"sigs.k8s.io/yaml"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/yaml"
 )
 
 // Looks for fields that looks like refs, but are not
@@ -452,6 +454,10 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	}
 
 	unstructs := loadUnstructs(t)
+	outputOnlySpecFields, err := loadOutputOnlySpecFields()
+	if err != nil {
+		t.Fatalf("error loading output-only spec fields from file: %v", err)
+	}
 
 	var errs []string
 	for _, crd := range crds {
@@ -526,6 +532,12 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 					}
 				}
 
+				// Exclude output-only spec fields.
+				oosfLine := fmt.Sprintf("[output_only_spec_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath)
+				if _, ok := outputOnlySpecFields[oosfLine]; ok {
+					missing = false
+				}
+
 				if missing {
 					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
 				}
@@ -536,6 +548,26 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	sort.Strings(errs)
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+}
+
+func loadOutputOnlySpecFields() (map[string]bool, error) {
+	file, err := os.Open("testdata/exceptions/outputonlyspecfields.txt")
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	outputOnlySpecFields := make(map[string]bool)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		outputOnlySpecFields[scanner.Text()] = true
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return outputOnlySpecFields, nil
 }
 
 func loadUnstructs(t *testing.T) []*unstructured.Unstructured {

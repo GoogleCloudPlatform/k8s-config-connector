@@ -22,7 +22,7 @@ import (
 var ApigeeEnvironmentGVK = GroupVersion.WithKind("ApigeeEnvironment")
 
 // ApigeeEnvironmentSpec defines the desired state of ApigeeEnvironment
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Environment
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Environment
 type ApigeeEnvironmentSpec struct {
 	// The ApigeeEnvironment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -125,7 +125,7 @@ type ApigeeEnvironmentStatus struct {
 }
 
 // ApigeeEnvironmentObservedState is the state of the ApigeeEnvironment resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Environment
+// +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1Environment
 type ApigeeEnvironmentObservedState struct {
 	/* NOTYET: Add this once direct controller is implemented
 	// Output only. Creation time of this environment as milliseconds since epoch.

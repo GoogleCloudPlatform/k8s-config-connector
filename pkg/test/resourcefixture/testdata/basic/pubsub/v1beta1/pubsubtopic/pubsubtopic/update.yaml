@@ -26,3 +26,4 @@ spec:
     schemaRef:
       name: pubsubschema-${uniqueId}
     encoding: JSON
+  messageRetentionDuration: 3600s

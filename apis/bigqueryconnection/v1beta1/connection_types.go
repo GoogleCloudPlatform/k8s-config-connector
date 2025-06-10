@@ -15,8 +15,11 @@
 package v1beta1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,7 +37,7 @@ type Parent struct {
 }
 
 // BigQueryConnectionConnectionSpec defines the desired state to connect BigQuery to external resources
-// +kcc:proto=google.cloud.bigquery.connection.v1.Connection
+// +kcc:spec:proto=google.cloud.bigquery.connection.v1.Connection
 type BigQueryConnectionConnectionSpec struct {
 	Parent `json:",inline"`
 
@@ -93,7 +96,7 @@ type BigQueryConnectionConnectionStatus struct {
 }
 
 // BigQueryConnectionConnectionSpec defines the desired state of BigQueryConnectionConnection
-// +kcc:proto=google.cloud.bigquery.connection.v1.Connection
+// +kcc:observedstate:proto=google.cloud.bigquery.connection.v1.Connection
 type BigQueryConnectionConnectionObservedState struct {
 	Aws *AwsPropertiesStatus `json:"aws,omitempty"`
 
@@ -162,7 +165,7 @@ type CloudSqlPropertiesSpec struct {
 type CloudSpannerPropertiesSpec struct {
 	// Reference to a spanner database ID.
 	// +required
-	DatabaseRef *refv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
+	DatabaseRef *spannerv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
 
 	// If parallelism should be used when reading from Cloud Spanner
 	UseParallelism *bool `json:"useParallelism,omitempty"`
@@ -217,7 +220,7 @@ type MetastoreServiceConfigSpec struct {
 	//  Example:
 	//
 	//  * `projects/[project_id]/locations/[region]/services/[service_id]`
-	MetastoreServiceRef *refv1beta1.MetastoreServiceRef `json:"metastoreServiceRef,omitempty"`
+	MetastoreServiceRef *metastorev1alpha1.ServiceRef `json:"metastoreServiceRef,omitempty"`
 }
 
 type SparkHistoryServerConfigSpec struct {
@@ -227,22 +230,22 @@ type SparkHistoryServerConfigSpec struct {
 	//  Example:
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
-	DataprocClusterRef *refv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.AwsProperties
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.AwsProperties
 type AwsPropertiesStatus struct {
 	AccessRole *AwsAccessRoleStatus `json:"accessRole,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.AwsAccessRole
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.AwsAccessRole
 type AwsAccessRoleStatus struct {
 	// A unique Google-owned and Google-generated identity for the Connection.
 	//  This identity will be used to access the user's AWS IAM Role.
 	Identity *string `json:"identity,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.AzureProperties
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.AzureProperties
 type AzurePropertiesStatus struct {
 	// The name of the Azure Active Directory Application.
 	Application *string `json:"application,omitempty"`
@@ -263,7 +266,7 @@ type AzurePropertiesStatus struct {
 	Identity *string `json:"identity,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.CloudSqlProperties
 type CloudSqlPropertiesStatus struct {
 	// The account ID of the service used for the purpose of this connection.
 	//
@@ -273,7 +276,7 @@ type CloudSqlPropertiesStatus struct {
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.CloudResourceProperties
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.CloudResourceProperties
 type CloudResourcePropertiesStatus struct {
 	//  The account ID of the service created for the purpose of this
 	//  connection.
@@ -289,7 +292,7 @@ type CloudResourcePropertiesStatus struct {
 	ServiceAccountID *string `json:"serviceAccountID,omitempty"`
 }
 
-// +kcc:proto=google.cloud.bigquery.connection.v1.SparkProperties
+// +kcc:status:proto=google.cloud.bigquery.connection.v1.SparkProperties
 type SparkPropertiesStatus struct {
 	//  The account ID of the service created for the purpose of this
 	//  connection.

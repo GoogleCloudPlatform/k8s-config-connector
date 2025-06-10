@@ -23,6 +23,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"k8s.io/klog/v2"
 )
 
@@ -84,15 +85,20 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 			comment := strings.TrimPrefix(line, "//")
 			comment = strings.TrimSpace(comment)
 
-			if strings.HasPrefix(comment, "+kcc:proto=") {
+			if proto, ok := codegen.GetProtoMessageFromAnnotation(comment); ok {
 				klog.V(2).Infof("found tool line %q", comment)
 				toolName := "kcc-proto"
+				if strings.Contains(comment, codegen.KCCProtoMessageAnnotationSpec) {
+					toolName = "kcc-proto-spec"
+				}
+				if strings.Contains(comment, codegen.KCCProtoMessageAnnotationObservedState) {
+					toolName = "kcc-proto-observedstate"
+				}
 				dataPoint := &DataPoint{
 					Description: description,
 					Type:        toolName,
 				}
 
-				proto := strings.TrimPrefix(comment, "+kcc:proto=")
 				dataPoint.SetInput("proto.message", proto)
 
 				var bb bytes.Buffer

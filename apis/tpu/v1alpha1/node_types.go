@@ -23,7 +23,7 @@ import (
 var TPUVirtualMachineGVK = GroupVersion.WithKind("TPUVirtualMachine")
 
 // TPUVirtualMachineSpec defines the desired state of TPUVirtualMachine
-// +kcc:proto=google.cloud.tpu.v2.Node
+// +kcc:spec:proto=google.cloud.tpu.v2.Node
 type TPUVirtualMachineSpec struct {
 	// Immutable. The location where the TPU virtual machine should reside.
 	// +required
@@ -127,7 +127,7 @@ type TPUVirtualMachineStatus struct {
 }
 
 // TPUVirtualMachineObservedState is the state of the TPUVirtualMachine resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.tpu.v2.Node
+// +kcc:observedstate:proto=google.cloud.tpu.v2.Node
 type TPUVirtualMachineObservedState struct {
 
 	/* NOTYET - EXTERNALREF

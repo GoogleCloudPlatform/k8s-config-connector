@@ -35,7 +35,7 @@ type Parent struct {
 }
 
 // ComposerEnvironmentSpec defines the desired state of ComposerEnvironment
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.Environment
+// +kcc:spec:proto=google.cloud.orchestration.airflow.service.v1.Environment
 type ComposerEnvironmentSpec struct {
 	Parent `json:",inline"`
 
@@ -79,7 +79,7 @@ type ComposerEnvironmentStatus struct {
 }
 
 // ComposerEnvironmentObservedState is the state of the ComposerEnvironment resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.Environment
+// +kcc:observedstate:proto=google.cloud.orchestration.airflow.service.v1.Environment
 type ComposerEnvironmentObservedState struct {
 	// Optional. Configuration parameters for this environment.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.Environment.config
@@ -252,7 +252,7 @@ type EnvironmentConfig struct {
 	DataRetentionConfig *DataRetentionConfig `json:"dataRetentionConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig
+// +kcc:observedstate:proto=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig
 type EnvironmentConfigObservedState struct {
 	// Output only. The Kubernetes Engine cluster used to run this environment.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.gke_cluster
@@ -511,7 +511,7 @@ type PrivateEnvironmentConfig struct {
 	NetworkingConfig *NetworkingConfig `json:"networkingConfig,omitempty"`
 }
 
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig
+// +kcc:observedstate:proto=google.cloud.orchestration.airflow.service.v1.PrivateEnvironmentConfig
 type PrivateEnvironmentConfigObservedState struct {
 	// Optional. Configuration for the private GKE cluster for a Private IP
 	//  Cloud Composer environment.

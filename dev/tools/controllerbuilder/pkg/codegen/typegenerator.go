@@ -214,7 +214,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := GoNameForProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
+	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationMisc, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
@@ -231,7 +231,7 @@ func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	goType := goNameForOutputProtoMessage(msg)
 
 	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotation, msg.FullName())
+	fmt.Fprintf(out, "// %s=%s\n", KCCProtoMessageAnnotationObservedState, msg.FullName())
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i, field := range msgDetails.OutputFields {
 		if !IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {

@@ -23,7 +23,7 @@ import (
 var CloudDeployDeliveryPipelineGVK = GroupVersion.WithKind("CloudDeployDeliveryPipeline")
 
 // DeliveryPipelineSpec defines the desired state of DeployDeliveryPipeline
-// +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
+// +kcc:spec:proto=google.cloud.deploy.v1.DeliveryPipeline
 type DeliveryPipelineSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 
@@ -89,7 +89,7 @@ type DeliveryPipelineStatus struct {
 }
 
 // DeliveryPipelineObservedState is the state of the DeployDeliveryPipeline resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.deploy.v1.DeliveryPipeline
+// +kcc:observedstate:proto=google.cloud.deploy.v1.DeliveryPipeline
 type DeliveryPipelineObservedState struct {
 	// Output only. Unique identifier of the `DeliveryPipeline`.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.uid

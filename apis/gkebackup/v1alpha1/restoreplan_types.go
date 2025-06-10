@@ -176,7 +176,7 @@ type RestoreConfig_VolumeDataRestorePolicyBinding struct {
 }
 
 // GKEBackupRestorePlanSpec defines the desired state of GKEBackupRestorePlan
-// +kcc:proto=google.cloud.gkebackup.v1.RestorePlan
+// +kcc:spec:proto=google.cloud.gkebackup.v1.RestorePlan
 type GKEBackupRestorePlanSpec struct {
 	// The GKEBackupRestorePlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -228,7 +228,7 @@ type GKEBackupRestorePlanStatus struct {
 }
 
 // GKEBackupRestorePlanObservedState is the state of the GKEBackupRestorePlan resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.gkebackup.v1.RestorePlan
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.RestorePlan
 type GKEBackupRestorePlanObservedState struct {
 	// Output only. The full name of the RestorePlan resource.
 	//  Format: `projects/*/locations/*/restorePlans/*`.

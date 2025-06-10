@@ -24,7 +24,7 @@ import (
 var ApigeeEndpointAttachmentGVK = GroupVersion.WithKind("ApigeeEndpointAttachment")
 
 // ApigeeEndpointAttachmentSpec defines the desired state of ApigeeEndpointAttachment
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment
 type ApigeeEndpointAttachmentSpec struct {
 	// Reference to parent Apigee Organization.
 	// +required
@@ -60,7 +60,7 @@ type ApigeeEndpointAttachmentStatus struct {
 }
 
 // ApigeeEndpointAttachmentObservedState is the state of the ApigeeEndpointAttachment resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment
+// +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment
 type ApigeeEndpointAttachmentObservedState struct {
 	// Output only. State of the endpoint attachment connection to the service attachment.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EndpointAttachment.connection_state

@@ -1,4 +1,4 @@
-POST https://cloudidentity.googleapis.com/v1beta1/groups?alt=json&initialGroupConfig=WITH_INITIAL_OWNER&prettyPrint=false
+POST https://cloudidentity.googleapis.com/v1beta1/groups?alt=json&initialGroupConfig=WITH_INITIAL_OWNER
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -45,7 +45,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -80,7 +81,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -118,21 +120,17 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false&updateMask=description%2Cdisplay_name%2Clabels
+PATCH https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&updateMask=displayName%2Cdescription%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Nope, this is still a test, just updated.",
   "displayName": "Updated Cloud Identity Group Name",
-  "groupKey": {
-    "id": "${uniqueId}-group@${ISOLATED_TEST_ORG_NAME}"
-  },
   "labels": {
     "cloudidentity.googleapis.com/groups.discussion_forum": "",
     "cloudidentity.googleapis.com/groups.security": ""
-  },
-  "parent": "customers/C00qzcxfe"
+  }
 }
 
 200 OK
@@ -165,7 +163,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -204,7 +203,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json&prettyPrint=false
+DELETE https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -219,4 +219,28 @@ X-Xss-Protection: 0
 
 {
   "done": true
+}
+
+---
+
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Error(2017): Permission denied for group resource 'groups/${groupID}' (or it may not exist).",
+    "status": "PERMISSION_DENIED"
+  }
 }

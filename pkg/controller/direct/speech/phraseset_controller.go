@@ -34,7 +34,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -169,9 +169,11 @@ func (a *phraseSetAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if !reflect.DeepEqual(resource.Phrases, a.actual.Phrases) {
 		paths = append(paths, "phrases")
 	}
+	/* NOTYET
 	if !reflect.DeepEqual(resource.Boost, a.actual.Boost) {
 		paths = append(paths, "boost")
 	}
+	*/
 	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
 		paths = append(paths, "display_name")
 	}

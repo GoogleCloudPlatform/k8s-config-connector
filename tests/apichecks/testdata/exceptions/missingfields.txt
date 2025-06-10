@@ -2159,8 +2159,6 @@
 [missing_field] crd=iampolicymembers.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.condition.expression" is not set in unstructured objects
 [missing_field] crd=iampolicymembers.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.condition.title" is not set in unstructured objects
 [missing_field] crd=iamserviceaccountkeys.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.publicKeyData" is not set in unstructured objects
-[missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=iamserviceaccounts.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.disabled" is not set in unstructured objects
 [missing_field] crd=iamworkforcepoolproviders.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.oidc.clientSecret.value.plainText.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.domains[]" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.allowedDomainsSettings.enable" is not set in unstructured objects
@@ -3045,6 +3043,26 @@
 [missing_field] crd=networkservicestlsroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.gateways[].namespace" is not set in unstructured objects
 [missing_field] crd=networkservicestlsroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.meshes[].external" is not set in unstructured objects
 [missing_field] crd=networkservicestlsroutes.networkservices.cnrm.cloud.google.com version=v1beta1: field ".spec.meshes[].namespace" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.acceleratorConfig.coreCount" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.acceleratorConfig.type" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.canIPForward" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.containerImage.tag" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.customGpuDriverPath" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.key" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.reservationAffinity.values[]" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].action" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].containerImage" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].createTime" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].framework" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].snapshot" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].state" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].targetImage" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].targetVersion" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].version" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.upgradeHistory[].vmImage" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageFamily" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageName" is not set in unstructured objects
+[missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.project" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instanceNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].external" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].namespace" is not set in unstructured objects
@@ -3118,29 +3136,7 @@
 [missing_field] crd=privatecacertificates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.pemCsr" is not set in unstructured objects
 [missing_field] crd=privatecacertificatetemplates.privateca.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=projects.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.dropUnknownFields" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.useTopicSchema" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.bigqueryConfig.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.avroConfig.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.filenamePrefix" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.filenameSuffix" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxBytes" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.maxDuration" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudStorageConfig.state" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.deadLetterTopicRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.deadLetterPolicy.maxDeliveryAttempts" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.enableMessageOrdering" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.expirationPolicy.ttl" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.filter" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.noWrapper.writeMetadata" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.oidcToken.audience" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.oidcToken.serviceAccountEmail" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.pushConfig.pushEndpoint" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.maximumBackoff" is not set in unstructured objects
-[missing_field] crd=pubsubsubscriptions.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.retryPolicy.minimumBackoff" is not set in unstructured objects
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageRetentionDuration" is not set in unstructured objects
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafService" is not set in unstructured objects
@@ -3306,13 +3302,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.pricingPlan" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.replicationType" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.allowedFailedAttempts" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.enableFailedAttemptsCheck" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.enablePasswordVerification" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.passwordExpirationDuration" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.status[].locked" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.status[].passwordExpirationTime" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.type" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].maxAgeSeconds" is not set in unstructured objects

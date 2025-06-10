@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -19,8 +19,6 @@ spec:
     gkeCluster:
       resourceRef:
         name: containercluster-${uniqueId}
-  externalId: c772f869-1d6c-4d50-a92e-816c48322246
-  infrastructureType: MULTI_CLOUD
   location: global
   resourceID: gkehubmembership-${uniqueId}
 status:

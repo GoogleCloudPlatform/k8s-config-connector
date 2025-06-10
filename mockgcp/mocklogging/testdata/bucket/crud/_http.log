@@ -1,0 +1,147 @@
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=test-bucket-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Initial description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "buckets": [
+    {
+      "description": "Default bucket",
+      "lifecycleState": "ACTIVE",
+      "name": "projects/${projectId}/locations/global/buckets/_Default",
+      "retentionDays": 30
+    },
+    {
+      "description": "Audit bucket",
+      "lifecycleState": "ACTIVE",
+      "locked": true,
+      "name": "projects/${projectId}/locations/global/buckets/_Required",
+      "retentionDays": 400
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "Initial description",
+      "lifecycleState": "ACTIVE",
+      "name": "projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}",
+      "retentionDays": 30,
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}?alt=json&updateMask=description
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Updated description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/test-bucket-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

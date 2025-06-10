@@ -145,6 +145,8 @@ securesourcemanagerinstancecmek|\
 securesourcemanagerrepositorybasic|\
 securesourcemanagerrepositoryfull|\
 sqlinstanceencryptionkey|\
+storageanywherecache-base|\
+storageanywherecache-full|\
 subnetconnector|\
 vertexaidatasetencryptionkey|\
 vertexaiendpointencryptionkey|\

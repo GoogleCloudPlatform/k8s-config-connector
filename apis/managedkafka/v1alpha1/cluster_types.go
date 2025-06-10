@@ -79,7 +79,7 @@ type GcpConfig struct {
 }
 
 // ManagedKafkaClusterSpec defines the desired state of ManagedKafkaCluster
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
+// +kcc:spec:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterSpec struct {
 	commonv1alpha1.CommonSpec `json:",inline"`
 
@@ -134,7 +134,7 @@ type ManagedKafkaClusterStatus struct {
 }
 
 // ManagedKafkaClusterObservedState is the state of the ManagedKafkaCluster resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.managedkafka.v1.Cluster
+// +kcc:observedstate:proto=google.cloud.managedkafka.v1.Cluster
 type ManagedKafkaClusterObservedState struct {
 	// Output only. The time when the cluster was created.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.Cluster.create_time

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -23,7 +24,7 @@ import (
 var DataprocBatchGVK = GroupVersion.WithKind("DataprocBatch")
 
 // DataprocBatchSpec defines the desired state of DataprocBatch
-// +kcc:proto=google.cloud.dataproc.v1.Batch
+// +kcc:spec:proto=google.cloud.dataproc.v1.Batch
 type DataprocBatchSpec struct {
 	// Optional. PySpark batch config.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.pyspark_batch
@@ -201,7 +202,7 @@ type DataprocBatchStatus struct {
 }
 
 // DataprocBatchObservedState is the state of the DataprocBatch resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.dataproc.v1.Batch
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.Batch
 type DataprocBatchObservedState struct {
 	// Output only. A batch UUID (Unique Universal Identifier). The service
 	//  generates this value when it creates the batch.
@@ -434,7 +435,7 @@ type SparkHistoryServerConfig struct {
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
-	DataprocClusterRef *v1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.UsageMetrics
@@ -501,7 +502,7 @@ type UsageSnapshot struct {
 	SnapshotTime *string `json:"snapshotTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.Batch.StateHistory
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.Batch.StateHistory
 type Batch_StateHistoryObservedState struct {
 	// Output only. The state of the batch at this point in history.
 	// +kcc:proto:field=google.cloud.dataproc.v1.Batch.StateHistory.state
@@ -516,7 +517,7 @@ type Batch_StateHistoryObservedState struct {
 	StateStartTime *string `json:"stateStartTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataproc.v1.RuntimeInfo
+// +kcc:observedstate:proto=google.cloud.dataproc.v1.RuntimeInfo
 type RuntimeInfoObservedState struct {
 	// Output only. Map of remote access endpoints (such as web interfaces and
 	//  APIs) to their URIs.

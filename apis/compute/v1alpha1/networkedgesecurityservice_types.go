@@ -31,7 +31,7 @@ type ComputeNetworkEdgeSecurityServiceParent struct {
 }
 
 // ComputeNetworkEdgeSecurityServiceSpec defines the desired state of ComputeNetworkEdgeSecurityService
-// +kcc:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
+// +kcc:spec:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
 type ComputeNetworkEdgeSecurityServiceSpec struct {
 	ComputeNetworkEdgeSecurityServiceParent `json:",inline"`
 	// The ComputeNetworkEdgeSecurityService name. If not given, the metadata.name will be used.
@@ -64,7 +64,7 @@ type ComputeNetworkEdgeSecurityServiceStatus struct {
 }
 
 // ComputeNetworkEdgeSecurityServiceObservedState is the state of the ComputeNetworkEdgeSecurityService resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
+// +kcc:observedstate:proto=google.cloud.compute.v1.NetworkEdgeSecurityService
 type ComputeNetworkEdgeSecurityServiceObservedState struct {
 	// [Output Only] Creation timestamp in RFC3339 text format.
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEdgeSecurityService.creation_timestamp

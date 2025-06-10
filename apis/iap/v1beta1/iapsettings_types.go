@@ -66,7 +66,7 @@ type AppEngineRef struct {
 }
 
 // IAPSettingsSpec defines the desired state of IAPSettings
-// +kcc:proto=google.cloud.iap.v1.IapSettings
+// +kcc:spec:proto=google.cloud.iap.v1.IapSettings
 type IAPSettingsSpec struct {
 	// The IAPSettings name.
 	ResourceID *string `json:"resourceID,omitempty"`

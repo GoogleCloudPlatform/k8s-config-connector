@@ -14,7 +14,7 @@
 
 package v1alpha1
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus
+// +kcc:status:proto=mockgcp.cloud.networkconnectivity.v1.GoogleRpcStatus
 type GoogleRpcStatus struct {
 	// The status code, which should be an enum value of google.rpc.Code.
 	Code *int32 `json:"code,omitempty"`

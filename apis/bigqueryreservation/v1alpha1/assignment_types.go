@@ -23,7 +23,7 @@ import (
 var BigQueryReservationAssignmentGVK = GroupVersion.WithKind("BigQueryReservationAssignment")
 
 // BigQueryReservationAssignmentSpec defines the desired state of BigQueryReservationAssignment
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
+// +kcc:spec:proto=google.cloud.bigquery.reservation.v1.Assignment
 type BigQueryReservationAssignmentSpec struct {
 	// The name of reservation to create a new assignment in,
 	//  or to move the assignment to.
@@ -69,7 +69,7 @@ type BigQueryReservationAssignmentStatus struct {
 }
 
 // BigQueryReservationAssignmentObservedState is the state of the BigQueryReservationAssignment resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
+// +kcc:observedstate:proto=google.cloud.bigquery.reservation.v1.Assignment
 type BigQueryReservationAssignmentObservedState struct {
 	// State of the assignment.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.Assignment.state

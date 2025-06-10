@@ -24,7 +24,7 @@ import (
 var NetworkServicesServiceBindingGVK = GroupVersion.WithKind("NetworkServicesServiceBinding")
 
 // NetworkServicesServiceBindingSpec defines the desired state of NetworkServicesServiceBinding
-// +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
+// +kcc:spec:proto=google.cloud.networkservices.v1.ServiceBinding
 type NetworkServicesServiceBindingSpec struct {
 
 	// Optional. A free-text description of the resource. Max length 1024
@@ -72,7 +72,7 @@ type NetworkServicesServiceBindingStatus struct {
 }
 
 // NetworkServicesServiceBindingObservedState is the state of the NetworkServicesServiceBinding resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.networkservices.v1.ServiceBinding
+// +kcc:observedstate:proto=google.cloud.networkservices.v1.ServiceBinding
 type NetworkServicesServiceBindingObservedState struct {
 	// Output only. The timestamp when the resource was created.
 	// +kcc:proto:field=google.cloud.networkservices.v1.ServiceBinding.create_time

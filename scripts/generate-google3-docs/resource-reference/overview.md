@@ -654,11 +654,11 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogview.md">LoggingLogView</a></td>
 </tr>
 <tr>
-  <td><a href="/managed-service-for-apache-kafka/docs">{{managedkafka_name}}</a></td>
+  <td><a href="/managed-service-for-apache-kafka/docs">{{managed_kafka_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md">ManagedKafkaCluster</a></td>
 </tr>
 <tr>
-  <td><a href="/managed-service-for-apache-kafka/docs">{{managedkafka_name}}</a></td>
+  <td><a href="/managed-service-for-apache-kafka/docs">{{managed_kafka_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic.md">ManagedKafkaTopic</a></td>
 </tr>
 <tr>
@@ -708,6 +708,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/network-connectivity/docs/">{{network_connectivity}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/networkconnectivity/networkconnectivityspoke.md">NetworkConnectivitySpoke</a></td>
+</tr>
+<tr>
+  <td><a href="/notebooks/docs/">Notebooks</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/notebooks/notebookinstance.md">NotebooksInstance</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/osconfig/rest/">OS Config</a></td>
@@ -798,11 +802,11 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md">SecretManagerSecretVersion</a></td>
 </tr>
 <tr>
-  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/secure-source-manager/docs/">{{ssm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md">SecureSourceManagerInstance</a></td>
 </tr>
 <tr>
-  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/secure-source-manager/docs/">{{ssm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md">SecureSourceManagerRepository</a></td>
 </tr>
 <tr>
@@ -832,6 +836,18 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/source-repositories/docs/">{{source_repos_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md">SourceRepoRepository</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechcustomclass.md">SpeechCustomClass</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechphraseset.md">SpeechPhraseSet</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechrecognizer.md">SpeechRecognizer</a></td>
 </tr>
 <tr>
   <td><a href="/spanner/docs/">{{spanner_name}}</a></td>
@@ -932,6 +948,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md">VertexAIIndex</a></td>
+</tr>
+<tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md">VertexAIMetadataStore</a></td>
 </tr>
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>

@@ -23,7 +23,7 @@ import (
 var CertificateManagerDNSAuthorizationGVK = GroupVersion.WithKind("CertificateManagerDNSAuthorization")
 
 // CertificateManagerDNSAuthorizationSpec defines the desired state of CertificateManagerDNSAuthorization
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization
+// +kcc:spec:proto=google.cloud.certificatemanager.v1.DnsAuthorization
 type CertificateManagerDNSAuthorizationSpec struct {
 	/* A human-readable description of the resource. */
 	// +optional
@@ -77,7 +77,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 
 /* NOTYET
 // CertificateManagerDNSAuthorizationSpec defines the desired state of CertificateManagerDNSAuthorization
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization
+// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.DnsAuthorization
 type CertificateManagerDNSAuthorizationObservedState struct {
 }
 */

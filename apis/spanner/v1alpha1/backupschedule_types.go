@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +24,7 @@ import (
 var SpannerBackupScheduleGVK = GroupVersion.WithKind("SpannerBackupSchedule")
 
 // SpannerBackupScheduleSpec defines the desired state of SpannerBackupSchedule
-// +kcc:proto=google.spanner.admin.database.v1.BackupSchedule
+// +kcc:spec:proto=google.spanner.admin.database.v1.BackupSchedule
 type SpannerBackupScheduleSpec struct {
 	// Optional. The schedule specification based on which the backup creations
 	//  are triggered.
@@ -53,7 +54,7 @@ type SpannerBackupScheduleSpec struct {
 	IncrementalBackupSpec *IncrementalBackupSpec `json:"incrementalBackupSpec,omitempty"`
 
 	// Required. The spanner database that this backup applies to.
-	DatabaseRef *refs.SpannerDatabaseRef `json:"spannerDatabaseRef,omitempty"`
+	DatabaseRef *spannerv1beta1.SpannerDatabaseRef `json:"spannerDatabaseRef,omitempty"`
 
 	// The SpannerBackupSchedule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -109,7 +110,7 @@ type SpannerBackupScheduleStatus struct {
 }
 
 // SpannerBackupScheduleObservedState is the state of the SpannerBackupSchedule resource as most recently observed in GCP.
-// +kcc:proto=google.spanner.admin.database.v1.BackupSchedule
+// +kcc:observedstate:proto=google.spanner.admin.database.v1.BackupSchedule
 type SpannerBackupScheduleObservedState struct {
 
 	// Output only. The timestamp at which the schedule was last updated.

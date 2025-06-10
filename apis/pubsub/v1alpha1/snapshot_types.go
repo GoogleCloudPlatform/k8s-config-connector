@@ -28,7 +28,7 @@ type Parent struct {
 }
 
 // PubSubSnapshotSpec defines the desired state of PubSubSnapshot
-// +kcc:proto=google.pubsub.v1.Snapshot
+// +kcc:spec:proto=google.pubsub.v1.Snapshot
 type PubSubSnapshotSpec struct {
 	Parent `json:",inline"`
 
@@ -85,7 +85,7 @@ type PubSubSnapshotStatus struct {
 }
 
 // PubSubSnapshotObservedState is the state of the PubSubSnapshot resource as most recently observed in GCP.
-// +kcc:proto=google.pubsub.v1.Snapshot
+// +kcc:observedstate:proto=google.pubsub.v1.Snapshot
 type PubSubSnapshotObservedState struct {
 }
 

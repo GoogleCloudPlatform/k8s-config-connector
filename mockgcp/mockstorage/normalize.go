@@ -36,6 +36,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	// Managed Folder
 	replacements.ReplacePath(".items[].createTime", "2024-04-01T12:34:56.123456Z")
 	replacements.ReplacePath(".items[].updateTime", "2024-04-01T12:34:56.123456Z")
+
+	// Anywhere Cache
+	replacements.ReplacePath(".requestId", "1234")
+
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

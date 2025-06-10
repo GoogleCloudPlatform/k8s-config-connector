@@ -22,7 +22,7 @@ import (
 var GKEBackupBackupGVK = GroupVersion.WithKind("GKEBackupBackup")
 
 // GKEBackupBackupSpec defines the desired state of GKEBackupBackup
-// +kcc:proto=google.cloud.gkebackup.v1.Backup
+// +kcc:spec:proto=google.cloud.gkebackup.v1.Backup
 type GKEBackupBackupSpec struct {
 	// The GKEBackupBackup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -86,7 +86,7 @@ type GKEBackupBackupStatus struct {
 }
 
 // GKEBackupBackupObservedState is the state of the GKEBackupBackup resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.gkebackup.v1.Backup
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.Backup
 type GKEBackupBackupObservedState struct {
 	// Output only. The fully qualified name of the Backup.
 	//  `projects/*/locations/*/backupPlans/*/backups/*`
@@ -255,7 +255,7 @@ func init() {
 	SchemeBuilder.Register(&GKEBackupBackup{}, &GKEBackupBackupList{})
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.Backup.ClusterMetadata
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.Backup.ClusterMetadata
 type Backup_ClusterMetadataObservedState struct {
 	// Output only. The source cluster from which this Backup was created.
 	//  Valid formats:
@@ -286,7 +286,7 @@ type Backup_ClusterMetadataObservedState struct {
 	AnthosVersion *string `json:"anthosVersion,omitempty"`
 }
 
-// +kcc:proto=google.cloud.gkebackup.v1.EncryptionKey
+// +kcc:observedstate:proto=google.cloud.gkebackup.v1.EncryptionKey
 type Backup_EncryptionKeyObservedState struct {
 	// Optional. Google Cloud KMS encryption key. Format:
 	//  `projects/*/locations/*/keyRings/*/cryptoKeys/*`

@@ -22,7 +22,7 @@ import (
 var CloudIdentityMembershipGVK = GroupVersion.WithKind("CloudIdentityMembership")
 
 // CloudIdentityMembershipSpec defines the desired state of CloudIdentityMembership
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.Membership
+// +kcc:spec:proto=google.apps.cloudidentity.groups.v1beta1.Membership
 type CloudIdentityMembershipSpec struct {
 	/* Immutable. Optional. The service-generated name of the resource. Format: {membershipID}. Used for acquisition only. Leave unset to create a new resource. */
 	ResourceID *string `json:"resourceID,omitempty"`

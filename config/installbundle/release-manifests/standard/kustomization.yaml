@@ -16,8 +16,8 @@ namespace: configconnector-operator-system
 commonLabels:
   cnrm.cloud.google.com/operator-system: "true"
 commonAnnotations:
-  cnrm.cloud.google.com/operator-version: "1.131.0"
+  cnrm.cloud.google.com/operator-version: "1.132.0"
 resources:
-  - crds.yaml
-  - rbac.yaml
-  - manager.yaml
+  - ../../../../operator/config/rbac
+  - ../../../../operator/config/crd
+  - ../../../../operator/config/manager

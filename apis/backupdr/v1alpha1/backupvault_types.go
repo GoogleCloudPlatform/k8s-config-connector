@@ -22,7 +22,7 @@ import (
 var BackupDRBackupVaultGVK = GroupVersion.WithKind("BackupDRBackupVault")
 
 // BackupDRBackupVaultSpec defines the desired state of BackupDRBackupVault
-// +kcc:proto=google.cloud.backupdr.v1.BackupVault
+// +kcc:spec:proto=google.cloud.backupdr.v1.BackupVault
 type BackupDRBackupVaultSpec struct {
 	// The BackupDRBackupVault name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -90,7 +90,7 @@ type BackupDRBackupVaultStatus struct {
 }
 
 // BackupDRBackupVaultObservedState is the state of the BackupDRBackupVault resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.backupdr.v1.BackupVault
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.BackupVault
 type BackupDRBackupVaultObservedState struct {
 	// Output only. Identifier. Name of the backup vault to create. It must have
 	//  the

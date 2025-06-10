@@ -23,7 +23,7 @@ import (
 var CloudDMSConversionWorkspaceGVK = GroupVersion.WithKind("CloudDMSConversionWorkspace")
 
 // CloudDMSConversionWorkspaceSpec defines the desired state of CloudDMSConversionWorkspace
-// +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspace
+// +kcc:spec:proto=google.cloud.clouddms.v1.ConversionWorkspace
 type CloudDMSConversionWorkspaceSpec struct {
 	// The CloudDMSConversionWorkspace name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -74,7 +74,7 @@ type CloudDMSConversionWorkspaceStatus struct {
 }
 
 // CloudDMSConversionWorkspaceObservedState is the state of the CloudDMSConversionWorkspace resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspace
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.ConversionWorkspace
 type CloudDMSConversionWorkspaceObservedState struct {
 	// Output only. Whether the workspace has uncommitted changes (changes which
 	//  were made after the workspace was committed).

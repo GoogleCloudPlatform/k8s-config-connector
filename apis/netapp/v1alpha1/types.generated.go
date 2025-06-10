@@ -52,7 +52,7 @@ type BackupPolicy struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-// +kcc:proto=google.cloud.netapp.v1.BackupPolicy
+// +kcc:observedstate:proto=google.cloud.netapp.v1.BackupPolicy
 type BackupPolicyObservedState struct {
 	// Output only. The total number of volumes assigned by this backup policy.
 	// +kcc:proto:field=google.cloud.netapp.v1.BackupPolicy.assigned_volume_count

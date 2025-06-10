@@ -1,6 +1,6 @@
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,9 +22,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships?alt=json&membershipId=${membershipID}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "authority": {
@@ -33,7 +33,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}"
     }
   },
   "labels": {
@@ -64,9 +64,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}/operations/${operationID}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
     "description": "A sample GKE Hub membership",
     "endpoint": {
       "gkeCluster": {
-        "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+        "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}"
       }
     },
     "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
@@ -117,9 +117,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/${membershipID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -141,7 +141,7 @@ X-Xss-Protection: 0
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}"
     }
   },
   "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",

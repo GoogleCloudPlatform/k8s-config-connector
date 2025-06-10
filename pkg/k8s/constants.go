@@ -39,6 +39,8 @@ const (
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"
+	Creating                             = "Creating"
+	CreatingMessage                      = "The resource is being created"
 	CreatedMessage                       = "Successfully created"
 	CreateFailed                         = "CreateFailed"
 	CreateFailedMessageTmpl              = "Create call failed: %v"
@@ -74,9 +76,9 @@ const (
 	SupportsSSAManager            = "supports-ssa"
 
 	// State into spec annotation values
-	StateMergeIntoSpec               = "merge"
-	StateAbsentInSpec                = "absent"
-	StateIntoSpecDefaultValueV1Beta1 = StateAbsentInSpec
+	StateIntoSpecAnnotation = "cnrm.cloud.google.com/state-into-spec"
+	StateMergeIntoSpec      = "merge"
+	StateAbsentInSpec       = "absent"
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
@@ -128,11 +130,8 @@ var (
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
 
-	StateIntoSpecAnnotation       = FormatAnnotation("state-into-spec")
-	StateIntoSpecAnnotationValues = []string{
-		StateMergeIntoSpec,
-		StateAbsentInSpec,
-	}
+	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
+
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)
 

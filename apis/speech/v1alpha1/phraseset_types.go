@@ -22,7 +22,7 @@ import (
 var SpeechPhraseSetGVK = GroupVersion.WithKind("SpeechPhraseSet")
 
 // SpeechPhraseSetSpec defines the desired state of SpeechPhraseSet
-// +kcc:proto=google.cloud.speech.v2.PhraseSet
+// +kcc:spec:proto=google.cloud.speech.v2.PhraseSet
 type SpeechPhraseSetSpec struct {
 	// The SpeechPhraseSet name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -40,7 +40,7 @@ type SpeechPhraseSetSpec struct {
 	//  binary search approach to finding the optimal value for your use case as
 	//  well as adding phrases both with and without boost to your requests.
 	// +kcc:proto:field=google.cloud.speech.v2.PhraseSet.boost
-	Boost *string `json:"boost,omitempty"`
+	/* NOTYET Boost *string `json:"boost,omitempty"` */
 
 	// User-settable, human-readable name for the PhraseSet. Must be 63
 	//  characters or less.
@@ -71,7 +71,7 @@ type SpeechPhraseSetStatus struct {
 }
 
 // SpeechPhraseSetObservedState is the state of the SpeechPhraseSet resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.speech.v2.PhraseSet
+// +kcc:observedstate:proto=google.cloud.speech.v2.PhraseSet
 type SpeechPhraseSetObservedState struct {
 	// Output only. Identifier. The resource name of the PhraseSet.
 	//  Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`.

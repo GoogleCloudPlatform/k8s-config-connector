@@ -41,7 +41,7 @@ type Parent struct {
 }
 
 // WorkflowsWorkflowSpec defines the desired state of Workflow
-// +kcc:proto=google.cloud.workflows.v1.Workflow
+// +kcc:spec:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
 	Parent `json:",inline"`
 
@@ -110,7 +110,7 @@ type WorkflowsWorkflowStatus struct {
 }
 
 // WorkflowsWorkflowObservedState is the state of the Workflow resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.workflows.v1.Workflow
+// +kcc:observedstate:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowObservedState struct {
 	// State of the workflow deployment.
 	State *string `json:"state,omitempty"`

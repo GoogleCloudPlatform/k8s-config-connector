@@ -26,7 +26,7 @@ var FirestoreDatabaseGVK = GroupVersion.WithKind("FirestoreDatabase")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
-// +kcc:proto=google.firestore.admin.v1.Database
+// +kcc:spec:proto=google.firestore.admin.v1.Database
 type FirestoreDatabaseSpec struct {
 	// Immutable. The Project that this resource belongs to.
 	ProjectRef v1beta1.ProjectRef `json:"projectRef"`
@@ -67,7 +67,7 @@ type FirestoreDatabaseStatus struct {
 }
 
 // FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
-// +kcc:proto=google.firestore.admin.v1.Database
+// +kcc:observedstate:proto=google.firestore.admin.v1.Database
 type FirestoreDatabaseObservedState struct {
 	// Output only. The system-generated UUID4 for this Database.
 	Uid *string `json:"uid,omitempty"`

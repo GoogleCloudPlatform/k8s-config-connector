@@ -203,15 +203,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The Spanner Database selfLink, when not managed
-                          by Config Connector.
+                        description: A reference to an externally managed SpannerDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SpannerDatabase` resource.
+                        description: The name of a SpannerDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SpannerDatabase`
-                          resource.
+                        description: The namespace of a SpannerDatabase resource.
                         type: string
                     type: object
                   databaseRole:
@@ -326,13 +325,31 @@ spec:
                            Example:
 
                            * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Metastore
-                              service , when not managed by Config Connector.
+                            description: A reference to an externally managed MetastoreService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                             type: string
-                        required:
-                        - external
+                          name:
+                            description: The name of a MetastoreService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MetastoreService resource.
+                            type: string
                         type: object
                     type: object
                   sparkHistoryServer:
@@ -363,15 +380,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Cluster
-                              to act as a Spark History Server for the connection
-                              , when not managed by Config Connector.
+                            description: A reference to an externally managed DataprocCluster
+                              resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
                             type: string
                           name:
-                            description: The `name` field of a Dataproc Cluster.
+                            description: The name of a DataprocCluster resource.
                             type: string
                           namespace:
-                            description: The `namespace` field of a Dataproc Cluster.
+                            description: The namespace of a DataprocCluster resource.
                             type: string
                         type: object
                     type: object
@@ -700,15 +716,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: The Spanner Database selfLink, when not managed
-                          by Config Connector.
+                        description: A reference to an externally managed SpannerDatabase
+                          resource. Should be in the format "projects/{{projectID}}/instances/{{instanceID}}/databases/{{databaseID}}".
                         type: string
                       name:
-                        description: The `name` field of a `SpannerDatabase` resource.
+                        description: The name of a SpannerDatabase resource.
                         type: string
                       namespace:
-                        description: The `namespace` field of a `SpannerDatabase`
-                          resource.
+                        description: The namespace of a SpannerDatabase resource.
                         type: string
                     type: object
                   databaseRole:
@@ -823,13 +838,31 @@ spec:
                            Example:
 
                            * `projects/[project_id]/locations/[region]/services/[service_id]`
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Metastore
-                              service , when not managed by Config Connector.
+                            description: A reference to an externally managed MetastoreService
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                             type: string
-                        required:
-                        - external
+                          name:
+                            description: The name of a MetastoreService resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a MetastoreService resource.
+                            type: string
                         type: object
                     type: object
                   sparkHistoryServer:
@@ -860,15 +893,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The self-link of an existing Dataproc Cluster
-                              to act as a Spark History Server for the connection
-                              , when not managed by Config Connector.
+                            description: A reference to an externally managed DataprocCluster
+                              resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
                             type: string
                           name:
-                            description: The `name` field of a Dataproc Cluster.
+                            description: The name of a DataprocCluster resource.
                             type: string
                           namespace:
-                            description: The `namespace` field of a Dataproc Cluster.
+                            description: The namespace of a DataprocCluster resource.
                             type: string
                         type: object
                     type: object

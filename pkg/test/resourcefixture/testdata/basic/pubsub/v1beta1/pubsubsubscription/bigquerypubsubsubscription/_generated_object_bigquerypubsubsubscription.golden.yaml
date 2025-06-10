@@ -16,8 +16,11 @@ metadata:
   namespace: ${uniqueId}
 spec:
   bigqueryConfig:
+    dropUnknownFields: false
     tableRef:
       name: bigquerytable-2-${uniqueId}
+    useTopicSchema: false
+    writeMetadata: false
   resourceID: pubsubsubscription-${uniqueId}
   topicRef:
     name: pubsubtopic-${uniqueId}

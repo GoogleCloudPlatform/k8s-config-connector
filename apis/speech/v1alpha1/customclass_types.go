@@ -22,7 +22,7 @@ import (
 var SpeechCustomClassGVK = GroupVersion.WithKind("SpeechCustomClass")
 
 // SpeechCustomClassSpec defines the desired state of SpeechCustomClass
-// +kcc:proto=google.cloud.speech.v2.CustomClass
+// +kcc:spec:proto=google.cloud.speech.v2.CustomClass
 type SpeechCustomClassSpec struct {
 	// The SpeechCustomClass name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -62,7 +62,7 @@ type SpeechCustomClassStatus struct {
 }
 
 // SpeechCustomClassObservedState is the state of the SpeechCustomClass resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.speech.v2.CustomClass
+// +kcc:observedstate:proto=google.cloud.speech.v2.CustomClass
 type SpeechCustomClassObservedState struct {
 	// Output only. Identifier. The resource name of the CustomClass.
 	//  Format:

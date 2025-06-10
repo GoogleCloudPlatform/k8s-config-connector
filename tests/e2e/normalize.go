@@ -113,6 +113,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	//Specific to Dataproc
 	visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.stateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.status.stateStartTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
 
 	// Specific to Firestore
@@ -332,6 +334,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.reachabilityDetails.verifyTime"] = "2025-01-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.reachabilityDetails.traces[].endpointInfo.sourcePort"] = "12345"
 
+	// Specific to OrgPolicy
+	visitor.replacePaths[".status.observedState.spec.updateTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
@@ -495,6 +500,18 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, groupId, "${groupID}")
 				})
+			case "memberships":
+				// e.g. "groups/194f77d03ad/memberships/196a3927214"
+				if n >= 3 {
+					groupId := tokens[len(tokens)-3]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, groupId, "${groupID}")
+					})
+					membershipId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, membershipId, "${membershipID}")
+					})
+				}
 			}
 		}
 
@@ -941,10 +958,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
 
 	// Common variables
+	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.etag"] = "abcdef0123A="
 	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
 	visitor.replacePaths[".response.uniqueId"] = "12345678"
+	visitor.replacePaths[".response.uid"] = "111111111111111111111"
 	visitor.replacePaths[".response.startTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".response.endTime"] = "2024-04-01T12:34:56.123456Z"
 

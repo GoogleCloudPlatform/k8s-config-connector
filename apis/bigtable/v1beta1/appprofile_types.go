@@ -27,7 +27,7 @@ type BigtableAppProfileParent struct {
 }
 
 // BigtableAppProfileSpec defines the desired state of BigtableAppProfile
-// +kcc:proto=google.bigtable.admin.v2.AppProfile
+// +kcc:spec:proto=google.bigtable.admin.v2.AppProfile
 type BigtableAppProfileSpec struct {
 	// The BigtableAppProfile name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -82,7 +82,7 @@ type BigtableAppProfileStatus struct {
 }
 
 // BigtableAppProfileObservedState is the state of the BigtableAppProfile resource as most recently observed in GCP.
-// +kcc:proto=google.bigtable.admin.v2.AppProfile
+// +kcc:observedstate:proto=google.bigtable.admin.v2.AppProfile
 type BigtableAppProfileObservedState struct {
 }
 

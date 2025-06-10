@@ -24,7 +24,7 @@ import (
 var ApigeeEnvgroupAttachmentGVK = GroupVersion.WithKind("ApigeeEnvgroupAttachment")
 
 // ApigeeEnvgroupAttachmentSpec defines the desired state of ApigeeEnvgroupAttachment
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
+// +kcc:spec:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
 type ApigeeEnvgroupAttachmentSpec struct {
 	// Reference to parent Environment Group
 	// +required
@@ -55,7 +55,7 @@ type ApigeeEnvgroupAttachmentStatus struct {
 }
 
 // ApigeeEnvgroupAttachmentObservedState is the state of the ApigeeEnvgroupAttachment resource as most recently observed in GCP.
-// +kcc:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
+// +kcc:observedstate:proto=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment
 type ApigeeEnvgroupAttachmentObservedState struct {
 	// Output only. The time at which the environment group attachment was created as milliseconds since epoch.
 	// +kcc:proto:field=mockgcp.cloud.apigee.v1.GoogleCloudApigeeV1EnvironmentGroupAttachment.created_at

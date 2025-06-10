@@ -31,16 +31,11 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
 )
 
-type metricsService struct {
-	*MockService
-	pb.UnimplementedMetricsServiceV2Server
-}
-
-func (s *metricsService) GetLogMetric(ctx context.Context, req *pb.GetLogMetricRequest) (*pb.LogMetric, error) {
+func (s *metricsServiceV2) GetLogMetric(ctx context.Context, req *pb.GetLogMetricRequest) (*pb.LogMetric, error) {
 	name, err := s.parseLogMetricName(req.MetricName)
 	if err != nil {
 		return nil, err
@@ -69,7 +64,7 @@ func redactForReturn(obj *pb.LogMetric) *pb.LogMetric {
 	return redacted
 }
 
-func (s *metricsService) CreateLogMetric(ctx context.Context, req *pb.CreateLogMetricRequest) (*pb.LogMetric, error) {
+func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLogMetricRequest) (*pb.LogMetric, error) {
 	reqName := req.Parent + "/metrics/" + req.GetMetric().GetName()
 	name, err := s.parseLogMetricName(reqName)
 	if err != nil {
@@ -98,7 +93,7 @@ func (s *metricsService) CreateLogMetric(ctx context.Context, req *pb.CreateLogM
 	return redactForReturn(obj), nil
 }
 
-func (s *metricsService) populateDefaultsForLogMetric(name *logMetricName, obj *pb.LogMetric) {
+func (s *metricsServiceV2) populateDefaultsForLogMetric(name *logMetricName, obj *pb.LogMetric) {
 
 	if obj.MetricDescriptor != nil {
 		obj.MetricDescriptor.Name = fmt.Sprintf("projects/%s/metricDescriptors/logging.googleapis.com/user/%s", name.Project.ID, name.MetricName)
@@ -106,7 +101,7 @@ func (s *metricsService) populateDefaultsForLogMetric(name *logMetricName, obj *
 	}
 }
 
-func (s *metricsService) UpdateLogMetric(ctx context.Context, req *pb.UpdateLogMetricRequest) (*pb.LogMetric, error) {
+func (s *metricsServiceV2) UpdateLogMetric(ctx context.Context, req *pb.UpdateLogMetricRequest) (*pb.LogMetric, error) {
 	reqName := req.MetricName
 
 	name, err := s.parseLogMetricName(reqName)
@@ -140,7 +135,7 @@ func (s *metricsService) UpdateLogMetric(ctx context.Context, req *pb.UpdateLogM
 	return redactForReturn(updated), nil
 }
 
-func (s *metricsService) DeleteLogMetric(ctx context.Context, req *pb.DeleteLogMetricRequest) (*empty.Empty, error) {
+func (s *metricsServiceV2) DeleteLogMetric(ctx context.Context, req *pb.DeleteLogMetricRequest) (*empty.Empty, error) {
 	name, err := s.parseLogMetricName(req.MetricName)
 	if err != nil {
 		return nil, err

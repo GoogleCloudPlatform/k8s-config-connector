@@ -26,7 +26,7 @@ var MemorystoreInstanceGVK = GroupVersion.WithKind("MemorystoreInstance")
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // MemorystoreInstanceSpec defines the desired state of MemorystoreInstance
-// +kcc:proto=google.cloud.memorystore.v1beta.Instance
+// +kcc:spec:proto=google.cloud.memorystore.v1beta.Instance
 type MemorystoreInstanceSpec struct {
 	// Optional. Immutable. The MemorystoreInstance name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

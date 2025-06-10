@@ -1,6 +1,6 @@
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -22,14 +22,20 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
 PATCH https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}?alt=json&updateMask=description
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "cleanupPolicies": {},
@@ -60,14 +66,20 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
 GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -89,5 +101,11 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-sample-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "satisfiesPzi": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vulnerabilityScanningConfig": {
+    "enablementState": "SCANNING_DISABLED",
+    "enablementStateReason": "API containerscanning.googleapis.com is not enabled.",
+    "lastEnableTime": "2024-04-01T12:34:56.123456Z"
+  }
 }

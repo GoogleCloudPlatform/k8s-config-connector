@@ -62,7 +62,7 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 		return fmt.Errorf("model is nil for gvk %s", gvk)
 	}
 
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps)
 	if err != nil {
 		return err
 	}
@@ -71,11 +71,13 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
+	gvk schema.GroupVersionKind, model Model, deps Deps) (*DirectReconciler, error) {
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
-	if jg == nil {
+
+	if deps.JitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}
+
 	r := DirectReconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -93,7 +95,8 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: jg,
+		jitterGenerator: deps.JitterGenerator,
+		defaulters:      deps.Defaulters,
 	}
 	return &r, nil
 }
@@ -150,6 +153,7 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 var _ reconcile.Reconciler = &DirectReconciler{}
 
 type Deps struct {
+	Defaulters         []k8s.Defaulter
 	JitterGenerator    jitter.Generator
 	ReconcilePredicate predicate.Predicate
 }
@@ -169,6 +173,8 @@ type DirectReconciler struct {
 	jitterGenerator            jitter.Generator
 
 	controllerName string
+
+	defaulters []k8s.Defaulter
 }
 
 type reconcileContext struct {
@@ -233,6 +239,15 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
+
+	if obj.GetDeletionTimestamp() != nil {
+		if k8s.HasFinalizer(obj, k8s.DeletionDefenderFinalizerName) {
+			// Object is being deleted, but we are waiting on the finalizer
+			// When the finalizer is removed the watch will fire, so no need for time-based re-reconciliation.
+			return reconcile.Result{}, nil
+		}
+	}
+
 	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.gvk, obj)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -246,7 +261,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
-		return true, err
+		return false, err
 	}
 
 	am := resourceactuation.DecideActuationMode(cc, ccc)
@@ -266,6 +281,25 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, nil
 	default:
 		return false, fmt.Errorf("unknown actuation mode %v", am)
+	}
+
+	// Apply defaulters
+	{
+		changeCount := 0
+		for _, defaulter := range r.Reconciler.defaulters {
+			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
+			if err != nil {
+				return false, fmt.Errorf("applying defaults: %w", err)
+			}
+			if changed {
+				changeCount++
+			}
+		}
+		if changeCount > 0 {
+			if err := r.Reconciler.Update(ctx, u); err != nil {
+				return false, fmt.Errorf("applying update after setting defaults: %w", err)
+			}
+		}
 	}
 
 	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
@@ -291,30 +325,41 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
+		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
 		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
 			// Resource has no controller finalizer; no finalization necessary
+			logger.Info("no controller finalizer; no finalization necessary",
+				"resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet finalized; requeuing
-			logger.Info("deletion defender has not yet finalized; requeuing", "resource", k8s.GetNamespacedName(u))
-			return true, nil
+			// deletion defender has not yet finalized; allowing watch catching the finalizer removal to handle this case.
+			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
+			return false, nil
 		}
-		if !k8s.HasAbandonAnnotation(u) {
-			deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
-			if _, err := adapter.Delete(ctx, deleteOp); err != nil {
-				if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
-					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-						resource, err := toK8sResource(u)
-						if err != nil {
-							return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
-						}
-						// Requeue resource for reconciliation with exponential backoff applied
-						return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+		if k8s.HasAbandonAnnotation(u) {
+			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+		if !existsAlready {
+			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+
+		logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(u))
+		deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
+		if _, err := adapter.Delete(ctx, deleteOp); err != nil {
+			if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
+				if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+					logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+					resource, err := toK8sResource(u)
+					if err != nil {
+						return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
 					}
-					return false, r.handleDeleteFailed(ctx, u, err)
+					// Requeue resource for reconciliation with exponential backoff applied
+					return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
 				}
+				return false, r.handleDeleteFailed(ctx, u, err)
 			}
 		}
 		return false, r.handleDeleted(ctx, u)

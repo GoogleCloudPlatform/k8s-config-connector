@@ -193,12 +193,10 @@ func (g *generatorBase) findTypeDeclarationWithProtoTag(protoTag string, srcDir 
 		}
 
 		for _, line := range strings.Split(string(b), "\n") {
-			line = strings.TrimSpace(line)
-			line = strings.TrimPrefix(line, "//")
-			line = strings.TrimSpace(line)
-			line += " "
-			if strings.HasPrefix(line, "+kcc:proto="+protoTag+" ") {
-				return &line, nil
+			if proto, ok := GetProtoMessageFromAnnotation(line); ok {
+				if proto == protoTag {
+					return &line, nil
+				}
 			}
 		}
 	}

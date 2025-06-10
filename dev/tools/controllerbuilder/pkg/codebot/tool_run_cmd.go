@@ -21,7 +21,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
+	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"k8s.io/klog/v2"
 )
 
@@ -89,21 +89,21 @@ func (t *RunTerminalCommand) Run(ctx context.Context, c *Chat, args map[string]a
 	return result, nil
 }
 
-func (t *RunTerminalCommand) BuildFunctionDefinition() *llm.FunctionDefinition {
-	declaration := &llm.FunctionDefinition{
+func (t *RunTerminalCommand) BuildFunctionDefinition() *gollm.FunctionDefinition {
+	declaration := &gollm.FunctionDefinition{
 		Name: "RunTerminalCommand",
 		Description: `
 		The function is to run a command in the operating system's terminal/command prompt. This is different from a function that adds two numbers. It interacts with the external environment.
 
 		For example, if I want to run a make rule ` + "`" + `make ready-pr` + "`" + `, this function should be called with the ` + "`" + `command` + "`" + ` to be ` + "`" + `make` + "`" + ` and ` + "`" + `args` + "`" + ` to be ` + "`" + `ready-pr` + "`" + `.
 		`,
-		Parameters: &llm.Schema{
+		Parameters: &gollm.Schema{
 			Description: "The input is the command to run and its arguments. The command is required and the arguments is optional.",
-			Type:        llm.TypeObject,
+			Type:        gollm.TypeObject,
 			Required:    []string{"command", "args"},
-			Properties: map[string]*llm.Schema{
+			Properties: map[string]*gollm.Schema{
 				"command": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 		command is the operating system's terminal command we want to run. It can be golang command, make rules, or bash script.
 
@@ -112,7 +112,7 @@ func (t *RunTerminalCommand) BuildFunctionDefinition() *llm.FunctionDefinition {
 		`,
 				},
 				"args": {
-					Type: llm.TypeString,
+					Type: gollm.TypeString,
 					Description: `
 		args is the arguments to the command. It is optional. If the command is ` + "`" + `make` + "`" + `, the args should be the make rule.
 		If the command is ` + "`" + `go` + "`" + `, the args should be the go command with go arguments.

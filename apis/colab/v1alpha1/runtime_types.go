@@ -33,7 +33,7 @@ type Runtime_Parent struct {
 }
 
 // ColabRuntimeSpec defines the desired state of ColabRuntime
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
+// +kcc:spec:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
 type ColabRuntimeSpec struct {
 	Runtime_Parent `json:",inline"`
 
@@ -103,7 +103,7 @@ type ColabRuntimeStatus struct {
 }
 
 // ColabRuntimeObservedState is the state of the ColabRuntime resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.NotebookRuntime
 type ColabRuntimeObservedState struct {
 	// Output only. The proxy endpoint used to access the NotebookRuntime.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.NotebookRuntime.proxy_uri
@@ -168,7 +168,7 @@ type ColabRuntimeObservedState struct {
 	*/
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.EncryptionSpec
 type EncryptionSpecObservedState struct {
 	// The Cloud KMS resource identifier of the customer managed
 	//  encryption key used to protect a resource. Has the form:

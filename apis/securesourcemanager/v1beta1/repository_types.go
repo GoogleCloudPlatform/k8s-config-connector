@@ -24,7 +24,7 @@ var SecureSourceManagerRepositoryGVK = GroupVersion.WithKind("SecureSourceManage
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // SecureSourceManagerRepositorySpec defines the desired state of SecureSourceManagerRepository
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository
+// +kcc:spec:proto=google.cloud.securesourcemanager.v1.Repository
 type SecureSourceManagerRepositorySpec struct {
 	Parent `json:",inline"`
 

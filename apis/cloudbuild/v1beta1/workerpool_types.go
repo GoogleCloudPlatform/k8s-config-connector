@@ -70,7 +70,7 @@ type PrivatePoolV1Config_WorkerConfig struct {
 	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
+// +kcc:spec:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
 type PrivatePoolV1Config_NetworkConfigSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The network definition that the workers are peered
@@ -93,7 +93,7 @@ type PrivatePoolV1Config_NetworkConfigSpec struct {
 	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
+// +kcc:status:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
 type PrivatePoolV1Config_NetworkConfigStatus struct {
 	// Immutable. The network definition that the workers are peered
 	//  to. If this section is left empty, the workers will be peered to
@@ -123,7 +123,7 @@ type CloudBuildWorkerPoolStatus struct {
 	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
 }
 
-// +kcc:proto=google.devtools.cloudbuild.v1.WorkerPool
+// +kcc:observedstate:proto=google.devtools.cloudbuild.v1.WorkerPool
 type CloudBuildWorkerPoolObservedState struct {
 	/* The creation timestamp of the workerpool.*/
 	// +optional

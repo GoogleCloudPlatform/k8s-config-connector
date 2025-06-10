@@ -30,17 +30,13 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/logging/v2"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-type configService struct {
-	*MockService
-	pb.UnimplementedConfigServiceV2Server
-}
-
 // createDefaultObjects will ensure that the default log bucket is created for the folder/project/org
-func (s *configService) createDefaultObjects(ctx context.Context, name *logBucketName) error {
+func (s *configServiceV2) createDefaultObjects(ctx context.Context, name *logBucketName) error {
 	// Create the default bucket
 	{
 		bucket := &pb.LogBucket{
@@ -51,7 +47,25 @@ func (s *configService) createDefaultObjects(ctx context.Context, name *logBucke
 		if name.folder != "" {
 			bucket.Name = fmt.Sprintf("folders/%s/locations/global/buckets/_Default", name.folder)
 		}
-		// TODO: Other orgs
+		if name.project != nil {
+			bucket.Name = fmt.Sprintf("projects/%s/locations/global/buckets/_Default", name.project.ID)
+		}
+		// TODO: Other parent
+
+		if err := s.createBucketIfNotExists(ctx, bucket); err != nil {
+			return err
+		}
+	}
+
+	// Create audit bucket for projects
+	if name.project != nil {
+		bucket := &pb.LogBucket{
+			Description:    "Audit bucket",
+			LifecycleState: pb.LifecycleState_ACTIVE,
+			Locked:         true,
+			RetentionDays:  400,
+		}
+		bucket.Name = fmt.Sprintf("projects/%s/locations/global/buckets/_Required", name.project.ID)
 
 		if err := s.createBucketIfNotExists(ctx, bucket); err != nil {
 			return err
@@ -61,7 +75,7 @@ func (s *configService) createDefaultObjects(ctx context.Context, name *logBucke
 	return nil
 }
 
-func (s *configService) createBucketIfNotExists(ctx context.Context, obj *pb.LogBucket) error {
+func (s *configServiceV2) createBucketIfNotExists(ctx context.Context, obj *pb.LogBucket) error {
 	fqn := obj.Name
 	existing := &pb.LogBucket{}
 	err := s.storage.Get(ctx, fqn, existing)
@@ -81,7 +95,7 @@ func (s *configService) createBucketIfNotExists(ctx context.Context, obj *pb.Log
 	return nil
 }
 
-func (s *configService) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.LogBucket, error) {
+func (s *configServiceV2) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.LogBucket, error) {
 	name, err := s.parseLogBucketName(req.Name)
 	if err != nil {
 		return nil, err
@@ -100,7 +114,33 @@ func (s *configService) GetBucket(ctx context.Context, req *pb.GetBucketRequest)
 	return obj, nil
 }
 
-func (s *configService) CreateBucket(ctx context.Context, req *pb.CreateBucketRequest) (*pb.LogBucket, error) {
+func (s *configServiceV2) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (*pb.ListBucketsResponse, error) {
+	name, err := s.parseLogBucketName(req.GetParent() + "/buckets/placeholder")
+	if err != nil {
+		return nil, err
+	}
+	if err := s.createDefaultObjects(ctx, name); err != nil {
+		return nil, err
+	}
+
+	prefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	response := &pb.ListBucketsResponse{}
+
+	kind := (&pb.LogBucket{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		logBucket := obj.(*pb.LogBucket)
+		if strings.HasPrefix(logBucket.GetName(), prefix) {
+			response.Buckets = append(response.Buckets, logBucket)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (s *configServiceV2) CreateBucket(ctx context.Context, req *pb.CreateBucketRequest) (*pb.LogBucket, error) {
 	reqName := req.Parent + "/buckets/" + req.GetBucketId()
 	name, err := s.parseLogBucketName(reqName)
 	if err != nil {
@@ -122,13 +162,16 @@ func (s *configService) CreateBucket(ctx context.Context, req *pb.CreateBucketRe
 	return obj, nil
 }
 
-func (s *configService) populateDefaultsForLogBucket(obj *pb.LogBucket) {
+func (s *configServiceV2) populateDefaultsForLogBucket(obj *pb.LogBucket) {
 	if obj.LifecycleState == pb.LifecycleState_LIFECYCLE_STATE_UNSPECIFIED {
 		obj.LifecycleState = pb.LifecycleState_ACTIVE
 	}
+	if obj.RetentionDays == 0 {
+		obj.RetentionDays = 30
+	}
 }
 
-func (s *configService) UpdateBucket(ctx context.Context, req *pb.UpdateBucketRequest) (*pb.LogBucket, error) {
+func (s *configServiceV2) UpdateBucket(ctx context.Context, req *pb.UpdateBucketRequest) (*pb.LogBucket, error) {
 	reqName := req.Name
 	name, err := s.parseLogBucketName(reqName)
 	if err != nil {
@@ -174,7 +217,7 @@ func (s *configService) UpdateBucket(ctx context.Context, req *pb.UpdateBucketRe
 	return updated, nil
 }
 
-func (s *configService) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
+func (s *configServiceV2) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
 	name, err := s.parseLogBucketName(req.Name)
 	if err != nil {
 		return nil, err

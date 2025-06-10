@@ -28,12 +28,11 @@ type BigtableAuthorizedViewParent struct {
 }
 
 // BigtableAuthorizedViewSpec defines the desired state of BigtableAuthorizedView
-// +kcc:proto=google.bigtable.admin.v2.AuthorizedView
+// +kcc:spec:proto=google.bigtable.admin.v2.AuthorizedView
 type BigtableAuthorizedViewSpec struct {
 	// The BigtableAuthorizedView name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// +required
 	BigtableAuthorizedViewParent `json:",inline"`
 
 	// An AuthorizedView permitting access to an explicit subset of a Table.
@@ -70,7 +69,7 @@ type BigtableAuthorizedViewStatus struct {
 }
 
 // BigtableAuthorizedViewObservedState is the state of the BigtableAuthorizedView resource as most recently observed in GCP.
-// +kcc:proto=google.bigtable.admin.v2.AuthorizedView
+// +kcc:observedstate:proto=google.bigtable.admin.v2.AuthorizedView
 type BigtableAuthorizedViewObservedState struct {
 }
 

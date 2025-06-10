@@ -15,7 +15,7 @@ go run main.go generate-fuzzer \
 go run main.go generate-fuzzer \
   --message "google.cloud.bigquery.datatransfer.v1.TransferConfig" \
   --api-version "bigquerydatatransfer.cnrm.cloud.google.com/v1beta1" \
-  --llm-model "gemini-2.0-flash-exp" \
+  --llm-model "gemini-2.5-pro-preview-05-06" \
   --max-attempts 3
 ```
 
@@ -23,7 +23,7 @@ go run main.go generate-fuzzer \
 go run main.go generate-fuzzer \
   --message "google.cloud.redis.cluster.v1.Cluster" \
   --api-version "redis.cnrm.cloud.google.com/v1beta1" \
-  --llm-model "gemini-2.0-flash-exp" \
+  --llm-model "gemini-2.5-pro-preview-05-06" \
   --max-attempts 5
 ```
 
@@ -31,7 +31,7 @@ go run main.go generate-fuzzer \
 go run main.go generate-fuzzer \
   --message "google.cloud.securesourcemanager.v1.Instance" \
   --api-version "securesourcemanager.cnrm.cloud.google.com/v1alpha1" \
-  --llm-model "gemini-2.0-flash-exp" \
+  --llm-model "gemini-2.5-pro-preview-05-06" \
   --max-attempts 5
 ```
 
@@ -39,6 +39,6 @@ go run main.go generate-fuzzer \
 go run main.go generate-fuzzer \
   --message "google.cloud.securesourcemanager.v1.Repository" \
   --api-version "securesourcemanager.cnrm.cloud.google.com/v1alpha1" \
-  --llm-model "gemini-2.0-flash-exp" \
+  --llm-model "gemini-2.5-pro-preview-05-06" \
   --max-attempts 5
 ```

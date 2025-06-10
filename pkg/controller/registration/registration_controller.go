@@ -17,6 +17,7 @@ package registration
 import (
 	"context"
 	"fmt"
+	"os"
 	"sync"
 	"time"
 
@@ -38,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -115,16 +117,17 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 	}
 
 	r := &ReconcileRegistration{
-		Client:           mgr.GetClient(),
-		provider:         rd.TfProvider,
-		smLoader:         rd.TfLoader,
-		dclConfig:        rd.DclConfig,
-		dclConverter:     rd.DclConverter,
-		mgr:              mgr,
-		controllers:      make(map[string]map[string]controllerContext),
-		registrationFunc: regFunc,
-		defaulters:       rd.Defaulters,
-		jitterGenerator:  rd.JitterGen,
+		Client:            mgr.GetClient(),
+		provider:          rd.TfProvider,
+		smLoader:          rd.TfLoader,
+		dclConfig:         rd.DclConfig,
+		dclConverter:      rd.DclConverter,
+		mgr:               mgr,
+		controllers:       make(map[string]map[string]controllerContext),
+		registrationFunc:  regFunc,
+		defaulters:        rd.Defaulters,
+		jitterGenerator:   rd.JitterGen,
+		dependencyTracker: rd.DependencyTracker,
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
@@ -145,15 +148,16 @@ var _ reconcile.Reconciler = &ReconcileRegistration{}
 // ReconcileRegistration reconciles a CRD owned by KCC
 type ReconcileRegistration struct {
 	client.Client
-	provider         *tfschema.Provider
-	smLoader         *servicemappingloader.ServiceMappingLoader
-	dclConfig        *dcl.Config
-	dclConverter     *conversion.Converter
-	mgr              manager.Manager
-	controllers      map[string]map[string]controllerContext
-	registrationFunc registrationFunc
-	defaulters       []k8s.Defaulter
-	jitterGenerator  jitter.Generator
+	provider          *tfschema.Provider
+	smLoader          *servicemappingloader.ServiceMappingLoader
+	dclConfig         *dcl.Config
+	dclConverter      *conversion.Converter
+	mgr               manager.Manager
+	controllers       map[string]map[string]controllerContext
+	registrationFunc  registrationFunc
+	defaulters        []k8s.Defaulter
+	jitterGenerator   jitter.Generator
+	dependencyTracker *gcpwatch.DependencyTracker
 
 	mu sync.Mutex
 }
@@ -241,7 +245,15 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		DclConverter: r.dclConverter,
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
+		//DependencyTracker: r.dependencyTracker,
 	}
+
+	// todo acpana house in KCC mgr flag
+	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
+	if v == "USE_DEPENDENCY_TRACKER" {
+		cds.DependencyTracker = r.dependencyTracker
+	}
+
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
 		groupKind := gvk.GroupKind()
@@ -251,7 +263,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			return nil, err
 		}
 
-		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator, Defaulters: r.defaulters}); err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
 		return schemaUpdater, nil
@@ -312,6 +324,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				return nil, err
 			}
 			deps := directbase.Deps{
+				Defaulters:         r.defaulters,
 				JitterGenerator:    r.jitterGenerator,
 				ReconcilePredicate: useDirectReconcilerPredicate,
 			}
@@ -356,10 +369,12 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 }
 
 func registerUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+	ctx := context.TODO()
+
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := unmanageddetector.Add(r.mgr, crd); err != nil {
+	if err := unmanageddetector.Add(ctx, r.mgr, crd); err != nil {
 		return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil

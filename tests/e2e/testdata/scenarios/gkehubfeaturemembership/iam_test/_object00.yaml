@@ -5,7 +5,7 @@ metadata:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -13,60 +13,8 @@ metadata:
   name: containercluster-${uniqueId}
   namespace: ${projectId}
 spec:
-  addonsConfig:
-    gcePersistentDiskCsiDriverConfig:
-      enabled: true
-    networkPolicyConfig:
-      disabled: true
-  clusterAutoscaling:
-    autoscalingProfile: BALANCED
-  clusterTelemetry:
-    type: ENABLED
-  databaseEncryption:
-    state: DECRYPTED
-  enableShieldedNodes: true
   location: us-central1-a
-  loggingConfig:
-    enableComponents:
-    - SYSTEM_COMPONENTS
-    - WORKLOADS
-  monitoringConfig:
-    advancedDatapathObservabilityConfig:
-    - enableMetrics: false
-    enableComponents:
-    - SYSTEM_COMPONENTS
-    managedPrometheus:
-      enabled: true
-  networkPolicy:
-    enabled: false
-  networkRef:
-    external: projects/${projectId}/global/networks/default
-  networkingMode: ROUTES
-  nodeConfig:
-    loggingVariant: DEFAULT
-    oauthScopes:
-    - https://www.googleapis.com/auth/devstorage.read_only
-    - https://www.googleapis.com/auth/logging.write
-    - https://www.googleapis.com/auth/monitoring
-    - https://www.googleapis.com/auth/service.management.readonly
-    - https://www.googleapis.com/auth/servicecontrol
-    - https://www.googleapis.com/auth/trace.append
-  nodeLocations:
-  - us-central1-a
-  nodeVersion: ""
-  notificationConfig:
-    pubsub:
-      enabled: false
-  podSecurityPolicyConfig:
-    enabled: false
-  releaseChannel:
-    channel: REGULAR
   resourceID: containercluster-${uniqueId}
-  securityPostureConfig:
-    mode: BASIC
-    vulnerabilityMode: VULNERABILITY_MODE_UNSPECIFIED
-  subnetworkRef:
-    external: projects/${projectId}/regions/us-central1-a/subnetworks/default
   workloadIdentityConfig:
     workloadPool: ${projectId}.svc.id.goog
 status:
@@ -76,5 +24,11 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  masterVersion: 1.30.5-gke.1014001
   observedGeneration: 2
-  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}
+  observedState:
+    privateClusterConfig:
+      privateEndpoint: 10.128.0.2
+      publicEndpoint: 8.8.8.8
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/containercluster-${uniqueId}
+  servicesIpv4Cidr: 34.118.224.0/20

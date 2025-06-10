@@ -22,7 +22,7 @@ import (
 var DiscoveryEngineDataStoreTargetSiteGVK = GroupVersion.WithKind("DiscoveryEngineDataStoreTargetSite")
 
 // DiscoveryEngineDataStoreTargetSiteSpec defines the desired state of DiscoveryEngineDataStoreTargetSite
-// +kcc:proto=google.cloud.discoveryengine.v1.TargetSite
+// +kcc:spec:proto=google.cloud.discoveryengine.v1.TargetSite
 type DiscoveryEngineDataStoreTargetSiteSpec struct {
 	// The DataStore this target site should be part of.
 	DataStoreRef *DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
@@ -63,7 +63,7 @@ type DiscoveryEngineDataStoreTargetSiteStatus struct {
 }
 
 // DiscoveryEngineDataStoreTargetSiteObservedState is the state of the DiscoveryEngineDataStoreTargetSite resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.discoveryengine.v1.TargetSite
+// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.TargetSite
 type DiscoveryEngineDataStoreTargetSiteObservedState struct {
 	// Output only. This is system-generated based on the provided_uri.
 	GeneratedURIPattern *string `json:"generatedURIPattern,omitempty"`

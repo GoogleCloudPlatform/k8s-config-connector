@@ -31,7 +31,7 @@ import (
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
@@ -62,7 +62,7 @@ const (
 
 var (
 	ErrNotFound = k8s.ErrIAMNotFound
-	logger      = klog.Log.WithName("iamclient")
+	logger      = log.Log.WithName("iamclient")
 
 	ProjectGVK = schema.GroupVersionKind{
 		Group:   ResourceManagerGroup,

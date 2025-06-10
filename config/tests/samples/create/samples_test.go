@@ -26,13 +26,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 
 	"golang.org/x/sync/semaphore"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
@@ -62,7 +62,7 @@ var (
 	// this manager is only used to get the rest.Config from the test framework
 	unusedManager manager.Manager
 
-	logger = klog.Log
+	logger = log.Log
 )
 
 var testDisabledList = map[string]bool{
@@ -308,7 +308,7 @@ func TestAll(t *testing.T) {
 func setup(ctx context.Context) {
 	flag.Parse()
 	var err error
-	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
+	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
 	if err != nil {
 		logging.Fatal(err, "error creating new manager")
 	}

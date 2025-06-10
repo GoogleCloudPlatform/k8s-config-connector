@@ -23,7 +23,7 @@ import (
 var RedisClusterGVK = GroupVersion.WithKind("RedisCluster")
 
 // RedisClusterSpec defines the desired state of RedisCluster
-// +kcc:proto=google.cloud.redis.cluster.v1.Cluster
+// +kcc:spec:proto=google.cloud.redis.cluster.v1.Cluster
 type RedisClusterSpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
@@ -100,7 +100,7 @@ type RedisClusterStatus struct {
 }
 
 // RedisClusterSpec defines the desired state of RedisCluster
-// +kcc:proto=google.cloud.redis.cluster.v1.Cluster
+// +kcc:observedstate:proto=google.cloud.redis.cluster.v1.Cluster
 type RedisClusterObservedState struct {
 
 	// Output only. The timestamp associated with the cluster creation request.

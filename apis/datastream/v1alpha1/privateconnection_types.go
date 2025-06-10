@@ -34,7 +34,7 @@ type Parent struct {
 }
 
 // DatastreamPrivateConnectionSpec defines the desired state of DatastreamPrivateConnection
-// +kcc:proto=google.cloud.datastream.v1.PrivateConnection
+// +kcc:spec:proto=google.cloud.datastream.v1.PrivateConnection
 type DatastreamPrivateConnectionSpec struct {
 	// The DatastreamPrivateConnection name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -71,7 +71,7 @@ type DatastreamPrivateConnectionStatus struct {
 }
 
 // DatastreamPrivateConnectionObservedState is the state of the DatastreamPrivateConnection resource as most recently observed in GCP.
-// +kcc:proto=google.cloud.datastream.v1.PrivateConnection
+// +kcc:observedstate:proto=google.cloud.datastream.v1.PrivateConnection
 type DatastreamPrivateConnectionObservedState struct {
 	// Output only. The resource's name.
 	// +kcc:proto:field=google.cloud.datastream.v1.PrivateConnection.name

@@ -28,7 +28,7 @@ type Parent struct {
 }
 
 // ReCAPTCHAEnterpriseFirewallPolicySpec defines the desired state of ReCAPTCHAEnterpriseFirewallPolicy
-// +kcc:proto=google.cloud.recaptchaenterprise.v1.FirewallPolicy
+// +kcc:spec:proto=google.cloud.recaptchaenterprise.v1.FirewallPolicy
 type ReCAPTCHAEnterpriseFirewallPolicySpec struct {
 	Parent `json:",inline"`
 

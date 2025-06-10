@@ -122,34 +122,31 @@ func (a *Adapter) normalizeReference(ctx context.Context) error {
 
 	// Resolve SpannerDatabaseRef
 	if obj.Spec.CloudSpannerSpec != nil {
-		if obj.Spec.CloudSpannerSpec.DatabaseRef != nil {
-			database, err := refs.ResolveSpannerDatabaseRef(ctx, a.reader, obj, obj.Spec.CloudSpannerSpec.DatabaseRef)
+		if ref := obj.Spec.CloudSpannerSpec.DatabaseRef; ref != nil {
+			_, err := ref.NormalizedExternal(ctx, a.reader, obj.Namespace)
 			if err != nil {
 				return err
 			}
-			obj.Spec.CloudSpannerSpec.DatabaseRef.External = database.String()
 		}
 	}
 
 	// Resolve Spark.DataprocClusterRef and Spark.MetastoreServiceRef
 	if obj.Spec.SparkSpec != nil {
 		if obj.Spec.SparkSpec.SparkHistoryServer != nil {
-			if obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef != nil {
-				cluster, err := refs.ResolveDataprocClusterRef(ctx, a.reader, obj, obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef)
+			if ref := obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef; ref != nil {
+				_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return err
 				}
-				obj.Spec.SparkSpec.SparkHistoryServer.DataprocClusterRef.External = cluster.String()
 			}
 		}
 
 		if obj.Spec.SparkSpec.MetastoreService != nil {
-			if obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef != nil {
-				service, err := refs.ResolveMetastoreServiceRef(ctx, a.reader, obj, obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef)
+			if ref := obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef; ref != nil {
+				_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 				if err != nil {
 					return err
 				}
-				obj.Spec.SparkSpec.MetastoreService.MetastoreServiceRef.External = service.String()
 			}
 		}
 	}

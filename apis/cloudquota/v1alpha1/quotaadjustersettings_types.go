@@ -29,7 +29,7 @@ type AdjusterSettingsParent struct {
 }
 
 // APIQuotaAdjusterSettingsSpec defines the desired state of APIQuotaAdjusterSettings
-// +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
+// +kcc:spec:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsSpec struct {
 	AdjusterSettingsParent `json:",inline"`
 	// The APIQuotaAdjusterSettings name. If not given, the metadata.name will be used.
@@ -57,7 +57,7 @@ type APIQuotaAdjusterSettingsStatus struct {
 }
 
 // APIQuotaAdjusterSettingsObservedState is the state of the APIQuotaAdjusterSettings resource as most recently observed in GCP.
-// +kcc:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
+// +kcc:observedstate:proto=google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 type APIQuotaAdjusterSettingsObservedState struct {
 	// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
 	// +kcc:proto:field=google.api.cloudquotas.v1beta.QuotaAdjusterSettings.update_time
