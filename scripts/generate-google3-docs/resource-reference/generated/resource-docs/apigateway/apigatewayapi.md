@@ -306,6 +306,20 @@ observedState:
 
 ## Sample YAML(s)
 
+### Typical Use Case
+```yaml
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
+kind: APIGatewayAPI
+metadata:
+  name: apigatewayapi-sample
+spec:
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  labels:
+    name: "wrench"
+  displayName: "Initial displayName"
+```
+
 
 Note: If you have any trouble with instantiating the resource, refer to <a href="/config-connector/docs/troubleshooting">Troubleshoot Config Connector</a>.
 
