@@ -25,4 +25,4 @@ spec:
     - gs://cloud-samples-data/bigquery/us-states/us-states.parquet
   friendlyName: BigQuery Table Updated
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"NULLABLE","name":"name","type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","type":"STRING"}]'
+  schema: '[{"mode":"NULLABLE","name":"name","policyTags":{},"type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","policyTags":{},"type":"STRING"}]'

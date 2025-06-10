@@ -450,11 +450,13 @@ X-Xss-Protection: 0
       {
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -522,11 +524,13 @@ X-Xss-Protection: 0
       {
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -620,11 +624,13 @@ X-Xss-Protection: 0
       {
         "mode": "NULLABLE",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "mode": "NULLABLE",
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
