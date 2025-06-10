@@ -33,9 +33,13 @@
 
 ## 5.4 Add samples 
 
-1.  In [config/samples/resources](config/samples/resources), create a new
-    directory for the resource's samples: `mkdir spannerinstance`.
-1.  Follow the [sample guidelines](./../../../README.Samples.md) and create sample(s) for the resource.
+1.  Make sure a <kind> directory exist under [config/samples/resources](config/samples/resources).
+    For example, if the kind is `spannerinstance`, the directory should be `config/samples/resources/spannerinstance`.
+1.  Make sure a a sample YAML file named `<service>-<version>-<kind>.yaml` exist under the directory. 
+1.  Look at example in pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<kind>-minimal/create.yaml to fill in the content for the sample YAML.
+1.  Fulfill the following requirements for the sample YAML file (the path is in JSON format).
+    - The `.metadata.name` is in the format `<kind>-sample` (lower case).
+    - If the resource has a `.spec.projectRef` field, use `projects/${PROJECT_ID?}` literally as `.spec.projectRef.external` value. 
 
 ### Run/Disable Sample Tests
 
@@ -45,7 +49,7 @@ Run the sample
 go test -v -tags=integration ./config/tests/samples/create -test.run TestAll -run-tests <your_sample_test_name>
 ```
 
-`your_sample_test_name` is the sample suite directory name, i.e `scheduler-job-pubsub`
+`your_sample_test_name` is the sample suite directory name, i.e `spannerinstance`
 
 Replace the environment variables to real values before running the tests.
 
@@ -58,6 +62,7 @@ tell the script which sample to use for generating snippets. Update the
 [pkg/snippet/snippetgeneration/snippetgeneration.go](./../../../pkg/snippet/snippetgeneration/snippetgeneration.go).
 
 ## 5.5 Add reference document 
+
 
 All beta resource can have a Google Reference documentation Connector 
 [reference doc](https://cloud.google.com/config-connector/docs/reference/overview). Please follow the steps to add the reference doc.

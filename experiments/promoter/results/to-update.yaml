@@ -1,0 +1,117 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- aiplatform/AIPlatformModel
+- alloydb/AlloyDBBackup
+- apigateway/APIGatewayAPI
+- apikeys/APIKeysKey
+- apiplatform/APIPlatformPlatformProjectReport
+- apphub/ApphubApplication
+- apphub/ApphubDiscoveredService
+- apphub/ApphubDiscoveredWorkload
+- asset/AssetFeed
+- asset/AssetSavedQuery
+- backupdr/BackupDRBackup
+- backupdr/BackupDRBackupPlan
+- backupdr/BackupDRBackupPlanAssociation
+- backupdr/BackupDRManagementServer
+- batch/BatchJob
+- batch/BatchTask
+- bigqueryanalyticshub/BigQueryAnalyticsHubDataExchange
+- bigqueryanalyticshub/BigQueryAnalyticsHubListing
+- bigquerybiglake/BigQueryBigLakeCatalog
+- bigquerybiglake/BigQueryBigLakeDatabase
+- bigquerybiglake/BigQueryBigLakeTable
+- bigquerydatapolicy/BigQueryDataPolicyDataPolicy
+- bigqueryreservation/BigQueryReservationAssignment
+- bigqueryreservation/BigQueryReservationReservation
+- bigtable/BigtableAuthorizedView
+- bigtable/BigtableBackup
+- bigtable/BigtableCluster
+- certificatemanager/CertificateManagerCertificateMapEntry
+- clouddeploy/CloudDeployCustomTargetType
+- clouddeploy/CloudDeployDeliveryPipeline
+- clouddeploy/CloudDeployDeployPolicy
+- clouddms/CloudDMSConversionWorkspace
+- clouddms/CloudDMSPrivateConnection
+- cloudquota/CloudQuotaQuotaAdjusterSettings
+- cloudquota/CloudQuotaQuotaPreference
+- cloudtasks/CloudTasksQueue
+- colab/ColabRuntime
+- colab/ColabRuntimeTemplate
+- composer/ComposerEnvironment
+- compute/ComputeInterconnect
+- compute/ComputeNetworkAttachment
+- compute/ComputeNetworkEdgeSecurityService
+- container/ContainerAnalysisNote
+- datacatalog/DataCatalogEntry
+- datacatalog/DataCatalogEntryGroup
+- datacatalog/DataCatalogTag
+- datacatalog/DataCatalogTagTemplate
+- dataplex/DataplexEntryGroup
+- dataplex/DataplexEntryType
+- dataplex/DataplexLake
+- dataplex/DataplexTask
+- dataplex/DataplexZone
+- dataproc/DataprocBatch
+- dataproc/DataprocJob
+- dataproc/DataprocNodeGroup
+- datastream/DatastreamConnectionProfile
+- datastream/DatastreamPrivateConnection
+- datastream/DatastreamRoute
+- discoveryengine/DiscoveryEngineDataStore
+- discoveryengine/DiscoveryEngineEngine
+- discoveryengine/DiscoveryEngineTargetSite
+- documentai/DocumentAIProcessor
+- documentai/DocumentAIProcessorVersion
+- edgecontainer/EdgeContainerMachine
+- essentialcontacts/EssentialContactsContact
+- eventarc/EventarcChannel
+- eventarc/EventarcGoogleChannelConfig
+- gkebackup/GKEBackupBackup
+- gkebackup/GKEBackupBackupPlan
+- gkebackup/GKEBackupRestore
+- gkebackup/GKEBackupRestorePlan
+- kms/KMSImportJob
+- logging/LoggingLink
+- managedkafka/ManagedKafkaConsumerGroup
+- memorystore/MemcacheInstance
+- metastore/MetastoreBackup
+- metastore/MetastoreFederation
+- metastore/MetastoreService
+- netapp/NetAppBackupPolicy
+- netapp/NetAppBackupVault
+- networkconnectivity/NetworkConnectivityInternalRange
+- networkconnectivity/NetworkConnectivityServiceConnectionPolicy
+- networkmanagement/NetworkManagementConnectivityTest
+- networkservices/NetworkServicesServiceBinding
+- orgpolicy/OrgPolicyCustomConstraint
+- orgpolicy/OrgPolicyPolicy
+- pubsub/PubSubSnapshot
+- recaptchaenterprise/RecaptchaEnterpriseFirewallPolicy
+- spanner/SpannerBackupSchedule
+- spanner/SpannerInstanceConfig
+- storage/StorageAnywhereCache
+- storagecontrol/StorageControlFolder
+- storagecontrol/StorageControlManagedFolder
+- tpu/TPUNode
+- vertexai/VertexAIFeaturestore
+- vmwareengine/VMwareEngineExternalAccessRule
+- vmwareengine/VMwareEngineExternalAddress
+- vmwareengine/VMwareEngineNetworkPeering
+- vmwareengine/VMwareEngineNetworkPolicy
+- vmwareengine/VMwareEnginePrivateCloud
+- vmwareengine/VMwareEngineVmwareEngineNetwork
+- workflowexecutions/WorkflowExecutionsExecution
+- workflows/WorkflowsWorkflow
