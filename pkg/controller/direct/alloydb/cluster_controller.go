@@ -201,7 +201,7 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.AutomatedBackupPolicy != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig != nil && obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef)
+		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.AutomatedBackupPolicy.EncryptionConfig.KMSKeyNameRef)
 		if err != nil {
 			return err
 		}
@@ -209,7 +209,7 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.ContinuousBackupConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig != nil && obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef)
+		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.ContinuousBackupConfig.EncryptionConfig.KMSKeyNameRef)
 		if err != nil {
 			return err
 		}
@@ -217,7 +217,7 @@ func (a *ClusterAdapter) normalizeReferences(ctx context.Context) error {
 	}
 
 	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyNameRef != nil {
-		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj.GetNamespace(), obj.Spec.EncryptionConfig.KMSKeyNameRef)
+		key, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionConfig.KMSKeyNameRef)
 		if err != nil {
 			return err
 		}

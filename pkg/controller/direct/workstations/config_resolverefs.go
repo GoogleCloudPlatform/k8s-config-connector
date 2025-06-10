@@ -32,7 +32,7 @@ func ResolveWorkstationConfigRefs(ctx context.Context, kube client.Reader, obj *
 	}
 	if obj.Spec.EncryptionKey != nil {
 		if obj.Spec.EncryptionKey.KmsCryptoKeyRef != nil {
-			obj.Spec.EncryptionKey.KmsCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj.Namespace, obj.Spec.EncryptionKey.KmsCryptoKeyRef)
+			obj.Spec.EncryptionKey.KmsCryptoKeyRef, err = refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.EncryptionKey.KmsCryptoKeyRef)
 			if err != nil {
 				return err
 			}

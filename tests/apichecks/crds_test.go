@@ -482,7 +482,7 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 
 				// Check for "Ref" fields
 				// autoKeyRef is an optional reference, see (pending link to KMSKeyRef_OneOf struct)
-				if strings.HasSuffix(fieldPath, "Ref") && !strings.HasSuffix(fieldPath, "autoKeyRef") {
+				if strings.HasSuffix(fieldPath, "Ref") {
 					hasExternal := false
 					hasName := false
 
@@ -517,8 +517,7 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 				}
 
 				// Any XYZRef field was already handled and handling the children will just double count
-				// autoKeyRef is an optional reference, see (pending link to KMSKeyRef_OneOf struct)
-				if strings.Contains(fieldPath, "Ref") && !strings.Contains(fieldPath, "autoKeyRef") {
+				if strings.Contains(fieldPath, "Ref") {
 					return
 				}
 

@@ -40,10 +40,11 @@ type KMSKeyRef_OneOf struct {
 }
 
 func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if err := r.validateOneOf(); err != nil {
+		return "", err
+	}
+
 	if r.External != "" {
-		if (r.AutoKeyRef != nil && r.AutoKeyRef.Name != "") || (r.KMSCryptoKeyRef != nil && r.KMSCryptoKeyRef.Name != "") {
-			return "", fmt.Errorf("cannot specify both `.external` and the KMSKey reference name")
-		}
 		// Resolve the external managed reference resource by external value
 		tokens := strings.Split(r.External, "/")
 		if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
@@ -54,12 +55,6 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 
 	// Resolve the KCC managed reference resource by its name
 	if r.KMSCryptoKeyRef != nil {
-		if r.KMSCryptoKeyRef.Name != "" && r.AutoKeyRef != nil && r.AutoKeyRef.Name != "" {
-			return "", fmt.Errorf("cannot specify both `.name` and `.autokeyRef.name` ")
-		}
-		if r.KMSCryptoKeyRef.Name == "" {
-			return "", fmt.Errorf("must specify either `.name` or `.external`")
-		}
 		// Use KMSCryptoKey
 		cryptoKey, err := r.KMSCryptoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
@@ -67,9 +62,6 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 		}
 		r.External = cryptoKey
 	} else {
-		if r.AutoKeyRef.Name == "" {
-			return "", fmt.Errorf("must specify either `.autokeyRef.name` or `.external`")
-		}
 		// Use KMSAutoKey
 		autoKey, err := r.AutoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
@@ -78,4 +70,25 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 		r.External = autoKey
 	}
 	return r.External, nil
+}
+
+// validateOneOf checks that exactly one of the key reference fields is set
+func (r *KMSKeyRef_OneOf) validateOneOf() error {
+	numOfNonNil := 0
+	if r.External != "" {
+		numOfNonNil++
+	}
+	if r.KMSCryptoKeyRef != nil && r.KMSCryptoKeyRef.Name != "" {
+		numOfNonNil++
+	}
+	if r.AutoKeyRef != nil && r.AutoKeyRef.Name != "" {
+		numOfNonNil++
+	}
+	if numOfNonNil == 0 {
+		return fmt.Errorf("a key reference must be provided: specify one of `.external`, `.name`, or `.autoKeyRef.name`")
+	}
+	if numOfNonNil > 1 {
+		return fmt.Errorf("exactly one of `.external`, `.name`, or `.autoKeyRef.name` must be specified, but %d were found", numOfNonNil)
+	}
+	return nil
 }
