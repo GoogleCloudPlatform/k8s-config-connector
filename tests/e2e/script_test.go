@@ -482,6 +482,26 @@ func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured
 	}
 }
 
+// getGeneration gets the metadata.generation for a given object
+func getGeneration(h *create.Harness, obj *unstructured.Unstructured) int64 {
+	existing := &unstructured.Unstructured{}
+	{
+		existing.SetGroupVersionKind(obj.GroupVersionKind())
+		existing.SetName(obj.GetName())
+		existing.SetNamespace(obj.GetNamespace())
+
+		key := types.NamespacedName{
+			Namespace: obj.GetNamespace(),
+			Name:      obj.GetName(),
+		}
+		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+			h.Fatalf("error getting object %v: %v", key, err)
+		}
+	}
+
+	return existing.GetGeneration()
+}
+
 // touchObject sets a new annotation that forces a re-reconciliation
 func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 	existing := &unstructured.Unstructured{}

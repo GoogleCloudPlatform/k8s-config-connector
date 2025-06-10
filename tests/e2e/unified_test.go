@@ -376,6 +376,37 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 				}
 
+				if ShouldTestRereconiliation(t, primaryResource) {
+					eventsBefore := h.Events.HTTPEvents
+
+					oldGeneration := getGeneration(h, primaryResource)
+					touchObject(h, primaryResource)
+					// Pause to allow re-reconciliation
+					// (annotations don't change the generation, so we can't wait for observedGeneration)
+					time.Sleep(2 * time.Second)
+
+					eventsAfter := h.Events.HTTPEvents
+
+					h.Events.HTTPEvents = eventsBefore
+
+					for i := len(eventsBefore); i < len(eventsAfter); i++ {
+						event := eventsAfter[i]
+						isReadOnly := false
+						switch event.Request.Method {
+						case "GET":
+							isReadOnly = true
+						}
+						if !isReadOnly {
+							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
+						}
+					}
+
+					newGeneration := getGeneration(h, primaryResource)
+					if oldGeneration != newGeneration {
+						t.Errorf("FAIL: re-reconciliation caused generation to change (from %v to %v)", oldGeneration, newGeneration)
+					}
+				}
+
 				if testPause {
 					opt.SkipWaitForDelete = true
 				}
