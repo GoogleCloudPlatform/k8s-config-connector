@@ -12,7 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: bigtable.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.bigtable.admin.v2
+// resource: BigtableAuthorizedView:AuthorizedView
+// resource: BigtableBackup:Backup
+// resource: BigtableCluster:Cluster
+
 package v1alpha1
+
+// +kcc:proto=google.bigtable.admin.v2.AuthorizedView.FamilySubsets
+type AuthorizedView_FamilySubsets struct {
+	// Individual exact column qualifiers to be included in the AuthorizedView.
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.FamilySubsets.qualifiers
+	Qualifiers [][]byte `json:"qualifiers,omitempty"`
+
+	// Prefixes for qualifiers to be included in the AuthorizedView. Every
+	//  qualifier starting with one of these prefixes is included in the
+	//  AuthorizedView. To provide access to all qualifiers, include the empty
+	//  string as a prefix
+	//  ("").
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.FamilySubsets.qualifier_prefixes
+	QualifierPrefixes [][]byte `json:"qualifierPrefixes,omitempty"`
+}
+
+// +kcc:proto=google.bigtable.admin.v2.AuthorizedView.SubsetView
+type AuthorizedView_SubsetView struct {
+	// Row prefixes to be included in the AuthorizedView.
+	//  To provide access to all rows, include the empty string as a prefix ("").
+	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.SubsetView.row_prefixes
+	RowPrefixes [][]byte `json:"rowPrefixes,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
+}
 
 // +kcc:proto=google.bigtable.admin.v2.AutoscalingLimits
 type AutoscalingLimits struct {
@@ -43,101 +77,8 @@ type Cluster_ClusterConfig struct {
 	ClusterAutoscalingConfig *Cluster_ClusterAutoscalingConfig `json:"clusterAutoscalingConfig,omitempty"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.AuthorizedView
-type AuthorizedView struct {
-	// Identifier. The name of this AuthorizedView.
-	//  Values are of the form
-	//  `projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}`
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.name
-	Name *string `json:"name,omitempty"`
-
-	// An AuthorizedView permitting access to an explicit subset of a Table.
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.subset_view
-	SubsetView *AuthorizedView_SubsetView `json:"subsetView,omitempty"`
-
-	// The etag for this AuthorizedView.
-	//  If this is provided on update, it must match the server's etag. The server
-	//  returns ABORTED error on a mismatched etag.
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.etag
-	Etag *string `json:"etag,omitempty"`
-
-	// Set to true to make the AuthorizedView protected against deletion.
-	//  The parent Table and containing Instance cannot be deleted if an
-	//  AuthorizedView has this bit set.
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.deletion_protection
-	DeletionProtection *bool `json:"deletionProtection,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.AuthorizedView.FamilySubsets
-type AuthorizedView_FamilySubsets struct {
-	// Individual exact column qualifiers to be included in the AuthorizedView.
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.FamilySubsets.qualifiers
-	Qualifiers [][]byte `json:"qualifiers,omitempty"`
-
-	// Prefixes for qualifiers to be included in the AuthorizedView. Every
-	//  qualifier starting with one of these prefixes is included in the
-	//  AuthorizedView. To provide access to all qualifiers, include the empty
-	//  string as a prefix
-	//  ("").
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.FamilySubsets.qualifier_prefixes
-	QualifierPrefixes [][]byte `json:"qualifierPrefixes,omitempty"`
-}
-
-// +kcc:proto=google.bigtable.admin.v2.AuthorizedView.SubsetView
-type AuthorizedView_SubsetView struct {
-	// Row prefixes to be included in the AuthorizedView.
-	//  To provide access to all rows, include the empty string as a prefix ("").
-	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.SubsetView.row_prefixes
-	RowPrefixes [][]byte `json:"rowPrefixes,omitempty"`
-
-	// TODO: unsupported map type with key string and value message
-}
-
-// +kcc:proto=google.bigtable.admin.v2.Backup
-type Backup struct {
-	// A globally unique identifier for the backup which cannot be
-	//  changed. Values are of the form
-	//  `projects/{project}/instances/{instance}/clusters/{cluster}/
-	//     backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
-	//  The final segment of the name must be between 1 and 50 characters
-	//  in length.
-	//
-	//  The backup is stored in the cluster identified by the prefix of the backup
-	//  name of the form
-	//  `projects/{project}/instances/{instance}/clusters/{cluster}`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. Immutable. Name of the table from which this backup was created.
-	//  This needs to be in the same instance as the backup. Values are of the form
-	//  `projects/{project}/instances/{instance}/tables/{source_table}`.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.source_table
-	SourceTable *string `json:"sourceTable,omitempty"`
-
-	// Required. The expiration time of the backup.
-	//  When creating a backup or updating its `expire_time`, the value must be
-	//  greater than the backup creation time by:
-	//  - At least 6 hours
-	//  - At most 90 days
-	//
-	//  Once the `expire_time` has passed, Cloud Bigtable will delete the backup.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.expire_time
-	ExpireTime *string `json:"expireTime,omitempty"`
-
-	// Indicates the backup type of the backup.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.backup_type
-	BackupType *string `json:"backupType,omitempty"`
-
-	// The time at which the hot backup will be converted to a standard backup.
-	//  Once the `hot_to_standard_time` has passed, Cloud Bigtable will convert the
-	//  hot backup to a standard backup. This value must be greater than the backup
-	//  creation time by:
-	//  - At least 24 hours
-	//
-	//  This field only applies for hot backups. When creating or updating a
-	//  standard backup, attempting to set this field will fail the request.
-	// +kcc:proto:field=google.bigtable.admin.v2.Backup.hot_to_standard_time
-	HotToStandardTime *string `json:"hotToStandardTime,omitempty"`
+// +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
+type EncryptionInfo struct {
 }
 
 // +kcc:proto=google.protobuf.Any
@@ -197,7 +138,7 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.bigtable.admin.v2.EncryptionInfo
+// +kcc:observedstate:proto=google.bigtable.admin.v2.EncryptionInfo
 type EncryptionInfoObservedState struct {
 	// Output only. The type of encryption used to protect this resource.
 	// +kcc:proto:field=google.bigtable.admin.v2.EncryptionInfo.encryption_type
