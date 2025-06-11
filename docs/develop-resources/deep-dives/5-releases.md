@@ -40,6 +40,7 @@
 1.  Fulfill the following requirements for the sample YAML file (the path is in JSON format).
     - The `.metadata.name` is in the format `<kind>-sample` (lower case).
     - If the resource has a `.spec.projectRef` field, use `projects/${PROJECT_ID?}` literally as `.spec.projectRef.external` value. 
+1.  Enable your service API in [SUPPORTED_SERVICES](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/scripts/shared-vars-public.sh#L32) if it's not there.
 
 ### Run/Disable Sample Tests
 
