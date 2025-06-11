@@ -123,7 +123,7 @@ func (in *LoggingLogMetricSpec) DeepCopyInto(out *LoggingLogMetricSpec) {
 	*out = *in
 	if in.LoggingLogBucketRef != nil {
 		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
-		*out = new(LoggingLogBucketRef)
+		*out = new(v1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.BucketOptions != nil {

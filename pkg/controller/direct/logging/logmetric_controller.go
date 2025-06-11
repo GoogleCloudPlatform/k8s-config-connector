@@ -100,10 +100,8 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 	}
 
 	// resolve LoggingLogBucketRef
-	if ref := obj.Spec.LoggingLogBucketRef; ref != nil {
-		if _, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
+	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
+		return nil, err
 	}
 
 	return &logMetricAdapter{

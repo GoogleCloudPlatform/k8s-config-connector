@@ -137,7 +137,7 @@ type LoggingLogMetricSpec struct {
 	// If empty, then the Log Metric is considered a non-Bucket Log Metric.
 	/* Only `external` field is supported to configure the reference for now. */
 	// +optional
-	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
 	/* Optional. The `bucket_options` are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values. */
 	// +optional

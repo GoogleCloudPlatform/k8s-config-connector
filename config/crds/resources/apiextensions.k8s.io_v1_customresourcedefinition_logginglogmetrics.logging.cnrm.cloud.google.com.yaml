@@ -151,24 +151,29 @@ spec:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
+                    - required:
+                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed LoggingLogBucket
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
+                    description: The external name of the referenced resource
+                    type: string
+                  kind:
+                    description: Kind of the referent.
                     type: string
                   name:
-                    description: The name of a LoggingLogBucket resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The namespace of a LoggingLogBucket resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               metricDescriptor:
