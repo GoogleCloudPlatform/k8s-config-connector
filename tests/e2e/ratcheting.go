@@ -23,7 +23,7 @@ import (
 // ShouldTestRereconiliation determines if we "touch" the primary object after we have run the test.
 // This should not cause write operations to GCP (read operations are OK)
 // We would like eventually to turn this on for all objects, but we have to turn on the testing gradually.
-func ShouldTestRereconiliation(t *testing.T, primaryResource *unstructured.Unstructured) bool {
+func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *unstructured.Unstructured) bool {
 	gvk := primaryResource.GroupVersionKind()
 
 	// We exempt an explicit list of resources, this way new resources must pass the test from the start
@@ -102,6 +102,12 @@ func ShouldTestRereconiliation(t *testing.T, primaryResource *unstructured.Unstr
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationCapacityCommitment"}:
 	case schema.GroupKind{Group: "bigqueryreservation.cnrm.cloud.google.com", Kind: "BigQueryReservationReservation"}:
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryRoutine"}:
+	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryTable"}:
+		if testName == "bigquerytable-ignore-schema-changes" {
+			return false
+		} else {
+			return true
+		}
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAuthorizedView"}:
 	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableBackup"}:
