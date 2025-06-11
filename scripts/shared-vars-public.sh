@@ -89,6 +89,7 @@ SUPPORTED_SERVICES=(
   networkconnectivity.googleapis.com
   networksecurity.googleapis.com
   networkservices.googleapis.com
+  notebooks.googleapis.com
   osconfig.googleapis.com
   opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
@@ -106,6 +107,7 @@ SUPPORTED_SERVICES=(
   sourcerepo.googleapis.com
   stackdriver.googleapis.com
   spanner.googleapis.com
+  speech.googleapis.com
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
