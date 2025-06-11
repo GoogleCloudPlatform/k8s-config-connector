@@ -20,7 +20,6 @@
 
 package v1alpha1
 
-
 // +kcc:proto=google.bigtable.admin.v2.LogicalView
 type LogicalView struct {
 	// Identifier. The unique name of the logical view.
