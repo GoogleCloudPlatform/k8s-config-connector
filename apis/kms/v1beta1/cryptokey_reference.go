@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,11 +25,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &KMSCryptoKeyRef{}
 var KMSCryptoKeyGVK = SchemeGroupVersion.WithKind("KMSCryptoKey")
 
 // KMSCryptoKeyRef defines the resource reference to KMSCryptoKey.
-type KMSCryptoKeyRef struct {
+type kmsCryptoKeyRef struct {
 	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
 	// The `namespace` of a `KMSCryptoKey` resource.
@@ -39,7 +37,7 @@ type KMSCryptoKeyRef struct {
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSCryptoKeyRef.
 // The "Name" and "Namespace" will be used to query the actual KMSCryptoKeyRef object from the cluster.
-func (r *KMSCryptoKeyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *kmsCryptoKeyRef) normalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.Name == "" {
 		return "", fmt.Errorf("`name` of `KMSCryptoKey` must be set")
 	}

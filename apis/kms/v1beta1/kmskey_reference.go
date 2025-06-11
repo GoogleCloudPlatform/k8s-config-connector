@@ -25,13 +25,13 @@ import (
 
 var _ refs.ExternalNormalizer = &KMSKeyRef_OneOf{}
 
-// A reference to the KMSCryptoKey(manual management), or the AutoKey(automated management)
+// A reference to the KMSCryptoKey(manual management), or the KMSKeyHandle(automated management)
 type KMSKeyRef_OneOf struct {
 	// Default KMS crypto key. This is for API backward compatibility and cannot be changed.
-	*KMSCryptoKeyRef `json:",inline"`
+	*kmsCryptoKeyRef `json:",inline"`
 
 	// A reference to the Autokey `KMSKeyHandle`, which auto generates a crypto key.
-	AutoKeyRef *kmsKeyHandleRef `json:"autoKeyRef,omitempty"`
+	KMSKeyHandleRef *kmsKeyHandleRef `json:"keyHandleRef,omitempty"`
 
 	// A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey).
 	// Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
@@ -54,16 +54,16 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 	}
 
 	// Resolve the KCC managed reference resource by its name
-	if r.KMSCryptoKeyRef != nil {
+	if r.kmsCryptoKeyRef != nil {
 		// Use KMSCryptoKey
-		cryptoKey, err := r.KMSCryptoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
+		cryptoKey, err := r.kmsCryptoKeyRef.normalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
 			return "", err
 		}
 		r.External = cryptoKey
 	} else {
 		// Use KMSAutoKey
-		autoKey, err := r.AutoKeyRef.NormalizedExternal(ctx, reader, otherNamespace)
+		autoKey, err := r.KMSKeyHandleRef.normalizedExternal(ctx, reader, otherNamespace)
 		if err != nil {
 			return "", err
 		}
@@ -75,20 +75,20 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 // validateOneOf checks that exactly one of the key reference fields is set
 func (r *KMSKeyRef_OneOf) validateOneOf() error {
 	numOfNonNil := 0
+	if r.kmsCryptoKeyRef != nil {
+		numOfNonNil++
+	}
+	if r.KMSKeyHandleRef != nil {
+		numOfNonNil++
+	}
 	if r.External != "" {
 		numOfNonNil++
 	}
-	if r.KMSCryptoKeyRef != nil && r.KMSCryptoKeyRef.Name != "" {
-		numOfNonNil++
-	}
-	if r.AutoKeyRef != nil && r.AutoKeyRef.Name != "" {
-		numOfNonNil++
-	}
 	if numOfNonNil == 0 {
-		return fmt.Errorf("a key reference must be provided: specify one of `.external`, `.name`, or `.autoKeyRef.name`")
+		return fmt.Errorf("a key reference must be provided: specify one of '.name', '.keyHandleRef.name' or '.external'")
 	}
 	if numOfNonNil > 1 {
-		return fmt.Errorf("exactly one of `.external`, `.name`, or `.autoKeyRef.name` must be specified, but %d were found", numOfNonNil)
+		return fmt.Errorf("exactly one of '.name', '.keyHandleRef.name' or '.external' must be specified, but %d were found", numOfNonNil)
 	}
 	return nil
 }
