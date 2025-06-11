@@ -125,6 +125,8 @@ spec:
                   includes an up-to-date reference of supported versions.
                 type: string
               encryptionKMSCryptoKeyRef:
+                description: 'NOTE: If references a KMS Crypto Key, use `kms.BasicCryptoKeyRef_OneOf`
+                  instead!'
                 oneOf:
                 - not:
                     required:

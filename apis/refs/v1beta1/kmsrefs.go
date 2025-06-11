@@ -26,6 +26,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// NOTE: If references a KMS Crypto Key, use `BasicCryptoKeyRef_OneOf` instead!
 type KMSCryptoKeyRef struct {
 	// A reference to an externally managed KMSCryptoKey.
 	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
