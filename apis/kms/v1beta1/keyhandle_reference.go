@@ -54,7 +54,7 @@ func (r *kmsKeyHandleRef) normalizedExternal(ctx context.Context, reader client.
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", KMSKeyHandleGVK, key, err)
 	}
-	// Use status.observedState.kmsKey instead of status.externalRef as the external resourceID of autoKey
+	// Use status.observedState.kmsKey instead of status.externalRef as the external value of autoKey
 	// status.externalRef: projects/${projectId}/locations/us-central1/keyHandles/1a1a1a-222b-3cc3-d444-e555ee555555
 	// status.observedState.kmsKey: projects/${key_project}/locations/us-central1/keyRings/autokey/cryptoKeys/${projectNumber}-compute-disk-${generated-id}
 	kmsKey, _, err := unstructured.NestedString(u.Object, "status", "observedState", "kmsKey")

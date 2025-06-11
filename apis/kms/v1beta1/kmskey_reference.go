@@ -34,8 +34,8 @@ type KMSKeyRef_OneOf struct {
 	KMSKeyHandleRef *kmsKeyHandleRef `json:"keyHandleRef,omitempty"`
 
 	// A reference to an externally managed KMSCryptoKey or KMSKeyHandle(AutoKey).
-	// Should be in the format `projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}}`.
-	// For AutoKey, replace {{key_ring_id}} to `autokey`, i.e. `projects/{{kms_project_id}}/locations/{{region}}/keyRings/autokey/cryptoKeys/{{key}}`.
+	// Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}}`.
+	// For AutoKey, replace {{keyRingId}} to `autokey`, i.e. `projects/{{projectId}}/locations/{{location}}/keyRings/autokey/cryptoKeys/{{keyId}}`.
 	External string `json:"external,omitempty"`
 }
 
@@ -50,7 +50,7 @@ func (r *KMSKeyRef_OneOf) NormalizedExternal(ctx context.Context, reader client.
 		if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "keyRings" && tokens[6] == "cryptoKeys" {
 			return r.External, nil
 		}
-		return "", fmt.Errorf("format of KMSKeyRef external=%q was not known (use projects/{{kms_project_id}}/locations/{{region}}/keyRings/{{key_ring_id}}/cryptoKeys/{{key}})", r.External)
+		return "", fmt.Errorf("format of KMSKeyRef external=%q was not known (use projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}/cryptoKeys/{{keyId}})", r.External)
 	}
 
 	// Resolve the KCC managed reference resource by its name
