@@ -26,6 +26,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// NOTE: If references a KMSKey, use `KMSKeyRef_OneOf` instead!
+// todo: use unexported variable kmsCryptoKeyRef to avoid referencing to the KMS crypto key.
+
 type KMSCryptoKeyRef struct {
 	// A reference to an externally managed KMSCryptoKey.
 	// Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
@@ -33,13 +36,9 @@ type KMSCryptoKeyRef struct {
 
 	// The `name` of a `KMSCryptoKey` resource.
 	Name string `json:"name,omitempty"`
+
 	// The `namespace` of a `KMSCryptoKey` resource.
 	Namespace string `json:"namespace,omitempty"`
-}
-
-type KMSCryptoKey struct {
-	Ref        *KMSCryptoKeyRef
-	ResourceID string
 }
 
 // ResolveKMSCryptoKeyRef will resolve a KMSCryptoKeyRef to a KMSCryptoKey.
