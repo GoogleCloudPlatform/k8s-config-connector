@@ -18,15 +18,12 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-var _ refsv1beta1.ExternalNormalizer = &kmsKeyHandleRef{}
 
 // kmsKeyHandleRef defines the resource reference to KMSKeyHandle
 type kmsKeyHandleRef struct {
@@ -39,7 +36,7 @@ type kmsKeyHandleRef struct {
 
 // NormalizedExternal provision the "External" value for other resource that depends on KMSKeyHandle.
 // The "Name" and "Namespace" will be used to query the actual KMSKeyHandle object from the cluster.
-func (r *kmsKeyHandleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *kmsKeyHandleRef) normalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.Name == "" {
 		return "", fmt.Errorf("name` of `KMSKeyHandle` must be set")
 	}
