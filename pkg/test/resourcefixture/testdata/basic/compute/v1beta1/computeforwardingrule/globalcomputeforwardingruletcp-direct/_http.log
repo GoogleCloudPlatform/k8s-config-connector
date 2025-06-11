@@ -705,7 +705,8 @@ X-Goog-Request-Params: project=${projectId}
   "IPProtocol": "TCP",
   "description": "A global forwarding rule",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "${forwardingRuleID}",
@@ -815,7 +816,8 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -872,7 +874,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "${forwardingRuleID}",
@@ -892,7 +895,8 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1018,7 +1022,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "${forwardingRuleID}",

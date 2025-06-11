@@ -1365,6 +1365,9 @@ X-Goog-Request-Params: project=example-project-01&region=us-central1
   "allPorts": true,
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
   "description": "A test forwarding rule with internal load balancing scheme",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",
   "network": "projects/example-project-01/global/networks/${networkID}",
@@ -1458,6 +1461,86 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
+  "loadBalancingScheme": "INTERNAL",
+  "name": "${forwardingRuleID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/subnetworks/${subnetworkID}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}/setLabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=example-project-01&region=us-central1&resource=${forwardingRuleID}
+
+{
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setLabels",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/forwardingRules/${forwardingRuleID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: project=example-project-01&region=us-central1&forwarding_rule=${forwardingRuleID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "IPProtocol": "TCP",
+  "allPorts": true,
+  "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "A test forwarding rule with internal load balancing scheme",
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "compute#forwardingRule",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
@@ -1757,7 +1840,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1816,7 +1900,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
@@ -1836,7 +1921,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1895,7 +1981,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   },
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",
@@ -2125,6 +2212,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/example-project-01/global/networks/${networkID}",

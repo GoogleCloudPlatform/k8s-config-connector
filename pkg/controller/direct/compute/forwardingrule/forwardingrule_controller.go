@@ -221,6 +221,12 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
 
+	// Include system label managed-by-cnrm in API call for backward compatibility
+	if forwardingRule.Labels == nil {
+		forwardingRule.Labels = make(map[string]string)
+	}
+	forwardingRule.Labels["managed-by-cnrm"] = "true"
+
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
 	// See GH issue for details: https://github.com/hashicorp/terraform-provider-google/issues/16255
@@ -321,6 +327,12 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
+
+	// Include system label managed-by-cnrm in API call for backward compatibility
+	if forwardingRule.Labels == nil {
+		forwardingRule.Labels = make(map[string]string)
+	}
+	forwardingRule.Labels["managed-by-cnrm"] = "true"
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}

@@ -828,7 +828,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1
   "IPProtocol": "TCP",
   "description": "A regional forwarding rule",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${forwardingRuleID}",
@@ -945,7 +946,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1003,7 +1005,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${forwardingRuleID}",
@@ -1026,7 +1029,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -1155,7 +1159,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL_MANAGED",
   "name": "${forwardingRuleID}",

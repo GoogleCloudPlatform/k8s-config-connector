@@ -536,7 +536,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1
   "ipVersion": "IPV4",
   "isMirroringCollector": true,
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",
@@ -658,7 +659,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -721,7 +723,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",
@@ -815,7 +818,8 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -877,7 +881,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
   "name": "${forwardingRuleID}",

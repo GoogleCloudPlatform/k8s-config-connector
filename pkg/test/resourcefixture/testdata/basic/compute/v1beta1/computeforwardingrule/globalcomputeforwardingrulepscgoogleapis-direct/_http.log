@@ -383,7 +383,8 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -440,7 +441,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-one"
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
   },
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
@@ -466,7 +468,8 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -523,7 +526,8 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "label-one": "value-two"
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
   },
   "name": "${forwardingRuleID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${addressID}",
