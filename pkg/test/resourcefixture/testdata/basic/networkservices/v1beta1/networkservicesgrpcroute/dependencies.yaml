@@ -65,8 +65,6 @@ metadata:
 spec:
   loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: "global"
-  projectRef:
-    external: "projects/${projectId}"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -75,5 +73,3 @@ metadata:
 spec:
   loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: "global"
-  projectRef:
-    external: "projects/${projectId}"

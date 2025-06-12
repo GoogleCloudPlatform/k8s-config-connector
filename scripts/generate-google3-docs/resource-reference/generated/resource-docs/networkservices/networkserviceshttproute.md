@@ -1534,9 +1534,6 @@ metadata:
 spec:
   loadBalancingScheme: "INTERNAL_SELF_MANAGED"
   location: global
-  projectRef:
-    # Replace "${PROJECT_ID?}" with your project ID
-    external: "projects/${PROJECT_ID?}"
 ---
 apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
 kind: NetworkServicesGateway

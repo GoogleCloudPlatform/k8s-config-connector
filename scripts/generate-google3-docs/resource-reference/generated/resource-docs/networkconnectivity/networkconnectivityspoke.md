@@ -701,7 +701,7 @@ spec:
     - subnetworkRef:
         name: networkconnectivityspoke-dep
       networkIp: "10.0.0.2"
-      accessConfigs:
+      accessConfig:
         - networkTier: "PREMIUM"
   canIpForward: true
 ---
