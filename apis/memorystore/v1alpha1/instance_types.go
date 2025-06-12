@@ -153,18 +153,18 @@ type PSCConnectionSpec struct {
 	//  Format:
 	//  projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.forwarding_rule
-	ForwardingRule *string `json:"forwardingRule,omitempty"`
+	ForwardingRuleRef *refs.ComputeForwardingRuleRef `json:"forwardingRule,omitempty"`
 
 	// Required. The consumer network where the IP address resides, in the form of
 	//  projects/{project_id}/global/networks/{network_id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.network
-	NetworkRef *string `json:"network,omitempty"`
+	NetworkRef *refs.ComputeNetworkRef `json:"network,omitempty"`
 
 	// Required. The service attachment which is the target of the PSC connection,
 	//  in the form of
 	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.service_attachment
-	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+	ServiceAttachment *refs.ComputeServiceAttachmentRef `json:"serviceAttachment,omitempty"`
 }
 
 // MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance
