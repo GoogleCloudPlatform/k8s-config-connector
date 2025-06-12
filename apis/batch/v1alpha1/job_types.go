@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 
@@ -423,7 +424,7 @@ type JobNotification struct {
 	//  a job, see
 	//  https://cloud.google.com/batch/docs/enable-notifications.
 	// +kcc:proto:field=google.cloud.batch.v1.JobNotification.pubsub_topic
-	PubsubTopicRef *v1beta1.PubSubTopicRef `json:"pubsubTopicRef,omitempty"`
+	PubsubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubsubTopicRef,omitempty"`
 
 	// The attribute requirements of messages to be sent to this Pub/Sub topic.
 	//  Without this field, no message will be sent.
