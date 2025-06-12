@@ -1,11 +1,11 @@
 module github.com/kptdev/kpt/tools/licensescan
 
-go 1.23.9
+go 1.24.0
 
 require (
-	github.com/spf13/cobra v1.5.0
-	k8s.io/klog/v2 v2.40.1
-	sigs.k8s.io/yaml v1.3.0
+	github.com/spf13/cobra v1.8.1
+	k8s.io/klog/v2 v2.130.1
+	sigs.k8s.io/yaml v1.4.0
 )
 
 require (
