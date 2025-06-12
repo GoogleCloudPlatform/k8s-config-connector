@@ -7,7 +7,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: new-value
@@ -38,7 +38,7 @@ spec:
     edition: ENTERPRISE
     insightsConfig:
       queryInsightsEnabled: true
-      queryPlansPerMinute: 20
+      queryPlansPerMinute: 40
       queryStringLength: 4500
       recordApplicationTags: true
       recordClientAddress: true
@@ -65,7 +65,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
+  observedGeneration: 2
   privateIpAddress: 192.168.0.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-encryptionkey-direct-${uniqueId}
   serverCaCert:
