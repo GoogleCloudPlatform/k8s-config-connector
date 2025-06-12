@@ -133,7 +133,7 @@ func SettingsMatch(desired *api.Settings, actual *api.Settings, diff *structured
 		diff.AddField(".settings.advancedMachineFeatures", actual.AdvancedMachineFeatures, desired.AdvancedMachineFeatures)
 		return false
 	}
-	if !reflect.DeepEqual(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
+	if !slicesMatch(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
 		diff.AddField(".settings.authorizedGaeApplications", actual.AuthorizedGaeApplications, desired.AuthorizedGaeApplications)
 		return false
 	}
@@ -245,6 +245,18 @@ func SettingsMatch(desired *api.Settings, actual *api.Settings, diff *structured
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return true
+}
+
+// slicesMatch checks if two slices are equal, matching with reflect.DeepEqual.
+// As a special-case, the empty slice is treated the same as the nil slice
+func slicesMatch[T any](desired []T, actual []T) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	if len(desired) == 0 && len(actual) == 0 {
+		return true
+	}
+	return reflect.DeepEqual(desired, actual)
 }
 
 func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) bool {
