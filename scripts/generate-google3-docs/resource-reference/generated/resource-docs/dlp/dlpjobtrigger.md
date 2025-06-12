@@ -2767,7 +2767,8 @@ spec:
               infoTypes:
               - name: "AGE"
                 version: "1"
-    inspectTemplateName: "fake"
+    inspectTemplateRef:
+      external: "fake"
 ---
 apiVersion: dlp.cnrm.cloud.google.com/v1beta1
 kind: DLPStoredInfoType

@@ -2156,7 +2156,7 @@ spec:
   dnsName: "example.com."
   visibility: private
   privateVisibilityConfig:
-  networks:
+    networks:
     - networkRef:
         name: dnsrecordset-dep-computenetworkreference
 ```
