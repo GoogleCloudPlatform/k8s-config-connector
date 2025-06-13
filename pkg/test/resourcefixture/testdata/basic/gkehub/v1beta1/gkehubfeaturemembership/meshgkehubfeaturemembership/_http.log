@@ -544,14 +544,21 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "stackType": "IPV4"
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -568,6 +575,11 @@ X-Xss-Protection: 0
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
     "window": {}
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -1871,14 +1883,21 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "stackType": "IPV4"
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -1895,6 +1914,11 @@ X-Xss-Protection: 0
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
     "window": {}
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
