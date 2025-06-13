@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
@@ -20,33 +21,23 @@ metadata:
 spec:
   location: us-central1-a
   initialNodeCount: 1
-  releaseChannel:
-    channel: "RAPID"
-  workloadIdentityConfig:
-    workloadPool: "${projectId}.svc.id.goog"
-  addonsConfig:
-    httpLoadBalancing:
-      disabled: true
-    horizontalPodAutoscaling:
-      disabled: true
-    networkPolicyConfig:
-      disabled: true
-    gcpFilestoreCsiDriverConfig:
-      enabled: false
-    cloudrunConfig:
-      disabled: true
-    dnsCacheConfig:
-      enabled: false
-    gcePersistentDiskCsiDriverConfig:
-      enabled: false
-    gkeBackupAgentConfig:
-      enabled: false
-    configConnectorConfig:
-      enabled: false
-    gcsFuseCsiDriverConfig:
-      enabled: false
-    istioConfig:
-      disabled: true
-      auth: "AUTH_MUTUAL_TLS"
-    kalmConfig:
-      enabled: false
+  clusterAutoscaling:
+    enabled: true
+    resourceLimits:
+      - resourceType: "cpu"
+        maximum: 1
+      - resourceType: "memory"
+        maximum: 1024 # In MiB
+    autoProvisioningDefaults:
+      management:
+        # Error: auto_upgrade in node autoprovisioning must be true when release_channel REGULAR is set
+        # autoUpgrade: false
+        autoUpgrade: true
+        autoRepair: false
+      oauthScopes:
+        - "https://www.googleapis.com/auth/devstorage.read_only"
+        - "https://www.googleapis.com/auth/logging.write"
+  nodePoolAutoConfig:
+    networkTags:
+      tags:
+        - "test-autoscaling"
