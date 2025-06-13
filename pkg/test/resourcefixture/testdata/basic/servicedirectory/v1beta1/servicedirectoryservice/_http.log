@@ -159,6 +159,67 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json&updateMask=metadata
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "metadata": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}"
+}
+
+---
+
+GET https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}"
+}
+
+---
+
 DELETE https://servicedirectory.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/namespaces/servicedirectorynamespace-${uniqueId}/services/servicedirectoryservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
