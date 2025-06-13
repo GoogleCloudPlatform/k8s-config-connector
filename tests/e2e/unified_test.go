@@ -324,20 +324,20 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 				create.RunCreateDeleteTest(h, opt)
 
+				// Get testName from t.Name()
+				// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+				// the testName should be computenodetemplate
+				pieces := strings.Split(t.Name(), "/")
+				var testName string
+				if len(pieces) > 0 {
+					testName = pieces[len(pieces)-1]
+				} else {
+					t.Fatalf("FAIL: failed to get test name")
+				}
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					folderID := h.FolderID()
 
 					for _, obj := range exportResources {
-						// Get testName from t.Name()
-						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
-						// the testName should be computenodetemplate
-						pieces := strings.Split(t.Name(), "/")
-						var testName string
-						if len(pieces) > 0 {
-							testName = pieces[len(pieces)-1]
-						} else {
-							t.Fatalf("FAIL: failed to get test name")
-						}
 						// Golden test exported GCP object
 						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
@@ -376,7 +376,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 				}
 
-				if ShouldTestRereconiliation(t, primaryResource) {
+				if ShouldTestRereconiliation(t, testName, primaryResource) {
 					eventsBefore := h.Events.HTTPEvents
 
 					oldGeneration := getGeneration(h, primaryResource)

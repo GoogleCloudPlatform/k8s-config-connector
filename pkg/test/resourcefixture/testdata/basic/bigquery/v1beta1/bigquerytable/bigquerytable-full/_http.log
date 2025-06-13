@@ -624,6 +624,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -703,6 +706,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -1226,6 +1232,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1533,6 +1540,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1704,6 +1712,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1901,6 +1910,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1939,6 +1949,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",

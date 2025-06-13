@@ -1,0 +1,30 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: bigquerytable-${uniqueId}
+spec:
+  datasetRef:
+    external: bigquerydataset${uniqueId}
+  description: An updated BigQuery table.
+  expirationTime: 2064442632000
+  externalDataConfiguration:
+    autodetect: false
+    compression: NONE
+    csvOptions:
+      encoding: ISO-8859-1
+      fieldDelimiter: ;
+      quote: ''''
+      skipLeadingRows: 2
+    ignoreUnknownValues: true
+    maxBadRecords: 100
+    sourceFormat: CSV
+    sourceUris:
+    - gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv
+  friendlyName: BigQuery Table Updated
+  resourceID: bigquerytable-${uniqueId}
+  schema: '[{"mode":"NULLABLE","name":"name","policyTags":{},"type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","policyTags":{},"type":"STRING"},{"mode":"NULLABLE","name":"date","policyTags":{},"type":"DATE"}]'
