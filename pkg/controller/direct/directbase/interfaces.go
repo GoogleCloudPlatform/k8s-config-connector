@@ -23,6 +23,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
+// IAMModel will instantiate the IAM controllers with dependecies to be able to
+// interface with Terraform and DCL based IAM resources.
+type IAMModel interface {
+	IAMAdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, deps *IAMAdapterDeps) (Adapter, error)
+}
+
 // Model is the entry-point for our per-object reconcilers
 type Model interface {
 	// AdapterForObject builds an operation object for reconciling the object u.

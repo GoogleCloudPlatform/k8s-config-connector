@@ -20,6 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 type ResourceReference struct {
@@ -31,6 +32,13 @@ type ResourceReference struct {
 	APIVersion string `json:"apiVersion,omitempty"`
 	// The external name of the referenced resource
 	External string `json:"external,omitempty"`
+}
+
+func (r *ResourceReference) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
 }
 
 type Member string
