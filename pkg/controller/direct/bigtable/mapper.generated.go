@@ -112,66 +112,6 @@ func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krmv1be
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
 	return out
 }
-func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmv1alpha1.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.AuthorizedView{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
-}
-func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuthorizedView) *pb.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := AuthorizedView_SubsetView_ToProto(mapCtx, in.SubsetView); oneof != nil {
-		out.AuthorizedView = &pb.AuthorizedView_SubsetView_{SubsetView: oneof}
-	}
-	out.Etag = direct.ValueOf(in.Etag)
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
-}
-func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krmv1alpha1.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.Backup{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SourceTable = direct.LazyPtr(in.GetSourceTable())
-	// MISSING: SourceBackup
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: SizeBytes
-	// MISSING: State
-	// MISSING: EncryptionInfo
-	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
-	out.HotToStandardTime = direct.StringTimestamp_FromProto(mapCtx, in.GetHotToStandardTime())
-	return out
-}
-func Backup_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Backup) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	out.Name = direct.ValueOf(in.Name)
-	out.SourceTable = direct.ValueOf(in.SourceTable)
-	// MISSING: SourceBackup
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: SizeBytes
-	// MISSING: State
-	// MISSING: EncryptionInfo
-	out.BackupType = direct.Enum_ToProto[pb.Backup_BackupType](mapCtx, in.BackupType)
-	out.HotToStandardTime = direct.StringTimestamp_ToProto(mapCtx, in.HotToStandardTime)
-	return out
-}
 func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
