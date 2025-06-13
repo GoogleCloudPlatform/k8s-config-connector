@@ -1,0 +1,243 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.132.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: metastorefederations.metastore.cnrm.cloud.google.com
+spec:
+  group: metastore.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: MetastoreFederation
+    listKind: MetastoreFederationList
+    plural: metastorefederations
+    shortNames:
+    - gcpmetastorefederation
+    - gcpmetastorefederations
+    singular: metastorefederation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: MetastoreFederation is the Schema for the MetastoreFederation
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MetastoreFederationSpec defines the desired state of MetastoreFederation
+            properties:
+              backendMetastores:
+                additionalProperties:
+                  properties:
+                    metastoreType:
+                      description: The type of the backend metastore.
+                      enum:
+                      - BIGQUERY
+                      - DATAPROC_METASTORE
+                      type: string
+                    serviceRef:
+                      description: |-
+                        The relative resource name of the metastore that is being federated.
+                         The formats of the relative resource names for the currently supported
+                         metastores are listed below:
+
+                         * BigQuery
+                             * `projects/{project_id}`
+                         * Dataproc Metastore
+                             * `projects/{project_id}/locations/{location}/services/{service_id}`
+                      properties:
+                        external:
+                          description: A reference to an externally managed MetastoreService
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
+                          type: string
+                        name:
+                          description: The name of a MetastoreService resource.
+                          type: string
+                        namespace:
+                          description: The namespace of a MetastoreService resource.
+                          type: string
+                      type: object
+                  type: object
+                description: map type with key int32 as string and value as BackendMetastore
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: User-defined labels for the metastore federation.
+                type: object
+              location:
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The MetastoreFederation name. If not given, the metadata.name
+                  will be used.
+                type: string
+              version:
+                description: Immutable. The Apache Hive metastore version of the federation.
+                  All backend metastore versions must be compatible with the federation
+                  version.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: MetastoreFederationStatus defines the config connector machine
+              state of MetastoreFederation
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the MetastoreFederation resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the metastore federation
+                      was created.
+                    type: string
+                  endpointURI:
+                    description: Output only. The federation endpoint.
+                    type: string
+                  state:
+                    description: Output only. The current state of the federation.
+                    type: string
+                  stateMessage:
+                    description: Output only. Additional information about the current
+                      state of the metastore federation, if available.
+                    type: string
+                  uid:
+                    description: Output only. The globally unique resource identifier
+                      of the metastore federation.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the metastore federation
+                      was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

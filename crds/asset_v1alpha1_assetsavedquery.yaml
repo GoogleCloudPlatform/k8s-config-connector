@@ -1,0 +1,436 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.132.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: assetsavedqueries.asset.cnrm.cloud.google.com
+spec:
+  group: asset.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AssetSavedQuery
+    listKind: AssetSavedQueryList
+    plural: assetsavedqueries
+    shortNames:
+    - gcpassetsavedquery
+    - gcpassetsavedqueries
+    singular: assetsavedquery
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AssetSavedQuery is the Schema for the AssetSavedQuery API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AssetSavedQuerySpec defines the desired state of AssetSavedQuery
+            properties:
+              content:
+                description: The query content.
+                properties:
+                  iamPolicyAnalysisQuery:
+                    description: An IAM Policy Analysis query, which could be used
+                      in the [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
+                      RPC or the [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
+                      RPC.
+                    properties:
+                      accessSelector:
+                        description: Optional. Specifies roles or permissions for
+                          analysis. This is optional.
+                        properties:
+                          permissions:
+                            description: Optional. The permissions to appear in result.
+                            items:
+                              type: string
+                            type: array
+                          roles:
+                            description: Optional. The roles to appear in result.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      conditionContext:
+                        description: Optional. The hypothetical context for IAM conditions
+                          evaluation.
+                        properties:
+                          accessTime:
+                            description: The hypothetical access timestamp to evaluate
+                              IAM conditions. Note that this value must not be earlier
+                              than the current time; otherwise, an INVALID_ARGUMENT
+                              error will be returned.
+                            type: string
+                        type: object
+                      identitySelector:
+                        description: Optional. Specifies an identity for analysis.
+                        properties:
+                          identity:
+                            description: |-
+                              Required. The identity appear in the form of principals in
+                               [IAM policy
+                               binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
+
+                               The examples of supported forms are:
+                               "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com".
+
+                               Notice that wildcard characters (such as * and ?) are not supported.
+                               You must give a specific identity.
+                            type: string
+                        required:
+                        - identity
+                        type: object
+                      options:
+                        description: Optional. The query options.
+                        properties:
+                          analyzeServiceAccountImpersonation:
+                            description: |-
+                              Optional. If true, the response will include access analysis from
+                               identities to resources via service account impersonation. This is a very
+                               expensive operation, because many derived queries will be executed. We
+                               highly recommend you use
+                               [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
+                               RPC instead.
+
+                               For example, if the request analyzes for which resources user A has
+                               permission P, and there's an IAM policy states user A has
+                               iam.serviceAccounts.getAccessToken permission to a service account SA,
+                               and there's another IAM policy states service account SA has permission P
+                               to a Google Cloud folder F, then user A potentially has access to the
+                               Google Cloud folder F. And those advanced analysis results will be
+                               included in
+                               [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+
+                               Another example, if the request analyzes for who has
+                               permission P to a Google Cloud folder F, and there's an IAM policy states
+                               user A has iam.serviceAccounts.actAs permission to a service account SA,
+                               and there's another IAM policy states service account SA has permission P
+                               to the Google Cloud folder F, then user A potentially has access to the
+                               Google Cloud folder F. And those advanced analysis results will be
+                               included in
+                               [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+
+                               Only the following permissions are considered in this analysis:
+
+                               * `iam.serviceAccounts.actAs`
+                               * `iam.serviceAccounts.signBlob`
+                               * `iam.serviceAccounts.signJwt`
+                               * `iam.serviceAccounts.getAccessToken`
+                               * `iam.serviceAccounts.getOpenIdToken`
+                               * `iam.serviceAccounts.implicitDelegation`
+
+                               Default is false.
+                            type: boolean
+                          expandGroups:
+                            description: |-
+                              Optional. If true, the identities section of the result will expand any
+                               Google groups appearing in an IAM policy binding.
+
+                               If
+                               [IamPolicyAnalysisQuery.identity_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.identity_selector]
+                               is specified, the identity in the result will be determined by the
+                               selector, and this flag is not allowed to set.
+
+                               If true, the default max expansion per group is 1000 for
+                               AssetService.AnalyzeIamPolicy][].
+
+                               Default is false.
+                            type: boolean
+                          expandResources:
+                            description: |-
+                              Optional. If true and
+                               [IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
+                               is not specified, the resource section of the result will expand any
+                               resource attached to an IAM policy to include resources lower in the
+                               resource hierarchy.
+
+                               For example, if the request analyzes for which resources user A has
+                               permission P, and the results include an IAM policy with P on a Google
+                               Cloud folder, the results will also include resources in that folder with
+                               permission P.
+
+                               If true and
+                               [IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
+                               is specified, the resource section of the result will expand the
+                               specified resource to include resources lower in the resource hierarchy.
+                               Only project or lower resources are supported. Folder and organization
+                               resources cannot be used together with this option.
+
+                               For example, if the request analyzes for which users have permission P on
+                               a Google Cloud project with this option enabled, the results will include
+                               all users who have permission P on that project or any lower resource.
+
+                               If true, the default max expansion per resource is 1000 for
+                               AssetService.AnalyzeIamPolicy][] and 100000 for
+                               AssetService.AnalyzeIamPolicyLongrunning][].
+
+                               Default is false.
+                            type: boolean
+                          expandRoles:
+                            description: |-
+                              Optional. If true, the access section of result will expand any roles
+                               appearing in IAM policy bindings to include their permissions.
+
+                               If
+                               [IamPolicyAnalysisQuery.access_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.access_selector]
+                               is specified, the access section of the result will be determined by the
+                               selector, and this flag is not allowed to set.
+
+                               Default is false.
+                            type: boolean
+                          outputGroupEdges:
+                            description: Optional. If true, the result will output
+                              the relevant membership relationships between groups
+                              and other groups, and between groups and principals.
+                              Default is false.
+                            type: boolean
+                          outputResourceEdges:
+                            description: Optional. If true, the result will output
+                              the relevant parent/child relationships between resources.
+                              Default is false.
+                            type: boolean
+                        type: object
+                      resourceSelector:
+                        description: Optional. Specifies a resource for analysis.
+                        properties:
+                          fullResourceName:
+                            description: Required. The [full resource name] (https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                              of a resource of [supported resource types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types).
+                            type: string
+                        required:
+                        - fullResourceName
+                        type: object
+                      scope:
+                        description: |-
+                          Required. The relative name of the root asset. Only resources and IAM
+                           policies within the scope will be analyzed.
+
+                           This can only be an organization number (such as "organizations/123"), a
+                           folder number (such as "folders/123"), a project ID (such as
+                           "projects/my-project-id"), or a project number (such as "projects/12345").
+
+                           To know how to get organization ID, visit [here
+                           ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
+
+                           To know how to get folder or project ID, visit [here
+                           ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
+                        type: string
+                    required:
+                    - scope
+                    type: object
+                type: object
+              description:
+                description: The description of this saved query. This value should
+                  be fewer than 255 characters.
+                type: string
+              folderRef:
+                description: FolderRef represents the Folder that this resource belongs
+                  to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              labels:
+                additionalProperties:
+                  type: string
+                description: Labels applied on the resource. This value should not
+                  contain more than 10 entries. The key and value of each entry must
+                  be non-empty and fewer than 64 characters.
+                type: object
+              organizationRef:
+                description: OrganizationRef represents the Organization that this
+                  resource belongs to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The AssetSavedQuery name. If not given, the metadata.name
+                  will be used.
+                type: string
+            type: object
+          status:
+            description: AssetSavedQueryStatus defines the config connector machine
+              state of AssetSavedQuery
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AssetSavedQuery resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The create time of this saved query.
+                    type: string
+                  creator:
+                    description: Output only. The account's email address who has
+                      created this saved query.
+                    type: string
+                  lastUpdateTime:
+                    description: Output only. The last update time of this saved query.
+                    type: string
+                  lastUpdater:
+                    description: Output only. The account's email address who has
+                      updated this saved query most recently.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null
