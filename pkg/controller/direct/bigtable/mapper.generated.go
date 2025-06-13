@@ -14,16 +14,16 @@
 
 // +generated:mapper
 // krm.group: bigtable.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.bigtable.admin.v2
 
 package bigtable
 
 import (
-	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
 )
 
 func AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmv1beta1.AppProfile_DataBoostIsolationReadOnly {
@@ -112,66 +112,6 @@ func AppProfile_StandardIsolation_ToProto(mapCtx *direct.MapContext, in *krmv1be
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
 	return out
 }
-func AuthorizedView_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView) *krmv1alpha1.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.AuthorizedView{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
-}
-func AuthorizedView_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AuthorizedView) *pb.AuthorizedView {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView{}
-	out.Name = direct.ValueOf(in.Name)
-	if oneof := AuthorizedView_SubsetView_ToProto(mapCtx, in.SubsetView); oneof != nil {
-		out.AuthorizedView = &pb.AuthorizedView_SubsetView_{SubsetView: oneof}
-	}
-	out.Etag = direct.ValueOf(in.Etag)
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
-}
-func Backup_FromProto(mapCtx *direct.MapContext, in *pb.Backup) *krmv1alpha1.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.Backup{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.SourceTable = direct.LazyPtr(in.GetSourceTable())
-	// MISSING: SourceBackup
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: SizeBytes
-	// MISSING: State
-	// MISSING: EncryptionInfo
-	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
-	out.HotToStandardTime = direct.StringTimestamp_FromProto(mapCtx, in.GetHotToStandardTime())
-	return out
-}
-func Backup_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Backup) *pb.Backup {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Backup{}
-	out.Name = direct.ValueOf(in.Name)
-	out.SourceTable = direct.ValueOf(in.SourceTable)
-	// MISSING: SourceBackup
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: SizeBytes
-	// MISSING: State
-	// MISSING: EncryptionInfo
-	out.BackupType = direct.Enum_ToProto[pb.Backup_BackupType](mapCtx, in.BackupType)
-	out.HotToStandardTime = direct.StringTimestamp_ToProto(mapCtx, in.HotToStandardTime)
-	return out
-}
 func BigtableAppProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
@@ -228,5 +168,27 @@ func EncryptionInfo_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Encryption
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
+	return out
+}
+func LogicalView_FromProto(mapCtx *direct.MapContext, in *pb.LogicalView) *krmv1alpha1.LogicalView {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LogicalView{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Query = direct.LazyPtr(in.GetQuery())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
+	return out
+}
+func LogicalView_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.LogicalView) *pb.LogicalView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogicalView{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Query = direct.ValueOf(in.Query)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
