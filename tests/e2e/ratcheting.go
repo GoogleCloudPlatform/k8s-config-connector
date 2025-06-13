@@ -225,7 +225,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "containeranalysis.cnrm.cloud.google.com", Kind: "ContainerAnalysisNote"}:
 	case schema.GroupKind{Group: "containeranalysis.cnrm.cloud.google.com", Kind: "ContainerAnalysisOccurrence"}:
 	case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
-	case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
+	//case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
+	//if testName ==
 	case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerNodePool"}:
 	case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogEntry"}:
 	case schema.GroupKind{Group: "datacatalog.cnrm.cloud.google.com", Kind: "DataCatalogEntryGroup"}:
