@@ -52,6 +52,23 @@ type ManagedKafkaClient interface {
 	UpdateConsumerGroup(ctx context.Context, in *UpdateConsumerGroupRequest, opts ...grpc.CallOption) (*ConsumerGroup, error)
 	// Deletes a single consumer group.
 	DeleteConsumerGroup(ctx context.Context, in *DeleteConsumerGroupRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Lists the acls in a given cluster.
+	ListAcls(ctx context.Context, in *ListAclsRequest, opts ...grpc.CallOption) (*ListAclsResponse, error)
+	// Returns the properties of a single acl.
+	GetAcl(ctx context.Context, in *GetAclRequest, opts ...grpc.CallOption) (*Acl, error)
+	// Creates a new acl in the given project, location, and cluster.
+	CreateAcl(ctx context.Context, in *CreateAclRequest, opts ...grpc.CallOption) (*Acl, error)
+	// Updates the properties of a single acl.
+	UpdateAcl(ctx context.Context, in *UpdateAclRequest, opts ...grpc.CallOption) (*Acl, error)
+	// Deletes an acl.
+	DeleteAcl(ctx context.Context, in *DeleteAclRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Incremental update: Adds an acl entry to an acl. Creates the acl if it does
+	// not exist yet.
+	AddAclEntry(ctx context.Context, in *AddAclEntryRequest, opts ...grpc.CallOption) (*AddAclEntryResponse, error)
+	// Incremental update: Removes an acl entry from an acl. Deletes the acl if
+	// its acl entries become empty (i.e. if the removed entry was the last one in
+	// the acl).
+	RemoveAclEntry(ctx context.Context, in *RemoveAclEntryRequest, opts ...grpc.CallOption) (*RemoveAclEntryResponse, error)
 }
 
 type managedKafkaClient struct {
@@ -188,6 +205,69 @@ func (c *managedKafkaClient) DeleteConsumerGroup(ctx context.Context, in *Delete
 	return out, nil
 }
 
+func (c *managedKafkaClient) ListAcls(ctx context.Context, in *ListAclsRequest, opts ...grpc.CallOption) (*ListAclsResponse, error) {
+	out := new(ListAclsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/ListAcls", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) GetAcl(ctx context.Context, in *GetAclRequest, opts ...grpc.CallOption) (*Acl, error) {
+	out := new(Acl)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetAcl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) CreateAcl(ctx context.Context, in *CreateAclRequest, opts ...grpc.CallOption) (*Acl, error) {
+	out := new(Acl)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/CreateAcl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) UpdateAcl(ctx context.Context, in *UpdateAclRequest, opts ...grpc.CallOption) (*Acl, error) {
+	out := new(Acl)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateAcl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) DeleteAcl(ctx context.Context, in *DeleteAclRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteAcl", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) AddAclEntry(ctx context.Context, in *AddAclEntryRequest, opts ...grpc.CallOption) (*AddAclEntryResponse, error) {
+	out := new(AddAclEntryResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/AddAclEntry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managedKafkaClient) RemoveAclEntry(ctx context.Context, in *RemoveAclEntryRequest, opts ...grpc.CallOption) (*RemoveAclEntryResponse, error) {
+	out := new(RemoveAclEntryResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.managedkafka.v1.ManagedKafka/RemoveAclEntry", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ManagedKafkaServer is the server API for ManagedKafka service.
 // All implementations must embed UnimplementedManagedKafkaServer
 // for forward compatibility
@@ -220,6 +300,23 @@ type ManagedKafkaServer interface {
 	UpdateConsumerGroup(context.Context, *UpdateConsumerGroupRequest) (*ConsumerGroup, error)
 	// Deletes a single consumer group.
 	DeleteConsumerGroup(context.Context, *DeleteConsumerGroupRequest) (*empty.Empty, error)
+	// Lists the acls in a given cluster.
+	ListAcls(context.Context, *ListAclsRequest) (*ListAclsResponse, error)
+	// Returns the properties of a single acl.
+	GetAcl(context.Context, *GetAclRequest) (*Acl, error)
+	// Creates a new acl in the given project, location, and cluster.
+	CreateAcl(context.Context, *CreateAclRequest) (*Acl, error)
+	// Updates the properties of a single acl.
+	UpdateAcl(context.Context, *UpdateAclRequest) (*Acl, error)
+	// Deletes an acl.
+	DeleteAcl(context.Context, *DeleteAclRequest) (*empty.Empty, error)
+	// Incremental update: Adds an acl entry to an acl. Creates the acl if it does
+	// not exist yet.
+	AddAclEntry(context.Context, *AddAclEntryRequest) (*AddAclEntryResponse, error)
+	// Incremental update: Removes an acl entry from an acl. Deletes the acl if
+	// its acl entries become empty (i.e. if the removed entry was the last one in
+	// the acl).
+	RemoveAclEntry(context.Context, *RemoveAclEntryRequest) (*RemoveAclEntryResponse, error)
 	mustEmbedUnimplementedManagedKafkaServer()
 }
 
@@ -268,6 +365,27 @@ func (UnimplementedManagedKafkaServer) UpdateConsumerGroup(context.Context, *Upd
 }
 func (UnimplementedManagedKafkaServer) DeleteConsumerGroup(context.Context, *DeleteConsumerGroupRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteConsumerGroup not implemented")
+}
+func (UnimplementedManagedKafkaServer) ListAcls(context.Context, *ListAclsRequest) (*ListAclsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAcls not implemented")
+}
+func (UnimplementedManagedKafkaServer) GetAcl(context.Context, *GetAclRequest) (*Acl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAcl not implemented")
+}
+func (UnimplementedManagedKafkaServer) CreateAcl(context.Context, *CreateAclRequest) (*Acl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAcl not implemented")
+}
+func (UnimplementedManagedKafkaServer) UpdateAcl(context.Context, *UpdateAclRequest) (*Acl, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAcl not implemented")
+}
+func (UnimplementedManagedKafkaServer) DeleteAcl(context.Context, *DeleteAclRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAcl not implemented")
+}
+func (UnimplementedManagedKafkaServer) AddAclEntry(context.Context, *AddAclEntryRequest) (*AddAclEntryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAclEntry not implemented")
+}
+func (UnimplementedManagedKafkaServer) RemoveAclEntry(context.Context, *RemoveAclEntryRequest) (*RemoveAclEntryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveAclEntry not implemented")
 }
 func (UnimplementedManagedKafkaServer) mustEmbedUnimplementedManagedKafkaServer() {}
 
@@ -534,6 +652,132 @@ func _ManagedKafka_DeleteConsumerGroup_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ManagedKafka_ListAcls_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAclsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).ListAcls(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/ListAcls",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).ListAcls(ctx, req.(*ListAclsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_GetAcl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAclRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).GetAcl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/GetAcl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).GetAcl(ctx, req.(*GetAclRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_CreateAcl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAclRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).CreateAcl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/CreateAcl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).CreateAcl(ctx, req.(*CreateAclRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_UpdateAcl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAclRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).UpdateAcl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/UpdateAcl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).UpdateAcl(ctx, req.(*UpdateAclRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_DeleteAcl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAclRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).DeleteAcl(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/DeleteAcl",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).DeleteAcl(ctx, req.(*DeleteAclRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_AddAclEntry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAclEntryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).AddAclEntry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/AddAclEntry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).AddAclEntry(ctx, req.(*AddAclEntryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagedKafka_RemoveAclEntry_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveAclEntryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagedKafkaServer).RemoveAclEntry(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.managedkafka.v1.ManagedKafka/RemoveAclEntry",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagedKafkaServer).RemoveAclEntry(ctx, req.(*RemoveAclEntryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ManagedKafka_ServiceDesc is the grpc.ServiceDesc for ManagedKafka service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -596,6 +840,34 @@ var ManagedKafka_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteConsumerGroup",
 			Handler:    _ManagedKafka_DeleteConsumerGroup_Handler,
+		},
+		{
+			MethodName: "ListAcls",
+			Handler:    _ManagedKafka_ListAcls_Handler,
+		},
+		{
+			MethodName: "GetAcl",
+			Handler:    _ManagedKafka_GetAcl_Handler,
+		},
+		{
+			MethodName: "CreateAcl",
+			Handler:    _ManagedKafka_CreateAcl_Handler,
+		},
+		{
+			MethodName: "UpdateAcl",
+			Handler:    _ManagedKafka_UpdateAcl_Handler,
+		},
+		{
+			MethodName: "DeleteAcl",
+			Handler:    _ManagedKafka_DeleteAcl_Handler,
+		},
+		{
+			MethodName: "AddAclEntry",
+			Handler:    _ManagedKafka_AddAclEntry_Handler,
+		},
+		{
+			MethodName: "RemoveAclEntry",
+			Handler:    _ManagedKafka_RemoveAclEntry_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

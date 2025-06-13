@@ -77,10 +77,10 @@ type OrgPolicyClient interface {
 	// Note: the supplied policy will perform a full overwrite of all
 	// fields.
 	UpdateCustomConstraint(ctx context.Context, in *UpdateCustomConstraintRequest, opts ...grpc.CallOption) (*CustomConstraint, error)
-	// Gets a custom constraint.
+	// Gets a custom or managed constraint.
 	//
 	// Returns a `google.rpc.Status` with `google.rpc.Code.NOT_FOUND` if the
-	// custom constraint does not exist.
+	// custom or managed constraint does not exist.
 	GetCustomConstraint(ctx context.Context, in *GetCustomConstraintRequest, opts ...grpc.CallOption) (*CustomConstraint, error)
 	// Retrieves all of the custom constraints that exist on a particular
 	// organization resource.
@@ -266,10 +266,10 @@ type OrgPolicyServer interface {
 	// Note: the supplied policy will perform a full overwrite of all
 	// fields.
 	UpdateCustomConstraint(context.Context, *UpdateCustomConstraintRequest) (*CustomConstraint, error)
-	// Gets a custom constraint.
+	// Gets a custom or managed constraint.
 	//
 	// Returns a `google.rpc.Status` with `google.rpc.Code.NOT_FOUND` if the
-	// custom constraint does not exist.
+	// custom or managed constraint does not exist.
 	GetCustomConstraint(context.Context, *GetCustomConstraintRequest) (*CustomConstraint, error)
 	// Retrieves all of the custom constraints that exist on a particular
 	// organization resource.

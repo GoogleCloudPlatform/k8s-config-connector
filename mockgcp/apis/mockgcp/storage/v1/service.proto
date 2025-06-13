@@ -667,9 +667,11 @@ message VpcNetworkSources {
 }
 
 message BucketIpFilter {
-  optional string mode = 1 [json_name="mode"];
-  optional PublicNetworkSource public_network_source = 2 [json_name="publicNetworkSource"];
-  repeated VpcNetworkSources vpc_network_sources = 3 [json_name="vpcNetworkSources"];
+  optional bool allow_all_service_agent_access = 1 [json_name="allowAllServiceAgentAccess"];
+  optional bool allow_cross_org_vpcs = 2 [json_name="allowCrossOrgVpcs"];
+  optional string mode = 3 [json_name="mode"];
+  optional PublicNetworkSource public_network_source = 4 [json_name="publicNetworkSource"];
+  repeated VpcNetworkSources vpc_network_sources = 5 [json_name="vpcNetworkSources"];
 }
 
 message Action {
