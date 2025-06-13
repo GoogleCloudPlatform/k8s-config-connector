@@ -16,7 +16,6 @@ package mockbigquery
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -138,6 +137,8 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	if obj.GetExternalDataConfiguration() != nil {
 		obj.Type = PtrTo("EXTERNAL")
+	} else if obj.GetView() != nil {
+		obj.Type = PtrTo("VIEW")
 	} else {
 		obj.Type = PtrTo("TABLE")
 	}
@@ -298,7 +299,23 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 			}
 		}
 	}
-
+	if obj.GetView() != nil {
+		if strings.HasPrefix(ValueOf(obj.View.Query), "SELECT distinct dt, user_id FROM") {
+			obj.Schema = &pb.TableSchema{}
+			obj.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("dt"),
+					Type: PtrTo("DATE"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("user_id"),
+					Type: PtrTo("STRING"),
+				},
+			}
+		}
+	}
 	if obj.MaterializedView != nil {
 		obj.Type = PtrTo("MATERIALIZED_VIEW")
 		obj.MaterializedView.LastRefreshTime = PtrTo(now.UnixMilli())
@@ -322,12 +339,6 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 				},
 			}
 		}
-	}
-
-	if obj.EncryptionConfiguration != nil {
-		fmt.Println("####################################################")
-		fmt.Printf("%+v\n", obj.EncryptionConfiguration)
-		fmt.Println("####################################################")
 	}
 
 	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
@@ -372,6 +383,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
+	updated.Schema = req.GetTable().GetSchema()
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
 		updated.ExternalDataConfiguration = req.GetTable().ExternalDataConfiguration
@@ -382,6 +394,32 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.Etag = PtrTo(computeEtag(updated))
 
 	updated.TableConstraints = req.GetTable().TableConstraints
+
+	updated.View = req.GetTable().View
+
+	if req.GetTable().View != nil {
+		if strings.HasPrefix(ValueOf(req.GetTable().View.Query), "SELECT distinct dt, user_id, guid FROM") {
+			updated.Schema = &pb.TableSchema{}
+			updated.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("dt"),
+					Type: PtrTo("DATE"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("user_id"),
+					Type: PtrTo("STRING"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("guid"),
+					Type: PtrTo("STRING"),
+				},
+			}
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
