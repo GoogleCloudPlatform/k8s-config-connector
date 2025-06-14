@@ -486,8 +486,6 @@ kind: ContainerAnalysisNote
 metadata:
   name: binaryauthorizationpolicy-dep-cluster
 spec:
-  projectRef:
-    name: binauthzpolicy-dep-cluster
   package:
     name: test-package
 ---

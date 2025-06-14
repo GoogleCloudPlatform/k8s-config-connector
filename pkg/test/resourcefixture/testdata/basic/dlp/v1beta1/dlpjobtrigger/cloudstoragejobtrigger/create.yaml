@@ -135,4 +135,5 @@ spec:
               infoTypes:
               - name: "AGE"
                 version: "1"
-    inspectTemplateName: "fake"
+    inspectTemplateRef:
+      external: "fake"

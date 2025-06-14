@@ -51,8 +51,6 @@ kind: ContainerAnalysisNote
 metadata:
   name: containeranalysisnote-${uniqueId}
 spec:
-  projectRef:
-    name: project-${uniqueId}
   package:
     name: test-package
 ---

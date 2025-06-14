@@ -559,8 +559,6 @@ spec:
   addonsConfig:
     advancedApiOpsConfig:
       enabled: true
-    integrationConfig:
-      enabled: false
     monetizationConfig:
       enabled: false
 ---
