@@ -47,3 +47,9 @@
         `status.externalRef` field, or via gcloud command or Cloud Console. The
         `spec.resourceID` field is used for acquisition only, leave the field
         unset when creating a new resource.
+
+## Bug Fixes:
+
+*   Fixed immutability constraint on
+    [Storage Bucket](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
+    resource location field, allowing it to be updated.
