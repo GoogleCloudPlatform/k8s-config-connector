@@ -81,14 +81,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
-                      The LoggingLogBucket selfLink, when not managed by Config Connector.
+                    description: A reference to an externally managed LoggingLogBucket
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}".
                     type: string
                   name:
-                    description: The `name` field of a `LoggingLogBucket` resource.
+                    description: The name of a LoggingLogBucket resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `LoggingLogBucket` resource.
+                    description: The namespace of a LoggingLogBucket resource.
                     type: string
                 type: object
               resourceID:
