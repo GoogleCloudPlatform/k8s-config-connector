@@ -190,6 +190,8 @@ type BackupVault struct {
 	// Format:
 	// `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
 	DestinationBackupVault string `protobuf:"bytes,10,opt,name=destination_backup_vault,json=destinationBackupVault,proto3" json:"destination_backup_vault,omitempty"`
+	// Optional. Backup retention policy defining the retenton of backups.
+	BackupRetentionPolicy *BackupVault_BackupRetentionPolicy `protobuf:"bytes,11,opt,name=backup_retention_policy,json=backupRetentionPolicy,proto3" json:"backup_retention_policy,omitempty"`
 }
 
 func (x *BackupVault) Reset() {
@@ -292,6 +294,13 @@ func (x *BackupVault) GetDestinationBackupVault() string {
 		return x.DestinationBackupVault
 	}
 	return ""
+}
+
+func (x *BackupVault) GetBackupRetentionPolicy() *BackupVault_BackupRetentionPolicy {
+	if x != nil {
+		return x.BackupRetentionPolicy
+	}
+	return nil
 }
 
 // GetBackupVaultRequest gets the state of a backupVault.
@@ -684,6 +693,100 @@ func (x *UpdateBackupVaultRequest) GetBackupVault() *BackupVault {
 	return nil
 }
 
+// Retention policy for backups in the backup vault
+type BackupVault_BackupRetentionPolicy struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Required. Minimum retention duration in days for backups in the backup
+	// vault.
+	BackupMinimumEnforcedRetentionDays int32 `protobuf:"varint,1,opt,name=backup_minimum_enforced_retention_days,json=backupMinimumEnforcedRetentionDays,proto3" json:"backup_minimum_enforced_retention_days,omitempty"`
+	// Optional. Indicates if the daily backups are immutable.
+	// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	// monthly_backup_immutable and manual_backup_immutable must be true.
+	DailyBackupImmutable bool `protobuf:"varint,2,opt,name=daily_backup_immutable,json=dailyBackupImmutable,proto3" json:"daily_backup_immutable,omitempty"`
+	// Optional. Indicates if the weekly backups are immutable.
+	// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	// monthly_backup_immutable and manual_backup_immutable must be true.
+	WeeklyBackupImmutable bool `protobuf:"varint,3,opt,name=weekly_backup_immutable,json=weeklyBackupImmutable,proto3" json:"weekly_backup_immutable,omitempty"`
+	// Optional. Indicates if the monthly backups are immutable.
+	// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	// monthly_backup_immutable and manual_backup_immutable must be true.
+	MonthlyBackupImmutable bool `protobuf:"varint,4,opt,name=monthly_backup_immutable,json=monthlyBackupImmutable,proto3" json:"monthly_backup_immutable,omitempty"`
+	// Optional. Indicates if the manual backups are immutable.
+	// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+	// monthly_backup_immutable and manual_backup_immutable must be true.
+	ManualBackupImmutable bool `protobuf:"varint,5,opt,name=manual_backup_immutable,json=manualBackupImmutable,proto3" json:"manual_backup_immutable,omitempty"`
+}
+
+func (x *BackupVault_BackupRetentionPolicy) Reset() {
+	*x = BackupVault_BackupRetentionPolicy{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_cloud_netapp_v1_backup_vault_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BackupVault_BackupRetentionPolicy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BackupVault_BackupRetentionPolicy) ProtoMessage() {}
+
+func (x *BackupVault_BackupRetentionPolicy) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_cloud_netapp_v1_backup_vault_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BackupVault_BackupRetentionPolicy.ProtoReflect.Descriptor instead.
+func (*BackupVault_BackupRetentionPolicy) Descriptor() ([]byte, []int) {
+	return file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDescGZIP(), []int{0, 0}
+}
+
+func (x *BackupVault_BackupRetentionPolicy) GetBackupMinimumEnforcedRetentionDays() int32 {
+	if x != nil {
+		return x.BackupMinimumEnforcedRetentionDays
+	}
+	return 0
+}
+
+func (x *BackupVault_BackupRetentionPolicy) GetDailyBackupImmutable() bool {
+	if x != nil {
+		return x.DailyBackupImmutable
+	}
+	return false
+}
+
+func (x *BackupVault_BackupRetentionPolicy) GetWeeklyBackupImmutable() bool {
+	if x != nil {
+		return x.WeeklyBackupImmutable
+	}
+	return false
+}
+
+func (x *BackupVault_BackupRetentionPolicy) GetMonthlyBackupImmutable() bool {
+	if x != nil {
+		return x.MonthlyBackupImmutable
+	}
+	return false
+}
+
+func (x *BackupVault_BackupRetentionPolicy) GetManualBackupImmutable() bool {
+	if x != nil {
+		return x.ManualBackupImmutable
+	}
+	return false
+}
+
 var File_mockgcp_cloud_netapp_v1_backup_vault_proto protoreflect.FileDescriptor
 
 var file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDesc = []byte{
@@ -699,7 +802,7 @@ var file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDesc = []byte{
 	0x75, 0x66, 0x2f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x5f, 0x6d, 0x61, 0x73, 0x6b, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xde, 0x08, 0x0a, 0x0b, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x56,
+	0x72, 0x6f, 0x74, 0x6f, 0x22, 0xbe, 0x0c, 0x0a, 0x0b, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x56,
 	0x61, 0x75, 0x6c, 0x74, 0x12, 0x17, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x08, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x45, 0x0a,
 	0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2a, 0x2e, 0x6d,
@@ -745,7 +848,37 @@ var file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDesc = []byte{
 	0x6e, 0x65, 0x74, 0x61, 0x70, 0x70, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x61, 0x70, 0x69,
 	0x73, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x56, 0x61, 0x75, 0x6c,
 	0x74, 0x52, 0x16, 0x64, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x61,
-	0x63, 0x6b, 0x75, 0x70, 0x56, 0x61, 0x75, 0x6c, 0x74, 0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x61, 0x62,
+	0x63, 0x6b, 0x75, 0x70, 0x56, 0x61, 0x75, 0x6c, 0x74, 0x12, 0x77, 0x0a, 0x17, 0x62, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x5f, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x70, 0x6f,
+	0x6c, 0x69, 0x63, 0x79, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3a, 0x2e, 0x6d, 0x6f, 0x63,
+	0x6b, 0x67, 0x63, 0x70, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x6e, 0x65, 0x74, 0x61, 0x70,
+	0x70, 0x2e, 0x76, 0x31, 0x2e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x56, 0x61, 0x75, 0x6c, 0x74,
+	0x2e, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e,
+	0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x15, 0x62, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69,
+	0x63, 0x79, 0x1a, 0xe4, 0x02, 0x0a, 0x15, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x52, 0x65, 0x74,
+	0x65, 0x6e, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12, 0x57, 0x0a, 0x26,
+	0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x5f, 0x6d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d, 0x5f, 0x65,
+	0x6e, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x64, 0x5f, 0x72, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f,
+	0x6e, 0x5f, 0x64, 0x61, 0x79, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x42, 0x03, 0xe0, 0x41,
+	0x02, 0x52, 0x22, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x4d, 0x69, 0x6e, 0x69, 0x6d, 0x75, 0x6d,
+	0x45, 0x6e, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x64, 0x52, 0x65, 0x74, 0x65, 0x6e, 0x74, 0x69, 0x6f,
+	0x6e, 0x44, 0x61, 0x79, 0x73, 0x12, 0x39, 0x0a, 0x16, 0x64, 0x61, 0x69, 0x6c, 0x79, 0x5f, 0x62,
+	0x61, 0x63, 0x6b, 0x75, 0x70, 0x5f, 0x69, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x08, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x14, 0x64, 0x61, 0x69, 0x6c,
+	0x79, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x49, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65,
+	0x12, 0x3b, 0x0a, 0x17, 0x77, 0x65, 0x65, 0x6b, 0x6c, 0x79, 0x5f, 0x62, 0x61, 0x63, 0x6b, 0x75,
+	0x70, 0x5f, 0x69, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x08, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x15, 0x77, 0x65, 0x65, 0x6b, 0x6c, 0x79, 0x42, 0x61,
+	0x63, 0x6b, 0x75, 0x70, 0x49, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x3d, 0x0a,
+	0x18, 0x6d, 0x6f, 0x6e, 0x74, 0x68, 0x6c, 0x79, 0x5f, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x5f,
+	0x69, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x42,
+	0x03, 0xe0, 0x41, 0x01, 0x52, 0x16, 0x6d, 0x6f, 0x6e, 0x74, 0x68, 0x6c, 0x79, 0x42, 0x61, 0x63,
+	0x6b, 0x75, 0x70, 0x49, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x3b, 0x0a, 0x17,
+	0x6d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x5f, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x5f, 0x69, 0x6d,
+	0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x42, 0x03, 0xe0,
+	0x41, 0x01, 0x52, 0x15, 0x6d, 0x61, 0x6e, 0x75, 0x61, 0x6c, 0x42, 0x61, 0x63, 0x6b, 0x75, 0x70,
+	0x49, 0x6d, 0x6d, 0x75, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x61, 0x62,
 	0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61,
 	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
@@ -856,35 +989,37 @@ func file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDescGZIP() []byte {
 }
 
 var file_mockgcp_cloud_netapp_v1_backup_vault_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_mockgcp_cloud_netapp_v1_backup_vault_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_mockgcp_cloud_netapp_v1_backup_vault_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_mockgcp_cloud_netapp_v1_backup_vault_proto_goTypes = []interface{}{
-	(BackupVault_State)(0),           // 0: mockgcp.cloud.netapp.v1.BackupVault.State
-	(BackupVault_BackupVaultType)(0), // 1: mockgcp.cloud.netapp.v1.BackupVault.BackupVaultType
-	(*BackupVault)(nil),              // 2: mockgcp.cloud.netapp.v1.BackupVault
-	(*GetBackupVaultRequest)(nil),    // 3: mockgcp.cloud.netapp.v1.GetBackupVaultRequest
-	(*ListBackupVaultsRequest)(nil),  // 4: mockgcp.cloud.netapp.v1.ListBackupVaultsRequest
-	(*ListBackupVaultsResponse)(nil), // 5: mockgcp.cloud.netapp.v1.ListBackupVaultsResponse
-	(*CreateBackupVaultRequest)(nil), // 6: mockgcp.cloud.netapp.v1.CreateBackupVaultRequest
-	(*DeleteBackupVaultRequest)(nil), // 7: mockgcp.cloud.netapp.v1.DeleteBackupVaultRequest
-	(*UpdateBackupVaultRequest)(nil), // 8: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest
-	nil,                              // 9: mockgcp.cloud.netapp.v1.BackupVault.LabelsEntry
-	(*timestamp.Timestamp)(nil),      // 10: google.protobuf.Timestamp
-	(*field_mask.FieldMask)(nil),     // 11: google.protobuf.FieldMask
+	(BackupVault_State)(0),                    // 0: mockgcp.cloud.netapp.v1.BackupVault.State
+	(BackupVault_BackupVaultType)(0),          // 1: mockgcp.cloud.netapp.v1.BackupVault.BackupVaultType
+	(*BackupVault)(nil),                       // 2: mockgcp.cloud.netapp.v1.BackupVault
+	(*GetBackupVaultRequest)(nil),             // 3: mockgcp.cloud.netapp.v1.GetBackupVaultRequest
+	(*ListBackupVaultsRequest)(nil),           // 4: mockgcp.cloud.netapp.v1.ListBackupVaultsRequest
+	(*ListBackupVaultsResponse)(nil),          // 5: mockgcp.cloud.netapp.v1.ListBackupVaultsResponse
+	(*CreateBackupVaultRequest)(nil),          // 6: mockgcp.cloud.netapp.v1.CreateBackupVaultRequest
+	(*DeleteBackupVaultRequest)(nil),          // 7: mockgcp.cloud.netapp.v1.DeleteBackupVaultRequest
+	(*UpdateBackupVaultRequest)(nil),          // 8: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest
+	(*BackupVault_BackupRetentionPolicy)(nil), // 9: mockgcp.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
+	nil,                          // 10: mockgcp.cloud.netapp.v1.BackupVault.LabelsEntry
+	(*timestamp.Timestamp)(nil),  // 11: google.protobuf.Timestamp
+	(*field_mask.FieldMask)(nil), // 12: google.protobuf.FieldMask
 }
 var file_mockgcp_cloud_netapp_v1_backup_vault_proto_depIdxs = []int32{
 	0,  // 0: mockgcp.cloud.netapp.v1.BackupVault.state:type_name -> mockgcp.cloud.netapp.v1.BackupVault.State
-	10, // 1: mockgcp.cloud.netapp.v1.BackupVault.create_time:type_name -> google.protobuf.Timestamp
-	9,  // 2: mockgcp.cloud.netapp.v1.BackupVault.labels:type_name -> mockgcp.cloud.netapp.v1.BackupVault.LabelsEntry
+	11, // 1: mockgcp.cloud.netapp.v1.BackupVault.create_time:type_name -> google.protobuf.Timestamp
+	10, // 2: mockgcp.cloud.netapp.v1.BackupVault.labels:type_name -> mockgcp.cloud.netapp.v1.BackupVault.LabelsEntry
 	1,  // 3: mockgcp.cloud.netapp.v1.BackupVault.backup_vault_type:type_name -> mockgcp.cloud.netapp.v1.BackupVault.BackupVaultType
-	2,  // 4: mockgcp.cloud.netapp.v1.ListBackupVaultsResponse.backup_vaults:type_name -> mockgcp.cloud.netapp.v1.BackupVault
-	2,  // 5: mockgcp.cloud.netapp.v1.CreateBackupVaultRequest.backup_vault:type_name -> mockgcp.cloud.netapp.v1.BackupVault
-	11, // 6: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest.update_mask:type_name -> google.protobuf.FieldMask
-	2,  // 7: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest.backup_vault:type_name -> mockgcp.cloud.netapp.v1.BackupVault
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	9,  // 4: mockgcp.cloud.netapp.v1.BackupVault.backup_retention_policy:type_name -> mockgcp.cloud.netapp.v1.BackupVault.BackupRetentionPolicy
+	2,  // 5: mockgcp.cloud.netapp.v1.ListBackupVaultsResponse.backup_vaults:type_name -> mockgcp.cloud.netapp.v1.BackupVault
+	2,  // 6: mockgcp.cloud.netapp.v1.CreateBackupVaultRequest.backup_vault:type_name -> mockgcp.cloud.netapp.v1.BackupVault
+	12, // 7: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest.update_mask:type_name -> google.protobuf.FieldMask
+	2,  // 8: mockgcp.cloud.netapp.v1.UpdateBackupVaultRequest.backup_vault:type_name -> mockgcp.cloud.netapp.v1.BackupVault
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_mockgcp_cloud_netapp_v1_backup_vault_proto_init() }
@@ -977,6 +1112,18 @@ func file_mockgcp_cloud_netapp_v1_backup_vault_proto_init() {
 				return nil
 			}
 		}
+		file_mockgcp_cloud_netapp_v1_backup_vault_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BackupVault_BackupRetentionPolicy); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -984,7 +1131,7 @@ func file_mockgcp_cloud_netapp_v1_backup_vault_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_mockgcp_cloud_netapp_v1_backup_vault_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

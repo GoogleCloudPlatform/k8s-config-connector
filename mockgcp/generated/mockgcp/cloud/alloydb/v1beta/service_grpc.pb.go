@@ -35,6 +35,9 @@ type AlloyDBAdminClient interface {
 	// Exports data from the cluster.
 	// Imperative only.
 	ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Imports data to the cluster.
+	// Imperative only.
+	ImportCluster(ctx context.Context, in *ImportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Upgrades a single Cluster.
 	// Imperative only.
 	UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
@@ -172,6 +175,15 @@ func (c *alloyDBAdminClient) UpdateCluster(ctx context.Context, in *UpdateCluste
 func (c *alloyDBAdminClient) ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) ImportCluster(ctx context.Context, in *ImportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -472,6 +484,9 @@ type AlloyDBAdminServer interface {
 	// Exports data from the cluster.
 	// Imperative only.
 	ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error)
+	// Imports data to the cluster.
+	// Imperative only.
+	ImportCluster(context.Context, *ImportClusterRequest) (*longrunningpb.Operation, error)
 	// Upgrades a single Cluster.
 	// Imperative only.
 	UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error)
@@ -581,6 +596,9 @@ func (UnimplementedAlloyDBAdminServer) UpdateCluster(context.Context, *UpdateClu
 }
 func (UnimplementedAlloyDBAdminServer) ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExportCluster not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) ImportCluster(context.Context, *ImportClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImportCluster not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpgradeCluster not implemented")
@@ -774,6 +792,24 @@ func _AlloyDBAdmin_ExportCluster_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AlloyDBAdminServer).ExportCluster(ctx, req.(*ExportClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_ImportCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImportClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).ImportCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).ImportCluster(ctx, req.(*ImportClusterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1362,6 +1398,10 @@ var AlloyDBAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExportCluster",
 			Handler:    _AlloyDBAdmin_ExportCluster_Handler,
+		},
+		{
+			MethodName: "ImportCluster",
+			Handler:    _AlloyDBAdmin_ImportCluster_Handler,
 		},
 		{
 			MethodName: "UpgradeCluster",
