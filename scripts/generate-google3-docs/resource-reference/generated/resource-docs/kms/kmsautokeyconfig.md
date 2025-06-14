@@ -67,7 +67,7 @@ folderRef:
   external: string
   name: string
   namespace: string
-keyProject:
+keyProjectRef:
   external: string
   kind: string
   name: string
@@ -123,7 +123,7 @@ keyProject:
     </tr>
     <tr>
         <td>
-            <p><code>keyProject</code></p>
+            <p><code>keyProjectRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -133,7 +133,7 @@ keyProject:
     </tr>
     <tr>
         <td>
-            <p><code>keyProject.external</code></p>
+            <p><code>keyProjectRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -143,7 +143,7 @@ keyProject:
     </tr>
     <tr>
         <td>
-            <p><code>keyProject.kind</code></p>
+            <p><code>keyProjectRef.kind</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -153,7 +153,7 @@ keyProject:
     </tr>
     <tr>
         <td>
-            <p><code>keyProject.name</code></p>
+            <p><code>keyProjectRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -163,7 +163,7 @@ keyProject:
     </tr>
     <tr>
         <td>
-            <p><code>keyProject.namespace</code></p>
+            <p><code>keyProjectRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
