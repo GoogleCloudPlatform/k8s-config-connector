@@ -91,6 +91,9 @@ func TestAllInSeries(t *testing.T) {
 					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
 					}
+					if s := os.Getenv("ONLY_TEST_KINDS"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_KINDS=%s", s)
+					}
 
 					// Record the CRDs we will use, for faster testing
 					keepCRDs := map[schema.GroupKind]bool{}
@@ -175,6 +178,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
 					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_KINDS"); s != "" {
+				kinds := strings.Split(s, ",")
+				if !slice.StringSliceContains(kinds, fixture.GVK.Kind) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_KINDS=%s", fixture.Name, fixture.GVK.Kind, s)
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -354,6 +363,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							}
 
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
+							if subdir := os.Getenv("EXPECTED_DIR"); subdir != "" {
+								expectedPath = filepath.Join(fixture.SourceDir, subdir, "_exported.yaml")
+							}
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
 						// Golden test created KRM object
@@ -371,6 +383,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+							if subdir := os.Getenv("EXPECTED_DIR"); subdir != "" {
+								expectedPath = filepath.Join(fixture.SourceDir, subdir, "_kube_object.yaml")
+							}
 							test.CompareGoldenObject(t, expectedPath, got)
 						}
 					}
@@ -434,7 +449,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						assertNoRequest(t, got, normalizers...)
 					} else {
 						expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
-
+						if subdir := os.Getenv("EXPECTED_DIR"); subdir != "" {
+							expectedPath = filepath.Join(fixture.SourceDir, subdir, "_http.log")
+						}
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}

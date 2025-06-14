@@ -36,7 +36,9 @@ type registration struct {
 	gvk     schema.GroupVersionKind
 	factory ModelFactoryFunc
 	model   directbase.Model
-	rg      predicate.ReconcileGate
+
+	// reconcileGate is a condition, we will reconcile only objects matching the specified condition
+	reconcileGate predicate.ReconcileGate
 }
 
 type ModelFactoryFunc func(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error)
@@ -51,7 +53,7 @@ func GetModel(gk schema.GroupKind) (directbase.Model, error) {
 
 func GetReconcileGate(gk schema.GroupKind) predicate.ReconcileGate {
 	registration := singleton.registrations[gk]
-	return registration.rg
+	return registration.reconcileGate
 }
 
 func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
@@ -97,14 +99,14 @@ func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
 	RegisterModelWithReconcileGate(gvk, modelFn, rg)
 }
 
-func RegisterModelWithReconcileGate(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, rg predicate.ReconcileGate) {
+func RegisterModelWithReconcileGate(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc, reconcileGate predicate.ReconcileGate) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
 	}
 	singleton.registrations[gvk.GroupKind()] = &registration{
-		gvk:     gvk,
-		factory: modelFn,
-		rg:      rg,
+		gvk:           gvk,
+		factory:       modelFn,
+		reconcileGate: reconcileGate,
 	}
 }
 
