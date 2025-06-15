@@ -1694,40 +1694,41 @@ branches:
       host-name: alloydb.googleapis.com
       notes: []
       apis-enabled: []
-    - name: alloydb-backup
-      local: resource-alloydb-backup
-      remote: resource-alloydb-backup
-      command: gcloud alloydb backups
-      group: alloydb
-      resource: backup
-      controller: Unknown
-      skip: false
-      kind: AlloydbBackup
-      package: google.cloud.alloydb.v1
-      proto: Backup
-      proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.alloydb.v1.Backup
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: alloydb-cluster
       local: resource-alloydb-cluster
       remote: resource-alloydb-cluster
       command: gcloud alloydb clusters
       group: alloydb
       resource: cluster
-      controller: Unknown
+      controller: terraform
       skip: false
       kind: AlloydbCluster
       package: google.cloud.alloydb.v1
       proto: Cluster
       proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
+      proto-service: google.cloud.alloydb.v1.Clusters
       proto-msg: google.cloud.alloydb.v1.Cluster
-      host-name: ""
-      notes: []
-      apis-enabled: []
+      host-name: alloydb.googleapis.com
+      notes:
+        - "Terraform based"
+        - "Mock already exists, skipping"
+    - name: alloydb-instance
+      local: resource-alloydb-instance
+      remote: resource-alloydb-instance
+      command: gcloud alloydb instances
+      group: alloydb
+      resource: instance
+      controller: terraform
+      kind: AlloydbInstance
+      package: google.cloud.alloydb.v1
+      proto: Instance
+      proto-path: google/cloud/alloydb/v1/service.proto
+      proto-service: google.cloud.alloydb.v1.Instances
+      proto-msg: google.cloud.alloydb.v1.Instance
+      host-name: alloydb.googleapis.com
+      notes:
+        - "Terraform based"
+        - "Mock already exists, skipping"
     - name: alloydb-connectioninfo
       local: resource-alloydb-connectioninfo
       remote: resource-alloydb-connectioninfo
@@ -1746,6 +1747,38 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
+    - name: alloydb-backup
+      local: resource-alloydb-backup
+      remote: resource-alloydb-backup
+      command: gcloud alloydb backups
+      group: alloydb
+      resource: backup
+      controller: terraform
+      kind: AlloydbBackup
+      package: google.cloud.alloydb.v1
+      proto: Backup
+      proto-path: google/cloud/alloydb/v1/service.proto
+      proto-service: google.cloud.alloydb.v1.Backups
+      proto-msg: google.cloud.alloydb.v1.Backup
+      host-name: alloydb.googleapis.com
+      notes:
+        - "Terraform based"
+    - name: alloydb-user
+      local: resource-alloydb-user
+      remote: resource-alloydb-user
+      command: gcloud alloydb users
+      group: alloydb
+      resource: user
+      controller: terraform
+      kind: AlloydbUser
+      package: google.cloud.alloydb.v1
+      proto: User
+      proto-path: google/cloud/alloydb/v1/service.proto
+      proto-service: google.cloud.alloydb.v1.Users
+      proto-msg: google.cloud.alloydb.v1.User
+      host-name: alloydb.googleapis.com
+      notes:
+      - "Terraform based"
     - name: alloydb-database
       local: resource-alloydb-database
       remote: resource-alloydb-database
@@ -1764,23 +1797,6 @@ branches:
       notes:
         - No gcloud command found
       apis-enabled: []
-    - name: alloydb-instance
-      local: resource-alloydb-instance
-      remote: resource-alloydb-instance
-      command: gcloud alloydb instances
-      group: alloydb
-      resource: instance
-      controller: Unknown
-      skip: false
-      kind: AlloydbInstance
-      package: google.cloud.alloydb.v1
-      proto: Instance
-      proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.alloydb.v1.Instance
-      host-name: ""
-      notes: []
-      apis-enabled: []
     - name: alloydb-supporteddatabaseflag
       local: resource-alloydb-supporteddatabaseflag
       remote: resource-alloydb-supporteddatabaseflag
@@ -1798,23 +1814,6 @@ branches:
       host-name: ""
       notes:
         - No gcloud command found
-      apis-enabled: []
-    - name: alloydb-user
-      local: resource-alloydb-user
-      remote: resource-alloydb-user
-      command: gcloud alloydb users
-      group: alloydb
-      resource: user
-      controller: Unknown
-      skip: false
-      kind: AlloydbUser
-      package: google.cloud.alloydb.v1
-      proto: User
-      proto-path: google/cloud/alloydb/v1/service.proto
-      proto-service: ""
-      proto-msg: google.cloud.alloydb.v1.User
-      host-name: ""
-      notes: []
       apis-enabled: []
     - name: analytics-account
       local: resource-analytics-account
