@@ -20,7 +20,6 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  description: "Initial description"
   backupPlanRef:
     name: backupdrbackupplan-minimal-${uniqueId}
   resourceType: compute.googleapis.com/Instance
