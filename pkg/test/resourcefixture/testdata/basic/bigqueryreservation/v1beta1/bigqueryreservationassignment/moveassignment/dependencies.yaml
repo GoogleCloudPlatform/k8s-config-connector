@@ -12,17 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Adding this scenario test to cover the nochange behavior in presubmit tests.
-# This is because TestAllInSeries function doesn't cover the nochange test step.
-#
-# During the re-reconciliation / drift-correction every 5-15 minutes, commonly
-# there shouldn't be any change (i.e. the "nochange") in both the KRM object and
-# the underlying GCP resource, so NO PATCH/POST API call should be made to the
-# underlying GCP resource. If there is a PATCH/POST call made when both the KRM
-# object and the underlying GCP resource are unchanged, it means something is
-# wrong in the Update logic.
-
-# 01: Create a failover reservation with a backup region
 apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
@@ -34,25 +23,25 @@ spec:
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
-  failover:
-    secondaryLocation: us-east1
+  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
   slotCapacity: 0
 ---
-# 02: Removing the failover should convert the reservation from
-#  failover to non-failover.
-# PATCH should include only "secondaryLocation" in the update mask.
 apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
-  name: bigqueryreservationreservation-${uniqueId}
+  name: bqreservation2-${uniqueId}
 spec:
+  autoscale:
+    maxSlots: 50
   concurrency: 0
   edition: ENTERPRISE_PLUS
   ignoreIdleSlots: false
   location: us-west2
+  secondaryLocation: us-east1
   projectRef:
     external: ${projectId}
-  resourceID: bigqueryreservationreservation${uniqueId}
+  resourceID: bqreservation2${uniqueId}
+  slotCapacity: 0
