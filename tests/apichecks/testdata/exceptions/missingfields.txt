@@ -185,8 +185,6 @@
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.end" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.interval" is not set in unstructured objects
 [missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.rangePartitioning.range.start" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.view.query" is not set in unstructured objects
-[missing_field] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.view.useLegacySql" is not set in unstructured objects
 [missing_field] crd=bigtablegcpolicies.bigtable.cnrm.cloud.google.com version=v1beta1: field ".spec.deletionPolicy" is not set in unstructured objects
 [missing_field] crd=bigtablegcpolicies.bigtable.cnrm.cloud.google.com version=v1beta1: field ".spec.maxAge[].days" is not set in unstructured objects
 [missing_field] crd=bigtablegcpolicies.bigtable.cnrm.cloud.google.com version=v1beta1: field ".spec.maxAge[].duration" is not set in unstructured objects
