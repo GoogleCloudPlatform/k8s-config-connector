@@ -34,6 +34,7 @@ import (
 )
 
 type Placeholders struct {
+	OrganizationID   string
 	ProjectID        string
 	ProjectNumber    int64
 	UniqueID         string
@@ -71,6 +72,7 @@ func TestScripts(t *testing.T) {
 			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
+				OrganizationID:   testgcp.TestOrgID.Get(),
 				ProjectID:        project.ProjectID,
 				ProjectNumber:    project.ProjectNumber,
 				UniqueID:         uniqueID,
