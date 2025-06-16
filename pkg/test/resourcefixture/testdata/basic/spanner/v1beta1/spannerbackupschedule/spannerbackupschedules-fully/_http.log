@@ -214,7 +214,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "database \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}\" not found",
+    "message": "Database not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -272,6 +272,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "state": "READY",
     "versionRetentionPeriod": "1h"
@@ -302,9 +303,23 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+    "actions": [
+      {
+        "action": "CREATE",
+        "entityNames": [
+          "t1"
+        ],
+        "entityType": "TABLE"
+      }
+    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "progress": [
+      {
+        "startTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
     "statements": [
-      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}"
@@ -329,19 +344,33 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+    "actions": [
+      {
+        "action": "CREATE",
+        "entityNames": [
+          "t1"
+        ],
+        "entityType": "TABLE"
+      }
+    ],
+    "commitTimestamps": [
+      "2024-04-01T12:34:56.123456Z"
+    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "progress": [
+      {
+        "endTime": "2024-04-01T12:34:56.123456Z",
+        "progressPercent": 100,
+        "startTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
     "statements": [
-      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseDialect": "GOOGLE_STANDARD_SQL",
-    "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "state": "READY",
-    "versionRetentionPeriod": "1h"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
 
@@ -363,6 +392,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -388,7 +423,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -589,7 +624,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "backupSchedule \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}\" not found",
+    "message": "Backup schedule not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -906,6 +941,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
