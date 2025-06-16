@@ -4,9 +4,6 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
-    cnrm-test: "true"
-    key1: value1
-    key2: value2
     managed-by-cnrm: "true"
   name: bigquerytable-${uniqueId}
 spec:

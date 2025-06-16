@@ -226,6 +226,16 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
 
+	// For table created from external data configuration,
+	// If no schema was provided, the Update request would fail.
+	// Getting schema from actual object.
+	if table.ExternalDataConfiguration != nil && table.Schema == nil && table.ExternalDataConfiguration.Schema == nil {
+		table.Schema = a.actual.Schema
+		for _, field := range table.Schema.Fields {
+			setEmptyPolicyTagsInSchema(field)
+		}
+	}
+
 	eq, err := TableEq(a.actual, table)
 	if err != nil {
 		return err
