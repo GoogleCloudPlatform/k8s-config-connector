@@ -1,0 +1,55 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerydatasetsample${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-main-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  datasetRef:
+    name:  bigquerydatasetsample${uniqueId}
+  friendlyName: main-table
+  timePartitioning:
+    field: dt
+    type: DAY
+  schema: |-
+    [
+      {
+        "name": "dt",
+        "type": "DATE",
+        "mode": "REQUIRED",
+        "description": "Date"
+      },
+      {
+        "name": "user_id",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "User ID"
+      },
+      {
+        "name": "guid",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Unique identifier of the entity"
+      }
+    ]
