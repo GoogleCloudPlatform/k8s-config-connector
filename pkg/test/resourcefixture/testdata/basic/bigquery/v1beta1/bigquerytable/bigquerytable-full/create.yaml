@@ -19,6 +19,8 @@ metadata:
   labels:
     key1: value1
     key2: value2
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}

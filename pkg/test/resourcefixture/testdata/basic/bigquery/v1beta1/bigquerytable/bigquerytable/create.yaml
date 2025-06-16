@@ -18,6 +18,7 @@ metadata:
   name: bigquerytablesample${uniqueId}
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   friendlyName: bigquerytable-sample
   datasetRef:
