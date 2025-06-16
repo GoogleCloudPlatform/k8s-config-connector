@@ -27,8 +27,6 @@ spec:
       name: kmscryptokey-${uniqueId}
   expirationTime: 1800000000000
   friendlyName: BigQueryTable Full Example
-  labels:
-    gcp-label-key: gcp-label-value
   requirePartitionFilter: true
   resourceID: bigquerytable-${uniqueId}
   schema: |

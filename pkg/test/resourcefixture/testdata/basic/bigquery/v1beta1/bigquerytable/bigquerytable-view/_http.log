@@ -264,21 +264,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -342,21 +339,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -470,13 +464,10 @@ X-Xss-Protection: 0
   "materializedView": {
     "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -553,13 +544,10 @@ X-Xss-Protection: 0
   "materializedView": {
     "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
-    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {
-    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
-  },
+  "materializedViewStatus": {},
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -598,32 +586,6 @@ X-Xss-Protection: 0
     "type": "DAY"
   },
   "type": "MATERIALIZED_VIEW"
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "options": {
-    "requestedPolicyVersion": 1
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
 }
 
 ---
@@ -771,21 +733,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
