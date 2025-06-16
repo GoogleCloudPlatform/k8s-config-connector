@@ -1,4 +1,4 @@
-POST https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/addressGroups?alt=json&addressGroupId=org-address-group-${uniqueId}
+POST https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups?alt=json&addressGroupId=org-address-group-${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -21,21 +21,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "create"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}"
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -58,16 +57,16 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "create"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}",
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AddressGroup",
     "capacity": 100,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "optional description",
-    "name": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "purpose": [
       "DEFAULT"
     ],
@@ -78,7 +77,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -97,7 +96,7 @@ X-Xss-Protection: 0
   "capacity": 100,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "optional description",
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+  "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
   "purpose": [
     "DEFAULT"
   ],
@@ -107,7 +106,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json&updateMask=description
+PATCH https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json&updateMask=description
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -128,21 +127,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "update"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}"
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -165,16 +163,16 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "update"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}",
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AddressGroup",
     "capacity": 100,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "New description",
-    "name": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "purpose": [
       "DEFAULT"
     ],
@@ -185,7 +183,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -204,7 +202,7 @@ X-Xss-Protection: 0
   "capacity": 100,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "New description",
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+  "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
   "purpose": [
     "DEFAULT"
   ],
@@ -214,7 +212,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+DELETE https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -230,21 +228,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "delete"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}"
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://networksecurity.googleapis.com/v1/organizations/128653134652/locations/us-central1/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -267,10 +264,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "organizations/${organizationID}128653134652/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
     "verb": "delete"
   },
-  "name": "organizations/${organizationID}128653134652/locations/us-central1/operations/${operationID}",
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

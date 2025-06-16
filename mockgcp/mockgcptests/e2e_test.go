@@ -64,6 +64,7 @@ func TestScripts(t *testing.T) {
 			ctx, closeContext := context.WithCancel(ctx)
 			t.Cleanup(closeContext)
 
+			organizationID := testgcp.TestOrgID.Get()
 			uniqueID := fmt.Sprintf("%x", time.Now().UnixNano())
 
 			h := NewHarness(t)
@@ -72,7 +73,7 @@ func TestScripts(t *testing.T) {
 			project := h.Project
 			testDir := filepath.Join(baseDir, scriptPath)
 			placeholders := Placeholders{
-				OrganizationID:   testgcp.TestOrgID.Get(),
+				OrganizationID:   organizationID,
 				ProjectID:        project.ProjectID,
 				ProjectNumber:    project.ProjectNumber,
 				UniqueID:         uniqueID,
@@ -150,7 +151,6 @@ func TestScripts(t *testing.T) {
 				}
 
 				folderID := ""
-				organizationID := ""
 
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
