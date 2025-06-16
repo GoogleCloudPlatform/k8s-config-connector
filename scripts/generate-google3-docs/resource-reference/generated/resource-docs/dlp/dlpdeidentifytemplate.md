@@ -7200,7 +7200,6 @@ kind: KMSCryptoKey
 metadata:
   name: dlpdeidentifytemplate-dep-infotypedeidentifytemplate
 spec:
-  location: "global"
   keyRingRef:
     name: "dlpdeidentifytemplate-dep-infotypedeidentifytemplate"
   purpose: "ENCRYPT_DECRYPT"

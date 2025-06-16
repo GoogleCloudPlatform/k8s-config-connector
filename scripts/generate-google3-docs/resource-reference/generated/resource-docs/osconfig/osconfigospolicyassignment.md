@@ -2093,7 +2093,6 @@ spec:
               remote:
                 uri: "https://remote.uri.com/package.msi"
                 sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
-              sha256Checksum: "3bbfd1043cd7afdb78cf9afec36c0c5370d2fea98166537b4e67f3816f256025"
       - id: "msi3"
         pkg:
           desiredState: "INSTALLED"

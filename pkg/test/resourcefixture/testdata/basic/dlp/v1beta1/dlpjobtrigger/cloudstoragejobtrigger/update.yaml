@@ -135,4 +135,5 @@ spec:
               infoTypes:
               - name: "DATE"
                 version: "2"
-    inspectTemplateName: "new-fake"
+    inspectTemplateRef:
+      external: "new-fake"
