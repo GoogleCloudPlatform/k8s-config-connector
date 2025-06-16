@@ -1,0 +1,27 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
+kind: AppHubApplication
+metadata:
+  name: apphubapplication-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Test Application Updated" # Changed
+  description: "An updated test application for AppHub." # Changed
+  scope:
+    type: REGIONAL # Immutable, so not changed
+  attributes:
+    criticality:
+      type: LOW # Changed
+    environment:
+      type: STAGING # Changed
+    businessOwners:
+      - email: "newowner@example.com" # Changed
+        displayName: "New Business Owner" # Changed
+    developerOwners:
+      - email: "newdev@example.com" # Changed
+        displayName: "New Developer Owner" # Changed
+    operatorOwners:
+      - email: "newops@example.com" # Changed
+        displayName: "New Operator Owner" # Changed
+  resourceID: "test-application" # Not changed, typically immutable or managed by resourceID

@@ -33,6 +33,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
   - title: "AlloyDBUser"
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
+- title: "App Hub"
+  section:
+  - title: "ApphubApplication"
+    path: /config-connector/docs/reference/resource-docs/apphub/apphubapplication.md
 - title: "Apigee"
   section:
   - title: "ApigeeEndpointAttachment"
