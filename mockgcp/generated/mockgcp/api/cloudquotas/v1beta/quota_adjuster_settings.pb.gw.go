@@ -131,6 +131,206 @@ func local_request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_0(ct
 
 }
 
+var (
+	filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1 = &utilities.DoubleArray{Encoding: map[string]int{"quota_adjuster_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
+)
+
+func request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(ctx context.Context, marshaler runtime.Marshaler, client QuotaAdjusterSettingsManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.QuotaAdjusterSettings); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if protoReq.UpdateMask == nil || len(protoReq.UpdateMask.GetPaths()) == 0 {
+		if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), protoReq.QuotaAdjusterSettings); err != nil {
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		} else {
+			protoReq.UpdateMask = fieldMask
+		}
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["quota_adjuster_settings.name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "quota_adjuster_settings.name")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "quota_adjuster_settings.name", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "quota_adjuster_settings.name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.UpdateQuotaAdjusterSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(ctx context.Context, marshaler runtime.Marshaler, server QuotaAdjusterSettingsManagerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.QuotaAdjusterSettings); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if protoReq.UpdateMask == nil || len(protoReq.UpdateMask.GetPaths()) == 0 {
+		if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), protoReq.QuotaAdjusterSettings); err != nil {
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		} else {
+			protoReq.UpdateMask = fieldMask
+		}
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["quota_adjuster_settings.name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "quota_adjuster_settings.name")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "quota_adjuster_settings.name", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "quota_adjuster_settings.name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.UpdateQuotaAdjusterSettings(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2 = &utilities.DoubleArray{Encoding: map[string]int{"quota_adjuster_settings": 0, "name": 1}, Base: []int{1, 2, 1, 0, 0}, Check: []int{0, 1, 2, 3, 2}}
+)
+
+func request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(ctx context.Context, marshaler runtime.Marshaler, client QuotaAdjusterSettingsManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.QuotaAdjusterSettings); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if protoReq.UpdateMask == nil || len(protoReq.UpdateMask.GetPaths()) == 0 {
+		if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), protoReq.QuotaAdjusterSettings); err != nil {
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		} else {
+			protoReq.UpdateMask = fieldMask
+		}
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["quota_adjuster_settings.name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "quota_adjuster_settings.name")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "quota_adjuster_settings.name", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "quota_adjuster_settings.name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.UpdateQuotaAdjusterSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(ctx context.Context, marshaler runtime.Marshaler, server QuotaAdjusterSettingsManagerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.QuotaAdjusterSettings); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if protoReq.UpdateMask == nil || len(protoReq.UpdateMask.GetPaths()) == 0 {
+		if fieldMask, err := runtime.FieldMaskFromRequestBody(newReader(), protoReq.QuotaAdjusterSettings); err != nil {
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		} else {
+			protoReq.UpdateMask = fieldMask
+		}
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["quota_adjuster_settings.name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "quota_adjuster_settings.name")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "quota_adjuster_settings.name", val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "quota_adjuster_settings.name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.UpdateQuotaAdjusterSettings(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0(ctx context.Context, marshaler runtime.Marshaler, client QuotaAdjusterSettingsManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetQuotaAdjusterSettingsRequest
 	var metadata runtime.ServerMetadata
@@ -158,6 +358,110 @@ func request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0(ctx context
 }
 
 func local_request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0(ctx context.Context, marshaler runtime.Marshaler, server QuotaAdjusterSettingsManagerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetQuotaAdjusterSettings(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(ctx context.Context, marshaler runtime.Marshaler, client QuotaAdjusterSettingsManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetQuotaAdjusterSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(ctx context.Context, marshaler runtime.Marshaler, server QuotaAdjusterSettingsManagerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetQuotaAdjusterSettings(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(ctx context.Context, marshaler runtime.Marshaler, client QuotaAdjusterSettingsManagerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetQuotaAdjusterSettingsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetQuotaAdjusterSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(ctx context.Context, marshaler runtime.Marshaler, server QuotaAdjusterSettingsManagerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetQuotaAdjusterSettingsRequest
 	var metadata runtime.ServerMetadata
 
@@ -214,6 +518,56 @@ func RegisterQuotaAdjusterSettingsManagerHandlerServer(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("PATCH", pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{quota_adjuster_settings.name=folders/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{quota_adjuster_settings.name=organizations/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -236,6 +590,56 @@ func RegisterQuotaAdjusterSettingsManagerHandlerServer(ctx context.Context, mux 
 		}
 
 		forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{name=folders/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{name=organizations/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -302,6 +706,50 @@ func RegisterQuotaAdjusterSettingsManagerHandlerClient(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("PATCH", pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{quota_adjuster_settings.name=folders/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/UpdateQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{quota_adjuster_settings.name=organizations/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -324,17 +772,77 @@ func RegisterQuotaAdjusterSettingsManagerHandlerClient(ctx context.Context, mux 
 
 	})
 
+	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{name=folders/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager/GetQuotaAdjusterSettings", runtime.WithHTTPPathPattern("/v1beta/{name=organizations/*/locations/*/quotaAdjusterSettings}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
 var (
 	pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "projects", "locations", "quotaAdjusterSettings", "quota_adjuster_settings.name"}, ""))
 
+	pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "folders", "locations", "quotaAdjusterSettings", "quota_adjuster_settings.name"}, ""))
+
+	pattern_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "organizations", "locations", "quotaAdjusterSettings", "quota_adjuster_settings.name"}, ""))
+
 	pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "projects", "locations", "quotaAdjusterSettings", "name"}, ""))
+
+	pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "folders", "locations", "quotaAdjusterSettings", "name"}, ""))
+
+	pattern_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1beta", "organizations", "locations", "quotaAdjusterSettings", "name"}, ""))
 )
 
 var (
 	forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_0 = runtime.ForwardResponseMessage
 
+	forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_1 = runtime.ForwardResponseMessage
+
+	forward_QuotaAdjusterSettingsManager_UpdateQuotaAdjusterSettings_2 = runtime.ForwardResponseMessage
+
 	forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_0 = runtime.ForwardResponseMessage
+
+	forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_1 = runtime.ForwardResponseMessage
+
+	forward_QuotaAdjusterSettingsManager_GetQuotaAdjusterSettings_2 = runtime.ForwardResponseMessage
 )

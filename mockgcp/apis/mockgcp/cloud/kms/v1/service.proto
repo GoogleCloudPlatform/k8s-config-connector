@@ -30,6 +30,13 @@ service FoldersServer {
     };
   };
 
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc GetKajPolicyConfigFolder(GetKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=folders/*/kajPolicyConfig}"
+    };
+  };
+
   // Updates the AutokeyConfig for a folder. The caller must have both `cloudkms.autokeyConfigs.update` permission on the parent folder and `cloudkms.cryptoKeys.setIamPolicy` permission on the provided key project. A KeyHandle creation in the folder's descendant projects will use this configuration to determine where to create the resulting CryptoKey.
   rpc UpdateAutokeyConfigFolder(UpdateAutokeyConfigFolderRequest) returns (AutokeyConfig) {
     option (google.api.http) = {
@@ -37,14 +44,69 @@ service FoldersServer {
       body: "folder"
     };
   };
+
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc UpdateKajPolicyConfigFolder(UpdateKajPolicyConfigFolderRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      patch: "/v1/{name=folders/*/kajPolicyConfig}"
+      body: "folder"
+    };
+  };
+}
+
+service OrganizationsServer {
+
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc GetKajPolicyConfigOrganization(GetKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=organizations/*/kajPolicyConfig}"
+    };
+  };
+
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc UpdateKajPolicyConfigOrganization(UpdateKajPolicyConfigOrganizationRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/kajPolicyConfig}"
+      body: "organization"
+    };
+  };
 }
 
 service ProjectsServer {
+
+  // Gets the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc GetKajPolicyConfigProject(GetKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/kajPolicyConfig}"
+    };
+  };
 
   // Returns the effective Cloud KMS Autokey configuration for a given project.
   rpc ShowEffectiveAutokeyConfigProject(ShowEffectiveAutokeyConfigProjectRequest) returns (ShowEffectiveAutokeyConfigResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=projects/*}:showEffectiveAutokeyConfig"
+    };
+  };
+
+  // Returns the KeyAccessJustificationsEnrollmentConfig of the resource closest to the given project in hierarchy.
+  rpc ShowEffectiveKeyAccessJustificationsEnrollmentConfigProject(ShowEffectiveKeyAccessJustificationsEnrollmentConfigProjectRequest) returns (ShowEffectiveKeyAccessJustificationsEnrollmentConfigResponse) {
+    option (google.api.http) = {
+      get: "/v1/{project=projects/*}:showEffectiveKeyAccessJustificationsEnrollmentConfig"
+    };
+  };
+
+  // Returns the KeyAccessJustificationsPolicyConfig of the resource closest to the given project in hierarchy.
+  rpc ShowEffectiveKeyAccessJustificationsPolicyConfigProject(ShowEffectiveKeyAccessJustificationsPolicyConfigProjectRequest) returns (ShowEffectiveKeyAccessJustificationsPolicyConfigResponse) {
+    option (google.api.http) = {
+      get: "/v1/{project=projects/*}:showEffectiveKeyAccessJustificationsPolicyConfig"
+    };
+  };
+
+  // Updates the KeyAccessJustificationsPolicyConfig for a given organization/folder/projects.
+  rpc UpdateKajPolicyConfigProject(UpdateKajPolicyConfigProjectRequest) returns (KeyAccessJustificationsPolicyConfig) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/kajPolicyConfig}"
+      body: "project"
     };
   };
 }
@@ -442,12 +504,14 @@ message AuditLogConfig {
 
 // Cloud KMS Autokey configuration for a folder.
 message AutokeyConfig {
+  // Optional. A checksum computed by the server based on the value of other fields. This may be sent on update requests to ensure that the client has an up-to-date value before proceeding. The request will be rejected with an ABORTED error on a mismatched etag.
+  optional string etag = 1 [json_name="etag"];
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
-  optional string key_project = 1 [json_name="keyProject"];
+  optional string key_project = 2 [json_name="keyProject"];
   // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
-  optional string name = 2 [json_name="name"];
+  optional string name = 3 [json_name="name"];
   // Output only. The state for the AutokeyConfig.
-  optional string state = 3 [json_name="state"];
+  optional string state = 4 [json_name="state"];
 }
 
 // Associates `members`, or principals, with a `role`.
@@ -736,10 +800,26 @@ message ImportJob {
   optional string state = 10 [json_name="state"];
 }
 
+// The configuration of a protection level for a project's Key Access Justifications enrollment.
+message KeyAccessJustificationsEnrollmentConfig {
+  // Whether the project has KAJ logging enabled.
+  optional bool audit_logging = 1 [json_name="auditLogging"];
+  // Whether the project is enrolled in KAJ policy enforcement.
+  optional bool policy_enforcement = 2 [json_name="policyEnforcement"];
+}
+
 // A KeyAccessJustificationsPolicy specifies zero or more allowed AccessReason values for encrypt, decrypt, and sign operations on a CryptoKey.
 message KeyAccessJustificationsPolicy {
   // The list of allowed reasons for access to a CryptoKey. Zero allowed access reasons means all encrypt, decrypt, and sign operations for the CryptoKey associated with this policy will fail.
   repeated string allowed_access_reasons = 1 [json_name="allowedAccessReasons"];
+}
+
+// A singleton configuration for Key Access Justifications policies.
+message KeyAccessJustificationsPolicyConfig {
+  // Optional. The default key access justification policy used when a CryptoKey is created in this folder. This is only used when a Key Access Justifications policy is not provided in the CreateCryptoKeyRequest. This overrides any default policies in its ancestry.
+  optional KeyAccessJustificationsPolicy default_key_access_justification_policy = 1 [json_name="defaultKeyAccessJustificationPolicy"];
+  // Identifier. The resource name for this KeyAccessJustificationsPolicyConfig in the format of "{organizations|folders|projects}/*/kajPolicyConfig".
+  optional string name = 2 [json_name="name"];
 }
 
 // Resource-oriented representation of a request to Cloud KMS Autokey and the resulting provisioning of a CryptoKey.
@@ -776,7 +856,7 @@ message ListCryptoKeyVersionsResponse {
   repeated CryptoKeyVersion crypto_key_versions = 1 [json_name="cryptoKeyVersions"];
   // A token to retrieve next page of results. Pass this value in ListCryptoKeyVersionsRequest.page_token to retrieve the next page of results.
   optional string next_page_token = 2 [json_name="nextPageToken"];
-  // The total number of CryptoKeyVersions that matched the query.
+  // The total number of CryptoKeyVersions that matched the query. This field is not populated if ListCryptoKeyVersionsRequest.filter is applied.
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
@@ -786,7 +866,7 @@ message ListCryptoKeysResponse {
   repeated CryptoKey crypto_keys = 1 [json_name="cryptoKeys"];
   // A token to retrieve next page of results. Pass this value in ListCryptoKeysRequest.page_token to retrieve the next page of results.
   optional string next_page_token = 2 [json_name="nextPageToken"];
-  // The total number of CryptoKeys that matched the query.
+  // The total number of CryptoKeys that matched the query. This field is not populated if ListCryptoKeysRequest.filter is applied.
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
@@ -796,7 +876,7 @@ message ListEkmConnectionsResponse {
   repeated EkmConnection ekm_connections = 1 [json_name="ekmConnections"];
   // A token to retrieve next page of results. Pass this value in ListEkmConnectionsRequest.page_token to retrieve the next page of results.
   optional string next_page_token = 2 [json_name="nextPageToken"];
-  // The total number of EkmConnections that matched the query.
+  // The total number of EkmConnections that matched the query. This field is not populated if ListEkmConnectionsRequest.filter is applied.
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
@@ -806,7 +886,7 @@ message ListImportJobsResponse {
   repeated ImportJob import_jobs = 1 [json_name="importJobs"];
   // A token to retrieve next page of results. Pass this value in ListImportJobsRequest.page_token to retrieve the next page of results.
   optional string next_page_token = 2 [json_name="nextPageToken"];
-  // The total number of ImportJobs that matched the query.
+  // The total number of ImportJobs that matched the query. This field is not populated if ListImportJobsRequest.filter is applied.
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
@@ -824,7 +904,7 @@ message ListKeyRingsResponse {
   repeated KeyRing key_rings = 1 [json_name="keyRings"];
   // A token to retrieve next page of results. Pass this value in ListKeyRingsRequest.page_token to retrieve the next page of results.
   optional string next_page_token = 2 [json_name="nextPageToken"];
-  // The total number of KeyRings that matched the query.
+  // The total number of KeyRings that matched the query. This field is not populated if ListKeyRingsRequest.filter is applied.
   optional int32 total_size = 3 [json_name="totalSize"];
 }
 
@@ -1042,6 +1122,22 @@ message ShowEffectiveAutokeyConfigResponse {
   optional string key_project = 1 [json_name="keyProject"];
 }
 
+// Response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsEnrollmentConfig
+message ShowEffectiveKeyAccessJustificationsEnrollmentConfigResponse {
+  // The effective KeyAccessJustificationsEnrollmentConfig for external keys.
+  optional KeyAccessJustificationsEnrollmentConfig external_config = 1 [json_name="externalConfig"];
+  // The effective KeyAccessJustificationsEnrollmentConfig for hardware keys.
+  optional KeyAccessJustificationsEnrollmentConfig hardware_config = 2 [json_name="hardwareConfig"];
+  // The effective KeyAccessJustificationsEnrollmentConfig for software keys.
+  optional KeyAccessJustificationsEnrollmentConfig software_config = 3 [json_name="softwareConfig"];
+}
+
+// Response message for KeyAccessJustificationsConfig.ShowEffectiveKeyAccessJustificationsPolicyConfig.
+message ShowEffectiveKeyAccessJustificationsPolicyConfigResponse {
+  // The effective KeyAccessJustificationsPolicyConfig.
+  optional KeyAccessJustificationsPolicyConfig effective_kaj_policy = 1 [json_name="effectiveKajPolicy"];
+}
+
 // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
 message Status {
   // The status code, which should be an enum value of google.rpc.Code.
@@ -1084,14 +1180,52 @@ message GetAutokeyConfigFolderRequest {
   optional string name = 1;
 }
 
+message GetKajPolicyConfigFolderRequest {
+  optional string name = 1;
+}
+
 message UpdateAutokeyConfigFolderRequest {
   optional string name = 1;
   optional string update_mask = 2;
   optional AutokeyConfig folder = 3;
 }
 
+message UpdateKajPolicyConfigFolderRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional KeyAccessJustificationsPolicyConfig folder = 3;
+}
+
+message GetKajPolicyConfigOrganizationRequest {
+  optional string name = 1;
+}
+
+message UpdateKajPolicyConfigOrganizationRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional KeyAccessJustificationsPolicyConfig organization = 3;
+}
+
+message GetKajPolicyConfigProjectRequest {
+  optional string name = 1;
+}
+
 message ShowEffectiveAutokeyConfigProjectRequest {
   optional string parent = 1;
+}
+
+message ShowEffectiveKeyAccessJustificationsEnrollmentConfigProjectRequest {
+  optional string name = 1;
+}
+
+message ShowEffectiveKeyAccessJustificationsPolicyConfigProjectRequest {
+  optional string name = 1;
+}
+
+message UpdateKajPolicyConfigProjectRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional KeyAccessJustificationsPolicyConfig project = 3;
 }
 
 message GenerateRandomBytesProjectsLocationRequest {
