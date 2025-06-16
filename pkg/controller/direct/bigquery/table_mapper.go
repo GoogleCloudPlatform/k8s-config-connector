@@ -184,12 +184,14 @@ func ViewDefinition_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ViewDefini
 	}
 	out := &pb.ViewDefinition{}
 	out.Query = direct.ValueOf(in.Query)
+	out.ForceSendFields = []string{}
 	// MISSING: UserDefinedFunctionResources
 	// if spec.view.useLegacySql is not set. Default to true.
 	if in.UseLegacySql == nil {
 		out.UseLegacySql = true
 	} else {
 		out.UseLegacySql = direct.ValueOf(in.UseLegacySql)
+		out.ForceSendFields = append(out.ForceSendFields, "UseLegacySql")
 	}
 	// MISSING: UseExplicitColumnNames
 	// MISSING: PrivacyPolicy
@@ -693,6 +695,10 @@ func BigQueryTableSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigQuer
 	out.FriendlyName = direct.ValueOf(in.FriendlyName)
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
+	if out.Labels == nil {
+		out.Labels = map[string]string{}
+	}
+	out.Labels["managed-by-cnrm"] = "true"
 	out.Schema = Table_Schema_ToProto(mapCtx, in.Schema, in.View == nil && in.MaterializedView == nil)
 	out.TimePartitioning = TimePartitioning_ToProto(mapCtx, in.TimePartitioning)
 	out.RangePartitioning = RangePartitioning_ToProto(mapCtx, in.RangePartitioning)
