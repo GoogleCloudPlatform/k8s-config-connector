@@ -818,17 +818,24 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "clusterIpv4CidrBlock": "/20",
     "servicesIpv4CidrBlock": "/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -845,6 +852,11 @@ X-Xss-Protection: 0
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
     "window": {}
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -1057,6 +1069,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
+  "labelFingerprint": "abcdef0123A=",
   "resourceLabels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -1188,17 +1201,24 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "clusterIpv4CidrBlock": "/20",
     "servicesIpv4CidrBlock": "/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -1215,6 +1235,11 @@ X-Xss-Protection: 0
   "loggingService": "none",
   "maintenancePolicy": {
     "window": {}
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true

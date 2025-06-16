@@ -230,10 +230,19 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolId = ""
 	}
 
+	if update.DesiredAddonsConfig != nil {
+		obj.AddonsConfig = update.DesiredAddonsConfig
+		update.DesiredAddonsConfig = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
+	}
+
+	if err := s.populateClusterDefaults(obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -325,11 +334,17 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.AddonsConfig == nil {
 		obj.AddonsConfig = &pb.AddonsConfig{}
 	}
-	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
-		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{
-			Enabled: true,
-		}
+	if obj.AddonsConfig.CloudRunConfig != nil && obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
+		obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
 	}
+	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
+		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{}
+	}
+	// Weird behavior:
+	// Even if `.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled` is set to
+	// `false` in request, the returned value is still `true`.
+	obj.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled = true
+
 	if obj.AddonsConfig.KubernetesDashboard == nil {
 		obj.AddonsConfig.KubernetesDashboard = &pb.KubernetesDashboard{
 			Disabled: true,
@@ -340,7 +355,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 			Disabled: true,
 		}
 	}
-
 	if obj.Autoscaling == nil {
 		obj.Autoscaling = &pb.ClusterAutoscaling{}
 	}
@@ -402,12 +416,34 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.DefaultMaxPodsConstraint.MaxPodsPerNode = 110
 	}
 
+	if obj.Endpoint == "" {
+		obj.Endpoint = "1.23.456.78"
+	}
+
 	if obj.EnterpriseConfig == nil {
 		obj.EnterpriseConfig = &pb.EnterpriseConfig{}
 	}
 
 	if obj.EnterpriseConfig.ClusterTier == pb.EnterpriseConfig_CLUSTER_TIER_UNSPECIFIED {
 		obj.EnterpriseConfig.ClusterTier = pb.EnterpriseConfig_STANDARD
+	}
+
+	if obj.Etag == "" {
+		obj.Etag = "abcdef0123A="
+	}
+
+	if obj.Id == "" {
+		obj.Id = "000000000000000000000"
+	}
+
+	if obj.InstanceGroupUrls == nil {
+		obj.InstanceGroupUrls = []string{
+			"https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef",
+		}
+	}
+
+	if obj.LabelFingerprint == "" {
+		obj.LabelFingerprint = "abcdef0123A="
 	}
 
 	if obj.LoggingConfig == nil {
@@ -427,6 +463,17 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 
 	if obj.LoggingService == "" {
 		obj.LoggingService = "logging.googleapis.com/kubernetes"
+	}
+
+	if obj.Master == nil {
+		obj.Master = &pb.Master{}
+	}
+
+	if obj.MasterAuth == nil {
+		obj.MasterAuth = &pb.MasterAuth{
+			ClientCertificateConfig: &pb.ClientCertificateConfig{},
+			ClusterCaCertificate:    "1234567890abcdefghijklmn",
+		}
 	}
 
 	if obj.MasterAuthorizedNetworksConfig == nil {
