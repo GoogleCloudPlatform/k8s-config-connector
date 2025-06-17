@@ -39,7 +39,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: BigtableLogicalView is the Schema for the BigtableLogicalView
@@ -58,7 +58,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: BigtableLogicalViewSpec defines the desired state of BigtableLogicalView
+            description: BigtableLogicalViewSpec defines a state of BigtableLogicalView
             properties:
               deletionProtection:
                 description: Optional. Set to true to make the LogicalView protected
@@ -149,6 +149,10 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
