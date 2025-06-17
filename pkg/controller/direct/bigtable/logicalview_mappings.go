@@ -30,18 +30,10 @@ func BigtableLogicalViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Logical
 		return nil
 	}
 	out := &krmv1alpha1.BigtableLogicalViewSpec{}
-	out.Name = &in.Name   // direct.LazyPtr(in.Name)
-	out.Query = &in.Query // direct.LazyPtr(in.Query)
+	out.Name = &in.Name
+	out.Query = &in.Query
 	// TODO: implement this once DeletionProtection is published in adminpb.logicalview.
 	// out.DeletionProtection = direct.LazyPtr(in.DeletionProtection)
-
-	// instanceIdentity, _, err := krmv1alpha1.ParseLogicalViewExternal(in.Name)
-	// if err != nil {
-	// 	return nil
-	// }
-	// out.BigtableLogicalViewParent = krmv1alpha1.BigtableLogicalViewParent{
-	// 	InstanceRef: &krmv1beta1.InstanceRef{External: instanceIdentity.String(), Name: instanceIdentity.ID()},
-	// }
 	return out
 }
 
