@@ -35,7 +35,7 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
 - title: "App Hub"
   section:
-  - title: "ApphubApplication"
+  - title: "AppHubApplication"
     path: /config-connector/docs/reference/resource-docs/apphub/apphubapplication.md
 - title: "Apigee"
   section:
