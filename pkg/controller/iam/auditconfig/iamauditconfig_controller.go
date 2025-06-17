@@ -67,15 +67,15 @@ var logger = log.Log.WithName(controllerName)
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
-		if deps.DclConverter != nil {
-			dclML = deps.DclConverter.MetadataLoader
+		if deps.DCLConverter != nil {
+			dclML = deps.DCLConverter.MetadataLoader
 		}
-		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TFLoader, dclML)
 	}
 
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
+	reconciler, err := NewReconciler(mgr, deps.TFProvider, deps.TFLoader, deps.DCLConverter, deps.DCLConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
 	if err != nil {
 		return err
 	}

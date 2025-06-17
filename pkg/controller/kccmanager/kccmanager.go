@@ -172,10 +172,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	rd := controller.Deps{
-		TfProvider:   provider,
-		TfLoader:     smLoader,
-		DclConfig:    dclConfig,
-		DclConverter: dclConverter,
+		TFProvider:   provider,
+		TFLoader:     smLoader,
+		DCLConfig:    dclConfig,
+		DCLConverter: dclConverter,
 		Defaulters: []k8s.Defaulter{
 			stateIntoSpecDefaulter,
 		},
