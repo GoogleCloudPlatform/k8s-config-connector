@@ -24,6 +24,8 @@ for the future release **
 
 ## New Beta Resources (Direct Reconciler):
 
+*   `StorageAnywhereCache`
+
 *   [`SAMPLE_BigQueryConnectionConnection`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection)
     (This is a sample, your actual release note should not contain `SAMPLE_`,
     otherwise it will be deleted)
