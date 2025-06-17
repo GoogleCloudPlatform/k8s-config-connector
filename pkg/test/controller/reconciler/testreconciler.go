@@ -333,7 +333,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		deps := directbase.Deps{
 			Defaulters:      defaulters,
 			JitterGenerator: jg,
-			AdapterDeps: &directbase.IAMAdapterDeps{
+			IAMAdapterDeps: &directbase.IAMAdapterDeps{
 				KubeClient: r.mgr.GetClient(),
 				ControllerDeps: &controller.Deps{
 					TfProvider:   r.provider,

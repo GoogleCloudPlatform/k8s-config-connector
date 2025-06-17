@@ -98,7 +98,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		},
 		jitterGenerator: deps.JitterGenerator,
 		defaulters:      deps.Defaulters,
-		iamDeps:         deps.AdapterDeps,
+		iamDeps:         deps.IAMAdapterDeps,
 	}
 	return &r, nil
 }
@@ -161,7 +161,7 @@ type Deps struct {
 	ReconcilePredicate predicate.Predicate
 
 	// There are Dependencies for Adapters in particular (not the reconcilers)
-	AdapterDeps *IAMAdapterDeps
+	IAMAdapterDeps *IAMAdapterDeps
 }
 
 // TODO(kcc-team): we want to remove these in the future

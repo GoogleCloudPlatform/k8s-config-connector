@@ -268,7 +268,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				JitterGenerator: r.jitterGenerator,
 				Defaulters:      r.defaulters,
 				// for iam controllers
-				AdapterDeps: &directbase.IAMAdapterDeps{
+				IAMAdapterDeps: &directbase.IAMAdapterDeps{
 					KubeClient: r.Client,
 					ControllerDeps: &controller.Deps{
 						TfProvider:   r.provider,
@@ -343,7 +343,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				ReconcilePredicate: useDirectReconcilerPredicate,
 
 				// for iam controllers
-				AdapterDeps: &directbase.IAMAdapterDeps{
+				IAMAdapterDeps: &directbase.IAMAdapterDeps{
 					KubeClient: r.Client,
 					ControllerDeps: &controller.Deps{
 						TfProvider:   r.provider,

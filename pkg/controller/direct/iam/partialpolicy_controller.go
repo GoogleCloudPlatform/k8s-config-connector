@@ -21,6 +21,7 @@ import (
 
 	"cloud.google.com/go/iam/apiv1/iampb"
 
+	"github.com/go-logr/logr"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -37,7 +38,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/go-logr/logr"
 )
 
 const (
@@ -143,7 +143,7 @@ func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {
 
 // IAMMemberIdentityResolver helps to resolve referenced member identity
 type IAMMemberIdentityResolver struct {
-	Iamclient *kcciamclient.IAMClient
+	IAMClient *kcciamclient.IAMClient
 	Ctx       context.Context
 }
 
@@ -182,7 +182,7 @@ func (t IAMMemberIdentityResolver) Resolve(member newiamv1beta1.Member, memberFr
 
 	}
 
-	return kcciamclient.ResolveMemberIdentity(t.Ctx, oldMember, oldMemberFrom, defaultNamespace, t.Iamclient.TFIAMClient)
+	return kcciamclient.ResolveMemberIdentity(t.Ctx, oldMember, oldMemberFrom, defaultNamespace, t.IAMClient.TFIAMClient)
 }
 
 func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
@@ -200,7 +200,7 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 		livePolicyForMerge = ToNewIAMPolicySkeleton(a.desired)
 	}
 
-	resolver := IAMMemberIdentityResolver{Iamclient: a.iamClient, Ctx: ctx}
+	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
 	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver)
 	if err != nil {
 		return fmt.Errorf("computing partial policy for create for %v: %w", k8s.GetNamespacedName(a.desired), err)
@@ -240,7 +240,7 @@ func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directba
 	livePolicyForMerge := &newiamv1beta1.IAMPolicy{}
 	livePolicyForMerge.Spec = *IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy)
 
-	resolver := IAMMemberIdentityResolver{Iamclient: a.iamClient, Ctx: ctx}
+	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
 
 	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver)
 	if err != nil {
