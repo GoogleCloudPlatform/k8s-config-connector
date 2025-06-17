@@ -110,18 +110,18 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opts RegistrationControllerOptions) error {
 	if rd.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
-		if rd.DclConverter != nil {
-			dclML = rd.DclConverter.MetadataLoader
+		if rd.DCLConverter != nil {
+			dclML = rd.DCLConverter.MetadataLoader
 		}
-		rd.JitterGen = jitter.NewDefaultGenerator(rd.TfLoader, dclML)
+		rd.JitterGen = jitter.NewDefaultGenerator(rd.TFLoader, dclML)
 	}
 
 	r := &ReconcileRegistration{
 		Client:            mgr.GetClient(),
-		provider:          rd.TfProvider,
-		smLoader:          rd.TfLoader,
-		dclConfig:         rd.DclConfig,
-		dclConverter:      rd.DclConverter,
+		provider:          rd.TFProvider,
+		smLoader:          rd.TFLoader,
+		dclConfig:         rd.DCLConfig,
+		dclConverter:      rd.DCLConverter,
 		mgr:               mgr,
 		controllers:       make(map[string]map[string]controllerContext),
 		registrationFunc:  regFunc,
@@ -239,10 +239,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		return nil, nil
 	}
 	cds := controller.Deps{
-		TfProvider:   r.provider,
-		TfLoader:     r.smLoader,
-		DclConfig:    r.dclConfig,
-		DclConverter: r.dclConverter,
+		TFProvider:   r.provider,
+		TFLoader:     r.smLoader,
+		DCLConfig:    r.dclConfig,
+		DCLConverter: r.dclConverter,
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 		//DependencyTracker: r.dependencyTracker,
@@ -271,10 +271,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				IAMAdapterDeps: &directbase.IAMAdapterDeps{
 					KubeClient: r.Client,
 					ControllerDeps: &controller.Deps{
-						TfProvider:   r.provider,
-						TfLoader:     r.smLoader,
-						DclConfig:    r.dclConfig,
-						DclConverter: r.dclConverter,
+						TFProvider:   r.provider,
+						TFLoader:     r.smLoader,
+						DCLConfig:    r.dclConfig,
+						DCLConverter: r.dclConverter,
 					},
 				},
 			}); err != nil {
@@ -346,10 +346,10 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				IAMAdapterDeps: &directbase.IAMAdapterDeps{
 					KubeClient: r.Client,
 					ControllerDeps: &controller.Deps{
-						TfProvider:   r.provider,
-						TfLoader:     r.smLoader,
-						DclConfig:    r.dclConfig,
-						DclConverter: r.dclConverter,
+						TFProvider:   r.provider,
+						TFLoader:     r.smLoader,
+						DCLConfig:    r.dclConfig,
+						DCLConverter: r.dclConverter,
 					},
 				},
 			}

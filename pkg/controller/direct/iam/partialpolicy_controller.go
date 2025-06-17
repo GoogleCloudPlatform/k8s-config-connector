@@ -70,13 +70,13 @@ func validateDeps(deps *directbase.IAMAdapterDeps) error {
 		return fmt.Errorf("ControllerDeps is nil")
 	}
 
-	if deps.ControllerDeps.TfProvider == nil {
+	if deps.ControllerDeps.TFProvider == nil {
 		return fmt.Errorf("TfProvider is nil")
 	}
-	if deps.ControllerDeps.TfLoader == nil {
+	if deps.ControllerDeps.TFLoader == nil {
 		return fmt.Errorf("TfLoader is nil")
 	}
-	if deps.ControllerDeps.DclConverter == nil {
+	if deps.ControllerDeps.DCLConverter == nil {
 		return fmt.Errorf("DclConverter is nil")
 	}
 
@@ -92,7 +92,7 @@ func (m *modelIAMPartialPolicy) IAMAdapterForObject(ctx context.Context, reader 
 		return nil, fmt.Errorf("error validating dependencies: %w", err)
 	}
 
-	iamClient := kcciamclient.New(deps.ControllerDeps.TfProvider, deps.ControllerDeps.TfLoader, deps.KubeClient, deps.ControllerDeps.DclConverter, deps.ControllerDeps.DclConfig)
+	iamClient := kcciamclient.New(deps.ControllerDeps.TFProvider, deps.ControllerDeps.TFLoader, deps.KubeClient, deps.ControllerDeps.DCLConverter, deps.ControllerDeps.DCLConfig)
 	return &IAMPartialPolicyAdapter{
 		iamClient: iamClient,
 		desired:   obj,
