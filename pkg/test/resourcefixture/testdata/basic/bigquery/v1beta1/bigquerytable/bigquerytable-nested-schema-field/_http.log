@@ -148,7 +148,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -179,12 +179,13 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Table containing policy history",
   "friendlyName": "bigquerytable-sample",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "schema": {
@@ -313,6 +314,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -336,18 +338,21 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -357,18 +362,21 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -383,12 +391,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -400,18 +410,21 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -432,7 +445,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -452,6 +465,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -475,18 +489,21 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -496,18 +513,21 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -522,12 +542,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -539,18 +561,21 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -572,12 +597,13 @@ X-Xss-Protection: 0
 
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Table containing policy history updated",
   "friendlyName": "bigquerytable-sample-updated",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "schema": {
@@ -706,6 +732,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -729,18 +756,21 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -750,18 +780,21 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -776,12 +809,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -793,18 +828,21 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -845,6 +883,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -868,18 +907,21 @@ X-Xss-Protection: 0
         "description": "Fully qualified name of the entity",
         "mode": "REQUIRED",
         "name": "qualified_name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -889,18 +931,21 @@ X-Xss-Protection: 0
             "description": "Name of Atlan Tag",
             "mode": "NULLABLE",
             "name": "type_name",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "GUID of the entity for this tag",
             "mode": "NULLABLE",
             "name": "entity_guid",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "Status of the entity",
             "mode": "NULLABLE",
             "name": "entity_status",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -915,12 +960,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -932,18 +979,21 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "type_resource",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Last update time of the entity",
         "mode": "REQUIRED",
         "name": "update_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "description": "time when cdp get data",
         "mode": "REQUIRED",
         "name": "atlan_get_time",
+        "policyTags": {},
         "type": "TIMESTAMP"
       }
     ]
@@ -964,7 +1014,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
