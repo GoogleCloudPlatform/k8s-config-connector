@@ -1800,6 +1800,16 @@
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.schema" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.segmentTerminator" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.version" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.description" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.expression" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.location" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.title" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.deniedPermissions[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.deniedPrincipals[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.exceptionPermissions[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.exceptionPrincipals[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].description" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpCertificates[].x509Certificate" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpEntityId" is not set in unstructured objects
