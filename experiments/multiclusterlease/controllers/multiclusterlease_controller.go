@@ -20,13 +20,13 @@ import (
 	"sync"
 	"time"
 
-	"cloud.google.com/go/storage"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/api/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/pkg/leaderelection"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/pkg/storage"
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -35,10 +35,9 @@ import (
 // MultiClusterLeaseReconciler reconciles a MultiClusterLease object
 type MultiClusterLeaseReconciler struct {
 	client.Client
-	Log        logr.Logger
-	GCSClient  *storage.Client
-	BucketName string
-	Identity   string
+	Log      logr.Logger
+	Storage  storage.Storage
+	Identity string
 
 	leaderElectorsMutex sync.Mutex
 	leaderElectors      map[string]*leaderelection.LeaderElector // keyed by NamespacedName
@@ -48,15 +47,13 @@ type MultiClusterLeaseReconciler struct {
 func NewMultiClusterLeaseReconciler(
 	client client.Client,
 	log logr.Logger,
-	gcsClient *storage.Client,
-	bucketName string,
+	storage storage.Storage,
 	identity string,
 ) *MultiClusterLeaseReconciler {
 	return &MultiClusterLeaseReconciler{
 		Client:         client,
 		Log:            log,
-		GCSClient:      gcsClient,
-		BucketName:     bucketName,
+		Storage:        storage,
 		Identity:       identity,
 		leaderElectors: make(map[string]*leaderelection.LeaderElector),
 	}
@@ -101,7 +98,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		return ctrl.Result{}, err
 	}
 
-	// Try to acquire or renew the lease in GCS
+	// Try to acquire or renew the lease in the storage backend
 	leaseInfo, err := leaderElector.AcquireOrRenew(ctx)
 	if err != nil {
 		log.Error(err, "failed to acquire or renew lease",
@@ -161,12 +158,20 @@ func (r *MultiClusterLeaseReconciler) handleDeletion(ctx context.Context, mcl *v
 		return ctrl.Result{}, nil
 	}
 
-	// TODO: get the leader elector and release the lease
-
-	// Clean up the leader elector from our map
+	// Get the leader elector and release the lease
 	r.leaderElectorsMutex.Lock()
-	delete(r.leaderElectors, client.ObjectKeyFromObject(mcl).String())
+	leaderElector, exists := r.leaderElectors[client.ObjectKeyFromObject(mcl).String()]
+	if exists {
+		delete(r.leaderElectors, client.ObjectKeyFromObject(mcl).String())
+	}
 	r.leaderElectorsMutex.Unlock()
+
+	if exists {
+		if err := leaderElector.ReleaseLease(ctx); err != nil {
+			log.Error(err, "failed to release lease during deletion")
+			// Continue with cleanup even if release fails
+		}
+	}
 
 	if err := r.removeFinalizer(ctx, mcl); err != nil {
 		return ctrl.Result{}, err
@@ -268,7 +273,7 @@ func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string, lease
 	}
 
 	// Create a new LeaderElector
-	le := leaderelection.NewLeaderElector(r.GCSClient, r.BucketName, r.Identity, key, lease)
+	le := leaderelection.NewLeaderElector(r.Storage, r.Identity, key, lease)
 	r.leaderElectors[key] = le
 	return le, nil
 }

@@ -16,37 +16,30 @@ package leaderelection
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"io"
-	"net/http"
 	"time"
 
-	"cloud.google.com/go/storage"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/api/v1alpha1"
-	"google.golang.org/api/googleapi"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/pkg/storage"
 )
 
-// LeaderElector handles the actual leader election logic with GCS
+// LeaderElector handles the actual leader election logic with pluggable storage
 type LeaderElector struct {
-	client     *storage.Client
-	bucketName string
-	identity   string
-	leaseKey   string
-	lease      *v1alpha1.MultiClusterLease
+	storage  storage.Storage
+	identity string
+	leaseKey string
+	lease    *v1alpha1.MultiClusterLease
 
 	leaseTransitions int32
 }
 
 // NewLeaderElector creates a new LeaderElector instance
-func NewLeaderElector(client *storage.Client, bucketName, identity, leaseKey string, lease *v1alpha1.MultiClusterLease) *LeaderElector {
+func NewLeaderElector(storage storage.Storage, identity, leaseKey string, lease *v1alpha1.MultiClusterLease) *LeaderElector {
 	return &LeaderElector{
-		client:     client,
-		bucketName: bucketName,
-		identity:   identity,
-		leaseKey:   leaseKey,
-		lease:      lease,
+		storage:  storage,
+		identity: identity,
+		leaseKey: leaseKey,
+		lease:    lease,
 	}
 }
 
@@ -62,11 +55,11 @@ type LeaseInfo struct {
 	LeaseTransitions *int32
 }
 
-// AcquireOrRenew attempts to acquire or renew the lease in GCS
+// AcquireOrRenew attempts to acquire or renew the lease using the configured storage backend
 func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error) {
 	// Try to get the current lease state
-	data, err := le.readLease(ctx)
-	if err == storage.ErrObjectNotExist {
+	leaseObj, err := le.storage.ReadLease(ctx, le.leaseKey)
+	if storage.IsNotFound(err) {
 		// This is the first time anyone is trying to acquire this lease
 		return le.createNewLease(ctx)
 	}
@@ -78,46 +71,46 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 	leaseDuration := le.lease.Spec.GetLeaseDuration()
 	gracePeriod := le.lease.Spec.GetGracePeriod()
 	totalLeaseTime := leaseDuration + gracePeriod
-	leaseExpired := data.HolderIdentity == "" || time.Since(data.RenewTime) > totalLeaseTime
+	leaseExpired := leaseObj.Data.HolderIdentity == "" || time.Since(leaseObj.Data.RenewTime) > totalLeaseTime
 
 	// We're not the leader
-	if data.HolderIdentity != le.identity && !leaseExpired {
+	if leaseObj.Data.HolderIdentity != le.identity && !leaseExpired {
 		return &LeaseInfo{
 			Acquired:         false,
-			HolderIdentity:   &data.HolderIdentity,
-			RenewTime:        &data.RenewTime,
-			LeaseTransitions: &data.LeaseTransitions,
+			HolderIdentity:   &leaseObj.Data.HolderIdentity,
+			RenewTime:        &leaseObj.Data.RenewTime,
+			LeaseTransitions: &leaseObj.Data.LeaseTransitions,
 		}, nil
 	}
 
 	// If we're the current holder or the lease is expired, try to acquire/renew
+	now := time.Now()
+	updatedLeaseData := leaseObj.Data
 
-	if data.HolderIdentity != le.identity && data.HolderIdentity != "" {
+	if leaseObj.Data.HolderIdentity != le.identity && leaseObj.Data.HolderIdentity != "" {
 		// If this is a new leader, increment transitions
-		data.LeaseTransitions++
+		updatedLeaseData.LeaseTransitions++
 	}
 
 	// Update the lease
-	now := time.Now()
-	updatedLeaseData := &data
 	updatedLeaseData.HolderIdentity = le.identity
 	updatedLeaseData.RenewTime = now
 
-	if err := le.updateLease(ctx, updatedLeaseData, data.Generation); err != nil {
-		if isGCSPreconditionError(err) {
+	if err := le.storage.UpdateLease(ctx, le.leaseKey, &updatedLeaseData, leaseObj.Generation); err != nil {
+		if storage.IsConditionalUpdateFailed(err) {
 			// Someone else modified the object since we read it
 			return &LeaseInfo{
 				Acquired:         false,
-				HolderIdentity:   &data.HolderIdentity,
-				RenewTime:        &data.RenewTime,
-				LeaseTransitions: &data.LeaseTransitions,
+				HolderIdentity:   &leaseObj.Data.HolderIdentity,
+				RenewTime:        &leaseObj.Data.RenewTime,
+				LeaseTransitions: &leaseObj.Data.LeaseTransitions,
 			}, nil
 		}
 		return &LeaseInfo{
 			Acquired:         false,
-			HolderIdentity:   &data.HolderIdentity,
-			RenewTime:        &data.RenewTime,
-			LeaseTransitions: &data.LeaseTransitions,
+			HolderIdentity:   &leaseObj.Data.HolderIdentity,
+			RenewTime:        &leaseObj.Data.RenewTime,
+			LeaseTransitions: &leaseObj.Data.LeaseTransitions,
 		}, fmt.Errorf("failed to update lease: %w", err)
 	}
 
@@ -130,130 +123,20 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 	}, nil
 }
 
-// leaseData represents the data stored in the GCS lease object
-type leaseData struct {
-	HolderIdentity   string    `json:"holderIdentity"`
-	RenewTime        time.Time `json:"renewTime"`
-	LeaseTransitions int32     `json:"leaseTransitions"`
-	Generation       int64     `json:"-"` // Not stored in JSON
-}
-
-// getObjectHandle returns a handle to the GCS object for this lease
-func (le *LeaderElector) getObjectHandle() *storage.ObjectHandle {
-	bucket := le.client.Bucket(le.bucketName)
-	return bucket.Object(fmt.Sprintf("leases/%s", le.leaseKey))
-}
-
-// readLease reads the current lease data from GCS
-func (le *LeaderElector) readLease(ctx context.Context) (leaseData, error) {
-	obj := le.getObjectHandle()
-	attrs, err := obj.Attrs(ctx)
-	if err != nil {
-		return leaseData{}, err
-	}
-
-	data := leaseData{
-		Generation: attrs.Generation,
-	}
-
-	// Read the object content
-	reader, err := obj.NewReader(ctx)
-	if err != nil {
-		return leaseData{}, err
-	}
-	defer reader.Close()
-
-	content, err := io.ReadAll(reader)
-	if err != nil {
-		return leaseData{}, fmt.Errorf("reading lease object: %w", err)
-	}
-
-	// If the object is empty, return default values
-	if len(content) == 0 {
-		return data, nil
-	}
-
-	// Unmarshal the JSON data
-	if err := json.Unmarshal(content, &data); err != nil {
-		return leaseData{}, fmt.Errorf("unmarshalling lease data: %w", err)
-	}
-
-	return data, nil
-}
-
-// updateLease updates the lease in GCS with optimistic locking
-func (le *LeaderElector) updateLease(ctx context.Context, data *leaseData, generation int64) error {
-	obj := le.getObjectHandle()
-
-	// Marshal the lease data to JSON
-	content, err := json.Marshal(data)
-	if err != nil {
-		return fmt.Errorf("marshalling lease data: %w", err)
-	}
-
-	// Create a conditional writer
-	w := obj.If(storage.Conditions{GenerationMatch: generation}).NewWriter(ctx)
-	w.ContentType = "application/json"
-	w.CacheControl = "no-cache, no-store, must-revalidate"
-
-	// Write the JSON data
-	if _, err := w.Write(content); err != nil {
-		w.Close()
-		if isGCSPreconditionError(err) {
-			return fmt.Errorf("precondition failed while writing lease data: %w", err)
-		}
-		return fmt.Errorf("writing lease data: %w", err)
-	}
-
-	// Close the writer to complete the operation
-	if err := w.Close(); err != nil {
-		if isGCSPreconditionError(err) {
-			return fmt.Errorf("precondition failed while closing writer: %w", err)
-		}
-		return fmt.Errorf("closing writer: %w", err)
-	}
-
-	return nil
-}
-
-// createNewLease creates a new lease object in GCS with this instance as the holder
-// Uses a precondition to ensure the object doesn't exist (preventing race conditions)
+// createNewLease creates a new lease object with this instance as the holder
 func (le *LeaderElector) createNewLease(ctx context.Context) (*LeaseInfo, error) {
-	obj := le.getObjectHandle()
 	now := time.Now()
 	leaseTransitions := int32(0)
 
 	// Create the lease data
-	data := leaseData{
+	data := storage.LeaseData{
 		HolderIdentity:   le.identity,
 		RenewTime:        now,
 		LeaseTransitions: leaseTransitions,
 	}
 
-	// Marshal the lease data to JSON
-	content, err := json.Marshal(data)
-	if err != nil {
-		return &LeaseInfo{Acquired: false}, fmt.Errorf("marshalling new lease data: %w", err)
-	}
-
-	// Use a precondition that the object doesn't exist
-	w := obj.If(storage.Conditions{DoesNotExist: true}).NewWriter(ctx)
-	w.ContentType = "application/json"
-	w.CacheControl = "no-cache, no-store, must-revalidate"
-
-	// Write the JSON data
-	if _, err := w.Write(content); err != nil {
-		w.Close()
-		if isGCSPreconditionError(err) {
-			// Someone else created the object since we checked
-			return &LeaseInfo{Acquired: false}, nil
-		}
-		return &LeaseInfo{Acquired: false}, fmt.Errorf("writing new lease data: %w", err)
-	}
-
-	// Close the writer to complete the operation
-	if err := w.Close(); err != nil {
-		if isGCSPreconditionError(err) {
+	if err := le.storage.CreateLease(ctx, le.leaseKey, &data); err != nil {
+		if storage.IsAlreadyExists(err) {
 			// Someone else created the object since we checked
 			return &LeaseInfo{Acquired: false}, nil
 		}
@@ -269,11 +152,37 @@ func (le *LeaderElector) createNewLease(ctx context.Context) (*LeaseInfo, error)
 	}, nil
 }
 
-// isGCSPreconditionError checks if an error is a GCS precondition failure
-func isGCSPreconditionError(err error) bool {
-	var gErr *googleapi.Error
-	if errors.As(err, &gErr) {
-		return gErr.Code == http.StatusPreconditionFailed || gErr.Code == http.StatusConflict
+// ReleaseLease releases the lease by setting a very short expiration time
+func (le *LeaderElector) ReleaseLease(ctx context.Context) error {
+	// Try to get the current lease state
+	leaseObj, err := le.storage.ReadLease(ctx, le.leaseKey)
+	if storage.IsNotFound(err) {
+		// Lease doesn't exist, nothing to release
+		return nil
 	}
-	return false
+	if err != nil {
+		return fmt.Errorf("failed to read lease for release: %w", err)
+	}
+
+	// Check if we're the current holder
+	if leaseObj.Data.HolderIdentity != le.identity {
+		// We're not the current holder, nothing to release
+		return nil
+	}
+
+	// Set the renew time to 1 second to make the lease expire quickly
+	expiredTime := time.Now().Add(1 * time.Second)
+	updatedData := leaseObj.Data
+	updatedData.RenewTime = expiredTime
+
+	// Update the lease with the expired time
+	if err := le.storage.UpdateLease(ctx, le.leaseKey, &updatedData, leaseObj.Generation); err != nil {
+		if storage.IsConditionalUpdateFailed(err) {
+			// Someone else modified the lease, which is fine
+			return nil
+		}
+		return fmt.Errorf("failed to update lease with expired time: %w", err)
+	}
+
+	return nil
 }
