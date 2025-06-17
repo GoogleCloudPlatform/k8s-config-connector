@@ -19,7 +19,7 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
+    message: Application is up to date
     reason: UpToDate
     status: "True"
     type: Ready

@@ -218,7 +218,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint&updateMask=attributes.businessOwners%2Cattributes.criticality.type%2Cattributes.developerOwners%2Cattributes.environment.type%2Cattributes.operatorOwners%2Cdescription%2CdisplayName
+PATCH https://apphub.googleapis.com/v1/projects/${projectId}/locations/us-central1/applications/test-application?%24alt=json%3Benum-encoding%3Dint&updateMask=attributes.businessOwners%2Cattributes.developerOwners%2Cattributes.environment.type%2Cattributes.operatorOwners%2Cdescription%2CdisplayName
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: application.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapplications%2Ftest-application
