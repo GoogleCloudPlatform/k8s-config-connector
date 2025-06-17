@@ -71,7 +71,7 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="https://cloud.google.com/app-hub/docs/">{{apphub_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">ApphubApplication</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
 </tr>
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>

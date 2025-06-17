@@ -7,7 +7,7 @@
 
 
 
-<p>The ApphubApplication resource represents an application registered in App Hub. App Hub helps you discover, deploy, and manage applications and services running in Google Cloud.</p>
+<p>The AppHubApplication resource represents an application registered in App Hub. App Hub helps you discover, deploy, and manage applications and services running in Google Cloud.</p>
 
 <table>
 <thead>

@@ -192,7 +192,6 @@ func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error listing servicemappings: %w", err)
 	}
-
 	autoGenSMMap, err := autogenloader.GetServiceMappingMap()
 	if err != nil {
 		return nil, fmt.Errorf("error getting auto-generated service mappings: %w", err)
