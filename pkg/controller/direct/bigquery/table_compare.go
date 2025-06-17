@@ -170,6 +170,31 @@ func externalDataConfigurationEq(a, b *bigquery.ExternalDataConfiguration) (bool
 	return equal, nil
 }
 
+func materializedViewEq(a, b *bigquery.MaterializedViewDefinition) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if !reflect.DeepEqual(a.AllowNonIncrementalDefinition, b.AllowNonIncrementalDefinition) {
+		return false
+	}
+	if !reflect.DeepEqual(a.EnableRefresh, b.EnableRefresh) {
+		return false
+	}
+	if !reflect.DeepEqual(a.Query, b.Query) {
+		return false
+	}
+	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {
+		return false
+	}
+	if !reflect.DeepEqual(a.RefreshIntervalMs, b.RefreshIntervalMs) {
+		return false
+	}
+	return true
+}
+
 func TableEq(a, b *bigquery.Table) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
@@ -189,7 +214,7 @@ func TableEq(a, b *bigquery.Table) (bool, error) {
 	if !reflect.DeepEqual(a.FriendlyName, b.FriendlyName) {
 		return false, nil
 	}
-	if !reflect.DeepEqual(a.MaterializedView, b.MaterializedView) {
+	if !materializedViewEq(a.MaterializedView, b.MaterializedView) {
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.MaxStaleness, b.MaxStaleness) {

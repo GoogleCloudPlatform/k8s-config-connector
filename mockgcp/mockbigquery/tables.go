@@ -392,6 +392,7 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.ExpirationTime = req.GetTable().ExpirationTime
 
 	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Labels = req.GetTable().Labels
 
 	updated.TableConstraints = req.GetTable().TableConstraints
 

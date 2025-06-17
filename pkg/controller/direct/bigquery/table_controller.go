@@ -17,7 +17,6 @@ package bigquery
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -235,7 +234,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			setEmptyPolicyTagsInSchema(field)
 		}
 	}
-
 	eq, err := TableEq(a.actual, table)
 	if err != nil {
 		return err
@@ -251,24 +249,26 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), mapCtx.Err())
 	}
-	if a.desired.ObjectMeta.Annotations != nil {
-		unmanaged, ok := a.desired.ObjectMeta.Annotations["cnrm.cloud.google.com/unmanaged"]
-		if ok && unmanaged != "" {
-			unmanagedFields := strings.Split(unmanaged, ",")
-			for _, field := range unmanagedFields {
-				// This ability is only intended for spec.schema field for the moment.
-				if field == "spec.schema" {
-					table.Schema = nil
-				}
-			}
-			// Make PATCH call with nil schema to avoid schema being updated.
-			res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
-			if err != nil {
-				return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
-			}
-			return a.UpdateStatusForUpdate(ctx, updateOp, res)
-		}
-	}
+
+	// TODO: Update annotation logic after confirming requirement.
+	// if a.desired.ObjectMeta.Annotations != nil {
+	// 	unmanaged, ok := a.desired.ObjectMeta.Annotations["cnrm.cloud.google.com/unmanaged"]
+	// 	if ok && unmanaged != "" {
+	// 		unmanagedFields := strings.Split(unmanaged, ",")
+	// 		for _, field := range unmanagedFields {
+	// 			// This ability is only intended for spec.schema field for the moment.
+	// 			if field == "spec.schema" {
+	// 				table.Schema = nil
+	// 			}
+	// 		}
+	// 		// Make PATCH call with nil schema to avoid schema being updated.
+	// 		res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
+	// 		if err != nil {
+	// 			return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
+	// 		}
+	// 		return a.UpdateStatusForUpdate(ctx, updateOp, res)
+	// 	}
+	// }
 	res, err := a.gcpService.Update(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 	if err != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
