@@ -230,7 +230,7 @@ type SparkHistoryServerConfigSpec struct {
 	//  Example:
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
-	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.ClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:status:proto=google.cloud.bigquery.connection.v1.AwsProperties

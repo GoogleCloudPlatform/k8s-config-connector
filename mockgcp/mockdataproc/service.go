@@ -90,11 +90,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pbhttp.RegisterAutoscalingPolicyServiceHandler,
 		pbhttp.RegisterWorkflowTemplateServiceHandler,
 		pbhttp.RegisterBatchControllerHandler,
-<<<<<<< HEAD
 		pbhttp.RegisterJobControllerHandler,
-=======
 		pbhttp.RegisterNodeGroupControllerHandler,
->>>>>>> 3a755e2f7 (Add mock service for dataproc nodeGroup)
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
