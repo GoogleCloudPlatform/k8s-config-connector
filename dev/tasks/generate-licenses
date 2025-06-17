@@ -25,16 +25,16 @@ mkdir -p dev/metadata/
 go build -o .build/config-connector ./cmd/config-connector
 
 # We ignore terraform-provider-google-beta, it is our code.
-go run github.com/GoogleContainerTools/kpt/tools/licensescan@latest scan \
+go run github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/licensescan@latest scan \
    --ignore=github.com/hashicorp/terraform-provider-google-beta \
    --binary .build/config-connector | jq > dev/metadata/licenses-config-connector.json
 
-go run github.com/GoogleContainerTools/kpt/tools/licensescan@latest scan \
+go run github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/licensescan@latest scan \
    --ignore=github.com/hashicorp/terraform-provider-google-beta \
    --binary .build/config-connector | jq -r '.[] | [.name, (.licenseInfo.licenseURLs | join(" ")), .licenseInfo.license, "config-connector", "YES", if .licenseInfo.mustShipCode then  "YES" else "NO" end ] | @csv' \
   > "${REPO_ROOT}/dev/metadata/licenses-config-connector.csv"
 
-go run github.com/GoogleContainerTools/kpt/tools/licensescan@latest scan --print --binary=.build/config-connector  \
+go run github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/licensescan@latest scan --print --binary=.build/config-connector  \
   --ignore=github.com/hashicorp/terraform-provider-google-beta \
   | jq -r '.[] | ("================================================================================\n= " + .name + " =\n\n" + .licenseFiles[].contents + "\n\n")' \
   > "${REPO_ROOT}/dev/metadata/licenses-config-connector.txt"

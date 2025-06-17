@@ -881,11 +881,12 @@ message DatasetAccessEntry {
 
 message DatasetListDatasets {
   optional DatasetReference dataset_reference = 1 [json_name="datasetReference"];
-  optional string friendly_name = 2 [json_name="friendlyName"];
-  optional string id = 3 [json_name="id"];
-  optional string kind = 4 [json_name="kind"];
-  map<string, string> labels = 5 [json_name="labels"];
-  optional string location = 6 [json_name="location"];
+  optional ExternalDatasetReference external_dataset_reference = 2 [json_name="externalDatasetReference"];
+  optional string friendly_name = 3 [json_name="friendlyName"];
+  optional string id = 4 [json_name="id"];
+  optional string kind = 5 [json_name="kind"];
+  map<string, string> labels = 6 [json_name="labels"];
+  optional string location = 7 [json_name="location"];
 }
 
 // Response format for a page of results when listing datasets.
@@ -1643,7 +1644,7 @@ message JobConfigurationLoad {
   optional string timestamp_format = 42 [json_name="timestampFormat"];
   // Optional. If sourceFormat is set to "AVRO", indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
   optional bool use_avro_logical_types = 43 [json_name="useAvroLogicalTypes"];
-  // Optional. Specifies the action that occurs if the destination table already exists. The following values are supported: * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the data, removes the constraints and uses the schema from the load job. * WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
+  // Optional. Specifies the action that occurs if the destination table already exists. The following values are supported: * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the data, removes the constraints and uses the schema from the load job. * WRITE_TRUNCATE_DATA: If the table already exists, BigQuery overwrites the data, but keeps the constraints and schema of the existing table. * WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
   optional string write_disposition = 44 [json_name="writeDisposition"];
 }
 
@@ -1701,7 +1702,7 @@ message JobConfigurationQuery {
   optional bool use_query_cache = 25 [json_name="useQueryCache"];
   // Describes user-defined function resources used in the query.
   repeated UserDefinedFunctionResource user_defined_function_resources = 26 [json_name="userDefinedFunctionResources"];
-  // Optional. Specifies the action that occurs if the destination table already exists. The following values are supported: * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the data, removes the constraints, and uses the schema from the query result. * WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result. The default value is WRITE_EMPTY. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
+  // Optional. Specifies the action that occurs if the destination table already exists. The following values are supported: * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the data, removes the constraints, and uses the schema from the query result. * WRITE_TRUNCATE_DATA: If the table already exists, BigQuery overwrites the data, but keeps the constraints and schema of the existing table. * WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate' error is returned in the job result. The default value is WRITE_EMPTY. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
   optional string write_disposition = 27 [json_name="writeDisposition"];
   // Optional. This is only supported for a SELECT query using a temporary table. If set, the query is allowed to write results incrementally to the temporary result table. This may incur a performance penalty. This option cannot be used with Legacy SQL. This feature is not yet available.
   optional bool write_incremental_results = 28 [json_name="writeIncrementalResults"];

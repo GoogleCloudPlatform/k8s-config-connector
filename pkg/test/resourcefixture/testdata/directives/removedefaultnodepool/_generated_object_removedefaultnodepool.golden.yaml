@@ -30,9 +30,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  endpoint: 1.23.456.78
+  labelFingerprint: abcdef0123A=
   masterVersion: 1.30.5-gke.1014001
   observedGeneration: 3
   observedState:
+    masterAuth:
+      clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
       privateEndpoint: 10.128.0.2
       publicEndpoint: 8.8.8.8

@@ -127,6 +127,10 @@ type ClusterManagerClient interface {
 	CheckAutopilotCompatibility(ctx context.Context, in *CheckAutopilotCompatibilityRequest, opts ...grpc.CallOption) (*CheckAutopilotCompatibilityResponse, error)
 	// Fetches locations that offer Google Kubernetes Engine.
 	ListLocations(ctx context.Context, in *ListLocationsRequest, opts ...grpc.CallOption) (*ListLocationsResponse, error)
+	// Fetch upgrade information of a specific cluster.
+	FetchClusterUpgradeInfo(ctx context.Context, in *FetchClusterUpgradeInfoRequest, opts ...grpc.CallOption) (*ClusterUpgradeInfo, error)
+	// Fetch upgrade information of a specific nodepool.
+	FetchNodePoolUpgradeInfo(ctx context.Context, in *FetchNodePoolUpgradeInfoRequest, opts ...grpc.CallOption) (*NodePoolUpgradeInfo, error)
 }
 
 type clusterManagerClient struct {
@@ -453,6 +457,24 @@ func (c *clusterManagerClient) ListLocations(ctx context.Context, in *ListLocati
 	return out, nil
 }
 
+func (c *clusterManagerClient) FetchClusterUpgradeInfo(ctx context.Context, in *FetchClusterUpgradeInfoRequest, opts ...grpc.CallOption) (*ClusterUpgradeInfo, error) {
+	out := new(ClusterUpgradeInfo)
+	err := c.cc.Invoke(ctx, "/mockgcp.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clusterManagerClient) FetchNodePoolUpgradeInfo(ctx context.Context, in *FetchNodePoolUpgradeInfoRequest, opts ...grpc.CallOption) (*NodePoolUpgradeInfo, error) {
+	out := new(NodePoolUpgradeInfo)
+	err := c.cc.Invoke(ctx, "/mockgcp.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClusterManagerServer is the server API for ClusterManager service.
 // All implementations must embed UnimplementedClusterManagerServer
 // for forward compatibility
@@ -561,6 +583,10 @@ type ClusterManagerServer interface {
 	CheckAutopilotCompatibility(context.Context, *CheckAutopilotCompatibilityRequest) (*CheckAutopilotCompatibilityResponse, error)
 	// Fetches locations that offer Google Kubernetes Engine.
 	ListLocations(context.Context, *ListLocationsRequest) (*ListLocationsResponse, error)
+	// Fetch upgrade information of a specific cluster.
+	FetchClusterUpgradeInfo(context.Context, *FetchClusterUpgradeInfoRequest) (*ClusterUpgradeInfo, error)
+	// Fetch upgrade information of a specific nodepool.
+	FetchNodePoolUpgradeInfo(context.Context, *FetchNodePoolUpgradeInfoRequest) (*NodePoolUpgradeInfo, error)
 	mustEmbedUnimplementedClusterManagerServer()
 }
 
@@ -672,6 +698,12 @@ func (UnimplementedClusterManagerServer) CheckAutopilotCompatibility(context.Con
 }
 func (UnimplementedClusterManagerServer) ListLocations(context.Context, *ListLocationsRequest) (*ListLocationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListLocations not implemented")
+}
+func (UnimplementedClusterManagerServer) FetchClusterUpgradeInfo(context.Context, *FetchClusterUpgradeInfoRequest) (*ClusterUpgradeInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchClusterUpgradeInfo not implemented")
+}
+func (UnimplementedClusterManagerServer) FetchNodePoolUpgradeInfo(context.Context, *FetchNodePoolUpgradeInfoRequest) (*NodePoolUpgradeInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchNodePoolUpgradeInfo not implemented")
 }
 func (UnimplementedClusterManagerServer) mustEmbedUnimplementedClusterManagerServer() {}
 
@@ -1316,6 +1348,42 @@ func _ClusterManager_ListLocations_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClusterManager_FetchClusterUpgradeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchClusterUpgradeInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).FetchClusterUpgradeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).FetchClusterUpgradeInfo(ctx, req.(*FetchClusterUpgradeInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClusterManager_FetchNodePoolUpgradeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchNodePoolUpgradeInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClusterManagerServer).FetchNodePoolUpgradeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClusterManagerServer).FetchNodePoolUpgradeInfo(ctx, req.(*FetchNodePoolUpgradeInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClusterManager_ServiceDesc is the grpc.ServiceDesc for ClusterManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1462,6 +1530,14 @@ var ClusterManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListLocations",
 			Handler:    _ClusterManager_ListLocations_Handler,
+		},
+		{
+			MethodName: "FetchClusterUpgradeInfo",
+			Handler:    _ClusterManager_FetchClusterUpgradeInfo_Handler,
+		},
+		{
+			MethodName: "FetchNodePoolUpgradeInfo",
+			Handler:    _ClusterManager_FetchNodePoolUpgradeInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

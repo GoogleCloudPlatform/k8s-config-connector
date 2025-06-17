@@ -17,6 +17,7 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -174,7 +175,7 @@ func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification
 	}
 	out := &krm.JobNotification{}
 	if in.GetPubsubTopic() != "" {
-		out.PubsubTopicRef = &v1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
+		out.PubsubTopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
 	}
 	out.Message = JobNotification_Message_FromProto(mapCtx, in.GetMessage())
 	return out

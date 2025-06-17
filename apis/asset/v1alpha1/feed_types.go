@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -34,7 +35,7 @@ type PubsubDestination struct {
 	// The name of the Pub/Sub topic to publish to.
 	//  Example: `projects/PROJECT_ID/topics/TOPIC_ID`.
 	// +kcc:proto:field=google.cloud.asset.v1.PubsubDestination.topic
-	TopicRef *refv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
 }
 
 // AssetFeedSpec defines the desired state of AssetFeed
