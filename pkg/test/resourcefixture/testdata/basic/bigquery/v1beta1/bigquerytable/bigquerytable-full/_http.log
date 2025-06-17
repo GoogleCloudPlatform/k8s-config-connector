@@ -195,7 +195,9 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity"
+    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
   }
 }
 
@@ -534,7 +536,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -565,11 +567,12 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "friendlyName": "referencedtable${uniqueId}",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "schema": {
@@ -629,6 +632,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -652,12 +656,96 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "State Code",
         "mode": "REQUIRED",
         "name": "state_code",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/referencedtable${uniqueId}",
+  "tableConstraints": {
+    "primaryKey": {
+      "columns": [
+        "dt",
+        "state_code"
+      ]
+    }
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "referencedtable${uniqueId}"
+  },
+  "timePartitioning": {
+    "field": "dt",
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "referencedtable${uniqueId}",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "dt"
+      }
+    ]
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "Date",
+        "mode": "REQUIRED",
+        "name": "dt",
+        "policyTags": {},
+        "type": "DATE"
+      },
+      {
+        "description": "State Code",
+        "mode": "REQUIRED",
+        "name": "state_code",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -686,7 +774,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -717,7 +805,7 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -733,6 +821,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "requirePartitionFilter": true,
@@ -865,6 +956,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -888,44 +982,53 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
+        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
+        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
+        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
+            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
+            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -935,6 +1038,7 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
+        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -979,7 +1083,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1009,6 +1113,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1032,44 +1139,53 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
+        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
+        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
+        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
+            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
+            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1079,6 +1195,7 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
+        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1125,7 +1242,7 @@ X-Xss-Protection: 0
 
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -1141,6 +1258,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "requirePartitionFilter": true,
@@ -1287,6 +1407,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1310,44 +1433,53 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
+        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
+        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
+        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
+            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
+            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1357,6 +1489,7 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
+        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1446,6 +1579,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "key2": "value2",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1469,44 +1605,53 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "post_abbr",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "name": "date",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "name": "col_numeric",
+        "policyTags": {},
         "precision": "38",
         "scale": "9",
         "type": "NUMERIC"
       },
       {
         "name": "col_bignumeric",
+        "policyTags": {},
         "precision": "76",
         "scale": "38",
         "type": "BIGNUMERIC"
       },
       {
         "name": "col_geography",
+        "policyTags": {},
         "type": "GEOGRAPHY"
       },
       {
         "name": "col_timestamp",
+        "policyTags": {},
         "type": "TIMESTAMP"
       },
       {
         "fields": [
           {
             "name": "sub_col1",
+            "policyTags": {},
             "type": "INTEGER"
           },
           {
             "name": "sub_col2",
+            "policyTags": {},
             "type": "BOOLEAN"
           }
         ],
@@ -1516,6 +1661,7 @@ X-Xss-Protection: 0
       {
         "mode": "REPEATED",
         "name": "col_array",
+        "policyTags": {},
         "type": "INTEGER"
       }
     ]
@@ -1575,7 +1721,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
@@ -1591,7 +1737,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1613,6 +1759,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1636,12 +1783,14 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "State Code",
         "mode": "REQUIRED",
         "name": "state_code",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1670,7 +1819,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
