@@ -700,15 +700,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                          description: A reference to an externally managed PubSubTopic
+                            resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                           type: string
                         name:
-                          description: The `metadata.name` field of a `PubSubTopic`
-                            resource.
+                          description: The name of a PubSubTopic resource.
                           type: string
                         namespace:
-                          description: The `metadata.namespace` field of a `PubSubTopic`
-                            resource.
+                          description: The namespace of a PubSubTopic resource.
                           type: string
                       type: object
                   type: object

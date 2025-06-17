@@ -357,7 +357,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[project_id]/topics/[topic_id]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed PubSubTopic resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -367,7 +367,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `PubSubTopic` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a PubSubTopic resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -377,7 +377,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `PubSubTopic` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a PubSubTopic resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -489,7 +489,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}If provided must be in the format `projects/[project_id]/subscriptions/[subscription_id]`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed PubSubSubscription resource. Should be in the format "projects/{{projectID}}/subscriptions/{{subscriptionID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -499,7 +499,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.name` field of a `PubSubSubscription` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a PubSubSubscription resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -509,7 +509,7 @@ serviceAccountRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `metadata.namespace` field of a `PubSubSubscription` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a PubSubSubscription resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

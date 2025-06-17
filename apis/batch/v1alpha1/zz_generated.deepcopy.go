@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apisk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -851,7 +852,7 @@ func (in *JobNotification) DeepCopyInto(out *JobNotification) {
 	*out = *in
 	if in.PubsubTopicRef != nil {
 		in, out := &in.PubsubTopicRef, &out.PubsubTopicRef
-		*out = new(v1beta1.PubSubTopicRef)
+		*out = new(pubsubv1beta1.PubSubTopicRef)
 		**out = **in
 	}
 	if in.Message != nil {

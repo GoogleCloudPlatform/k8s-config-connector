@@ -97,11 +97,10 @@ func (m *SnapshotModel) AdapterForObject(ctx context.Context, reader client.Read
 
 	// resolve subscription
 	if obj.Spec.PubSubSubscriptionRef != nil {
-		subscription, err := refsv1beta1.ResolvePubSubSubscription(ctx, reader, obj, obj.Spec.PubSubSubscriptionRef)
+		_, err := obj.Spec.PubSubSubscriptionRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.PubSubSubscriptionRef.External = subscription.String()
 	}
 
 	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
