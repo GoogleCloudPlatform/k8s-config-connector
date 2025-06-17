@@ -61,6 +61,9 @@ func NewAddressGroupIdentity(ctx context.Context, reader client.Reader, obj *Net
 	if obj.Spec.OrganizationRef != nil && obj.Spec.ProjectRef != nil {
 		return nil, fmt.Errorf("organization and project cannot be defined at the same time")
 	}
+	if obj.Spec.OrganizationRef == nil && obj.Spec.ProjectRef == nil {
+		return nil, fmt.Errorf("one of organization and project must be defined")
+	}
 	// Get Parent
 	var parentID string
 	if obj.Spec.OrganizationRef != nil {
@@ -69,7 +72,7 @@ func NewAddressGroupIdentity(ctx context.Context, reader client.Reader, obj *Net
 			return nil, err
 		}
 		parentID = organization.OrganizationID
-	} else if obj.Spec.ProjectRef != nil {
+	} else {
 		project, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 		if err != nil {
 			return nil, err
@@ -77,6 +80,9 @@ func NewAddressGroupIdentity(ctx context.Context, reader client.Reader, obj *Net
 		parentID = project.ProjectID
 	}
 
+	if obj.Spec.Location == "" {
+		return nil, fmt.Errorf("location must be defined")
+	}
 	location := obj.Spec.Location
 
 	// Get desired ID
