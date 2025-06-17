@@ -1,4 +1,4 @@
-module github.com/kptdev/kpt/tools/licensescan
+module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/tools/licensescan
 
 go 1.24.0
 
@@ -9,8 +9,7 @@ require (
 )
 
 require (
-	github.com/go-logr/logr v1.2.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/go-logr/logr v1.4.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
