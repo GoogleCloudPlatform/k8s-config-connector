@@ -454,6 +454,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 
 	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
 	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	// TODO - modify this to have a dynamic wait rather than static wait, this would help a early completion for our tests.
 	time.Sleep(resourceContext.PostModifyDelay)
 
 	// Check labels match on update
@@ -616,6 +617,9 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 			t.Errorf("expected resource %s to exist after deletion, but got error: %s", initialUnstruct.GetName(), err)
 		}
 	} else {
+		// A delete delay which would allow resources to cleanup.
+		time.Sleep(resourceContext.PostDeleteDelay)
+
 		getFunc := func() error {
 			// for some resources, Get after Delete is eventually consistent, for that reason we retry until an error is returned
 			_, err := resourceContext.Get(ctx, t, reconciledUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)

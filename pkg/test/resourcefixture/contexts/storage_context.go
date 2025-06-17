@@ -14,6 +14,8 @@
 
 package contexts
 
+import "time"
+
 func init() {
 	resourceContextMap["storagenotificationbase"] = ResourceContext{
 		ResourceKind: "StorageNotification",
@@ -22,5 +24,18 @@ func init() {
 
 	resourceContextMap["forcedestroy"] = ResourceContext{
 		ResourceKind: "StorageBucket",
+	}
+
+	// Tests would take 70 (for creaate) + 70 (for update) + 70 (for drift) + 70 (for delete) = 280 mins.
+	resourceContextMap["storageanywherecache-base"] = ResourceContext{
+		ResourceKind:    "StorageAnywhereCache",
+		PostModifyDelay: 70 * time.Minute,
+		PostDeleteDelay: 70 * time.Minute,
+	}
+
+	resourceContextMap["storageanywherecache-full"] = ResourceContext{
+		ResourceKind:    "StorageAnywhereCache",
+		PostModifyDelay: 70 * time.Minute,
+		PostDeleteDelay: 70 * time.Minute,
 	}
 }

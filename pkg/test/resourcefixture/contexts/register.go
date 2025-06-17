@@ -65,6 +65,9 @@ type ResourceContext struct {
 	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
 	PostModifyDelay time.Duration
 
+	// Some resource need time to finally clean up, This is done to ensure that we charge our users correctly.
+	PostDeleteDelay time.Duration
+
 	// If true, skip drift detection test.
 	SkipDriftDetection bool
 
