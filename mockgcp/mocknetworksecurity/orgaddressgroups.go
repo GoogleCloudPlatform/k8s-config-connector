@@ -45,7 +45,7 @@ func (s *organizationsLocationsAddressGroupsServer) GetOrganizationsLocationsAdd
 	obj := &pb.AddressGroup{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, err
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (s *organizationsLocationsAddressGroupsServer) GetOrganizationsLocationsAdd
 }
 
 func (s *organizationsLocationsAddressGroupsServer) CreateOrganizationsLocationsAddressGroup(ctx context.Context, req *pb.CreateOrganizationsLocationsAddressGroupRequest) (*longrunning.Operation, error) {
-	reqName := req.GetParent() + "/addressGroups/" + req.GetAddressGroupId()
+	reqName := req.GetOrganizationsLocationsAddressGroup().GetName()
 	name, err := s.parseOrgGroupName(reqName)
 	if err != nil {
 		return nil, err
