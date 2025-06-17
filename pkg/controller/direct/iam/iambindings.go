@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@ package iam
 
 import (
 	"fmt"
+	"slices"
 	"sort"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 )
@@ -91,8 +93,8 @@ func ConvertIAMPartialBindingsToIAMPolicyBindings(partialPolicy *v1beta1.IAMPart
 
 func toIAMPolicyBinding(b v1beta1.IAMPartialPolicyBinding, resolver MemberIdentityResolver, defaultNamespace string) (binding v1beta1.IAMPolicyBinding, err error) {
 	members := make([]v1beta1.Member, 0)
-	for _, m := range b.Members {
-		resolvedMember, err := resolver.Resolve(m.Member, m.MemberFrom, defaultNamespace)
+	for _, member := range b.Members {
+		resolvedMember, err := resolver.Resolve(member.Member, member.MemberFrom, defaultNamespace)
 		if err != nil {
 			return binding, fmt.Errorf("error resolving member identity of IAMPartialPolicy binding: %w", err)
 		}
@@ -109,9 +111,9 @@ func toIAMPolicyBinding(b v1beta1.IAMPartialPolicyBinding, resolver MemberIdenti
 func mergeBindingsWithSameRoleAndCondition(bindings []v1beta1.IAMPolicyBinding) []v1beta1.IAMPolicyBinding {
 	bindingMap := mergeBindings(bindings)
 	mergedBindings := make([]v1beta1.IAMPolicyBinding, 0)
-	for _, v := range bindingMap {
-		if len(v.Members) > 0 {
-			mergedBindings = append(mergedBindings, v)
+	for _, binding := range bindingMap {
+		if len(binding.Members) > 0 {
+			mergedBindings = append(mergedBindings, binding)
 		}
 	}
 	return mergedBindings
@@ -126,15 +128,15 @@ func mergeBindingSlices(bindingSlice1, bindingSlice2 []v1beta1.IAMPolicyBinding)
 
 func mergeBindings(bindings []v1beta1.IAMPolicyBinding) map[iamBindingKey]v1beta1.IAMPolicyBinding {
 	bindingMap := make(map[iamBindingKey]v1beta1.IAMPolicyBinding)
-	for _, a := range bindings {
-		k := getIamBindingKey(a)
-		b, ok := bindingMap[k]
+	for _, binding := range bindings {
+		key := getIamBindingKey(binding)
+		b, ok := bindingMap[key]
 		if !ok {
-			bindingMap[k] = *a.DeepCopy()
+			bindingMap[key] = *binding.DeepCopy()
 			continue
 		}
-		b.Members = mergeMembers(b.Members, a.Members)
-		bindingMap[k] = b
+		b.Members = mergeMembers(b.Members, binding.Members)
+		bindingMap[key] = b
 	}
 	return bindingMap
 }
@@ -159,27 +161,27 @@ func computeDeletedMembersPerBinding(bindings, lastAppliedBindings []v1beta1.IAM
 }
 
 func getIamBindingKey(binding v1beta1.IAMPolicyBinding) iamBindingKey {
-	k := iamBindingKey{}
-	k.Role = binding.Role
+	key := iamBindingKey{}
+	key.Role = binding.Role
 	if binding.Condition != nil {
-		k.Condition = *binding.Condition
+		key.Condition = *binding.Condition
 	}
-	return k
+	return key
 }
 
 func removeMembersPerBinding(bindings, deletedBindings []v1beta1.IAMPolicyBinding) []v1beta1.IAMPolicyBinding {
 	bindingMap := mergeBindings(bindings)
-	for _, a := range deletedBindings {
-		k := getIamBindingKey(a)
-		if b, ok := bindingMap[k]; ok {
-			b.Members = removeDeletedMembers(b.Members, a.Members)
-			bindingMap[k] = b
+	for _, binding := range deletedBindings {
+		key := getIamBindingKey(binding)
+		if mergedBinding, ok := bindingMap[key]; ok {
+			mergedBinding.Members = removeDeletedMembers(mergedBinding.Members, binding.Members)
+			bindingMap[key] = mergedBinding
 		}
 	}
 	res := make([]v1beta1.IAMPolicyBinding, 0)
-	for _, b := range bindingMap {
-		if len(b.Members) > 0 {
-			res = append(res, b)
+	for _, binding := range bindingMap {
+		if len(binding.Members) > 0 {
+			res = append(res, binding)
 		}
 	}
 	return res
@@ -187,8 +189,8 @@ func removeMembersPerBinding(bindings, deletedBindings []v1beta1.IAMPolicyBindin
 
 func removeDeletedMembers(members, deletedMembers []v1beta1.Member) []v1beta1.Member {
 	memberMap := make(map[v1beta1.Member]bool)
-	for _, m := range deletedMembers {
-		memberMap[m] = true
+	for _, deletedMember := range deletedMembers {
+		memberMap[deletedMember] = true
 	}
 	res := make([]v1beta1.Member, 0)
 	for _, m := range members {
@@ -202,12 +204,12 @@ func removeDeletedMembers(members, deletedMembers []v1beta1.Member) []v1beta1.Me
 func computeDeletedMembers(members, lastAppliedMembers []v1beta1.Member) []v1beta1.Member {
 	memberMap := make(map[v1beta1.Member]bool)
 	res := make([]v1beta1.Member, 0)
-	for _, m := range members {
-		memberMap[m] = true
+	for _, member := range members {
+		memberMap[member] = true
 	}
-	for _, m := range lastAppliedMembers {
-		if _, ok := memberMap[m]; !ok {
-			res = append(res, m)
+	for _, appliedMember := range lastAppliedMembers {
+		if _, ok := memberMap[appliedMember]; !ok {
+			res = append(res, appliedMember)
 		}
 	}
 	return res
@@ -232,21 +234,23 @@ func mergeMembers(memberSlice1, memberSlice2 []v1beta1.Member) []v1beta1.Member 
 }
 
 func sortBindingSlice(bindings []v1beta1.IAMPolicyBinding) {
-	sort.Slice(bindings, func(i, j int) bool {
-		k1 := getIamBindingKey(bindings[i])
-		k2 := getIamBindingKey(bindings[j])
+	slices.SortFunc(bindings, func(a, b v1beta1.IAMPolicyBinding) int {
+		k1 := getIamBindingKey(a)
+		k2 := getIamBindingKey(b)
 		if k1.Role != k2.Role {
-			return k1.Role < k2.Role
+			return strings.Compare(k1.Role, k2.Role)
 		}
 		if k1.Condition.Title != k2.Condition.Title {
-			return k1.Condition.Title < k2.Condition.Title
+			return strings.Compare(k1.Condition.Title, k2.Condition.Title)
 		}
 		if k1.Condition.Description != k2.Condition.Description {
-			return k1.Condition.Description < k2.Condition.Description
+			return strings.Compare(k1.Condition.Description, k2.Condition.Description)
 		}
 		if k1.Condition.Expression != k2.Condition.Expression {
-			return k1.Condition.Expression < k2.Condition.Expression
+			return strings.Compare(k1.Condition.Expression, k2.Condition.Expression)
 		}
-		return false
+		// return 0 // returns 0 means incomparable aka k1 == k2; https://en.wikipedia.org/wiki/Weak_ordering#Strict_weak_orderings
+		// so we force an ordering in this case of k1 < k2 for determinism in other areas of the stack (like status displays)
+		return -1
 	})
 }

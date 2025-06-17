@@ -320,9 +320,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	var adapter Adapter
 	var adapteErr error
-	if iamModel, ok := r.Reconciler.model.(IAMModel); ok {
-		adapter, adapteErr = iamModel.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
-	} else {
+	switch m := r.Reconciler.model.(type) {
+	case IAMModel:
+		adapter, adapteErr = m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
+	default:
+		// The default case handles any other type that implements the base model interface.
 		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
 	}
 	if adapteErr != nil {
