@@ -264,18 +264,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -339,18 +342,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -371,7 +377,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -402,7 +408,7 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -412,9 +418,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "friendlyName": "mv_test3",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "materializedView": {
+    "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
@@ -452,16 +461,22 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "materializedView": {
+    "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
+    "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "refreshIntervalMs": "1800000"
   },
-  "materializedViewStatus": {},
+  "materializedViewStatus": {
+    "refreshWatermark": "2024-04-01T12:34:56.123456Z"
+  },
   "numActiveLogicalBytes": "0",
   "numBytes": "0",
   "numLongTermBytes": "0",
@@ -529,88 +544,14 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
   "materializedView": {
-    "enableRefresh": true,
-    "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "refreshIntervalMs": "1800000"
-  },
-  "materializedViewStatus": {},
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "dt"
-      }
-    ]
-  },
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "user_id",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "timePartitioning": {
-    "field": "dt",
-    "type": "DAY"
-  },
-  "type": "MATERIALIZED_VIEW"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clustering": {
-    "fields": [
-      "user_id"
-    ]
-  },
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "mv_test3",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "materializedView": {
+    "allowNonIncrementalDefinition": false,
     "enableRefresh": true,
     "lastRefreshTime": "123456789",
     "query": "SELECT\ndistinct dt, user_id\nFROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
@@ -662,7 +603,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
@@ -721,18 +662,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]

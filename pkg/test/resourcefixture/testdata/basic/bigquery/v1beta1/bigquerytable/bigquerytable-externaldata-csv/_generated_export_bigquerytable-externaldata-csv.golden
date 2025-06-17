@@ -4,6 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
+    cnrm-test: "true"
     managed-by-cnrm: "true"
   name: bigquerytable-${uniqueId}
 spec:
@@ -26,4 +27,4 @@ spec:
     - gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv
   friendlyName: BigQuery Table Updated
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"NULLABLE","name":"name","type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","type":"STRING"},{"mode":"NULLABLE","name":"date","type":"DATE"}]'
+  schema: '[{"mode":"NULLABLE","name":"name","policyTags":{},"type":"STRING"},{"mode":"NULLABLE","name":"post_abbr","policyTags":{},"type":"STRING"},{"mode":"NULLABLE","name":"date","policyTags":{},"type":"DATE"}]'
