@@ -191,6 +191,7 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 		"CC-BY-3.0":        false,
 		"BSL-1.0":          false,
 		"NCSA":             false,
+		"OPENSSL":          false,
 	}
 
 	if len(errors) == 0 {
