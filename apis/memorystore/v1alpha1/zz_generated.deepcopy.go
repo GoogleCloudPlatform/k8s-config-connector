@@ -967,19 +967,19 @@ func (in *PSCConnectionSpec) DeepCopyInto(out *PSCConnectionSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ForwardingRule != nil {
-		in, out := &in.ForwardingRule, &out.ForwardingRule
-		*out = new(string)
+	if in.ForwardingRuleRef != nil {
+		in, out := &in.ForwardingRuleRef, &out.ForwardingRuleRef
+		*out = new(v1beta1.ComputeForwardingRuleRef)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(string)
+		*out = new(v1beta1.ComputeNetworkRef)
 		**out = **in
 	}
-	if in.ServiceAttachment != nil {
-		in, out := &in.ServiceAttachment, &out.ServiceAttachment
-		*out = new(string)
+	if in.ServiceAttachmentRef != nil {
+		in, out := &in.ServiceAttachmentRef, &out.ServiceAttachmentRef
+		*out = new(v1beta1.ComputeServiceAttachmentRef)
 		**out = **in
 	}
 }
