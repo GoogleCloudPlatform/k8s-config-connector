@@ -34,6 +34,43 @@ func checkFieldValid(fields []*bigquery.TableFieldSchema) error {
 	return nil
 }
 
+func policyTagsEq(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if a.Names == nil && b.Names == nil {
+		return true
+	}
+
+	// Due to inconsistent API behavior, suppress empty array and nil.
+	if a.Names == nil && b.Names != nil && len(b.Names) == 0 {
+		return true
+	}
+
+	// Due to inconsistent API behavior, suppress empty array and nil.
+	if b.Names == nil && a.Names != nil && len(a.Names) == 0 {
+		return true
+	}
+
+	if a.Names == nil || b.Names == nil {
+		return false
+	}
+	if len(a.Names) != len(b.Names) {
+		return false
+	}
+	sort.Strings(a.Names)
+	sort.Strings(b.Names)
+	for i := range a.Names {
+		if a.Names[i] != b.Names[i] {
+			return false
+		}
+	}
+	return true
+}
+
 // Sort the fields in place by name.
 func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	sort.Slice(fields, func(i, j int) bool {
@@ -64,9 +101,6 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 		if !reflect.DeepEqual(desired[i].Collation, actual[i].Collation) {
 			return false, nil
 		}
-		if !reflect.DeepEqual(desired[i].DataPolicies, actual[i].DataPolicies) {
-			return false, nil
-		}
 		if !reflect.DeepEqual(desired[i].DefaultValueExpression, actual[i].DefaultValueExpression) {
 			return false, nil
 		}
@@ -85,7 +119,7 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 		if !reflect.DeepEqual(desired[i].Name, actual[i].Name) {
 			return false, nil
 		}
-		if !reflect.DeepEqual(desired[i].PolicyTags, actual[i].PolicyTags) {
+		if !policyTagsEq(desired[i].PolicyTags, actual[i].PolicyTags) {
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Precision, actual[i].Precision) {
@@ -163,7 +197,8 @@ func externalDataConfigurationEq(a, b *bigquery.ExternalDataConfiguration) (bool
 	if !reflect.DeepEqual(a.SourceUris, b.SourceUris) {
 		return false, nil
 	}
-	equal, err := tableFieldsSchemaEq(a.Schema.Fields, b.Schema.Fields)
+
+	equal, err := tableSchemaEq(a.Schema, b.Schema)
 	if err != nil {
 		return false, err
 	}
@@ -190,6 +225,32 @@ func materializedViewEq(a, b *bigquery.MaterializedViewDefinition) bool {
 		return false
 	}
 	if !reflect.DeepEqual(a.RefreshIntervalMs, b.RefreshIntervalMs) {
+		return false
+	}
+	return true
+}
+
+func tableSchemaEq(a, b *bigquery.TableSchema) (bool, error) {
+	if a == nil && b == nil {
+		return true, nil
+	}
+	if a == nil || b == nil {
+		return false, nil
+	}
+	return tableFieldsSchemaEq(a.Fields, b.Fields)
+}
+
+func viewEq(a, b *bigquery.ViewDefinition) bool {
+	if a == nil && b == nil {
+		return true
+	}
+	if a == nil || b == nil {
+		return false
+	}
+	if !reflect.DeepEqual(a.Query, b.Query) {
+		return false
+	}
+	if !reflect.DeepEqual(a.UseLegacySql, b.UseLegacySql) {
 		return false
 	}
 	return true
@@ -229,13 +290,14 @@ func TableEq(a, b *bigquery.Table) (bool, error) {
 	if !reflect.DeepEqual(a.TableConstraints, b.TableConstraints) {
 		return false, nil
 	}
-	if !reflect.DeepEqual(a.View, b.View) {
+
+	if !viewEq(a.View, b.View) {
 		return false, nil
 	}
 	if !reflect.DeepEqual(a.Labels, b.Labels) {
 		return false, nil
 	}
-	equal, err := tableFieldsSchemaEq(a.Schema.Fields, b.Schema.Fields)
+	equal, err := tableSchemaEq(a.Schema, b.Schema)
 	if err != nil {
 		return false, err
 	}

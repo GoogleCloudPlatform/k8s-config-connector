@@ -18,7 +18,8 @@ spec:
   datasetRef:
     name: bigquerydatasetsample${uniqueId}
   friendlyName: mv_test3
-  schema: '[{"description":"dt","mode":"NULLABLE","name":"dt","type":"DATE"},{"description":"user_id","mode":"NULLABLE","name":"user_id","type":"STRING"}]'
+  schema: '[{"description":"dt","mode":"NULLABLE","name":"dt","type":"DATE"},{"description":"user_id","mode":"NULLABLE","name":"user_id","type":"STRING"},{"mode":"NULLABLE","name":"guid","type":"STRING",
+    "description":"guid"}]'
   view:
     query: SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`
     useLegacySql: false

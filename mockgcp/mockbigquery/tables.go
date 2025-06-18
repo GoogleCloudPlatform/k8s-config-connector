@@ -403,19 +403,22 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 			updated.Schema = &pb.TableSchema{}
 			updated.Schema.Fields = []*pb.TableFieldSchema{
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("dt"),
-					Type: PtrTo("DATE"),
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("dt"),
+					Type:        PtrTo("DATE"),
+					Description: PtrTo("dt"),
 				},
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("user_id"),
-					Type: PtrTo("STRING"),
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("user_id"),
+					Type:        PtrTo("STRING"),
+					Description: PtrTo("user_id"),
 				},
 				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("guid"),
-					Type: PtrTo("STRING"),
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("guid"),
+					Type:        PtrTo("STRING"),
+					Description: PtrTo("guid"),
 				},
 			}
 		}

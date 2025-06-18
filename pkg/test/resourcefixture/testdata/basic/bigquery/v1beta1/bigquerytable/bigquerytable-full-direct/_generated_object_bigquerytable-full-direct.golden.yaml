@@ -28,7 +28,7 @@ spec:
   expirationTime: 1800000000000
   friendlyName: BigQueryTable Full Example
   requirePartitionFilter: true
-  schema: |
+  schema: |-
     [
       {
         "name": "name",
