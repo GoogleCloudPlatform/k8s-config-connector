@@ -42,12 +42,12 @@ var (
 		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
 	}
 
+	IAMPartialPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
+	}
 	// NOT YET
-	// IAMPartialPolicyGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
-	// }
 	// IAMPolicyMemberGVK = schema.GroupVersionKind{
 	// 	Group:   SchemeGroupVersion.Group,
 	// 	Version: SchemeGroupVersion.Version,
@@ -58,5 +58,5 @@ var (
 	// 	Version: SchemeGroupVersion.Version,
 	// 	Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
 	// }
-	//IAMAPIVersion = SchemeGroupVersion.String()
+	IAMAPIVersion = SchemeGroupVersion.String()
 )
