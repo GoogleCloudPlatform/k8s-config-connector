@@ -4,6 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
+    department_name: hr
     managed-by-cnrm: "true"
   name: bigquerytablesample${uniqueId}
 spec:
@@ -11,7 +12,7 @@ spec:
   - user_id
   datasetRef:
     external: bigquerydatasetsample${uniqueId}
-  friendlyName: mv_test3
+  friendlyName: mv_test3_updated
   materializedView:
     enableRefresh: true
     query: |-
@@ -20,7 +21,6 @@ spec:
       FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`
     refreshIntervalMs: 1800000
   resourceID: bigquerytablesample${uniqueId}
-  schema: '[{"mode":"NULLABLE","name":"dt","type":"DATE"},{"mode":"NULLABLE","name":"user_id","type":"STRING"}]'
   timePartitioning:
     field: dt
     type: DAY
