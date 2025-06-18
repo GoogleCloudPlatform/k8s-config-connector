@@ -235,6 +235,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 	}
 	eq, err := TableEq(a.actual, table)
+
 	if err != nil {
 		return err
 	}

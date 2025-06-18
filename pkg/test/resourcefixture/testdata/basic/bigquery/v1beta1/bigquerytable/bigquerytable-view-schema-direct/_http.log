@@ -781,6 +781,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
+      },
+      {
+        "description": "guid",
+        "mode": "NULLABLE",
+        "name": "guid",
+        "type": "STRING"
       }
     ]
   },
@@ -825,16 +831,19 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
+        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
+        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -889,16 +898,19 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
+        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
+        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
