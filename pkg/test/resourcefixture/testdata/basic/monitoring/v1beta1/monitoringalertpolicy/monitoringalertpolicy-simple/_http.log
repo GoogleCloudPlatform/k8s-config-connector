@@ -1,0 +1,825 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "monitoringnotificationchannel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "monitoringnotificationchannel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage"
+    }
+  ],
+  "displayName": "Test Alert Policy",
+  "documentation": {
+    "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+    "mimeType": "text/markdown"
+  },
+  "enabled": true,
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "WARNING",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "documentation": {
+    "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+    "mimeType": "text/markdown"
+  },
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "WARNING",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "documentation": {
+    "content": "Introduction to alerting\nAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly.\n\nTo create an alerting policy, you must describe the circumstances under which you want to be alerted and how you want to be notified. This page provides an overview of alerting policies and the concepts behind them.\n\nFor a practical introduction to alerting, try one of these quickstarts:\n\nQuickstart for GCP\nQuickstart for AWS\nFor an alerting policy that monitors usage and alerts you when you approach the threshold for billing, see Alerting on monthly log ingestion and Alerting on monthly trace span ingestion.\n\nHow does alerting work?\nYou can create and manage alerting policies with the Google Cloud Console, the Cloud Monitoring API, and Cloud SDK.\n\nEach alerting policy specifies the following:\n\nConditions that identify when a resource or a group of resources is in a state that requires you to take action. The conditions for an alerting policy are continuously monitored. You cannot configure the conditions to be monitored only for certain time periods.\n\nNotifications that are sent through email, SMS, or other channels to let your support team know when the conditions have been met. Configuring notifications is optional. For information on the available notification channels, see Notification options.\n\nDocumentation that can be included in some types of notifications to help your support team resolve the issue. Configuring documentation is optional.\n\nWhen the conditions of an alerting policy are met, Cloud Monitoring creates and displays an incident in the Google Cloud Console. If you set up notifications, Cloud Monitoring also sends notifications to people or third-party notification services. Responders can acknowledge receipt of the notification, but the incident remains open until the conditions that triggered the incident are no longer true.\n\nFor information and viewing and managing incidents by using the Google Cloud Console, see Incidents and events.",
+    "mimeType": "text/markdown"
+  },
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "WARNING",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json&updateMask=displayName%2Ccombiner%2Cenabled%2Cconditions%2CnotificationChannels%2Cdocumentation%2Cseverity
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_LT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.1,
+        "trigger": {
+          "count": 3
+        }
+      },
+      "displayName": "Very low CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "displayName": "Updated Test Alert Policy",
+  "documentation": {
+    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+    "mimeType": "text/markdown"
+  },
+  "enabled": false,
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "ERROR",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_LT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.1,
+        "trigger": {
+          "count": 3
+        }
+      },
+      "displayName": "Very low CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Updated Test Alert Policy",
+  "documentation": {
+    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+    "mimeType": "text/markdown"
+  },
+  "enabled": false,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "ERROR",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_LT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.1,
+        "trigger": {
+          "count": 3
+        }
+      },
+      "displayName": "Very low CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Updated Test Alert Policy",
+  "documentation": {
+    "content": "“Just the place for a Snark!” the Bellman cried,\nAs he monitored his resources with care;\nSupporting each metric on the top of the tide\nBy a finger entwined in his hair.\n\n“Just the place for a Snark! I have measured it twice:\nThat alone should discourage the crew.\nJust the place for a Snark! I have measured it thrice:\nWhat I measure three times is true.”",
+    "mimeType": "text/markdown"
+  },
+  "enabled": false,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "notificationChannels": [
+    "projects/${projectId}/notificationChannels/${notificationChannelID}",
+    "projects/${projectId}/notificationChannels/${notificationChannelID}"
+  ],
+  "severity": "ERROR",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel3-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel2-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "displayName": "monitoringnotificationchannel1-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "dev@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
