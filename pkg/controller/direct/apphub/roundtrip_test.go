@@ -28,7 +28,7 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
-func FuzzApphubApplicationSpec(f *testing.F) {
+func FuzzAppHubApplicationSpec(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		randStream := rand.New(rand.NewSource(seed))
 
