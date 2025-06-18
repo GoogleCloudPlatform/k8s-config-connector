@@ -98,6 +98,9 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	// resolve LoggingLogBucketRef
+	// todo: LoggingLogBucketRef is *v1alpha1.ResourceRef, ideally should use *loggingv1beta1.LoggingLogBucketRef instead
+	// *v1alpha1.ResourceRef has required `kind` field, this migration could introduce breaking changes to Beta CRD
 	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
 		return nil, err
 	}

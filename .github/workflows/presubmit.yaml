@@ -111,6 +111,17 @@ jobs:
       - name: "Run vcr tests"
         run: |
           ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
+  tests-e2e-direct-iam:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run direct iam tests"
+        run: |
+          ./scripts/github-actions/ga-iam-direct-tests.sh
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
