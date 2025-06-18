@@ -525,7 +525,7 @@ spec:
                           - type
                           type: object
                         rateLimitThreshold:
-                          description: Threshold at which to begin ratelimiting.
+                          description: Threshold at which to begin rate limiting.
                           properties:
                             count:
                               description: Number of HTTP(S) requests for calculating

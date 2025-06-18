@@ -119,4 +119,4 @@ spec:
     forwardInboundCredentials:
       idToken: true
       accessToken: true
-      refereshToken: true
+      refreshToken: true
