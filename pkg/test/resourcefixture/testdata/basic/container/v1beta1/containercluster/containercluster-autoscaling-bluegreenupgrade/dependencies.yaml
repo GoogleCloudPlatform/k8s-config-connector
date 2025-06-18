@@ -12,47 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: computenetwork-${uniqueId}
-spec:
-  routingMode: REGIONAL
-  autoCreateSubnetworks: false
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeSubnetwork
-metadata:
-  name: computesubnetwork-${uniqueId}
-spec:
-  ipCidrRange: 10.2.0.0/16
-  region: us-central1
-  networkRef:
-    name: computenetwork-${uniqueId}
----
-apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
-kind: PubSubTopic
-metadata:
-  name: pubsubtopic-${uniqueId}
----
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
 spec:
-  location: us-central1
+  location: us-west1
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
-  labels:
-    key-one: value-one
   name: kmscryptokey-${uniqueId}
 spec:
   keyRingRef:
     name: kmskeyring-${uniqueId}
-  purpose: ASYMMETRIC_SIGN
-  versionTemplate:
-    algorithm: EC_SIGN_P384_SHA384
-    protectionLevel: SOFTWARE
-  importOnly: false
+  purpose: "ENCRYPT_DECRYPT"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iamserviceaccount-1-${uniqueId}
+spec:
+  resourceID: gsa-1-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  name: iamserviceaccount-2-${uniqueId}
+spec:
+  resourceID: gsa-2-${uniqueId}

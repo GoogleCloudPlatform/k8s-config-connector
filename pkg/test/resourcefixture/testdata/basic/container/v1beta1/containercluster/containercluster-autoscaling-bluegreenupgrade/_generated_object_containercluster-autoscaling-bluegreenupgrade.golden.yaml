@@ -1,0 +1,75 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: containercluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clusterAutoscaling:
+    autoProvisioningDefaults:
+      bootDiskKMSKeyRef:
+        name: kmscryptokey-${uniqueId}
+      diskSize: 100
+      imageType: UBUNTU_CONTAINERD
+      management:
+        autoRepair: true
+        autoUpgrade: true
+      minCpuPlatform: automatic
+      oauthScopes:
+      - https://www.googleapis.com/auth/cloud-platform
+      - https://www.googleapis.com/auth/devstorage.read_only
+      serviceAccountRef:
+        name: iamserviceaccount-2-${uniqueId}
+      shieldedInstanceConfig:
+        enableIntegrityMonitoring: true
+        enableSecureBoot: true
+      upgradeSettings:
+        blueGreenSettings:
+          nodePoolSoakDuration: 4800s
+          standardRolloutPolicy:
+            batchNodeCount: 1
+            batchPercentage: 0
+            batchSoakDuration: 1200s
+        strategy: BLUE_GREEN
+    autoscalingProfile: BALANCED
+    enabled: true
+    resourceLimits:
+    - maximum: 10
+      minimum: 1
+      resourceType: cpu
+    - maximum: 100
+      minimum: 1
+      resourceType: memory
+  initialNodeCount: 1
+  location: us-west1-a
+  resourceID: containercluster-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  endpoint: 34.118.192.0
+  labelFingerprint: abcdef0123A=
+  masterVersion: 1.32.4-gke.1353003
+  observedGeneration: 3
+  observedState:
+    masterAuth:
+      clusterCaCertificate: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUlYcFN4TS9vQlltMXBxT1hlTVAvV0V3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01EaGxPRFZoTldRdFpETmxOQzAwTUdVNUxXSXpZV1l0TXpOaU9XRmlObUZqTXpkbQpNQ0FYRFRJMU1EWXhPREUyTWpFd04xb1lEekl3TlRVd05qRXhNVGN5TVRBM1dqQXZNUzB3S3dZRFZRUURFeVF3Ck9HVTROV0UxWkMxa00yVTBMVFF3WlRrdFlqTmhaaTB6TTJJNVlXSTJZV016TjJZd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FEYmhXM1JsRFRaK203NTFrVGNscjBGeCtNZE9vZWpRcXJIMFp2QQpUSmMyNWtMdlI3eEdjWnFYaVBiaTRQOWdhZEQ2dGkyVThvMkhFRmd4WXhpckl1UitCV2FRRlErTkd2WVNrTDFZClJDNU5Gb1MvSGpMZUtLUHd1d0F4YVRubGhSdFNJMk9Xd2NvVUpFeVkxdjhDb2t0dXpTNmVuRXUwcVdjTERBeGgKdUdweTJmMDNTQlRNd2JmSCsycUtDVldyczJRanlxQTFMRS9Sc1FzY1J1RGtCcHpPL0pHT0FVd0R3UEs4YWZTaApTTXJQNTd6VXdnYVpaMWgvWGlxMTRLVXJuRG9aWVlGL0NnNkFiWGxMblNsajFJY0xHZnRpR2p6b0VDb3RIenYwCkRxMXZLbmYydzNSbDJXL3dZTCsyd0h2MWgrOS85S2h6OGFQL3crSmt2bGQ0bHptQitvOGl3Z20yVWw3akM2T0oKVFhyMS9CUlFRU2JGekpocXE4QTZPUkVoald0OHM0blJoWVpMdUlwZGNyYlJMS2JHYTNPK2NRUUV0Mm5Ha1NPOQpqYWY2MXl3MlI3UnllYlJyQjJYYmlRMnNTTGhVeFdET3Vha1FYV2FBVWRtTXhTcC8rR28vbUZRaXM2V01ZdVdQCnVOQ2VyMHN3a3Y2RkRpa0xrYTByZDh6S3Y0OENBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTG03cFRoWmk5M3VKVDU2bHIzYXB0Mjk4azQ0TUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQ21NeTJnTkpueUsvVzNYUU5SRlFqL0ZSei9wY3lvQXpKZE1IZU9pOStLClgwakJFL1F4aUZ2ekpKcG56dU5IZWxsc0VIZWJDZnRWTnBrZjRMZi83c2hkbXB6dFpHQ1o3d3BXb2RxM09QVFUKU0xzSHQ2TlFtRmhnWXo2WTVneXcyempDWHQ1MGhSOWZOeXJnSmVyWXBRbUY3eUlrNEdhRXZqeEIyN3R0VC9FSwowMjVGU0ZuaFdNNWpZV1p4WHRFdGxSblhDZW5WODlHMUVNV2NlQ2RIZFdJcVFJMjZIbjVTU2JEUnJtUFgyK2E5CkUvMTREZFUzRXR4QU5KWXpsNldMd0lBMktrcTA3bDl6N2psQ25sL3Q2eTNITFQvTW5oSXp6dFREQjh0RHA2RHIKMUhMTTRISEp6MmF5Q2c2b09BVUszVmJIMFZoYTkxalhTeTZMTmd3ZjBRUkRPaEJ2VkYwWmkyMXEwZlVGb1JjMApyY0NRa3F1V05CRHNvVUdySW9nNE9hbVpXaHlOdFlvelNCMVJ2blYrQ294aDNNS1VuQU1Hc0lPSTl3R1Z0T1AyCm1HZlplblNsOHdGeUcvbUV2UFFHQlNMVGJobGR1OFdBR0dCeFdUNlk0OWJWeHFQdERqaHprby90cGo5eVg2cVMKN0NaWEhScG4zUm8yVHY2dHk0dW5uUkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    privateClusterConfig:
+      privateEndpoint: 10.138.15.217
+      publicEndpoint: 34.118.192.0
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-west1-a/clusters/containercluster-${uniqueId}
+  servicesIpv4Cidr: 34.118.224.0/20

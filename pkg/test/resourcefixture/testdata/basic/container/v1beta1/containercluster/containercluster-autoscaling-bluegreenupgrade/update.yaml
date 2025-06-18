@@ -21,7 +21,7 @@ spec:
   clusterAutoscaling:
     enabled: true
     # autoscalingProfile: "BALANCED" # Or "OPTIMIZE_UTILIZATION" - moved under clusterAutoscaling
-    autoscalingProfile: OPTIMIZE_UTILIZATION
+    autoscalingProfile: BALANCED
     resourceLimits:
     - resourceType: "cpu"
       minimum: 1
@@ -32,30 +32,31 @@ spec:
     autoProvisioningDefaults:
       oauthScopes:
       - "https://www.googleapis.com/auth/cloud-platform"
+      - "https://www.googleapis.com/auth/devstorage.read_only"
       serviceAccountRef:
-        name: "iamserviceaccount-${uniqueId}"
+        name: iamserviceaccount-2-${uniqueId}
       upgradeSettings:
 #        maxSurge: 1
 #        maxUnavailable: 0
         strategy: "BLUE_GREEN" # Or "SURGE"
         blueGreenSettings:
           standardRolloutPolicy:
-            batchPercentage: 0.2
-            batchNodeCount: 1 # Use either percentage or node count
-            batchSoakDuration: "1800s" # 30 minutes
-          nodePoolSoakDuration: "3600s" # 1 hour
+            batchPercentage: 0 # Setting the integer field to 0 means to unset the field. This behavior will be changed in direct controller.
+            batchNodeCount: 1 # Use either percentage or node count.
+            batchSoakDuration: "1200s" # 20 minutes
+          nodePoolSoakDuration: "4800s" # 80 minutes
       management:
         autoRepair: true
         autoUpgrade: true
         # upgradeOptions is output-only
       shieldedInstanceConfig:
-        enableSecureBoot: false
-        enableIntegrityMonitoring: false
+        enableSecureBoot: true
+        enableIntegrityMonitoring: true
       bootDiskKMSKeyRef:
-        name: "kmscryptokey-${uniqueId}"
-      diskSize: 50 #GB
-      imageType: "COS_CONTAINERD"
+        name: "kmscryptokey-${uniqueId}" # immutable
+      diskSize: 100 #GB
+      imageType: "UBUNTU_CONTAINERD"
       # This field is deprecated, minCpuPlatform should be specified using
       # cloud.google.com/requested-min-cpu-platform label selector on the pod.
       # To unset the min cpu platform field pass "automatic" as field value.
-      minCpuPlatform: "Intel Skylake"
+      minCpuPlatform: "automatic"
