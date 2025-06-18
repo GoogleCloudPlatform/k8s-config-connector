@@ -33,7 +33,7 @@ spec:
       oauthScopes:
       - "https://www.googleapis.com/auth/cloud-platform"
       serviceAccountRef:
-        name: "iamserviceaccount-${uniqueId}"
+        name: iamserviceaccount-1-${uniqueId}
       upgradeSettings:
 #        maxSurge: 1
 #        maxUnavailable: 0
@@ -41,7 +41,7 @@ spec:
         blueGreenSettings:
           standardRolloutPolicy:
             batchPercentage: 0.2
-            batchNodeCount: 1 # Use either percentage or node count
+#            batchNodeCount: 1 # Use either percentage or node count
             batchSoakDuration: "1800s" # 30 minutes
           nodePoolSoakDuration: "3600s" # 1 hour
       management:
@@ -52,7 +52,7 @@ spec:
         enableSecureBoot: false
         enableIntegrityMonitoring: false
       bootDiskKMSKeyRef:
-        name: "kmscryptokey-${uniqueId}"
+        name: kmscryptokey-${uniqueId}
       diskSize: 50 #GB
       imageType: "COS_CONTAINERD"
       # This field is deprecated, minCpuPlatform should be specified using
