@@ -30,7 +30,6 @@ go run . generate-mapper \
   --service google.bigtable.admin.v2 \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1
 
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
