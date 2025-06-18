@@ -33,6 +33,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
   - title: "AlloyDBUser"
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
+- title: "API Gateway"
+  section:
+  - title: "APIGatewayAPI"
+    path: /config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md
 - title: "Apigee"
   section:
   - title: "ApigeeEndpointAttachment"

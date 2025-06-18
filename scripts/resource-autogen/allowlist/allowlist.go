@@ -35,7 +35,6 @@ var (
 		"alloydb/google_alloydb_backup",
 		"alloydb/google_alloydb_cluster",
 		"alloydb/google_alloydb_instance",
-		"api_gateway/google_api_gateway_api",
 		"api_gateway/google_api_gateway_api_config",
 		"api_gateway/google_api_gateway_gateway",
 		"apigee/google_apigee_addons_config",
