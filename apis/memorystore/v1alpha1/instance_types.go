@@ -164,7 +164,7 @@ type PSCConnectionSpec struct {
 	//  in the form of
 	//  projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.service_attachment
-	ServiceAttachment *refs.ComputeServiceAttachmentRef `json:"serviceAttachment,omitempty"`
+	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachment,omitempty"`
 }
 
 // MemorystoreInstanceStatus defines the config connector machine state of MemorystoreInstance

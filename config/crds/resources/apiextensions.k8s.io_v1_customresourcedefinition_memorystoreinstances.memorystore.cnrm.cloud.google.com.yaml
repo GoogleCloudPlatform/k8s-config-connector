@@ -162,7 +162,35 @@ spec:
                               forwardingRule:
                                 description: 'Required. The URI of the consumer side
                                   forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}'
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ForwardingRule selflink in the
+                                      form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeAddress`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeAddress`
+                                      resource.
+                                    type: string
+                                type: object
                               ipAddress:
                                 description: Required. The IP allocated on the consumer
                                   network for the PSC forwarding rule.
@@ -170,12 +198,68 @@ spec:
                               network:
                                 description: Required. The consumer network where
                                   the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      Compute Network resource. Should be in the format
+                                      `projects/{{projectID}}/global/networks/{{network}}`.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                type: object
                               serviceAttachment:
                                 description: Required. The service attachment which
                                   is the target of the PSC connection, in the form
                                   of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeServiceAttachment selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                type: object
                             type: object
                         type: object
                       type: array
