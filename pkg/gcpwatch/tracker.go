@@ -19,7 +19,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/event"
