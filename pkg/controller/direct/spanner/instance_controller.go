@@ -61,7 +61,8 @@ func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bo
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
 	}
-	return obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil
+	// If the fields supported by on the direct controller exist, use direct controller.
+	return obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
