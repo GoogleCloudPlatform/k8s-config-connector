@@ -26,6 +26,12 @@ func ReportReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
 	}
 }
 
+func ReportReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	if listener, ok := GetListenerFromContext(ctx); ok {
+		listener.OnReconcileEnd(ctx, u, result, err)
+	}
+}
+
 func ReportError(ctx context.Context, err error, args ...any) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
 		listener.OnError(ctx, err, args...)
