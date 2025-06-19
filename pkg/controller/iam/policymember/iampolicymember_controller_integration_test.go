@@ -26,7 +26,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
