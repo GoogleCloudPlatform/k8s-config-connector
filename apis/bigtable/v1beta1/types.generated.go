@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: bigtable.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.bigtable.admin.v2
+// resource: BigtableAppProfile:AppProfile
+
 package v1beta1
 
 // +kcc:proto=google.bigtable.admin.v2.AppProfile.DataBoostIsolationReadOnly
