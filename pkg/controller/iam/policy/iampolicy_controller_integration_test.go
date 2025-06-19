@@ -25,8 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -57,21 +56,21 @@ var (
 	expectedReconcileResult = reconcile.Result{RequeueAfter: k8s.MeanReconcileReenqueuePeriod}
 )
 
-var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 	bindings := []iamv1beta1.IAMPolicyBinding{
 		{
 			Role:    rc.CreateBindingRole,
-			Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 		},
 	}
 	newBindings := []iamv1beta1.IAMPolicyBinding{
 		{
 			Role:    rc.CreateBindingRole,
-			Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 		},
 		{
 			Role:    rc.UpdateBindingRole,
-			Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 		},
 	}
 	k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -104,21 +103,21 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithSISMerge(
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return fixture.GVK.Kind == "PubSubTopic"
 	}
-	var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		newBindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 			{
 				Role:    rc.UpdateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -154,11 +153,11 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalR
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithAuditConfigs(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		auditConfigs := []iamv1beta1.IAMPolicyAuditConfig{
@@ -167,7 +166,7 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithAuditConf
 				AuditLogConfigs: []iamv1beta1.AuditLogConfig{
 					{
 						LogType:         "ADMIN_READ",
-						ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+						ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 					},
 				},
 			},
@@ -181,7 +180,7 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithAuditConf
 					},
 					{
 						LogType:         "ADMIN_READ",
-						ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+						ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 					},
 				},
 			},
@@ -283,11 +282,11 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, kube
 func TestReconcileIAMPolicyResourceLevelDeleteParentFirst(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -299,11 +298,11 @@ func TestReconcileIAMPolicyResourceLevelDeleteParentFirst(t *testing.T) {
 func TestReconcileIAMPolicyResourceLevelDeleteParentFirstWithExternalRef(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -376,11 +375,11 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 func TestReconcileIAMPolicyResourceLevelAcquire(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -392,11 +391,11 @@ func TestReconcileIAMPolicyResourceLevelAcquire(t *testing.T) {
 func TestReconcileIAMPolicyResourceLevelAcquireWithExternalRef(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
@@ -408,11 +407,11 @@ func TestReconcileIAMPolicyResourceLevelAcquireWithExternalRef(t *testing.T) {
 func TestReconcileIAMPolicyResourceLevelAcquireWithAuditConfigs(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		bindings := []iamv1beta1.IAMPolicyBinding{
 			{
 				Role:    rc.CreateBindingRole,
-				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				Members: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		auditConfigs := []iamv1beta1.IAMPolicyAuditConfig{
@@ -421,7 +420,7 @@ func TestReconcileIAMPolicyResourceLevelAcquireWithAuditConfigs(t *testing.T) {
 				AuditLogConfigs: []iamv1beta1.AuditLogConfig{
 					{
 						LogType:         "ADMIN_READ",
-						ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+						ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 					},
 				},
 			},
