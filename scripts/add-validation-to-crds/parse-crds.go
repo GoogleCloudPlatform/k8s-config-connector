@@ -269,7 +269,7 @@ oneOf:
   - required:
     - memberFrom
 `
-	} else if fieldPath == ".spec.bindings[].members[].memberFrom" {
+	} else if fieldPath == ".spec.bindings[].members[].memberFrom" || fieldPath == ".spec.memberFrom" {
 		ruleYAML = `
 oneOf:
   - required:
@@ -289,7 +289,15 @@ oneOf:
 			fields.Insert(k)
 		}
 		signature := strings.Join(sets.List(fields), ",")
-		if signature == "apiVersion,external,kind,name,namespace" {
+		if strings.HasPrefix(signature, "condition,member,memberFrom") && fieldPath == ".spec" { // IAMPolicyMember
+			ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+		} else if signature == "apiVersion,external,kind,name,namespace" {
 			// hack for IAMPolicy.spec.resourceRef for backwards compat
 			if fieldPath == ".spec.resourceRef" {
 				ruleYAML = resourceRefRuleWithOnlyKind
