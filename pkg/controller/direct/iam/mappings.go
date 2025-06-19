@@ -20,8 +20,7 @@ import (
 	"cloud.google.com/go/iam/apiv1/iampb"
 	expr "google.golang.org/genproto/googleapis/type/expr"
 
-	newiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
-	oldiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -32,7 +31,7 @@ const (
 	DataRead           = "DATA_READ"
 )
 
-func IAMPolicySpec_ToProto(_ *direct.MapContext, in *oldiamv1beta1.IAMPolicySpec) *iampb.Policy {
+func IAMPolicySpec_ToProto(_ *direct.MapContext, in *krm.IAMPolicySpec) *iampb.Policy {
 	if in == nil {
 		return nil
 	}
@@ -98,29 +97,29 @@ func IAMPolicySpec_ToProto(_ *direct.MapContext, in *oldiamv1beta1.IAMPolicySpec
 	return protoPolicy
 }
 
-func IAMPolicySpec_FromProto(_ *direct.MapContext, in *iampb.Policy) *newiamv1beta1.IAMPolicySpec {
+func IAMPolicySpec_FromProto(_ *direct.MapContext, in *iampb.Policy) *krm.IAMPolicySpec {
 	if in == nil {
 		return nil
 	}
 
-	out := &newiamv1beta1.IAMPolicySpec{
+	out := &krm.IAMPolicySpec{
 		Etag: string(in.Etag),
 	}
 
 	// Map Bindings from Proto to KRM
 	if len(in.Bindings) > 0 {
-		out.Bindings = make([]newiamv1beta1.IAMPolicyBinding, 0, len(in.Bindings))
+		out.Bindings = make([]krm.IAMPolicyBinding, 0, len(in.Bindings))
 		for _, pbBinding := range in.Bindings {
-			binding := newiamv1beta1.IAMPolicyBinding{
+			binding := krm.IAMPolicyBinding{
 				Role:    pbBinding.Role,
-				Members: make([]newiamv1beta1.Member, len(pbBinding.Members)),
+				Members: make([]krm.Member, len(pbBinding.Members)),
 			}
 			for i, member := range pbBinding.Members {
-				binding.Members[i] = newiamv1beta1.Member(member)
+				binding.Members[i] = krm.Member(member)
 			}
 
 			if pbBinding.Condition != nil {
-				binding.Condition = &newiamv1beta1.IAMCondition{
+				binding.Condition = &krm.IAMCondition{
 					Expression:  pbBinding.Condition.Expression,
 					Title:       pbBinding.Condition.Title,
 					Description: pbBinding.Condition.Description,
@@ -132,24 +131,24 @@ func IAMPolicySpec_FromProto(_ *direct.MapContext, in *iampb.Policy) *newiamv1be
 
 	// Map AuditConfigs from Proto to KRM
 	if len(in.AuditConfigs) > 0 {
-		out.AuditConfigs = make([]newiamv1beta1.IAMPolicyAuditConfig, 0, len(in.AuditConfigs))
+		out.AuditConfigs = make([]krm.IAMPolicyAuditConfig, 0, len(in.AuditConfigs))
 		for _, pbAuditConfig := range in.AuditConfigs {
-			ac := newiamv1beta1.IAMPolicyAuditConfig{
+			ac := krm.IAMPolicyAuditConfig{
 				Service: pbAuditConfig.Service,
 			}
 
 			if len(pbAuditConfig.AuditLogConfigs) > 0 {
-				ac.AuditLogConfigs = make([]newiamv1beta1.AuditLogConfig, 0, len(pbAuditConfig.AuditLogConfigs))
+				ac.AuditLogConfigs = make([]krm.AuditLogConfig, 0, len(pbAuditConfig.AuditLogConfigs))
 				for _, pbAlc := range pbAuditConfig.AuditLogConfigs {
 					logTypeString := mapProtoLogTypeToKRM(pbAlc.LogType)
 
-					alc := newiamv1beta1.AuditLogConfig{
+					alc := krm.AuditLogConfig{
 						LogType: logTypeString,
 					}
 					if len(pbAlc.ExemptedMembers) > 0 {
-						alc.ExemptedMembers = make([]newiamv1beta1.Member, len(pbAlc.ExemptedMembers))
+						alc.ExemptedMembers = make([]krm.Member, len(pbAlc.ExemptedMembers))
 						for i, em := range pbAlc.ExemptedMembers {
-							alc.ExemptedMembers[i] = newiamv1beta1.Member(em)
+							alc.ExemptedMembers[i] = krm.Member(em)
 						}
 					}
 					ac.AuditLogConfigs = append(ac.AuditLogConfigs, alc)
