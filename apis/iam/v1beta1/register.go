@@ -47,16 +47,27 @@ var (
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
 	}
-	// NOT YET
-	// IAMPolicyMemberGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
-	// }
-	// IAMAuditConfigGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
-	// }
+	IAMPolicyMemberGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
+	}
+	IAMAuditConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
+	}
 	IAMAPIVersion = SchemeGroupVersion.String()
 )
+
+// todo acpana -- remove once CRD generation is not strictly go script driven!
+// IsHandwrittenIAM returns true if the given GVK corresponds to that of a
+// handwritten IAM resource.
+func IsHandwrittenIAM(gvk schema.GroupVersionKind) bool {
+	switch gvk {
+	case IAMPolicyGVK, IAMPolicyMemberGVK, IAMAuditConfigGVK, IAMPartialPolicyGVK:
+		return true
+	default:
+		return false
+	}
+}
