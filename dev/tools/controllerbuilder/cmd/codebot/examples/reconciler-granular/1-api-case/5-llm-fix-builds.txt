@@ -1,0 +1,3 @@
+I'm fixing go code under `${REPO_ROOT}/apis/${SERVICE}/v1alpha1`, you should help me.
+
+run `go build ${REPO_ROOT}/apis/${SERVICE}/v1alpha1/...`, and try to edit the code to fix the error.
