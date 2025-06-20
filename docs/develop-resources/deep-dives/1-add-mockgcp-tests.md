@@ -61,6 +61,7 @@ git add <golden_file> <log_file> && git commit -m "log: real gcp"
 - `golden_file` is the `_generated_object_<your_resource_test>.golden.yaml` file based on *real GCP reconciliation*.
 - `log_file` is the `_http.log` file recording the *real GCP log*.
 
+If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_CRUD_TESTS_REGEX in [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh).
 
 #### Record mock GCP log.
 
