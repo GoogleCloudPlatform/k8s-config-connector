@@ -80,6 +80,10 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 							if _, ok := v.precomputedMappings[protoName]; !ok {
 								v.precomputedMappings[protoName] = make(map[string]*gocode.GoStruct)
 							}
+
+							// TODO: When promoting a resource from v1alpha1 to v1beta1, the same Go struct will exist in both the v1alpha1 and v1beta1 KRM API folders.
+							// Currently, this code overrides v1alpha1 with v1beta1 in this mapping during visiting the go code.
+							// However, this can cause issues if the promoted resource shares a nested Go struct with another v1alpha1 resource.
 							v.precomputedMappings[protoName][s.Name] = s
 						}
 					}
