@@ -36,13 +36,9 @@ spec:
       serviceAccountRef:
         name: iamserviceaccount-2-${uniqueId}
       upgradeSettings:
-        strategy: "BLUE_GREEN" # Or "SURGE"
-        blueGreenSettings:
-          standardRolloutPolicy:
-            batchPercentage: 0 # Setting the integer field to 0 means to unset the field. This behavior will be changed in direct controller.
-            batchNodeCount: 1 # Use either percentage or node count.
-            batchSoakDuration: "1200s" # 20 minutes
-          nodePoolSoakDuration: "4800s" # 80 minutes
+        maxSurge: 5
+        maxUnavailable: 1
+        strategy: "SURGE" # Or "BLUE_GREEN"
       management:
         autoRepair: true
         autoUpgrade: true
