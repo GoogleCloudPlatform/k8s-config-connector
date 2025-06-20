@@ -156,3 +156,22 @@ vmwareengineexternalaccessrule|\
 vmwareengineexternaladdress|\
 vmwareengineprivatecloud|\
 zonalalloydbinstance"
+
+# Regex used to match long running samples tests cases (10m+ runtime). Any new
+# long-running samples tests should be added to this regex in alphabetical order.
+LONG_RUNNING_SAMPLES_TESTS_REGEX="autopilot-cluster|\
+autopilot-config-controller-instance|\
+basic-node-pool|\
+cloudidsendpoint|\
+datafusioninstance|\
+gkehubmembership|\
+managedkafkacluster-basic|\
+managedkafkacluster-cmek|\
+managedkafkatopic|\
+mysql-sql-instance|\
+private-ip-instance|\
+rediscluster|\
+securesourcemanagerinstance-cmek|\
+securesourcemanagerrepository|\
+sqlsslcert|\
+storageanywherecache"
