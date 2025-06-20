@@ -146,9 +146,13 @@ spec:
                 description: Project-wide App Engine service settings
                 properties:
                   applicationRef:
+                    description: AppEngineApplicationRef defines the resource reference
+                      to AppEngineApplication, which "External" field holds the GCP
+                      identifier for the KRM object.
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}'
+                        description: The value of an externally managed AppEngineApplication
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{appID}}".
                         type: string
                     type: object
                   projectRef:
@@ -190,14 +194,16 @@ spec:
                     description: Optional. If specified, settings apply to the service
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}'
+                        description: The value of an externally managed AppEngineService
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_ID}}".
                         type: string
                     type: object
                   versionRef:
                     description: Optional. If specified, settings apply to the version
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
+                        description: The value of an externally managed AppEngineVersion
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_id}}/version/{{versionID}}".
                         type: string
                     type: object
                 required:
@@ -656,9 +662,13 @@ spec:
                 description: Project-wide App Engine service settings
                 properties:
                   applicationRef:
+                    description: AppEngineApplicationRef defines the resource reference
+                      to AppEngineApplication, which "External" field holds the GCP
+                      identifier for the KRM object.
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}'
+                        description: The value of an externally managed AppEngineApplication
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{appID}}".
                         type: string
                     type: object
                   projectRef:
@@ -700,14 +710,16 @@ spec:
                     description: Optional. If specified, settings apply to the service
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}'
+                        description: The value of an externally managed AppEngineService
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_ID}}".
                         type: string
                     type: object
                   versionRef:
                     description: Optional. If specified, settings apply to the version
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
+                        description: The value of an externally managed AppEngineVersion
+                          resource. Should be in the format "projects/{{projectID}}/iap_web/appengine-{{appID}}/service/{{service_id}}/version/{{versionID}}".
                         type: string
                     type: object
                 required:
