@@ -1,0 +1,48 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bigquerytable-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  description: An updated BigQuery table.
+  expirationTime: 2064442632000
+  externalDataConfiguration:
+    autodetect: false
+    compression: NONE
+    ignoreUnknownValues: true
+    maxBadRecords: 100
+    parquetOptions:
+      enableListInference: true
+      enumAsString: true
+    sourceFormat: CSV
+    sourceUris:
+    - gs://cloud-samples-data/bigquery/us-states/us-states.parquet
+  friendlyName: BigQuery Table Updated
+  resourceID: bigquerytable-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  externalRef: projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  location: us-central1
+  observedGeneration: 2
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
+  type: EXTERNAL

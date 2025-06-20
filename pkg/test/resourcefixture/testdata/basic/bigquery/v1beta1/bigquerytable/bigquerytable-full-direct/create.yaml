@@ -19,12 +19,14 @@ metadata:
   labels:
     key1: value1
     key2: value2
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}
   friendlyName: BigQueryTable Full Example
   description: "A detailed example of a BigQuery Table resource."
-  schema: >
+  schema: |-
     [
       {
         "name": "name",
@@ -85,7 +87,7 @@ spec:
     field: date
   requirePartitionFilter: true # Use top-level field instead of the one under timePartitioning
   clustering:
-    - name
+    - name # Must match a field in the schema
     - post_abbr
   encryptionConfiguration:
     kmsKeyRef:
@@ -102,13 +104,5 @@ spec:
           referencedColumn: state_code
         referencedTable:
           projectId: ${projectId}
-          datasetId: bigquerydataset${uniqueId}
-          tableId: referencedtable${uniqueId}
-      - name: fk_constraint_example_2
-        columnReferences:
-          referencingColumn: date
-          referencedColumn: dt
-        referencedTable:
-          projectId: ${projectId}
-          datasetId: bigquerydataset${uniqueId}
+          datasetId:  bigquerydataset${uniqueId}
           tableId: referencedtable${uniqueId}
