@@ -27,6 +27,15 @@
     For opt-in direct controller,
     *   Added `spec.labels` field.
 
+## New features or enhancements:
+
+*   [Storage Bucket](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
+    *   Removed immutability constraint on
+        [Storage Bucket](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket)
+        resource's `spec.location` and
+        `spec.customPlacementConfig.dataLocations` fields, allowing them to be
+        updated.
+
 ## Reconciliation Improvements:
 
 *   [BigtableAppProfile](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigtable/bigtableappprofile)
