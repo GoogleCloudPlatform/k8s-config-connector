@@ -472,5 +472,5 @@ func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Cl
 		time.Sleep(baseDelay * (1 << i)) // delays: 100ms * 2^0, 100ms * 2^1, 100ms * 2^2
 	}
 
-	return fmt.Errorf("failed to delete after %d retries: %w", maxRetries, err)
+	return fmt.Errorf("failed to delete resource '%s' of GVK %s after %d retries", k8s.GetNamespacedName(u), u.GroupVersionKind(), maxRetries)
 }
