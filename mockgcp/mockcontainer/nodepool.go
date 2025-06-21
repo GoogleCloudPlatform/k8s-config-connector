@@ -202,6 +202,16 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			"https://www.googleapis.com/auth/userinfo.email",
 			"https://www.googleapis.com/auth/cloud-platform",
 		}
+	} else {
+		hasMonitoring := false
+		for _, scope := range obj.OauthScopes {
+			if scope == "https://www.googleapis.com/auth/monitoring" {
+				hasMonitoring = true
+			}
+		}
+		if !hasMonitoring {
+			obj.OauthScopes = append(obj.OauthScopes, "https://www.googleapis.com/auth/monitoring")
+		}
 	}
 
 	if obj.UpgradeSettings == nil {
@@ -216,6 +226,15 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			AutoRepair:  true,
 			AutoUpgrade: true,
 		}
+	}
+
+	// According to the proto:
+	//   This field is deprecated, min_cpu_platform should be specified using
+	//   `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
+	//   To unset the min cpu platform field pass "automatic"
+	//   as field value.
+	if obj.MinCpuPlatform == "automatic" {
+		obj.MinCpuPlatform = ""
 	}
 
 	return nil
