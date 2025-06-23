@@ -30,11 +30,6 @@ type MemorystoreInstanceSpec struct {
 
 	Parent `json:",inline"`
 
-	// Identifier. Unique name of the instance.
-	//  Format: projects/{project}/locations/{location}/instances/{instance}
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.name
-	Name *string `json:"name,omitempty"`
-
 	// Optional. Labels to represent user-provided metadata.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.labels
 	Labels map[string]string `json:"labels,omitempty"`

@@ -288,9 +288,6 @@ spec:
               mode:
                 description: Optional. The mode config for the instance.
                 type: string
-              name:
-                description: 'Identifier. Unique name of the instance. Format: projects/{project}/locations/{location}/instances/{instance}'
-                type: string
               nodeType:
                 description: Optional. Immutable. Machine type for individual nodes
                   of the instance.

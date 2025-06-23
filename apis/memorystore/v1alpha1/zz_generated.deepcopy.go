@@ -624,11 +624,6 @@ func (in *MemorystoreInstanceSpec) DeepCopyInto(out *MemorystoreInstanceSpec) {
 		**out = **in
 	}
 	in.Parent.DeepCopyInto(&out.Parent)
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))
