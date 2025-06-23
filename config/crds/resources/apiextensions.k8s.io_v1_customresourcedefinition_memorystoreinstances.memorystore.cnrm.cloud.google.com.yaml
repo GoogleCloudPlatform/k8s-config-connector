@@ -159,7 +159,7 @@ spec:
                             description: Detailed information of a PSC connection
                               that is created by the user.
                             properties:
-                              forwardingRule:
+                              forwardingRuleRef:
                                 description: 'Required. The URI of the consumer side
                                   forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}'
                                 oneOf:
@@ -195,7 +195,7 @@ spec:
                                 description: Required. The IP allocated on the consumer
                                   network for the PSC forwarding rule.
                                 type: string
-                              network:
+                              networkRef:
                                 description: Required. The consumer network where
                                   the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
                                 oneOf:
@@ -227,7 +227,7 @@ spec:
                                       resource.
                                     type: string
                                 type: object
-                              serviceAttachment:
+                              serviceAttachmentRef:
                                 description: Required. The service attachment which
                                   is the target of the PSC connection, in the form
                                   of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
