@@ -74,20 +74,29 @@ func TestServiceResources(t *testing.T) {
 
 func assertServiceAbandoned(t *testing.T, testName string, service *unstructured.Unstructured) {
 	annotations := service.GetAnnotations()
-	value, ok := annotations[k8s.DeletionPolicyAnnotation]
-	if !ok {
-		t.Errorf("Service resource %q in test %q has no deletion policy annotation, "+
-			"but it should have the following annotation: \"%s: abandon\"",
-			strings.ReplaceAll(service.GetName(), mockUniqueID, "${uniqueId}"),
-			testName, k8s.DeletionPolicyAnnotation)
+	switch testName {
+	case "gkehubacmfeature", "gkehubmcifeature", "gkehubmcsdfeature":
+		// The above test cases create specific projects and only enable the
+		// services in the newly created project, so they don't need to be
+		// abandoned to avoid racing conditions.
 		return
+	default:
+		value, ok := annotations[k8s.DeletionPolicyAnnotation]
+		if !ok {
+			t.Errorf("Service resource %q in test %q has no deletion policy annotation, "+
+				"but it should have the following annotation: \"%s: abandon\"",
+				strings.ReplaceAll(service.GetName(), mockUniqueID, "${uniqueId}"),
+				testName, k8s.DeletionPolicyAnnotation)
+			return
+		}
+		if value != k8s.DeletionPolicyAbandon {
+			t.Errorf("Service resource %q in test %q should have %q annotation set to %q, "+
+				"but it should be \"abandon\"",
+				strings.ReplaceAll(service.GetName(), mockUniqueID, "${uniqueId}"),
+				testName, k8s.DeletionPolicyAnnotation, value)
+		}
 	}
-	if value != k8s.DeletionPolicyAbandon {
-		t.Errorf("Service resource %q in test %q should have %q annotation set to %q, "+
-			"but it should be \"abandon\"",
-			strings.ReplaceAll(service.GetName(), mockUniqueID, "${uniqueId}"),
-			testName, k8s.DeletionPolicyAnnotation, value)
-	}
+	return
 }
 
 func assertServiceNotUnderMainTestProject(t *testing.T, testName string, service *unstructured.Unstructured) {
