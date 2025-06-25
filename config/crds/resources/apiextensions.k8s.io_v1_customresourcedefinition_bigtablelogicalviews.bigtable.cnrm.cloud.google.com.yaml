@@ -60,10 +60,6 @@ spec:
           spec:
             description: BigtableLogicalViewSpec defines a state of BigtableLogicalView
             properties:
-              deletionProtection:
-                description: Optional. Set to true to make the LogicalView protected
-                  against deletion.
-                type: boolean
               instanceRef:
                 description: InstanceRef defines the resource reference to BigtableInstance,
                   which "External" field holds the GCP identifier for the KRM object.
@@ -97,7 +93,7 @@ spec:
                 description: The BigtableLogicalView's select query.
                 type: string
               resourceID:
-                description: The BigtableLogicalView name. If not given, the metadata.name
+                description: The BigtableLogicalView ID. If not given, the metadata.name
                   will be used.
                 type: string
             required:

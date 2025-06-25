@@ -66,12 +66,12 @@ func NewLogicalViewIdentity(ctx context.Context, reader client.Reader, obj *Bigt
 	}
 
 	// Get desired ID
-	_, resourceID, err := ParseLogicalViewExternal(*obj.Spec.Name)
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
 	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve logical view name")
 	}
 
 	// Use approved External

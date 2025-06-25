@@ -30,16 +30,17 @@ type BigtableLogicalViewParent struct {
 // BigtableLogicalViewSpec defines a state of BigtableLogicalView
 // +kcc:proto=google.bigtable.admin.v2.LogicalView
 type BigtableLogicalViewSpec struct {
-	// The BigtableLogicalView name. If not given, the metadata.name will be used.
-	Name *string `json:"resourceID,omitempty"`
+	// The BigtableLogicalView ID. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
 
 	BigtableLogicalViewParent `json:",inline"`
 
 	// The BigtableLogicalView's select query.
 	Query *string `json:"query,omitempty"`
 
+	// TODO: Add this once the feature is live.
 	// Optional. Set to true to make the LogicalView protected against deletion.
-	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+	// DeletionProtection *bool `json:"deletionProtection,omitempty"`
 }
 
 // BigtableLogicalViewStatus defines the config connector machine state of BigtableLogicalView

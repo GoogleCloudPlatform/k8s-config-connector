@@ -119,14 +119,14 @@ var _ directbase.Adapter = &LogicalViewAdapter{}
 // Return a non-nil error requeues the requests.
 func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting BigtableAppProfile", "name", a.id)
+	log.V(2).Info("getting BigtableLogicalView", "name", a.id)
 
 	logicalViewInfo, err := a.gcpClient.LogicalViewInfo(ctx, a.id.ParentInstanceIdString(), a.id.ID())
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting BigtableAppProfile %q: %w", a.id, err)
+		return false, fmt.Errorf("getting BigtableLogicalView %q: %w", a.id, err)
 	}
 
 	a.actual = &bigtablepb.LogicalView{
@@ -155,7 +155,7 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		// TODO: Add this once the feature is enabled.
 		// DeletionProtection: resource.DeletionProtection,
 	}
-	err := a.gcpClient.CreateLogicalView(ctx, a.id.ID(), logicalViewInfo)
+	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
 	if err != nil {
 		return fmt.Errorf("creating LogicalView %s: %w", a.id, err)
 	}
@@ -206,7 +206,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			LogicalViewID: a.id.ID(),
 			Query:         desiredPb.Query,
 		}
-		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentString(), desiredlogicalview)
+		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
 		if err != nil {
 			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
 		}
@@ -222,6 +222,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	status := &krm.BigtableLogicalViewStatus{}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	status.Name = direct.LazyPtr(a.id.String())
 	// TODO: Add ObservedState
 	// status.ObservedState = LogicalViewObservedState_FromProto(mapCtx, updated)
