@@ -610,8 +610,20 @@ func isOperationDone(s string) bool {
 
 // addTestTimeout will ensure the test fails if not completed before timeout
 func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
-	ctx, cancel := context.WithTimeout(ctx, timeout)
 
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		// If the target is real, check if SUBTEST_TIMEOUT_E2E is present set
+		// accordingly, or fallback to original timeouts if there's any error.
+
+		if subtestTimeoutE2EStr := os.Getenv("SUBTEST_TIMEOUT_E2E"); subtestTimeoutE2EStr != "" {
+			parsedTimeout, err := time.ParseDuration(subtestTimeoutE2EStr)
+			if err == nil {
+				timeout = parsedTimeout
+			}
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, timeout)
 	done := false
 	timedOut := false
 	t.Cleanup(func() {
