@@ -166,6 +166,53 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  policyTagCount:
+                    description: Output only. Number of policy tags in this taxonomy.
+                    format: int32
+                    type: integer
+                  service:
+                    description: Output only. Identity of the service which owns the
+                      Taxonomy. This field is only populated when the taxonomy is
+                      created by a Google Cloud service. Currently only 'DATAPLEX'
+                      is supported.
+                    properties:
+                      identity:
+                        description: The service agent for the service.
+                        type: string
+                      name:
+                        description: The Google Cloud service name.
+                        type: string
+                    type: object
+                  taxonomyTimestamps:
+                    description: Output only. Creation and modification timestamps
+                      of this taxonomy.
+                    properties:
+                      createTime:
+                        description: Creation timestamp of the resource within the
+                          given system.
+                        type: string
+                      expiredTime:
+                        description: |-
+                          Output only. Expiration timestamp of the resource within the given system.
+
+                          Currently only applicable to BigQuery resources.
+                        type: string
+                      updateTime:
+                        description: |-
+                          Timestamp of the last modification of the resource or its metadata within
+                           a given system.
+
+                           Note: Depending on the source system, not every modification updates this
+                           timestamp.
+                           For example, BigQuery timestamps every metadata modification but not data
+                           or permission changes.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec

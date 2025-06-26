@@ -67,6 +67,60 @@ type DataCatalogTaxonomyStatus struct {
 
 	// A unique specifier for the DataCatalogTaxonomy resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *DataCatalogTaxonomyObservedState `json:"observedState,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.Taxonomy.Service
+type Taxonomy_Service struct {
+	// The Google Cloud service name.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.name
+	Name *string `json:"name,omitempty"`
+
+	// The service agent for the service.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.Service.identity
+	Identity *string `json:"identity,omitempty"`
+}
+
+// +kcc:proto=google.cloud.datacatalog.v1.SystemTimestamps
+type SystemTimestamps struct {
+	// Creation timestamp of the resource within the given system.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Timestamp of the last modification of the resource or its metadata within
+	//  a given system.
+	//
+	//  Note: Depending on the source system, not every modification updates this
+	//  timestamp.
+	//  For example, BigQuery timestamps every metadata modification but not data
+	//  or permission changes.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.SystemTimestamps.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. Expiration timestamp of the resource within the given system.
+	//
+	// Currently only applicable to BigQuery resources.
+	ExpireTime *string `json:"expiredTime,omitempty"`
+}
+
+// DataCatalogTaxonomyObservedState is the state of the DataCatalogTaxonomy resource as most recently observed in GCP.
+// +kcc:proto=google.cloud.datacatalog.v1.Taxonomy
+type DataCatalogTaxonomyObservedState struct {
+	// Output only. Number of policy tags in this taxonomy.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.policy_tag_count
+	PolicyTagCount *int32 `json:"policyTagCount,omitempty"`
+
+	// Output only. Creation and modification timestamps of this taxonomy.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.taxonomy_timestamps
+	TaxonomyTimestamps *SystemTimestamps `json:"taxonomyTimestamps,omitempty"`
+
+	// Output only. Identity of the service which owns the Taxonomy. This field is
+	//  only populated when the taxonomy is created by a Google Cloud service.
+	//  Currently only 'DATAPLEX' is supported.
+	// +kcc:proto:field=google.cloud.datacatalog.v1.Taxonomy.service
+	Service *Taxonomy_Service `json:"service,omitempty"`
 }
 
 // +genclient
