@@ -10,5 +10,5 @@
 
 - exec: gcloud bigtable logical-views list --instance=test-instance-${uniqueId}
 
-- exec: gcloud bigtable logical-views delete test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --force --quiet
+- exec: gcloud bigtable logical-views delete test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --quiet
 - exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet
