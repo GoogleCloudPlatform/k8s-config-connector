@@ -17,9 +17,9 @@ kind: BillingBudgetsBudget
 metadata:
   name: billingbudgetsbudget-${uniqueId}
 spec:
+  displayName: calendar-budget-${uniqueId}
   billingAccountRef:
     external: ${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES}
-  displayName: "sample-budget"
   budgetFilter:
     projects:
     - name: "project-1-${uniqueId}"
