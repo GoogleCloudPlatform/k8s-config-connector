@@ -34,7 +34,7 @@ func checkFieldValid(fields []*bigquery.TableFieldSchema) error {
 	return nil
 }
 
-func policyTagsEq(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
+func policyTagsEqual(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	if a == nil && b == nil {
 		return true
 	}
@@ -44,18 +44,12 @@ func policyTagsEq(a, b *bigquery.TableFieldSchemaPolicyTags) bool {
 	if a.Names == nil && b.Names == nil {
 		return true
 	}
-
-	// Due to inconsistent API behavior, suppress empty array and nil.
-	if a.Names == nil && b.Names != nil && len(b.Names) == 0 {
-		return true
-	}
-
-	// Due to inconsistent API behavior, suppress empty array and nil.
-	if b.Names == nil && a.Names != nil && len(a.Names) == 0 {
-		return true
-	}
-
+	// If one of a.Names or b.Names is nil.
 	if a.Names == nil || b.Names == nil {
+		// Suppress nil string and emptry string different.
+		if len(a.Names) == len(b.Names) {
+			return true
+		}
 		return false
 	}
 	if len(a.Names) != len(b.Names) {
@@ -78,7 +72,7 @@ func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	})
 }
 
-func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, error) {
+func tableFieldsSchemaEqual(desired, actual []*bigquery.TableFieldSchema) (bool, error) {
 	if len(desired) == 0 && len(actual) == 0 {
 		return true, nil
 	}
@@ -92,6 +86,8 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 	if len(desired) != len(actual) {
 		return false, nil
 	}
+	// The fields from API can be in a different order.
+	// Sort by name before comparing.
 	sortSchemaFields(desired)
 	sortSchemaFields(actual)
 	for i := range desired {
@@ -119,7 +115,7 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 		if !reflect.DeepEqual(desired[i].Name, actual[i].Name) {
 			return false, nil
 		}
-		if !policyTagsEq(desired[i].PolicyTags, actual[i].PolicyTags) {
+		if !policyTagsEqual(desired[i].PolicyTags, actual[i].PolicyTags) {
 			return false, nil
 		}
 		if !reflect.DeepEqual(desired[i].Precision, actual[i].Precision) {
@@ -137,7 +133,7 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 		if !reflect.DeepEqual(desired[i].Type, actual[i].Type) {
 			return false, nil
 		}
-		eq, err := tableFieldsSchemaEq(desired[i].Fields, actual[i].Fields)
+		eq, err := tableFieldsSchemaEqual(desired[i].Fields, actual[i].Fields)
 		if err != nil {
 			return false, err
 		}
@@ -148,7 +144,7 @@ func tableFieldsSchemaEq(desired, actual []*bigquery.TableFieldSchema) (bool, er
 	return true, nil
 }
 
-func externalDataConfigurationEq(a, b *bigquery.ExternalDataConfiguration) (bool, error) {
+func externalDataConfigurationEqual(a, b *bigquery.ExternalDataConfiguration) (bool, error) {
 	if a == nil && b == nil {
 		return true, nil
 	}
@@ -237,7 +233,7 @@ func tableSchemaEq(a, b *bigquery.TableSchema) (bool, error) {
 	if a == nil || b == nil {
 		return false, nil
 	}
-	return tableFieldsSchemaEq(a.Fields, b.Fields)
+	return tableFieldsSchemaEqual(a.Fields, b.Fields)
 }
 
 func viewEq(a, b *bigquery.ViewDefinition) bool {
@@ -304,5 +300,5 @@ func TableEq(a, b *bigquery.Table) (bool, error) {
 	if !equal {
 		return false, nil
 	}
-	return externalDataConfigurationEq(a.ExternalDataConfiguration, b.ExternalDataConfiguration)
+	return externalDataConfigurationEqual(a.ExternalDataConfiguration, b.ExternalDataConfiguration)
 }

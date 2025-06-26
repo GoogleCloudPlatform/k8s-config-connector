@@ -94,12 +94,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
-
-	projectID := id.Parent().ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project ID")
-	}
-
 	// Create bigquery GCP client for BQ Table.
 	gcpService, err := m.tableService(ctx)
 	if err != nil {
@@ -156,13 +150,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
 
 	a.customTableLogic(table)
-	if desired.Spec.EncryptionConfiguration != nil && desired.Spec.EncryptionConfiguration.KmsKeyRef != nil {
-		kmsRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, a.desired, a.desired.Spec.EncryptionConfiguration.KmsKeyRef)
-		if err != nil {
-			return err
-		}
-		table.EncryptionConfiguration.KmsKeyName = kmsRef.External
-	}
 	parent := a.id.Parent()
 	if table.View != nil && table.Schema != nil {
 		log.V(2).Info("Removing schema from table definition because big query does not support setting schema on view creation")
@@ -178,7 +165,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.Id)
 		res, err = a.gcpService.Update(parent.ProjectID, parent.DatasetID, res.Id, table).Do()
 		if err != nil {
-			return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
+			return fmt.Errorf("error updating Table during CREATE table with both schema and view specified %s: %w", a.id.ID(), err)
 		}
 		log.V(2).Info("successfully updated Table with schema", "name", res.Id)
 		if err := a.UpdateStatusForCreate(ctx, createOp, res); err != nil {
@@ -225,6 +212,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
 
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	// For table created from external data configuration,
 	// If no schema was provided, the Update request would fail.
 	// Getting schema from actual object.
@@ -241,15 +232,18 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	// No diff detected.
 	if eq {
+		log.Info("no diff detected for Table", "name", a.id)
+		if *a.desired.Status.ExternalRef == "" {
+			// If it is the first reconciliation after switching to direct controller,
+			// or is an acquisition, then update Status to fill out the ExternalRef
+			// and ObservedState.
+			return a.UpdateStatusForUpdate(ctx, updateOp, a.actual)
+		}
 		return nil
 	}
 
 	a.customTableLogic(table)
 	parent := a.id.Parent()
-
-	if mapCtx.Err() != nil {
-		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), mapCtx.Err())
-	}
 
 	// TODO: Update annotation logic after confirming requirement.
 	// if a.desired.ObjectMeta.Annotations != nil {
@@ -277,9 +271,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	return a.UpdateStatusForUpdate(ctx, updateOp, res)
 }
 
-func (a *Adapter) UpdateStatusForUpdate(ctx context.Context, updateOp *directbase.UpdateOperation, created *bigquery.Table) error {
+func (a *Adapter) UpdateStatusForUpdate(ctx context.Context, updateOp *directbase.UpdateOperation, updated *bigquery.Table) error {
 	mapCtx := &direct.MapContext{}
-	status := BigQueryTableStatus_FromProto(mapCtx, created)
+	status := BigQueryTableStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -301,6 +295,8 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	obj := &krm.BigQueryTable{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigQueryTableSpec_FromProto(mapCtx, a.actual))
+	// Populate the reference from the identity
+	obj.Spec.DatasetRef = &krm.DatasetRef{External: a.id.Parent().String()}
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -321,16 +317,23 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("deleting Table", "name", a.id.String())
 	parent := a.id.Parent()
 	if err := a.gcpService.Delete(parent.ProjectID, parent.DatasetID, a.id.ID()).Do(); err != nil {
+		if direct.IsNotFound(err) {
+			log.V(2).Info("skipping delete for non-existent BigQuery Table, assuming it was already deleted", "name", a.id.String())
+			return true, nil
+		}
 		return false, fmt.Errorf("deleting Table %s: %w", a.id, err)
 	}
 	return true, nil
 }
 
+// customTableLogic added extra logics for the table obj before making the API call.
+// These extra logics could not be handled in the mapper functions.
 func (a *Adapter) customTableLogic(table *bigquery.Table) {
 	if table == nil {
 		return
 	}
 	parent := a.id.Parent()
+	// Adding TableReference object as the API requires this object to be populated to be valid.
 	table.TableReference = &bigquery.TableReference{
 		ProjectId: parent.ProjectID,
 		DatasetId: parent.DatasetID,
