@@ -141,7 +141,7 @@ func (a *GroupAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 		return fmt.Errorf("creating Group %s: %w", a.id, err)
 	}
 	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
-		return fmt.Errorf("error waiting Group %s deletion: %w", a.id, err)
+		return fmt.Errorf("error waiting Group %s creation: %w", a.id, err)
 	}
 
 	// Get server generated group name
