@@ -24,8 +24,6 @@ spec:
     name: bigquerydataset${uniqueId}
   friendlyName: BigQueryTable Full Example
   description: "A detailed example of a BigQuery Table resource."
-  labels: # These are GCP labels, use .metadata.labels for K8s labels unless using direct reconciler
-    gcp-label-key: gcp-label-value
   schema: |-
     [
       {
