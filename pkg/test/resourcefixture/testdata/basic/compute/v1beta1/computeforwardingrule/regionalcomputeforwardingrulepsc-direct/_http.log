@@ -1366,7 +1366,6 @@ X-Goog-Request-Params: project=example-project-01&region=us-central1
   "backendService": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
   "description": "A test forwarding rule with internal load balancing scheme",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
@@ -1481,7 +1480,6 @@ X-Goog-Request-Params: project=example-project-01&region=us-central1&resource=${
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   }
 }
@@ -1541,7 +1539,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",
@@ -1843,7 +1840,6 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -1904,7 +1900,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1926,7 +1921,6 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1&resource=${forwar
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -1987,7 +1981,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -2220,7 +2213,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "loadBalancingScheme": "INTERNAL",

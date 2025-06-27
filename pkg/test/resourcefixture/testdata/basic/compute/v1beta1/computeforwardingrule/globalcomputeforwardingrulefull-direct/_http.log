@@ -546,7 +546,6 @@ X-Goog-Request-Params: project=${projectId}
   "description": "A global forwarding rule",
   "ipVersion": "IPV4",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -684,7 +683,6 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -744,7 +742,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -778,7 +775,6 @@ X-Goog-Request-Params: project=${projectId}&resource=${forwardingRuleID}
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -907,7 +903,6 @@ X-Xss-Protection: 0
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },

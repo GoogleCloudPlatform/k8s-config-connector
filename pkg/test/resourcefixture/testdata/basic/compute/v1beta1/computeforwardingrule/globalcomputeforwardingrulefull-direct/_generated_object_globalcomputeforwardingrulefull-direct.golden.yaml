@@ -11,7 +11,6 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-two
   name: computeglobalforwardingrule-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -20,6 +19,8 @@ spec:
     ip: 0.0.0.0
   ipProtocol: TCP
   ipVersion: IPV4
+  labels:
+    label-one: value-two
   loadBalancingScheme: INTERNAL_SELF_MANAGED
   location: global
   metadataFilters:
