@@ -884,7 +884,6 @@ X-Xss-Protection: 0
     "network": "projects/example-project-01/global/networks/default",
     "subnetwork": "default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
@@ -1951,7 +1950,6 @@ X-Xss-Protection: 0
     "network": "projects/example-project-01/global/networks/default",
     "subnetwork": "default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",

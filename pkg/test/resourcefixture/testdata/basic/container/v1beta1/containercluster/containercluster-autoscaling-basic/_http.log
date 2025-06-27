@@ -34,50 +34,37 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "cluster": {
-    "addonsConfig": {
-      "cloudRunConfig": {
-        "disabled": true
-      },
-      "configConnectorConfig": {
-        "enabled": false
-      },
-      "dnsCacheConfig": {
-        "enabled": false
-      },
-      "gcePersistentDiskCsiDriverConfig": {
-        "enabled": false
-      },
-      "gcpFilestoreCsiDriverConfig": {
-        "enabled": false
-      },
-      "gcsFuseCsiDriverConfig": {
-        "enabled": false
-      },
-      "gkeBackupAgentConfig": {
-        "enabled": false
-      },
-      "horizontalPodAutoscaling": {
-        "disabled": true
-      },
-      "httpLoadBalancing": {
-        "disabled": true
-      },
-      "istioConfig": {
-        "auth": "AUTH_MUTUAL_TLS",
-        "disabled": true
-      },
-      "kalmConfig": {
-        "enabled": false
-      },
-      "networkPolicyConfig": {
-        "disabled": true
-      }
-    },
     "autopilot": {
       "enabled": false
     },
     "autoscaling": {
-      "enableNodeAutoprovisioning": false
+      "autoprovisioningNodePoolDefaults": {
+        "diskSizeGb": 100,
+        "imageType": "COS_CONTAINERD",
+        "management": {
+          "autoUpgrade": true,
+          "upgradeOptions": {}
+        },
+        "minCpuPlatform": "automatic",
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write"
+        ],
+        "serviceAccount": "default",
+        "upgradeSettings": {}
+      },
+      "autoscalingProfile": "BALANCED",
+      "enableNodeAutoprovisioning": true,
+      "resourceLimits": [
+        {
+          "maximum": "1",
+          "resourceType": "cpu"
+        },
+        {
+          "maximum": "1024",
+          "resourceType": "memory"
+        }
+      ]
     },
     "binaryAuthorization": {
       "enabled": false
@@ -108,11 +95,15 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
         "https://www.googleapis.com/auth/trace.append"
       ]
     },
+    "nodePoolAutoConfig": {
+      "networkTags": {
+        "tags": [
+          "test-autoscaling"
+        ]
+      }
+    },
     "notificationConfig": {
       "pubsub": {}
-    },
-    "releaseChannel": {
-      "channel": "RAPID"
     },
     "resourceLabels": {
       "cnrm-test": "true",
@@ -120,9 +111,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "shieldedNodes": {
       "enabled": true
-    },
-    "workloadIdentityConfig": {
-      "workloadPool": "${projectId}.svc.id.goog"
     }
   }
 }
@@ -218,29 +206,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
-    "cloudRunConfig": {
-      "disabled": true,
-      "loadBalancerType": "LOAD_BALANCER_TYPE_EXTERNAL"
-    },
-    "configConnectorConfig": {},
-    "dnsCacheConfig": {},
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
-    "gcpFilestoreCsiDriverConfig": {},
-    "gcsFuseCsiDriverConfig": {},
-    "gkeBackupAgentConfig": {},
-    "horizontalPodAutoscaling": {
-      "disabled": true
-    },
-    "httpLoadBalancing": {
-      "disabled": true
-    },
-    "istioConfig": {
-      "auth": "AUTH_MUTUAL_TLS",
-      "disabled": true
-    },
-    "kalmConfig": {},
     "kubernetesDashboard": {
       "disabled": true
     },
@@ -251,19 +219,34 @@ X-Xss-Protection: 0
   "autopilot": {},
   "autoscaling": {
     "autoprovisioningNodePoolDefaults": {
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
       "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
+        "autoUpgrade": true,
+        "upgradeOptions": {}
       },
       "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring"
       ],
+      "serviceAccount": "default",
       "upgradeSettings": {
         "strategy": "SURGE"
       }
     },
-    "autoscalingProfile": "BALANCED"
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "1",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1024",
+        "resourceType": "memory"
+      }
+    ]
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
@@ -361,6 +344,13 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
+  "nodePoolAutoConfig": {
+    "networkTags": {
+      "tags": [
+        "test-autoscaling"
+      ]
+    }
+  },
   "nodePools": [
     {
       "config": {
@@ -427,7 +417,7 @@ X-Xss-Protection: 0
     "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
   },
   "releaseChannel": {
-    "channel": "RAPID"
+    "channel": "REGULAR"
   },
   "resourceLabels": {
     "cnrm-test": "true",
@@ -444,9 +434,6 @@ X-Xss-Protection: 0
   },
   "status": "RUNNING",
   "subnetwork": "default",
-  "workloadIdentityConfig": {
-    "workloadPool": "${projectId}.svc.id.goog"
-  },
   "zone": "us-central1-a"
 }
 
@@ -458,44 +445,37 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "update": {
-    "desiredAddonsConfig": {
-      "cloudRunConfig": {
-        "disabled": true
+    "desiredClusterAutoscaling": {
+      "autoprovisioningNodePoolDefaults": {
+        "diskSizeGb": 100,
+        "imageType": "COS_CONTAINERD",
+        "management": {
+          "autoUpgrade": true,
+          "upgradeOptions": {}
+        },
+        "minCpuPlatform": "automatic",
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write"
+        ],
+        "serviceAccount": "default",
+        "upgradeSettings": {
+          "blueGreenSettings": {},
+          "strategy": "SURGE"
+        }
       },
-      "configConnectorConfig": {
-        "enabled": false
-      },
-      "dnsCacheConfig": {
-        "enabled": false
-      },
-      "gcePersistentDiskCsiDriverConfig": {
-        "enabled": false
-      },
-      "gcpFilestoreCsiDriverConfig": {
-        "enabled": false
-      },
-      "gcsFuseCsiDriverConfig": {
-        "enabled": false
-      },
-      "gkeBackupAgentConfig": {
-        "enabled": false
-      },
-      "horizontalPodAutoscaling": {
-        "disabled": true
-      },
-      "httpLoadBalancing": {
-        "disabled": true
-      },
-      "istioConfig": {
-        "auth": "AUTH_MUTUAL_TLS",
-        "disabled": true
-      },
-      "kalmConfig": {
-        "enabled": false
-      },
-      "networkPolicyConfig": {
-        "disabled": true
-      }
+      "autoscalingProfile": "BALANCED",
+      "enableNodeAutoprovisioning": true,
+      "resourceLimits": [
+        {
+          "maximum": "1",
+          "resourceType": "cpu"
+        },
+        {
+          "maximum": "1024",
+          "resourceType": "memory"
+        }
+      ]
     }
   }
 }
@@ -563,29 +543,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
-    "cloudRunConfig": {
-      "disabled": true,
-      "loadBalancerType": "LOAD_BALANCER_TYPE_EXTERNAL"
-    },
-    "configConnectorConfig": {},
-    "dnsCacheConfig": {},
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
-    "gcpFilestoreCsiDriverConfig": {},
-    "gcsFuseCsiDriverConfig": {},
-    "gkeBackupAgentConfig": {},
-    "horizontalPodAutoscaling": {
-      "disabled": true
-    },
-    "httpLoadBalancing": {
-      "disabled": true
-    },
-    "istioConfig": {
-      "auth": "AUTH_MUTUAL_TLS",
-      "disabled": true
-    },
-    "kalmConfig": {},
     "kubernetesDashboard": {
       "disabled": true
     },
@@ -596,19 +556,34 @@ X-Xss-Protection: 0
   "autopilot": {},
   "autoscaling": {
     "autoprovisioningNodePoolDefaults": {
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
       "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
+        "autoUpgrade": true,
+        "upgradeOptions": {}
       },
       "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
+        "https://www.googleapis.com/auth/devstorage.read_only",
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring"
       ],
+      "serviceAccount": "default",
       "upgradeSettings": {
         "strategy": "SURGE"
       }
     },
-    "autoscalingProfile": "BALANCED"
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "1",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1024",
+        "resourceType": "memory"
+      }
+    ]
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
@@ -706,6 +681,13 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
+  "nodePoolAutoConfig": {
+    "networkTags": {
+      "tags": [
+        "test-autoscaling"
+      ]
+    }
+  },
   "nodePools": [
     {
       "config": {
@@ -772,7 +754,7 @@ X-Xss-Protection: 0
     "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
   },
   "releaseChannel": {
-    "channel": "RAPID"
+    "channel": "REGULAR"
   },
   "resourceLabels": {
     "cnrm-test": "true",
@@ -789,9 +771,6 @@ X-Xss-Protection: 0
   },
   "status": "RUNNING",
   "subnetwork": "default",
-  "workloadIdentityConfig": {
-    "workloadPool": "${projectId}.svc.id.goog"
-  },
   "zone": "us-central1-a"
 }
 
@@ -803,45 +782,100 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 {
   "update": {
-    "desiredAddonsConfig": {
-      "cloudRunConfig": {
-        "disabled": true,
-        "loadBalancerType": "LOAD_BALANCER_TYPE_INTERNAL"
+    "desiredClusterAutoscaling": {
+      "autoprovisioningNodePoolDefaults": {
+        "diskSizeGb": 100,
+        "imageType": "COS_CONTAINERD",
+        "management": {
+          "autoRepair": true,
+          "autoUpgrade": true,
+          "upgradeOptions": {}
+        },
+        "minCpuPlatform": "automatic",
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring"
+        ],
+        "serviceAccount": "default",
+        "upgradeSettings": {
+          "blueGreenSettings": {},
+          "strategy": "SURGE"
+        }
       },
-      "configConnectorConfig": {
-        "enabled": true
-      },
-      "dnsCacheConfig": {
-        "enabled": true
-      },
-      "gcePersistentDiskCsiDriverConfig": {
-        "enabled": true
-      },
-      "gcpFilestoreCsiDriverConfig": {
-        "enabled": true
-      },
-      "gcsFuseCsiDriverConfig": {
-        "enabled": true
-      },
-      "gkeBackupAgentConfig": {
-        "enabled": true
-      },
-      "horizontalPodAutoscaling": {
-        "disabled": false
-      },
-      "httpLoadBalancing": {
-        "disabled": false
-      },
-      "istioConfig": {
-        "auth": "AUTH_NONE",
-        "disabled": false
-      },
-      "kalmConfig": {
-        "enabled": true
-      },
-      "networkPolicyConfig": {
-        "disabled": false
-      }
+      "autoscalingProfile": "BALANCED",
+      "enableNodeAutoprovisioning": true,
+      "resourceLimits": [
+        {
+          "maximum": "2",
+          "resourceType": "cpu"
+        },
+        {
+          "maximum": "2048",
+          "resourceType": "memory"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/containercluster-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "update": {
+    "desiredNodePoolAutoConfigNetworkTags": {
+      "tags": [
+        "test-autoscaling-updated"
+      ]
     }
   }
 }
@@ -909,55 +943,47 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
-    "cloudRunConfig": {
-      "disabled": true,
-      "loadBalancerType": "LOAD_BALANCER_TYPE_INTERNAL"
-    },
-    "configConnectorConfig": {
-      "enabled": true
-    },
-    "dnsCacheConfig": {
-      "enabled": true
-    },
     "gcePersistentDiskCsiDriverConfig": {
-      "enabled": true
-    },
-    "gcpFilestoreCsiDriverConfig": {
-      "enabled": true
-    },
-    "gcsFuseCsiDriverConfig": {
-      "enabled": true
-    },
-    "gkeBackupAgentConfig": {
-      "enabled": true
-    },
-    "horizontalPodAutoscaling": {},
-    "httpLoadBalancing": {},
-    "istioConfig": {},
-    "kalmConfig": {
       "enabled": true
     },
     "kubernetesDashboard": {
       "disabled": true
     },
-    "networkPolicyConfig": {}
+    "networkPolicyConfig": {
+      "disabled": true
+    }
   },
   "autopilot": {},
   "autoscaling": {
     "autoprovisioningNodePoolDefaults": {
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
       "management": {
         "autoRepair": true,
-        "autoUpgrade": true
+        "autoUpgrade": true,
+        "upgradeOptions": {}
       },
       "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring"
       ],
+      "serviceAccount": "default",
       "upgradeSettings": {
         "strategy": "SURGE"
       }
     },
-    "autoscalingProfile": "BALANCED"
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "2",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "2048",
+        "resourceType": "memory"
+      }
+    ]
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
@@ -1055,6 +1081,13 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
+  "nodePoolAutoConfig": {
+    "networkTags": {
+      "tags": [
+        "test-autoscaling-updated"
+      ]
+    }
+  },
   "nodePools": [
     {
       "config": {
@@ -1121,7 +1154,7 @@ X-Xss-Protection: 0
     "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
   },
   "releaseChannel": {
-    "channel": "RAPID"
+    "channel": "REGULAR"
   },
   "resourceLabels": {
     "cnrm-test": "true",
@@ -1138,9 +1171,6 @@ X-Xss-Protection: 0
   },
   "status": "RUNNING",
   "subnetwork": "default",
-  "workloadIdentityConfig": {
-    "workloadPool": "${projectId}.svc.id.goog"
-  },
   "zone": "us-central1-a"
 }
 
