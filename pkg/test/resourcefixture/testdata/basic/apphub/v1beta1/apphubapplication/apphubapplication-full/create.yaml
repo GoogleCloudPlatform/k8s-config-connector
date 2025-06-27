@@ -1,0 +1,27 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
+kind: AppHubApplication
+metadata:
+  name: apphubapplication-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Test Application"
+  description: "A test application for AppHub."
+  scope:
+    type: REGIONAL
+  attributes:
+    criticality:
+      type: MISSION_CRITICAL
+    environment:
+      type: PRODUCTION
+    businessOwners:
+      - email: "owner@example.com"
+        displayName: "Business Owner"
+    developerOwners:
+      - email: "dev@example.com"
+        displayName: "Developer Owner"
+    operatorOwners:
+      - email: "ops@example.com"
+        displayName: "Operator Owner"
+  resourceID: "test-application"

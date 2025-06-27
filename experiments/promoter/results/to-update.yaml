@@ -17,7 +17,7 @@
 - apigateway/APIGatewayAPI
 - apikeys/APIKeysKey
 - apiplatform/APIPlatformPlatformProjectReport
-- apphub/ApphubApplication
+- apphub/AppHubApplication
 - apphub/ApphubDiscoveredService
 - apphub/ApphubDiscoveredWorkload
 - asset/AssetFeed
