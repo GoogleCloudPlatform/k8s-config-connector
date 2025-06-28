@@ -83,6 +83,19 @@ func (s *RegistrationServiceV1) UpdateNamespace(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
+	}
+	for _, path := range paths {
+		switch path {
+		case "labels":
+			obj.Labels = req.GetNamespace().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
