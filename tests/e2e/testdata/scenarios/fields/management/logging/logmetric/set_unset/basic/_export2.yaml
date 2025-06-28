@@ -6,6 +6,12 @@ spec:
   description: ""
   disabled: false
   filter: resource.type=gae_app AND severity<=INFO
+  metricDescriptor:
+    displayName: ""
+    launchStage: ""
+    metricKind: DELTA
+    unit: "1"
+    valueType: INT64
   projectRef:
     external: ${projectId}
   valueExtractor: ""
