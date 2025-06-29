@@ -236,6 +236,9 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 	t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 
 	if writeGoldenOutput {
+		if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+			t.Fatalf("failed to create directories for golden output file %s: %v", p, err)
+		}
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
