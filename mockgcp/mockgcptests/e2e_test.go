@@ -84,6 +84,8 @@ func TestScripts(t *testing.T) {
 
 			var httpEvents []*test.LogEntry
 
+			scriptEnv := make(map[string]string)
+
 			for _, step := range script.Steps {
 				stepCmd := ""
 				stepType := ""
@@ -99,6 +101,10 @@ func TestScripts(t *testing.T) {
 					stepCmd = step.Post
 					stepType = "post"
 					captureEvents = false
+				} else if step.SetEnv != nil {
+					stepCmd = step.SetEnv.Exec
+					stepType = "set-env"
+					captureEvents = false
 				}
 				if stepCmd != "" {
 					cmd := exec.CommandContext(ctx, "bash", "-c", stepCmd)
@@ -111,6 +117,10 @@ func TestScripts(t *testing.T) {
 
 					// Don't check for updates to gcloud components (causes spurious requests to dl.google.com)
 					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPONENT_MANAGER_DISABLE_UPDATE_CHECK=yes")
+
+					for k, v := range scriptEnv {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+					}
 
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
@@ -132,6 +142,13 @@ func TestScripts(t *testing.T) {
 						httpEvents = append(httpEvents, h.Events.HTTPEvents...)
 					}
 					h.Events.HTTPEvents = nil
+
+					if step.SetEnv != nil {
+						k := step.SetEnv.Name
+						v := strings.TrimSpace(stdout.String())
+						t.Logf("setting script env var %q to %q", k, v)
+						scriptEnv[k] = v
+					}
 				}
 			}
 
@@ -197,9 +214,15 @@ type Script struct {
 }
 
 type Step struct {
+	Exec   string  `json:"exec"`
+	Pre    string  `json:"pre"`
+	Post   string  `json:"post"`
+	SetEnv *SetEnv `json:"env"`
+}
+
+type SetEnv struct {
+	Name string `json:"name"`
 	Exec string `json:"exec"`
-	Pre  string `json:"pre"`
-	Post string `json:"post"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
