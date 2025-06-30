@@ -18,23 +18,9 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
-var (
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
-
-	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
-
-	GKEHubFeatureMembershipGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    "GKEHubFeatureMembership",
-	}
-)
+var GKEHubFeatureMembershipGVK = GroupVersion.WithKind("GKEHubFeatureMembership")
 
 type FeaturemembershipBinauthz struct {
 	/* Whether binauthz is enabled in this cluster. */
@@ -65,6 +51,7 @@ type FeaturemembershipConfigSync struct {
 	StopSyncing *bool `json:"stopSyncing,omitempty"`
 }
 
+// +kcc:proto=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec
 type FeaturemembershipConfigmanagement struct {
 	/* **DEPRECATED** Binauthz configuration for the cluster. This field will be ignored and should not be set. */
 	// +optional
@@ -89,6 +76,46 @@ type FeaturemembershipConfigmanagement struct {
 	/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
 	// +optional
 	Management *string `json:"management,omitempty"`
+
+	// // Optional. Config Sync configuration for the cluster.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.config_sync
+	// ConfigSync *ConfigSync `json:"configSync,omitempty"`
+
+	// // Optional. Policy Controller configuration for the cluster.
+	// //  Deprecated: Configuring Policy Controller through the configmanagement
+	// //  feature is no longer recommended. Use the policycontroller feature instead.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.policy_controller
+	// PolicyController *PolicyController `json:"policyController,omitempty"`
+
+	// // Optional. Binauthz configuration for the cluster. Deprecated: This field
+	// //  will be ignored and should not be set.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.binauthz
+	// Binauthz *BinauthzConfig `json:"binauthz,omitempty"`
+
+	// // Optional. Hierarchy Controller configuration for the cluster.
+	// //  Deprecated: Configuring Hierarchy Controller through the configmanagement
+	// //  feature is no longer recommended. Use
+	// //  https://github.com/kubernetes-sigs/hierarchical-namespaces instead.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.hierarchy_controller
+	// HierarchyController *HierarchyControllerConfig `json:"hierarchyController,omitempty"`
+
+	// // Optional. Version of ACM installed.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.version
+	// Version *string `json:"version,omitempty"`
+
+	// // Optional. The user-specified cluster name used by Config Sync
+	// //  cluster-name-selector annotation or ClusterSelector, for applying configs
+	// //  to only a subset of clusters. Omit this field if the cluster's fleet
+	// //  membership name is used by Config Sync cluster-name-selector annotation or
+	// //  ClusterSelector. Set this field if a name different from the cluster's
+	// //  fleet membership name is used by Config Sync cluster-name-selector
+	// //  annotation or ClusterSelector.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.cluster
+	// Cluster *string `json:"cluster,omitempty"`
+
+	// // Optional. Enables automatic Feature management.
+	// // +kcc:proto:field=google.cloud.gkehub.configmanagement.v1beta.MembershipSpec.management
+	// Management *string `json:"management,omitempty"`
 }
 
 type FeaturemembershipGit struct {
@@ -215,7 +242,8 @@ type FeaturemembershipPolicyController struct {
 	TemplateLibraryInstalled *bool `json:"templateLibraryInstalled,omitempty"`
 }
 
-type FeaturemembershipPolicyControllerHubConfig struct {
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.HubConfig
+type HubConfig struct {
 	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
 	// +optional
 	AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
@@ -251,13 +279,69 @@ type FeaturemembershipPolicyControllerHubConfig struct {
 	/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
 	// +optional
 	ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+
+	// Map of deployment configs to deployments (“admission”, “audit”, “mutation”).
+	DeploymentConfigs *PolicyControllerDeploymentConfigs `json:"deploymentConfigs,omitempty"`
+
+	// // The install_spec represents the intended state specified by the
+	// //  latest request that mutated install_spec in the feature spec,
+	// //  not the lifecycle state of the
+	// //  feature observed by the Hub feature controller
+	// //  that is reported in the feature state.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.install_spec
+	// InstallSpec *string `json:"installSpec,omitempty"`
+
+	// // Sets the interval for Policy Controller Audit Scans (in seconds).
+	// //  When set to 0, this disables audit functionality altogether.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.audit_interval_seconds
+	// AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
+
+	// // The set of namespaces that are excluded from Policy Controller checks.
+	// //  Namespaces do not need to currently exist on the cluster.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.exemptable_namespaces
+	// ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
+
+	// // Enables the ability to use Constraint Templates that reference to objects
+	// //  other than the object currently being evaluated.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.referential_rules_enabled
+	// ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+
+	// // Logs all denies and dry run failures.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.log_denies_enabled
+	// LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+
+	// // Enables the ability to mutate resources using Policy Controller.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.mutation_enabled
+	// MutationEnabled *bool `json:"mutationEnabled,omitempty"`
+
+	// // Monitoring specifies the configuration of monitoring.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.monitoring
+	// Monitoring *MonitoringConfig `json:"monitoring,omitempty"`
+
+	// // Specifies the desired policy content on the cluster
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.policy_content
+	// PolicyContent *PolicyContentSpec `json:"policyContent,omitempty"`
+
+	// // The maximum number of audit violations to be stored in a constraint.
+	// //  If not set, the internal default (currently 20) will be used.
+	// // +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.HubConfig.constraint_violation_limit
+	// ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
 }
 
+type PolicyControllerDeploymentConfigs struct {
+	Admission *PolicyControllerDeploymentConfig `json:"admission,omitempty"`
+	Audit     *PolicyControllerDeploymentConfig `json:"audit,omitempty"`
+	Mutation  *PolicyControllerDeploymentConfig `json:"mutation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec
 type FeaturemembershipPolicycontroller struct {
-	/* Policy Controller configuration for the cluster. */
-	PolicyControllerHubConfig FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig"`
+	// Policy Controller configuration for the cluster.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec.policy_controller_hub_config
+	PolicyControllerHubConfig *HubConfig `json:"policyControllerHubConfig,omitempty"`
 
 	/* Optional. Version of Policy Controller to install. Defaults to the latest version. */
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.MembershipSpec.version
 	// +optional
 	Version *string `json:"version,omitempty"`
 }
@@ -268,6 +352,7 @@ type FeaturemembershipTemplateLibrary struct {
 	Installation *string `json:"installation,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.gkehub.v1beta.MembershipFeatureSpec
 type GKEHubFeatureMembershipSpec struct {
 	/* Config Management-specific spec. */
 	// +optional
@@ -305,6 +390,11 @@ type GKEHubFeatureMembershipStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+}
+
+// GKEHubFeatureMembershipObservedState is the state of the GKEHubFeatureMembership resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.gkehub.v1beta.MembershipFeatureSpec
+type GKEHubFeatureMembershipObservedState struct {
 }
 
 // +genclient
