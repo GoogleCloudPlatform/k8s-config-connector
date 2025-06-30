@@ -500,6 +500,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, groupId, "${groupID}")
 				})
+			case "taxonomies":
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${taxonomyID}")
+				})
 			case "memberships":
 				// e.g. "groups/194f77d03ad/memberships/196a3927214"
 				if n >= 3 {
@@ -545,6 +549,10 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${membershipID}")
+				})
+			case schema.GroupVersionKind{Group: "datacatalog.cnrm.cloud.google.com", Version: "v1beta1", Kind: "DataCatalogTaxonomy"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${taxonomiesID}")
 				})
 			}
 		}

@@ -1,0 +1,154 @@
+POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "Collection of policy tags",
+  "displayName": "taxonomy_displayName"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "Collection of policy tags",
+  "displayName": "taxonomy_displayName",
+  "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
+  "service": {},
+  "taxonomyTimestamps": {
+    "createTime": "2025-06-30T19:13:00.088Z",
+    "updateTime": "2025-06-30T19:13:00.088Z"
+  }
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "Collection of policy tags",
+  "displayName": "taxonomy_displayName",
+  "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
+  "service": {},
+  "taxonomyTimestamps": {
+    "createTime": "2025-06-30T19:13:00.088Z",
+    "updateTime": "2025-06-30T19:13:00.088Z"
+  }
+}
+
+---
+
+PATCH https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json&updateMask=displayName%2Cdescription%2CactivatedPolicyTypes
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "activatedPolicyTypes": [
+    "FINE_GRAINED_ACCESS_CONTROL",
+    "POLICY_TYPE_UNSPECIFIED"
+  ],
+  "description": "Updated description of collection of policy tags",
+  "displayName": "updated_taxonomy_displayName"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "POLICY_TYPE_UNSPECIFIED",
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "Updated description of collection of policy tags",
+  "displayName": "updated_taxonomy_displayName",
+  "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
+  "service": {},
+  "taxonomyTimestamps": {
+    "createTime": "2025-06-30T19:13:00.088Z",
+    "updateTime": "2025-06-30T19:13:00.909Z"
+  }
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activatedPolicyTypes": [
+    "POLICY_TYPE_UNSPECIFIED",
+    "FINE_GRAINED_ACCESS_CONTROL"
+  ],
+  "description": "Updated description of collection of policy tags",
+  "displayName": "updated_taxonomy_displayName",
+  "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
+  "service": {},
+  "taxonomyTimestamps": {
+    "createTime": "2025-06-30T19:13:00.088Z",
+    "updateTime": "2025-06-30T19:13:00.909Z"
+  }
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
