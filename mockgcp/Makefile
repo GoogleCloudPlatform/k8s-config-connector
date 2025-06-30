@@ -214,6 +214,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/google/identity/accesscontextmanager/v1/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto
 
 .PHONY: generate-protos-from-openapi
