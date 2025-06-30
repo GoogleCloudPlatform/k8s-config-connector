@@ -270,6 +270,8 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.dataCatalogTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".sourceSystemTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".sourceSystemTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.taxonomyTimestamps.createTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.taxonomyTimestamps.updateTime"] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to Eventarc
 	visitor.replacePaths[".pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"

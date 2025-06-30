@@ -30,8 +30,8 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T21:17:06.853Z",
-    "updateTime": "2025-06-30T21:17:06.853Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -61,8 +61,8 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T21:17:06.853Z",
-    "updateTime": "2025-06-30T21:17:06.853Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -95,16 +95,16 @@ X-Xss-Protection: 0
 
 {
   "activatedPolicyTypes": [
-    "POLICY_TYPE_UNSPECIFIED",
-    "FINE_GRAINED_ACCESS_CONTROL"
+    "FINE_GRAINED_ACCESS_CONTROL",
+    "POLICY_TYPE_UNSPECIFIED"
   ],
   "description": "Updated description of collection of policy tags",
   "displayName": "updated_taxonomy_displayName",
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T21:17:06.853Z",
-    "updateTime": "2025-06-30T21:17:07.844Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -127,16 +127,16 @@ X-Xss-Protection: 0
 
 {
   "activatedPolicyTypes": [
-    "POLICY_TYPE_UNSPECIFIED",
-    "FINE_GRAINED_ACCESS_CONTROL"
+    "FINE_GRAINED_ACCESS_CONTROL",
+    "POLICY_TYPE_UNSPECIFIED"
   ],
   "description": "Updated description of collection of policy tags",
   "displayName": "updated_taxonomy_displayName",
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T21:17:06.853Z",
-    "updateTime": "2025-06-30T21:17:07.844Z"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
