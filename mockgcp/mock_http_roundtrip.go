@@ -27,6 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"

@@ -1247,6 +1247,15 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 				t.Fatalf("error normalizing response: %v", err)
 			}
 		})
+
+		for _, event := range events {
+			url := event.Request.URL
+			newURL, err := replacements.visitString(url, "<url>")
+			if err != nil {
+				t.Fatalf("error normalizing request.url: %v", err)
+			}
+			event.Request.URL = newURL
+		}
 	}
 }
 

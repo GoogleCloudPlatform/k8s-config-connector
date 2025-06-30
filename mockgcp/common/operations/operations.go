@@ -151,7 +151,7 @@ func markDone(op *pb.Operation, result proto.Message, err error) error {
 	return nil
 }
 
-func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.Message, result proto.Message) (*pb.Operation, error) {
+func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.Message, result proto.Message, opts ...LROOption) (*pb.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := uuid.NewUUID()
@@ -178,6 +178,10 @@ func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.
 		op.Metadata = metadataAny
 	}
 	fqn := op.Name
+
+	for _, opt := range opts {
+		opt(op)
+	}
 
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
@@ -210,4 +214,22 @@ func (s *Operations) GetOperation(ctx context.Context, req *pb.GetOperationReque
 	}
 
 	return op, nil
+}
+
+type LROOption func(op *pb.Operation)
+
+// WithName is an option passed to the LRO factories that allows the name to be replaced
+func WithName(name string) LROOption {
+	return func(op *pb.Operation) {
+		now := time.Now()
+		uuid := uuid.NewUUID()
+
+		s := name
+		s = strings.ReplaceAll(s, "{{uuid}}", string(uuid))
+		s = strings.ReplaceAll(s, "{{millis}}", fmt.Sprintf("%d", now.UnixMilli()))
+		s = strings.ReplaceAll(s, "{{micros}}", fmt.Sprintf("%d", now.UnixMicro()))
+		s = strings.ReplaceAll(s, "{{nanos}}", fmt.Sprintf("%d", now.UnixNano()))
+
+		op.Name = s
+	}
 }
