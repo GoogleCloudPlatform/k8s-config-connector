@@ -47,3 +47,15 @@ func (m *gcpClient) newDataCatalogClient(ctx context.Context) (*api.Client, erro
 	}
 	return client, err
 }
+
+func (m *gcpClient) newPolicyTagManagerClient(ctx context.Context) (*api.PolicyTagManagerClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewPolicyTagManagerRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building datacatalog policyTagManager client: %w", err)
+	}
+	return client, err
+}

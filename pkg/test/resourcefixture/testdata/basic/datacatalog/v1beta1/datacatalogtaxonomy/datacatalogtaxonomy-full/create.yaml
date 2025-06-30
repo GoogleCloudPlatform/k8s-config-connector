@@ -16,6 +16,8 @@ apiVersion: datacatalog.cnrm.cloud.google.com/v1beta1
 kind: DataCatalogTaxonomy
 metadata:
   name: datacatalogtaxonomy-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
   activatedPolicyTypes:
   - FINE_GRAINED_ACCESS_CONTROL

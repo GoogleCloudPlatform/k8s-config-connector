@@ -1,10 +1,11 @@
-POST https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies?alt=json
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us/taxonomies
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
 
 {
   "activatedPolicyTypes": [
-    "FINE_GRAINED_ACCESS_CONTROL"
+    1
   ],
   "description": "Collection of policy tags",
   "displayName": "taxonomy_displayName"
@@ -29,16 +30,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T19:13:00.088Z",
-    "updateTime": "2025-06-30T19:13:00.088Z"
+    "createTime": "2025-06-30T21:04:54.414Z",
+    "updateTime": "2025-06-30T21:04:54.414Z"
   }
 }
 
 ---
 
-GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Ftaxonomies%2F${taxonomiesID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -59,24 +61,26 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T19:13:00.088Z",
-    "updateTime": "2025-06-30T19:13:00.088Z"
+    "createTime": "2025-06-30T21:04:54.414Z",
+    "updateTime": "2025-06-30T21:04:54.414Z"
   }
 }
 
 ---
 
-PATCH https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json&updateMask=displayName%2Cdescription%2CactivatedPolicyTypes
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?updateMask=displayName%2Cdescription%2CactivatedPolicyTypes
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: taxonomy.name=projects%2F${projectId}%2Flocations%2Fus%2Ftaxonomies%2F${taxonomiesID}
 
 {
   "activatedPolicyTypes": [
-    "FINE_GRAINED_ACCESS_CONTROL",
-    "POLICY_TYPE_UNSPECIFIED"
+    1,
+    0
   ],
   "description": "Updated description of collection of policy tags",
-  "displayName": "updated_taxonomy_displayName"
+  "displayName": "updated_taxonomy_displayName",
+  "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}"
 }
 
 200 OK
@@ -99,16 +103,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T19:13:00.088Z",
-    "updateTime": "2025-06-30T19:13:00.909Z"
+    "createTime": "2025-06-30T21:04:54.414Z",
+    "updateTime": "2025-06-30T21:04:55.315Z"
   }
 }
 
 ---
 
-GET https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Ftaxonomies%2F${taxonomiesID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -130,16 +135,17 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us/taxonomies/${taxonomiesID}",
   "service": {},
   "taxonomyTimestamps": {
-    "createTime": "2025-06-30T19:13:00.088Z",
-    "updateTime": "2025-06-30T19:13:00.909Z"
+    "createTime": "2025-06-30T21:04:54.414Z",
+    "updateTime": "2025-06-30T21:04:55.315Z"
   }
 }
 
 ---
 
-DELETE https://datacatalog.googleapis.com/v1beta1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}?alt=json
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us/taxonomies/${taxonomiesID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Ftaxonomies%2F${taxonomiesID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
