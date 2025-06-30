@@ -383,6 +383,30 @@ type GKEHubFeatureMembershipSpec struct {
 	ProjectRef FeatureProjectRef `json:"projectRef"`
 }
 
+// +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig
+type PolicyControllerDeploymentConfig struct {
+	// Pod replica count.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.replica_count
+	ReplicaCount *int64 `json:"replicaCount,omitempty"`
+
+	// Container resource requirements.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.container_resources
+	ContainerResources *ResourceRequirements `json:"containerResources,omitempty"`
+
+	// REMOVED - DEPRECATED
+	// Pod anti-affinity enablement. Deprecated: use `pod_affinity` instead.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_anti_affinity
+	// PodAntiAffinity *bool `json:"podAntiAffinity,omitempty"`
+
+	// Pod tolerations of node taints.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_tolerations
+	PodTolerations []PolicyControllerDeploymentConfig_Toleration `json:"podTolerations,omitempty"`
+
+	// Pod affinity configuration.
+	// +kcc:proto:field=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig.pod_affinity
+	PodAffinity *string `json:"podAffinity,omitempty"`
+}
+
 type GKEHubFeatureMembershipStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubFeatureMembership's current state. */

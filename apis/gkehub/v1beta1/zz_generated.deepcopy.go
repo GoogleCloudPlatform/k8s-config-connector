@@ -1014,11 +1014,6 @@ func (in *PolicyControllerDeploymentConfig) DeepCopyInto(out *PolicyControllerDe
 		*out = new(ResourceRequirements)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.PodAntiAffinity != nil {
-		in, out := &in.PodAntiAffinity, &out.PodAntiAffinity
-		*out = new(bool)
-		**out = **in
-	}
 	if in.PodTolerations != nil {
 		in, out := &in.PodTolerations, &out.PodTolerations
 		*out = make([]PolicyControllerDeploymentConfig_Toleration, len(*in))

@@ -450,10 +450,6 @@ spec:
                               podAffinity:
                                 description: Pod affinity configuration.
                                 type: string
-                              podAntiAffinity:
-                                description: 'Pod anti-affinity enablement. Deprecated:
-                                  use `pod_affinity` instead.'
-                                type: boolean
                               podTolerations:
                                 description: Pod tolerations of node taints.
                                 items:
@@ -515,10 +511,6 @@ spec:
                               podAffinity:
                                 description: Pod affinity configuration.
                                 type: string
-                              podAntiAffinity:
-                                description: 'Pod anti-affinity enablement. Deprecated:
-                                  use `pod_affinity` instead.'
-                                type: boolean
                               podTolerations:
                                 description: Pod tolerations of node taints.
                                 items:
@@ -580,10 +572,6 @@ spec:
                               podAffinity:
                                 description: Pod affinity configuration.
                                 type: string
-                              podAntiAffinity:
-                                description: 'Pod anti-affinity enablement. Deprecated:
-                                  use `pod_affinity` instead.'
-                                type: boolean
                               podTolerations:
                                 description: Pod tolerations of node taints.
                                 items:
