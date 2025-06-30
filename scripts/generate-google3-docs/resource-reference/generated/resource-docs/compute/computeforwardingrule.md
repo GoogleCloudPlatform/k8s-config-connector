@@ -94,6 +94,8 @@ backendServiceRef:
   name: string
   namespace: string
 description: string
+gcpLabels:
+  string: string
 ipAddress:
   addressRef:
     external: string
@@ -269,6 +271,26 @@ internal load balancer.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. An optional description of this resource. Provide this property when you create the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gcpLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The GCP labels assigned to this resource.
+
+GCPLabel keys must be between 1 and 63 characters long, have a UTF-8 encoding
+of maximum 128 bytes, and must conform to the following PCRE regular
+expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
+
+GCPLabel values must be between 0 and 63 characters long, have a UTF-8
+encoding of maximum 128 bytes, and must conform to the following PCRE
+regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
+
+No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

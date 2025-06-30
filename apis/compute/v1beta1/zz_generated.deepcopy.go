@@ -309,6 +309,13 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 		*out = new(string)
 		**out = **in
 	}
+	if in.GCPLabels != nil {
+		in, out := &in.GCPLabels, &out.GCPLabels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
 	if in.IpAddress != nil {
 		in, out := &in.IpAddress, &out.IpAddress
 		*out = new(ForwardingruleIpAddress)

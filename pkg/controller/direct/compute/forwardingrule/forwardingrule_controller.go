@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+
 	"k8s.io/klog/v2"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -33,7 +35,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -106,9 +107,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 
 	// Get location
 	location := obj.Spec.Location
-
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
 
 	// Handle TF default values
 	if obj.Spec.LoadBalancingScheme == nil {
@@ -215,7 +213,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
+	sanitizedLabels := handleLabelsForObject(desired)
 
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
@@ -319,7 +317,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
+	sanitizedLabels := handleLabelsForObject(desired)
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -661,4 +659,20 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 		}
 	}
 	return nil
+}
+
+func handleLabelsForObject(desired *krm.ComputeForwardingRule) map[string]string {
+	labels := make(map[string]string)
+	if desired.Spec.GCPLabels != nil {
+		// If specification labels are non-empty, use specification labels only
+		labels = desired.Spec.GCPLabels
+		// Apply Config Connector default labels
+		labels[label.CnrmManagedKey] = "true"
+	} else {
+		// Otherwise, use metadata.labels for backward compatibility
+		labels = desired.Labels
+		// Remove system labels in metadata.labels and apply Config Connector default labels
+		labels = label.NewGCPLabelsFromK8sLabels(labels)
+	}
+	return labels
 }
