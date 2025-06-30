@@ -38,6 +38,7 @@ type Placeholders struct {
 	ProjectNumber    int64
 	UniqueID         string
 	BillingAccountID string
+	OrganizationID   string
 }
 
 func TestScripts(t *testing.T) {
@@ -75,6 +76,7 @@ func TestScripts(t *testing.T) {
 				ProjectNumber:    project.ProjectNumber,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				OrganizationID:   testgcp.TestOrgID.Get(),
 			}
 			script := loadScript(t, testDir, placeholders)
 
@@ -222,9 +224,10 @@ func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
 func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s := string(b)
-	s = strings.Replace(s, "${uniqueId}", placeholders.UniqueID, -1)
-	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
-	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
-	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.ReplaceAll(s, "${uniqueId}", placeholders.UniqueID)
+	s = strings.ReplaceAll(s, "${projectId}", placeholders.ProjectID)
+	s = strings.ReplaceAll(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10))
+	s = strings.ReplaceAll(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID)
+	s = strings.ReplaceAll(s, "${ORG_ID}", placeholders.OrganizationID)
 	return []byte(s)
 }
