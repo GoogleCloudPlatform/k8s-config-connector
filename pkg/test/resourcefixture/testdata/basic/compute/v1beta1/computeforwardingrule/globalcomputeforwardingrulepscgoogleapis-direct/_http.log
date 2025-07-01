@@ -364,6 +364,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
       "namespace": "goog-psc-${networkID}-${networkID}",
@@ -451,6 +452,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
       "namespace": "goog-psc-${networkID}-${networkID}",
@@ -538,6 +540,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
       "namespace": "goog-psc-${networkID}-${networkID}",

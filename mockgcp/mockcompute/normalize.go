@@ -45,7 +45,27 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if isComputeAPI(event) && isGetOperation(event) {
+	if !isComputeAPI(event) {
+		return
+	}
+
+	// Handle request target replacement
+	event.VisitRequestStringValues(func(path string, value string) {
+		target := ""
+		if path == ".target" {
+			target = value
+			if target != "" {
+				tokens := strings.Split(target, "/")
+				if len(tokens) >= 2 {
+					klog.Infof("targe=%q", target)
+					idReplacementHelper(target, tokens[len(tokens)-1], replacements)
+				}
+			}
+		}
+	})
+
+	// Handle response targetLink/targetId replacement
+	if isGetOperation(event) {
 		targetLink := ""
 		targetId := ""
 
@@ -59,34 +79,8 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		})
 
 		if targetLink != "" && targetId != "" {
-			tokens := strings.Split(targetLink, "/")
-			n := len(tokens)
-			if n >= 2 {
-				kind := tokens[n-2]
-
-				placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
-				if strings.HasSuffix(kind, "ies") {
-					placeholder = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
-				}
-				switch kind {
-				case "addresses":
-					placeholder = "${addressID}"
-				}
-
-				// We _should_ differentiate between ID and number.
-				// But this causes too many diffs right now.
-
-				klog.Infof("targetLink=%q, targetId=%q, placeholder=%q", targetLink, targetId, placeholder)
-
-				replacements.ReplaceStringValue(targetId, placeholder)
-
-				if v := tokens[n-1]; v == "default" {
-					// Don't replace, "default" is a well-known value used for both subnetwork and network
-					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
-				} else {
-					replacements.ReplaceStringValue(v, placeholder)
-				}
-			}
+			klog.Infof("targetLink=%q, targetId=%q", targetLink, targetId)
+			idReplacementHelper(targetLink, targetId, replacements)
 		}
 	}
 }
@@ -120,4 +114,33 @@ func isComputeAPI(event mockgcpregistry.Event) bool {
 		return true
 	}
 	return false
+}
+
+func idReplacementHelper(
+	valueWithID string,
+	id string,
+	replacements mockgcpregistry.NormalizingVisitor,
+) {
+	tokens := strings.Split(valueWithID, "/")
+	n := len(tokens)
+	if n >= 2 {
+		kind := tokens[n-2]
+		placeholder := "${" + strings.TrimSuffix(kind, "s") + "ID}"
+		if strings.HasSuffix(kind, "ies") {
+			placeholder = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
+		}
+		switch kind {
+		case "addresses":
+			placeholder = "${addressID}"
+		}
+
+		replacements.ReplaceStringValue(id, placeholder)
+
+		if v := tokens[n-1]; v == "default" {
+			// Don't replace, "default" is a well-known value used for both subnetwork and network
+			// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
+		} else {
+			replacements.ReplaceStringValue(v, placeholder)
+		}
+	}
 }
