@@ -29,8 +29,8 @@ func init() {
 
 func bigQueryDataPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataPolicy{},
-		BigQueryDataPolicySpec_FromProto, BigQueryDataPolicySpec_ToProto,
-		BigQueryDataPolicyObservedState_FromProto, BigQueryDataPolicyObservedState_ToProto,
+		BigQueryDataPolicyDataPolicySpec_FromProto, BigQueryDataPolicyDataPolicySpec_ToProto,
+		BigQueryDataPolicyDataPolicyObservedState_FromProto, BigQueryDataPolicyDataPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".data_policy_type")

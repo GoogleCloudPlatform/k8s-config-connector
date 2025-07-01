@@ -26,34 +26,35 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicyObservedState {
+func BigQueryDataPolicyDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicyDataPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigQueryDataPolicyObservedState{}
+	out := &krmv1alpha1.BigQueryDataPolicyDataPolicyObservedState{}
 	return out
 }
-func BigQueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicyObservedState) *pb.DataPolicy {
+func BigQueryDataPolicyDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicyDataPolicyObservedState) *pb.DataPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.DataPolicy{}
 	return out
 }
-func BigQueryDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicySpec {
+func BigQueryDataPolicyDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicyDataPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigQueryDataPolicySpec{}
+	out := &krmv1alpha1.BigQueryDataPolicyDataPolicySpec{}
 	if in.GetPolicyTag() != "" {
 		out.PolicyTagRef = &datacalogref.PolicyTagRef{External: in.GetPolicyTag()}
 	}
 	out.DataMaskingPolicy = DataMaskingPolicy_FromProto(mapCtx, in.GetDataMaskingPolicy())
-	out.DataPolicyType = direct.Enum_FromProto(mapCtx, in.GetDataPolicyType())
-	out.DataPolicyID = direct.LazyPtr(in.GetDataPolicyId())
+	out.DataPolicyType = in.DataPolicyType.String()
+
+	out.ResourceID = direct.LazyPtr(in.GetDataPolicyId())
 	return out
 }
-func BigQueryDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicySpec) *pb.DataPolicy {
+func BigQueryDataPolicyDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicyDataPolicySpec) *pb.DataPolicy {
 	if in == nil {
 		return nil
 	}
@@ -64,8 +65,8 @@ func BigQueryDataPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.B
 	if oneof := DataMaskingPolicy_ToProto(mapCtx, in.DataMaskingPolicy); oneof != nil {
 		out.Policy = &pb.DataPolicy_DataMaskingPolicy{DataMaskingPolicy: oneof}
 	}
-	out.DataPolicyType = direct.Enum_ToProto[pb.DataPolicy_DataPolicyType](mapCtx, in.DataPolicyType)
-	out.DataPolicyId = direct.ValueOf(in.DataPolicyID)
+	out.DataPolicyType = direct.Enum_ToProto[pb.DataPolicy_DataPolicyType](mapCtx, direct.LazyPtr(in.DataPolicyType))
+	out.DataPolicyId = direct.ValueOf(in.ResourceID)
 	return out
 }
 func DataMaskingPolicy_FromProto(mapCtx *direct.MapContext, in *pb.DataMaskingPolicy) *krmv1alpha1.DataMaskingPolicy {
