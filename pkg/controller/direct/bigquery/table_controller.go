@@ -162,8 +162,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		}
 		log.V(2).Info("successfully created Table", "name", res.Id)
 		table.Schema = schemaBack
-		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.Id)
-		res, err = a.gcpService.Update(parent.ProjectID, parent.DatasetID, res.Id, table).Do()
+		log.V(2).Info("Updating BigQuery Table back with schema", "name", res.TableReference.TableId)
+		res, err = a.gcpService.Update(parent.ProjectID, parent.DatasetID, res.TableReference.TableId, table).Do()
 		if err != nil {
 			return fmt.Errorf("error updating Table during CREATE table with both schema and view specified %s: %w", a.id.ID(), err)
 		}
