@@ -22,7 +22,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/iamresource"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 

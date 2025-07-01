@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
