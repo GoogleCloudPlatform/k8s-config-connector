@@ -133,6 +133,52 @@ policycontroller:
   policyControllerHubConfig:
     auditIntervalSeconds: integer
     constraintViolationLimit: integer
+    deploymentConfigs:
+      admission:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
+      audit:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
+      mutation:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
     exemptableNamespaces:
     - string
     installSpec: string
@@ -802,7 +848,7 @@ projectRef:
     <tr>
         <td>
             <p><code>policycontroller.policyControllerHubConfig</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -827,6 +873,496 @@ projectRef:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Map of deployment configs to deployments (“admission”, “audit”, “mutation”).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1002,8 +1538,6 @@ projectRef:
 </tbody>
 </table>
 
-
-<p>* Field is required when parent field is specified</p>
 
 
 ### Status
