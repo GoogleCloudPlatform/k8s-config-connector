@@ -264,18 +264,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -339,18 +342,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -571,7 +577,6 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
-    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -635,7 +640,6 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
-    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -713,16 +717,19 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
+        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
+        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -737,7 +744,6 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
-    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -780,16 +786,19 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
+        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
+        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -804,7 +813,6 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
-    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -872,18 +880,21 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
+        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
+        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
