@@ -86,6 +86,9 @@ spec:
     expirationMs: 86400000
     field: date
   requirePartitionFilter: true # Use top-level field instead of the one under timePartitioning
+  labels:
+    spec-label-key1: updated-value1
+    spec-label-key2: updated-value2
   clustering:
     - name
     - post_abbr

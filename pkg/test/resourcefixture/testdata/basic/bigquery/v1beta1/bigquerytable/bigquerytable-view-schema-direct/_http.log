@@ -264,21 +264,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -342,21 +339,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -482,128 +476,6 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/${projectId}:bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "friendlyName": "mv_test3",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "description": "dt",
-        "mode": "NULLABLE",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "description": "user_id",
-        "mode": "NULLABLE",
-        "name": "user_id",
-        "type": "STRING"
-      }
-    ]
-  },
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "view": {
-    "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "useLegacySql": false
-  }
-}
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "table \"projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/${projectId}:bigquerytablesample${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "table \"projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/${projectId}:bigquerytablesample${uniqueId}\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "etag": "abcdef0123A=",
-  "friendlyName": "mv_test3",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "dt",
-        "type": "DATE"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "user_id",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydatasetsample${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytablesample${uniqueId}"
-  },
-  "type": "VIEW",
-  "view": {
-    "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
-    "useLegacySql": false
-  }
-}
-
----
-
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -691,6 +563,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -752,6 +625,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -831,19 +705,16 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
         "type": "DATE"
       },
       {
-        "description": "user_id",
         "mode": "NULLABLE",
         "name": "user_id",
         "type": "STRING"
       },
       {
-        "description": "guid",
         "mode": "NULLABLE",
         "name": "guid",
         "type": "STRING"
@@ -858,6 +729,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -898,6 +770,71 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "mode": "NULLABLE",
+        "name": "dt",
+        "type": "DATE"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "user_id",
+        "type": "STRING"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "guid",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytablesample${uniqueId}"
+  },
+  "type": "VIEW",
+  "view": {
+    "privacyPolicy": {},
+    "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+    "useLegacySql": false
+  }
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "etag": "abcdef0123A=",
+  "friendlyName": "mv_test3",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "schema": {
+    "fields": [
+      {
         "description": "dt",
         "mode": "NULLABLE",
         "name": "dt",
@@ -925,6 +862,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -992,21 +930,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]

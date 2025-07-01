@@ -13,7 +13,7 @@ spec:
     external: bigquerydatasetsample${uniqueId}
   friendlyName: mv_test3
   resourceID: bigquerytablesample${uniqueId}
-  schema: '[{"description":"dt","mode":"NULLABLE","name":"dt","type":"DATE"},{"description":"user_id","mode":"NULLABLE","name":"user_id","type":"STRING"},{"description":"guid","mode":"NULLABLE","name":"guid","type":"STRING"}]'
+  schema: '[{"mode":"NULLABLE","name":"dt","type":"DATE"},{"mode":"NULLABLE","name":"user_id","type":"STRING"},{"mode":"NULLABLE","name":"guid","type":"STRING"}]'
   view:
     query: SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`
     useLegacySql: false

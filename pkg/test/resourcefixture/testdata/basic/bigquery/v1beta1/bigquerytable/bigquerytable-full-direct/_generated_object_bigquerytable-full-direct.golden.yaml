@@ -27,6 +27,9 @@ spec:
       name: kmscryptokey-${uniqueId}
   expirationTime: 1800000000000
   friendlyName: BigQueryTable Full Example
+  labels:
+    spec-label-key1: updated-value1
+    spec-label-key2: updated-value2
   requirePartitionFilter: true
   schema: |-
     [
