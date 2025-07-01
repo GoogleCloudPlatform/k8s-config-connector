@@ -336,10 +336,10 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 			IAMAdapterDeps: &directbase.IAMAdapterDeps{
 				KubeClient: r.mgr.GetClient(),
 				ControllerDeps: &controller.Deps{
-					TfProvider:   r.provider,
-					TfLoader:     r.smLoader,
-					DclConfig:    r.dclConfig,
-					DclConverter: r.dclConverter,
+					TFProvider:   r.provider,
+					TFLoader:     r.smLoader,
+					DCLConfig:    r.dclConfig,
+					DCLConverter: r.dclConverter,
 				},
 			},
 		}
