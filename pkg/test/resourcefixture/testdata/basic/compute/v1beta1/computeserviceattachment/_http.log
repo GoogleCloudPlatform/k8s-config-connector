@@ -1034,6 +1034,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
 }
 
@@ -1116,6 +1117,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
 }
 
@@ -2072,6 +2074,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/forwardingRules/${forwardingRuleID}",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west1/subnetworks/${subnetworkID}"
 }
 

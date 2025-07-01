@@ -814,6 +814,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "110-110",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
@@ -895,6 +896,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "110-110",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 
@@ -1045,6 +1047,7 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "110-110",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}"
 }
 

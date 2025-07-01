@@ -346,11 +346,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}\" not found",
+        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}\" not found"
+    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}\" not found"
   }
 }
 
@@ -362,7 +362,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "test description",
-  "name": "computetargethttpproxy-${uniqueId}",
+  "name": "${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -408,8 +408,8 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
-  "name": "computetargethttpproxy-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
+  "name": "${targetHttpProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -435,11 +435,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}\" not found",
+        "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}\" not found"
+    "message": "targetHttpProxy \"projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}\" not found"
   }
 }
 
@@ -451,7 +451,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "other test description",
-  "name": "computetargethttpproxy-2-${uniqueId}",
+  "name": "${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -497,8 +497,8 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
-  "name": "computetargethttpproxy-2-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}",
+  "name": "${targetHttpProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -553,7 +553,7 @@ X-Goog-Request-Params: project=${projectId}
   "name": "${forwardingRuleID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "portRange": "80",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}"
 }
 
 200 OK
@@ -646,7 +646,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}"
 }
 
 ---
@@ -730,7 +731,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}"
 }
 
 ---
@@ -784,7 +786,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&forwarding_rule=${forwardingRuleID}
 
 {
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}"
 }
 
 200 OK
@@ -883,7 +885,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "portRange": "80-80",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}"
 }
 
 ---
@@ -972,8 +975,8 @@ X-Xss-Protection: 0
   "description": "other test description",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
-  "name": "computetargethttpproxy-2-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}",
+  "name": "${targetHttpProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
@@ -1025,8 +1028,8 @@ X-Xss-Protection: 0
   "description": "test description",
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
-  "name": "computetargethttpproxy-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
+  "name": "${targetHttpProxyID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/${targetHttpProxyID}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 

@@ -258,11 +258,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}\" not found",
+        "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}\" not found"
+    "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}\" not found"
   }
 }
 
@@ -274,7 +274,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "a regional target vpn gateway",
-  "name": "computetargetvpngateway-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1"
 }
@@ -321,10 +321,10 @@ X-Xss-Protection: 0
   "description": "a regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "name": "computetargetvpngateway-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -349,11 +349,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}\" not found",
+        "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}\" not found"
+    "message": "targetVpnGateway \"projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}\" not found"
   }
 }
 
@@ -365,7 +365,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "description": "another regional target vpn gateway",
-  "name": "computetargetvpngateway-2-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1"
 }
@@ -412,10 +412,10 @@ X-Xss-Protection: 0
   "description": "another regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "name": "computetargetvpngateway-2-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -467,7 +467,7 @@ X-Goog-Request-Params: project=${projectId}&region=us-central1
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 200 OK
@@ -561,7 +561,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -643,7 +644,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -697,7 +699,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: project=${projectId}&region=us-central1&forwarding_rule=${forwardingRuleID}
 
 {
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 200 OK
@@ -796,7 +798,8 @@ X-Xss-Protection: 0
   "networkTier": "PREMIUM",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -887,10 +890,10 @@ X-Xss-Protection: 0
   "description": "another regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "name": "computetargetvpngateway-2-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
@@ -941,10 +944,10 @@ X-Xss-Protection: 0
   "description": "a regional target vpn gateway",
   "id": "000000000000000000000",
   "kind": "compute#targetVpnGateway",
-  "name": "computetargetvpngateway-${uniqueId}",
+  "name": "${targetVpnGatewayID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/${targetVpnGatewayID}"
 }
 
 ---
