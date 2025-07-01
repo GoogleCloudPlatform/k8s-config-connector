@@ -21,7 +21,6 @@ metadata:
   name: computeregionalforwardingrule-${uniqueId}
 spec:
   description: "A regional forwarding rule"
-
   target:
     targetVPNGatewayRef:
       name: computetargetvpngateway-${uniqueId}
