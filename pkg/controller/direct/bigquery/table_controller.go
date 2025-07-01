@@ -233,13 +233,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// No diff detected.
 	if eq {
 		log.Info("no diff detected for Table", "name", a.id)
-		if *a.desired.Status.ExternalRef == "" {
-			// If it is the first reconciliation after switching to direct controller,
-			// or is an acquisition, then update Status to fill out the ExternalRef
-			// and ObservedState.
-			return a.UpdateStatusForUpdate(ctx, updateOp, a.actual)
-		}
-		return nil
+		return a.UpdateStatusForUpdate(ctx, updateOp, a.actual)
 	}
 
 	a.customTableLogic(table)
