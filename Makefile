@@ -45,7 +45,7 @@ all: test manager operator config-connector
 
 # Run tests
 .PHONY: test
-test: generate fmt vet manifests
+test: generate-proto generate fmt vet manifests
 	./scripts/unit-test.sh
 
 # Build config-connector binary
@@ -394,3 +394,8 @@ generate-types:
 	./generate-proto.sh && \
 	find config -name "*.yaml" -type f | xargs -I {} go run . generate-types --config {}
 	dev/tasks/fix-gofmt 
+
+.PHONY: generate-proto
+generate-proto:
+	cd dev/tools/controllerbuilder && \
+		./generate-proto.sh
