@@ -127,22 +127,6 @@ spec:
                 description: Immutable. An optional description of this resource.
                   Provide this property when you create the resource.
                 type: string
-              gcpLabels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  The GCP labels assigned to this resource.
-
-                  GCPLabel keys must be between 1 and 63 characters long, have a UTF-8 encoding
-                  of maximum 128 bytes, and must conform to the following PCRE regular
-                  expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
-
-                  GCPLabel values must be between 0 and 63 characters long, have a UTF-8
-                  encoding of maximum 128 bytes, and must conform to the following PCRE
-                  regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
-
-                  No more than 64 labels can be assigned to a given resource.
-                type: object
               ipAddress:
                 description: |-
                   The IP address that this forwarding rule is serving on behalf of.
@@ -229,6 +213,22 @@ spec:
                   This can only be set to true for load balancers that have their
                   'loadBalancingScheme' set to 'INTERNAL'.
                 type: boolean
+              labels:
+                additionalProperties:
+                  type: string
+                description: |-
+                  The labels assigned to this resource.
+
+                  Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
+                  of maximum 128 bytes, and must conform to the following PCRE regular
+                  expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
+
+                  Label values must be between 0 and 63 characters long, have a UTF-8
+                  encoding of maximum 128 bytes, and must conform to the following PCRE
+                  regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
+
+                  No more than 64 labels can be assigned to a given resource.
+                type: object
               loadBalancingScheme:
                 description: |-
                   Immutable. Specifies the forwarding rule type.
