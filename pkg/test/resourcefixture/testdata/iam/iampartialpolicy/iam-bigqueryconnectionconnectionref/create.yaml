@@ -1,0 +1,16 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-${uniqueId}
+spec:
+  bindings:
+    - role: roles/cloudsql.client
+      members:
+        - memberFrom:
+            bigQueryConnectionConnectionRef:
+              type: cloudSQL
+              name: bqcc-${uniqueId}
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: ${projectId} 

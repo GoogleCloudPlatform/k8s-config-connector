@@ -794,3 +794,98 @@ func buildCRDFilter(keepCRDs map[schema.GroupKind]bool) create.HarnessOption {
 		return keepCRDs[gk]
 	})
 }
+
+func TestIAM_AllInSeries(t *testing.T) {
+	if os.Getenv("RUN_E2E") == "" {
+		t.Skip("RUN_E2E not set; skipping")
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = 3 * time.Minute
+	}
+
+	t.Run("iam-fixtures", func(t *testing.T) {
+		// Only run fixtures under iam/iampartialpolicy
+		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			return strings.Contains(name, "iam-bigqueryconnectionconnectionref") ||
+				strings.Contains(name, "iam-logsinkref") ||
+				strings.Contains(name, "iam-serviceaccountref") ||
+				strings.Contains(name, "iam-serviceidentityref") ||
+				strings.Contains(name, "iam-sqlinstanceref")
+		}
+		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
+			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
+
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
+
+					opt.Create = append(opt.Create, primaryResource)
+
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+
+					// We want to use SSA everywhere, but some of our tests are broken by SSA
+					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
+					case "bigtable.cnrm.cloud.google.com",
+						"orgpolicy.cnrm.cloud.google.com",
+						"gkehub.cnrm.cloud.google.com":
+						// Use SSA
+
+					default:
+						t.Logf("not yet using SSA for create of resources in group %q", group)
+						opt.DoNotUseServerSideApplyForCreate = true
+					}
+
+					return primaryResource, opt
+				}
+
+				runScenario(ctx, t, false, fixture, loadFixture)
+			})
+		}
+	})
+
+	t.Logf("shutting down manager")
+	cancel()
+}
