@@ -31,22 +31,22 @@ import (
 var _ refsv1beta1.ExternalNormalizer = &ClusterRef{}
 var DataprocClusterGVK = GroupVersion.WithKind("DataprocCluster")
 
-// NodeGroupRef defines the resource reference to DataprocNodeGroup, which "External" field
+// ClusterRef defines the resource reference to ClusterRef, which "External" field
 // holds the GCP identifier for the KRM object.
 type ClusterRef struct {
-	// A reference to an externally managed DataprocNodeGroup resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
+	// A reference to an externally managed DataprocClusterGroup resource.
+	// Should be in the format "projects/{{projectID}}/regions/{{regions}}/clusters/{{clusterID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a DataprocNodeGroup resource.
+	// The name of a DataprocClusterGroup resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a DataprocNodeGroup resource.
+	// The namespace of a DataprocClusterGroup resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on DataprocCluster.
-// If the "External" is given in the other resource's spec.ClusterRef, the given value will be used.
+// If the "External" is given in the other resource's spec.DataprocClusterRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual DataprocCluster.
 func (r *ClusterRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {

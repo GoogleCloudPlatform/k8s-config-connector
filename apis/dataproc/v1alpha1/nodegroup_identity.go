@@ -66,7 +66,10 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	cluster := obj.Spec.ClusterRef.Name
+	cluster, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve clusterRef: %w", err)
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

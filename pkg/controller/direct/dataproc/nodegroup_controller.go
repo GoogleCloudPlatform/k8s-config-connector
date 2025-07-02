@@ -161,7 +161,12 @@ func (a *NodegroupAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("Dataproc Nodegroup update is not supported", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataprocNodeGroupStatus{}
+	status.ObservedState = DataprocNodeGroupObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -195,7 +200,7 @@ func (a *NodegroupAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
 func (a *NodegroupAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting Nodegroup", "name", a.id)
+	log.V(2).Info("deleting Nodegroup is a no-op", "name", a.id)
 
 	return true, nil
 }
