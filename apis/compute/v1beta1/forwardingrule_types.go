@@ -151,18 +151,18 @@ type ComputeForwardingRuleSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	// The GCP labels assigned to this resource.
+	// The labels assigned to this resource.
 	//
-	// GCPLabel keys must be between 1 and 63 characters long, have a UTF-8 encoding
+	// Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
 	// of maximum 128 bytes, and must conform to the following PCRE regular
 	// expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
 	//
-	// GCPLabel values must be between 0 and 63 characters long, have a UTF-8
+	// Label values must be between 0 and 63 characters long, have a UTF-8
 	// encoding of maximum 128 bytes, and must conform to the following PCRE
 	// regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
 	//
 	// No more than 64 labels can be assigned to a given resource.
-	GCPLabels map[string]string `json:"gcpLabels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 	/* The IP address that this forwarding rule is serving on behalf of.
 
 	Addresses are restricted based on the forwarding rule's load

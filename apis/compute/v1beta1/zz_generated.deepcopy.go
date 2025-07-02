@@ -309,8 +309,8 @@ func (in *ComputeForwardingRuleSpec) DeepCopyInto(out *ComputeForwardingRuleSpec
 		*out = new(string)
 		**out = **in
 	}
-	if in.GCPLabels != nil {
-		in, out := &in.GCPLabels, &out.GCPLabels
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
