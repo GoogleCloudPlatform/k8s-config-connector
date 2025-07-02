@@ -148,7 +148,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -179,28 +179,26 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "A BigQuery table.",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
-    "sourceFormat": "PARQUET",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "tableReference": {
@@ -227,23 +225,21 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
-    "sourceFormat": "PARQUET",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -258,12 +254,14 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
       }
@@ -281,7 +279,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -300,23 +298,21 @@ X-Xss-Protection: 0
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
     "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 10,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
-    "sourceFormat": "PARQUET",
+    "sourceFormat": "AVRO",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -331,12 +327,14 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "type": "STRING"
       }
@@ -355,39 +353,39 @@ X-Xss-Protection: 0
 
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "An updated BigQuery table.",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "policyTags": {},
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "policyTags": {},
         "type": "STRING"
@@ -417,23 +415,21 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -448,13 +444,15 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "policyTags": {},
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "policyTags": {},
         "type": "STRING"
@@ -491,23 +489,21 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
     "compression": "NONE",
     "ignoreUnknownValues": true,
     "maxBadRecords": 100,
-    "parquetOptions": {
-      "enableListInference": true,
-      "enumAsString": true
-    },
     "sourceFormat": "CSV",
     "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.parquet"
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
     ]
   },
   "friendlyName": "BigQuery Table Updated",
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -522,13 +518,15 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
-        "mode": "NULLABLE",
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
         "name": "name",
         "policyTags": {},
         "type": "STRING"
       },
       {
-        "mode": "NULLABLE",
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
         "name": "post_abbr",
         "policyTags": {},
         "type": "STRING"
@@ -547,7 +545,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
