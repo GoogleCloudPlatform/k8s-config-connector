@@ -65,8 +65,11 @@ func (r *ForwardingRuleReconcileGate) ShouldReconcile(o *unstructured.Unstructur
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
 	}
-	// Run the direct reconciler only when spec.Target.GoogleAPIsBundle is specified
-	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
+	// Run the direct reconciler when spec.target.googleAPIsBundle is specified
+	hasGoogleAPIsBundle := obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
+	// Run the direct reconciler when spec.labels is specified
+	hasLabels := obj.Spec.Labels != nil
+	return hasGoogleAPIsBundle || hasLabels
 }
 
 type forwardingRuleModel struct {
@@ -663,9 +666,9 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 
 func handleLabelsForObject(desired *krm.ComputeForwardingRule) map[string]string {
 	labels := make(map[string]string)
-	if desired.Spec.GCPLabels != nil {
+	if desired.Spec.Labels != nil {
 		// If specification labels are non-empty, use specification labels only
-		labels = desired.Spec.GCPLabels
+		labels = desired.Spec.Labels
 		// Apply Config Connector default labels
 		labels[label.CnrmManagedKey] = "true"
 	} else {
