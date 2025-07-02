@@ -153,6 +153,7 @@ spec:
                                     type: string
                                 type: object
                             required:
+                            - networkRef
                             - projectRef
                             type: object
                           pscConnection:
@@ -260,6 +261,11 @@ spec:
                                       resource.
                                     type: string
                                 type: object
+                            required:
+                            - forwardingRuleRef
+                            - ipAddress
+                            - networkRef
+                            - serviceAttachmentRef
                             type: object
                         type: object
                       type: array
@@ -356,8 +362,6 @@ spec:
                 description: Required. Immutable. User inputs and resource details
                   of the auto-created PSC connections.
                 items:
-                  description: kcc specific struct to separate input and output fields
-                    in google.cloud.memorystore.v1beta.PscAutoConnection
                   properties:
                     networkRef:
                       description: Required. The network where the PSC endpoints are
@@ -427,6 +431,7 @@ spec:
                           type: string
                       type: object
                   required:
+                  - networkRef
                   - projectRef
                   type: object
                 type: array
@@ -513,12 +518,6 @@ spec:
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
-                  discoveryEndpoints:
-                    description: Output only. Endpoints clients can connect to the
-                      instance through. Currently only one discovery endpoint is supported.
-                    items:
-                      type: object
-                    type: array
                   endpoints:
                     description: Optional. Endpoints for the instance.
                     items:
@@ -563,8 +562,8 @@ spec:
                       the instance.
                     type: object
                   pscAutoConnections:
-                    description: Required. Immutable. User inputs and resource details
-                      of the auto-created PSC connections.
+                    description: Immutable. User inputs and resource details of the
+                      auto-created PSC connections.
                     items:
                       properties:
                         connectionType:
