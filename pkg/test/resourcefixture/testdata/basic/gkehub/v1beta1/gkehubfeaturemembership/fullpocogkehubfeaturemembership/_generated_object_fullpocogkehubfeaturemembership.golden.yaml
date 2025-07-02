@@ -20,6 +20,22 @@ spec:
     policyControllerHubConfig:
       auditIntervalSeconds: 15
       constraintViolationLimit: 25
+      deploymentConfigs:
+        mutation:
+          containerResources:
+            limits:
+              cpu: "1"
+              memory: 2000Mi
+            requests:
+              cpu: 100m
+              memory: 20Mi
+          podAffinity: ANTI_AFFINITY
+          podTolerations:
+          - effect: something
+            key: foo
+            operator: eq
+            value: bar
+          replicaCount: 1
       exemptableNamespaces:
       - test-namespace-two
       installSpec: INSTALL_SPEC_SUSPENDED

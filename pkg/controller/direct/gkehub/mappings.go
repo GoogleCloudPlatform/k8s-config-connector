@@ -155,12 +155,12 @@ func FeaturemembershipPolicyContent_FromProto(mapCtx *direct.MapContext, r *api.
 	return out
 }
 
-func FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx *direct.MapContext, r *api.PolicyControllerHubConfig) *krm.FeaturemembershipPolicyControllerHubConfig {
+func FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx *direct.MapContext, r *api.PolicyControllerHubConfig) *krm.HubConfig {
 	if r == nil {
 		return nil
 	}
 
-	out := &krm.FeaturemembershipPolicyControllerHubConfig{}
+	out := &krm.HubConfig{}
 	out.AuditIntervalSeconds = direct.LazyPtr(r.AuditIntervalSeconds)
 	out.ConstraintViolationLimit = direct.LazyPtr(r.ConstraintViolationLimit)
 	out.ExemptableNamespaces = r.ExemptableNamespaces
@@ -170,6 +170,8 @@ func FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx *direct.MapCont
 	out.MutationEnabled = direct.LazyPtr(r.MutationEnabled)
 	out.PolicyContent = FeaturemembershipPolicyContent_FromProto(mapCtx, r.PolicyContent)
 	out.ReferentialRulesEnabled = direct.LazyPtr(r.ReferentialRulesEnabled)
+
+	out.DeploymentConfigs = DeploymentConfigs_FromProto(mapCtx, r.DeploymentConfigs)
 
 	return out
 }
@@ -189,7 +191,7 @@ func PolicycontrollerMembershipSpec_FromProto(mapCtx *direct.MapContext, r *api.
 	}
 
 	out := &krm.FeaturemembershipPolicycontroller{}
-	out.PolicyControllerHubConfig = *FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx, r.PolicyControllerHubConfig)
+	out.PolicyControllerHubConfig = FeaturemembershipPolicyControllerHubConfig_FromProto(mapCtx, r.PolicyControllerHubConfig)
 	out.Version = direct.LazyPtr(r.Version)
 
 	return out

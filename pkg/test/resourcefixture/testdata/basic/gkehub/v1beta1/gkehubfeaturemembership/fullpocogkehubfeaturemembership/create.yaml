@@ -41,5 +41,36 @@ spec:
         templateLibrary:
           installation: "NOT_INSTALLED"
       referentialRulesEnabled: false
+      deploymentConfigs:
+        admission:
+          podTolerations:
+          - key: foo
+            operator: eq
+            value: bar
+            effect: something
+          podAffinity: ANTI_AFFINITY
+          replicaCount: 1
+          containerResources:
+            limits:
+              cpu: "2"
+              memory: 4000Mi
+            requests:
+              cpu: "1"
+              memory: 2000Mi
+        audit:
+          podTolerations:
+          - key: foo
+            operator: eq
+            value: audit
+            effect: something
+          podAffinity: NO_AFFINITY
+          replicaCount: 2
+          containerResources:
+            limits:
+              cpu: "1.5"
+              memory: 1000Mi
+            requests:
+              cpu: "0.5"
+              memory: 500Mi
     version: "1.18.0"
 

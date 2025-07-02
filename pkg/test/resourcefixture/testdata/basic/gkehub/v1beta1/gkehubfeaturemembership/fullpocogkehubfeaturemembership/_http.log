@@ -1322,6 +1322,52 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
           "constraintViolationLimit": "20",
+          "deploymentConfigs": {
+            "admission": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "4000Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "bar"
+                }
+              ],
+              "replicaCount": "1"
+            },
+            "audit": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1.5",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "0.5",
+                  "memory": "500Mi"
+                }
+              },
+              "podAffinity": "NO_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "audit"
+                }
+              ],
+              "replicaCount": "2"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace"
           ],
@@ -1400,6 +1446,52 @@ X-Xss-Protection: 0
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "10",
             "constraintViolationLimit": "20",
+            "deploymentConfigs": {
+              "admission": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "2",
+                    "memory": "4000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "2000Mi"
+                  }
+                },
+                "podAffinity": "ANTI_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "something",
+                    "key": "foo",
+                    "operator": "eq",
+                    "value": "bar"
+                  }
+                ],
+                "replicaCount": "1"
+              },
+              "audit": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "1.5",
+                    "memory": "1000Mi"
+                  },
+                  "requests": {
+                    "cpu": "0.5",
+                    "memory": "500Mi"
+                  }
+                },
+                "podAffinity": "NO_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "something",
+                    "key": "foo",
+                    "operator": "eq",
+                    "value": "audit"
+                  }
+                ],
+                "replicaCount": "2"
+              }
+            },
             "exemptableNamespaces": [
               "test-namespace"
             ],
@@ -1453,6 +1545,52 @@ X-Xss-Protection: 0
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
           "constraintViolationLimit": "20",
+          "deploymentConfigs": {
+            "admission": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "4000Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "bar"
+                }
+              ],
+              "replicaCount": "1"
+            },
+            "audit": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1.5",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "0.5",
+                  "memory": "500Mi"
+                }
+              },
+              "podAffinity": "NO_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "audit"
+                }
+              ],
+              "replicaCount": "2"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace"
           ],
@@ -1493,6 +1631,30 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
           "constraintViolationLimit": "25",
+          "deploymentConfigs": {
+            "mutation": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                },
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "20Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "bar"
+                }
+              ],
+              "replicaCount": "1"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace-two"
           ],
@@ -1575,6 +1737,30 @@ X-Xss-Protection: 0
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "15",
             "constraintViolationLimit": "25",
+            "deploymentConfigs": {
+              "mutation": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "2000Mi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "20Mi"
+                  }
+                },
+                "podAffinity": "ANTI_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "something",
+                    "key": "foo",
+                    "operator": "eq",
+                    "value": "bar"
+                  }
+                ],
+                "replicaCount": "1"
+              }
+            },
             "exemptableNamespaces": [
               "test-namespace-two"
             ],
@@ -1631,6 +1817,30 @@ X-Xss-Protection: 0
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
           "constraintViolationLimit": "25",
+          "deploymentConfigs": {
+            "mutation": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                },
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "20Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "something",
+                  "key": "foo",
+                  "operator": "eq",
+                  "value": "bar"
+                }
+              ],
+              "replicaCount": "1"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace-two"
           ],
