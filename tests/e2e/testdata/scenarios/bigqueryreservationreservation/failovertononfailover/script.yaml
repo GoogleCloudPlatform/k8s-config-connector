@@ -23,7 +23,7 @@
 # wrong in the Update logic.
 
 # 01: Create a failover reservation with a backup region
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
@@ -44,7 +44,7 @@ spec:
 # 02: Removing the failover should convert the reservation from
 #  failover to non-failover.
 # PATCH should include only "secondaryLocation" in the update mask.
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
