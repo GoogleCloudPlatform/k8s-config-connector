@@ -15,7 +15,7 @@ spec:
     displayName: ""
     launchStage: ""
     metricKind: DELTA
-    unit: ""
+    unit: "1"
     valueType: DISTRIBUTION
   projectRef:
     external: ${projectId}
