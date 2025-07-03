@@ -274,7 +274,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectId}/global/networks/default",
     "subnetwork": "default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
