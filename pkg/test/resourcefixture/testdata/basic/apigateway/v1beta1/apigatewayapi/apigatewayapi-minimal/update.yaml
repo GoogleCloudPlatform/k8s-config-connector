@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apigateway.cnrm.cloud.google.com/v1alpha1
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
 kind: APIGatewayAPI
 metadata:
   name: apigatewayapi-minimal-${uniqueId}
@@ -20,5 +20,5 @@ spec:
   projectRef:
     external: ${projectId}
   labels:
-    name: "wrench"
-  displayName: "Initial displayName"
+    name: "updatedwrench"
+  displayName: "Updated displayName"
