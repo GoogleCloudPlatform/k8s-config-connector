@@ -18,11 +18,7 @@ metadata:
   name: spannerinstance-${uniqueId}
 spec:
   config: regional-us-central1
-  displayName: Spanner Instance Full
-  autoscalingConfig:
-    autoscalingLimits:
-      maxProcessingUnits: 3000
-      minProcessingUnits: 1000
-    autoscalingTargets:
-      highPriorityCpuUtilizationPercent: 75
-      storageUtilizationPercent: 80
+  displayName: Spanner Instance Full 1 Updated
+  processingUnits: 3000
+  labels:
+    updated-label: "yes"
