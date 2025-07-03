@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.128.0
+    cnrm.cloud.google.com/version: 1.132.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -93,16 +93,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The ComputeBackendService selflink in the form "projects/{{project}}/global/backendServices/{{name}}"
-                      or "projects/{{project}}/regions/{{region}}/backendServices/{{name}}"
-                      when not managed by Config Connector.
+                    description: The value of an externally managed ComputeBackendService
+                      resource.
                     type: string
                   name:
-                    description: The `name` field of a `ComputeBackendService` resource.
+                    description: The name of a ComputeBackendService resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeBackendService`
-                      resource.
+                    description: The namespace of a ComputeBackendService resource.
                     type: string
                 type: object
               description:
