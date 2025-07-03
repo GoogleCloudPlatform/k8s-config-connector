@@ -1,0 +1,210 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  name: validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: ValidatingWebhookConfigurationCustomization
+    listKind: ValidatingWebhookConfigurationCustomizationList
+    plural: validatingwebhookconfigurationcustomizations
+    singular: validatingwebhookconfigurationcustomization
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          ValidatingWebhookConfigurationCustomization is the Schema for customizing the validating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          ValidatingWebhookConfigurationCustomization is the Schema for customizing the validating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
