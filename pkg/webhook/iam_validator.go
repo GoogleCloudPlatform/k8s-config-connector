@@ -166,7 +166,7 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 	if externalonlygvks.IsExternalOnlyGVK(gvk) {
 		rc, err := kcciamclient.GetResourceConfigForExternalOnlyGVK(gvk)
 		if err != nil {
-			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %w", gvk, err)
+			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for external GroupVersionKind %v: %w", gvk, err)
 		}
 		return []*v1alpha1.ResourceConfig{rc}, nil
 	}
