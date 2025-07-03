@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
@@ -20,33 +21,21 @@ metadata:
 spec:
   location: us-central1-a
   initialNodeCount: 1
-  releaseChannel:
-    channel: "RAPID"
-  workloadIdentityConfig:
-    workloadPool: "${projectId}.svc.id.goog"
-  addonsConfig:
-    httpLoadBalancing:
-      disabled: true
-    horizontalPodAutoscaling:
-      disabled: true
-    networkPolicyConfig:
-      disabled: true
-    gcpFilestoreCsiDriverConfig:
-      enabled: false
-    cloudrunConfig:
-      disabled: true
-    dnsCacheConfig:
-      enabled: false
-    gcePersistentDiskCsiDriverConfig:
-      enabled: false
-    gkeBackupAgentConfig:
-      enabled: false
-    configConnectorConfig:
-      enabled: false
-    gcsFuseCsiDriverConfig:
-      enabled: false
-    istioConfig:
-      disabled: true
-      auth: "AUTH_MUTUAL_TLS"
-    kalmConfig:
-      enabled: false
+  clusterAutoscaling:
+    enabled: true
+    resourceLimits:
+      - resourceType: "cpu"
+        maximum: 2
+      - resourceType: "memory"
+        maximum: 2048 # In MiB
+    autoProvisioningDefaults:
+      management:
+        autoUpgrade: true
+        autoRepair: true
+      oauthScopes:
+        - "https://www.googleapis.com/auth/logging.write"
+        - "https://www.googleapis.com/auth/monitoring"
+  nodePoolAutoConfig:
+    networkTags:
+      tags:
+        - "test-autoscaling-updated"
