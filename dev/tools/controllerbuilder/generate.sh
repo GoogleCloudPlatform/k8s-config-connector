@@ -252,5 +252,24 @@ go run . generate-mapper \
    --service google.cloud.alloydb.v1beta  \
    --api-version alloydb.cnrm.cloud.google.com/v1alpha1
 
+# NetworkSecurity
+go run . generate-types \
+    --service google.cloud.networksecurity.v1beta1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
+    --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy
+
+go run . generate-mapper \
+    --service google.cloud.networksecurity.v1beta1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1beta1
+
+go run . generate-types \
+     --service google.cloud.networksecurity.v1 \
+     --resource NetworkSecurityAddressGroup:AddressGroup \
+     --api-version "networksecurity.cnrm.cloud.google.com/v1alpha1"
+
+go run . generate-mapper \
+    --service google.cloud.networksecurity.v1 \
+    --api-version networksecurity.cnrm.cloud.google.com/v1alpha1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt
