@@ -18,11 +18,18 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 func ReportReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
 		listener.OnReconcileStart(ctx, u)
+	}
+}
+
+func ReportReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	if listener, ok := GetListenerFromContext(ctx); ok {
+		listener.OnReconcileEnd(ctx, u, result, err)
 	}
 }
 

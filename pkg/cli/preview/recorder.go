@@ -24,6 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 // GKNN is the canonical identity for a kube object; it is short for Group-Kind-Namespaced-Name
@@ -70,6 +71,7 @@ type EventType string
 
 const (
 	EventTypeReconcileStart EventType = "reconcileStart"
+	EventTypeReconcileEnd   EventType = "reconcileEnd"
 	EventTypeDiff           EventType = "diff"
 	EventTypeKubeAction     EventType = "kubeAction"
 	EventTypeGCPAction      EventType = "gcpAction"
@@ -123,6 +125,11 @@ func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *u
 	l.recorder.recordReconcileStart(ctx, u)
 }
 
+// OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err)
+}
+
 // OnDiff is called by the structured reporting subsystem when a diff occurs.
 func (l *structuredReportingListener) OnDiff(ctx context.Context, diff *structuredreporting.Diff) {
 	l.recorder.recordDiff(ctx, diff)
@@ -164,6 +171,17 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
 		eventType: EventTypeReconcileStart,
+		object:    u.DeepCopy(),
+	})
+}
+
+// recordReconcileEnd captures the reconcile end into our recorder.
+func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	gknn := gknnFromUnstructured(u)
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType: EventTypeReconcileEnd,
 		object:    u.DeepCopy(),
 	})
 }
