@@ -30,6 +30,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -97,6 +98,10 @@ func (m *mockRoundTripper) ConfigureVisitor(requestURL string, visitor mockgcpre
 
 func (m *mockRoundTripper) Previsit(event mockgcpregistry.Event, visitor mockgcpregistry.NormalizingVisitor) {
 	m.registeredServices.Previsit(event, visitor)
+}
+
+func (m *mockRoundTripper) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, visitor mockgcpregistry.NormalizingVisitor) {
+	m.registeredServices.ConfigureKRMObjectVisitor(u, visitor)
 }
 
 func (m *mockRoundTripper) Run(ctx context.Context) error {

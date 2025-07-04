@@ -17,6 +17,7 @@ package mockgcpregistry
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type FactoryFunc func(env *common.MockEnvironment, storage storage.Storage) MockService
@@ -57,5 +58,15 @@ func (s *Services) Previsit(event Event, visitor NormalizingVisitor) {
 			continue
 		}
 		supportsNormalization.Previsit(event, visitor)
+	}
+}
+
+func (s *Services) ConfigureKRMObjectVisitor(u *unstructured.Unstructured, visitor NormalizingVisitor) {
+	for _, service := range s.Services {
+		supportsKRMObjectNormalization, ok := service.(SupportsKRMObjectNormalization)
+		if !ok {
+			continue
+		}
+		supportsKRMObjectNormalization.ConfigureKRMObjectVisitor(u, visitor)
 	}
 }
