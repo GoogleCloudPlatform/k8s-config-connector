@@ -25,7 +25,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
-  "keyProject": "projects/${uniqueId}",
+  "keyProject": "projects/${projectId}",
   "name": "folders/${folderID}/autokeyConfig"
 }
 
@@ -40,7 +40,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/${uniqueId}",
+  "keyProject": "projects/${projectId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
 }
@@ -63,7 +63,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/${uniqueId}",
+  "keyProject": "projects/${projectId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
 }
@@ -76,7 +76,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: autokey_config.name=folders%2F${folderID}%2FautokeyConfig
 
 {
-  "keyProject": "projects/diff-{uniqueId}",
+  "keyProject": "projects/diff-${projectId}",
   "name": "folders/${folderID}/autokeyConfig"
 }
 
@@ -91,7 +91,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/diff-{uniqueId}",
+  "keyProject": "projects/diff-${projectId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
 }
@@ -114,7 +114,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "keyProject": "projects/diff-{uniqueId}",
+  "keyProject": "projects/diff-${projectId}",
   "name": "folders/${folderID}/autokeyConfig",
   "state": 1
 }
