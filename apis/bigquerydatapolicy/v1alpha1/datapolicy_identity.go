@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DataPolicyIdentity defines the resource reference to BigQueryDataPolicy, which "External" field
+// DataPolicyIdentity defines the resource reference to BigQueryDataPolicyDataPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
 type DataPolicyIdentity struct {
 	parent *DataPolicyParent
@@ -32,7 +32,7 @@ type DataPolicyIdentity struct {
 }
 
 func (i *DataPolicyIdentity) String() string {
-	return i.parent.String() + "/datapolicies/" + i.id
+	return i.parent.String() + "/dataPolicies/" + i.id
 }
 
 func (i *DataPolicyIdentity) ID() string {
@@ -53,7 +53,7 @@ func (p *DataPolicyParent) String() string {
 }
 
 // New builds a DataPolicyIdentity from the Config Connector DataPolicy object.
-func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQueryDataPolicy) (*DataPolicyIdentity, error) {
+func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQueryDataPolicyDataPolicy) (*DataPolicyIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -105,8 +105,8 @@ func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 
 func ParseDataPolicyExternal(external string) (parent *DataPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datapolicies" {
-		return nil, "", fmt.Errorf("format of BigQueryDataPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/datapolicies/{{datapolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataPolicies" {
+		return nil, "", fmt.Errorf("format of BigQueryDataPolicyDataPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/dataPolicies/{{datapolicyID}})", external)
 	}
 	parent = &DataPolicyParent{
 		ProjectID: tokens[1],
