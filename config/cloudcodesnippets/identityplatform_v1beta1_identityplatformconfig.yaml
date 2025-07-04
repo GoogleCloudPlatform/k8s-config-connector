@@ -119,4 +119,4 @@ insertText: |
       forwardInboundCredentials:
         idToken: \${58:true}
         accessToken: \${59:true}
-        refereshToken: \${60:true}
+        refreshToken: \${60:true}

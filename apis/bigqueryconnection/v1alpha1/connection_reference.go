@@ -62,7 +62,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 		}
 		id.parent = "projects/" + tokens[1] + "/locations/" + tokens[3]
 
-		// Validate spec parent and resourceID field if the resource is already reconcilied with a GCP Connection resource.
+		// Validate spec parent and resourceID field if the resource is already reconciled with a GCP Connection resource.
 		if tokens[1] != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s",
 				tokens[1], projectID)

@@ -80,7 +80,7 @@ func BuildExportCmd() *cobra.Command {
 	cmd.Flags().StringArrayVarP(&opts.targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
 	cmd.Flags().StringArrayVarP(&opts.ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
 
-	cmd.Flags().IntVarP(&opts.workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker routines to export namespaces with. Defaults to 10. ")
+	cmd.Flags().IntVarP(&opts.workerRoutines, workerRoutinesFlag, "", 10, "Configure the number of worker routines to export namespaces with. Defaults to 10. ")
 
 	return cmd
 }
@@ -109,7 +109,7 @@ type ExportOptions struct {
 	targetObjects []string
 	ignoreObjects []string
 
-	workerRountines int
+	workerRoutines int
 }
 
 // Task is implemented by our namespace-collection routine, or anything else we want to run in parallel.
@@ -218,8 +218,8 @@ func (t *dumpResourcesTask) Run(ctx context.Context) error {
 }
 
 func (opts *ExportOptions) validateFlags() error {
-	if opts.workerRountines <= 0 || opts.workerRountines > 100 {
-		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", opts.workerRountines, workerRoutinesFlag)
+	if opts.workerRoutines <= 0 || opts.workerRoutines > 100 {
+		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", opts.workerRoutines, workerRoutinesFlag)
 	}
 
 	return nil
@@ -335,7 +335,7 @@ func RunExport(ctx context.Context, opts *ExportOptions) error {
 	var errs []error
 	var errsMutex sync.Mutex
 
-	for i := 0; i < opts.workerRountines; i++ {
+	for i := 0; i < opts.workerRoutines; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()

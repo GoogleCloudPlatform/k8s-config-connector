@@ -45,7 +45,7 @@ func copyMaintenanceScheduleFieldToSpec() ResourceOverride {
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := PruneNoOpsField(r, "maintenanceSchedule"); err != nil {
-			return fmt.Errorf("error prunning no-ops field 'maintenanceSchedule' in pre-actuation transformation: %w", err)
+			return fmt.Errorf("error pruning no-ops field 'maintenanceSchedule' in pre-actuation transformation: %w", err)
 		}
 		return nil
 	}

@@ -125,7 +125,7 @@ type DataformRepositoryStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the DataformReposity resource in GCP.
+	// A unique specifier for the DataformRepository resource in GCP.
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 

@@ -96,13 +96,13 @@ func keepFirstGenerationFields() ResourceOverride {
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := PruneNoOpsField(r, "settings", "authorizedGaeApplications"); err != nil {
-			return fmt.Errorf("error prunning no-ops field 'settings.authorizedGaeApplications' in pre-actuation transformation: %w", err)
+			return fmt.Errorf("error pruning no-ops field 'settings.authorizedGaeApplications' in pre-actuation transformation: %w", err)
 		}
 		if err := PruneNoOpsField(r, "settings", "crashSafeReplication"); err != nil {
-			return fmt.Errorf("error prunning no-ops field 'settings.crashSafeReplication' in pre-actuation transformation: %w", err)
+			return fmt.Errorf("error pruning no-ops field 'settings.crashSafeReplication' in pre-actuation transformation: %w", err)
 		}
 		if err := PruneNoOpsField(r, "settings", "replicationType"); err != nil {
-			return fmt.Errorf("error prunning no-ops field 'settings.replicationType' in pre-actuation transformation: %w", err)
+			return fmt.Errorf("error pruning no-ops field 'settings.replicationType' in pre-actuation transformation: %w", err)
 		}
 		return nil
 	}
