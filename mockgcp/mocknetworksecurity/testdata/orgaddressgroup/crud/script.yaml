@@ -1,0 +1,5 @@
+
+- exec: gcloud network-security org-address-groups create org-address-group-${uniqueId} --type=IPV4 --capacity=100 --description="optional description" --location=us-central1 --organization=${TEST_ORG_ID}
+- exec: gcloud network-security org-address-groups describe org-address-group-${uniqueId} --location=us-central1 --organization=${TEST_ORG_ID}
+- exec: gcloud network-security org-address-groups update org-address-group-${uniqueId} --description="New description" --location=us-central1 --organization=${TEST_ORG_ID}
+- exec: gcloud network-security org-address-groups delete org-address-group-${uniqueId} --location=us-central1 --organization=${TEST_ORG_ID} --quiet
