@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "mcp-gke": {
+        "command": "uv",
+        "args": [
+            "--directory",
+            "experiments/mcp-gke/src",
+            "run",
+            "run.py"
+        ]
+        }    
+    },
+    "theme": "Default",
+    "preferredEditor": "vscode"
+}

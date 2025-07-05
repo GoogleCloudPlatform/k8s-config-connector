@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: mcp-gke
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: google>=3.0.0
+Requires-Dist: google-genai>=1.21.1
+Requires-Dist: kubernetes>=33.1.0
+Requires-Dist: mcp>=1.9.4
+Requires-Dist: pyyaml>=6.0.2
