@@ -158,7 +158,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	}
 
 	t.Run("fixtures", func(t *testing.T) {
-		fixtures := resourcefixture.Load(t)
+		// Skip newly added iam/iampartialpolicy for now as they run under TestIAM_AllInSeries
+		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			return !strings.Contains(name, "iam-bigqueryconnectionconnectionref") &&
+				!strings.Contains(name, "iam-logsinkref") &&
+				!strings.Contains(name, "iam-serviceaccountref") &&
+				!strings.Contains(name, "iam-serviceidentityref") &&
+				!strings.Contains(name, "iam-sqlinstanceref")
+		}
+		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
