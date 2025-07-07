@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &PolicyTagRef{}
 // holds the GCP identifier for the KRM object.
 type PolicyTagRef struct {
 	// A reference to an externally managed DataCatalogPolicyTag resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policytags/{{policytagID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DataCatalogPolicyTag resource.
