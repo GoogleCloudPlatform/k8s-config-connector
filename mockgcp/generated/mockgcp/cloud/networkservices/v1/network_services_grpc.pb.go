@@ -89,6 +89,8 @@ type NetworkServicesClient interface {
 	GetServiceBinding(ctx context.Context, in *GetServiceBindingRequest, opts ...grpc.CallOption) (*ServiceBinding, error)
 	// Creates a new ServiceBinding in a given project and location.
 	CreateServiceBinding(ctx context.Context, in *CreateServiceBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates the parameters of a single ServiceBinding.
+	UpdateServiceBinding(ctx context.Context, in *UpdateServiceBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single ServiceBinding.
 	DeleteServiceBinding(ctx context.Context, in *DeleteServiceBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists Meshes in a given project and location.
@@ -101,6 +103,24 @@ type NetworkServicesClient interface {
 	UpdateMesh(ctx context.Context, in *UpdateMeshRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single Mesh.
 	DeleteMesh(ctx context.Context, in *DeleteMeshRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists ServiceLbPolicies in a given project and location.
+	ListServiceLbPolicies(ctx context.Context, in *ListServiceLbPoliciesRequest, opts ...grpc.CallOption) (*ListServiceLbPoliciesResponse, error)
+	// Gets details of a single ServiceLbPolicy.
+	GetServiceLbPolicy(ctx context.Context, in *GetServiceLbPolicyRequest, opts ...grpc.CallOption) (*ServiceLbPolicy, error)
+	// Creates a new ServiceLbPolicy in a given project and location.
+	CreateServiceLbPolicy(ctx context.Context, in *CreateServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates the parameters of a single ServiceLbPolicy.
+	UpdateServiceLbPolicy(ctx context.Context, in *UpdateServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single ServiceLbPolicy.
+	DeleteServiceLbPolicy(ctx context.Context, in *DeleteServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Get a single RouteView of a Gateway.
+	GetGatewayRouteView(ctx context.Context, in *GetGatewayRouteViewRequest, opts ...grpc.CallOption) (*GatewayRouteView, error)
+	// Get a single RouteView of a Mesh.
+	GetMeshRouteView(ctx context.Context, in *GetMeshRouteViewRequest, opts ...grpc.CallOption) (*MeshRouteView, error)
+	// Lists RouteViews
+	ListGatewayRouteViews(ctx context.Context, in *ListGatewayRouteViewsRequest, opts ...grpc.CallOption) (*ListGatewayRouteViewsResponse, error)
+	// Lists RouteViews
+	ListMeshRouteViews(ctx context.Context, in *ListMeshRouteViewsRequest, opts ...grpc.CallOption) (*ListMeshRouteViewsResponse, error)
 }
 
 type networkServicesClient struct {
@@ -408,6 +428,15 @@ func (c *networkServicesClient) CreateServiceBinding(ctx context.Context, in *Cr
 	return out, nil
 }
 
+func (c *networkServicesClient) UpdateServiceBinding(ctx context.Context, in *UpdateServiceBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateServiceBinding", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networkServicesClient) DeleteServiceBinding(ctx context.Context, in *DeleteServiceBindingRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteServiceBinding", in, out, opts...)
@@ -456,6 +485,87 @@ func (c *networkServicesClient) UpdateMesh(ctx context.Context, in *UpdateMeshRe
 func (c *networkServicesClient) DeleteMesh(ctx context.Context, in *DeleteMeshRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteMesh", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) ListServiceLbPolicies(ctx context.Context, in *ListServiceLbPoliciesRequest, opts ...grpc.CallOption) (*ListServiceLbPoliciesResponse, error) {
+	out := new(ListServiceLbPoliciesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/ListServiceLbPolicies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) GetServiceLbPolicy(ctx context.Context, in *GetServiceLbPolicyRequest, opts ...grpc.CallOption) (*ServiceLbPolicy, error) {
+	out := new(ServiceLbPolicy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/GetServiceLbPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) CreateServiceLbPolicy(ctx context.Context, in *CreateServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateServiceLbPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) UpdateServiceLbPolicy(ctx context.Context, in *UpdateServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateServiceLbPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) DeleteServiceLbPolicy(ctx context.Context, in *DeleteServiceLbPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteServiceLbPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) GetGatewayRouteView(ctx context.Context, in *GetGatewayRouteViewRequest, opts ...grpc.CallOption) (*GatewayRouteView, error) {
+	out := new(GatewayRouteView)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/GetGatewayRouteView", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) GetMeshRouteView(ctx context.Context, in *GetMeshRouteViewRequest, opts ...grpc.CallOption) (*MeshRouteView, error) {
+	out := new(MeshRouteView)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/GetMeshRouteView", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) ListGatewayRouteViews(ctx context.Context, in *ListGatewayRouteViewsRequest, opts ...grpc.CallOption) (*ListGatewayRouteViewsResponse, error) {
+	out := new(ListGatewayRouteViewsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/ListGatewayRouteViews", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) ListMeshRouteViews(ctx context.Context, in *ListMeshRouteViewsRequest, opts ...grpc.CallOption) (*ListMeshRouteViewsResponse, error) {
+	out := new(ListMeshRouteViewsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/ListMeshRouteViews", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -532,6 +642,8 @@ type NetworkServicesServer interface {
 	GetServiceBinding(context.Context, *GetServiceBindingRequest) (*ServiceBinding, error)
 	// Creates a new ServiceBinding in a given project and location.
 	CreateServiceBinding(context.Context, *CreateServiceBindingRequest) (*longrunningpb.Operation, error)
+	// Updates the parameters of a single ServiceBinding.
+	UpdateServiceBinding(context.Context, *UpdateServiceBindingRequest) (*longrunningpb.Operation, error)
 	// Deletes a single ServiceBinding.
 	DeleteServiceBinding(context.Context, *DeleteServiceBindingRequest) (*longrunningpb.Operation, error)
 	// Lists Meshes in a given project and location.
@@ -544,6 +656,24 @@ type NetworkServicesServer interface {
 	UpdateMesh(context.Context, *UpdateMeshRequest) (*longrunningpb.Operation, error)
 	// Deletes a single Mesh.
 	DeleteMesh(context.Context, *DeleteMeshRequest) (*longrunningpb.Operation, error)
+	// Lists ServiceLbPolicies in a given project and location.
+	ListServiceLbPolicies(context.Context, *ListServiceLbPoliciesRequest) (*ListServiceLbPoliciesResponse, error)
+	// Gets details of a single ServiceLbPolicy.
+	GetServiceLbPolicy(context.Context, *GetServiceLbPolicyRequest) (*ServiceLbPolicy, error)
+	// Creates a new ServiceLbPolicy in a given project and location.
+	CreateServiceLbPolicy(context.Context, *CreateServiceLbPolicyRequest) (*longrunningpb.Operation, error)
+	// Updates the parameters of a single ServiceLbPolicy.
+	UpdateServiceLbPolicy(context.Context, *UpdateServiceLbPolicyRequest) (*longrunningpb.Operation, error)
+	// Deletes a single ServiceLbPolicy.
+	DeleteServiceLbPolicy(context.Context, *DeleteServiceLbPolicyRequest) (*longrunningpb.Operation, error)
+	// Get a single RouteView of a Gateway.
+	GetGatewayRouteView(context.Context, *GetGatewayRouteViewRequest) (*GatewayRouteView, error)
+	// Get a single RouteView of a Mesh.
+	GetMeshRouteView(context.Context, *GetMeshRouteViewRequest) (*MeshRouteView, error)
+	// Lists RouteViews
+	ListGatewayRouteViews(context.Context, *ListGatewayRouteViewsRequest) (*ListGatewayRouteViewsResponse, error)
+	// Lists RouteViews
+	ListMeshRouteViews(context.Context, *ListMeshRouteViewsRequest) (*ListMeshRouteViewsResponse, error)
 	mustEmbedUnimplementedNetworkServicesServer()
 }
 
@@ -650,6 +780,9 @@ func (UnimplementedNetworkServicesServer) GetServiceBinding(context.Context, *Ge
 func (UnimplementedNetworkServicesServer) CreateServiceBinding(context.Context, *CreateServiceBindingRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateServiceBinding not implemented")
 }
+func (UnimplementedNetworkServicesServer) UpdateServiceBinding(context.Context, *UpdateServiceBindingRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateServiceBinding not implemented")
+}
 func (UnimplementedNetworkServicesServer) DeleteServiceBinding(context.Context, *DeleteServiceBindingRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteServiceBinding not implemented")
 }
@@ -667,6 +800,33 @@ func (UnimplementedNetworkServicesServer) UpdateMesh(context.Context, *UpdateMes
 }
 func (UnimplementedNetworkServicesServer) DeleteMesh(context.Context, *DeleteMeshRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMesh not implemented")
+}
+func (UnimplementedNetworkServicesServer) ListServiceLbPolicies(context.Context, *ListServiceLbPoliciesRequest) (*ListServiceLbPoliciesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListServiceLbPolicies not implemented")
+}
+func (UnimplementedNetworkServicesServer) GetServiceLbPolicy(context.Context, *GetServiceLbPolicyRequest) (*ServiceLbPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServiceLbPolicy not implemented")
+}
+func (UnimplementedNetworkServicesServer) CreateServiceLbPolicy(context.Context, *CreateServiceLbPolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateServiceLbPolicy not implemented")
+}
+func (UnimplementedNetworkServicesServer) UpdateServiceLbPolicy(context.Context, *UpdateServiceLbPolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateServiceLbPolicy not implemented")
+}
+func (UnimplementedNetworkServicesServer) DeleteServiceLbPolicy(context.Context, *DeleteServiceLbPolicyRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteServiceLbPolicy not implemented")
+}
+func (UnimplementedNetworkServicesServer) GetGatewayRouteView(context.Context, *GetGatewayRouteViewRequest) (*GatewayRouteView, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGatewayRouteView not implemented")
+}
+func (UnimplementedNetworkServicesServer) GetMeshRouteView(context.Context, *GetMeshRouteViewRequest) (*MeshRouteView, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMeshRouteView not implemented")
+}
+func (UnimplementedNetworkServicesServer) ListGatewayRouteViews(context.Context, *ListGatewayRouteViewsRequest) (*ListGatewayRouteViewsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGatewayRouteViews not implemented")
+}
+func (UnimplementedNetworkServicesServer) ListMeshRouteViews(context.Context, *ListMeshRouteViewsRequest) (*ListMeshRouteViewsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMeshRouteViews not implemented")
 }
 func (UnimplementedNetworkServicesServer) mustEmbedUnimplementedNetworkServicesServer() {}
 
@@ -1275,6 +1435,24 @@ func _NetworkServices_CreateServiceBinding_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NetworkServices_UpdateServiceBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateServiceBindingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).UpdateServiceBinding(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateServiceBinding",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).UpdateServiceBinding(ctx, req.(*UpdateServiceBindingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NetworkServices_DeleteServiceBinding_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteServiceBindingRequest)
 	if err := dec(in); err != nil {
@@ -1379,6 +1557,168 @@ func _NetworkServices_DeleteMesh_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkServicesServer).DeleteMesh(ctx, req.(*DeleteMeshRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_ListServiceLbPolicies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListServiceLbPoliciesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).ListServiceLbPolicies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/ListServiceLbPolicies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).ListServiceLbPolicies(ctx, req.(*ListServiceLbPoliciesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_GetServiceLbPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServiceLbPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).GetServiceLbPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/GetServiceLbPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).GetServiceLbPolicy(ctx, req.(*GetServiceLbPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_CreateServiceLbPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateServiceLbPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).CreateServiceLbPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateServiceLbPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).CreateServiceLbPolicy(ctx, req.(*CreateServiceLbPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_UpdateServiceLbPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateServiceLbPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).UpdateServiceLbPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateServiceLbPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).UpdateServiceLbPolicy(ctx, req.(*UpdateServiceLbPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_DeleteServiceLbPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteServiceLbPolicyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).DeleteServiceLbPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteServiceLbPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).DeleteServiceLbPolicy(ctx, req.(*DeleteServiceLbPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_GetGatewayRouteView_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGatewayRouteViewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).GetGatewayRouteView(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/GetGatewayRouteView",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).GetGatewayRouteView(ctx, req.(*GetGatewayRouteViewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_GetMeshRouteView_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMeshRouteViewRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).GetMeshRouteView(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/GetMeshRouteView",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).GetMeshRouteView(ctx, req.(*GetMeshRouteViewRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_ListGatewayRouteViews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGatewayRouteViewsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).ListGatewayRouteViews(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/ListGatewayRouteViews",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).ListGatewayRouteViews(ctx, req.(*ListGatewayRouteViewsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_ListMeshRouteViews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMeshRouteViewsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).ListMeshRouteViews(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/ListMeshRouteViews",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).ListMeshRouteViews(ctx, req.(*ListMeshRouteViewsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1523,6 +1863,10 @@ var NetworkServices_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NetworkServices_CreateServiceBinding_Handler,
 		},
 		{
+			MethodName: "UpdateServiceBinding",
+			Handler:    _NetworkServices_UpdateServiceBinding_Handler,
+		},
+		{
 			MethodName: "DeleteServiceBinding",
 			Handler:    _NetworkServices_DeleteServiceBinding_Handler,
 		},
@@ -1545,6 +1889,42 @@ var NetworkServices_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteMesh",
 			Handler:    _NetworkServices_DeleteMesh_Handler,
+		},
+		{
+			MethodName: "ListServiceLbPolicies",
+			Handler:    _NetworkServices_ListServiceLbPolicies_Handler,
+		},
+		{
+			MethodName: "GetServiceLbPolicy",
+			Handler:    _NetworkServices_GetServiceLbPolicy_Handler,
+		},
+		{
+			MethodName: "CreateServiceLbPolicy",
+			Handler:    _NetworkServices_CreateServiceLbPolicy_Handler,
+		},
+		{
+			MethodName: "UpdateServiceLbPolicy",
+			Handler:    _NetworkServices_UpdateServiceLbPolicy_Handler,
+		},
+		{
+			MethodName: "DeleteServiceLbPolicy",
+			Handler:    _NetworkServices_DeleteServiceLbPolicy_Handler,
+		},
+		{
+			MethodName: "GetGatewayRouteView",
+			Handler:    _NetworkServices_GetGatewayRouteView_Handler,
+		},
+		{
+			MethodName: "GetMeshRouteView",
+			Handler:    _NetworkServices_GetMeshRouteView_Handler,
+		},
+		{
+			MethodName: "ListGatewayRouteViews",
+			Handler:    _NetworkServices_ListGatewayRouteViews_Handler,
+		},
+		{
+			MethodName: "ListMeshRouteViews",
+			Handler:    _NetworkServices_ListMeshRouteViews_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
