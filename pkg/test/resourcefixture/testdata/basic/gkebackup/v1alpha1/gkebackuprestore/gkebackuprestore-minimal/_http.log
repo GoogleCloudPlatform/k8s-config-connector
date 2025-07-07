@@ -559,7 +559,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectId}/global/networks/${networkID}",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
@@ -1802,7 +1801,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectId}/global/networks/${networkID}",
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",

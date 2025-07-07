@@ -194,6 +194,12 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	if update.DesiredClusterAutoscaling != nil {
 		obj.Autoscaling = update.DesiredClusterAutoscaling
 		update.DesiredClusterAutoscaling = nil
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings.String() == "" {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings = nil
+		}
 	}
 
 	if update.DesiredLoggingService != "" {
@@ -235,6 +241,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredAddonsConfig = nil
 	}
 
+	if update.DesiredNodePoolAutoConfigNetworkTags != nil {
+		if obj.NodePoolAutoConfig == nil {
+			obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+		}
+		obj.NodePoolAutoConfig.NetworkTags = update.DesiredNodePoolAutoConfigNetworkTags
+		update.DesiredNodePoolAutoConfigNetworkTags = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
@@ -252,7 +266,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_UPDATE_CLUSTER,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    buildTargetLink(name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -509,6 +523,10 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 
 	if obj.MonitoringService == "" {
 		obj.MonitoringService = "monitoring.googleapis.com/kubernetes"
+	}
+
+	if obj.NetworkPolicy != nil && obj.NetworkPolicy.String() == "" {
+		obj.NetworkPolicy = nil
 	}
 
 	if obj.PrivateClusterConfig == nil {
