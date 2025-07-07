@@ -31,7 +31,7 @@ type PolicyTagIdentity struct {
 }
 
 func (i *PolicyTagIdentity) String() string {
-	return i.parent.String() + "/policytags/" + i.id
+	return i.parent.String() + "/policyTags/" + i.id
 }
 
 func (i *PolicyTagIdentity) ID() string {
@@ -113,8 +113,8 @@ func NewPolicyTagIdentity(ctx context.Context, reader client.Reader, obj *DataCa
 
 func ParsePolicyTagExternal(external string) (parent *PolicyTagParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "taxonomies" || tokens[6] != "policytags" {
-		return nil, "", fmt.Errorf("format of DataCatalogPolicyTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policytags/{{policytagID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "taxonomies" || tokens[6] != "policyTags" {
+		return nil, "", fmt.Errorf("format of DataCatalogPolicyTag external=%q was not known (use projects/{{projectID}}/locations/{{location}}/taxonomies/{{taxonomyID}}/policyTags/{{policytagID}})", external)
 	}
 	parent = &PolicyTagParent{
 		ProjectID: tokens[1],
