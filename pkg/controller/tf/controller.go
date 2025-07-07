@@ -363,12 +363,6 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error calculating diff: %w", err))
 	}
-	if krmResource.Kind == "ContainerCluster" && diff != nil {
-		fmt.Println("maqiuyu... containercluster...")
-		for a, d := range diff.Attributes {
-			fmt.Println(a + " " + d.GoString())
-		}
-	}
 	if !liveState.Empty() && diff.RequiresNew() {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource,
 			k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff)))
