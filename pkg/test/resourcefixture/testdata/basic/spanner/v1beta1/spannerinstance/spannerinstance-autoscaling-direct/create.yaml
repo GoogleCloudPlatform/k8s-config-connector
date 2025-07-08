@@ -16,9 +16,18 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
   name: spannerinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-central1
-  displayName: Spanner Instance Full 1 Updated
-  processingUnits: 3000
-  labels:
-    updated-label: "yes"
+  displayName: Autoscaling Instance
+  autoscalingConfig:
+    autoscalingLimits:
+      maxProcessingUnits: 3000
+      minProcessingUnits: 1000
+    autoscalingTargets:
+      highPriorityCpuUtilizationPercent: 75
+      storageUtilizationPercent: 80
+  # Error 400: Feature MANAGED_AUTOSCALER is not available to Instance [instance-name],
+  # in Edition STANDARD. The minimum required Edition for this feature is ENTERPRISE.
+  edition: ENTERPRISE

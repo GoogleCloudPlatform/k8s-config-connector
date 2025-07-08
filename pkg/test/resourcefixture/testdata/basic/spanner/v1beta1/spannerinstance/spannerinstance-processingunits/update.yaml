@@ -18,5 +18,5 @@ metadata:
   name: spannerinstance-${uniqueId}
 spec:
   config: regional-us-central1
-  displayName: Spanner Instance Full 1
-  processingUnits: 2000
+  displayName: Spanner Instance Updated
+  processingUnits: 3000
