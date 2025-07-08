@@ -166,3 +166,11 @@ experiments/conductor/branches.yaml
 
 # failing fuzz output
 pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
+
+# Experimental MCP 
+# Let Gemini CLI to ignore env to avoid sensitive data
+.gemini/.env
+# Ignore pycache
+experiments/mcp/**/__pycache__
+# Ignore python egg files
+experiments/mcp/**/*.egg-info

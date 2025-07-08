@@ -1,0 +1,15 @@
+{
+    "mcpServers": {
+        "mcp-kcc": {
+        "command": "uv",
+        "args": [
+            "--directory",
+            "experiments/mcp/src",
+            "run",
+            "run.py"
+        ]
+        }    
+    },
+    "theme": "Default",
+    "preferredEditor": "vscode"
+}
