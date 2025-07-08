@@ -15,6 +15,7 @@ spec:
     kmsKeyRef:
       name: kmscryptokey-${uniqueId}
   fullBackupSpec: {}
+  incrementalBackupSpec: {}
   retentionDuration: 1000000s
   spannerDatabaseRef:
     name: spannerdb-${uniqueId}
