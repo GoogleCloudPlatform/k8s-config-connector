@@ -132,8 +132,12 @@ if [[ -n "${STALE_VERSION:-}" ]]; then
   echo "stale version: ${STALE_VERSION}"
 
   # Remove the STALE_VERSION package for standard and autopilot
-  rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}
-  rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}
+  rm -rf ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/cluster
+  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm ${REPO_ROOT}/operator/autopilot-channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
+  rm -rf ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/cluster
+  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/crds.yaml
+  rm ${REPO_ROOT}/operator/channels/packages/configconnector/${STALE_VERSION}/namespaced/0-cnrm-system.yaml
 fi
 
 # Format
