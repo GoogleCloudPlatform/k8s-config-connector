@@ -174,7 +174,12 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		status := &krm.SpannerBackupScheduleStatus{}
+		status.ObservedState = SpannerBackupScheduleObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	// Remove output only fields from paths
 	paths = paths.Delete(outputOnlyFields...)

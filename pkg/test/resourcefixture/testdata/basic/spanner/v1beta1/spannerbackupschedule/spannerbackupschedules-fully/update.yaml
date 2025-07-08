@@ -19,7 +19,7 @@ metadata:
 spec:
   spannerDatabaseRef:
     name: spannerdb-${uniqueId}
-  fullBackupSpec: {}
+  incrementalBackupSpec: {}
   spec:
     cronSpec: 
       text: 0 3 * * *
