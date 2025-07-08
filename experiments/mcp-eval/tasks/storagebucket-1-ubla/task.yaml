@@ -1,0 +1,5 @@
+script:
+- prompt: "Create a KCC StorageBucket named storstoragebucket-ubla that has ubla enabled, and then write the YAML to a file at $(git rev-parse --show-toplevel)/.build/tasks/storagebucket-ubla/storagebucket-ubla.yaml. hint: Use MCP tools if possible "
+verifier: "verify.sh"
+cleanup: "cleanup.sh"
+difficulty: "medium" 

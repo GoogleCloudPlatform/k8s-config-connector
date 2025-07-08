@@ -34,14 +34,14 @@ class MCPForGKEServer(FastMCP):
         # Use prompt instead dedicated code since it requires a LLM call.
         self.add_tool(
             name="create_resource",
-            description="Create a Kubernetes CustomResource object based on the provided CustomResourceDefinition (CRD) file.",
+            description="Create a KCC CustomResource object based on the provided CustomResourceDefinition (CRD) file.",
             fn=self.create_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_tool(
             name="validate_resource",
-            description="Validate a Kubernetes CustomResource object against its CustomResourceDefinition (CRD) using kubeconform." +
+            description="Validate a KCC CustomResource object against its CustomResourceDefinition (CRD) using kubeconform." +
             "If tool helps validating CR if a GKE cluster or kubectl is not available. Otherwise, the kubectl server side validation will be preferred.",
             fn=self.validate_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
@@ -49,7 +49,7 @@ class MCPForGKEServer(FastMCP):
         
         self.add_tool(
             name="update_custom_resource",
-            description="""Update a Kubernetes CustomResource object with specific requirements.
+            description="""Update a KCC CustomResource object with specific requirements.
             "This tool expects the config change to be a nested dictionary representing a JSON merge patch.
             "For example, {"spec": {"replicas": 3}, "metadata": {"labels": {"app": "my-app"}}}.
             "The tool will update the CustomResource object in the cluster with the provided requirements. 
@@ -64,7 +64,7 @@ class MCPForGKEServer(FastMCP):
         
         self.add_tool(
             name="describe_resource",
-            description="Get detailed information about a specific Kubernetes resource.",
+            description="Get detailed information about a specific KCC resource.",
             fn=self.describe_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -72,8 +72,8 @@ class MCPForGKEServer(FastMCP):
         # This is a trick since GEMINI CLI does not support MCP prompts yet.
         # We make a special tool to introduce the prompt usage into the GEMINI plan. 
         self.add_tool(
-            name="list_scenarios",
-            description="Give a list of available prompts for Kubernetes related tasks." +
+            name="list_task_scenarios",
+            description="Give a list of available prompts for KCC related tasks." +
             "Each prompt is a specific scenario that is designed to help LLM understand the tasks."
             "Using prompt should be preferred before using tools, because the prompt can help determining which tools to use and the order of using them.",
             fn=self.list_prompts,
@@ -81,14 +81,14 @@ class MCPForGKEServer(FastMCP):
         )
         
         self.add_prompt(Prompt(
-            name="scenario_custom_create_resource",
-            description="A prompt to create a Kubernetes CustomResource object based on user requirements.",
+            name="scenario_create_resource",
+            description="A prompt to help creating a KCC CustomResource object with some specific requirements.",
             fn=self.scenario_custom_create_resource
         ))
         
         self.add_prompt(Prompt(
             name="scenario_resource_status",
-            description="A prompt to describe a Kubernetes CustomResource object in the GKE cluster. It specifically checks if the CR is in a healthy status.",
+            description="A prompt to describe a KCC CustomResource object in the  cluster. It checks if the CR is in a healthy status.",
             fn=self.scenario_resource_status
         ))
     
@@ -223,12 +223,13 @@ class MCPForGKEServer(FastMCP):
         except Exception as e:
             return f"An unexpected error occurred: {e}"
         
-    async def create_resource(self, crd_content: str|None, crd_path: str|None, custom_configs: dict) -> str:
+    async def create_resource(self, crd_content: str = None, crd_path: str = None, custom_configs: dict = None) -> str:
         """Provide a prompt to give LLM instructions to create a CustomResource object for the given CustomResourceDefinition.
+        either crd_content or crd_path should be provided.
 
         Args:
-            crd_content: The content of the CustomResourceDefinition. If not given, use crd_path  
-            crd_path: Is the path to the CustomResourceDefinition. Required if crd_content is not given. 
+            crd_content: The content of the CustomResourceDefinition. If not given, use crd_path.
+            crd_path: Is the path to the CustomResourceDefinition. Required if crd_content is not given.
             custom_configs: A dictionary containing the configurations to fill in the CustomResource object.
             It could include fields with specific value or user requirements.
             For example, {"spec.replicas": 3, "spec.template.spec.containers[0].image": "nginx:latest"}.
@@ -237,6 +238,12 @@ class MCPForGKEServer(FastMCP):
         Returns:
             The prompt message.
         """
+        if crd_content and crd_path:
+            raise ValueError("Please provide either crd_content or crd_path, not both.")
+
+        if not crd_content and not crd_path:
+            raise ValueError("Please provide either crd_content or crd_path.")
+
         if not crd_content:
             # read CRD from path
             crd_content = fs.read_yaml_file(crd_path)
@@ -309,12 +316,13 @@ class MCPForGKEServer(FastMCP):
         except subprocess.CalledProcessError as e:
             return f"Error updating resource: {e.stderr}"
         
-    async def validate_resource(self, cr: str, crd_path: str) -> str:
+    async def validate_resource(self, cr: str, crd_path: str, timeout: int = 30) -> str:
         """Validate a CustomResource object if kubectl --dry-run=server is not available.
 
         Args:
             cr: The CustomResource object to validate.
             crd_path: The path to the CustomResourceDefinition.
+            timeout: The timeout for the validation command in seconds.
         """
         if not cr:
             return "Error: No CustomResource provided for validation."
@@ -325,17 +333,18 @@ class MCPForGKEServer(FastMCP):
         for file in files:
             abspath = os.path.join(os.getcwd(), file)
             if not os.path.exists(abspath):
-                raise(f"Error: File not found at '{abspath}'")
+                raise ValueError(f"Error: File not found at '{abspath}'")
             
-            return self.run_kubeconform_with_yaml_content(abspath, cr)
+            return self.run_kubeconform_with_yaml_content(abspath, cr, timeout)
     
-    def run_kubeconform_with_yaml_content(self, schema_location: str, yaml_content: str) -> str:
+    def run_kubeconform_with_yaml_content(self, schema_location: str, yaml_content: str, timeout: int = 30) -> str:
         """
         Runs the kubeconform command, passing the YAML content via stdin.
 
         Args:
             schema_location (str): The path to the schema JSON file.
             yaml_content (str): The content of the YAML file as a string.
+            timeout (int): The timeout for the command in seconds.
 
         Returns:
             subprocess.CompletedProcess: The result of the subprocess execution.
@@ -351,12 +360,15 @@ class MCPForGKEServer(FastMCP):
                 command,
                 input=yaml_content.encode('utf-8'),  # Encode the YAML content to bytes
                 capture_output=True,
-                check=False  # Raise a CalledProcessError if the command returns a non-zero exit code
+                check=False,  # Raise a CalledProcessError if the command returns a non-zero exit code
+                timeout=timeout
             )
             print("kubeconform output (stdout):\n", result)
             if result.stderr:
-                raise("kubeconform errors (stderr):\n", result.stderr)
+                raise ValueError(f"kubeconform errors (stderr):\n{result.stderr.decode()}")
             return result.stdout
+        except subprocess.TimeoutExpired as e:
+            raise ValueError(f"kubeconform command timed out after {timeout} seconds: {e}\n")
         except subprocess.CalledProcessError as e:
             raise ValueError(f"Error running kubeconform: {e}\n")
         except FileNotFoundError:

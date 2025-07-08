@@ -27,7 +27,7 @@ def read_yaml_file(crd_path):
         dict: A dictionary representing the content of the YAML file, or None if an error occurs.
     """
     if not os.path.exists(crd_path):
-        raise(f"Error: File not found at '{crd_path}'")
+        raise ValueError(f"Error: File not found at '{crd_path}'")
     
     if not crd_path.lower().endswith(('.yaml', '.yml')):
         print(f"Warning: The file '{crd_path}' does not appear to be a YAML file.")
@@ -39,7 +39,7 @@ def read_yaml_file(crd_path):
     except yaml.YAMLError as e:
         raise ValueError(f"Error parsing YAML file '{crd_path}': {e}")
     except Exception as e:
-        raise Exception(f"An unexpected error occurred while reading '{crd_path}': {e}")
+        raise ValueError(f"An unexpected error occurred while reading '{crd_path}': {e}")
 
 def write_yaml_file(file_path, content):
     """
@@ -54,9 +54,9 @@ def write_yaml_file(file_path, content):
         str: An error message if an exception occurs.
     """
     if not file_path:
-        raise ("file_path cannot be None")
+        raise ValueError("file_path cannot be None")
     if not content:
-        raise ("content cannot be None")
+        raise ValueError("content cannot be None")
     
     try:
         with open(file_path, 'w') as file:

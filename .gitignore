@@ -174,3 +174,6 @@ pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
 experiments/mcp/**/__pycache__
 # Ignore python egg files
 experiments/mcp/**/*.egg-info
+
+# MCP eval
+experiments/mcp-eval/**/__pycache__
