@@ -1,0 +1,15 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    managed-by-cnrm: "true"
+  name: bigquerytable-${uniqueId}
+spec:
+  datasetRef:
+    external: bigquerydataset${uniqueId}
+  description: Updated description of BQ Table
+  friendlyName: BigQueryTable Example
+  resourceID: bigquerytable-${uniqueId}
+  schema: '[{"mode":"REQUIRED","name":"name","type":"STRING"},{"mode":"REQUIRED","name":"email","type":"STRING"}]'
