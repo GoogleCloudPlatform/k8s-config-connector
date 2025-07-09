@@ -30,6 +30,9 @@ func GetTestCommonWebhookConfigs() ([]webhook.Config, error) {
 		// deny-immutable-field-updates webhook currently cannot work with envtest
 		// because updates from controller cannot be distinguished by service account
 		// TODO: figure out a way to enable it in envtest
+
+		// res = append(res, config)
+
 		if config.Name != "deny-immutable-field-updates.cnrm.cloud.google.com" {
 			res = append(res, config)
 		}
