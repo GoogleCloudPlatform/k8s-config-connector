@@ -237,6 +237,7 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -288,6 +289,7 @@ X-Xss-Protection: 0
       {
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       }
     ]

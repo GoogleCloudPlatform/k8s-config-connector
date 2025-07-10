@@ -12,4 +12,4 @@ spec:
   description: Description of BQ Table
   friendlyName: BigQueryTable Example
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"REQUIRED","name":"name","type":"STRING"}]'
+  schema: '[{"mode":"REQUIRED","name":"name","policyTags":{},"type":"STRING"}]'
