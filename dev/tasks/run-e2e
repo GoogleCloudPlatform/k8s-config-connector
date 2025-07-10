@@ -25,9 +25,12 @@ if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
   export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 fi
 
-if [[ -z "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
-  KCC_USE_DIRECT_RECONCILERS=SpannerInstance
-fi
+# We no longer only test against direct SpannerInstance. Keeping the following
+# code as an example of enabling pure direct reconciler in tests.
+#if [[ -z "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
+#  KCC_USE_DIRECT_RECONCILERS=SpannerInstance
+#fi
+
 echo "Using direct controllers: $KCC_USE_DIRECT_RECONCILERS"
 export KCC_USE_DIRECT_RECONCILERS
 
