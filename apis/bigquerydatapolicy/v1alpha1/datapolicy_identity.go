@@ -24,37 +24,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DataPolicyIdentity defines the resource reference to BigQueryDataPolicy, which "External" field
+// BigQueryDataPolicyDataPolicyIdentity defines the resource reference to BigQueryDataPolicyDataPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
-type DataPolicyIdentity struct {
-	parent *DataPolicyParent
+type BigQueryDataPolicyDataPolicyIdentity struct {
+	parent *BigQueryDataPolicyDataPolicyParent
 	id     string
 }
 
-func (i *DataPolicyIdentity) String() string {
-	return i.parent.String() + "/datapolicies/" + i.id
+func (i *BigQueryDataPolicyDataPolicyIdentity) String() string {
+	return i.parent.String() + "/dataPolicies/" + i.id
 }
 
-func (i *DataPolicyIdentity) ID() string {
+func (i *BigQueryDataPolicyDataPolicyIdentity) ID() string {
 	return i.id
 }
 
-func (i *DataPolicyIdentity) Parent() *DataPolicyParent {
+func (i *BigQueryDataPolicyDataPolicyIdentity) Parent() *BigQueryDataPolicyDataPolicyParent {
 	return i.parent
 }
 
-type DataPolicyParent struct {
+type BigQueryDataPolicyDataPolicyParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *DataPolicyParent) String() string {
+func (p *BigQueryDataPolicyDataPolicyParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a DataPolicyIdentity from the Config Connector DataPolicy object.
-func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQueryDataPolicy) (*DataPolicyIdentity, error) {
-
+// NewBigQueryDataPolicyDataPolicyIdentiy builds a BigQueryDataPolicyDataPolicyIdentiy from the Config Connector BigQueryDataPolicyDataPolicy object.
+func NewBigQueryDataPolicyDataPolicyIdentiy(ctx context.Context, reader client.Reader, obj *BigQueryDataPolicyDataPolicy) (*BigQueryDataPolicyDataPolicyIdentity, error) {
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
 	if err != nil {
@@ -94,8 +93,8 @@ func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 				resourceID, actualResourceID)
 		}
 	}
-	return &DataPolicyIdentity{
-		parent: &DataPolicyParent{
+	return &BigQueryDataPolicyDataPolicyIdentity{
+		parent: &BigQueryDataPolicyDataPolicyParent{
 			ProjectID: projectID,
 			Location:  location,
 		},
@@ -103,12 +102,12 @@ func NewDataPolicyIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 	}, nil
 }
 
-func ParseDataPolicyExternal(external string) (parent *DataPolicyParent, resourceID string, err error) {
+func ParseDataPolicyExternal(external string) (parent *BigQueryDataPolicyDataPolicyParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datapolicies" {
-		return nil, "", fmt.Errorf("format of BigQueryDataPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/datapolicies/{{datapolicyID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "dataPolicies" {
+		return nil, "", fmt.Errorf("format of BigQueryDataPolicy external=%q was not known (use projects/{{projectID}}/locations/{{location}}/dataPolicies/{{datapolicyID}})", external)
 	}
-	parent = &DataPolicyParent{
+	parent = &BigQueryDataPolicyDataPolicyParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
