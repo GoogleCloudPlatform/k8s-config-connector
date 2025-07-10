@@ -6,7 +6,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
     cnrm.cloud.google.com/tf2crd: "true"
   name: bigquerydatapolicydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com
@@ -16,6 +15,7 @@ spec:
     categories:
     - gcp
     kind: BigQueryDataPolicyDataPolicy
+    listKind: BigQueryDataPolicyDataPolicyList
     plural: bigquerydatapolicydatapolicies
     shortNames:
     - gcpbigquerydatapolicydatapolicy
@@ -43,46 +43,45 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigQueryDataPolicyDataPolicy is the Schema for the BigQueryDataPolicy
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigQueryDataPolicyDataPolicySpec defines the desired state
+              of BigQueryDataPolicy
             properties:
               dataMaskingPolicy:
                 description: The data masking policy that specifies the data masking
                   rule to use.
                 properties:
                   predefinedExpression:
-                    description: 'The available masking rules. Learn more here: https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.
-                      Possible values: ["SHA256", "ALWAYS_NULL", "DEFAULT_MASKING_VALUE",
-                      "LAST_FOUR_CHARACTERS", "FIRST_FOUR_CHARACTERS", "EMAIL_MASK",
-                      "DATE_YEAR_MASK"].'
+                    description: 'A predefined masking expression. Learn more here:
+                      https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest/v1beta1/projects.locations.dataPolicies#predefinedexpression'
                     type: string
-                required:
-                - predefinedExpression
                 type: object
               dataPolicyType:
-                description: 'The enrollment level of the service. Possible values:
-                  ["COLUMN_LEVEL_SECURITY_POLICY", "DATA_MASKING_POLICY"].'
+                description: Required. Data policy type. Type of data policy.
                 type: string
               location:
-                description: Immutable. The name of the location of the data policy.
+                description: Required. The location of the application.
                 type: string
               policyTag:
                 description: Policy tag resource name, in the format of projects/{project_number}/locations/{locationId}/taxonomies/{taxonomyId}/policyTags/{policyTag_id}.
                 type: string
               projectRef:
-                description: The project that this resource belongs to.
+                description: Required. The host project of the application.
                 oneOf:
                 - not:
                     required:
@@ -99,19 +98,23 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The dataPolicyId of the resource.
-                  Used for creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The BigQueryDataPolicy name. If not given, the metadata.name
+                  will be used.
                 type: string
             required:
             - dataPolicyType
@@ -120,10 +123,12 @@ spec:
             - projectRef
             type: object
           status:
+            description: BigQueryDataPolicyDataPolicyStatus defines the config connector
+              machine state of BigQueryDataPolicy
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -147,8 +152,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: Resource name of this data policy, in the format of projects/{project_number}/locations/{locationId}/dataPolicies/{dataPolicyId}.
+              externalRef:
+                description: A unique specifier for the BigQueryDataPolicy resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -156,7 +162,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -165,9 +176,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

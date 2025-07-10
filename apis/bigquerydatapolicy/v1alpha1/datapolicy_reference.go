@@ -26,13 +26,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DataPolicyRef{}
+var _ refsv1beta1.ExternalNormalizer = &BigQueryDataPolicyDataPolicyRef{}
 
 // DataPolicyRef defines the resource reference to BigQueryDataPolicy, which "External" field
 // holds the GCP identifier for the KRM object.
-type DataPolicyRef struct {
+type BigQueryDataPolicyDataPolicyRef struct {
 	// A reference to an externally managed BigQueryDataPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/datapolicys/{{datapolicyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/dataPolicies/{{datapolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a BigQueryDataPolicy resource.
@@ -45,9 +45,9 @@ type DataPolicyRef struct {
 // NormalizedExternal provision the "External" value for other resource that depends on BigQueryDataPolicy.
 // If the "External" is given in the other resource's spec.BigQueryDataPolicyRef, the given value will be used.
 // Otherwise, the "Name" and "Namespace" will be used to query the actual BigQueryDataPolicy object from the cluster.
-func (r *DataPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *BigQueryDataPolicyDataPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryDataPolicyGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigQueryDataPolicyDataPolicyGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *DataPolicyRef) NormalizedExternal(ctx context.Context, reader client.Re
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigQueryDataPolicyGVK)
+	u.SetGroupVersionKind(BigQueryDataPolicyDataPolicyGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryDataPolicyGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryDataPolicyDataPolicyGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")

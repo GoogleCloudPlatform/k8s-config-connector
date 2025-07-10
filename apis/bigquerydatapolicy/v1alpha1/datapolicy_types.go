@@ -15,17 +15,17 @@
 package v1alpha1
 
 import (
-	datacalog "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var BigQueryDataPolicyGVK = GroupVersion.WithKind("BigQueryDataPolicy")
+var BigQueryDataPolicyDataPolicyGVK = GroupVersion.WithKind("BigQueryDataPolicyDataPolicy")
 
 // +kcc:proto=google.cloud.bigquery.datapolicies.v1beta1.DataMaskingPolicy
 type DataMaskingPolicy struct {
 	// A predefined masking expression.
+	// Learn more here: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest/v1beta1/projects.locations.dataPolicies#predefinedexpression
 	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataMaskingPolicy.predefined_expression
 	PredefinedExpression *string `json:"predefinedExpression,omitempty"`
 }
@@ -40,36 +40,30 @@ type Parent struct {
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
-// BigQueryDataPolicySpec defines the desired state of BigQueryDataPolicy
+// BigQueryDataPolicyDataPolicySpec defines the desired state of BigQueryDataPolicy
 // +kcc:spec:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy
-type BigQueryDataPolicySpec struct {
+type BigQueryDataPolicyDataPolicySpec struct {
 	// The BigQueryDataPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. Defines the parent path of the resource.
 	*Parent `json:",inline"`
 
-	// Reference to a Data Catalog Policy Tag resource.
-	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy.policy_tag
-	PolicyTagRef *datacalog.PolicyTagRef `json:"policyTagRef,omitempty"`
+	/* Policy tag resource name, in the format of projects/{project_number}/locations/{locationId}/taxonomies/{taxonomyId}/policyTags/{policyTag_id}. */
+	PolicyTag *string `json:"policyTag"`
 
 	// The data masking policy that specifies the data masking rule to use.
 	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy.data_masking_policy
 	DataMaskingPolicy *DataMaskingPolicy `json:"dataMaskingPolicy,omitempty"`
 
-	// Type of data policy.
+	// Required. Data policy type. Type of data policy.
+	// +required
 	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy.data_policy_type
 	DataPolicyType *string `json:"dataPolicyType,omitempty"`
-
-	// User-assigned (human readable) ID of the data policy that needs to be
-	//  unique within a project. Used as {data_policy_id} in part of the resource
-	//  name.
-	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy.data_policy_id
-	DataPolicyID *string `json:"dataPolicyID,omitempty"`
 }
 
-// BigQueryDataPolicyStatus defines the config connector machine state of BigQueryDataPolicy
-type BigQueryDataPolicyStatus struct {
+// BigQueryDataPolicyDataPolicyStatus defines the config connector machine state of BigQueryDataPolicy
+type BigQueryDataPolicyDataPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -81,43 +75,43 @@ type BigQueryDataPolicyStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigQueryDataPolicyObservedState `json:"observedState,omitempty"`
+	ObservedState *BigQueryDataPolicyDataPolicyObservedState `json:"observedState,omitempty"`
 }
 
-// BigQueryDataPolicyObservedState is the state of the BigQueryDataPolicy resource as most recently observed in GCP.
+// BigQueryDataPolicyDataPolicyObservedState is the state of the BigQueryDataPolicy resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.bigquery.datapolicies.v1beta1.DataPolicy
-type BigQueryDataPolicyObservedState struct {
+type BigQueryDataPolicyDataPolicyObservedState struct {
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatapolicy;gcpbigquerydatapolicies
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatapolicydatapolicy;gcpbigquerydatapolicydatapolicies
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BigQueryDataPolicy is the Schema for the BigQueryDataPolicy API
+// BigQueryDataPolicyDataPolicy is the Schema for the BigQueryDataPolicy API
 // +k8s:openapi-gen=true
-type BigQueryDataPolicy struct {
+type BigQueryDataPolicyDataPolicy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   BigQueryDataPolicySpec   `json:"spec,omitempty"`
-	Status BigQueryDataPolicyStatus `json:"status,omitempty"`
+	Spec   BigQueryDataPolicyDataPolicySpec   `json:"spec,omitempty"`
+	Status BigQueryDataPolicyDataPolicyStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// BigQueryDataPolicyList contains a list of BigQueryDataPolicy
-type BigQueryDataPolicyList struct {
+// BigQueryDataPolicyDataPolicyList contains a list of BigQueryDataPolicyDataPolicy
+type BigQueryDataPolicyDataPolicyList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigQueryDataPolicy `json:"items"`
+	Items           []BigQueryDataPolicyDataPolicy `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&BigQueryDataPolicy{}, &BigQueryDataPolicyList{})
+	SchemeBuilder.Register(&BigQueryDataPolicyDataPolicy{}, &BigQueryDataPolicyDataPolicyList{})
 }
