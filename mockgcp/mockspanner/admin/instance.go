@@ -84,10 +84,15 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
 		obj.Edition = pb.Instance_STANDARD
 	}
+	if obj.DefaultBackupScheduleType == pb.Instance_DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED &&
+		obj.InstanceType != pb.Instance_FREE_INSTANCE {
+		obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
+	}
+	obj.Name = fqn
+	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 
 	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
-	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -101,8 +106,8 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
 		metadata.ExpectedFulfillmentPeriod = pb.FulfillmentPeriod_FULFILLMENT_PERIOD_NORMAL
 		metadata.EndTime = now
+		metadata.Instance.CreateTime = now
 		metadata.Instance.UpdateTime = now
-		metadata.Instance.ReplicaComputeCapacity = nil
 		metadata.Instance.Name = fqn
 		retObj := proto.Clone(obj).(*pb.Instance)
 		retObj.Name = fqn
@@ -125,6 +130,10 @@ func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.I
 		obj.ProcessingUnits = update.ProcessingUnits
 		obj.NodeCount = update.ProcessingUnits / 1000
 	}
+
+	if update.InstanceType == pb.Instance_INSTANCE_TYPE_UNSPECIFIED {
+		obj.InstanceType = pb.Instance_PROVISIONED
+	}
 }
 
 func (s *SpannerInstanceV1) populateReplicaComputeCapacityForSpannerInstance(obj *pb.Instance) {
@@ -136,10 +145,11 @@ func (s *SpannerInstanceV1) populateReplicaComputeCapacityForSpannerInstance(obj
 		}
 		r := &pb.ReplicaComputeCapacity{
 			ReplicaSelection: &pb.ReplicaSelection{Location: location},
-			ComputeCapacity:  &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.NodeCount},
+			//ComputeCapacity:  &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.NodeCount},
 		}
 		obj.ReplicaComputeCapacity = append(obj.ReplicaComputeCapacity, r)
 	}
+	obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.ProcessingUnits}
 }
 
 func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunningpb.Operation, error) {
@@ -190,9 +200,9 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	}
 
 	s.populateDefaultsForSpannerInstance(req.Instance, obj)
+	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
-	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -204,7 +214,6 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		metadata.ExpectedFulfillmentPeriod = pb.FulfillmentPeriod_FULFILLMENT_PERIOD_NORMAL
 		metadata.EndTime = now
 		metadata.Instance.UpdateTime = now
-		metadata.Instance.ReplicaComputeCapacity = nil
 		retObj := proto.Clone(obj).(*pb.Instance)
 		return retObj, nil
 	})
