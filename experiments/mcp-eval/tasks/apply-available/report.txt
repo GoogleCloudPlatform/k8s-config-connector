@@ -1,0 +1,12 @@
+Evaluation Report
+====================
+
+--- Summary for MCP Enabled ---
+Total Tests Run: 1
+Tests Passed: 1
+Tests Failed: 0
+Pass Rate: 100.00%
+Average Latency: 137966.82 ms
+Max Latency: 137966.82 ms
+Total LLM Requests: 0
+

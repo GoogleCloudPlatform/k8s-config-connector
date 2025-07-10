@@ -123,7 +123,6 @@ if __name__ == "__main__":
         f.write("="*20 + "\n")
 
     # --- Run with MCP Enabled ---
-    print("--- Starting Evaluation with MCP Enabled ---")
     with open('config.json', 'r') as f:
         mcp_config = json.load(f)
     
@@ -144,8 +143,8 @@ if __name__ == "__main__":
         f.write("\n--- Summary for MCP Disabled ---\n")
         f.write(no_mcp_evaluator.get_summary() + "\n")
 
-
     # --- Run with MCP Enabled ---
+    print("--- Starting Evaluation with MCP Enabled ---")
     setup_mcp_config(mcp_config, config_file_path=mcp_config_path)
     mcp_evaluator = MCPEvaluator()
     for test in test_cases:

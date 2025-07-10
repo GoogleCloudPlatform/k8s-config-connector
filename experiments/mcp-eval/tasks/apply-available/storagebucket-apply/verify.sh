@@ -21,9 +21,14 @@ set -o pipefail
 # Get the top-level directory of the git repository
 TOP_LEVEL=$(git rev-parse --show-toplevel)
 
-gcloud storage buckets describe gs://storagebucket-apply
+if kubectl wait --for=condition=Ready storagebuckets/storagebucket-apply -n storagebucket-apply --timeout=30s; then
+    exit 0
+else
+    exit 1
+fi 
 
-if kubectl wait --for=condition=Ready storagebuckets/storagebucket-apply -A --timeout=30s; then
+
+if gcloud storage buckets describe gs://storagebucket-apply; then
     exit 0
 else
     exit 1

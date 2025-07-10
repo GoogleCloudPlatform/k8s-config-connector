@@ -1,5 +1,0 @@
-script:
-- prompt: "Your task is to get a 'storagebucket-apply' KCC StorageBucket with UBLA enabled running in the cluster. Use the available tools to generate the manifest, validate it, and then apply it. If you need to create any files, store them under $(git rev-parse --show-toplevel)/.build/tasks/storagebucket-3-apply/. Hint: This is a multi-step process. Use the mcp tools to help you. If the mcp tool is not available, use your knowledge to generate the YAML manifest."
-verifier: "verify.sh"
-cleanup: "cleanup.sh"
-difficulty: "hard" 

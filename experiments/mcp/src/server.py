@@ -100,6 +100,12 @@ class MCPForGKEServer(FastMCP):
     def load_criteria(self):
         criteria = {}
         criteria_dir = "criteria"
+        if not os.path.exists(criteria_dir):
+            # Fallback to an absolute path
+            # This is useful when the script is not run from the root of the project
+            # TODO: make this more robust
+            criteria_dir = os.path.join(os.getcwd(), "criteria")
+        
         if os.path.exists(criteria_dir):
             for filename in os.listdir(criteria_dir):
                 if filename.endswith(".json"):
@@ -238,9 +244,7 @@ class MCPForGKEServer(FastMCP):
         """Generates a detailed prompt instructing an LLM to create a YAML manifest for a Custom Resource.
 
         This function takes a Custom Resource Definition (CRD) and optional user configurations and
-        produces a precise prompt. The prompt directs the LLM to analyze the CRD's schema, generate a
-        complete YAML manifest, apply the user's configurations, and use valid placeholders for any
-        remaining required fields.
+        produces a precise prompt. The prompt directs the LLM to generate the YAML manifest.
 
         Either `crd_content` or `crd_path` must be provided.
 
@@ -254,9 +258,6 @@ class MCPForGKEServer(FastMCP):
         Returns:
             A detailed string prompt for the LLM to generate a YAML manifest.
         """
-        if crd_content and crd_path:
-            raise ValueError("Please provide either crd_content or crd_path, not both.")
-
         if not crd_content and not crd_path:
             raise ValueError("Please provide either crd_content or crd_path.")
 
@@ -279,9 +280,6 @@ Here are the custom configurations to apply:
 
 Please follow these instructions carefully:
 {instructions}
-
-Here are some examples:
-{examples}
 
 Quality Criteria:
 {quality_criteria}
