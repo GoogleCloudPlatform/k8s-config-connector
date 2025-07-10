@@ -22,14 +22,58 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
+// isMaintenanceVersionAvailable checks if the given maintenance version is available in the list of available versions.
+func isMaintenanceVersionAvailable(version string, availableVersions []string) bool {
+	if version == "" || len(availableVersions) == 0 {
+		return false
+	}
+	for _, availableVersion := range availableVersions {
+		if availableVersion == version {
+			return true
+		}
+	}
+	return false
+}
+
+// determineMaintenanceVersion determines the appropriate maintenance version to use based on user specification and actual instance state.
+// Returns the maintenance version to use, or empty string if none should be set.
+func determineMaintenanceVersion(userSpecifiedVersion *string, actualVersion string, availableVersions []string) string {
+	// If user specified a version, use it regardless of actual/available
+	if userSpecifiedVersion != nil {
+		return *userSpecifiedVersion
+	}
+
+	// If no actual instance, don't set maintenance version
+	if actualVersion == "" {
+		return ""
+	}
+
+	// If the user hasn't specified a maintenance version:
+	// 1. If AvailableMaintenanceVersions is not populated by GCP, assume actual.MaintenanceVersion is still valid
+	// 2. If AvailableMaintenanceVersions is populated and actual.MaintenanceVersion is still valid, use it
+	// 3. If AvailableMaintenanceVersions is populated and actual.MaintenanceVersion is not valid, pick the first available version (we cannot leave this field empty, otherwise we will see constant diff)
+	if len(availableVersions) == 0 {
+		// Scenario 1: AvailableMaintenanceVersions not populated, assume actual version is valid
+		return actualVersion
+	} else if isMaintenanceVersionAvailable(actualVersion, availableVersions) {
+		// Scenario 2: Actual version is still valid
+		return actualVersion
+	} else {
+		// Scenario 3: Actual version is retired, pick the first available version
+		return availableVersions[0]
+	}
+}
+
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 	if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
 	}
 	if in.Spec.MaintenanceVersion == nil && actual != nil {
-		// If desired maintenanceVersion is not specified, assume user wants the actual.
-		out.MaintenanceVersion = actual.MaintenanceVersion
+		maintenanceVersion := determineMaintenanceVersion(in.Spec.MaintenanceVersion, actual.MaintenanceVersion, actual.AvailableMaintenanceVersions)
+		if maintenanceVersion != "" {
+			out.MaintenanceVersion = maintenanceVersion
+		}
 	}
 	if in.Spec.Settings.ActivationPolicy == nil {
 		// GCP default ActivationPolicy is ALWAYS.
