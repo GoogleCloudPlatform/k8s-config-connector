@@ -157,6 +157,30 @@ class MCPEvaluator:
 
         return df
 
+    def get_summary(self):
+        if not self.test_results:
+            return "No test results to summarize."
+
+        df = pd.DataFrame(self.test_results)
+        passed_count = df['passed'].sum()
+        total_count = len(df)
+        fail_count = total_count - passed_count
+        pass_rate = (passed_count / total_count) * 100 if total_count > 0 else 0
+        avg_latency = df['latency_ms'].mean()
+        max_latency = df['latency_ms'].max()
+        total_llm_requests = df['llm_requests'].sum()
+
+        summary = (
+            f"Total Tests Run: {total_count}\n"
+            f"Tests Passed: {passed_count}\n"
+            f"Tests Failed: {fail_count}\n"
+            f"Pass Rate: {pass_rate:.2f}%\n"
+            f"Average Latency: {avg_latency:.2f} ms\n"
+            f"Max Latency: {max_latency:.2f} ms\n"
+            f"Total LLM Requests: {total_llm_requests}\n"
+        )
+        return summary
+        
     def _run_gemini_command_internal(self, command, prompt):
         """
         Runs a Gemini CLI command and captures its output and error, printing it in real-time.

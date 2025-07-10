@@ -95,17 +95,6 @@ def compare_reports(mcp_df, no_mcp_df):
 
 
 if __name__ == "__main__":
-    # Discover test cases from the tasks directory
-    test_cases = discover_tasks()
-    if not test_cases:
-        print("No test cases found in the 'tasks' directory. Exiting.")
-        sys.exit(0)
-
-    # --- Run with MCP Enabled ---
-    print("--- Starting Evaluation with MCP Enabled ---")
-    with open('config.json', 'r') as f:
-        mcp_config = json.load(f)
-    
     # Create the parser
     parser = argparse.ArgumentParser(prog="eval")
     parser.add_argument(
@@ -113,28 +102,66 @@ if __name__ == "__main__":
         type=str,
         help='Path to the .gemini/settings.json configuration file, if not configured, will look at the curent .gemini/settings.json'
     )
+    parser.add_argument(
+        '--tasks-dir', '-t',
+        type=str,
+        default="tasks",
+        help='Path to the directory containing test tasks.'
+    )
     args = parser.parse_args()
+
+    # Discover test cases from the tasks directory
+    test_cases = discover_tasks(args.tasks_dir)
+    if not test_cases:
+        print(f"No test cases found in the '{args.tasks_dir}' directory. Exiting.")
+        sys.exit(0)
+
+    # Create or clear the report file
+    report_path = os.path.join(args.tasks_dir, "report.txt")
+    with open(report_path, "w") as f:
+        f.write("Evaluation Report\n")
+        f.write("="*20 + "\n")
+
+    # --- Run with MCP Enabled ---
+    print("--- Starting Evaluation with MCP Enabled ---")
+    with open('config.json', 'r') as f:
+        mcp_config = json.load(f)
+    
     # Access the value of --config-path
     if args.config_path:
         mcp_config_path = args.config_path
     else:
         mcp_config_path = os.path.join(os.getcwd(), ".gemini/settings.json") 
-    setup_mcp_config(mcp_config, config_file_path=mcp_config_path)
-    mcp_evaluator = MCPEvaluator()
-    mcp_results_df = run_evaluation(mcp_evaluator, test_cases)
-
+        
     # --- Run with MCP Disabled ---
     print("\n--- Starting Evaluation with MCP Disabled ---")
     setup_mcp_config({}, config_file_path=mcp_config_path) # Empty config disables MCP
     no_mcp_evaluator = MCPEvaluator()
-    no_mcp_results_df = run_evaluation(no_mcp_evaluator, test_cases)
+    for test in test_cases:
+        no_mcp_evaluator.run_test_case(**test)
+    no_mcp_results_df = no_mcp_evaluator.generate_report()
+    with open(report_path, "a") as f:
+        f.write("\n--- Summary for MCP Disabled ---\n")
+        f.write(no_mcp_evaluator.get_summary() + "\n")
 
+
+    # --- Run with MCP Enabled ---
+    setup_mcp_config(mcp_config, config_file_path=mcp_config_path)
+    mcp_evaluator = MCPEvaluator()
+    for test in test_cases:
+        mcp_evaluator.run_test_case(**test)
+    mcp_results_df = mcp_evaluator.generate_report()
+    with open(report_path, "a") as f:
+        f.write("\n--- Summary for MCP Enabled ---\n")
+        f.write(mcp_evaluator.get_summary() + "\n")
 
     # --- Compare Results ---
     if not mcp_results_df.empty and not no_mcp_results_df.empty:
         report = compare_reports(mcp_results_df, no_mcp_results_df)
         print(report)
-        with open("report.txt", "w") as f:
+        with open(report_path, "a") as f:
             f.write(report)
     else:
         print("\nCould not generate comparison report due to one or both evaluation runs failing.")
+
+    print(f"\nEvaluation complete. Full report written to {report_path}")

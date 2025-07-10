@@ -1,0 +1,5 @@
+script:
+- prompt: "You need to create a KCC ComputeSubnetwork resource named 'my-subnetwork' in the 'us-central1' region with an IP CIDR range of '10.2.0.0/16' and referencing a ComputeNetwork named 'my-network'. Use the available tools to generate the appropriate YAML manifest and then write it to the file at $(git rev-parse --show-toplevel)/.build/tasks/compute-2-subnetwork/subnetwork.yaml. Hint: Use the available MCP tools to find the resource schema and generate the YAML. If the mcp tool is not available, use your knowledge to generate the YAML manifest. "
+verifier: "verify.sh"
+cleanup: "cleanup.sh"
+difficulty: "medium"

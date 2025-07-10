@@ -31,10 +31,13 @@ class MCPForGKEServer(FastMCP):
     def __init__(self, kubeconfig: str):
         super().__init__()
         
+        self.criteria = self.load_criteria()
+        api_criteria = self.criteria.get("api", {})
+        
         # Use prompt instead dedicated code since it requires a LLM call.
         self.add_tool(
             name="create_resource",
-            description="Generates a complete and valid YAML manifest for a Kubernetes Custom Resource. Use this to scaffold a new resource by providing its CustomResourceDefinition (CRD). It's the best first step for creating any new KCC resource.",
+            description=api_criteria.get("description", "Provide a prompt to give LLM instructions to create a CustomResource object for the given CustomResourceDefinition. It should be preferred as the LLM prompt instruction to generates a complete and valid YAML manifest for a Kubernetes Custom Resource. It's the best first step for creating any new KCC resource."),
             fn=self.create_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -60,8 +63,8 @@ class MCPForGKEServer(FastMCP):
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
-        # This is a trick since GEMINI CLI does not support MCP prompts yet.
-        # We make a special tool to introduce the prompt usage into the GEMINI plan. 
+        # This is a trick since GEMINI CLI does not support MCP prompts yet.
+        # We make a special tool to introduce the prompt usage into the GEMINI plan. 
         self.add_tool(
             name="list_task_scenarios",
             description="Provides a list of high-level task scenarios or workflows. Use this to discover multi-step actions you can perform, such as creating a resource and then verifying its status.",
@@ -71,18 +74,18 @@ class MCPForGKEServer(FastMCP):
         
         self.add_prompt(Prompt(
             name="scenario_create_resource",
-            description="A prompt to help creating a KCC CustomResource object with some specific requirements.",
+            description="Guides the LLM to generate a complete and valid YAML manifest for a new Kubernetes Custom Resource. Use this when a user wants to create a resource and has provided a high-level description of their needs. The prompt will instruct the LLM to use the `create_resource` tool to get detailed instructions on how to generate the YAML, and the `validate_resource` tool to validate the generated YAML.",
             fn=self.scenario_custom_create_resource
         ))
         
         self.add_prompt(Prompt(
             name="scenario_resource_status",
-            description="A prompt to describe a KCC CustomResource object in the  cluster. It checks if the CR is in a healthy status.",
+            description="Initiates a workflow to check the readiness and health of an existing Kubernetes Custom Resource in a cluster. This is the best tool to use when a user wants to know the status of a resource or troubleshoot why it is not ready. The prompt will guide the LLM to use the `describe_resource` tool to get the resource's status and then provide suggestions for fixing it, potentially using the `update_custom_resource` tool.",
             fn=self.scenario_resource_status
         ))
     
         # Load Kubernetes configuration
-        # A cluster context is preferred and enables more tasks. If not given, we will do our best (e.g. kubeconform vs kubectl --dry-run=server) 
+        # A cluster context is preferred and enables more tasks. If not given, we will do our best (e.g. kubeconform vs kubectl --dry-run=server) 
         try:
             kubernetes.config.load_kube_config(kubeconfig)
             self.core_v1 = kubernetes.client.CoreV1Api()
@@ -94,16 +97,31 @@ class MCPForGKEServer(FastMCP):
             self.core_v1 = None
             self.apps_v1 = None
 
+    def load_criteria(self):
+        criteria = {}
+        criteria_dir = "criteria"
+        if os.path.exists(criteria_dir):
+            for filename in os.listdir(criteria_dir):
+                if filename.endswith(".json"):
+                    topic = os.path.splitext(filename)[0]
+                    filepath = os.path.join(criteria_dir, filename)
+                    with open(filepath, "r") as f:
+                        criteria[topic] = json.load(f)
+        return criteria
+
     async def scenario_custom_create_resource(self, resource_kind: str, name: str, namespace: str, descriptive_requirements: dict) -> str:
-        """ Generate a prompt for Gemini to create a Kubernetes CustomResource (CR) based on user requirements.
+        """Constructs a detailed prompt that guides the LLM to generate a valid Kubernetes Custom Resource manifest.
+
+        This function translates a user's high-level request into a precise, multi-step plan for the LLM.
+        The generated prompt instructs the LLM to use the `create_resource` tool to generate the initial YAML
+        and then use the `validate_resource` tool to ensure the output is correct before presenting it to the user.
         
         Args:
-            resource_kind: The kind of the resource to generate, e.g., "Deployment", "Service", etc.
-            name: The name of the resource.
-            namespace: The namespace where the resource will be created.
-            descriptive_requirements: A dictionary containing user descriptive requirements for the resource.
-            It could include fields with specific value or user requirements.
-            For example, {"replica": 3, "image": "use latest ubuntu"}. 
+            resource_kind: The `kind` of the Kubernetes resource to create (e.g., "StorageBucket", "SQLInstance").
+            name: The `metadata.name` for the resource.
+            namespace: The `metadata.namespace` where the resource will be created.
+            descriptive_requirements: A dictionary mapping resource field paths to desired values or natural language descriptions.
+                For example, `{"spec.versioning.enabled": True, "spec.lifecycleRule": "30-day deletion policy"}`.
         """
         # Prepare the instruction for Gemini
         instruction = f"""Create a Kubernetes YAML CustomResource (CR) of kind '{resource_kind}' with the name '{name}' in the namespace '{namespace}'. 
@@ -122,12 +140,16 @@ class MCPForGKEServer(FastMCP):
         return instruction
 
     async def scenario_resource_status(self, resource_kind: str, name: str, namespace: str) -> str:
-        """ Generate a prompt for Gemini to check and (if possible) make a Kubernetes CustomResource (CR) ready and healthy.
+        """Generates a prompt that outlines a workflow for checking and diagnosing a Kubernetes resource's status.
+
+        This function creates instructions for the LLM to first use the `describe_resource` tool to fetch the
+        live state of the resource from the cluster. Based on the output, the LLM is then guided to analyze
+        the `status.conditions` field, report the resource's health, and suggest fixes for any issues.
         
         Args:
-            resource_kind: The kind of the resource to check, e.g., "Deployment", "Service", etc.
-            name: The name of the resource.
-            namespace: The namespace where the resource is located.
+            resource_kind: The `kind` of the resource to check (e.g., "IAMPolicyMember", "PubSubSubscription").
+            name: The `metadata.name` of the resource.
+            namespace: The `metadata.namespace` where the resource is located.
         """
         # Prepare the instruction for Gemini
         instruction = f"""Check if the Kubernetes CustomResource (CR) of kind '{resource_kind}' with the name '{name}' in the namespace '{namespace}' is ready and healthy. 
@@ -213,19 +235,24 @@ class MCPForGKEServer(FastMCP):
             return f"An unexpected error occurred: {e}"
         
     async def create_resource(self, crd_content: str = None, crd_path: str = None, custom_configs: dict = None) -> str:
-        """Provide a prompt to give LLM instructions to create a CustomResource object for the given CustomResourceDefinition.
-        either crd_content or crd_path should be provided.
+        """Generates a detailed prompt instructing an LLM to create a YAML manifest for a Custom Resource.
+
+        This function takes a Custom Resource Definition (CRD) and optional user configurations and
+        produces a precise prompt. The prompt directs the LLM to analyze the CRD's schema, generate a
+        complete YAML manifest, apply the user's configurations, and use valid placeholders for any
+        remaining required fields.
+
+        Either `crd_content` or `crd_path` must be provided.
 
         Args:
-            crd_content: The content of the CustomResourceDefinition. If not given, use crd_path.
-            crd_path: Is the path to the CustomResourceDefinition. Required if crd_content is not given.
-            custom_configs: A dictionary containing the configurations to fill in the CustomResource object.
-            It could include fields with specific value or user requirements.
-            For example, {"spec.replicas": 3, "spec.template.spec.containers[0].image": "nginx:latest"}.
-            If not provided, the tool will try to fill in as many fields as possible based on the CRD definition.
+            crd_content: A string containing the full YAML content of the Custom Resource Definition.
+            crd_path: The filesystem path to the CRD YAML file. Used if `crd_content` is not provided.
+            custom_configs: A dictionary of configurations to apply to the resource. Keys are dot-separated
+                paths (e.g., "spec.replicas") and values are the desired settings. If not provided, the
+                LLM will generate a manifest with placeholders based on the CRD schema.
             
         Returns:
-            The prompt message.
+            A detailed string prompt for the LLM to generate a YAML manifest.
         """
         if crd_content and crd_path:
             raise ValueError("Please provide either crd_content or crd_path, not both.")
@@ -238,6 +265,8 @@ class MCPForGKEServer(FastMCP):
             crd_content = fs.read_yaml_file(crd_path)
             if not crd_content:
                 raise ValueError(f"Error reading CRD from path: {crd_path}. Please check the file path and format.")
+        
+        api_criteria = self.criteria.get("api", {})
             
         # ask Gemini to generate
         instruction = """You are a Kubernetes expert. Your task is to create a YAML file for a Custom Resource based on the provided Custom Resource Definition (CRD).
@@ -249,14 +278,22 @@ Here are the custom configurations to apply:
 {custom_configs}
 
 Please follow these instructions carefully:
-1.  **Analyze the CRD**: Understand the structure, required fields, and data types from the `openAPIV3Schema` in the CRD.
-2.  **Create the YAML**: Generate a complete and valid YAML for the Custom Resource.
-3.  **Apply Custom Configs**: If `custom_configs` are provided, merge them into the generated YAML. Pay close attention to the correct path for each configuration.
-4.  **Use valid placeholders**: For any required fields not covered by `custom_configs`, use sensible, valid placeholder values (e.g., 'my-resource-name' for `.metadata.name`). Ensure names comply with RFC 1123 (DNS subdomain format).
-5.  **Return only YAML**: Your final output should be only the generated YAML content, with no extra text or explanations.
+{instructions}
 
-Example of a good placeholder for a name: `metadata:\n  name: example-name`
-""".format(crd=crd_content,custom_configs=custom_configs)
+Here are some examples:
+{examples}
+
+Quality Criteria:
+{quality_criteria}
+
+Return only YAML: Your final output should be only the generated YAML content, with no extra text or explanations.
+""".format(
+    crd=crd_content,
+    custom_configs=custom_configs,
+    instructions="\n".join([f"- {item}" for item in api_criteria.get("instructions", [])]),
+    examples="\n".join([f"- {item['scenario']}: {item['request']}" for item in api_criteria.get("examples", [])]),
+    quality_criteria="\n".join([f"- {item}" for item in api_criteria.get("quality_criteria", [])]),
+)
         return instruction
     
     async def update_custom_resource(self, resource_kind: str, resource_name: str, namespace: str, requirements: dict) -> str:
@@ -354,4 +391,3 @@ Example of a good placeholder for a name: `metadata:\n  name: example-name`
             return f"Error: kubeconform command timed out after {timeout} seconds."
         except Exception as e:
             return f"An unexpected error occurred while running kubeconform: {e}"
-    

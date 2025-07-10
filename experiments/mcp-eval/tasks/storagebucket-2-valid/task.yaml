@@ -1,5 +1,0 @@
-script:
-- prompt: "Generate the YAML for a KCC StorageBucket named storstoragebucket-valid, and then write the YAML to a file at $(git rev-parse --show-toplevel)/.build/tasks/storagebucket-valid/storagebucket-valid.yaml. hint: Use MCP tools if possible "
-verifier: "verify.sh"
-cleanup: "cleanup.sh"
-difficulty: "medium" 

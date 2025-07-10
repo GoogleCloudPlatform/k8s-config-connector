@@ -1,5 +1,0 @@
-script:
-- prompt: "apply a storage bucket named storagebucket-apply that has ubla enabled. hint: Use MCP tools. if you need to create any files, store them under $(git rev-parse --show-toplevel)/.build/tasks/storagebucket-apply/ "
-verifier: "verify.sh"
-cleanup: "cleanup.sh"
-difficulty: "hard" 

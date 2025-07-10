@@ -1,9 +1,0 @@
-
-
-======= Comparison Report: MCP vs. No MCP =======
-
-               test_name  passed_mcp  passed_no_mcp  latency_ms_mcp  latency_ms_no_mcp  latency_diff  llm_requests_mcp  llm_requests_no_mcp  llm_requests_diff
-0   storagebucket-1-ubla        True           True    29122.904539       47498.473406 -18375.568867                 0                    0                  0
-1  storagebucket-2-valid       False          False    55479.513407       33837.466240  21642.047167                 0                    0                  0
-2  storagebucket-3-apply       False          False   148928.990602      146303.752661   2625.237942                 0                    0                  0
-
