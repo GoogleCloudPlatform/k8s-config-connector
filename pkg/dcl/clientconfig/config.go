@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -49,6 +50,10 @@ func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Cl
 			return nil, nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
 		}
 		opt.HTTPClient = httpClient
+	}
+
+	if opt.EnableMetricsTransport {
+		opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
 	}
 
 	configOptions := []dcl.ConfigOption{

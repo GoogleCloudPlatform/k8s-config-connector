@@ -15,10 +15,13 @@
 package config
 
 import (
+	"context"
 	"net/http"
 
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
+	htransport "google.golang.org/api/transport/http"
 	"google.golang.org/grpc"
 )
 
@@ -45,6 +48,9 @@ type ControllerConfig struct {
 	// GCPTokenSource mints OAuth2 tokens to be passed with GCP API calls,
 	// allowing use of a non-default OAuth2 identity
 	GCPTokenSource oauth2.TokenSource
+
+	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
+	EnableMetricsTransport bool
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
@@ -57,19 +63,30 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 	if c.UserAgent != "" {
 		opts = append(opts, option.WithUserAgent(c.UserAgent))
 	}
+
 	if c.HTTPClient != nil {
 		httpClient := &http.Client{}
 		*httpClient = *c.HTTPClient
+
+		transport := c.HTTPClient.Transport
+		if c.EnableMetricsTransport {
+			transport = metricstransport.NewMetricsTransport(transport)
+		}
+
 		httpClient.Transport = &optionsRoundTripper{
 			config:       *c,
 			quotaProject: quotaProject,
-			inner:        c.HTTPClient.Transport,
+			inner:        transport,
 		}
 		opts = append(opts, option.WithHTTPClient(httpClient))
 
 		// quotaProject is incompatible with http client
 		quotaProject = ""
 	}
+	// else {
+	// the default HTTP client is used and wired up with Google auth
+	// }
+
 	if quotaProject != "" {
 		opts = append(opts, option.WithQuotaProject(quotaProject))
 	}
@@ -122,4 +139,28 @@ func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 		req.Header.Set("X-goog-user-project", m.quotaProject)
 	}
 	return m.inner.RoundTrip(req)
+}
+
+// NewAuthenticatedHTTPClient creates an HTTP client with proper authentication
+// and optionally wraps it with metrics transport
+func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*http.Client, error) {
+	opts, err := c.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	// Create an authenticated transport using htransport
+	baseTransport := http.DefaultTransport
+	if c.EnableMetricsTransport {
+		// Wrap the base transport with metrics transport
+		baseTransport = metricstransport.NewMetricsTransport(baseTransport)
+	}
+
+	// Create an authenticated transport
+	authTransport, err := htransport.NewTransport(ctx, baseTransport, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{Transport: authTransport}, nil
 }
