@@ -76,6 +76,9 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	now := timestamppb.Now()
 
 	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	// Value of ReplicaComputeCapacity during creation is determined by raw
+	// input so it needs to be processed first.
+	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 	s.populateDefaultsForSpannerInstance(obj, obj)
 	obj.State = pb.Instance_READY
 	if len(obj.DisplayName) < 4 || len(obj.DisplayName) > 30 {
@@ -89,9 +92,7 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 		obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
 	}
 	obj.Name = fqn
-	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 
-	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
 
 	obj.CreateTime = now
@@ -119,16 +120,22 @@ func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.I
 	// At most one of either node_count or processing_units should be present.
 	// https://cloud.google.com/spanner/docs/compute-capacity
 	// 1 nodeCount equals 1000 processingUnits
+	fmt.Printf("maqiuyu... update:\n%+v\n", update)
+	fmt.Printf("maqiuyu... obj:\n%+v\n", obj)
 	if update.AutoscalingConfig != nil {
 		update.ProcessingUnits = update.GetAutoscalingConfig().AutoscalingLimits.GetMinProcessingUnits()
 		update.NodeCount = update.GetAutoscalingConfig().AutoscalingLimits.GetMinNodes()
 	}
-	if 1000*update.NodeCount > update.ProcessingUnits {
-		obj.ProcessingUnits = 1000 * update.NodeCount
-		obj.NodeCount = update.NodeCount
-	} else {
-		obj.ProcessingUnits = update.ProcessingUnits
-		obj.NodeCount = update.ProcessingUnits / 1000
+	// If either nodeCount or processingUnits fields are unset, it means some
+	// changes need to happen. Otherwise, keep obj as is.
+	if update.NodeCount != 0 || update.ProcessingUnits != 0 {
+		if 1000*update.NodeCount > update.ProcessingUnits {
+			obj.ProcessingUnits = 1000 * update.NodeCount
+			obj.NodeCount = update.NodeCount
+		} else {
+			obj.ProcessingUnits = update.ProcessingUnits
+			obj.NodeCount = update.ProcessingUnits / 1000
+		}
 	}
 
 	if update.InstanceType == pb.Instance_INSTANCE_TYPE_UNSPECIFIED {
@@ -138,18 +145,69 @@ func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.I
 
 func (s *SpannerInstanceV1) populateReplicaComputeCapacityForSpannerInstance(obj *pb.Instance) {
 	if len(obj.ReplicaComputeCapacity) == 0 {
-		tokens := strings.Split(obj.Config, "/")
-		var location string
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instanceConfigs" {
-			location = strings.TrimPrefix(tokens[3], "regional-")
-		}
-		r := &pb.ReplicaComputeCapacity{
-			ReplicaSelection: &pb.ReplicaSelection{Location: location},
-			//ComputeCapacity:  &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.NodeCount},
-		}
-		obj.ReplicaComputeCapacity = append(obj.ReplicaComputeCapacity, r)
+		obj.ReplicaComputeCapacity = append(obj.ReplicaComputeCapacity, &pb.ReplicaComputeCapacity{})
 	}
-	obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.ProcessingUnits}
+
+	tokens := strings.Split(obj.Config, "/")
+	var location string
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instanceConfigs" {
+		location = strings.TrimPrefix(tokens[3], "regional-")
+	}
+	obj.ReplicaComputeCapacity[0].ReplicaSelection = &pb.ReplicaSelection{Location: location}
+
+	// When creating an instance, ReplicaComputeCapacity is initialized:
+	// - if autoscalingLimits are configured,
+	//   - if minNodes is set, set ReplicaComputeCapacity_NodeCount to minNodes
+	//   - else set ReplicaComputeCapacity_ProcessingUnits to minProcessingUnits
+	// - else
+	//   - if nodeCount is set, set ReplicaComputeCapacity_NodeCount to nodeCount
+	//   - else set ReplicaComputeCapacity_ProcessingUnits to processingUnits
+	// When updating an instance, ReplicaComputeCapacity is updated:
+	//   type of ComputeCapacity is not changed, but the value of it is updated accordingly.
+
+	// Check if the computeCapacity is already set.
+	var useNodeCount bool
+	var useProcessingUnits bool
+	if obj.ReplicaComputeCapacity[0].ComputeCapacity != nil {
+		if _, ok := obj.ReplicaComputeCapacity[0].ComputeCapacity.(*pb.ReplicaComputeCapacity_NodeCount); ok {
+			useNodeCount = true
+		} else {
+			useProcessingUnits = true
+		}
+	}
+
+	// Instance creation
+	if !(useNodeCount || useProcessingUnits) {
+		if obj.AutoscalingConfig != nil && obj.AutoscalingConfig.AutoscalingLimits != nil {
+			limits := obj.AutoscalingConfig.AutoscalingLimits
+			if _, ok := limits.GetMinLimit().(*pb.AutoscalingConfig_AutoscalingLimits_MinNodes); ok {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: limits.GetMinNodes()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: limits.GetMinProcessingUnits()}
+			}
+		} else {
+			if obj.NodeCount != 0 {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.GetNodeCount()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.GetProcessingUnits()}
+			}
+		}
+	} else { // Instance Update
+		if obj.AutoscalingConfig != nil && obj.AutoscalingConfig.AutoscalingLimits != nil {
+			limits := obj.AutoscalingConfig.AutoscalingLimits
+			if useNodeCount {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: limits.GetMinNodes()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: limits.GetMinProcessingUnits()}
+			}
+		} else {
+			if useNodeCount {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.GetNodeCount()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.GetProcessingUnits()}
+			}
+		}
+	}
 }
 
 func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunningpb.Operation, error) {
@@ -162,6 +220,7 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	now := timestamppb.Now()
 	obj.UpdateTime = now
 	updated := req.Instance
@@ -199,9 +258,10 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		}
 	}
 
-	s.populateDefaultsForSpannerInstance(req.Instance, obj)
+	s.populateDefaultsForSpannerInstance(updated, obj)
+	// Value of ReplicaComputeCapacity during update is determined by processed
+	// input so it needs to be handled after defaults are populated.
 	s.populateReplicaComputeCapacityForSpannerInstance(obj)
-	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -282,6 +342,8 @@ func (s *SpannerInstanceV1) CreateInstanceConfig(ctx context.Context, req *pb.Cr
 		Progress:       &pb.OperationProgress{StartTime: timestamppb.Now()},
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.Progress.EndTime = timestamppb.Now()
+		lroMetadata.Progress.ProgressPercent = 100
 		return obj, nil
 	})
 }

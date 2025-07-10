@@ -93,7 +93,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-central1",
       "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -154,7 +153,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -193,7 +191,6 @@ X-Xss-Protection: 0
         }
       }
     ],
-    "resourceLocation": "us-central1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -246,7 +243,6 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "resourceLocation": "us-central1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -323,7 +319,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-central1",
       "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -384,7 +379,6 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "resourceLocation": "us-central1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -422,7 +416,6 @@ X-Xss-Protection: 0
         }
       }
     ],
-    "resourceLocation": "us-central1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -474,7 +467,6 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "resourceLocation": "us-central1",
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
