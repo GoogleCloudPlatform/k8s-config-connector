@@ -351,6 +351,10 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 			log.V(2).Info("'spec.machineConfig.cpuCount' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount))
 			updatePaths = append(updatePaths, "machine_config.cpu_count")
 		}
+		if desired.MachineConfig.MachineType != nil && !reflect.DeepEqual(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType) {
+			log.V(2).Info("'spec.machineConfig.machineType' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType))
+			updatePaths = append(updatePaths, "machine_config.machine_type")
+		}
 	}
 	if desired.NetworkConfig != nil {
 		if desired.NetworkConfig.EnablePublicIP != nil && !reflect.DeepEqual(actual.NetworkConfig.EnablePublicIP, desired.NetworkConfig.EnablePublicIP) {
