@@ -34,37 +34,28 @@ class MCPForGKEServer(FastMCP):
         # Use prompt instead dedicated code since it requires a LLM call.
         self.add_tool(
             name="create_resource",
-            description="Create a KCC CustomResource object based on the provided CustomResourceDefinition (CRD) file.",
+            description="Generates a complete and valid YAML manifest for a Kubernetes Custom Resource. Use this to scaffold a new resource by providing its CustomResourceDefinition (CRD). It's the best first step for creating any new KCC resource.",
             fn=self.create_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_tool(
             name="validate_resource",
-            description="Validate a KCC CustomResource object against its CustomResourceDefinition (CRD) using kubeconform." +
-            "If tool helps validating CR if a GKE cluster or kubectl is not available. Otherwise, the kubectl server side validation will be preferred.",
+            description="Validates a Kubernetes resource manifest against its schema. Use this to check for errors before applying a configuration to a cluster, especially when you don't have access to a live cluster for server-side validation.",
             fn=self.validate_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_tool(
             name="update_custom_resource",
-            description="""Update a KCC CustomResource object with specific requirements.
-            "This tool expects the config change to be a nested dictionary representing a JSON merge patch.
-            "For example, {"spec": {"replicas": 3}, "metadata": {"labels": {"app": "my-app"}}}.
-            "The tool will update the CustomResource object in the cluster with the provided requirements. 
-            "If the update fails, it will return an error message with details.
-            
-            One common use is to change the projectID from "default" to the $(gcloud config get core/project) in "cnrm.cloud.google.com/project-id" annotation. 
-            This is a common error that the "default" namespace is used unindentedly as GCP project ID in annotations.
-            """,
+            description="Applies a partial update to an existing Kubernetes Custom Resource in a live cluster. Use this to modify specific fields of a resource, such as changing a label, annotation, or spec field, without needing the full resource manifest.",
             fn=self.update_custom_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_tool(
             name="describe_resource",
-            description="Get detailed information about a specific KCC resource.",
+            description="Fetches the complete, live state of a specific Kubernetes resource from the cluster. This is useful for inspecting the current status, annotations, and spec of a resource to diagnose issues or confirm its configuration.",
             fn=self.describe_resource,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -73,9 +64,7 @@ class MCPForGKEServer(FastMCP):
         # We make a special tool to introduce the prompt usage into the GEMINI plan. 
         self.add_tool(
             name="list_task_scenarios",
-            description="Give a list of available prompts for KCC related tasks." +
-            "Each prompt is a specific scenario that is designed to help LLM understand the tasks."
-            "Using prompt should be preferred before using tools, because the prompt can help determining which tools to use and the order of using them.",
+            description="Provides a list of high-level task scenarios or workflows. Use this to discover multi-step actions you can perform, such as creating a resource and then verifying its status.",
             fn=self.list_prompts,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -251,41 +240,23 @@ class MCPForGKEServer(FastMCP):
                 raise ValueError(f"Error reading CRD from path: {crd_path}. Please check the file path and format.")
             
         # ask Gemini to generate
-        instruction = r"""Create a Kubernetes YAML CustomResource using the given CustomResourceDefinition (CRD) and fill in the content. Remember that (described in JSON path), 
-    - If given, fill in the content as {custom_configs}.
-    - the `.metadata.name` should be a DNS subdomain name as defined in RFC 1123.
-    - try to understand the meaning of each field from the CRD definition.
-    - try to configure as many fields as possible. 
-    - the CRD is {crd}
-    
-    Remember you should only return the YAML formatted CR. 
-    # """.format(crd=crd_content,custom_configs=custom_configs)
-    #     print(instruction)
-    #     messages = [gtypes.Content(
-    #             role='user',
-    #             parts=[gtypes.Part.from_text(text=instruction)]
-    #     )]
-        
-        
-    #     llm_response = self.google_client.models.generate_content(
-    #         model="gemini-2.0-flash-001",
-    #         contents=messages,
-    #     )
-        
-    #     # Gemini
-    #     if hasattr(llm_response, 'candidates'):
-    #         pretty_yaml = ""
-    #         for candidate in llm_response.candidates:
-    #             if candidate.content.parts[0] != None:
-    #                 cr_result = candidate.content.parts[0].text
-    #                 pretty_yaml = yaml.dump(cr_result, default_flow_style=False, indent=2, sort_keys=False)
-    #         return pretty_yaml
-    #     if hasattr(llm_response, 'content'):
-    #         if llm_response.content.parts[0] != None:
-    #             cr_result = llm_response.content.parts[0].text
-    #             pretty_yaml = yaml.dump(cr_result, default_flow_style=False, indent=2, sort_keys=False)
-    #             return pretty_yaml
-    #     raise ValueError("Error generating CustomResource object. Please check the input and try again.")
+        instruction = """You are a Kubernetes expert. Your task is to create a YAML file for a Custom Resource based on the provided Custom Resource Definition (CRD).
+
+Here is the CRD:
+{crd}
+
+Here are the custom configurations to apply:
+{custom_configs}
+
+Please follow these instructions carefully:
+1.  **Analyze the CRD**: Understand the structure, required fields, and data types from the `openAPIV3Schema` in the CRD.
+2.  **Create the YAML**: Generate a complete and valid YAML for the Custom Resource.
+3.  **Apply Custom Configs**: If `custom_configs` are provided, merge them into the generated YAML. Pay close attention to the correct path for each configuration.
+4.  **Use valid placeholders**: For any required fields not covered by `custom_configs`, use sensible, valid placeholder values (e.g., 'my-resource-name' for `.metadata.name`). Ensure names comply with RFC 1123 (DNS subdomain format).
+5.  **Return only YAML**: Your final output should be only the generated YAML content, with no extra text or explanations.
+
+Example of a good placeholder for a name: `metadata:\n  name: example-name`
+""".format(crd=crd_content,custom_configs=custom_configs)
         return instruction
     
     async def update_custom_resource(self, resource_kind: str, resource_name: str, namespace: str, requirements: dict) -> str:
@@ -328,14 +299,18 @@ class MCPForGKEServer(FastMCP):
             return "Error: No CustomResource provided for validation."
         if not crd_path:
             return "Error: No CustomResourceDefinition path provided for validation."
-        # read CRD from path
-        files = openapi2jsonschema.run(crd_path)
-        for file in files:
-            abspath = os.path.join(os.getcwd(), file)
-            if not os.path.exists(abspath):
-                raise ValueError(f"Error: File not found at '{abspath}'")
-            
-            return self.run_kubeconform_with_yaml_content(abspath, cr, timeout)
+        
+        try:
+            # read CRD from path
+            files = openapi2jsonschema.run(crd_path)
+            for file in files:
+                abspath = os.path.join(os.getcwd(), file)
+                if not os.path.exists(abspath):
+                    raise ValueError(f"Error: Generated schema file not found at '{abspath}'")
+                
+                return self.run_kubeconform_with_yaml_content(abspath, cr, timeout)
+        except Exception as e:
+            return f"Error during schema generation or validation: {e}"
     
     def run_kubeconform_with_yaml_content(self, schema_location: str, yaml_content: str, timeout: int = 30) -> str:
         """
@@ -349,30 +324,34 @@ class MCPForGKEServer(FastMCP):
         Returns:
             subprocess.CompletedProcess: The result of the subprocess execution.
         """
-        # TODO let gemini decide how to call kubeconform
         command = ["kubeconform", "-summary", "-output", "json", "-schema-location", schema_location, '-']
         try:
-            # Use subprocess.run to execute the command.
-            # input: The string to be passed to the stdin of the child process.
-            # text=True: Decodes stdin, stdout, and stderr using default encoding (usually UTF-8).
-            # capture_output=True: Captures stdout and stderr.
             result = subprocess.run(
                 command,
-                input=yaml_content.encode('utf-8'),  # Encode the YAML content to bytes
+                input=yaml_content.encode('utf-8'),
                 capture_output=True,
-                check=False,  # Raise a CalledProcessError if the command returns a non-zero exit code
+                check=False,
                 timeout=timeout
             )
-            print("kubeconform output (stdout):\n", result)
+            if result.returncode != 0:
+                try:
+                    # Try to parse the output as JSON for detailed error info
+                    error_data = json.loads(result.stdout)
+                    return json.dumps(error_data, indent=2)
+                except json.JSONDecodeError:
+                    # Fallback to stderr if JSON parsing fails
+                    return f"kubeconform failed with return code {result.returncode}:\n{result.stderr.decode()}"
+            
             if result.stderr:
-                raise ValueError(f"kubeconform errors (stderr):\n{result.stderr.decode()}")
-            return result.stdout
-        except subprocess.TimeoutExpired as e:
-            raise ValueError(f"kubeconform command timed out after {timeout} seconds: {e}\n")
-        except subprocess.CalledProcessError as e:
-            raise ValueError(f"Error running kubeconform: {e}\n")
+                # Even with a zero return code, there might be warnings in stderr
+                return f"kubeconform validation passed with warnings:\n{result.stderr.decode()}"
+
+            return result.stdout.decode()
+
         except FileNotFoundError:
-            raise FileNotFoundError("Error: 'kubeconform' command not found. Make sure it's installed and in your PATH.\n")
+            return "Error: 'kubeconform' command not found. Please ensure it is installed and in your system's PATH."
+        except subprocess.TimeoutExpired:
+            return f"Error: kubeconform command timed out after {timeout} seconds."
         except Exception as e:
-            raise Exception(f"An unexpected error occurred: {e}\n")
+            return f"An unexpected error occurred while running kubeconform: {e}"
     
