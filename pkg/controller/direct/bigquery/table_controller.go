@@ -123,11 +123,11 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *krm.TableIdentity
-	gcpService *bigquery.TablesService
-	desired    *krm.BigQueryTable
-	actual     *bigquery.Table
-	reader     client.Reader
+	id              *krm.TableIdentity
+	gcpService      *bigquery.TablesService
+	desired         *krm.BigQueryTable
+	actual          *bigquery.Table
+	reader          client.Reader
 	unmanagedFields []string
 }
 
@@ -236,7 +236,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			setEmptyPolicyTagsInSchema(field)
 		}
 	}
-	// Make fields unmanaged before performing desired vs actual comparision.
+	// Make fields unmanaged before performing desired vs actual comparison.
 	if len(a.unmanagedFields) > 0 {
 		makeFieldsUnmanaged(table, a.unmanagedFields)
 		makeFieldsUnmanaged(a.actual, a.unmanagedFields)
@@ -278,7 +278,7 @@ func makeFieldsUnmanaged(table *bigquery.Table, unmanagedFields []string) {
 		if fieldName == "spec.schema.fields.policyTags" {
 			unmanagePolicyTags(table)
 		}
-		if fieldName == "spec.schema.fields.dataPolicies"{
+		if fieldName == "spec.schema.fields.dataPolicies" {
 			unmanageDataPolicy(table)
 		}
 	}
@@ -291,7 +291,7 @@ func unmanagePolicyTags(table *bigquery.Table) {
 }
 
 func setEmptyPolicyTags(fields []*bigquery.TableFieldSchema) {
-	for _, field := range(fields) {
+	for _, field := range fields {
 		field.PolicyTags = nil
 		setEmptyPolicyTags(field.Fields)
 	}
@@ -304,7 +304,7 @@ func unmanageDataPolicy(table *bigquery.Table) {
 }
 
 func setEmptyDataPolicy(fields []*bigquery.TableFieldSchema) {
-	for _, field := range(fields) {
+	for _, field := range fields {
 		field.DataPolicies = nil
 		setEmptyDataPolicy(field.Fields)
 	}
