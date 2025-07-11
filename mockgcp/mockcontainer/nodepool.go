@@ -203,13 +203,29 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			"https://www.googleapis.com/auth/cloud-platform",
 		}
 	} else {
+		// TODO: Reach out to API team to get clarification of the following behavior:
+		// When the input is
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write"
+		// ],
+		// the output becomes
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write",
+		//   "https://www.googleapis.com/auth/monitoring"
+		// ],
 		hasMonitoring := false
+		hasLoggingWrite := false
 		for _, scope := range obj.OauthScopes {
 			if scope == "https://www.googleapis.com/auth/monitoring" {
 				hasMonitoring = true
 			}
+			if scope == "https://www.googleapis.com/auth/logging.write" {
+				hasLoggingWrite = true
+			}
 		}
-		if !hasMonitoring {
+		if hasLoggingWrite && !hasMonitoring {
 			obj.OauthScopes = append(obj.OauthScopes, "https://www.googleapis.com/auth/monitoring")
 		}
 	}

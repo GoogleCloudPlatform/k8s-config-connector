@@ -14,6 +14,7 @@
 package e2e
 
 import (
+	"strings"
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -232,7 +233,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
 		// Enable re-reconciliation for new test cases; keep old test cases
 		// untouched until we verify they work.
-		if testName == "containercluster-autoscaling" {
+		if strings.HasPrefix(testName, "containercluster-autoscaling") {
 			return true
 		} else {
 			return false

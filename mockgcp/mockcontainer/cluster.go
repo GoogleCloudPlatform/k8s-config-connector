@@ -140,6 +140,14 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		obj.NodePools[i] = nodePoolObj
 	}
 
+	if obj.Autoscaling != nil && obj.Autoscaling.AutoprovisioningNodePoolDefaults != nil &&
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings != nil {
+		upgradeSettings := obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings
+		if *upgradeSettings.Strategy == pb.NodePoolUpdateStrategy_SURGE && upgradeSettings.MaxSurge > 0 {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings = nil
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
