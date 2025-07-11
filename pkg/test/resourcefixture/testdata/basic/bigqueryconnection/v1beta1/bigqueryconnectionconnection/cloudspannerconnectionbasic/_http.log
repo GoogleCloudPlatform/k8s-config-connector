@@ -1,7 +1,6 @@
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,23 +21,21 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "Spanner Database Dependency",
     "labels": {
+      "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
     "nodeCount": 1
   },
-  "instanceId": "spannerinstance-${uniqueId}",
-  "parent": "projects/${projectId}"
+  "instanceId": "spannerinstance-${uniqueId}"
 }
 
 200 OK
@@ -55,9 +52,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Database Dependency",
-      "edition": 1,
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
+        "cnrm-test": "true",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
@@ -71,7 +71,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": 2
+      "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -80,10 +80,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -102,14 +101,26 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Spanner Database Dependency",
       "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
+        "cnrm-test": "true",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -120,17 +131,69 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Spanner Database Dependency",
     "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "labels": {
+      "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 1,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
+}
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": "AUTOMATIC",
+  "displayName": "Spanner Database Dependency",
+  "edition": "STANDARD",
+  "instanceType": "PROVISIONED",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
+  "nodeCount": 1,
+  "processingUnits": 1000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 1,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
+  "state": "READY",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -507,10 +570,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -524,24 +586,34 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": "AUTOMATIC",
   "displayName": "Spanner Database Dependency",
-  "edition": 1,
+  "edition": "STANDARD",
+  "instanceType": "PROVISIONED",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
-  "state": 2,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 1,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
+  "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

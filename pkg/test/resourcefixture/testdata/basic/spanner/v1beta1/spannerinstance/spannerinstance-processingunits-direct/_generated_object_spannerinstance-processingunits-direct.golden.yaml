@@ -2,6 +2,7 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
@@ -10,14 +11,12 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-    label-one: value-one
-    label-two: value-two
-  name: spannerinstance-sample-${uniqueId}
+  name: spannerinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  config: regional-us-west1
-  displayName: New spanner Instance Sample
-  numNodes: 3
+  config: regional-us-central1
+  displayName: Spanner Instance Updated
+  processingUnits: 3000
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -25,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/instances/spannerinstance-sample-${uniqueId}
+  externalRef: projects/${projectId}/instances/spannerinstance-${uniqueId}
   observedGeneration: 2
   observedState:
     numNodes: 3

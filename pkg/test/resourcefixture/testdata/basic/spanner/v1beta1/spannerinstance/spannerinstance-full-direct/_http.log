@@ -1,6 +1,7 @@
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -21,22 +22,35 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?alt=json
+POST https://spanner.googleapis.com/v1/projects/${projectId}/instances?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "instance": {
+    "autoscalingConfig": {
+      "autoscalingLimits": {
+        "maxNodes": 4,
+        "minNodes": 2
+      },
+      "autoscalingTargets": {
+        "highPriorityCpuUtilizationPercent": 50,
+        "storageUtilizationPercent": 50
+      }
+    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "Spanner Instance Sample",
+    "defaultBackupScheduleType": 1,
+    "displayName": "Instance Sample",
+    "edition": 2,
     "labels": {
-      "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
-    "nodeCount": 2
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
   },
-  "instanceId": "spannerinstance-sample-${uniqueId}"
+  "instanceId": "spannerinstance-sample-${uniqueId}",
+  "parent": "projects/${projectId}"
 }
 
 200 OK
@@ -52,13 +66,22 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
+      "autoscalingConfig": {
+        "autoscalingLimits": {
+          "maxNodes": 4,
+          "minNodes": 2
+        },
+        "autoscalingTargets": {
+          "highPriorityCpuUtilizationPercent": 50,
+          "storageUtilizationPercent": 50
+        }
+      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Spanner Instance Sample",
-      "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
+      "defaultBackupScheduleType": 1,
+      "displayName": "Instance Sample",
+      "edition": 2,
+      "instanceType": 1,
       "labels": {
-        "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -73,7 +96,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": "READY"
+      "state": 2
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -82,9 +105,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -102,14 +126,23 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
+      "autoscalingConfig": {
+        "autoscalingLimits": {
+          "maxNodes": 4,
+          "minNodes": 2
+        },
+        "autoscalingTargets": {
+          "highPriorityCpuUtilizationPercent": 50,
+          "storageUtilizationPercent": 50
+        }
+      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Spanner Instance Sample",
-      "edition": "STANDARD",
+      "defaultBackupScheduleType": "NONE",
+      "displayName": "Instance Sample",
+      "edition": "ENTERPRISE",
       "instanceType": "PROVISIONED",
       "labels": {
-        "cnrm-test": "true",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -132,14 +165,23 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
+    "autoscalingConfig": {
+      "autoscalingLimits": {
+        "maxNodes": 4,
+        "minNodes": 2
+      },
+      "autoscalingTargets": {
+        "highPriorityCpuUtilizationPercent": 50,
+        "storageUtilizationPercent": 50
+      }
+    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "Spanner Instance Sample",
-    "edition": "STANDARD",
+    "defaultBackupScheduleType": "NONE",
+    "displayName": "Instance Sample",
+    "edition": "ENTERPRISE",
     "instanceType": "PROVISIONED",
     "labels": {
-      "cnrm-test": "true",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -161,9 +203,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -175,14 +218,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "autoscalingConfig": {
+    "autoscalingLimits": {
+      "maxNodes": 4,
+      "minNodes": 2
+    },
+    "autoscalingTargets": {
+      "highPriorityCpuUtilizationPercent": 50,
+      "storageUtilizationPercent": 50
+    }
+  },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": "AUTOMATIC",
-  "displayName": "Spanner Instance Sample",
-  "edition": "STANDARD",
-  "instanceType": "PROVISIONED",
+  "defaultBackupScheduleType": 1,
+  "displayName": "Instance Sample",
+  "edition": 2,
+  "instanceType": 1,
   "labels": {
-    "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -197,28 +249,39 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "state": "READY",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "nodeCount,displayName",
+  "fieldMask": "displayName,labels,defaultBackupScheduleType,autoscalingConfig,edition",
   "instance": {
-    "displayName": "New Spanner Instance Sample",
+    "autoscalingConfig": {
+      "autoscalingLimits": {
+        "maxNodes": 5,
+        "minNodes": 3
+      },
+      "autoscalingTargets": {
+        "highPriorityCpuUtilizationPercent": 90,
+        "storageUtilizationPercent": 90
+      }
+    },
+    "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "defaultBackupScheduleType": 2,
+    "displayName": "Updated Instance Sample",
+    "edition": 3,
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
+      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/%!s(\u003cnil\u003e)",
-    "nodeCount": 3,
-    "processingUnits": 2000
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
   }
 }
 
@@ -235,15 +298,24 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceMetadata",
     "instance": {
+      "autoscalingConfig": {
+        "autoscalingLimits": {
+          "maxNodes": 5,
+          "minNodes": 3
+        },
+        "autoscalingTargets": {
+          "highPriorityCpuUtilizationPercent": 90,
+          "storageUtilizationPercent": 90
+        }
+      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "New Spanner Instance Sample",
-      "edition": "STANDARD",
-      "instanceType": "PROVISIONED",
+      "defaultBackupScheduleType": 2,
+      "displayName": "Updated Instance Sample",
+      "edition": 3,
+      "instanceType": 1,
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
+        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -257,7 +329,7 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "state": "READY",
+      "state": 2,
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -267,9 +339,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -287,15 +360,24 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
+      "autoscalingConfig": {
+        "autoscalingLimits": {
+          "maxNodes": 5,
+          "minNodes": 3
+        },
+        "autoscalingTargets": {
+          "highPriorityCpuUtilizationPercent": 90,
+          "storageUtilizationPercent": 90
+        }
+      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "New Spanner Instance Sample",
-      "edition": "STANDARD",
+      "displayName": "Updated Instance Sample",
+      "edition": "ENTERPRISE_PLUS",
       "instanceType": "PROVISIONED",
       "labels": {
-        "cnrm-test": "true",
-        "label-one": "value-one",
+        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -317,15 +399,24 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
+    "autoscalingConfig": {
+      "autoscalingLimits": {
+        "maxNodes": 5,
+        "minNodes": 3
+      },
+      "autoscalingTargets": {
+        "highPriorityCpuUtilizationPercent": 90,
+        "storageUtilizationPercent": 90
+      }
+    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "New Spanner Instance Sample",
-    "edition": "STANDARD",
+    "displayName": "Updated Instance Sample",
+    "edition": "ENTERPRISE_PLUS",
     "instanceType": "PROVISIONED",
     "labels": {
-      "cnrm-test": "true",
-      "label-one": "value-one",
+      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -346,9 +437,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -360,15 +452,24 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "autoscalingConfig": {
+    "autoscalingLimits": {
+      "maxNodes": 5,
+      "minNodes": 3
+    },
+    "autoscalingTargets": {
+      "highPriorityCpuUtilizationPercent": 90,
+      "storageUtilizationPercent": 90
+    }
+  },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": "AUTOMATIC",
-  "displayName": "New Spanner Instance Sample",
-  "edition": "STANDARD",
-  "instanceType": "PROVISIONED",
+  "defaultBackupScheduleType": 2,
+  "displayName": "Updated Instance Sample",
+  "edition": 3,
+  "instanceType": 1,
   "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
+    "label-one": "updated-value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -382,15 +483,16 @@ X-Xss-Protection: 0
       }
     }
   ],
-  "state": "READY",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?alt=json
+DELETE https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
