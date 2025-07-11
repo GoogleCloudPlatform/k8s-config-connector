@@ -55,6 +55,7 @@ else
     if [ "$(uname)" == "Darwin" ]; then
       brew install protobuf
     else
+      echo "apt install..."
       sudo apt install -y protobuf-compiler
     fi
 fi
