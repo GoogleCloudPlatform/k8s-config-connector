@@ -53,4 +53,8 @@ func init() {
 		ResourceKind:       "BigQueryConnectionConnection",
 		SkipDriftDetection: true,
 	}
+	resourceContextMap["bigquerytable-unmanaged-fields-without-update"] = ResourceContext{
+		ResourceKind:       "BigQueryTable",
+		SkipDriftDetection: true,
+	}
 }

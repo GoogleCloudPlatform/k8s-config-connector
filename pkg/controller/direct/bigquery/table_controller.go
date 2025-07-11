@@ -17,6 +17,7 @@ package bigquery
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -36,7 +37,9 @@ import (
 )
 
 const (
-	ctrlName = "bigquery-controller"
+	ctrlName                            = "bigquery-controller"
+	unmanageDataPoliciesAnnotationValue = "spec.schema.fields.dataPolicies"
+	unmanagePolicyTagsAnnotationValue   = "spec.schema.fields.policyTags"
 )
 
 func init() {
@@ -56,6 +59,9 @@ var _ kccpredicate.ReconcileGate = &TableReconcileGate{}
 
 func (r *TableReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
 	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+	if _, ok := o.GetAnnotations()[kccpredicate.AnnotationUnmanaged]; ok {
 		return true
 	}
 	obj := &krm.BigQueryTable{}
@@ -99,12 +105,23 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
-	return &Adapter{
+	adapter := &Adapter{
 		id:         id,
 		gcpService: gcpService,
 		desired:    obj,
 		reader:     reader,
-	}, nil
+	}
+	unmanaged, ok := obj.GetAnnotations()[kccpredicate.AnnotationUnmanaged]
+	if ok && unmanaged != "" {
+		unmanagedFields := strings.Split(unmanaged, ",")
+		for _, field := range unmanagedFields {
+			if field != unmanageDataPoliciesAnnotationValue && field != unmanagePolicyTagsAnnotationValue {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported", field)
+			}
+		}
+		adapter.unmanagedFields = unmanagedFields
+	}
+	return adapter, nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -113,11 +130,12 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *krm.TableIdentity
-	gcpService *bigquery.TablesService
-	desired    *krm.BigQueryTable
-	actual     *bigquery.Table
-	reader     client.Reader
+	id              *krm.TableIdentity
+	gcpService      *bigquery.TablesService
+	desired         *krm.BigQueryTable
+	actual          *bigquery.Table
+	reader          client.Reader
+	unmanagedFields []string
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -225,6 +243,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			setEmptyPolicyTagsInSchema(field)
 		}
 	}
+	// Make fields unmanaged before performing desired vs actual comparison.
+	if len(a.unmanagedFields) > 0 {
+		makeFieldsUnmanaged(table, a.unmanagedFields)
+		makeFieldsUnmanaged(a.actual, a.unmanagedFields)
+	}
 	eq, err := TableEq(a.actual, table)
 
 	if err != nil {
@@ -239,30 +262,62 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	a.customTableLogic(table)
 	parent := a.id.Parent()
 
-	// TODO: Update annotation logic after confirming requirement.
-	// if a.desired.ObjectMeta.Annotations != nil {
-	// 	unmanaged, ok := a.desired.ObjectMeta.Annotations["cnrm.cloud.google.com/unmanaged"]
-	// 	if ok && unmanaged != "" {
-	// 		unmanagedFields := strings.Split(unmanaged, ",")
-	// 		for _, field := range unmanagedFields {
-	// 			// This ability is only intended for spec.schema field for the moment.
-	// 			if field == "spec.schema" {
-	// 				table.Schema = nil
-	// 			}
-	// 		}
-	// 		// Make PATCH call with nil schema to avoid schema being updated.
-	// 		res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
-	// 		if err != nil {
-	// 			return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
-	// 		}
-	// 		return a.UpdateStatusForUpdate(ctx, updateOp, res)
-	// 	}
-	// }
+	if len(a.unmanagedFields) > 0 {
+		// Make PATCH call without unmanaged fields to avoid accidental override.
+		res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
+		if err != nil {
+			return fmt.Errorf("error patching Table %s: %w", a.id.ID(), err)
+		}
+		return a.UpdateStatusForUpdate(ctx, updateOp, res)
+	}
+	// If not unmanaged field is specify, we use PUT to keep backward compatibility with TF controller.
 	res, err := a.gcpService.Update(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 	if err != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
 	}
 	return a.UpdateStatusForUpdate(ctx, updateOp, res)
+}
+
+func makeFieldsUnmanaged(table *bigquery.Table, unmanagedFields []string) {
+	if table == nil {
+		return
+	}
+	for _, fieldName := range unmanagedFields {
+		if fieldName == unmanagePolicyTagsAnnotationValue {
+			unmanagePolicyTags(table)
+		}
+		if fieldName == unmanageDataPoliciesAnnotationValue {
+			unmanageDataPolicies(table)
+		}
+	}
+}
+
+func unmanagePolicyTags(table *bigquery.Table) {
+	if table != nil && table.Schema != nil {
+		setEmptyPolicyTags(table.Schema.Fields)
+	}
+}
+
+// Recursively set PolicyTags to nil for each fields and subfields.
+func setEmptyPolicyTags(fields []*bigquery.TableFieldSchema) {
+	for _, field := range fields {
+		field.PolicyTags = nil
+		setEmptyPolicyTags(field.Fields)
+	}
+}
+
+func unmanageDataPolicies(table *bigquery.Table) {
+	if table != nil && table.Schema != nil {
+		setEmptyDataPolicies(table.Schema.Fields)
+	}
+}
+
+// Recursively set DataPolicies to nil for each fields and subfields.
+func setEmptyDataPolicies(fields []*bigquery.TableFieldSchema) {
+	for _, field := range fields {
+		field.DataPolicies = nil
+		setEmptyDataPolicies(field.Fields)
+	}
 }
 
 func (a *Adapter) UpdateStatusForUpdate(ctx context.Context, updateOp *directbase.UpdateOperation, updated *bigquery.Table) error {

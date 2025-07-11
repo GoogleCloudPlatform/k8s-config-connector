@@ -1,0 +1,16 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    managed-by-cnrm: "true"
+  name: bigquerytable-${uniqueId}
+spec:
+  datasetRef:
+    external: bigquerydataset${uniqueId}
+  description: Updated Description of BQ Table
+  friendlyName: BigQueryTable Example
+  resourceID: bigquerytable-${uniqueId}
+  schema: '[{"description":"Name of the entity","mode":"REQUIRED","name":"name","type":"STRING"},{"description":"atlan
+    BQ labels","fields":[{"description":"key","mode":"NULLABLE","name":"key","type":"STRING"},{"description":"values","mode":"NULLABLE","name":"value","type":"STRING"}],"mode":"REPEATED","name":"labels","type":"RECORD"}]'

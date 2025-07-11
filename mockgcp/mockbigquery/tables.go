@@ -55,6 +55,8 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 
 	updated.FriendlyName = req.GetTable().FriendlyName
+	updated.Description = req.GetTable().Description
+	updated.Schema = req.GetTable().Schema
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
 	}

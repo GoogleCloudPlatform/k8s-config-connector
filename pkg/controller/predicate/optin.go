@@ -19,6 +19,9 @@ import "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 // AnnotationKeyAlphaReconciler allows customers to opt-in to using the direct reconciler.
 const AnnotationKeyAlphaReconciler = "alpha.cnrm.cloud.google.com/reconciler"
 
+// AnnotationUnmanaged allows customer to specify the fields that are not managed by the controller.
+const AnnotationUnmanaged = "cnrm.cloud.google.com/unmanaged"
+
 // OptInToDirectReconciliation allows users to opt in to direct reconciliation
 // by specifying an AnnotationKeyAlphaReconciler annotation.
 type OptInToDirectReconciliation struct {

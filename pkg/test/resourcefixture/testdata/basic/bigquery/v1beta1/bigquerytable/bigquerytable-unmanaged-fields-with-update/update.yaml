@@ -1,0 +1,61 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+  labels:
+    key1: value1
+    key2: value2
+  annotations:
+    cnrm.cloud.google.com/unmanaged: "spec.schema.fields.policyTags,spec.schema.fields.dataPolicies"
+spec:
+  datasetRef:
+    name: bigquerydataset${uniqueId}
+  friendlyName: BigQueryTable Example
+  description: "Updated Description of BQ Table"
+  schema: |-
+    [
+      {
+        "name": "name",
+        "type": "STRING",
+        "mode": "REQUIRED",
+        "description": "Name of the entity",
+        "dataPolicies": [{"name": "mock dataPolicies"}],
+        "policyTags": {"names": ["mock policytags"]}
+      },
+      {
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key",
+            "dataPolicies": [{"name": "mock dataPolicies"}],
+            "policyTags": {"names": ["mock policytags"]}
+          },
+          {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+          }
+        ],
+        "description": "atlan BQ labels"
+      }
+    ]
