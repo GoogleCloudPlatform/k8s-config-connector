@@ -1,0 +1,5 @@
+
+- exec: gcloud network-security address-groups create address-group-${uniqueId} --type=IPV4 --capacity=100 --description="optional description" --location=us-central1
+- exec: gcloud network-security address-groups describe address-group-${uniqueId} --location=us-central1
+- exec: gcloud network-security address-groups update address-group-${uniqueId} --description="New description" --location=us-central1
+- exec: gcloud network-security address-groups delete address-group-${uniqueId} --location=us-central1 --quiet
