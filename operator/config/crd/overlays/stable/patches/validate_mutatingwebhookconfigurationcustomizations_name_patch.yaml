@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This kustomization.yaml is not intended to be run by itself,
-# since it depends on service name and namespace that are out of this kustomize package.
-# It should be run by config/default
-
-resources:
-- overlays/full
+- op: add
+  path: /spec/versions/0/schema/openAPIV3Schema/properties/metadata/properties
+  value:
+    name:
+      enum:
+        - mutating-webhook
+      type: string
+- op: add
+  path: /spec/versions/1/schema/openAPIV3Schema/properties/metadata/properties
+  value:
+    name:
+      enum:
+        - mutating-webhook
+      type: string

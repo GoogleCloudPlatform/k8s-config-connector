@@ -184,7 +184,15 @@ func LoadAllCRDs() ([]apiextensions.CustomResourceDefinition, error) {
 }
 
 func loadOperatorCRDs() ([]apiextensions.CustomResourceDefinition, error) {
-	return loadCRDs(paths.GetOperatorCRDsPath())
+	allCRDs := make([]apiextensions.CustomResourceDefinition, 0)
+	for _, p := range paths.GetOperatorCRDsPaths() {
+		crds, err := loadCRDs(p)
+		if err != nil {
+			return nil, err
+		}
+		allCRDs = append(allCRDs, crds...)
+	}
+	return allCRDs, nil
 }
 
 func loadCRDs(crdsRoot string) ([]apiextensions.CustomResourceDefinition, error) {
