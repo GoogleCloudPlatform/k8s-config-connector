@@ -113,7 +113,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 	unmanaged, ok := obj.GetAnnotations()[kccpredicate.AnnotationUnmanaged]
 	if ok && unmanaged != "" {
-		unmanagedFields := strings.Split(unmanaged, ";")
+		unmanagedFields := strings.Split(unmanaged, ",")
 		for _, field := range unmanagedFields {
 			if field != unmanageDataPoliciesAnnotationValue && field != unmanagePolicyTagsAnnotationValue {
 				return nil, fmt.Errorf("unmanaging field `%s` is not supported", field)

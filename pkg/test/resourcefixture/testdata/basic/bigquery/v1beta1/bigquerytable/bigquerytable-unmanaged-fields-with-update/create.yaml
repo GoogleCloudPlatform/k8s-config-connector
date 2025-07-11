@@ -20,7 +20,7 @@ metadata:
     key1: value1
     key2: value2
   annotations:
-    cnrm.cloud.google.com/unmanaged: "spec.schema.fields.policyTags;spec.schema.fields.dataPolicies"
+    cnrm.cloud.google.com/unmanaged: "spec.schema.fields.policyTags,spec.schema.fields.dataPolicies"
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}
