@@ -22,6 +22,7 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	v1 "k8s.io/api/apps/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -141,15 +142,21 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		return false, fmt.Errorf("error parsing '%v' as a label selector: %w", stsLabelSelectorRaw, err)
 	}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(corev1beta1.ConfigConnectorGroupVersionKind)
-	err = c.Get(ctx, types.NamespacedName{Name: corev1beta1.ConfigConnectorAllowedName}, u)
+	u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
+	err = c.Get(ctx, types.NamespacedName{
+		Namespace: namespace,
+		Name:      corev1beta1.ConfigConnectorContextAllowedName,
+	}, u)
 	if err != nil {
+		if apierrors.IsNotFound(err) {
+			return false, nil
+		}
 		return false, err
 	}
 	podNamespace := k8s.SystemNamespace
-	managerNamespaceSuffix, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespaceSuffix")
-	if err == nil && found && managerNamespaceSuffix != "" {
-		podNamespace = replaceNamespaceSuffix(namespace, managerNamespaceSuffix)
+	managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
+	if err == nil && found && managerNamespace != "" {
+		podNamespace = managerNamespace
 	}
 	stsList := &v1.StatefulSetList{}
 	stsOpts := &client.ListOptions{
@@ -161,22 +168,4 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)
 	}
 	return len(stsList.Items) > 0, nil
-}
-
-const delimiter = "-"
-
-func replaceNamespaceSuffix(namespace, suffix string) string {
-	if suffix == "" {
-		return namespace
-	}
-
-	lastDelimiterIndex := strings.LastIndexAny(namespace, delimiter)
-
-	// If no delimiter is found, there's no suffix to replace.
-	// Return the original string.
-	if lastDelimiterIndex == -1 {
-		return namespace
-	}
-
-	return namespace[0:lastDelimiterIndex+1] + suffix
 }

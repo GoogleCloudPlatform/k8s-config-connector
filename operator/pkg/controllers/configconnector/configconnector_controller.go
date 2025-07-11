@@ -71,13 +71,12 @@ type ReconcilerOptions struct {
 // Reconciler also watches "ControllerResource" kind and apply customizations
 // specified in "ControllerResource" CRs to KCC components.
 type Reconciler struct {
-	reconciler             *declarative.Reconciler
-	client                 client.Client
-	recorder               record.EventRecorder
-	labelMaker             declarative.LabelMaker
-	log                    logr.Logger
-	customizationWatcher   *controllers.CustomizationWatcher
-	managerNamespaceSuffix string
+	reconciler           *declarative.Reconciler
+	client               client.Client
+	recorder             record.EventRecorder
+	labelMaker           declarative.LabelMaker
+	log                  logr.Logger
+	customizationWatcher *controllers.CustomizationWatcher
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
@@ -238,7 +237,6 @@ func (r *Reconciler) handleConfigConnectorLifecycle() declarative.ObjectTransfor
 					return fmt.Errorf("error removing %v finalizer from ConfigConnector object %v: %w", k8s.OperatorFinalizer, cc.GetName(), err)
 				}
 			}
-			r.managerNamespaceSuffix = ""
 			// Nothing needs to apply when it's a delete ops.
 			m.Items = nil
 			return nil
@@ -264,16 +262,7 @@ func (r *Reconciler) handleConfigConnectorLifecycle() declarative.ObjectTransfor
 			if err := r.verifyPerNamespaceControllerManagerPodsAreDeleted(ctx, r.client); err != nil {
 				return fmt.Errorf("error waiting for all per-namespace controller manager pods to be removed: %w", err)
 			}
-			r.managerNamespaceSuffix = ""
 		} else {
-			if r.managerNamespaceSuffix != cc.Spec.ManagerNamespaceSuffix {
-				// Veriy that all old per-namespace controller manager pods are removed, then continue the reconciliation.
-				if err := r.verifyPerNamespaceControllerManagerPodsAreDeleted(ctx, r.client); err != nil {
-					return fmt.Errorf("error waiting for all per-namespace controller manager pods to be removed: %w", err)
-				}
-			}
-			r.managerNamespaceSuffix = cc.Spec.ManagerNamespaceSuffix
-
 			if err := r.removeClusterModeOnlySharedComponents(ctx, r.client); err != nil {
 				return err
 			}
@@ -423,15 +412,10 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	if err != nil {
 		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
-	// If controller managers run in separate namespace then need to list pods across all namespaces.
-	// Otherwise controller managers run in "cnrm-system" namespace, list only that namespace.
-	podNamespace := k8s.CNRMSystemNamespace
-	if r.managerNamespaceSuffix != "" {
-		podNamespace = ""
-	}
+	// Controller managers may run in separate namespace
+	// so need to list pods across all namespaces.
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     podNamespace,
 		LabelSelector: podLabelSelector,
 		Limit:         100,
 	}
@@ -442,7 +426,7 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	for _, p := range podList.Items {
 		podNames = append(podNames, p.Name)
 	}
-	r.log.Info("verifying that per-namespace controller manager pods are deleted", "namespace", podNamespace, "pods", podNames)
+	r.log.Info("verifying that per-namespace controller manager pods are deleted", "namespace", k8s.CNRMSystemNamespace, "pods", podNames)
 	if len(podList.Items) == 0 {
 		return nil
 	}
@@ -474,15 +458,10 @@ func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, c cli
 	if err != nil {
 		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
-	// If controller managers run in separate namespace then need to list pods across all namespaces.
-	// Otherwise controller managers run in "cnrm-system" namespace, list only that namespace.
-	podNamespace := k8s.CNRMSystemNamespace
-	if r.managerNamespaceSuffix != "" {
-		podNamespace = ""
-	}
+	// Controller managers may run in separate namespace
+	// so need to list pods across all namespaces.
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     podNamespace,
 		LabelSelector: podLabelSelector,
 	}
 	if err := wait.ExponentialBackoff(b, func() (done bool, err error) {

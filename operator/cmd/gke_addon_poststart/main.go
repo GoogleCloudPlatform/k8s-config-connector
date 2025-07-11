@@ -16,7 +16,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -40,12 +39,6 @@ spec:
   mode: namespaced
 `
 
-var perNamespaceLabels = map[string]string{
-	"tenancy.gke.io/access-level": "supervisor",
-	"tenancy.gke.io/project":      "no-project",
-	"tenancy.gke.io/tenant":       "no-tenant",
-}
-
 var configConnectorResource = schema.GroupVersionResource{
 	Group:    "core.cnrm.cloud.google.com",
 	Version:  "v1beta1",
@@ -56,16 +49,12 @@ var configConnectorResource = schema.GroupVersionResource{
 // after the manager container is created. This is meant to be used for the GKE
 // add-on only, not the standalone operator.
 func main() {
-	var managerNamespaceSuffix string
-	flag.StringVar(&managerNamespaceSuffix, "manager-namespace-suffix", "", "Create controller manager pod/SA in a separate namespace, replacing suffix of watched namespace with the specified suffix.")
-	flag.Parse()
-
 	ctx := context.Background()
 	dynamicClient, err := dynamic.NewForConfig(ctrl.GetConfigOrDie())
 	if err != nil {
 		log.Fatalf("error creating dynamic client: %v", err)
 	}
-	if err := createDefaultConfigConnector(ctx, dynamicClient, managerNamespaceSuffix); err != nil {
+	if err := createDefaultConfigConnector(ctx, dynamicClient); err != nil {
 		log.Fatalf("error creating default ConfigConnector object: %v", err)
 	}
 }
@@ -73,20 +62,11 @@ func main() {
 // createDefaultConfigConnector creates a ConfigConnector object on the K8s API
 // server. This is done for users who want to have a default ConfigConnector
 // object created for them upon enabling the GKE add-on.
-func createDefaultConfigConnector(ctx context.Context, dynamicClient dynamic.Interface, managerNamespaceSuffix string) error {
+func createDefaultConfigConnector(ctx context.Context, dynamicClient dynamic.Interface) error {
 	u := &unstructured.Unstructured{}
 	b := []byte(defaultConfigConnector)
 	if err := yaml.Unmarshal(b, u); err != nil {
 		return fmt.Errorf("error unmarshalling bytes to unstruct: %w", err)
-	}
-	if managerNamespaceSuffix != "" {
-		if err := unstructured.SetNestedField(u.Object, managerNamespaceSuffix, "spec", "managerNamespaceSuffix"); err != nil {
-			return err
-		}
-		u.SetLabels(perNamespaceLabels)
-		if err := unstructured.SetNestedField(u.Object, managerNamespaceSuffix, "metadata", "labels"); err != nil {
-			return err
-		}
 	}
 
 	// Create the ConfigConnector object. Retry on error just in case the

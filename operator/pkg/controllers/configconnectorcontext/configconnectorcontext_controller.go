@@ -231,16 +231,7 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		if !ok {
 			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 		}
-		var managerNamespaceSuffix string
-		cc, err := controllers.GetConfigConnector(ctx, r.client, controllers.ValidConfigConnectorNamespacedName)
-		if err != nil {
-			if !apierrors.IsNotFound(err) {
-				return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
-			}
-		} else {
-			managerNamespaceSuffix = cc.Spec.ManagerNamespaceSuffix
-		}
-		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items, managerNamespaceSuffix)
+		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
 		}
@@ -312,6 +303,11 @@ func (r *Reconciler) finalizeCCContextDeletion(ctx context.Context, ccc *corev1b
 	if err := cluster.DeleteNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, r.client, ccc.Namespace); err != nil {
 		return err
 	}
+	if ccc.Spec.ManagerNamespace != "" {
+		if err := r.deleteManagerNamepace(ctx, ccc.Spec.ManagerNamespace); err != nil {
+			return err
+		}
+	}
 	r.log.Info("Successfully finalized ConfigConnectorContext deletion...", "name", ccc.Name, "namespace", ccc.Namespace)
 	// Nothing needs to apply when it's a delete ops.
 	m.Items = nil
@@ -350,6 +346,11 @@ func (r *Reconciler) handleCCContextLifecycleForNamespacedMode(ctx context.Conte
 	}
 	if err := r.verifyCNRMSystemNamespaceIsActive(ctx); err != nil {
 		return err
+	}
+	if ccc.Spec.ManagerNamespace != "" {
+		if err := r.verifyManagerNamespaceIsActive(ctx, ccc.Spec.ManagerNamespace); err != nil {
+			return err
+		}
 	}
 
 	if !controllers.EnsureOperatorFinalizer(ccc) {
@@ -418,6 +419,60 @@ func (r *Reconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) erro
 	}
 	if !n.GetDeletionTimestamp().IsZero() {
 		return fmt.Errorf("ConfigConnector system namespace %v is pending deletion, stop the reconciliation", k8s.CNRMSystemNamespace)
+	}
+	return nil
+}
+
+func (r *Reconciler) verifyManagerNamespaceIsActive(ctx context.Context, managerNamespace string) error {
+	r.log.Info("verifying that ConfigConnector manager namespace is active...", "manager namespace", managerNamespace)
+	n := &corev1.Namespace{}
+	key := types.NamespacedName{
+		Name: managerNamespace,
+	}
+	if err := r.client.Get(ctx, key, n); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("verifying that ConfigConnector manager namespace not found, creating...", "manager namespace", managerNamespace)
+			ns := &corev1.Namespace{}
+			ns.SetName(managerNamespace)
+			ns.SetLabels(map[string]string{k8s.ManagedByKCCLabel: "true"})
+			if err := r.client.Create(ctx, ns); err != nil {
+				return fmt.Errorf("error creating the ConfigConnector manager namespace %v: %w", ns, err)
+			}
+			return nil
+		}
+		return fmt.Errorf("error getting the ConfigConnector manager namespace %v: %w", key, err)
+	}
+	if !n.GetDeletionTimestamp().IsZero() {
+		return fmt.Errorf("ConfigConnector manager namespace %v is pending deletion, stop the reconciliation", managerNamespace)
+	}
+	return nil
+}
+
+func (r *Reconciler) deleteManagerNamepace(ctx context.Context, managerNamespace string) error {
+	r.log.Info("deleting ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+	n := &corev1.Namespace{}
+	key := types.NamespacedName{
+		Name: managerNamespace,
+	}
+	if err := r.client.Get(ctx, key, n); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("not found ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+			return nil
+		}
+		return err
+	}
+	if !n.GetDeletionTimestamp().IsZero() {
+		r.log.Info("ConfigConnector manager namespace already deleted...", "manager namespace", managerNamespace)
+		return nil
+	}
+	managed, found := n.GetLabels()[k8s.ManagedByKCCLabel]
+	if found && managed == "true" {
+		r.log.Info("managed ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+		if err := r.client.Delete(ctx, n); err != nil {
+			return fmt.Errorf("error deleting the ConfigConnector manager namespace %v: %w", n, err)
+		}
+	} else {
+		r.log.Info("manager namespace is not managed by ConfigConnector, skip deletion...", "manager namespace", managerNamespace)
 	}
 	return nil
 }

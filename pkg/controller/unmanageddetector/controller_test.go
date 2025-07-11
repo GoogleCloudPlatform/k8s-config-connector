@@ -84,17 +84,14 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 	tests := []struct {
 		name      string
 		namespace string
-		cc        *unstructured.Unstructured
 	}{
 		{
 			name:      "namespaced CC",
 			namespace: testvariable.NewUniqueID(),
-			cc:        newConfigConnectorNamespacedUnstructured(),
 		},
 		{
 			name:      "per namespace CC",
 			namespace: "t1234-tenant0-provider",
-			cc:        newConfigConnectorPerNamespaceUnstructured(),
 		},
 	}
 	for _, tc := range tests {
@@ -119,9 +116,11 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 			}
 			resource := newTestKindUnstructured(resourceNN)
 			test.EnsureObjectExists(t, resource, client)
-			test.EnsureObjectExists(t, tc.cc, client)
+
+			cc := newConfigConnectorNamespacedUnstructured()
+			test.EnsureObjectExists(t, cc, client)
 			defer func() {
-				err := client.Delete(context.Background(), tc.cc)
+				err := client.Delete(context.Background(), cc)
 				if err != nil {
 					t.Fatalf("cannot delete ConfigConnector: %v", err)
 				}
@@ -162,19 +161,16 @@ func TestReconcile_ManagedResource(t *testing.T) {
 		name             string
 		namespace        string
 		managerNamespace string
-		cc               *unstructured.Unstructured
 	}{
 		{
 			name:             "namespaced CC",
 			namespace:        testvariable.NewUniqueID(),
 			managerNamespace: k8s.SystemNamespace,
-			cc:               newConfigConnectorNamespacedUnstructured(),
 		},
 		{
 			name:             "per namespace CC",
 			namespace:        "t1234-tenant0-provider",
 			managerNamespace: "t1234-tenant0-supervisor",
-			cc:               newConfigConnectorPerNamespaceUnstructured(),
 		},
 	}
 	for _, tc := range tests {
@@ -200,9 +196,11 @@ func TestReconcile_ManagedResource(t *testing.T) {
 			}
 			resource := newTestKindUnstructured(resourceNN)
 			test.EnsureObjectExists(t, resource, client)
-			test.EnsureObjectExists(t, tc.cc, client)
+
+			cc := newConfigConnectorNamespacedUnstructured()
+			test.EnsureObjectExists(t, cc, client)
 			defer func() {
-				err := client.Delete(context.Background(), tc.cc)
+				err := client.Delete(context.Background(), cc)
 				if err != nil {
 					t.Fatalf("cannot delete ConfigConnector: %v", err)
 				}
@@ -210,6 +208,9 @@ func TestReconcile_ManagedResource(t *testing.T) {
 
 			controller := newControllerUnstructuredForNamespace(resourceNN.Namespace, tc.managerNamespace)
 			test.EnsureObjectExists(t, controller, client)
+
+			ccc := newConfigConnectorContextUnstructured(resourceNN.Namespace, tc.managerNamespace)
+			test.EnsureObjectExists(t, ccc, client)
 
 			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 			if err != nil {
@@ -299,6 +300,45 @@ func newControllerUnstructuredForNamespace(namespace, managerNamespace string) *
 	}
 }
 
+func newConfigConnectorContextUnstructured(namespace, managerNamespace string) *unstructured.Unstructured {
+	if managerNamespace == k8s.SystemNamespace {
+		return &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "core.cnrm.cloud.google.com/v1beta1",
+				"kind":       "ConfigConnectorContext",
+				"metadata": map[string]interface{}{
+					"namespace": namespace,
+					"name":      corev1beta1.ConfigConnectorContextAllowedName,
+				},
+				"spec": map[string]interface{}{
+					"googleServiceAccount": "tenant-gcp-account@1234.iam.gserviceaccount.com",
+					"stateIntoSpec":        "Absent",
+				},
+			},
+		}
+	}
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "core.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ConfigConnectorContext",
+			"metadata": map[string]interface{}{
+				"labels": map[string]interface{}{
+					"tenancy.gke.io/access-level": "supervisor",
+					"tenancy.gke.io/project":      "t1234",
+					"tenancy.gke.io/tenant":       "t1234-tenant0",
+				},
+				"namespace": namespace,
+				"name":      corev1beta1.ConfigConnectorContextAllowedName,
+			},
+			"spec": map[string]interface{}{
+				"googleServiceAccount": "tenant-gcp-account@1234.iam.gserviceaccount.com",
+				"stateIntoSpec":        "Absent",
+				"managerNamespace":     managerNamespace,
+			},
+		},
+	}
+}
+
 func newConfigConnectorNamespacedUnstructured() *unstructured.Unstructured {
 	apiVersion, kind := corev1beta1.ConfigConnectorGroupVersionKind.ToAPIVersionAndKind()
 	return &unstructured.Unstructured{
@@ -310,28 +350,6 @@ func newConfigConnectorNamespacedUnstructured() *unstructured.Unstructured {
 			},
 			"spec": map[string]interface{}{
 				"mode": "namespaced",
-			},
-		},
-	}
-}
-
-func newConfigConnectorPerNamespaceUnstructured() *unstructured.Unstructured {
-	apiVersion, kind := corev1beta1.ConfigConnectorGroupVersionKind.ToAPIVersionAndKind()
-	return &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"apiVersion": apiVersion,
-			"kind":       kind,
-			"metadata": map[string]interface{}{
-				"name": "configconnector.core.cnrm.cloud.google.com",
-				"labels": map[string]interface{}{
-					"tenancy.gke.io/access-level": "supervisor",
-					"tenancy.gke.io/project":      "no-project",
-					"tenancy.gke.io/tenant":       "no-tenant",
-				},
-			},
-			"spec": map[string]interface{}{
-				"mode":                   "namespaced",
-				"managerNamespaceSuffix": "supervisor",
 			},
 		},
 	}

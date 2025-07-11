@@ -488,6 +488,12 @@ func GetPerNamespaceManifest() []string {
 	return res
 }
 
+func GetPerManagerNamespaceManifest() []string {
+	res := make([]string, 0)
+	res = append(res, PerNamespaceComponentsTemplate...)
+	return res
+}
+
 func ManuallyReplaceGSA(components []string, saName string) []string {
 	res := make([]string, 0)
 	for _, s := range components {

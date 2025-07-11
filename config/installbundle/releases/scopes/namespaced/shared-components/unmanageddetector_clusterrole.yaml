@@ -41,6 +41,6 @@ rules:
   - apiGroups:
     - core.cnrm.cloud.google.com
     resources:
-    - configconnectors
+    - configconnectorcontexts
     verbs:
     - get
