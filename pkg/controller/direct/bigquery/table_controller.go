@@ -37,7 +37,9 @@ import (
 )
 
 const (
-	ctrlName = "bigquery-controller"
+	ctrlName                            = "bigquery-controller"
+	unmanageDataPoliciesAnnotationValue = "spec.schema.fields.dataPolicies"
+	unmanagePolicyTagsAnnotationValue   = "spec.schema.fields.policyTags"
 )
 
 func init() {
@@ -112,6 +114,11 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	unmanaged, ok := obj.GetAnnotations()[kccpredicate.AnnotationUnmanaged]
 	if ok && unmanaged != "" {
 		unmanagedFields := strings.Split(unmanaged, ";")
+		for _, field := range unmanagedFields {
+			if field != unmanageDataPoliciesAnnotationValue && field != unmanagePolicyTagsAnnotationValue {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported", field)
+			}
+		}
 		adapter.unmanagedFields = unmanagedFields
 	}
 	return adapter, nil
@@ -256,13 +263,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	parent := a.id.Parent()
 
 	if len(a.unmanagedFields) > 0 {
-		// Make PATCH call without unmanaged fields to avoid accidental override
+		// Make PATCH call without unmanaged fields to avoid accidental override.
 		res, err := a.gcpService.Patch(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 		if err != nil {
-			return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
+			return fmt.Errorf("error patching Table %s: %w", a.id.ID(), err)
 		}
 		return a.UpdateStatusForUpdate(ctx, updateOp, res)
 	}
+	// If not unmanaged field is specify, we use PUT to keep backward compatibility with TF controller.
 	res, err := a.gcpService.Update(parent.ProjectID, parent.DatasetID, a.id.ID(), table).Do()
 	if err != nil {
 		return fmt.Errorf("error updating Table %s: %w", a.id.ID(), err)
@@ -275,11 +283,11 @@ func makeFieldsUnmanaged(table *bigquery.Table, unmanagedFields []string) {
 		return
 	}
 	for _, fieldName := range unmanagedFields {
-		if fieldName == "spec.schema.fields.policyTags" {
+		if fieldName == unmanagePolicyTagsAnnotationValue {
 			unmanagePolicyTags(table)
 		}
-		if fieldName == "spec.schema.fields.dataPolicies" {
-			unmanageDataPolicy(table)
+		if fieldName == unmanageDataPoliciesAnnotationValue {
+			unmanageDataPolicies(table)
 		}
 	}
 }
@@ -290,6 +298,7 @@ func unmanagePolicyTags(table *bigquery.Table) {
 	}
 }
 
+// Recursively set PolicyTags to nil for each fields and subfields.
 func setEmptyPolicyTags(fields []*bigquery.TableFieldSchema) {
 	for _, field := range fields {
 		field.PolicyTags = nil
@@ -297,16 +306,17 @@ func setEmptyPolicyTags(fields []*bigquery.TableFieldSchema) {
 	}
 }
 
-func unmanageDataPolicy(table *bigquery.Table) {
+func unmanageDataPolicies(table *bigquery.Table) {
 	if table != nil && table.Schema != nil {
-		setEmptyDataPolicy(table.Schema.Fields)
+		setEmptyDataPolicies(table.Schema.Fields)
 	}
 }
 
-func setEmptyDataPolicy(fields []*bigquery.TableFieldSchema) {
+// Recursively set DataPolicies to nil for each fields and subfields.
+func setEmptyDataPolicies(fields []*bigquery.TableFieldSchema) {
 	for _, field := range fields {
 		field.DataPolicies = nil
-		setEmptyDataPolicy(field.Fields)
+		setEmptyDataPolicies(field.Fields)
 	}
 }
 
