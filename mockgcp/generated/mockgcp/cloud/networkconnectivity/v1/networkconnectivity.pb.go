@@ -4067,7 +4067,7 @@ type PscConfig struct {
 	AllowedGoogleProducersResourceHierarchyLevel []string `protobuf:"bytes,1,rep,name=allowed_google_producers_resource_hierarchy_level,json=allowedGoogleProducersResourceHierarchyLevel,proto3" json:"allowed_google_producers_resource_hierarchy_level,omitempty"`
 	// Optional. Max number of PSC connections for this policy.
 	Limit int64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	// Required. ProducerInstanceLocation is used to specify which authorization mechanism to use to determine which projects the Producer instance can be within.
+	// Optional. ProducerInstanceLocation is used to specify which authorization mechanism to use to determine which projects the Producer instance can be within.
 	ProducerInstanceLocation string `protobuf:"bytes,3,opt,name=producer_instance_location,json=producerInstanceLocation,proto3" json:"producer_instance_location,omitempty"`
 	// The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
 	Subnetworks []string `protobuf:"bytes,4,rep,name=subnetworks,proto3" json:"subnetworks,omitempty"`

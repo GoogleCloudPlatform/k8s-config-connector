@@ -1208,6 +1208,20 @@ message ExternalDatasetReference {
   optional string external_source = 2 [json_name="externalSource"];
 }
 
+// Options for the runtime of the external system.
+message ExternalRuntimeOptions {
+  // Optional. Amount of CPU provisioned for the container instance. If not specified, the default value is 0.33 vCPUs.
+  optional double container_cpu = 1 [json_name="containerCpu"];
+  // Optional. Amount of memory provisioned for the container instance. Format: {number}{unit} where unit is one of "M", "G", "Mi" and "Gi" (e.g. 1G, 512Mi). If not specified, the default value is 512Mi.
+  optional string container_memory = 2 [json_name="containerMemory"];
+  // Optional. Maximum number of rows in each batch sent to the external runtime. If absent or if 0, BigQuery dynamically decides the number of rows in a batch.
+  optional int64 max_batching_rows = 3 [json_name="maxBatchingRows"];
+  // Optional. Fully qualified name of the connection whose service account will be used to execute the code in the container. Format: ```"projects/{project_id}/locations/{location_id}/connections/{connection_id}"```
+  optional string runtime_connection = 4 [json_name="runtimeConnection"];
+  // Optional. Language runtime version (e.g. python-3.11).
+  optional string runtime_version = 5 [json_name="runtimeVersion"];
+}
+
 // The external service cost is a portion of the total cost, these costs are not additive with total_bytes_billed. Moreover, this field only track external service costs that will show up as BigQuery costs (e.g. training BigQuery ML job with google cloud CAIP or Automl Tables services), not other costs which may be accrued by running the query (e.g. reading from Bigtable or Cloud Storage). The external service costs with different billing sku (e.g. CAIP job is charged based on VM usage) are converted to BigQuery billed_bytes and slot_ms with equivalent amount of US dollars. Services may not directly correlate to these metrics, but these are the equivalents for billing purposes. Output only.
 message ExternalServiceCost {
   // External service cost in terms of bigquery bytes billed.
@@ -1485,7 +1499,7 @@ message Job {
   optional string etag = 2 [json_name="etag"];
   // Output only. Opaque ID field of the job.
   optional string id = 3 [json_name="id"];
-  // Output only. The reason why a Job was created. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  // Output only. The reason why a Job was created.
   optional JobCreationReason job_creation_reason = 4 [json_name="jobCreationReason"];
   // Optional. Reference describing the unique-per-user name of the job.
   optional JobReference job_reference = 5 [json_name="jobReference"];
@@ -1728,7 +1742,7 @@ message JobConfigurationTableCopy {
   optional string write_disposition = 8 [json_name="writeDisposition"];
 }
 
-// Reason about why a Job was created from a [`jobs.query`](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query) method when used with `JOB_CREATION_OPTIONAL` Job creation mode. For [`jobs.insert`](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert) method calls it will always be `REQUESTED`. [Preview](https://cloud.google.com/products/#product-launch-stages)
+// Reason about why a Job was created from a [`jobs.query`](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query) method when used with `JOB_CREATION_OPTIONAL` Job creation mode. For [`jobs.insert`](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert) method calls it will always be `REQUESTED`.
 message JobCreationReason {
   // Output only. Specifies the high level reason why a Job was created.
   optional string code = 1 [json_name="code"];
@@ -2284,6 +2298,14 @@ message ProjectReference {
   optional string project_id = 1 [json_name="projectId"];
 }
 
+// Options for a user-defined Python function.
+message PythonOptions {
+  // Required. The entry point function in the user's Python code.
+  optional string entry_point = 1 [json_name="entryPoint"];
+  // Optional. A list of package names along with versions to be installed. Follows requirements.txt syntax (e.g. numpy==2.0, permutation, urllib3<2.2.1)
+  repeated string packages = 2 [json_name="packages"];
+}
+
 // Query optimization information for a QUERY job.
 message QueryInfo {
   // Output only. Information about query optimizations.
@@ -2346,7 +2368,7 @@ message QueryRequest {
   optional bool dry_run = 6 [json_name="dryRun"];
   // Optional. Output format adjustments.
   optional DataFormatOptions format_options = 7 [json_name="formatOptions"];
-  // Optional. If not set, jobs are always required. If set, the query request will follow the behavior described JobCreationMode. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  // Optional. If not set, jobs are always required. If set, the query request will follow the behavior described JobCreationMode.
   optional string job_creation_mode = 8 [json_name="jobCreationMode"];
   // Optional. Job timeout in milliseconds. If this time limit is exceeded, BigQuery will attempt to stop a longer job, but may not always succeed in canceling it before the job completes. For example, a job that takes more than 60 seconds to complete has a better chance of being stopped than a job that takes 10 seconds to complete. This timeout applies to the query even if a job does not need to be created.
   optional int64 job_timeout_ms = 9 [json_name="jobTimeoutMs"];
@@ -2395,7 +2417,7 @@ message QueryResponse {
   repeated ErrorProto errors = 5 [json_name="errors"];
   // Whether the query has completed or not. If rows or totalRows are present, this will always be true. If this is false, totalRows will not be available.
   optional bool job_complete = 6 [json_name="jobComplete"];
-  // Optional. The reason why a Job was created. Only relevant when a job_reference is present in the response. If job_reference is not present it will always be unset. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  // Optional. The reason why a Job was created. Only relevant when a job_reference is present in the response. If job_reference is not present it will always be unset.
   optional JobCreationReason job_creation_reason = 7 [json_name="jobCreationReason"];
   // Reference to the Job that was created to run the query. This field will be present even if the original request timed out, in which case GetQueryResults can be used to read the results once the query has completed. Since this API only returns the first page of results, subsequent pages can be fetched via the same mechanism (GetQueryResults). If job_creation_mode was set to `JOB_CREATION_OPTIONAL` and the query completes without creating a job, this field will be empty.
   optional JobReference job_reference = 8 [json_name="jobReference"];
@@ -2407,7 +2429,7 @@ message QueryResponse {
   optional int64 num_dml_affected_rows = 11 [json_name="numDmlAffectedRows"];
   // A token used for paging results. A non-empty token indicates that additional results are available. To see additional results, query the [`jobs.getQueryResults`](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults) method. For more information, see [Paging through table data](https://cloud.google.com/bigquery/docs/paging-results).
   optional string page_token = 12 [json_name="pageToken"];
-  // Auto-generated ID for the query. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  // Auto-generated ID for the query.
   optional string query_id = 13 [json_name="queryId"];
   // An object with as many results as can be contained within the maximum permitted reply size. To get any additional rows, you can call GetQueryResults and specify the jobReference returned above.
   repeated TableRow rows = 14 [json_name="rows"];
@@ -2541,28 +2563,32 @@ message Routine {
   optional string determinism_level = 6 [json_name="determinismLevel"];
   // Output only. A hash of this resource.
   optional string etag = 7 [json_name="etag"];
+  // Optional. Options for the runtime of the external system executing the routine. This field is only applicable for Python UDFs. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  optional ExternalRuntimeOptions external_runtime_options = 8 [json_name="externalRuntimeOptions"];
   // Optional. If language = "JAVASCRIPT", this field stores the path of the imported JAVASCRIPT libraries.
-  repeated string imported_libraries = 8 [json_name="importedLibraries"];
+  repeated string imported_libraries = 9 [json_name="importedLibraries"];
   // Optional. Defaults to "SQL" if remote_function_options field is absent, not set otherwise.
-  optional string language = 9 [json_name="language"];
+  optional string language = 10 [json_name="language"];
   // Output only. The time when this routine was last modified, in milliseconds since the epoch.
-  optional int64 last_modified_time = 10 [json_name="lastModifiedTime"];
+  optional int64 last_modified_time = 11 [json_name="lastModifiedTime"];
+  // Optional. Options for Python UDF. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  optional PythonOptions python_options = 12 [json_name="pythonOptions"];
   // Optional. Remote function specific options.
-  optional RemoteFunctionOptions remote_function_options = 11 [json_name="remoteFunctionOptions"];
+  optional RemoteFunctionOptions remote_function_options = 13 [json_name="remoteFunctionOptions"];
   // Optional. Can be set only if routine_type = "TABLE_VALUED_FUNCTION". If absent, the return table type is inferred from definition_body at query time in each query that references this routine. If present, then the columns in the evaluated table result will be cast to match the column types specified in return table type, at query time.
-  optional StandardSqlTableType return_table_type = 12 [json_name="returnTableType"];
+  optional StandardSqlTableType return_table_type = 14 [json_name="returnTableType"];
   // Optional if language = "SQL"; required otherwise. Cannot be set if routine_type = "TABLE_VALUED_FUNCTION". If absent, the return type is inferred from definition_body at query time in each query that references this routine. If present, then the evaluated result will be cast to the specified returned type at query time. For example, for the functions created with the following statements: * `CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);` * `CREATE FUNCTION Increment(x FLOAT64) AS (Add(x, 1));` * `CREATE FUNCTION Decrement(x FLOAT64) RETURNS FLOAT64 AS (Add(x, -1));` The return_type is `{type_kind: "FLOAT64"}` for `Add` and `Decrement`, and is absent for `Increment` (inferred as FLOAT64 at query time). Suppose the function `Add` is replaced by `CREATE OR REPLACE FUNCTION Add(x INT64, y INT64) AS (x + y);` Then the inferred return type of `Increment` is automatically changed to INT64 at query time, while the return type of `Decrement` remains FLOAT64.
-  optional StandardSqlDataType return_type = 13 [json_name="returnType"];
+  optional StandardSqlDataType return_type = 15 [json_name="returnType"];
   // Required. Reference describing the ID of this routine.
-  optional RoutineReference routine_reference = 14 [json_name="routineReference"];
+  optional RoutineReference routine_reference = 16 [json_name="routineReference"];
   // Required. The type of routine.
-  optional string routine_type = 15 [json_name="routineType"];
+  optional string routine_type = 17 [json_name="routineType"];
   // Optional. The security mode of the routine, if defined. If not defined, the security mode is automatically determined from the routine's configuration.
-  optional string security_mode = 16 [json_name="securityMode"];
+  optional string security_mode = 18 [json_name="securityMode"];
   // Optional. Spark specific options.
-  optional SparkOptions spark_options = 17 [json_name="sparkOptions"];
+  optional SparkOptions spark_options = 19 [json_name="sparkOptions"];
   // Optional. Use this option to catch many common errors. Error checking is not exhaustive, and successfully creating a procedure doesn't guarantee that the procedure will successfully execute at runtime. If `strictMode` is set to `TRUE`, the procedure body is further checked for errors such as non-existent tables or columns. The `CREATE PROCEDURE` statement fails if the body fails any of these checks. If `strictMode` is set to `FALSE`, the procedure body is checked only for syntax. For procedures that invoke themselves recursively, specify `strictMode=FALSE` to avoid non-existent procedure errors during validation. Default value is `TRUE`.
-  optional bool strict_mode = 18 [json_name="strictMode"];
+  optional bool strict_mode = 20 [json_name="strictMode"];
 }
 
 // Id path of a routine.

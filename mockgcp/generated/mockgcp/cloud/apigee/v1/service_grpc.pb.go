@@ -11184,6 +11184,8 @@ var OrganizationsEnvironmentsResourcefilesServer_ServiceDesc = grpc.ServiceDesc{
 type OrganizationsEnvironmentsSecurityActionsServerClient interface {
 	// CreateSecurityAction creates a SecurityAction.
 	CreateOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *CreateOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
+	// Delete a SecurityAction.
+	DeleteOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DeleteOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error)
 	// Disable a SecurityAction. The `state` of the SecurityAction after disabling is `DISABLED`. `DisableSecurityAction` can be called on SecurityActions in the state `ENABLED`; SecurityActions in a different state (including `DISABLED`) return an error.
 	DisableOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DisableOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Enable a SecurityAction. The `state` of the SecurityAction after enabling is `ENABLED`. `EnableSecurityAction` can be called on SecurityActions in the state `DISABLED`; SecurityActions in a different state (including `ENABLED) return an error.
@@ -11192,6 +11194,8 @@ type OrganizationsEnvironmentsSecurityActionsServerClient interface {
 	GetOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *GetOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Returns a list of SecurityActions. This returns both enabled and disabled actions.
 	ListOrganizationsEnvironmentsSecurityActions(ctx context.Context, in *ListOrganizationsEnvironmentsSecurityActionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error)
+	// Update a SecurityAction.
+	PatchOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *PatchOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 }
 
 type organizationsEnvironmentsSecurityActionsServerClient struct {
@@ -11205,6 +11209,15 @@ func NewOrganizationsEnvironmentsSecurityActionsServerClient(cc grpc.ClientConnI
 func (c *organizationsEnvironmentsSecurityActionsServerClient) CreateOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *CreateOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error) {
 	out := new(GoogleCloudApigeeV1SecurityAction)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/CreateOrganizationsEnvironmentsSecurityAction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsEnvironmentsSecurityActionsServerClient) DeleteOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DeleteOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error) {
+	out := new(GoogleProtobufEmpty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/DeleteOrganizationsEnvironmentsSecurityAction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -11247,12 +11260,23 @@ func (c *organizationsEnvironmentsSecurityActionsServerClient) ListOrganizations
 	return out, nil
 }
 
+func (c *organizationsEnvironmentsSecurityActionsServerClient) PatchOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *PatchOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error) {
+	out := new(GoogleCloudApigeeV1SecurityAction)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/PatchOrganizationsEnvironmentsSecurityAction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsEnvironmentsSecurityActionsServerServer is the server API for OrganizationsEnvironmentsSecurityActionsServer service.
 // All implementations must embed UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer
 // for forward compatibility
 type OrganizationsEnvironmentsSecurityActionsServerServer interface {
 	// CreateSecurityAction creates a SecurityAction.
 	CreateOrganizationsEnvironmentsSecurityAction(context.Context, *CreateOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
+	// Delete a SecurityAction.
+	DeleteOrganizationsEnvironmentsSecurityAction(context.Context, *DeleteOrganizationsEnvironmentsSecurityActionRequest) (*GoogleProtobufEmpty, error)
 	// Disable a SecurityAction. The `state` of the SecurityAction after disabling is `DISABLED`. `DisableSecurityAction` can be called on SecurityActions in the state `ENABLED`; SecurityActions in a different state (including `DISABLED`) return an error.
 	DisableOrganizationsEnvironmentsSecurityAction(context.Context, *DisableOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Enable a SecurityAction. The `state` of the SecurityAction after enabling is `ENABLED`. `EnableSecurityAction` can be called on SecurityActions in the state `DISABLED`; SecurityActions in a different state (including `ENABLED) return an error.
@@ -11261,6 +11285,8 @@ type OrganizationsEnvironmentsSecurityActionsServerServer interface {
 	GetOrganizationsEnvironmentsSecurityAction(context.Context, *GetOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Returns a list of SecurityActions. This returns both enabled and disabled actions.
 	ListOrganizationsEnvironmentsSecurityActions(context.Context, *ListOrganizationsEnvironmentsSecurityActionsRequest) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error)
+	// Update a SecurityAction.
+	PatchOrganizationsEnvironmentsSecurityAction(context.Context, *PatchOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	mustEmbedUnimplementedOrganizationsEnvironmentsSecurityActionsServerServer()
 }
 
@@ -11270,6 +11296,9 @@ type UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer struct {
 
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) CreateOrganizationsEnvironmentsSecurityAction(context.Context, *CreateOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsEnvironmentsSecurityAction not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) DeleteOrganizationsEnvironmentsSecurityAction(context.Context, *DeleteOrganizationsEnvironmentsSecurityActionRequest) (*GoogleProtobufEmpty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsEnvironmentsSecurityAction not implemented")
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) DisableOrganizationsEnvironmentsSecurityAction(context.Context, *DisableOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableOrganizationsEnvironmentsSecurityAction not implemented")
@@ -11282,6 +11311,9 @@ func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) GetOrga
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) ListOrganizationsEnvironmentsSecurityActions(context.Context, *ListOrganizationsEnvironmentsSecurityActionsRequest) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsEnvironmentsSecurityActions not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) PatchOrganizationsEnvironmentsSecurityAction(context.Context, *PatchOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsEnvironmentsSecurityAction not implemented")
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) mustEmbedUnimplementedOrganizationsEnvironmentsSecurityActionsServerServer() {
 }
@@ -11311,6 +11343,24 @@ func _OrganizationsEnvironmentsSecurityActionsServer_CreateOrganizationsEnvironm
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).CreateOrganizationsEnvironmentsSecurityAction(ctx, req.(*CreateOrganizationsEnvironmentsSecurityActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsEnvironmentsSecurityActionsServer_DeleteOrganizationsEnvironmentsSecurityAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsEnvironmentsSecurityActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).DeleteOrganizationsEnvironmentsSecurityAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/DeleteOrganizationsEnvironmentsSecurityAction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).DeleteOrganizationsEnvironmentsSecurityAction(ctx, req.(*DeleteOrganizationsEnvironmentsSecurityActionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -11387,6 +11437,24 @@ func _OrganizationsEnvironmentsSecurityActionsServer_ListOrganizationsEnvironmen
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsEnvironmentsSecurityActionsServer_PatchOrganizationsEnvironmentsSecurityAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsEnvironmentsSecurityActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).PatchOrganizationsEnvironmentsSecurityAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/PatchOrganizationsEnvironmentsSecurityAction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).PatchOrganizationsEnvironmentsSecurityAction(ctx, req.(*PatchOrganizationsEnvironmentsSecurityActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsEnvironmentsSecurityActionsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -11397,6 +11465,10 @@ var OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc = grpc.ServiceDes
 		{
 			MethodName: "CreateOrganizationsEnvironmentsSecurityAction",
 			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_CreateOrganizationsEnvironmentsSecurityAction_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsEnvironmentsSecurityAction",
+			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_DeleteOrganizationsEnvironmentsSecurityAction_Handler,
 		},
 		{
 			MethodName: "DisableOrganizationsEnvironmentsSecurityAction",
@@ -11413,6 +11485,10 @@ var OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc = grpc.ServiceDes
 		{
 			MethodName: "ListOrganizationsEnvironmentsSecurityActions",
 			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_ListOrganizationsEnvironmentsSecurityActions_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsEnvironmentsSecurityAction",
+			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_PatchOrganizationsEnvironmentsSecurityAction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1118,7 +1118,7 @@ message PscConfig {
   repeated string allowed_google_producers_resource_hierarchy_level = 1 [json_name="allowedGoogleProducersResourceHierarchyLevel"];
   // Optional. Max number of PSC connections for this policy.
   int64 limit = 2 [json_name="limit"];
-  // Required. ProducerInstanceLocation is used to specify which authorization mechanism to use to determine which projects the Producer instance can be within.
+  // Optional. ProducerInstanceLocation is used to specify which authorization mechanism to use to determine which projects the Producer instance can be within.
   string producer_instance_location = 3 [json_name="producerInstanceLocation"];
   // The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
   repeated string subnetworks = 4 [json_name="subnetworks"];

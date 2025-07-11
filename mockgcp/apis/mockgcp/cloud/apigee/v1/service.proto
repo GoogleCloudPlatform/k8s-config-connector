@@ -1799,6 +1799,13 @@ service OrganizationsEnvironmentsSecurityActionsServer {
     };
   };
 
+  // Delete a SecurityAction.
+  rpc DeleteOrganizationsEnvironmentsSecurityAction(DeleteOrganizationsEnvironmentsSecurityActionRequest) returns (GoogleProtobufEmpty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=organizations/*/environments/*/securityActions/*}"
+    };
+  };
+
   // Disable a SecurityAction. The `state` of the SecurityAction after disabling is `DISABLED`. `DisableSecurityAction` can be called on SecurityActions in the state `ENABLED`; SecurityActions in a different state (including `DISABLED`) return an error.
   rpc DisableOrganizationsEnvironmentsSecurityAction(DisableOrganizationsEnvironmentsSecurityActionRequest) returns (GoogleCloudApigeeV1SecurityAction) {
     option (google.api.http) = {
@@ -1826,6 +1833,14 @@ service OrganizationsEnvironmentsSecurityActionsServer {
   rpc ListOrganizationsEnvironmentsSecurityActions(ListOrganizationsEnvironmentsSecurityActionsRequest) returns (GoogleCloudApigeeV1ListSecurityActionsResponse) {
     option (google.api.http) = {
       get: "/v1/{parent=organizations/*/environments/*}/securityActions"
+    };
+  };
+
+  // Update a SecurityAction.
+  rpc PatchOrganizationsEnvironmentsSecurityAction(PatchOrganizationsEnvironmentsSecurityActionRequest) returns (GoogleCloudApigeeV1SecurityAction) {
+    option (google.api.http) = {
+      patch: "/v1/{name=organizations/*/environments/*/securityActions/*}"
+      body: "organizations_environments_security_action"
     };
   };
 }
@@ -4979,24 +4994,26 @@ message GoogleCloudApigeeV1Organization {
   int64 last_modified_at = 18 [json_name="lastModifiedAt"];
   // Output only. Name of the Apigee organization.
   string name = 19 [json_name="name"];
+  // Optional. Flag that specifies if internet egress is restricted for VPC Service Controls. Valid only when runtime_type is `CLOUD` and disable_vpc_peering is `true`.
+  bool network_egress_restricted = 20 [json_name="networkEgressRestricted"];
   // Optional. Configuration for the Portals settings.
-  bool portal_disabled = 20 [json_name="portalDisabled"];
+  bool portal_disabled = 21 [json_name="portalDisabled"];
   // Output only. Project ID associated with the Apigee organization.
-  string project_id = 21 [json_name="projectId"];
+  string project_id = 22 [json_name="projectId"];
   // Optional. Properties defined in the Apigee organization profile.
-  GoogleCloudApigeeV1Properties properties = 22 [json_name="properties"];
+  GoogleCloudApigeeV1Properties properties = 23 [json_name="properties"];
   // Optional. Cloud KMS key name used for encrypting the data that is stored and replicated across runtime instances. Update is not allowed after the organization is created. If not specified or [RuntimeType](#RuntimeType) is `TRIAL`, a Google-Managed encryption key will be used. For example: "projects/foo/locations/us/keyRings/bar/cryptoKeys/baz". **Note:** Not supported for Apigee hybrid.
-  string runtime_database_encryption_key_name = 23 [json_name="runtimeDatabaseEncryptionKeyName"];
+  string runtime_database_encryption_key_name = 24 [json_name="runtimeDatabaseEncryptionKeyName"];
   // Required. Runtime type of the Apigee organization based on the Apigee subscription purchased.
-  string runtime_type = 24 [json_name="runtimeType"];
+  string runtime_type = 25 [json_name="runtimeType"];
   // Output only. State of the organization. Values other than ACTIVE means the resource is not ready to use.
-  string state = 25 [json_name="state"];
+  string state = 26 [json_name="state"];
   // Output only. Subscription plan that the customer has purchased. Output only.
-  string subscription_plan = 26 [json_name="subscriptionPlan"];
+  string subscription_plan = 27 [json_name="subscriptionPlan"];
   // Output only. DEPRECATED: This will eventually be replaced by BillingType. Subscription type of the Apigee organization. Valid values include trial (free, limited, and for evaluation purposes only) or paid (full subscription has been purchased). See [Apigee pricing](https://cloud.google.com/apigee/pricing/).
-  string subscription_type = 27 [json_name="subscriptionType"];
+  string subscription_type = 28 [json_name="subscriptionType"];
   // Not used by Apigee.
-  string type = 28 [json_name="type"];
+  string type = 29 [json_name="type"];
 }
 
 message GoogleCloudApigeeV1OrganizationProjectMapping {
@@ -6247,7 +6264,7 @@ message GoogleCloudApigeeV1UpdateAppGroupAppKeyRequest {
   string action = 1 [json_name="action"];
   // The list of API products that will be associated with the credential. This list will be appended to the existing list of associated API Products for this App Key. Duplicates will be ignored.
   repeated string api_products = 2 [json_name="apiProducts"];
-  // Note that only Scopes and Attributes of the AppGroupAppKey can be amended.
+  // Note that only Scopes and Attributes of the AppGroupAppKey can be amended. Scopes and Attributes mentioned in the request will be inserted and the existing scopes and attributes will be removed.
   GoogleCloudApigeeV1AppGroupAppKey app_group_app_key = 3 [json_name="appGroupAppKey"];
 }
 
@@ -7498,6 +7515,10 @@ message CreateOrganizationsEnvironmentsSecurityActionRequest {
   GoogleCloudApigeeV1SecurityAction organizations_environments_security_action = 3;
 }
 
+message DeleteOrganizationsEnvironmentsSecurityActionRequest {
+  string name = 1;
+}
+
 message DisableOrganizationsEnvironmentsSecurityActionRequest {
   string name = 1;
   GoogleCloudApigeeV1DisableSecurityActionRequest organizations_environments_security_action = 2;
@@ -7517,6 +7538,12 @@ message ListOrganizationsEnvironmentsSecurityActionsRequest {
   int32 page_size = 2;
   string page_token = 3;
   string parent = 4;
+}
+
+message PatchOrganizationsEnvironmentsSecurityActionRequest {
+  string name = 1;
+  string update_mask = 2;
+  GoogleCloudApigeeV1SecurityAction organizations_environments_security_action = 3;
 }
 
 message BatchUpdateOrganizationsEnvironmentsSecurityIncidentRequest {
