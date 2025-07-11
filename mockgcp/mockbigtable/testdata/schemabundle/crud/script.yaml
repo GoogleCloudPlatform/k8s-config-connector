@@ -1,0 +1,8 @@
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-east1-c
+- exec: gcloud bigtable tables create test-table --instance=test-instance-${uniqueId} --column-families="customer"
+- exec: gcloud bigtable schema-bundles create sb-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table --proto-descriptors-file=proto_schema_bundle.pb
+- exec: gcloud bigtable schema-bundles describe sb-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table
+- exec: gcloud bigtable schema-bundles update sb-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table --proto-descriptors-file=updated_proto_schema_bundle.pb
+- exec: gcloud bigtable schema-bundles delete sb-${uniqueId} --instance=test-instance-${uniqueId} --table=test-table
+- exec: gcloud bigtable tables delete test-table --instance=test-instance-${uniqueId} --quiet
+- exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet

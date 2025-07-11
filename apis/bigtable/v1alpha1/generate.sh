@@ -26,7 +26,8 @@ go run . generate-types \
   --api-version bigtable.cnrm.cloud.google.com/v1alpha1  \
   --resource BigtableAuthorizedView:AuthorizedView \
   --resource BigtableBackup:Backup \
-  --resource BigtableCluster:Cluster
+  --resource BigtableCluster:Cluster \
+  --resource BigtableSchemaBundle:SchemaBundle
 
 go run . generate-mapper \
   --service google.bigtable.admin.v2 \

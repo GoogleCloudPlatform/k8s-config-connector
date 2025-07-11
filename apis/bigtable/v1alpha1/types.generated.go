@@ -19,6 +19,7 @@
 // resource: BigtableAuthorizedView:AuthorizedView
 // resource: BigtableBackup:Backup
 // resource: BigtableCluster:Cluster
+// resource: BigtableSchemaBundle:SchemaBundle
 
 package v1alpha1
 
