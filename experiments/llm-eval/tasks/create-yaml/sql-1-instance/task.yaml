@@ -13,7 +13,8 @@
 # limitations under the License.
 
 script:
-- prompt: "You need to create a KCC SQLInstance resource named 'my-sql-instance' with database version 'MYSQL_8_0' and region 'us-central1'. Use the available tools to generate the appropriate YAML manifest and then write it to the file at $(git rev-parse --show-toplevel)/.build/tasks/sql-1-instance/instance.yaml. Hint: Use the available MCP tools to find the resource schema and generate the YAML. If the mcp tool is not available, use your knowledge to generate the YAML manifest. "
+- prompt: "You need to create a KCC SQLInstance resource named 'my-sql-instance' with database version 'MYSQL_8_0' and region 'us-central1'."
+output_file: "instance.yaml"
 verifier: "verify.sh"
 cleanup: "cleanup.sh"
 difficulty: "medium"

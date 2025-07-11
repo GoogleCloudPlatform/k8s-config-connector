@@ -13,7 +13,7 @@
 # limitations under the License.
 
 script:
-- prompt: "Your task is to get a 'storagebucket-apply' KCC StorageBucket in namespace storagebucket-apply with UBLA enabled running in the cluster. If you need to create any files, store them under $(git rev-parse --show-toplevel)/.build/tasks/storagebucket-3-apply/. Use project $(gcloud config get core/project). Hint: This is a multi-step process."
+- prompt: "Your task is to get a 'storagebucket-apply' KCC StorageBucket in namespace storagebucket-apply with UBLA enabled running in the cluster. Use project $(gcloud config get core/project). Hint: This is a multi-step process."
 verifier: "verify.sh"
 cleanup: "cleanup.sh"
 difficulty: "hard" 

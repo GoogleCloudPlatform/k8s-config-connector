@@ -55,6 +55,10 @@ def discover_tasks(tasks_dir="tasks"):
                     if not prompt:
                         print(f"Warning: No prompt found for task {test_name}, skipping.")
                         continue
+                    
+                    output_file = task_data.get("output_file", f"{test_name}.yaml")
+                    prompt += f"\nPlace the generated YAML in a file at `$(git rev-parse --show-toplevel)/.build/{root}/{output_file}`."
+                    prompt += "\nHint: Use the available MCP tools to find the resource schema and generate the YAML. If the mcp tool is not available, use your knowledge to generate the YAML manifest."
 
                     test_cases.append({
                         "name": test_name,

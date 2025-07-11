@@ -34,7 +34,7 @@ if ! grep -q "kind: StorageBucket" "${FILE_PATH}"; then
   exit 1
 fi
 
-# Check if the file has the annotation "cnrm.cloud.google.com/project-id" or valid spec.labels
+# Check if the file has the annotation "cnrm.cloud.google.com/project-id"
 if grep -q 'cnrm.cloud.google.com/project-id' "${FILE_PATH}"; then
   echo "Found project-id annotation"
   exit 0
