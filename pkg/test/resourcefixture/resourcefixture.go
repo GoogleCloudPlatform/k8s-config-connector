@@ -177,6 +177,8 @@ func readGroupVersionKind(t *testing.T, config []byte) (schema.GroupVersionKind,
 func parseTestTypeFromPath(t *testing.T, path string) TestType {
 	t.Helper()
 	switch parseTestDataSubdirFromPath(t, path) {
+	case "iam":
+		return "iam"
 	case "basic":
 		return Basic
 	case "containerannotations":
