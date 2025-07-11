@@ -187,6 +187,39 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "labels": {
     "managed-by-cnrm": "true"
   },
+  "schema": {
+    "fields": [
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "policyTags": {},
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "policyTags": {},
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      }
+    ]
+  },
   "tableReference": {
     "datasetId": "bigquerydataset${uniqueId}",
     "projectId": "${projectId}",
@@ -222,7 +255,36 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "schema": {},
+  "schema": {
+    "fields": [
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      }
+    ]
+  },
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset${uniqueId}",
@@ -265,6 +327,36 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
+  "schema": {
+    "fields": [
+      {
+        "description": "Name of the entity",
+        "mode": "REQUIRED",
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
+      }
+    ]
+  },
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset${uniqueId}",
@@ -281,7 +373,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "Updated description of BQ Table",
+  "description": "Updated Description of BQ Table",
   "friendlyName": "BigQueryTable Example",
   "labels": {
     "managed-by-cnrm": "true"
@@ -289,14 +381,30 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "schema": {
     "fields": [
       {
+        "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "REQUIRED",
-        "name": "email",
-        "type": "STRING"
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
       }
     ]
   },
@@ -319,7 +427,7 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
-  "description": "Updated description of BQ Table",
+  "description": "Updated Description of BQ Table",
   "etag": "abcdef0123A=",
   "friendlyName": "BigQueryTable Example",
   "id": "000000000000000000000",
@@ -338,14 +446,30 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "REQUIRED",
-        "name": "email",
-        "type": "STRING"
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
       }
     ]
   },
@@ -375,7 +499,7 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
-  "description": "Updated description of BQ Table",
+  "description": "Updated Description of BQ Table",
   "etag": "abcdef0123A=",
   "friendlyName": "BigQueryTable Example",
   "id": "000000000000000000000",
@@ -394,14 +518,30 @@ X-Xss-Protection: 0
   "schema": {
     "fields": [
       {
+        "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
         "type": "STRING"
       },
       {
-        "mode": "REQUIRED",
-        "name": "email",
-        "type": "STRING"
+        "description": "atlan BQ labels",
+        "fields": [
+          {
+            "description": "key",
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          },
+          {
+            "description": "values",
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "labels",
+        "type": "RECORD"
       }
     ]
   },

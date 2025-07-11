@@ -20,24 +20,42 @@ metadata:
     key1: value1
     key2: value2
   annotations:
-    cnrm.cloud.google.com/unmanaged: "spec.schema.fields.policyTags"
+    cnrm.cloud.google.com/unmanaged: "spec.schema.fields.policyTags;spec.schema.fields.dataPolicies"
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}
   friendlyName: BigQueryTable Example
-  description: "Updated description of BQ Table"
+  description: "Updated Description of BQ Table"
   schema: |-
     [
       {
         "name": "name",
         "type": "STRING",
         "mode": "REQUIRED",
-        "policyTags": {"names": ["fake-policy-tag"]}
+        "description": "Name of the entity",
+        "dataPolicies": [{"name": "mock dataPolicies"}],
+        "policyTags": {"names": ["mock policytags"]}
       },
       {
-        "name": "email",
-        "type": "STRING",
-        "mode": "REQUIRED",
-        "policyTags": {"names": ["fake-policy-tag"]}
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key",
+            "dataPolicies": [{"name": "mock dataPolicies"}],
+            "policyTags": {"names": ["mock policytags"]}
+          },
+          {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+          }
+        ],
+        "description": "atlan BQ labels"
       }
     ]

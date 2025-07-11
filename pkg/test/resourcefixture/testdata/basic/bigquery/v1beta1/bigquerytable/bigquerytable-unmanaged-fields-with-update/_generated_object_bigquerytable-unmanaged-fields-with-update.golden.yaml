@@ -4,7 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/unmanaged: spec.schema.fields.policyTags
+    cnrm.cloud.google.com/unmanaged: spec.schema.fields.policyTags;spec.schema.fields.dataPolicies
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -18,7 +18,7 @@ metadata:
 spec:
   datasetRef:
     name: bigquerydataset${uniqueId}
-  description: Updated description of BQ Table
+  description: Updated Description of BQ Table
   friendlyName: BigQueryTable Example
   schema: |-
     [
@@ -26,13 +26,31 @@ spec:
         "name": "name",
         "type": "STRING",
         "mode": "REQUIRED",
-        "policyTags": {"names": ["fake-policy-tag"]}
+        "description": "Name of the entity",
+        "dataPolicies": [{"name": "mock dataPolicies"}],
+        "policyTags": {"names": ["mock policytags"]}
       },
       {
-        "name": "email",
-        "type": "STRING",
-        "mode": "REQUIRED",
-        "policyTags": {"names": ["fake-policy-tag"]}
+        "name": "labels",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "key",
+            "type": "STRING",
+            "mode": "NULLABLE",
+            "description": "key",
+            "dataPolicies": [{"name": "mock dataPolicies"}],
+            "policyTags": {"names": ["mock policytags"]}
+          },
+          {
+            "name":"value",
+            "type":"STRING",
+            "mode":"NULLABLE",
+            "description":"values"
+          }
+        ],
+        "description": "atlan BQ labels"
       }
     ]
 status:

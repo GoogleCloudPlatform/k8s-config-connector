@@ -9,7 +9,8 @@ metadata:
 spec:
   datasetRef:
     external: bigquerydataset${uniqueId}
-  description: Updated description of BQ Table
+  description: Updated Description of BQ Table
   friendlyName: BigQueryTable Example
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"mode":"REQUIRED","name":"name","type":"STRING"},{"mode":"REQUIRED","name":"email","type":"STRING"}]'
+  schema: '[{"description":"Name of the entity","mode":"REQUIRED","name":"name","type":"STRING"},{"description":"atlan
+    BQ labels","fields":[{"description":"key","mode":"NULLABLE","name":"key","type":"STRING"},{"description":"values","mode":"NULLABLE","name":"value","type":"STRING"}],"mode":"REPEATED","name":"labels","type":"RECORD"}]'
