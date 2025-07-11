@@ -261,6 +261,7 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -270,12 +271,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
@@ -333,6 +336,7 @@ X-Xss-Protection: 0
         "description": "Name of the entity",
         "mode": "REQUIRED",
         "name": "name",
+        "policyTags": {},
         "type": "STRING"
       },
       {
@@ -342,12 +346,14 @@ X-Xss-Protection: 0
             "description": "key",
             "mode": "NULLABLE",
             "name": "key",
+            "policyTags": {},
             "type": "STRING"
           },
           {
             "description": "values",
             "mode": "NULLABLE",
             "name": "value",
+            "policyTags": {},
             "type": "STRING"
           }
         ],
