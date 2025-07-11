@@ -98,6 +98,19 @@ func (o *CreateOperation) RecordUpdatingEvent() {
 	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
 
+var _ Operation = &FindOperation{}
+
+type FindOperation struct {
+	operationBase
+}
+
+func NewFindOperation(client client.Client, object *unstructured.Unstructured) *FindOperation {
+	op := &FindOperation{}
+	op.client = client
+	op.object = object
+	return op
+}
+
 type DeleteOperation struct {
 	object *unstructured.Unstructured
 }

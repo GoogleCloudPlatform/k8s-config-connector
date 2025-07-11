@@ -64,7 +64,7 @@ type Adapter interface {
 
 	// Find must be called as the first operation (unless we are deleting).
 	// It returns whether the corresponding GCP object was found.
-	Find(ctx context.Context) (found bool, err error)
+	Find(ctx context.Context, op *FindOperation) (found bool, err error)
 
 	// Create creates a new GCP object.
 	// This should only be called when Find has previously returned false.

@@ -339,7 +339,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	// To create, update or delete the GCP object, we need to get the GCP object first.
 	// Because the object contains the cloud service information like `selfLink` `ID` required to validate
 	// the resource uniqueness before updating/deleting.
-	existsAlready, err := adapter.Find(ctx)
+	findOp := NewFindOperation(r.Reconciler.Client, u)
+	existsAlready, err := adapter.Find(ctx, findOp)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
