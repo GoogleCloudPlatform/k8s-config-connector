@@ -386,7 +386,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 
 				if ShouldTestRereconiliation(t, testName, primaryResource) {
-					h.Log("Testing re-reconciliation...")
+					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
 					eventsBefore := h.Events.HTTPEvents
 
 					oldGeneration := getGeneration(h, primaryResource)

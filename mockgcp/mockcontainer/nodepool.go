@@ -203,7 +203,8 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			"https://www.googleapis.com/auth/cloud-platform",
 		}
 	} else {
-		// Reach out to API team to understand why when the input is
+		// TODO: Reach out to API team to get clarification of the following behavior:
+		// When the input is
 		// "oauthScopes": [
 		//   "https://www.googleapis.com/auth/devstorage.read_only",
 		//   "https://www.googleapis.com/auth/logging.write"
