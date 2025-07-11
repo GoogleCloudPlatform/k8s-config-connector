@@ -160,38 +160,6 @@ spec:
                             description: Detailed information of a PSC connection
                               that is created by the user.
                             properties:
-                              forwardingRuleRef:
-                                description: 'Required. The URI of the consumer side
-                                  forwarding rule. Format: projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}'
-                                oneOf:
-                                - not:
-                                    required:
-                                    - external
-                                  required:
-                                  - name
-                                - not:
-                                    anyOf:
-                                    - required:
-                                      - name
-                                    - required:
-                                      - namespace
-                                  required:
-                                  - external
-                                properties:
-                                  external:
-                                    description: The ForwardingRule selflink in the
-                                      form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}"
-                                      when not managed by Config Connector.
-                                    type: string
-                                  name:
-                                    description: The `name` field of a `ComputeAddress`
-                                      resource.
-                                    type: string
-                                  namespace:
-                                    description: The `namespace` field of a `ComputeAddress`
-                                      resource.
-                                    type: string
-                                type: object
                               ipAddress:
                                 description: Required. The IP allocated on the consumer
                                   network for the PSC forwarding rule.
@@ -262,7 +230,6 @@ spec:
                                     type: string
                                 type: object
                             required:
-                            - forwardingRuleRef
                             - ipAddress
                             - networkRef
                             - serviceAttachmentRef
@@ -359,8 +326,8 @@ spec:
                     type: string
                 type: object
               pscAutoConnections:
-                description: Required. Immutable. User inputs and resource details
-                  of the auto-created PSC connections.
+                description: User inputs and resource details of the auto-created
+                  PSC connections.
                 items:
                   properties:
                     networkRef:
@@ -560,6 +527,10 @@ spec:
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
+                    properties:
+                      sizeGB:
+                        description: Output only. Memory size in GB of the node.
+                        type: number
                     type: object
                   pscAutoConnections:
                     description: Immutable. User inputs and resource details of the
@@ -605,6 +576,11 @@ spec:
                   stateInfo:
                     description: Output only. Additional information about the state
                       of the instance.
+                    properties:
+                      updateInfo:
+                        description: Output only. Describes ongoing update when instance
+                          state is UPDATING.
+                        type: object
                     type: object
                   uid:
                     description: Output only. System assigned, unique identifier for

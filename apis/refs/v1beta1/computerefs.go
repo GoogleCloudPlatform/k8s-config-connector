@@ -256,15 +256,6 @@ type ComputeAddressRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type ComputeForwardingRuleRef struct {
-	/* The ForwardingRule selflink in the form "projects/{{project}}/regions/{{region}}/forwardingRules/{{name}}" when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeAddress` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeAddress` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
-
 type ComputeServiceAttachmentRef struct {
 	/* The ComputeServiceAttachment selflink in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}" when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
