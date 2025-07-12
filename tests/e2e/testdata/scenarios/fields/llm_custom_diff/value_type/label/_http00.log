@@ -89,6 +89,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -136,6 +137,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -215,6 +217,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -262,6 +265,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
