@@ -1,4 +1,4 @@
-apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
 kind: AppHubApplication
 metadata:
   name: apphubapplication-minimal-${uniqueId}
@@ -6,6 +6,6 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-west2
-  description: "Updated description"
+  description: "Initial description"
   scope:
     type: REGIONAL
