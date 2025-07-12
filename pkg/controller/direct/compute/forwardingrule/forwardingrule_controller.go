@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+
 	"k8s.io/klog/v2"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -63,8 +65,11 @@ func (r *ForwardingRuleReconcileGate) ShouldReconcile(o *unstructured.Unstructur
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
 		return false
 	}
-	// Run the direct reconciler only when spec.Target.GoogleAPIsBundle is specified
-	return obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
+	// Run the direct reconciler when spec.target.googleAPIsBundle is specified
+	hasGoogleAPIsBundle := obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil
+	// Run the direct reconciler when spec.labels is specified
+	hasLabels := obj.Spec.Labels != nil
+	return hasGoogleAPIsBundle || hasLabels
 }
 
 type forwardingRuleModel struct {
@@ -105,9 +110,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 
 	// Get location
 	location := obj.Spec.Location
-
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
 
 	// Handle TF default values
 	if obj.Spec.LoadBalancingScheme == nil {
@@ -220,7 +222,8 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
+	labels := handleLabelsForObject(desired)
+	forwardingRule.Labels = labels
 
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
@@ -268,7 +271,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	// Set labels for the created forwarding rule
 	// Add labels back for psc forwarding rule
 	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
-		forwardingRule.Labels = desired.Labels
+		forwardingRule.Labels = labels
 	}
 	if forwardingRule.Labels != nil {
 		op, err := a.setLabels(ctx, created.LabelFingerprint, forwardingRule.Labels)
@@ -322,7 +325,7 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
+	forwardingRule.Labels = handleLabelsForObject(desired)
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
@@ -658,4 +661,20 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 		}
 	}
 	return nil
+}
+
+func handleLabelsForObject(desired *krm.ComputeForwardingRule) map[string]string {
+	labels := make(map[string]string)
+	if desired.Spec.Labels != nil {
+		// If specification labels are non-empty, use specification labels only
+		labels = desired.Spec.Labels
+		// Apply Config Connector default labels
+		labels[label.CnrmManagedKey] = "true"
+	} else {
+		// Otherwise, use metadata.labels for backward compatibility
+		labels = desired.Labels
+		// Remove system labels in metadata.labels and apply Config Connector default labels
+		labels = label.NewGCPLabelsFromK8sLabels(labels)
+	}
+	return labels
 }
