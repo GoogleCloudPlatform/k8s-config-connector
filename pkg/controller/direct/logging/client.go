@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/logging/v2"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,12 +35,12 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newProjectMetricsService(ctx context.Context) (*api.ProjectsMetricsService, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	service, err := api.NewService(ctx, opts...)
+	service, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building service for logging: %w", err)
 	}

@@ -22,6 +22,7 @@ import (
 	"go.opencensus.io/stats/view"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func RegisterControllerOpenCensusViews() error {
@@ -45,7 +46,8 @@ func RegisterPrometheusExporter(addr string) error {
 	// Run the Prometheus exporter as a scrape endpoint.
 	go func() {
 		mux := http.NewServeMux()
-		mux.Handle("/metrics", pe)
+		mux.Handle("/metrics", pe)                              // OpenCensus
+		mux.Handle("/experimental-metrics", promhttp.Handler()) // Prometheus Go client
 		if err := http.ListenAndServe(addr, mux); err != nil {
 			logging.Fatal(err, "failed to run Prometheus scrape endpoint")
 		}
