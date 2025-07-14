@@ -11,14 +11,13 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: spannerinstance-sample-${uniqueId}
+  name: spannerinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  config: regional-us-west1
-  displayName: New Spanner Instance Sample
-  numNodes: 3
-  resourceID: spannerinstance-sample-${uniqueId}
+  config: regional-us-central1
+  displayName: Spanner Instance Updated
+  processingUnits: 3000
+  resourceID: spannerinstance-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

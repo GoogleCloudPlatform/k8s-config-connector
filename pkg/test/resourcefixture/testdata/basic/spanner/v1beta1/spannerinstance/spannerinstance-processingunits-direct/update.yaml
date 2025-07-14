@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  labels:
-    label-one: "value-one"
-  name: spannerinstance-sample-${uniqueId}
+  name: spannerinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
-  config: regional-us-west1
-  displayName: New Spanner Instance Sample
-  numNodes: 3
-
+  config: regional-us-central1
+  displayName: Spanner Instance Updated
+  processingUnits: 3000

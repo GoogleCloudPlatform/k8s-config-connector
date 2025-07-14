@@ -76,6 +76,9 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	now := timestamppb.Now()
 
 	obj := proto.Clone(req.GetInstance()).(*pb.Instance)
+	// Value of ReplicaComputeCapacity during creation is determined by raw
+	// input so it needs to be processed first.
+	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 	s.populateDefaultsForSpannerInstance(obj, obj)
 	obj.State = pb.Instance_READY
 	if len(obj.DisplayName) < 4 || len(obj.DisplayName) > 30 {
@@ -84,10 +87,13 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
 		obj.Edition = pb.Instance_STANDARD
 	}
+	if obj.DefaultBackupScheduleType == pb.Instance_DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED &&
+		obj.InstanceType != pb.Instance_FREE_INSTANCE {
+		obj.DefaultBackupScheduleType = pb.Instance_AUTOMATIC
+	}
+	obj.Name = fqn
 
-	// Metadata instance include ReplicaComputeCapacity even if not specify
 	cloneObj := proto.Clone(obj).(*pb.Instance)
-	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
 
 	obj.CreateTime = now
 	obj.UpdateTime = now
@@ -101,8 +107,8 @@ func (s *SpannerInstanceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
 		metadata.ExpectedFulfillmentPeriod = pb.FulfillmentPeriod_FULFILLMENT_PERIOD_NORMAL
 		metadata.EndTime = now
+		metadata.Instance.CreateTime = now
 		metadata.Instance.UpdateTime = now
-		metadata.Instance.ReplicaComputeCapacity = nil
 		metadata.Instance.Name = fqn
 		retObj := proto.Clone(obj).(*pb.Instance)
 		retObj.Name = fqn
@@ -118,27 +124,87 @@ func (s *SpannerInstanceV1) populateDefaultsForSpannerInstance(update, obj *pb.I
 		update.ProcessingUnits = update.GetAutoscalingConfig().AutoscalingLimits.GetMinProcessingUnits()
 		update.NodeCount = update.GetAutoscalingConfig().AutoscalingLimits.GetMinNodes()
 	}
-	if 1000*update.NodeCount > update.ProcessingUnits {
-		obj.ProcessingUnits = 1000 * update.NodeCount
-		obj.NodeCount = update.NodeCount
-	} else {
-		obj.ProcessingUnits = update.ProcessingUnits
-		obj.NodeCount = update.ProcessingUnits / 1000
+	// If either nodeCount or processingUnits fields are unset, it means some
+	// changes need to happen. Otherwise, keep obj as is.
+	if update.NodeCount != 0 || update.ProcessingUnits != 0 {
+		if 1000*update.NodeCount > update.ProcessingUnits {
+			obj.ProcessingUnits = 1000 * update.NodeCount
+			obj.NodeCount = update.NodeCount
+		} else {
+			obj.ProcessingUnits = update.ProcessingUnits
+			obj.NodeCount = update.ProcessingUnits / 1000
+		}
+	}
+
+	if update.InstanceType == pb.Instance_INSTANCE_TYPE_UNSPECIFIED {
+		obj.InstanceType = pb.Instance_PROVISIONED
 	}
 }
 
 func (s *SpannerInstanceV1) populateReplicaComputeCapacityForSpannerInstance(obj *pb.Instance) {
 	if len(obj.ReplicaComputeCapacity) == 0 {
-		tokens := strings.Split(obj.Config, "/")
-		var location string
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instanceConfigs" {
-			location = strings.TrimPrefix(tokens[3], "regional-")
+		obj.ReplicaComputeCapacity = append(obj.ReplicaComputeCapacity, &pb.ReplicaComputeCapacity{})
+	}
+
+	tokens := strings.Split(obj.Config, "/")
+	var location string
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "instanceConfigs" {
+		location = strings.TrimPrefix(tokens[3], "regional-")
+	}
+	obj.ReplicaComputeCapacity[0].ReplicaSelection = &pb.ReplicaSelection{Location: location}
+
+	// When creating an instance, ReplicaComputeCapacity is initialized:
+	// - if autoscalingLimits are configured,
+	//   - if minNodes is set, set ReplicaComputeCapacity_NodeCount to minNodes
+	//   - else set ReplicaComputeCapacity_ProcessingUnits to minProcessingUnits
+	// - else
+	//   - if nodeCount is set, set ReplicaComputeCapacity_NodeCount to nodeCount
+	//   - else set ReplicaComputeCapacity_ProcessingUnits to processingUnits
+	// When updating an instance, ReplicaComputeCapacity is updated:
+	//   type of ComputeCapacity is not changed, but the value of it is updated accordingly.
+
+	// Check if the computeCapacity is already set.
+	var useNodeCount bool
+	var useProcessingUnits bool
+	if obj.ReplicaComputeCapacity[0].ComputeCapacity != nil {
+		if _, ok := obj.ReplicaComputeCapacity[0].ComputeCapacity.(*pb.ReplicaComputeCapacity_NodeCount); ok {
+			useNodeCount = true
+		} else {
+			useProcessingUnits = true
 		}
-		r := &pb.ReplicaComputeCapacity{
-			ReplicaSelection: &pb.ReplicaSelection{Location: location},
-			ComputeCapacity:  &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.NodeCount},
+	}
+
+	// Instance creation
+	if !(useNodeCount || useProcessingUnits) {
+		if obj.AutoscalingConfig != nil && obj.AutoscalingConfig.AutoscalingLimits != nil {
+			limits := obj.AutoscalingConfig.AutoscalingLimits
+			if _, ok := limits.GetMinLimit().(*pb.AutoscalingConfig_AutoscalingLimits_MinNodes); ok {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: limits.GetMinNodes()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: limits.GetMinProcessingUnits()}
+			}
+		} else {
+			if obj.NodeCount != 0 {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.GetNodeCount()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.GetProcessingUnits()}
+			}
 		}
-		obj.ReplicaComputeCapacity = append(obj.ReplicaComputeCapacity, r)
+	} else { // Instance Update
+		if obj.AutoscalingConfig != nil && obj.AutoscalingConfig.AutoscalingLimits != nil {
+			limits := obj.AutoscalingConfig.AutoscalingLimits
+			if useNodeCount {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: limits.GetMinNodes()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: limits.GetMinProcessingUnits()}
+			}
+		} else {
+			if useNodeCount {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_NodeCount{NodeCount: obj.GetNodeCount()}
+			} else {
+				obj.ReplicaComputeCapacity[0].ComputeCapacity = &pb.ReplicaComputeCapacity_ProcessingUnits{ProcessingUnits: obj.GetProcessingUnits()}
+			}
+		}
 	}
 }
 
@@ -152,6 +218,7 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	now := timestamppb.Now()
 	obj.UpdateTime = now
 	updated := req.Instance
@@ -189,10 +256,11 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		}
 	}
 
-	s.populateDefaultsForSpannerInstance(req.Instance, obj)
-	// Metadata instance include ReplicaComputeCapacity even if not specify
+	s.populateDefaultsForSpannerInstance(updated, obj)
+	// Value of ReplicaComputeCapacity during update is determined by processed
+	// input so it needs to be handled after defaults are populated.
+	s.populateReplicaComputeCapacityForSpannerInstance(obj)
 	cloneObj := proto.Clone(obj).(*pb.Instance)
-	s.populateReplicaComputeCapacityForSpannerInstance(cloneObj)
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -204,7 +272,6 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 		metadata.ExpectedFulfillmentPeriod = pb.FulfillmentPeriod_FULFILLMENT_PERIOD_NORMAL
 		metadata.EndTime = now
 		metadata.Instance.UpdateTime = now
-		metadata.Instance.ReplicaComputeCapacity = nil
 		retObj := proto.Clone(obj).(*pb.Instance)
 		return retObj, nil
 	})
@@ -273,6 +340,8 @@ func (s *SpannerInstanceV1) CreateInstanceConfig(ctx context.Context, req *pb.Cr
 		Progress:       &pb.OperationProgress{StartTime: timestamppb.Now()},
 	}
 	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.Progress.EndTime = timestamppb.Now()
+		lroMetadata.Progress.ProgressPercent = 100
 		return obj, nil
 	})
 }

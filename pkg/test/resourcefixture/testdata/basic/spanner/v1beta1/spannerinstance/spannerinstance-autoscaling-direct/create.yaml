@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,19 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  labels:
-    label-one: "value-one"
-  name: spannerinstance-sample-${uniqueId}
+  name: spannerinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
-  config: regional-us-west1
-  displayName: Spanner Instance Sample
-  numNodes: 2
+  config: regional-us-central1
+  displayName: Autoscaling Instance
+  autoscalingConfig:
+    autoscalingLimits:
+      maxProcessingUnits: 3000
+      minProcessingUnits: 1000
+    autoscalingTargets:
+      highPriorityCpuUtilizationPercent: 75
+      storageUtilizationPercent: 80
+  # Error 400: Feature MANAGED_AUTOSCALER is not available to Instance [instance-name],
+  # in Edition STANDARD. The minimum required Edition for this feature is ENTERPRISE.
+  edition: ENTERPRISE

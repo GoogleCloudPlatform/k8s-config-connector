@@ -17,9 +17,10 @@ kind: SpannerInstance
 metadata:
   labels:
     label-one: "value-one"
-    label-two: "value-two"
   name: spannerinstance-sample-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   config: regional-us-west1
-  displayName: New spanner Instance Sample
-  numNodes: 3
+  displayName: Spanner Instance Sample
+  numNodes: 2

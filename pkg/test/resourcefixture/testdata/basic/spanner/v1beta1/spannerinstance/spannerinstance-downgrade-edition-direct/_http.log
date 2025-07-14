@@ -30,12 +30,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 {
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "Spanner Instance Sample",
+    "displayName": "Instance Sample",
+    "edition": 2,
     "labels": {
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 2
+    "nodeCount": 1
   },
   "instanceId": "spannerinstance-sample-${uniqueId}",
   "parent": "projects/${projectId}"
@@ -55,17 +56,19 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "displayName": "Spanner Instance Sample",
-      "edition": 1,
+      "defaultBackupScheduleType": 2,
+      "displayName": "Instance Sample",
+      "edition": 2,
+      "instanceType": 1,
       "labels": {
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 2,
-      "processingUnits": 2000,
+      "nodeCount": 1,
+      "processingUnits": 1000,
       "replicaComputeCapacity": [
         {
-          "nodeCount": 2,
+          "nodeCount": 1,
           "replicaSelection": {
             "location": "us-west1"
           }
@@ -102,14 +105,25 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "displayName": "Spanner Instance Sample",
-      "edition": "STANDARD",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
+      "displayName": "Instance Sample",
+      "edition": "ENTERPRISE",
+      "instanceType": "PROVISIONED",
       "labels": {
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 2,
-      "processingUnits": 2000,
+      "nodeCount": 1,
+      "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -120,14 +134,24 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Spanner Instance Sample",
-    "edition": "STANDARD",
+    "defaultBackupScheduleType": "AUTOMATIC",
+    "displayName": "Instance Sample",
+    "edition": "ENTERPRISE",
+    "instanceType": "PROVISIONED",
     "labels": {
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 2,
-    "processingUnits": 2000,
+    "nodeCount": 1,
+    "processingUnits": 1000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 1,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -152,14 +176,24 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Spanner Instance Sample",
-  "edition": 1,
+  "defaultBackupScheduleType": 2,
+  "displayName": "Instance Sample",
+  "edition": 2,
+  "instanceType": 1,
   "labels": {
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-  "nodeCount": 2,
-  "processingUnits": 2000,
+  "nodeCount": 1,
+  "processingUnits": 1000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 1,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -172,15 +206,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "displayName,nodeCount",
+  "fieldMask": "displayName,defaultBackupScheduleType",
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "displayName": "New spanner Instance Sample",
+    "displayName": "New Instance Sample",
+    "edition": 1,
     "labels": {
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 3
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
   }
 }
 
@@ -199,17 +233,18 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "New spanner Instance Sample",
-      "edition": 1,
+      "displayName": "New Instance Sample",
+      "edition": 2,
+      "instanceType": 1,
       "labels": {
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 3,
-      "processingUnits": 3000,
+      "nodeCount": 1,
+      "processingUnits": 1000,
       "replicaComputeCapacity": [
         {
-          "nodeCount": 3,
+          "nodeCount": 1,
           "replicaSelection": {
             "location": "us-west1"
           }
@@ -248,14 +283,23 @@ X-Xss-Protection: 0
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "New spanner Instance Sample",
-      "edition": "STANDARD",
+      "displayName": "New Instance Sample",
+      "edition": "ENTERPRISE",
+      "instanceType": "PROVISIONED",
       "labels": {
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-      "nodeCount": 3,
-      "processingUnits": 3000,
+      "nodeCount": 1,
+      "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -266,14 +310,157 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "New spanner Instance Sample",
-    "edition": "STANDARD",
+    "displayName": "New Instance Sample",
+    "edition": "ENTERPRISE",
+    "instanceType": "PROVISIONED",
     "labels": {
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-    "nodeCount": 3,
-    "processingUnits": 3000,
+    "nodeCount": 1,
+    "processingUnits": 1000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 1,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
+    "state": "READY",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
+
+{
+  "fieldMask": "edition",
+  "instance": {
+    "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "displayName": "New Instance Sample",
+    "edition": 1,
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceMetadata",
+    "instance": {
+      "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "New Instance Sample",
+      "edition": 1,
+      "instanceType": 1,
+      "labels": {
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+      "nodeCount": 1,
+      "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
+      "state": 2,
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://spanner.googleapis.com/v1/projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
+    "instance": {
+      "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "New Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
+      "labels": {
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+      "nodeCount": 1,
+      "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
+      "state": "READY",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
+    "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "New Instance Sample",
+    "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+    "nodeCount": 1,
+    "processingUnits": 1000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 1,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -298,14 +485,23 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "New spanner Instance Sample",
+  "displayName": "New Instance Sample",
   "edition": 1,
+  "instanceType": 1,
   "labels": {
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
-  "nodeCount": 3,
-  "processingUnits": 3000,
+  "nodeCount": 1,
+  "processingUnits": 1000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 1,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

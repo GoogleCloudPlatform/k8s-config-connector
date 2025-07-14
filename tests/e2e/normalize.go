@@ -1163,6 +1163,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// spanner
 	visitor.replacePaths[".metadata.progress.startTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.progress.endTime"] = "2024-04-02T12:34:56.123456Z"
 	visitor.replacePaths[".metadata.instanceConfig.etag"] = "abcdef0123A"
 
 	// Run visitors

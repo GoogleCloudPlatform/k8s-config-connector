@@ -29,25 +29,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "instance": {
-    "autoscalingConfig": {
-      "autoscalingLimits": {
-        "maxNodes": 4,
-        "minNodes": 2
-      },
-      "autoscalingTargets": {
-        "highPriorityCpuUtilizationPercent": 50,
-        "storageUtilizationPercent": 50
-      }
-    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "defaultBackupScheduleType": 1,
-    "displayName": "Instance Sample",
-    "edition": 2,
+    "displayName": "Spanner Instance Sample",
     "labels": {
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+    "nodeCount": 2
   },
   "instanceId": "spannerinstance-sample-${uniqueId}",
   "parent": "projects/${projectId}"
@@ -66,22 +54,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
-      "autoscalingConfig": {
-        "autoscalingLimits": {
-          "maxNodes": 4,
-          "minNodes": 2
-        },
-        "autoscalingTargets": {
-          "highPriorityCpuUtilizationPercent": 50,
-          "storageUtilizationPercent": 50
-        }
-      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": 1,
-      "displayName": "Instance Sample",
-      "edition": 2,
+      "defaultBackupScheduleType": 2,
+      "displayName": "Spanner Instance Sample",
+      "edition": 1,
+      "instanceType": 1,
       "labels": {
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -125,27 +103,26 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
-      "autoscalingConfig": {
-        "autoscalingLimits": {
-          "maxNodes": 4,
-          "minNodes": 2
-        },
-        "autoscalingTargets": {
-          "highPriorityCpuUtilizationPercent": 50,
-          "storageUtilizationPercent": 50
-        }
-      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-      "defaultBackupScheduleType": "NONE",
-      "displayName": "Instance Sample",
-      "edition": "ENTERPRISE",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
+      "displayName": "Spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
-        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 2,
       "processingUnits": 2000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 2,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -154,28 +131,26 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
-    "autoscalingConfig": {
-      "autoscalingLimits": {
-        "maxNodes": 4,
-        "minNodes": 2
-      },
-      "autoscalingTargets": {
-        "highPriorityCpuUtilizationPercent": 50,
-        "storageUtilizationPercent": 50
-      }
-    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "NONE",
-    "displayName": "Instance Sample",
-    "edition": "ENTERPRISE",
+    "defaultBackupScheduleType": "AUTOMATIC",
+    "displayName": "Spanner Instance Sample",
+    "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "labels": {
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2,
     "processingUnits": 2000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 2,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -198,28 +173,26 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscalingConfig": {
-    "autoscalingLimits": {
-      "maxNodes": 4,
-      "minNodes": 2
-    },
-    "autoscalingTargets": {
-      "highPriorityCpuUtilizationPercent": 50,
-      "storageUtilizationPercent": 50
-    }
-  },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": 1,
-  "displayName": "Instance Sample",
-  "edition": 2,
+  "defaultBackupScheduleType": 2,
+  "displayName": "Spanner Instance Sample",
+  "edition": 1,
+  "instanceType": 1,
   "labels": {
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 2,
   "processingUnits": 2000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 2,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -232,27 +205,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "displayName,labels,defaultBackupScheduleType,autoscalingConfig,edition",
+  "fieldMask": "displayName,nodeCount,defaultBackupScheduleType",
   "instance": {
-    "autoscalingConfig": {
-      "autoscalingLimits": {
-        "maxNodes": 5,
-        "minNodes": 3
-      },
-      "autoscalingTargets": {
-        "highPriorityCpuUtilizationPercent": 90,
-        "storageUtilizationPercent": 90
-      }
-    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
-    "defaultBackupScheduleType": 2,
-    "displayName": "Updated Instance Sample",
-    "edition": 3,
+    "displayName": "New Spanner Instance Sample",
     "labels": {
-      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
-    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}"
+    "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
+    "nodeCount": 3
   }
 }
 
@@ -269,23 +230,12 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.UpdateInstanceMetadata",
     "instance": {
-      "autoscalingConfig": {
-        "autoscalingLimits": {
-          "maxNodes": 5,
-          "minNodes": 3
-        },
-        "autoscalingTargets": {
-          "highPriorityCpuUtilizationPercent": 90,
-          "storageUtilizationPercent": 90
-        }
-      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": 2,
-      "displayName": "Updated Instance Sample",
-      "edition": 3,
+      "displayName": "New Spanner Instance Sample",
+      "edition": 1,
+      "instanceType": 1,
       "labels": {
-        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -330,28 +280,25 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
-      "autoscalingConfig": {
-        "autoscalingLimits": {
-          "maxNodes": 5,
-          "minNodes": 3
-        },
-        "autoscalingTargets": {
-          "highPriorityCpuUtilizationPercent": 90,
-          "storageUtilizationPercent": 90
-        }
-      },
       "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
       "createTime": "2024-04-01T12:34:56.123456Z",
-      "defaultBackupScheduleType": "AUTOMATIC",
-      "displayName": "Updated Instance Sample",
-      "edition": "ENTERPRISE_PLUS",
+      "displayName": "New Spanner Instance Sample",
+      "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "labels": {
-        "label-one": "updated-value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 3,
       "processingUnits": 3000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 3,
+          "replicaSelection": {
+            "location": "us-west1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -360,28 +307,25 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
-    "autoscalingConfig": {
-      "autoscalingLimits": {
-        "maxNodes": 5,
-        "minNodes": 3
-      },
-      "autoscalingTargets": {
-        "highPriorityCpuUtilizationPercent": 90,
-        "storageUtilizationPercent": 90
-      }
-    },
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "defaultBackupScheduleType": "AUTOMATIC",
-    "displayName": "Updated Instance Sample",
-    "edition": "ENTERPRISE_PLUS",
+    "displayName": "New Spanner Instance Sample",
+    "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "labels": {
-      "label-one": "updated-value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 3,
     "processingUnits": 3000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 3,
+        "replicaSelection": {
+          "location": "us-west1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -404,28 +348,25 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoscalingConfig": {
-    "autoscalingLimits": {
-      "maxNodes": 5,
-      "minNodes": 3
-    },
-    "autoscalingTargets": {
-      "highPriorityCpuUtilizationPercent": 90,
-      "storageUtilizationPercent": 90
-    }
-  },
   "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultBackupScheduleType": 2,
-  "displayName": "Updated Instance Sample",
-  "edition": 3,
+  "displayName": "New Spanner Instance Sample",
+  "edition": 1,
+  "instanceType": 1,
   "labels": {
-    "label-one": "updated-value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 3,
   "processingUnits": 3000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 3,
+      "replicaSelection": {
+        "location": "us-west1"
+      }
+    }
+  ],
   "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

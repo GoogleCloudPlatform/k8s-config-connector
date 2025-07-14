@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,19 @@
 apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
-  labels:
-    label-one: "value-one"
-  name: spannerinstance-sample-${uniqueId}
+  name: spannerinstance-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
-  config: regional-us-west1
-  displayName: New Spanner Instance Sample
-  numNodes: 3
-
+  config: regional-us-central1
+  # Error 400: Invalid UpdateInstance request.\nerror details: name = BadRequest
+  # field = instance.display_name desc = Display name must be between 4-30 characters long.
+  displayName: Autoscaling Instance Updated
+  autoscalingConfig:
+    autoscalingLimits:
+      maxProcessingUnits: 4000
+      minProcessingUnits: 2000
+    autoscalingTargets:
+      highPriorityCpuUtilizationPercent: 85
+      storageUtilizationPercent: 90
+  edition: ENTERPRISE
