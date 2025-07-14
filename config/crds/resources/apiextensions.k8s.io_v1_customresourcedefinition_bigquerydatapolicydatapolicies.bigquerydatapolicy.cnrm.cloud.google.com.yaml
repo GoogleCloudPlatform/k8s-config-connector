@@ -70,6 +70,8 @@ spec:
                     description: 'A predefined masking expression. Learn more here:
                       https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest/v1beta1/projects.locations.dataPolicies#predefinedexpression'
                     type: string
+                required:
+                - predefinedExpression
                 type: object
               dataPolicyType:
                 description: Required. Data policy type. Type of data policy.

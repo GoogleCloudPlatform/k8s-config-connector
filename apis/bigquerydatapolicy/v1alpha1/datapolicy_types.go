@@ -27,6 +27,7 @@ type DataMaskingPolicy struct {
 	// A predefined masking expression.
 	// Learn more here: https://cloud.google.com/bigquery/docs/reference/bigquerydatapolicy/rest/v1beta1/projects.locations.dataPolicies#predefinedexpression
 	// +kcc:proto:field=google.cloud.bigquery.datapolicies.v1beta1.DataMaskingPolicy.predefined_expression
+	// +required
 	PredefinedExpression *string `json:"predefinedExpression,omitempty"`
 }
 
