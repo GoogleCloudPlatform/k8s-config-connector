@@ -329,7 +329,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAccessBoundaryPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAuditConfig"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMCustomRole"}:
-	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPartialPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccountKey"}:

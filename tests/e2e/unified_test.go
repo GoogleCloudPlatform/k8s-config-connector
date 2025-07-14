@@ -874,18 +874,6 @@ func TestIAM_AllInSeries(t *testing.T) {
 						opt.Updates = append(opt.Updates, u)
 					}
 
-					// We want to use SSA everywhere, but some of our tests are broken by SSA
-					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
-					case "bigtable.cnrm.cloud.google.com",
-						"orgpolicy.cnrm.cloud.google.com",
-						"gkehub.cnrm.cloud.google.com":
-						// Use SSA
-
-					default:
-						t.Logf("not yet using SSA for create of resources in group %q", group)
-						opt.DoNotUseServerSideApplyForCreate = true
-					}
-
 					return primaryResource, opt
 				}
 
