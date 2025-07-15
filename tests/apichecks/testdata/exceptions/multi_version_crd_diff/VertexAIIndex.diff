@@ -1,78 +1,78 @@
 --- a/v1alpha1
 +++ b/v1beta1
-  &v1.JSONSchemaProps{
-  	... // 26 identical fields
-  	AnyOf: nil,
-  	Not:   nil,
-  	Properties: map[string]v1.JSONSchemaProps{
-  		"apiVersion": {Description: "apiVersion defines the versioned schema of this representation o"..., Type: "string"},
-  		"kind":       {Description: "kind is a string value representing the REST resource this objec"..., Type: "string"},
-  		"metadata":   {Type: "object"},
-  		"spec": {
-  			... // 26 identical fields
-  			AnyOf: nil,
-  			Not:   nil,
-  			Properties: map[string]v1.JSONSchemaProps{
-  				"description":       {Description: "The description of the Index.", Type: "string"},
-  				"displayName":       {Description: "The display name of the Index. The name can be up to 128 charact"..., Type: "string"},
-  				"indexUpdateMethod": {Description: "Immutable. The update method to use with this Index. The value m"..., Type: "string"},
-  				"metadata": {
-  					... // 26 identical fields
-  					AnyOf: nil,
-  					Not:   nil,
-  					Properties: map[string]v1.JSONSchemaProps{
-  						"config": {
-  							... // 26 identical fields
-  							AnyOf: nil,
-  							Not:   nil,
-  							Properties: map[string]v1.JSONSchemaProps{
-  								"algorithmConfig": {
-  									... // 26 identical fields
-  									AnyOf: nil,
-  									Not:   nil,
-  									Properties: map[string]v1.JSONSchemaProps{
-  										"bruteForceConfig": {
-  											... // 35 identical fields
-  											Example:                nil,
-  											Nullable:               false,
-- 											XPreserveUnknownFields: nil,
-+ 											XPreserveUnknownFields: &true,
-  											XEmbeddedResource:      false,
-  											XIntOrString:           false,
-  											... // 4 identical fields
-  										},
-  										"treeAhConfig": {Description: "Configuration options for using the tree-AH algorithm (Shallow t"..., Type: "object", Properties: {"leafNodeEmbeddingCount": {Description: "Number of embeddings on each leaf node. The default value is 100"..., Type: "integer"}, "leafNodesToSearchPercent": {Description: "The default percentage of leaf nodes that any query may be searc"..., Type: "integer"}}},
-  									},
-  									AdditionalProperties: nil,
-  									PatternProperties:    nil,
-  									... // 13 identical fields
-  								},
-  								"approximateNeighborsCount": {Description: "The default number of neighbors to find via approximate search b"..., Type: "integer"},
-  								"dimensions":                {Description: "The number of dimensions of the input vectors.", Type: "integer"},
-  								... // 3 identical entries
-  							},
-  							AdditionalProperties: nil,
-  							PatternProperties:    nil,
-  							... // 13 identical fields
-  						},
-  						"contentsDeltaUri": {Description: "Allows creating or replacing the contents of the Matching Engine"..., Type: "string"},
-  					},
-  					AdditionalProperties: nil,
-  					PatternProperties:    nil,
-  					... // 13 identical fields
-  				},
-  				"projectRef": {Description: "The project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "Allowed value: The `name` field of a `Project` resource.", Type: "string"}, "name": {Description: "Name of the referent. More info: https://kubernetes.io/docs/conc"..., Type: "string"}, "namespace": {Description: "Namespace of the referent. More info: https://kubernetes.io/docs"..., Type: "string"}}, ...},
-  				"region":     {Description: "Immutable. The region of the index. eg us-central1.", Type: "string"},
-  				"resourceID": {Description: "Immutable. Optional. The service-generated name of the resource."..., Type: "string"},
-  			},
-  			AdditionalProperties: nil,
-  			PatternProperties:    nil,
-  			... // 13 identical fields
-  		},
-  		"status": {Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observation of the res"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer"}, "observedState": {Description: "The observed state of the underlying GCP resource.", Type: "object", Properties: {"createTime": {Description: `The timestamp of when the Index was created in RFC3339 UTC "Zulu`..., Type: "string"}, "indexStats": {Description: "Stats of the index resource.", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"shardsCount": {Description: "The number of shards in the Index.", Type: "integer"}, "vectorsCount": {Description: "The number of vectors in the Index.", Type: "string"}}}}}, "metadataSchemaUri": {Description: "Points to a YAML file stored on Google Cloud Storage describing "..., Type: "string"}, "name": {Description: "The resource name of the Index.", Type: "string"}}}}},
-  	},
-  	AdditionalProperties: nil,
-  	PatternProperties:    nil,
-  	... // 13 identical fields
-  }
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "apiVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"description":       {Description: "The description of the Index.", Type: "string"},
+  				"displayName":       {Description: "The display name of the Index. The name can be up to 128 charact"..., Type: "string"},
+  				"indexUpdateMethod": {Description: "Immutable. The update method to use with this Index. The value m"..., Type: "string"},
+  				"metadata": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"config": {
+  							... // 26 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"algorithmConfig": {
+  									... // 26 identical fields
+  									AnyOf: nil,
+  									Not:   nil,
+  									Properties: map[string]v1.JSONSchemaProps{
+  										"bruteForceConfig": {
+  											... // 35 identical fields
+  											Example:                nil,
+  											Nullable:               false,
+- 											XPreserveUnknownFields: nil,
++ 											XPreserveUnknownFields: &true,
+  											XEmbeddedResource:      false,
+  											XIntOrString:           false,
+  											... // 4 identical fields
+  										},
+  										"treeAhConfig": {Description: "Configuration options for using the tree-AH algorithm (Shallow t"..., Type: "object", Properties: {"leafNodeEmbeddingCount": {Description: "Number of embeddings on each leaf node. The default value is 100"..., Type: "integer"}, "leafNodesToSearchPercent": {Description: "The default percentage of leaf nodes that any query may be searc"..., Type: "integer"}}},
+  									},
+  									AdditionalProperties: nil,
+  									PatternProperties:    nil,
+  									... // 13 identical fields
+  								},
+  								"approximateNeighborsCount": {Description: "The default number of neighbors to find via approximate search b"..., Type: "integer"},
+  								"dimensions":                {Description: "The number of dimensions of the input vectors.", Type: "integer"},
+  								... // 3 identical entries
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"contentsDeltaUri": {Description: "Allows creating or replacing the contents of the Matching Engine"..., Type: "string"},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"projectRef": {Description: "The project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "Allowed value: The `name` field of a `Project` resource.", Type: "string"}, "name": {Description: "Name of the referent. More info: https://kubernetes.io/docs/conc"..., Type: "string"}, "namespace": {Description: "Namespace of the referent. More info: https://kubernetes.io/docs"..., Type: "string"}}, ...},
+  				"region":     {Description: "Immutable. The region of the index. eg us-central1.", Type: "string"},
+  				"resourceID": {Description: "Immutable. Optional. The service-generated name of the resource."..., Type: "string"},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observation of the res"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer"}, "observedState": {Description: "The observed state of the underlying GCP resource.", Type: "object", Properties: {"createTime": {Description: `The timestamp of when the Index was created in RFC3339 UTC "Zulu`..., Type: "string"}, "indexStats": {Description: "Stats of the index resource.", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"shardsCount": {Description: "The number of shards in the Index.", Type: "integer"}, "vectorsCount": {Description: "The number of vectors in the Index.", Type: "string"}}}}}, "metadataSchemaUri": {Description: "Points to a YAML file stored on Google Cloud Storage describing "..., Type: "string"}, "name": {Description: "The resource name of the Index.", Type: "string"}}}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
 

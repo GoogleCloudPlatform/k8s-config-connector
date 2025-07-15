@@ -773,7 +773,6 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 	}
 }
 
-
 // isValidPlural checks if a string is a valid pluralization of another string
 func isValidPlural(singular, plural string) bool {
 	// Special cases for words that are already plural or don't follow standard rules

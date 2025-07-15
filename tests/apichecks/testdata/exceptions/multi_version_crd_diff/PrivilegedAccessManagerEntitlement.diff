@@ -1,43 +1,43 @@
 --- a/v1alpha1
 +++ b/v1beta1
-  &v1.JSONSchemaProps{
-  	... // 26 identical fields
-  	AnyOf: nil,
-  	Not:   nil,
-  	Properties: map[string]v1.JSONSchemaProps{
-  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
-  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
-  		"metadata":   {Type: "object"},
-  		"spec": {
-  			... // 26 identical fields
-  			AnyOf: nil,
-  			Not:   nil,
-  			Properties: map[string]v1.JSONSchemaProps{
-  				... // 8 identical entries
-  				"projectRef":                   {Description: "Immutable. The Project that this resource belongs to. One and on"..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
-  				"requesterJustificationConfig": {Description: "Required. The manner in which the requester should provide a jus"..., Type: "object", Properties: {"notMandatory": {Description: "NotMandatory justification type means the justification isn't re"..., Type: "object", XPreserveUnknownFields: &true}, "unstructured": {Description: "Unstructured justification type means the justification is in th"..., Type: "object", XPreserveUnknownFields: &true}}},
-  				"resourceID": {
-  					ID:     "",
-  					Schema: "",
-  					Ref:    nil,
-  					Description: strings.Join({
-+ 						"Immutable. ",
-  						"The PrivilegedAccessManagerEntitlement name. If not given, the '",
-  						"metadata.name' will be used.",
-  					}, ""),
-  					Type:   "string",
-  					Format: "",
-  					... // 38 identical fields
-  				},
-  			},
-  			AdditionalProperties: nil,
-  			PatternProperties:    nil,
-  			... // 13 identical fields
-  		},
-  		"status": {Description: "PrivilegedAccessManagerEntitlementStatus defines the config conn"..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the PrivilegedAccessManagerEntitlement re"..., Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}, "observedState": {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Output only. Create time stamp.", Type: "string"}, "etag": {Description: "An 'etag' is used for optimistic concurrency control as a way to"..., Type: "string"}, "state": {Description: "Output only. Current state of this entitlement.", Type: "string"}, "updateTime": {Description: "Output only. Update time stamp.", Type: "string"}}}}},
-  	},
-  	AdditionalProperties: nil,
-  	PatternProperties:    nil,
-  	... // 13 identical fields
-  }
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				... // 8 identical entries
+  				"projectRef":                   {Description: "Immutable. The Project that this resource belongs to. One and on"..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
+  				"requesterJustificationConfig": {Description: "Required. The manner in which the requester should provide a jus"..., Type: "object", Properties: {"notMandatory": {Description: "NotMandatory justification type means the justification isn't re"..., Type: "object", XPreserveUnknownFields: &true}, "unstructured": {Description: "Unstructured justification type means the justification is in th"..., Type: "object", XPreserveUnknownFields: &true}}},
+  				"resourceID": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
++ 						"Immutable. ",
+  						"The PrivilegedAccessManagerEntitlement name. If not given, the '",
+  						"metadata.name' will be used.",
+  					}, ""),
+  					Type:   "string",
+  					Format: "",
+  					... // 38 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "PrivilegedAccessManagerEntitlementStatus defines the config conn"..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the PrivilegedAccessManagerEntitlement re"..., Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}, "observedState": {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Output only. Create time stamp.", Type: "string"}, "etag": {Description: "An 'etag' is used for optimistic concurrency control as a way to"..., Type: "string"}, "state": {Description: "Output only. Current state of this entitlement.", Type: "string"}, "updateTime": {Description: "Output only. Update time stamp.", Type: "string"}}}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
 
