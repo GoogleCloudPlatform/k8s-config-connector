@@ -18,10 +18,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
 	"unicode"
+
+	"github.com/google/go-cmp/cmp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -699,6 +702,75 @@ func TestCRDShortNamePluralization(t *testing.T) {
 	sort.Strings(errs)
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
+}
+
+// TestMultiVersionCRDNoDiff checks for schema differences between versions of the same CRD.
+func TestMultiVersionCRDNoDiff(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	diffDir := "testdata/exceptions/multi_version_crd_diff"
+
+	for _, crd := range crds {
+		if len(crd.Spec.Versions) <= 1 {
+			continue
+		}
+
+		// Get all versions and sort them
+		var versions []apiextensions.CustomResourceDefinitionVersion
+		for _, v := range crd.Spec.Versions {
+			versions = append(versions, v)
+		}
+		sort.Slice(versions, func(i, j int) bool {
+			return versions[i].Name < versions[j].Name
+		})
+
+		// The last version is the storage version and our "base"
+		baseVersion := versions[len(versions)-1]
+
+		var allDiffs strings.Builder
+
+		// Compare all other versions to the base version
+		for i := 0; i < len(versions)-1; i++ {
+			otherVersion := versions[i]
+
+			diff := cmp.Diff(otherVersion.Schema.OpenAPIV3Schema, baseVersion.Schema.OpenAPIV3Schema)
+			if diff != "" {
+				header := fmt.Sprintf("--- a/%s\n+++ b/%s\n", otherVersion.Name, baseVersion.Name)
+				allDiffs.WriteString(header)
+				allDiffs.WriteString(diff)
+				allDiffs.WriteString("\n")
+			}
+		}
+
+		if allDiffs.Len() > 0 {
+			diffFileName := crd.Spec.Names.Kind + ".diff"
+			diffFilePath := filepath.Join(diffDir, diffFileName)
+
+			if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+				if err := os.MkdirAll(diffDir, 0755); err != nil {
+					t.Fatalf("error creating directory %s: %v", diffDir, err)
+				}
+				if err := os.WriteFile(diffFilePath, []byte(allDiffs.String()), 0644); err != nil {
+					t.Fatalf("error writing diff file %s: %v", diffFilePath, err)
+				}
+				// Continue to next CRD after writing
+				continue
+			}
+
+			expectedDiff, err := os.ReadFile(diffFilePath)
+			if err != nil {
+				t.Errorf("crd %s has schema diff between versions, but could not read exception file %s: %v\n\nGot diff:\n%s", crd.Name, diffFilePath, err, allDiffs.String())
+				continue
+			}
+
+			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
+				t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
+			}
+		}
+	}
 }
 
 // isValidPlural checks if a string is a valid pluralization of another string
