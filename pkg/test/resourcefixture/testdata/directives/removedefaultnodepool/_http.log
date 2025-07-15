@@ -530,8 +530,7 @@ X-Xss-Protection: 0
       },
       "oauthScopes": [
         "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/monitoring"
+        "https://www.googleapis.com/auth/cloud-platform"
       ],
       "upgradeSettings": {
         "strategy": "SURGE"

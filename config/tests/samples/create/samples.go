@@ -128,11 +128,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	// Create and reconcile all resources & dependencies
 	for _, u := range opt.Create {
 		if opt.DoNotUseServerSideApplyForCreate {
-			t.Log("using legacy create to create object (should ideally use server-side apply)")
+			t.Log("using legacy create to create object (should ideally use server-side apply)", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
 			if err := t.GetClient().Create(ctx, u); err != nil {
 				t.Fatalf("error creating resource: %v", err)
 			}
 		} else {
+			t.Log("using server-side apply to create object", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
 			if err := t.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
 				t.Fatalf("error creating resource: %v", err)
 			}
@@ -149,6 +150,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	if len(opt.Updates) != 0 {
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
+			t.Logf("using server-side apply to update object")
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 				t.Fatalf("error updating resource: %v", err)
 			}
