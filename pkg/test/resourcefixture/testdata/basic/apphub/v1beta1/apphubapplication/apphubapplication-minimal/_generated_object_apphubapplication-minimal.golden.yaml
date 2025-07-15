@@ -1,4 +1,4 @@
-apiVersion: apphub.cnrm.cloud.google.com/v1alpha1
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
 kind: AppHubApplication
 metadata:
   finalizers:

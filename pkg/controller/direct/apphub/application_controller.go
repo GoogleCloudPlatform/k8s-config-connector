@@ -18,19 +18,22 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	gcp "cloud.google.com/go/apphub/apiv1"
 	apphubpb "cloud.google.com/go/apphub/apiv1/apphubpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -177,12 +180,25 @@ func (a *ApplicationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
 	// remove name from update paths
 	paths = paths.Delete("name")
+
+	if len(paths) == 0 {
+		// TODO: This is a bit of a hack, we should have a better way to handle this
+		status := &krm.AppHubApplicationStatus{}
+		status.ObservedState = AppHubApplicationObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		condition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  v1.ConditionTrue,
+			Reason:  k8s.UpToDate,
+			Message: "Application is up to date",
+		}
+		return updateOp.UpdateStatus(ctx, status, condition)
+	}
+
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}

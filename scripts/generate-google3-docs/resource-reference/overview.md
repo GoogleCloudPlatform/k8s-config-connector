@@ -68,7 +68,12 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
-</tr><tr>
+</tr>
+<tr>
+  <td><a href="https://cloud.google.com/app-hub/docs/">{{apphub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
+</tr>
+<tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md">ApigeeEndpointAttachment</a></td>
 </tr>
@@ -95,6 +100,14 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md">ApigeeOrganization</a></td>
+</tr>
+<tr>
+  <td><a href="https://cloud.google.com/app-hub/docs/">{{app_hub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
+</tr>
+<tr>
+  <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
 </tr>
 <tr>
   <td><a href="/bigquery/docs/query-overview">{{analytics_hub_name}}</a></td>

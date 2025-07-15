@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	pkgk8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -80,7 +80,7 @@ type Parent struct {
 type AppHubApplicationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []pkgk8sv1beta1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -125,6 +125,7 @@ type AppHubApplicationObservedState struct {
 
 // AppHubApplication is the Schema for the AppHubApplication API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type AppHubApplication struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

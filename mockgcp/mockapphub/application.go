@@ -74,10 +74,60 @@ func (s *AppHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateA
 		switch path {
 		case "description":
 			obj.Description = req.GetApplication().GetDescription()
-		case "display_name":
+		case "displayName":
 			obj.DisplayName = req.GetApplication().GetDisplayName()
 		case "attributes":
 			obj.Attributes = req.GetApplication().GetAttributes()
+		case "attributes.businessOwners":
+			if obj.Attributes == nil {
+				obj.Attributes = &pb.Attributes{}
+			}
+			obj.Attributes.BusinessOwners = req.GetApplication().GetAttributes().GetBusinessOwners()
+		case "attributes.criticality":
+			if obj.Attributes == nil {
+				obj.Attributes = &pb.Attributes{}
+			}
+			obj.Attributes.Criticality = req.GetApplication().GetAttributes().GetCriticality()
+		case "attributes.criticality.type":
+			// 	if obj.Attributes == nil {
+			// 		obj.Attributes = &pb.Attributes{}
+			// 	}
+			// 	if obj.Attributes.Criticality == nil {
+			// 		obj.Attributes.Criticality = &pb.Criticality{}
+			// 	}
+			// 	obj.Attributes.Criticality.Type = req.GetApplication().GetAttributes().GetCriticality().GetType()
+			continue
+		case "attributes.developerOwners":
+			if obj.Attributes == nil {
+				obj.Attributes = &pb.Attributes{}
+			}
+			obj.Attributes.DeveloperOwners = req.GetApplication().GetAttributes().GetDeveloperOwners()
+		case "attributes.environment":
+			if obj.Attributes == nil {
+				obj.Attributes = &pb.Attributes{}
+			}
+			obj.Attributes.Environment = req.GetApplication().GetAttributes().GetEnvironment()
+		case "attributes.environment.type":
+			// 	if obj.Attributes == nil {
+			// 		obj.Attributes = &pb.Attributes{}
+			// 	}
+			// 	if obj.Attributes.Environment == nil {
+			// 		obj.Attributes.Environment = &pb.Environment{}
+			// 	}
+			// 	obj.Attributes.Environment.Type = req.GetApplication().GetAttributes().GetEnvironment().GetType()
+			continue
+		case "attributes.operatorOwners":
+			if obj.Attributes == nil {
+				obj.Attributes = &pb.Attributes{}
+			}
+			obj.Attributes.OperatorOwners = req.GetApplication().GetAttributes().GetOperatorOwners()
+		case "scope":
+			obj.Scope = req.GetApplication().GetScope()
+		case "scope.type":
+			if obj.Scope == nil {
+				obj.Scope = &pb.Scope{}
+			}
+			obj.Scope.Type = req.GetApplication().GetScope().GetType()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -87,12 +137,12 @@ func (s *AppHubV1Service) UpdateApplication(ctx context.Context, req *pb.UpdateA
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
-		ApiVersion:    "v1",
-		CreateTime:    timestamppb.Now(),
-		Target:        name.String(),
-		Verb:          "update",
-		EndTime:       timestamppb.Now(),
-		StatusMessage: "Updating application",
+		ApiVersion: "v1",
+		CreateTime: timestamppb.Now(),
+		Target:     name.String(),
+		Verb:       "update",
+		// EndTime:       timestamppb.Now(),
+		// StatusMessage: "Updating application",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
