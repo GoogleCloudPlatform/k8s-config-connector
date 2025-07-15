@@ -24,6 +24,10 @@ for the future release **
 
 ## New Beta Resources (Direct Reconciler):
 
+*   [`APIGatewayAPI`](https://cloud.google.com/config-connector/docs/reference/docs/reference/resource-docs/apigateway/apigatewayapi.md)
+
+*   [`AppHubApplication`](https://cloud.google.com/config-connector/docs/reference/docs/reference/resource-docs/apphub/apphubapplication.md)
+
 *   `StorageAnywhereCache`
 
 *   [`SAMPLE_BigQueryConnectionConnection`](https://cloud.google.com/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection)
@@ -33,6 +37,7 @@ for the future release **
     *   Manage
         [connections](https://cloud.google.com/bigquery/docs/working-with-connections)
         to connect to Google services and external data sources
+
 
 ## New Alpha Resources (Direct Reconciler):
 
