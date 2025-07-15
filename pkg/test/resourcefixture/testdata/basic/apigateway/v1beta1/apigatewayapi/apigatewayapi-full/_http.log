@@ -37,6 +37,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
   "displayName": "My APIGateway API full example",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
   "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog"
 }
 
@@ -93,6 +99,12 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.Api",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "My APIGateway API full example",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
     "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
     "name": "projects/${projectId}/locations/global/apis/apigatewayapi-${uniqueId}",
     "state": "ACTIVE",
@@ -120,6 +132,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "My APIGateway API full example",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
   "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/apigatewayapi-${uniqueId}",
   "state": 2,
