@@ -230,9 +230,9 @@ func (a *ApplicationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if exception != "" {
 		condition = &v1alpha1.Condition{
 			Type:    v1alpha1.ReadyConditionType,
-			Status:  v1.ConditionTrue,
-			Reason:  k8s.UpToDate,
-			Message: "Application is up to date with GCP exceptions: " + exception,
+			Status:  v1.ConditionFalse,
+			Reason:  k8s.UpdateFailed,
+			Message: "Application not up to date: " + exception,
 		}
 	} else {
 		condition = &v1alpha1.Condition{
