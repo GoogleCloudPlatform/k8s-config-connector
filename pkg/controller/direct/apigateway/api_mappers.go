@@ -20,6 +20,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+// Note: This file is aimed to distinguish the imported beta API from the alpha API in the auto generated file (mapper.generated.go)
+
 func APIGatewayAPIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Api) *krm.APIGatewayAPIObservedState {
 	if in == nil {
 		return nil

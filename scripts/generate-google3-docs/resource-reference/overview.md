@@ -62,7 +62,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md">AlloyDBUser</a></td>
 </tr>
 <tr>
-  <td><a href="/api-gateway/docs/">API Gateway</a></td>
+  <td><a href="/api-gateway/docs/">{{apigateway_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md">APIGatewayAPI</a></td>
 </tr>
 <tr>
