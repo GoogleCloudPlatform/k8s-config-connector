@@ -148,6 +148,22 @@ func BigtableAuthorizedViewObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	return out
 }
+func BigtableLogicalViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LogicalView) *krmv1alpha1.BigtableLogicalViewObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.BigtableLogicalViewObservedState{}
+	// MISSING: Etag
+	return out
+}
+func BigtableLogicalViewObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableLogicalViewObservedState) *pb.LogicalView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogicalView{}
+	// MISSING: Etag
+	return out
+}
 func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfo {
 	if in == nil {
 		return nil
