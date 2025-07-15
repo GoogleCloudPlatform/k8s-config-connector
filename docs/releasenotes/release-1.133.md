@@ -36,12 +36,7 @@ for the future release **
 
 ## New Alpha Resources (Direct Reconciler):
 
-*   `SAMPLE_KMSAutokeyConfig` (This is a sample, your actual release note should
-    not contain `SAMPLE_`, otherwise it will be deleted)
-
-    *   Manage the
-        [KMS auto key](https://cloud.google.com/kms/docs/autokey-overview) which
-        simplifies the CMEKs provisioning and assignment.
+*   `BigtableLogicalView`
 
 ## New Fields:
 
