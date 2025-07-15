@@ -239,6 +239,10 @@ type Branch struct {
 	ProtoMsg  string `yaml:"proto-msg"`     // google.ai.generativelanguage.v1beta.Model
 	HostName  string `yaml:"host-name"`     // generativelanguage.googleapis.com
 
+	CreateFileInstructions       string `yaml:"create-instructions"`
+	UpdateFileInstructions       string `yaml:"update-instructions"`
+	DependenciesFileInstructions string `yaml:"dependencies-instructions"`
+
 	Notes []string `yaml:"notes"` // Observation goes here
 
 	// GCP APIs that need to be enabled for the branch.
