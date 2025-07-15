@@ -1,0 +1,386 @@
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${organizationID}/environments/apigeeenvironment-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "description": "Test environment for IAM tests",
+  "displayName": "test-environment",
+  "name": "apigeeenvironment-${uniqueId}",
+  "properties": {
+    "property": null
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "CREATE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}"
+  },
+  "name": "organizations/${organizationID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Environment",
+    "description": "Test environment for IAM tests",
+    "displayName": "test-environment",
+    "name": "apigeeenvironment-${uniqueId}",
+    "properties": {}
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test environment for IAM tests",
+  "displayName": "test-environment",
+  "name": "apigeeenvironment-${uniqueId}",
+  "properties": {}
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apigee.environmentAdmin"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.environmentAdmin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.environmentAdmin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "group:test-group@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "user:test@example.com"
+        ],
+        "role": "roles/apigee.environmentAdmin"
+      },
+      {
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/apigee.environmentEditor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/apigee.environmentAdmin"
+    },
+    {
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/apigee.environmentEditor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/apigee.environmentAdmin"
+    },
+    {
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/apigee.environmentEditor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}:setIamPolicy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "policy": {
+    "bindings": null,
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test environment for IAM tests",
+  "displayName": "test-environment",
+  "name": "apigeeenvironment-${uniqueId}",
+  "properties": {}
+}
+
+---
+
+DELETE https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "DELETE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}"
+  },
+  "name": "organizations/${organizationID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/${organizationID}/environments/apigeeenvironment-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "resource organizations/${organizationID}/environments/apigeeenvironment-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
