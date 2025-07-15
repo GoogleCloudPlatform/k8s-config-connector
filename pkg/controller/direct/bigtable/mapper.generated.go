@@ -148,6 +148,22 @@ func BigtableAuthorizedViewObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: Name
 	return out
 }
+func BigtableSchemaBundleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SchemaBundle) *krmv1alpha1.BigtableSchemaBundleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.BigtableSchemaBundleObservedState{}
+	// MISSING: Etag
+	return out
+}
+func BigtableSchemaBundleObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableSchemaBundleObservedState) *pb.SchemaBundle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SchemaBundle{}
+	// MISSING: Etag
+	return out
+}
 func EncryptionInfo_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmv1beta1.EncryptionInfo {
 	if in == nil {
 		return nil
