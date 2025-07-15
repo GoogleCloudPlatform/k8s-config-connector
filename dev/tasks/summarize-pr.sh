@@ -33,152 +33,156 @@
 
 # --- Script Start ---
 
-set -e # Exit immediately if a command exits with a non-zero status.
+set -e
+set -o pipefail
 
 # 1. --- VALIDATE INPUT AND PREREQUISITES ---
 if ! command -v gh &> /dev/null; then
-    echo "Error: GitHub CLI 'gh' is not installed. Please install it to use this script." >&2
+    echo "Error: GitHub CLI ('gh') is not installed. Please install it." >&2
     exit 1
 fi
-if ! command -v git &> /dev/null; then
-    echo "Error: 'git' is not installed." >&2
-    exit 1
-fi
-
 PR_NUMBER=$1
 if [[ -z "$PR_NUMBER" ]]; then
     echo "Usage: $0 <PR_NUMBER>" >&2
     exit 1
 fi
 
-# 2. --- SETUP AND FETCH PR DATA ---
-echo "### Summarizing PR #$PR_NUMBER ###"
+echo "### Summarizing PR #${PR_NUMBER} ###"
 
-ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-function cleanup {
-  echo -e "\nReturning to the original branch: $ORIGINAL_BRANCH"
-  git checkout "$ORIGINAL_BRANCH" >/dev/null 2>&1
-}
-trap cleanup EXIT
+# 2. --- SETUP ---
+# Define final output filenames and create temporary files for processing
+SUMMARY_FILE="pr-${PR_NUMBER}-summary.md"
+ADDITIONS_FILE="pr-${PR_NUMBER}-additions.txt"
+DELETIONS_FILE="pr-${PR_NUMBER}-deletions.txt"
+OTHER_CHANGES_FILE="pr-${PR_NUMBER}-other.diff"
 
-echo "Checking out PR #$PR_NUMBER..."
-gh pr checkout "$PR_NUMBER" >/dev/null 2>&1
+TMP_REPLACEMENTS=$(mktemp)
+TMP_OTHER=$(mktemp)
+TMP_ADDITIONS=$(mktemp)
+TMP_DELETIONS=$(mktemp)
+TMP_DIFF=$(mktemp)
+# The trap command ensures that all temporary files are cleaned up on script exit
+trap 'rm -f "$TMP_DIFF" "$TMP_REPLACEMENTS" "$TMP_OTHER" "$TMP_ADDITIONS" "$TMP_DELETIONS"' EXIT
 
-BASE_BRANCH=$(gh pr view "$PR_NUMBER" --json baseRefName -q '.baseRefName')
-echo "Base branch detected: $BASE_BRANCH"
-
-COMMIT_HASHES=$(git log "$BASE_BRANCH"..HEAD --reverse --pretty=format:"%H")
-
-if [[ -z "$COMMIT_HASHES" ]]; then
-    echo "Could not find any commits for this PR relative to '$BASE_BRANCH'."
+# 3. --- FETCH AND PROCESS THE DIFF ---
+echo "Fetching diff for PR #${PR_NUMBER}..."
+# We fetch the full diff without ignoring whitespace to process it intelligently.
+if ! gh pr diff "$PR_NUMBER" > "$TMP_DIFF"; then
+    echo "Could not fetch diff for PR #${PR_NUMBER}. It may not exist or you may lack permissions."
     exit 1
 fi
 
-# 3. --- PROCESS EACH COMMIT ---
-for commit in $COMMIT_HASHES; do
-    commit_msg=$(git log -1 --pretty=%s "$commit")
-    echo -e "\n"
-    echo "========================================================================"
-    echo "Commit: $commit_msg ($commit)"
-    echo "========================================================================"
+if [ ! -s "$TMP_DIFF" ]; then
+    echo "PR #${PR_NUMBER} is empty or already merged. No diff to process."
+    touch "$SUMMARY_FILE" "$ADDITIONS_FILE" "$DELETIONS_FILE" "$OTHER_CHANGES_FILE"
+    exit 0
+fi
 
-    git show --patch-with-stat "$commit" | awk '
-        # Print summary for replacements
-        function print_replacement_summary(counts, files,  key, parts, file) {
-            if (length(counts) > 0) {
-                # Sort keys for consistent output
-                PROCINFO["sorted_in"] = "@ind_str_asc";
-                for (key in counts) {
-                    split(key, parts, " ==> ");
-                    printf "\n*   Replaced:\n";
-                    printf "    - %s\n", parts[1];
-                    printf "    + %s\n", parts[2];
-                    printf "    Occurrences: %d\n", counts[key];
-                    printf "    Locations:\n";
-                    PROCINFO["sorted_in"] = "@ind_str_asc";
-                    for (file in files[key]) {
-                        printf "      - %s\n", file;
-                    }
-                }
-            }
+echo "Processing diff..."
+# This awk script is the core of the summarizer. It categorizes every line of the diff.
+awk '
+    function flush_other_buffer() {
+        if (other_buffer && !is_new_file && !is_deleted_file) {
+            print other_buffer > "'"$TMP_OTHER"'";
         }
+    }
 
-        # Print summary for additions
-        function print_addition_summary(lines, blocks,  file) {
-            if (length(lines) > 0) {
-                printf "\n*   Additions Summary:\n";
-                PROCINFO["sorted_in"] = "@ind_str_asc";
-                for (file in lines) {
-                    printf "    - %s: Added %d line(s) in %d block(s).\n", file, lines[file], blocks[file];
-                }
-            }
+    /^diff --git a\/(.+) b\// {
+        flush_other_buffer();
+        other_buffer = $0;
+        removed_line = "";
+        is_new_file = 0;
+        is_deleted_file = 0;
+        next;
+    }
+
+    /^new file mode/ {
+        is_new_file = 1;
+        match(other_buffer, /^diff --git a\/(.+) b\//, f);
+        print f[1] > "'"$TMP_ADDITIONS"'";
+        next;
+    }
+    /^deleted file mode/ {
+        is_deleted_file = 1;
+        match(other_buffer, /^diff --git a\/(.+) b\//, f);
+        print f[1] > "'"$TMP_DELETIONS"'";
+        next;
+    }
+
+    (is_new_file || is_deleted_file) { next; }
+
+    /^index/ || /^---/ || /^\+\+\+/ { other_buffer = other_buffer "\n" $0; next; }
+    /^@@/ { other_buffer = other_buffer "\n" $0; next; }
+
+    /^-/ {
+        if (removed_line) { other_buffer = other_buffer "\n" removed_line; }
+        removed_line = $0;
+        next;
+    }
+
+    /^\+/ && removed_line {
+        # A candidate pair is found. Check if it is a stylistic-only change.
+        stripped_removed = removed_line;
+        sub(/^-/, "", stripped_removed);
+        stripped_added = $0;
+        sub(/^\+/, "", stripped_added);
+
+        if (stripped_removed == stripped_added) {
+            # The lines are identical, so this is a stylistic-only change (e.g., newline). Ignore it.
+        } else {
+            # The lines are different. This is a real replacement to be summarized.
+            print removed_line " <||> " $0 > "'"$TMP_REPLACEMENTS"'";
         }
+        removed_line = ""; # Reset state
+        next;
+    }
 
-        # Initialize variables
-        BEGIN {
-            current_file = "N/A";
+    {
+        if (removed_line) {
+            other_buffer = other_buffer "\n" removed_line;
             removed_line = "";
-            in_diff_body = 0;
-            in_added_block = 0;
-
-            split("", replacement_counts);
-            split("", replacement_files);
-            split("", addition_lines_per_file);
-            split("", addition_blocks_per_file);
         }
+        other_buffer = other_buffer "\n" $0;
+    }
 
-        /^diff --git a\/(.+) b\// {
-            current_file = gensub(/^diff --git a\/(.+) b\/.*/, "\\1", "g");
-            in_diff_body = 0;
-            next;
-        }
+    END {
+        flush_other_buffer();
+    }
+' "$TMP_DIFF"
 
-        /^@@/ { in_diff_body = 1; next; }
-        !in_diff_body { next; }
+# 4. --- GENERATE FINAL OUTPUT FILES ---
+echo "Generating output files..."
 
-        /^-/ && !/^---/ {
-            removed_line = substr($0, 2);
-            in_added_block = 0; # A removal breaks a block of additions
-            next;
-        }
+# Generate the summary file by counting the unique replacement pairs
+{
+    echo "# Summary of Identical Changes for PR #${PR_NUMBER}"
+    echo ""
+    if [ ! -s "$TMP_REPLACEMENTS" ]; then
+        echo "No simple line-for-line replacements were found in this PR."
+    else
+        sort "$TMP_REPLACEMENTS" | uniq -c | while read -r line; do
+            count=$(echo "$line" | awk '{print $1}')
+            replacement=$(echo "$line" | cut -d' ' -f2-)
+            removed_line="${replacement% <||> *}"
+            added_line="${replacement#* <||> }"
+            echo "*   **Replaced (${count} occurrences):**"
+            echo '    ```diff'
+            echo "$removed_line"
+            echo "$added_line"
+            echo '    ```'
+            echo ""
+        done
+    fi
+} > "$SUMMARY_FILE"
 
-        /^\+/ && !/^\+\+\+/ {
-            added_line = substr($0, 2);
-            if (removed_line != "") {
-                # It is a replacement
-                key = removed_line " ==> " added_line;
-                replacement_counts[key]++;
-                replacement_files[key][current_file] = 1;
-                removed_line = ""; # Reset
-                in_added_block = 0;
-            } else {
-                # It is a pure addition
-                addition_lines_per_file[current_file]++;
-                if (in_added_block == 0) {
-                    addition_blocks_per_file[current_file]++;
-                }
-                in_added_block = 1;
-            }
-            next;
-        }
+# Move the final temp files to their destination, creating empty files if no changes of that type were found.
+mv "$TMP_ADDITIONS" "$ADDITIONS_FILE" 2>/dev/null || touch "$ADDITIONS_FILE"
+mv "$TMP_DELETIONS" "$DELETIONS_FILE" 2>/dev/null || touch "$DELETIONS_FILE"
+mv "$TMP_OTHER" "$OTHER_CHANGES_FILE" 2>/dev/null || touch "$OTHER_CHANGES_FILE"
 
-        # Any other line (context line) resets the states
-        {
-            removed_line = "";
-            in_added_block = 0;
-        }
-
-        # After processing all lines, print the full summary
-        END {
-            print_replacement_summary(replacement_counts, replacement_files);
-            print_addition_summary(addition_lines_per_file, addition_blocks_per_file);
-
-            if (length(replacement_counts) == 0 && length(addition_lines_per_file) == 0) {
-                print "No simple line replacements or additions found.";
-            }
-        }
-    '
-done
-
-echo -e "\n### End of Summary ###"
-
+echo "--- Summary Generation Complete ---"
+echo "Results have been written to:"
+echo " - ${SUMMARY_FILE}"
+echo " - ${ADDITIONS_FILE}"
+echo " - ${DELETIONS_FILE}"
+echo " - ${OTHER_CHANGES_FILE}"
