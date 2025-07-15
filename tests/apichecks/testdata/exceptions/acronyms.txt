@@ -538,7 +538,6 @@
 [acronyms] crd=kmscryptokeyversions.kms.cnrm.cloud.google.com version=v1alpha1: field ".status.attestation[].externalProtectionLevelOptions.externalKeyUri" should be ".status.attestation[].externalProtectionLevelOptions.externalKeyURI"
 [acronyms] crd=kmskeyringimportjobs.kms.cnrm.cloud.google.com version=v1alpha1: field ".spec.importJobId" should be ".spec.importJobID"
 [acronyms] crd=memcacheinstances.memcache.cnrm.cloud.google.com version=v1beta1: field ".status.memcacheNodes[].nodeId" should be ".status.memcacheNodes[].nodeID"
-[acronyms] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.nodeConfig.sizeGb" should be ".status.observedState.nodeConfig.sizeGB"
 [acronyms] crd=monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.httpCheck.useSsl" should be ".spec.httpCheck.useSSL"
 [acronyms] crd=monitoringuptimecheckconfigs.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.httpCheck.validateSsl" should be ".spec.httpCheck.validateSSL"
 [acronyms] crd=networkconnectivityhubs.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".status.routingVpcs" should be ".status.routingVPCs"
