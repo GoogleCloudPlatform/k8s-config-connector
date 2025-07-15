@@ -1,3 +1,5 @@
+--- a/v1alpha1
++++ b/v1beta1
   &v1.JSONSchemaProps{
   	... // 26 identical fields
   	AnyOf: nil,
@@ -81,3 +83,4 @@
   	PatternProperties:    nil,
   	... // 13 identical fields
   }
+
