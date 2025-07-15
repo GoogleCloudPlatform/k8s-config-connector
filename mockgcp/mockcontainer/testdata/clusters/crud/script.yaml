@@ -1,0 +1,4 @@
+- exec: gcloud container clusters create test-${uniqueId} --zone=us-central1-a --quiet
+- exec: gcloud container clusters describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud container clusters update test-${uniqueId} --zone=us-central1-a --enable-dns-access --quiet
+- exec: gcloud container clusters delete test-${uniqueId} --zone=us-central1-a --quiet
