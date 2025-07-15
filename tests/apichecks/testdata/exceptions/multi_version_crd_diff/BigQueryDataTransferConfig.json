@@ -1,0 +1,83 @@
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				... // 12 identical entries
+  				"schedule":        {Description: "Data transfer schedule.\n If the data source does not support a c"..., Type: "string"},
+  				"scheduleOptions": {Description: "Options customizing the data transfer schedule.", Type: "object", Properties: {"disableAutoScheduling": {Description: "If true, automatic scheduling of data transfer runs for this con"..., Type: "boolean"}, "endTime": {Description: "Defines time to stop scheduling transfer runs. A transfer run ca"..., Type: "string"}, "startTime": {Description: "Specifies time to start scheduling transfer runs. The first run "..., Type: "string"}}},
++ 				"scheduleOptionsV2": {
++ 					Description: `Options customizing different types of data transfer schedule. This field replaces "schedule" and "schedule_options" fields. Sch`...,
++ 					Type:        "object",
++ 					Properties: map[string]v1.JSONSchemaProps{
++ 						"eventDrivenSchedule": {
++ 							Description: "Event driven transfer schedule o"...,
++ 							Type:        "object",
++ 							Properties:  map[string]v1.JSONSchemaProps{...},
++ 						},
++ 						"manualSchedule": {Description: "Manual transfer schedule. If set"..., Type: "object"},
++ 						"timeBasedSchedule": {
++ 							Description: "Time based transfer schedule opt"...,
++ 							Type:        "object",
++ 							Properties:  map[string]v1.JSONSchemaProps{...},
++ 						},
++ 					},
++ 				},
+  				"serviceAccountRef": {Description: "Service account email. If this field is set, the transfer config"..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `email` field of an `IAMServiceAccount` resource.", Type: "string"}, "name": {Description: "Name of the referent. More info: https://kubernetes.io/docs/conc"..., Type: "string"}, "namespace": {Description: "Namespace of the referent. More info: https://kubernetes.io/docs"..., Type: "string"}}, ...},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"conditions":         {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}},
+  				"externalRef":        {Description: "A unique specifier for the BigQueryDataTransferConfig resource i"..., Type: "string"},
+  				"observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"},
+  				"observedState": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"datasetRegion": {Description: "Output only. Region in which BigQuery dataset is located.", Type: "string"},
++ 						"error": {
++ 							Description: "Output only. Error code with detailed information about reason of the latest config failure.",
++ 							Type:        "object",
++ 							Properties: map[string]v1.JSONSchemaProps{
++ 								"code": {
++ 									Description: "The status code, which should be"...,
++ 									Type:        "integer",
++ 									Format:      "int32",
++ 								},
++ 								"message": {Description: "A developer-facing error message"..., Type: "string"},
++ 							},
++ 						},
+  						"name":        {Description: "Identifier. The resource name of the transfer config. Transfer c"..., Type: "string"},
+  						"nextRunTime": {Description: "Output only. Next time when data transfer will run.", Type: "string"},
+  						... // 4 identical entries
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }

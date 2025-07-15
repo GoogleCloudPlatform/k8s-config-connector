@@ -18,10 +18,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
 	"unicode"
+
+	"github.com/google/go-cmp/cmp"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -699,6 +702,61 @@ func TestCRDShortNamePluralization(t *testing.T) {
 	sort.Strings(errs)
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
+}
+
+// TestMultiVersionCRDNoDiff checks for schema differences between versions of the same CRD.
+func TestMultiVersionCRDNoDiff(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	diffDir := "testdata/exceptions/multi_version_crd_diff"
+
+	for _, crd := range crds {
+		if len(crd.Spec.Versions) <= 1 {
+			continue
+		}
+
+		schemas := make(map[string]*apiextensions.JSONSchemaProps)
+		var versionNames []string
+		for _, v := range crd.Spec.Versions {
+			schemas[v.Name] = v.Schema.OpenAPIV3Schema
+			versionNames = append(versionNames, v.Name)
+		}
+		sort.Strings(versionNames)
+
+		// We are interested in v1alpha1 and v1beta1 for now.
+		alphaSchema, alphaExists := schemas["v1alpha1"]
+		betaSchema, betaExists := schemas["v1beta1"]
+
+		if !alphaExists || !betaExists {
+			continue
+		}
+
+		diff := cmp.Diff(alphaSchema, betaSchema)
+		if diff != "" {
+			diffFileName := crd.Spec.Names.Kind + ".json"
+			diffFilePath := filepath.Join(diffDir, diffFileName)
+
+			summary := fmt.Sprintf("[multi_version_crd_diff] crd=%s, versions=%s: diff detected in %s", crd.Name, "v1alpha1,v1beta1", diffFilePath)
+			errs = append(errs, summary)
+
+			if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+				if err := os.MkdirAll(diffDir, 0755); err != nil {
+					t.Fatalf("error creating directory %s: %v", diffDir, err)
+				}
+				if err := os.WriteFile(diffFilePath, []byte(diff), 0644); err != nil {
+					t.Fatalf("error writing diff file %s: %v", diffFilePath, err)
+				}
+			}
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/multi_version_crd_diff.txt", want)
 }
 
 // isValidPlural checks if a string is a valid pluralization of another string

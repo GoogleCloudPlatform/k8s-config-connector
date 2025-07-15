@@ -1,0 +1,69 @@
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				... // 7 identical entries
+  				"location":                {Description: "Immutable. The location where the alloydb cluster should reside.", Type: "string"},
+  				"maintenanceUpdatePolicy": {Description: "Optional. The maintenance update policy determines when to allow"..., Type: "object", Properties: {"maintenanceWindows": {Description: "Preferred windows to perform maintenance. Currently limited to 1.", Type: "array", Items: &{Schema: &{Type: "object", Required: {"day", "startTime"}, Properties: {"day": {Description: "Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY,"..., Type: "string"}, "startTime": {Description: "Preferred time to start the maintenance operation on the specifi"..., Type: "object", Properties: {"hours": {Description: "Hours of day in 24 hour format. Should be from 0 to 23. An API m"..., Type: "integer", Format: "int32"}, "minutes": {Description: "Minutes of hour of day. Must be from 0 to 59.", Type: "integer", Format: "int32"}, "nanos": {Description: "Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.", Type: "integer", Format: "int32"}, "seconds": {Description: "Seconds of minutes of the time. Must normally be from 0 to 59. A"..., Type: "integer", Format: "int32"}}}}}}}}},
+  				"networkConfig": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"allocatedIpRange": {Description: "Optional. Name of the allocated IP range for the private IP Allo"..., Type: "string"},
+  						"networkRef": {
+  							ID:     "",
+  							Schema: "",
+  							Ref:    nil,
+  							Description: strings.Join({
+- 								"Optional. ",
+  								"The resource link for the VPC network in which cluster resources",
+  								" are created and from which they are accessible via Private IP. ",
+  								... // 184 identical bytes
+  							}, ""),
+  							Type:   "object",
+  							Format: "",
+  							... // 38 identical fields
+  						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"networkRef": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
+- 						"Required. ",
+  						"The resource link for the VPC network in which cluster resources",
+  						" are created and from which they are accessible via Private IP. ",
+  						... // 225 identical bytes
+  					}, ""),
+  					Type:   "object",
+  					Format: "",
+  					... // 38 identical fields
+  				},
+  				"projectRef": {Description: "The project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
+  				"resourceID": {Description: "The AlloyDBCluster name. If not given, the metadata.name will be"..., Type: "string"},
+  				... // 3 identical entries
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "AlloyDBClusterStatus defines the config connector machine state "..., Type: "object", Properties: {"backupSource": {Description: "Output only. Cluster created from backup.", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"backupName": {Description: "The name of the backup resource.", Type: "string"}}}}}, "conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "continuousBackupInfo": {Description: "Output only. Continuous backup properties for this cluster.", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"earliestRestorableTime": {Description: "Output only. The earliest restorable time that can be restored t"..., Type: "string"}, "enabledTime": {Description: "Output only. When ContinuousBackup was most recently enabled. Se"..., Type: "string"}, "encryptionInfo": {Description: "Output only. The encryption information for the WALs and backups"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"encryptionType": {Description: "Output only. Type of encryption.", Type: "string"}, "kmsKeyVersions": {Description: "Output only. Cloud KMS key versions that are being used to prote"..., Type: "array", Items: &{Schema: &{Type: "string"}}}}}}}, "schedule": {Description: "Output only. Days of the week on which a continuous backup is ta"..., Type: "array", Items: &{Schema: &{Type: "string"}}}}}}}, "databaseVersion": {Description: "The database engine major version. This is an output-only field "..., Type: "string"}, ...}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }

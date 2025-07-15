@@ -1,0 +1,111 @@
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"description": {Description: "A human-readable description of the resource.", Type: "string"},
+  				"domain":      {Description: "Immutable. A domain which is being authorized. A DnsAuthorizatio"..., Type: "string", XValidations: {{Rule: "self == oldSelf", Message: "Domain field is immutable"}}},
++ 				"location": {
++ 					Description: `Immutable. Optional. Location represents the geographical location of the DnsAuthorization. If not specified, "global" is used.`,
++ 					Type:        "string",
++ 				},
+  				"projectRef": {Description: "The project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
+  				"resourceID": {Description: "Optional. The name of the resource. Used for creation and acquis"..., Type: "string"},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"conditions": {Description: "Conditions represent the latest available observations of the Ce"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}},
+  				"dnsResourceRecord": {
+  					... // 21 identical fields
+  					MinProperties: nil,
+  					Required:      nil,
+  					Items: &v1.JSONSchemaPropsOrArray{
+  						Schema: &v1.JSONSchemaProps{
+  							... // 26 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"data": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Output only. ",
+  										"Data of the DNS Resource Record.",
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  								"name": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
++ 										"Output only. ",
+  										"Fully qualified name of the DNS Resource Record. ",
+- 										"E.g. '",
++ 										"e.g. `",
+  										"_acme-challenge.example.com",
+- 										"'.",
++ 										"`",
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  								"type": {
+  									ID:     "",
+  									Schema: "",
+  									Ref:    nil,
+  									Description: strings.Join({
+- 										"Type of the DNS Resource Record",
++ 										"Output only. Type of the DNS Resource Record. Currently always s",
++ 										`et to "CNAME"`,
+  										".",
+  									}, ""),
+  									Type:   "string",
+  									Format: "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						JSONSchemas: nil,
+  					},
+  					AllOf: nil,
+  					OneOf: nil,
+  					... // 18 identical fields
+  				},
++ 				"externalRef": {
++ 					Description: "A unique specifier for the CertificateManagerDNSAuthorization resource in GCP.",
++ 					Type:        "string",
++ 				},
+  				"observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
