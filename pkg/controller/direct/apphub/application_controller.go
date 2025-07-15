@@ -17,7 +17,6 @@ package apphub
 import (
 	"context"
 	"fmt"
-	"slices"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -184,65 +183,46 @@ func (a *ApplicationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	// remove name from update paths
 	paths = paths.Delete("name")
 
-	exception := ""
-	if slices.Contains(sets.List(paths), "attributes.criticality.type") {
-		exception += "Changes in `attributes.criticality.type` detected. " +
-			"Though the AppHub server allows this update mask, the actual field is not changeable."
-		paths = paths.Delete("attributes.criticality.type")
-	}
-	if slices.Contains(sets.List(paths), "attributes.environment.type") {
-		exception += "Changes in `.criticality.type` detected. " +
-			"Though the AppHub server allows this update mask, the actual field is not changeable."
-		paths = paths.Delete("attributes.criticality.type")
-	}
-
-	var updated *apphubpb.Application
 	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		updated = a.actual
-	} else {
-		updateMask := &fieldmaskpb.FieldMask{
-			Paths: sets.List(paths),
+		// TODO: This is a bit of a hack, we should have a better way to handle this
+		status := &krm.AppHubApplicationStatus{}
+		status.ObservedState = AppHubApplicationObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
 		}
-		desiredPb.Name = a.id.String()
-		req := &apphubpb.UpdateApplicationRequest{
-			UpdateMask:  updateMask,
-			Application: desiredPb,
+		condition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  v1.ConditionTrue,
+			Reason:  k8s.UpToDate,
+			Message: "Application is up to date",
 		}
-		op, err := a.gcpClient.UpdateApplication(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating Application %s: %w", a.id, err)
-		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("Application %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated Application", "name", a.id)
-
+		return updateOp.UpdateStatus(ctx, status, condition)
 	}
+
+	updateMask := &fieldmaskpb.FieldMask{
+		Paths: sets.List(paths),
+	}
+	desiredPb.Name = a.id.String()
+	req := &apphubpb.UpdateApplicationRequest{
+		UpdateMask:  updateMask,
+		Application: desiredPb,
+	}
+	op, err := a.gcpClient.UpdateApplication(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating Application %s: %w", a.id, err)
+	}
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("Application %s waiting update: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated Application", "name", a.id)
 
 	status := &krm.AppHubApplicationStatus{}
 	status.ObservedState = AppHubApplicationObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	var condition *v1alpha1.Condition
-	if exception != "" {
-		condition = &v1alpha1.Condition{
-			Type:    v1alpha1.ReadyConditionType,
-			Status:  v1.ConditionFalse,
-			Reason:  k8s.UpdateFailed,
-			Message: "Application not up to date: " + exception,
-		}
-	} else {
-		condition = &v1alpha1.Condition{
-			Type:    v1alpha1.ReadyConditionType,
-			Status:  v1.ConditionTrue,
-			Reason:  k8s.UpToDate,
-			Message: "Application is up to date",
-		}
-	}
-	return updateOp.UpdateStatus(ctx, status, condition)
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.

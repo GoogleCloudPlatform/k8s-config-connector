@@ -52,6 +52,22 @@ type AppHubApplicationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apphub.v1.Criticality
+type Criticality struct {
+	// Required. Criticality Type.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.Environment
+type Environment struct {
+	// Required. Environment Type.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
+	Type *string `json:"type,omitempty"`
+}
+
 type Parent struct {
 	// Required. The location of the application.
 	Location string `json:"location,omitempty"`

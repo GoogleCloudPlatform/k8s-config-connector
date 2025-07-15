@@ -12,9 +12,9 @@ spec:
     type: REGIONAL # Immutable, so not changed
   attributes:
     criticality:
-      type: LOW # Changed
+      type: MISSION_CRITICAL # immutable
     environment:
-      type: STAGING # Changed
+      type: PRODUCTION # immutable
     businessOwners:
       - email: "newowner@example.com" # Changed
         displayName: "New Business Owner" # Changed

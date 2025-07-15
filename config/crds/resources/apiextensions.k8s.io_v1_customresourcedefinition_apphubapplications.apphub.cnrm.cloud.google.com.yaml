@@ -82,6 +82,9 @@ spec:
                       type:
                         description: Required. Criticality Type.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   developerOwners:
                     description: Optional. Developer team that owns development and
@@ -103,6 +106,9 @@ spec:
                       type:
                         description: Required. Environment Type.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   operatorOwners:
                     description: Optional. Operator team that ensures runtime and
@@ -303,6 +309,9 @@ spec:
                       type:
                         description: Required. Criticality Type.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   developerOwners:
                     description: Optional. Developer team that owns development and
@@ -324,6 +333,9 @@ spec:
                       type:
                         description: Required. Environment Type.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   operatorOwners:
                     description: Optional. Operator team that ensures runtime and

@@ -15,12 +15,12 @@ spec:
     - displayName: New Business Owner
       email: newowner@example.com
     criticality:
-      type: LOW
+      type: MISSION_CRITICAL
     developerOwners:
     - displayName: New Developer Owner
       email: newdev@example.com
     environment:
-      type: STAGING
+      type: PRODUCTION
     operatorOwners:
     - displayName: New Operator Owner
       email: newops@example.com
@@ -35,10 +35,7 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Application is up to date with GCP exceptions: Changes in `attributes.criticality.type`
-      detected. Though the AppHub server allows this update mask, the actual field
-      is not changeable.Changes in `.criticality.type` detected. Though the AppHub
-      server allows this update mask, the actual field is not changeable.'
+    message: The resource is up to date
     reason: UpToDate
     status: "True"
     type: Ready
