@@ -37,6 +37,10 @@ toc:
   section:
   - title: "APIGatewayAPI"
     path: /config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md
+- title: "App Hub"
+  section:
+  - title: "ApphubApplication"
+    path: /config-connector/docs/reference/resource-docs/apphub/apphubapplication.md
 - title: "Apigee"
   section:
   - title: "ApigeeEndpointAttachment"
