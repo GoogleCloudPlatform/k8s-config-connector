@@ -85,6 +85,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdMoveExistingTest             = 50
 	cmdCreateFullTest               = 51
 	cmdAddUpdateInFullTest          = 52
+	cmdAddDependenciesInFullTest    = 53
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
@@ -181,7 +182,7 @@ func (opts *RunnerOptions) validateAndDefaultFlags() error {
 	case "":
 		// When the handle local change option is unset, each command will handle it differently.
 		switch opts.command {
-		case cmdCreateFullTest, cmdAddUpdateInFullTest:
+		case cmdCreateFullTest, cmdAddUpdateInFullTest, cmdAddDependenciesInFullTest:
 			opts.handleLocalChange = handleLocalChangeOptionCommit
 		default:
 			opts.handleLocalChange = handleLocalChangeOptionCleanUp
@@ -199,7 +200,7 @@ func (opts *RunnerOptions) validateAndDefaultFlags() error {
 			cmdRunAndFixGoldenRealGCPOutput, cmdCaptureGoldenMockOutput,
 			cmdRunAndFixGoldenMockOutput:
 			opts.testDirSuffix = "minimal"
-		case cmdCreateFullTest, cmdAddUpdateInFullTest:
+		case cmdCreateFullTest, cmdAddUpdateInFullTest, cmdAddDependenciesInFullTest:
 			opts.testDirSuffix = "full"
 		}
 	} else {
@@ -496,6 +497,10 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, REGEX_MSG_52, branches.Branches, "Add update step to existing maximal tests", []BranchProcessor{
 			{Fn: addUpdateInFullTest, CommitMsgTemplate: COMMIT_MSG_52, AttemptsOnNoChange: 0, CommitOptional: true},
 		})
+	case cmdAddDependenciesInFullTest: // 53
+		processBranches(ctx, opts, REGEX_MSG_53, branches.Branches, "Add dependencies to existing maximal tests", []BranchProcessor{
+			{Fn: addDependenciesInFullTest, CommitMsgTemplate: COMMIT_MSG_53, AttemptsOnNoChange: 0, CommitOptional: true},
+		})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -542,6 +547,7 @@ func printHelp() {
 	log.Println("\t50 - [Test] Move test data to subdirectory if the test files are directly under <version>/<kind> directory for each branch")
 	log.Println("\t51 - [Test] Create maximal tests for each branch")
 	log.Println("\t52 - [Test] Add the update step to existing maximal tests for each branch")
+	log.Println("\t53 - [Test] Add the dependencies to existing maximal tests for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {

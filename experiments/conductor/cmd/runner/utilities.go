@@ -67,6 +67,7 @@ var commandMap = map[int64]string{
 	cmdMoveExistingTest:             "moveexistingtest",
 	cmdCreateFullTest:               "createfulltest",
 	cmdAddUpdateInFullTest:          "addupdateinfulltest",
+	cmdAddDependenciesInFullTest:    "adddependenciesinfulltest",
 }
 
 type exitBash func()

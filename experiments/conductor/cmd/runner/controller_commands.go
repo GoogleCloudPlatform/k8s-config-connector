@@ -576,6 +576,137 @@ func addUpdateInFullTest(ctx context.Context, opts *RunnerOptions, branch Branch
 	return []string{parentDir}, nil, nil
 }
 
+const addDependenciesInFullTestPrompt string = `Generate a ${TEST_DIR}/dependencies.yaml file based on the information in the ${TEST_DIR}/create.yaml file and the ${TEST_DIR}/update.yaml.
+
+First, read the ${TEST_DIR}/create.yaml and ${TEST_DIR}/update.yaml file that was just generated.
+If any spec field name ends with "Ref", or if any field value ends with "${uniqueId}", then read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.${GROUP}.cnrm.cloud.google.com.yaml to understand the schema.
+Replace <pluralized-kind> with the pluralized version of the kind: ${KIND} in the filename. If not, do nothing and leave.
+Identify field with subfields "name", "namespace" and "external" in the CRD file. These fields are reference fields.
+Identify the kinds of the reference fields. The kind is indicated in the description of the reference field's subfield, "external" field in the CRD file.
+For each identified kind, read the CRD files with names ending with "<kind>.yaml" under crds/ folder.
+
+Second, generate a ${TEST_DIR}/dependencies.yaml file. The file should follow these requirements:
+- Add an Apache 2.0 license header with Copyright ${CURRENT_YEAR} Google LLC.
+- Identify reference fields and their values in ${TEST_DIR}/create.yaml and ${TEST_DIR}/update.yaml.
+- Create one resource for each reference field that specifies subfield "name" and has a different value of "name".
+- Split each resource with "---" and a new line.
+- For each resource,
+    - The <kind> should be the kind of the reference field.
+    - Use apiVersion: <apiVersion>, where <apiVersion> is defined in the CRD file, whose name ends with "<kind>.yaml".
+    - Use kind: <kind>.
+    - Use metadata.name: <referencedResourceName>, where <referencedResourceName> is the value of the subfield "name" under the reference field.
+    - If the CRD has a "spec.projectRef" field, use projectRef.external: ${projectId}.
+    - If the CRD has a "spec.location" field, use location: us-central1.
+    - Only include required fields from the CRD of <kind>.
+    - Follow the schema defined in the CRD file of <kind>.
+    - Do not add any field not defined in the CRD file of <kind>.
+
+Use ReadFile to read the ${TEST_DIR}/create.yaml file.
+Use ReadFile to read the ${TEST_DIR}/update.yaml file.
+Use ReadFile to read all the CRD files.
+Check all the spec fields including the nested fields in the ${TEST_DIR}/create.yaml file and the ${TEST_DIR}/update.yaml file.
+If any field value in ${TEST_DIR}/create.yaml or ${TEST_DIR}/update.yaml ends with "${uniqueId}", then there must be a ${TEST_DIR}/dependencies.yaml.
+If there is no field name in ${TEST_DIR}/create.yaml or ${TEST_DIR}/update.yaml other than "spec.projectRef" ending with "Ref", do nothing and leave.
+Use CreateFile to write the YAML content to the ${TEST_DIR}/dependencies.yaml file if it doesn't exist; or overwrite the existing file.
+Respond only with the YAML content, no explanations.`
+
+// addDependenciesInFullTest creates dependencies.yaml for test case with given name for the branch.
+func addDependenciesInFullTest(ctx context.Context, opts *RunnerOptions, branch Branch, execResults *ExecResults) ([]string, *ExecResults, error) {
+	log.Printf("Adding dependencies.yaml for full test cases in branch %s", branch.Name)
+
+	// Check if we have the required fields
+	if branch.Group == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Group field", branch.Name)
+	}
+
+	if branch.Kind == "" {
+		return nil, nil, fmt.Errorf("branch %s is missing Kind field", branch.Name)
+	}
+
+	// Default CRD version and group
+	crdVersion := "v1alpha1"
+	if branch.Controller == "terraform-v1beta1" {
+		crdVersion = "v1beta1"
+		log.Printf("This is a TF-based v1beta1 resource")
+	}
+
+	parentDir := filepath.Join(
+		"pkg", "test", "resourcefixture", "testdata", "basic",
+		branch.Group, strings.ToLower(crdVersion),
+		strings.ToLower(branch.Kind),
+	)
+
+	currentYear := time.Now().Year()
+
+	// TODO: Customize the maximal test index.
+	for i := 0; i < 3; i++ {
+		log.Printf("Adding dependencies.yaml to maximal test #%d", i+1)
+
+		// TODO: Customize the max attempt number.
+		for attempt := 0; attempt < 3; attempt++ {
+			log.Printf("Attempt %d to add dependencies.yaml to maximal test #%d", attempt+1, i+1)
+
+			// 1. Check if test case already exists. Skip dependencies.yaml generation if test case and create.yaml doesn't exist.
+			testDir := filepath.Join(
+				parentDir,
+				fmt.Sprintf("%s-%s", strings.ToLower(branch.Kind), opts.testDirSuffix),
+			)
+
+			if i > 0 {
+				testDir = filepath.Join(fmt.Sprintf("%s-%d", testDir, i))
+			}
+			fullTestDir := filepath.Join(opts.branchRepoDir, testDir)
+			_, err := os.Stat(fullTestDir)
+			if err != nil {
+				if !errors.Is(err, os.ErrNotExist) {
+					return nil, nil, fmt.Errorf("error checking whether test directory %s exists: %w", fullTestDir, err)
+				} else {
+					return nil, nil, fmt.Errorf("cannot generate dependencies.yaml for test case because test directory %s doesn't exist: %w", fullTestDir, err)
+				}
+			}
+			createFilePath := filepath.Join(fullTestDir, "create.yaml")
+			_, err = os.Stat(createFilePath)
+			if err != nil {
+				if !errors.Is(err, os.ErrNotExist) {
+					return nil, nil, fmt.Errorf("error checking whether create file %s exists: %w", createFilePath, err)
+				} else {
+					return nil, nil, fmt.Errorf("cannot generate dependencies.yaml for test case because create file %s doesn't exist: %w", createFilePath, err)
+				}
+			}
+			dependenciesFilePath := filepath.Join(fullTestDir, "dependencies.yaml")
+			_, err = os.Stat(dependenciesFilePath)
+			if err == nil {
+				log.Printf("no need to generate dependencies.yaml for test case because dependencies file %s already exists", dependenciesFilePath)
+				break
+			}
+			if err != nil && !errors.Is(err, os.ErrNotExist) {
+				return nil, nil, fmt.Errorf("error checking whether dependencies file %s exists: %w", dependenciesFilePath, err)
+			}
+
+			// 2. Generate dependencies.yaml.
+			dependenciesPrompt := strings.ReplaceAll(addDependenciesInFullTestPrompt, "${TEST_DIR}", testDir)
+			dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${GROUP}", branch.Group)
+			dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${KIND}", branch.Kind)
+			dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
+			cfg := CommandConfig{
+				Name:         "Generate Dependencies YAML",
+				Cmd:          "codebot",
+				Args:         []string{"--prompt=/dev/stdin"},
+				Stdin:        strings.NewReader(dependenciesPrompt),
+				WorkDir:      opts.branchRepoDir,
+				RetryBackoff: GenerativeCommandRetryBackoff,
+				MaxAttempts:  2,
+			}
+			_, err = executeCommand(opts, cfg)
+			if err != nil {
+				return nil, nil, fmt.Errorf("failed to generate dependencies.yaml: %w", err)
+			}
+		}
+	}
+
+	return []string{parentDir}, nil, nil
+}
+
 const createFullTestCreatePrompt string = `Generate a ${TEST_DIR}/create.yaml file for testing a Kubernetes controller.
 
 First, read the CRD file at config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<pluralized-kind>.${GROUP}.cnrm.cloud.google.com.yaml to understand the schema.
