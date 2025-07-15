@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "mcp-kcc": {
+            "command": "uv",
+            "description": "this is an example of integrating the MCP to GEMINI CLI. This is the .gemini/settings.json.",
+            "args": [
+                "--directory",
+                "experiments/mcp/src",
+                "run",
+                "run.py"
+            ]
+        }
+    }
+}
