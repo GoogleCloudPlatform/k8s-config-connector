@@ -92,7 +92,13 @@ var _ directbase.Adapter = &forwardingRuleAdapter{}
 
 func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ComputeForwardingRule{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -216,14 +222,13 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	sanitizedLabels := handleLabelsForObject(desired)
 
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = sanitizedLabels
+	labels := desired.Spec.Labels
 
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
@@ -271,7 +276,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	// Set labels for the created forwarding rule
 	// Add labels back for psc forwarding rule
 	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
-		forwardingRule.Labels = sanitizedLabels
+		forwardingRule.Labels = labels
 	}
 	if forwardingRule.Labels != nil {
 		op, err := a.setLabels(ctx, created.LabelFingerprint, forwardingRule.Labels)
@@ -320,13 +325,11 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	sanitizedLabels := handleLabelsForObject(desired)
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = sanitizedLabels
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
@@ -662,20 +665,4 @@ func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.Com
 		}
 	}
 	return nil
-}
-
-func handleLabelsForObject(desired *krm.ComputeForwardingRule) map[string]string {
-	labels := make(map[string]string)
-	if desired.Spec.Labels != nil {
-		// If specification labels are non-empty, use specification labels only
-		labels = desired.Spec.Labels
-		// Apply Config Connector default labels
-		labels[label.CnrmManagedKey] = "true"
-	} else {
-		// Otherwise, use metadata.labels for backward compatibility
-		labels = desired.Labels
-		// Remove system labels in metadata.labels and apply Config Connector default labels
-		labels = label.NewGCPLabelsFromK8sLabels(labels)
-	}
-	return labels
 }

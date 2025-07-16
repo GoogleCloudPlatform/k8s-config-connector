@@ -94,8 +94,6 @@ backendServiceRef:
   name: string
   namespace: string
 description: string
-gcpLabels:
-  string: string
 ipAddress:
   addressRef:
     external: string
@@ -105,6 +103,8 @@ ipAddress:
 ipProtocol: string
 ipVersion: string
 isMirroringCollector: boolean
+labels:
+  string: string
 loadBalancingScheme: string
 location: string
 metadataFilters:
@@ -275,26 +275,6 @@ internal load balancer.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>gcpLabels</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}The GCP labels assigned to this resource.
-
-GCPLabel keys must be between 1 and 63 characters long, have a UTF-8 encoding
-of maximum 128 bytes, and must conform to the following PCRE regular
-expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
-
-GCPLabel values must be between 0 and 63 characters long, have a UTF-8
-encoding of maximum 128 bytes, and must conform to the following PCRE
-regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
-
-No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>ipAddress</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -421,6 +401,26 @@ load balancer will not have their traffic mirrored even if a
 
 This can only be set to true for load balancers that have their
 'loadBalancingScheme' set to 'INTERNAL'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}The labels assigned to this resource.
+
+Label keys must be between 1 and 63 characters long, have a UTF-8 encoding
+of maximum 128 bytes, and must conform to the following PCRE regular
+expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`
+
+Label values must be between 0 and 63 characters long, have a UTF-8
+encoding of maximum 128 bytes, and must conform to the following PCRE
+regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`
+
+No more than 64 labels can be assigned to a given resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
