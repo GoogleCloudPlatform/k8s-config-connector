@@ -513,11 +513,6 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 					return
 				}
 
-				// Avoid dup.
-				if strings.HasSuffix(fieldPath, "[]") {
-					return
-				}
-
 				// Check if field exists in any unstructured object
 				missing := true
 				for _, obj := range unstructs {
@@ -544,6 +539,33 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	}
 
 	sort.Strings(errs)
+	// Filter out errors for fields that are also reported for their array equivalent.
+	// For example, if we have an error for "spec.foo" and "spec.foo[]", we only keep the latter.
+	if len(errs) > 0 {
+		filteredErrs := make([]string, 0, len(errs))
+		i := 0
+		for i < len(errs) {
+			addCurrent := true
+			if i+1 < len(errs) {
+				currentErr := errs[i]
+				nextErr := errs[i+1]
+				const suffix = "\" is not set in unstructured objects"
+				prefix := strings.TrimSuffix(currentErr, suffix)
+				if strings.HasPrefix(nextErr, prefix) {
+					diff := strings.TrimPrefix(nextErr, prefix)
+					if strings.Contains(diff, "[]") || strings.Contains(diff, ".") {
+						addCurrent = false
+					}
+				}
+			}
+			if addCurrent {
+				filteredErrs = append(filteredErrs, errs[i])
+			}
+			i++
+		}
+		errs = filteredErrs
+	}
+
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
 }
