@@ -1,0 +1,145 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Dependencies
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: default
+spec:
+  description: Default network for the project
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-${uniqueId}
+spec:
+  location: global
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-${uniqueId}
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computebackendservice-${uniqueId}
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: computetargethttpproxy-${uniqueId}
+spec:
+  description: "test description"
+  urlMapRef:
+    name: computeurlmap-${uniqueId}
+  location: global
+---
+
+# metadata.labels: [gcp-v1] only. [gke.io/non-gcp] is invalid (removed)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    gcp-v1: stg
+    gke.io/non-gcp: test
+  name: computeglobalforwardingrule-${uniqueId}
+spec:
+  description: "A global forwarding rule"
+  location: global
+  target:
+    targetHTTPProxyRef:
+      name: computetargethttpproxy-${uniqueId}
+  portRange: "80"
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  ipAddress:
+    ip: "0.0.0.0"
+  networkRef:
+    name: default
+---
+
+# spec.labels override metadata labels:  [gcp-v2] only.
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    gcp-v1: stg
+    gke.io/non-gcp: test
+  name: computeglobalforwardingrule-${uniqueId}
+spec:
+  description: "A global forwarding rule"
+  location: global
+  labels:
+    gcp-v2: prod
+  target:
+    targetHTTPProxyRef:
+      name: computetargethttpproxy-${uniqueId}
+  portRange: "80"
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  ipAddress:
+    ip: "0.0.0.0"
+  networkRef:
+    name: default
+---
+
+# spec.labels updates:  [gcp-v2, gcp-v3] only.
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    gcp-v1: stg
+    gke.io/non-gcp: test
+  name: computeglobalforwardingrule-${uniqueId}
+spec:
+  description: "A global forwarding rule"
+  location: global
+  labels:
+    gcp-v2: prod
+    gcp-v3: prod-asia
+  target:
+    targetHTTPProxyRef:
+      name: computetargethttpproxy-${uniqueId}
+  portRange: "80"
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  ipAddress:
+    ip: "0.0.0.0"
+  networkRef:
+    name: default
+
+---
+
+# fall back to metadata.labels: [gcp-v1] only.
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  labels:
+    gcp-v1: stg
+    gke.io/non-gcp: test
+  name: computeglobalforwardingrule-${uniqueId}
+spec:
+  description: "A global forwarding rule"
+  location: global
+  target:
+    targetHTTPProxyRef:
+      name: computetargethttpproxy-${uniqueId}
+  portRange: "80"
+  loadBalancingScheme: INTERNAL_SELF_MANAGED
+  ipAddress:
+    ip: "0.0.0.0"
+  networkRef:
+    name: default
