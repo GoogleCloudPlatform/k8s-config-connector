@@ -14,7 +14,12 @@
 
 package mockcontainer
 
-import "strings"
+import (
+	"context"
+	"strings"
+
+	"google.golang.org/grpc/metadata"
+)
 
 func PtrTo[T any](t T) *T {
 	return &t
@@ -52,4 +57,29 @@ func AsZonalLink(link string) string {
 func isZone(location string) bool {
 	tokens := strings.Split(location, "-")
 	return len(tokens) == 3
+}
+
+// getAPIVersion returns the version of the API the caller is using.
+// It defaults to v1beta1
+func getAPIVersion(ctx context.Context) string {
+	md, _ := metadata.FromIncomingContext(ctx)
+	path := ""
+	if md != nil {
+		for _, v := range md.Get("path") {
+			path = v
+		}
+	}
+	path = strings.TrimPrefix(path, "/")
+	version, _, _ := strings.Cut(path, "/")
+	if version == "" {
+		// Default to v1beta1
+		version = "v1beta1"
+	}
+	return version
+}
+
+// buildSelfLink constructs a full self link (including https://container.googleapis.com/<version>/)
+func buildSelfLink(ctx context.Context, fqn string) string {
+	version := getAPIVersion(ctx)
+	return "https://container.googleapis.com/" + version + "/" + fqn
 }

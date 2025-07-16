@@ -79,7 +79,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		obj.Locations = []string{name.Location}
 	}
 
-	obj.SelfLink = fmt.Sprintf("https://container.googleapis.com/v1beta1/projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster)
+	obj.SelfLink = buildSelfLink(ctx, fmt.Sprintf("projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster))
 	obj.SelfLink = AsZonalLink(obj.SelfLink)
 
 	if obj.Network == "" {
@@ -121,16 +121,14 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		return nil, err
 	}
 
-	if len(obj.NodePools) != 0 {
-		return nil, fmt.Errorf("nodePools must be empty when creating a cluster")
+	if len(obj.NodePools) == 0 {
+		defaultNodePool := &pb.NodePool{
+			Name:      "default-pool",
+			Status:    pb.NodePool_RUNNING,
+			Locations: []string{name.Location},
+		}
+		obj.NodePools = append(obj.NodePools, defaultNodePool)
 	}
-	defaultNodePool := &pb.NodePool{
-		Name:      "default-pool",
-		Status:    pb.NodePool_RUNNING,
-		Locations: []string{name.Location},
-	}
-
-	obj.NodePools = append(obj.NodePools, defaultNodePool)
 
 	for i, nodePool := range obj.NodePools {
 		nodePoolObj := proto.Clone(nodePool).(*pb.NodePool)
@@ -162,7 +160,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_CLUSTER,
-		TargetLink:    buildTargetLink(name),
+		TargetLink:    buildTargetLink(ctx, name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		op.Progress = &pb.OperationProgress{
@@ -257,6 +255,11 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolAutoConfigNetworkTags = nil
 	}
 
+	if update.DesiredControlPlaneEndpointsConfig != nil {
+		obj.ControlPlaneEndpointsConfig = update.DesiredControlPlaneEndpointsConfig
+		update.DesiredControlPlaneEndpointsConfig = nil
+	}
+
 	// TODO: Support more updates!
 
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
@@ -274,7 +277,7 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_UPDATE_CLUSTER,
-		TargetLink:    buildTargetLink(name),
+		TargetLink:    buildTargetLink(ctx, name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -334,7 +337,7 @@ func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClus
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_CLUSTER,
-		TargetLink:    buildTargetLink(name),
+		TargetLink:    buildTargetLink(ctx, name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -627,8 +630,8 @@ func (s *MockService) parseClusterName(name string) (*clusterName, error) {
 	}
 }
 
-func buildTargetLink(name *clusterName) string {
-	return "https://container.googleapis.com/v1beta1/" + AsZonalLink(name.LinkWithNumber())
+func buildTargetLink(ctx context.Context, name *clusterName) string {
+	return buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber()))
 }
 
 func lastComponent(s string) string {
