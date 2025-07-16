@@ -22,13 +22,13 @@ import (
 	"fmt"
 	"os"
 
+	backportalpha "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/backport-alpha"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deleteannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/deletefield"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/reflowdescriptions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/removedescriptions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setfield"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/backport-alpha"
 	"github.com/spf13/cobra"
 )
 

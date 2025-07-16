@@ -17,6 +17,7 @@ package backportalpha
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/pkg/objectvisitor"
 	"github.com/spf13/cobra"
@@ -27,7 +28,7 @@ func AddCommand(parent *cobra.Command) {
 	var opt Options
 	cmd := &cobra.Command{
 		Use:   "backport-alpha",
-		Short: "Ensures CRDs have a v1alpha1 version if they have a v1beta1 version.",
+		Short: "Adds additional versions to a CRD based on the 'internal.cloud.google.com/additional-versions' label.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Run(cmd.Context(), opt)
 		},
@@ -50,21 +51,15 @@ func (o *Options) Validate() error {
 type visitor struct {
 }
 
+// VisitObject processes a single object, adding additional versions to CRDs if they have the 'internal.cloud.google.com/additional-versions' label.
 func (v *visitor) VisitObject(obj *unstructured.Unstructured) error {
 	if obj.GetKind() != "CustomResourceDefinition" {
 		return nil
 	}
 
 	labels := obj.GetLabels()
-	if labels["cnrm.cloud.google.com/tf2crd"] == "true" || labels["cnrm.cloud.google.com/dcl2crd"] == "true" {
-		return nil
-	}
-
-	group, _, err := unstructured.NestedString(obj.Object, "spec", "group")
-	if err != nil {
-		return fmt.Errorf("error getting spec.group: %w", err)
-	}
-	if group == "iam.cnrm.cloud.google.com" {
+	additionalVersionsLabel := labels["internal.cloud.google.com/additional-versions"]
+	if additionalVersionsLabel == "" {
 		return nil
 	}
 
@@ -76,40 +71,66 @@ func (v *visitor) VisitObject(obj *unstructured.Unstructured) error {
 		return nil
 	}
 
-	hasV1Beta1 := false
-	hasV1Alpha1 := false
-	var v1beta1Spec map[string]interface{}
+	var storageVersionSpec map[string]interface{}
+	for _, version := range versions {
+		versionMap, ok := version.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		storage, _, _ := unstructured.NestedBool(versionMap, "storage")
+		if storage {
+			storageVersionSpec = versionMap
+			break
+		}
+	}
 
+	if storageVersionSpec == nil {
+		// No storage version found, should not happen on a valid CRD
+		return nil
+	}
+
+	existingVersions := make(map[string]bool)
 	for _, version := range versions {
 		versionMap, ok := version.(map[string]interface{})
 		if !ok {
 			continue
 		}
 		name, _, _ := unstructured.NestedString(versionMap, "name")
-		if name == "v1beta1" {
-			hasV1Beta1 = true
-			v1beta1Spec = versionMap
-		}
-		if name == "v1alpha1" {
-			hasV1Alpha1 = true
-		}
+		existingVersions[name] = true
 	}
 
-	if hasV1Beta1 && !hasV1Alpha1 {
-		v1alpha1Spec := make(map[string]interface{})
-		for k, v := range v1beta1Spec {
-			v1alpha1Spec[k] = v
+	additionalVersions := strings.Split(additionalVersionsLabel, ",")
+	changed := false
+	for _, additionalVersionName := range additionalVersions {
+		additionalVersionName = strings.TrimSpace(additionalVersionName)
+		if additionalVersionName == "" {
+			continue
+		}
+		if existingVersions[additionalVersionName] {
+			continue
 		}
 
-		v1alpha1Spec["name"] = "v1alpha1"
-		v1alpha1Spec["storage"] = false
-		v1alpha1Spec["served"] = true
+		newVersionSpec := make(map[string]interface{})
+		for k, v := range storageVersionSpec {
+			newVersionSpec[k] = v
+		}
 
-		versions = append(versions, v1alpha1Spec)
+		newVersionSpec["name"] = additionalVersionName
+		newVersionSpec["storage"] = false
+		newVersionSpec["served"] = true // Assuming additional versions should be served
+
+		versions = append(versions, newVersionSpec)
+		changed = true
+	}
+
+	if changed {
 		if err := unstructured.SetNestedSlice(obj.Object, versions, "spec", "versions"); err != nil {
 			return fmt.Errorf("error setting spec.versions: %w", err)
 		}
 	}
+
+	delete(labels, "internal.cloud.google.com/additional-versions")
+	obj.SetLabels(labels)
 
 	return nil
 }
