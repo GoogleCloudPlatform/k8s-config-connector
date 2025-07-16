@@ -107,9 +107,6 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, reader clien
 	// Get location
 	location := obj.Spec.Location
 
-	// Set label managed-by-cnrm: true
-	obj.ObjectMeta.Labels["managed-by-cnrm"] = "true"
-
 	// Handle TF default values
 	if obj.Spec.LoadBalancingScheme == nil {
 		obj.Spec.LoadBalancingScheme = direct.LazyPtr("EXTERNAL")
