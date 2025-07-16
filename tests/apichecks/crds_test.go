@@ -466,11 +466,14 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 
+			kind := crd.Spec.Names.Kind
+
 			if version.Name == "v1alpha1" {
-				continue
+				if os.Getenv("TARGET_KIND") == "" || os.Getenv("TARGET_KIND") != kind {
+					continue
+				}
 			}
 
-			kind := crd.Spec.Names.Kind
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
 				// Only consider fields under `spec`
