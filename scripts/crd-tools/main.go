@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/removedescriptions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setannotation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/setfield"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/crd-tools/cmd/backport-alpha"
 	"github.com/spf13/cobra"
 )
 
@@ -44,6 +45,7 @@ func run(ctx context.Context) error {
 		Use: "crd-tools",
 	}
 
+	backportalpha.AddCommand(rootCmd)
 	deleteannotation.AddCommand(rootCmd)
 	deletefield.AddCommand(rootCmd)
 	reflowdescriptions.AddCommand(rootCmd)
