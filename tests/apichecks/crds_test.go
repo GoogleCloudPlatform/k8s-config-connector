@@ -508,18 +508,13 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 					return
 				}
 
-				// Skip non-terminal fields (fields with children or slices)
-				if field.props != nil {
-					if len(field.props.Properties) > 0 || field.props.Type == "object" {
-						return
-					}
-					if field.props.Type == "array" && field.props.Items != nil {
-						return // Skip the array itself; focus on its elements
-					}
-				}
-
 				// Any XYZRef field was already handled and handling the children will just double count
 				if strings.Contains(fieldPath, "Ref") {
+					return
+				}
+
+				// Avoid dup.
+				if strings.HasSuffix(fieldPath, "[]") {
 					return
 				}
 
@@ -638,13 +633,13 @@ func hasField(obj map[string]interface{}, fieldPath string) bool {
 			if nextMap, ok := next.(map[string]interface{}); ok {
 				current = nextMap
 			} else {
-				return true
+				return i == len(parts)-1
 			}
 		} else {
 			return false
 		}
 	}
-	return false
+	return true
 }
 
 func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
