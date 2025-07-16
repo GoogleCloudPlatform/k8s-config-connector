@@ -312,14 +312,9 @@ operator-manager-bin:
 
 # Build kcc manifests for both standard and autopilot clusters
 .PHONY: all-manifests
-all-manifests: crd-manifests rbac-manifests build-operator-manifests
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/standard/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/standard/rbac.yaml
+all-manifests: config-connector-manifests-standard config-connector-manifests-autopilot
 	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
-	cp config/installbundle/release-manifests/crds.yaml config/installbundle/release-manifests/autopilot/crds.yaml
-	cp config/installbundle/release-manifests/rbac.yaml config/installbundle/release-manifests/autopilot/rbac.yaml
 	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
-
 
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
@@ -333,7 +328,7 @@ config-connector-manifests-autopilot: build-operator-manifests
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
 	make -C operator docker-build
 
 .PHONY: push-operator-manifest
@@ -350,14 +345,12 @@ clean-release-manifests:
 	rm config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: deploy-kcc-standard
-deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest 
-	kubectl apply -f config/installbundle/release-manifests/standard/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+deploy-kcc-standard: docker-build docker-push config-connector-manifests-standard push-operator-manifest
+	kustomize build config/installbundle/release-manifests/standard | kubectl apply -f -
 
 .PHONY: deploy-kcc-autopilot
 deploy-kcc-autopilot: docker-build docker-push config-connector-manifests-autopilot push-operator-manifest
-	kubectl apply -f config/installbundle/release-manifests/autopilot/manifests.yaml ${CONTEXT_FLAG}
-	kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity | sed -e 's/$${PROJECT_ID?}/${PROJECT_ID}/g'| kubectl apply -f - ${CONTEXT_FLAG}
+	kustomize build config/installbundle/release-manifests/autopilot | kubectl apply -f -
 
 .PHONY: powertool-tests
 powertool-tests:
