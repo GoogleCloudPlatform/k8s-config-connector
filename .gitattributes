@@ -3,3 +3,5 @@ pkg/clients/generated/** linguist-generated=true
 **/*.generated.go linguist-generated=true
 
 **/go.sum linguist-generated=true
+
+config/crds/resources/** linguist-generated=true
