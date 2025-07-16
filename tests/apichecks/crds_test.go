@@ -753,7 +753,10 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 				if err := os.MkdirAll(diffDir, 0755); err != nil {
 					t.Fatalf("error creating directory %s: %v", diffDir, err)
 				}
-				if err := os.WriteFile(diffFilePath, []byte(allDiffs.String()), 0644); err != nil {
+				// To address inconsistencies between local and CI environments,
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
+				normalizedDiff := strings.ReplaceAll(allDiffs.String(), "\u00a0", " ")
+				if err := os.WriteFile(diffFilePath, []byte(normalizedDiff), 0644); err != nil {
 					t.Fatalf("error writing diff file %s: %v", diffFilePath, err)
 				}
 				// Continue to next CRD after writing
@@ -767,7 +770,13 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 			}
 
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
-				t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
+				// To address inconsistencies between local and CI environments,
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
+				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
+				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
+					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
+				}
 			}
 		}
 	}
