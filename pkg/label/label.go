@@ -39,9 +39,11 @@ func ComputeLabels(u *unstructured.Unstructured) error {
 	return unstructured.SetNestedStringMap(u.Object, newLabels, "spec", "labels")
 }
 
+// NewGCPLabelsFromK8sLabels removes labels that violate GCP labels restrictions(i.e. KRM-style labels)
+// and apply Config Connector default labels.
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
 	res := removeLabelsWithKRMPrefix(labels)
-	// Apply default label.
+	// Apply default label "managed-by-cnrm": "true"
 	res[CnrmManagedKey] = "true"
 	return res
 }
@@ -49,10 +51,10 @@ func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
 func removeLabelsWithKRMPrefix(labels map[string]string) map[string]string {
 	res := make(map[string]string)
 	for k, v := range labels {
+		// Do not include any KRM-style labels (labels that include a prefix denoted with a '/').
+		// todo: verify if '/' is sufficient for identifying all system labels,
+		// and are there edge cases we need to consider.
 		if len(strings.Split(k, "/")) == 2 {
-			// Do not include any KRM-style labels (labels that include a prefix
-			// denoted with a '/').
-			// TODO(b/137755194): Determine long-term solution.
 			continue
 		}
 		res[k] = v
