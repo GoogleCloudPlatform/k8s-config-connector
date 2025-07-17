@@ -121,7 +121,7 @@ func (a *apiQuotaAdjusterSettingsAdapter) Find(ctx context.Context) (bool, error
 	return true, nil
 }
 
-// Create is not supported for QuotaAdjusterSettings. This resource is managed by GCP implicitly.
+// This function should not be reachable, because Find always returns an object"
 func (a *apiQuotaAdjusterSettingsAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("create operation is not supported for resource %s", cloudquotav1beta1.APIQuotaAdjusterSettingsGVK)

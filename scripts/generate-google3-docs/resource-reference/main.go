@@ -857,8 +857,8 @@ func crdFileNameForGVK(gvk schema.GroupVersionKind) string {
 	// special plural formats. The best practice is to use singular as is
 	alreadyPluralWords := []string{"settings", "metrics", "series", "data"}
 
-	switch gvk.Kind{
-	// We already missed some resources before they have been promoted to Beta 
+	switch gvk.Kind {
+	// We already missed some resources before they have been promoted to Beta
 	case "ComputeProjectMetadata":
 	default:
 		for _, word := range alreadyPluralWords {
