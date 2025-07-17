@@ -7,7 +7,7 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: apiquotaadjustersettings.cloudquota.cnrm.cloud.google.com
+  name: gcpapiquotaadjustersettings.cloudquota.cnrm.cloud.google.com
 spec:
   group: cloudquota.cnrm.cloud.google.com
   names:
@@ -15,10 +15,9 @@ spec:
     - gcp
     kind: APIQuotaAdjusterSettings
     listKind: APIQuotaAdjusterSettingsList
-    plural: apiquotaadjustersettings
+    plural: gcpapiquotaadjustersettings
     shortNames:
     - gcpapiquotaadjustersettings
-    - apiquotaadjustersettings
     singular: apiquotaadjustersettings
   preserveUnknownFields: false
   scope: Namespaced
