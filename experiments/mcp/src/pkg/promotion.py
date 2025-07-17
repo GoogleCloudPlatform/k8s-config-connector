@@ -121,45 +121,37 @@ def promote_api_file(api_path: str, target_version: str) -> dict:
         abs_api_path = to_abs_path(api_path)
         source_version = get_version_from_path(abs_api_path)
         source_dir = os.path.dirname(abs_api_path)
-        
+
         target_dir = source_dir.replace(source_version, target_version)
         os.makedirs(target_dir, exist_ok=True)
 
-        for filename in os.listdir(source_dir):
+        resource_basename = os.path.basename(api_path).replace('_types.go', '')
+
+        relevant_files = [
+            'doc.go',
+            'groupversion_info.go',
+            f'{resource_basename}_types.go',
+            f'{resource_basename}_identity.go',
+            f'{resource_basename}_reference.go',
+        ]
+
+        for filename in relevant_files:
             source_filepath = os.path.join(source_dir, filename)
             target_filepath = os.path.join(target_dir, filename)
 
             if os.path.isfile(source_filepath) and filename.endswith('.go'):
                 with open(source_filepath, 'r') as f:
                     content = f.read()
-                
+
                 new_content = content.replace(f"package {source_version}", f"package {target_version}")
                 new_content = new_content.replace(source_version, target_version)
-                
+
                 with open(target_filepath, 'w') as f:
                     f.write(new_content)
 
                 if filename.endswith('_types.go'):
                     with open(target_filepath, 'r') as f:
                         lines = f.readlines()
-                    
-                    # Handle additional-versions label
-                    labels_found = False
-                    for i, line in enumerate(lines):
-                        if "kubebuilder:metadata:labels" in line:
-                            line = lines[i].rstrip()
-                            if line.endswith('"'):
-                                new_label = f';"internal.cloud.google.com/additional-versions={source_version}"'
-                                lines[i] = line[:-1] + new_label + '"\n'
-                            labels_found = True
-                            break
-                    
-                    if not labels_found:
-                        for i, line in enumerate(lines):
-                            if "// +k8s:openapi-gen=true" in line:
-                                new_label_line = f'// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions={source_version}"\n'
-                                lines.insert(i, new_label_line)
-                                break
 
                     # Handle storageversion
                     storage_version_found = any("kubebuilder:storageversion" in line for line in lines)
@@ -168,7 +160,7 @@ def promote_api_file(api_path: str, target_version: str) -> dict:
                             if "// +k8s:openapi-gen=true" in line:
                                 lines.insert(i, '// +kubebuilder:storageversion\n')
                                 break
-                    
+
                     with open(target_filepath, 'w') as f:
                         f.writelines(lines)
 

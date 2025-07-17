@@ -88,7 +88,7 @@ class MCPForGKEServer(FastMCP):
         
         self.add_tool(
             name="promote_controller",
-            description="Promotes a KCC controller to a new version. This involves updating the controller's API imports and running validation.",
+            description="Promotes a KCC controller to a new version. This involves updating the controller's API imports and running validation. If the validation fails due to compilation errors related to package versions, you may need to manually adjust the imports. For example, if a type is still in `v1alpha1`, you may need to add `krmalpha 'github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1'` and change references from `krm.MyType` to `krmalpha.MyType`.",
             fn=self.promote_controller,
             annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
         )
