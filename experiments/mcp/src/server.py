@@ -26,6 +26,7 @@ import yaml
 import subprocess
 from pkg import fs
 from pkg import openapi2jsonschema
+from pkg import promotion
 
 class MCPForGKEServer(FastMCP):
     def __init__(self, kubeconfig: str):
@@ -70,6 +71,13 @@ class MCPForGKEServer(FastMCP):
             description="Provides a list of high-level task scenarios or workflows. Use this to discover multi-step actions you can perform, such as creating a resource and then verifying its status.",
             fn=self.list_prompts,
             annotations=ToolAnnotations(readOnlyHint=True),
+        )
+        
+        self.add_tool(
+            name="promote",
+            description="Promotes a KCC resource. This involves updating the API version, controller, and test fixtures.",
+            fn=self.promote,
+            annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
         )
         
         self.add_prompt(Prompt(
@@ -308,7 +316,6 @@ Return only YAML: Your final output should be only the generated YAML content, w
         Returns:
             A string indicating the result of the update operation.
         """
-        # Use kubectl patch command to update the resource
         if not requirements:
             return "No requirements provided for updating the CustomResource."
         
@@ -389,3 +396,26 @@ Return only YAML: Your final output should be only the generated YAML content, w
             return f"Error: kubeconform command timed out after {timeout} seconds."
         except Exception as e:
             return f"An unexpected error occurred while running kubeconform: {e}"
+
+    async def promote(self, kind: str, service: str, apiPath: str, controllerPath: str, testFixturePath: str, targetVersion: str) -> str:
+        """Promotes a KCC resource to a new version.
+
+        Args:
+            kind: The kind of the resource.
+            service: The service name for the resource.
+            apiPath: The path to the API definition file.
+            controllerPath: The path to the controller file.
+            testFixturePath: The path to the test fixture.
+            targetVersion: The target version to promote to.
+        """
+        try:
+            new_api_path = promotion.promote_api_file(apiPath, targetVersion)
+            new_controller_path = promotion.promote_controller_file(controllerPath, targetVersion)
+            new_test_fixture_path = promotion.promote_test_fixture(testFixturePath, targetVersion)
+            return f"""Successfully promoted {kind} to {targetVersion}.
+New API path: {new_api_path}
+Modified controller path: {new_controller_path}
+New test fixture path: {new_test_fixture_path}
+"""
+        except Exception as e:
+            return f"Error promoting resource: {e}"
