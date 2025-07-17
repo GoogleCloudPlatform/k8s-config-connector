@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>APIQuotaAdjusterSettings<br>gcpapiquotaadjustersetting<br>gcpapiquotaadjustersettings<br>apiquotaadjustersettings</td>
+<td>APIQuotaAdjusterSettings<br>gcpapiquotaadjustersettings<br>apiquotaadjustersettings<br>apiquotaadjustersettings</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
