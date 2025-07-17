@@ -852,7 +852,22 @@ func crdFilePathForGVK(gvk schema.GroupVersionKind) string {
 }
 
 func crdFileNameForGVK(gvk schema.GroupVersionKind) string {
-	crdName := fmt.Sprintf("%s.%s", text.Pluralize(gvk.Kind), gvk.Group)
+	plural := text.Pluralize(gvk.Kind)
+
+	// special plural formats. The best practice is to use singular as is
+	alreadyPluralWords := []string{"settings", "metrics", "series", "data"}
+
+	switch gvk.Kind {
+	// We already missed some resources before they have been promoted to Beta
+	case "ComputeProjectMetadata":
+	default:
+		for _, word := range alreadyPluralWords {
+			if strings.HasSuffix(strings.ToLower(gvk.Kind), word) {
+				plural = gvk.Kind // Already plural words should stay the same
+			}
+		}
+	}
+	crdName := fmt.Sprintf("%s.%s", plural, gvk.Group)
 	return strings.ToLower(strings.Join([]string{"apiextensions.k8s.io_v1_customresourcedefinition", crdName}, "_")) + ".yaml"
 }
 
