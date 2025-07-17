@@ -115,6 +115,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
   - title: "CloudBuildWorkerPool"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
+- title: "Cloud Quotas"
+  section:
+  - title: "APIQuotaAdjusterSettings"
+    path: /config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"

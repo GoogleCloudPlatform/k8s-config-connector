@@ -93,6 +93,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"ApigeeEnvgroupAttachment",
 		"ApigeeInstance",
 		"ApigeeInstanceAttachment",
+		"APIQuotaAdjusterSettings",
 		"APIGatewayAPI",
 		"BigQueryConnectionConnection",
 		"BigQueryDataTransferConfig",

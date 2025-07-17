@@ -174,6 +174,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md">CloudBuildWorkerPool</a></td>
 </tr>
 <tr>
+  <td><a href="/quotas/docs/">Cloud Quotas</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md">APIQuotaAdjusterSettings</a></td>
+</tr>
+<tr>
   <td><a href="/functions/docs/">{{function_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudfunctions/cloudfunctionsfunction.md">CloudFunctionsFunction</a></td>
 </tr>
