@@ -436,6 +436,11 @@ Return only YAML: Your final output should be only the generated YAML content, w
             
             new_test_fixture_path = promotion.promote_test_fixture(testFixturePath, targetVersion)
             
+            # Validate the test fixture
+            success, output = promotion.validate_test_fixture(kind)
+            if not success:
+                return f"Test fixture validation failed after promotion. Error:\n{output}"
+
             return f"""Successfully promoted {kind} to {targetVersion}.
 New API path: {new_api_path}
 Modified controller path: {new_controller_path}

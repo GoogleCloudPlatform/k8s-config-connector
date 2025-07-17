@@ -145,6 +145,17 @@ def promote_test_fixture(test_fixture_path: str, target_version: str) -> str:
 
     return new_test_fixture_path
 
+def validate_test_fixture(kind: str) -> tuple[bool, str]:
+    """
+    Validates the test fixture by running the hack/compare-mock script.
+    """
+    script = './hack/compare-mock'
+    arg = f'fixtures/{kind}'
+    result = subprocess.run([script, arg], capture_output=True, text=True)
+    if result.returncode != 0:
+        return False, result.stderr
+    return True, result.stdout
+
 def validate_promotion(api_path: str, target_version: str) -> tuple[bool, str]:
     """
     Validates the promotion by running the CRD generation script.
