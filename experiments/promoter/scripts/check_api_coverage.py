@@ -76,7 +76,7 @@ def main():
         service = candidate.get('service')
         if not kind or not service:
             print(f"Skipping candidate without kind or service: {candidate}")
-            candidate['apiValidation'] = False
+            candidate['apiCoverage'] = False
             updated_candidates.append(candidate)
             continue
 
@@ -86,7 +86,7 @@ def main():
         kind_plural = kind_to_plural_map.get(kind)
         if not kind_plural:
             print(f"  FAIL: Could not determine plural for kind '{kind}'.")
-            candidate['apiValidation'] = False
+            candidate['apiCoverage'] = False
             updated_candidates.append(candidate)
             continue
 
@@ -99,7 +99,7 @@ def main():
             with open(file_path, 'r') as f:
                 if search_string in f.read():
                     print(f"  FAIL: Found exception for {kind} in {file_path}")
-                    candidate['apiValidation'] = False
+                    candidate['apiCoverage'] = False
                     found_exception = True
                     break
         
@@ -108,24 +108,24 @@ def main():
             continue
 
         # Run the specific test
-        command = f"TARGET_KIND={kind} go test ./tests/apichecks/... -run TestCRDFieldPresenceInUnstructured"
+        command = f"TARGET_KIND={kind} go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests"
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=project_root)
 
         if result.returncode == 0:
             print(f"  PASS: {kind}")
-            candidate['apiValidation'] = True
+            candidate['apiCoverage'] = True
         else:
             print(f"  FAIL: {kind}")
             print(f"    stdout: {result.stdout}")
             print(f"    stderr: {result.stderr}")
-            candidate['apiValidation'] = False
+            candidate['apiCoverage'] = False
         
         updated_candidates.append(candidate)
 
     with open(candidates_file, 'w') as f:
         json.dump(updated_candidates, f, indent=2)
 
-    print("\nUpdated candidates.json with apiValidation results.")
+    print("\nUpdated candidates.json with apiCoverage results.")
 
 if __name__ == "__main__":
     main()
