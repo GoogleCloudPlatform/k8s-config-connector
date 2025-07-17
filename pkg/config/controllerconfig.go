@@ -16,6 +16,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
@@ -82,16 +83,17 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 
 		// quotaProject is incompatible with http client
 		quotaProject = ""
+	} else {
+		// the default HTTP client is used and wired up with Google auth
+
+		// we cannot pass both a custom http client and a token source to the Google transport
+		if c.GCPTokenSource != nil {
+			opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
+		}
 	}
-	// else {
-	// the default HTTP client is used and wired up with Google auth
-	// }
 
 	if quotaProject != "" {
 		opts = append(opts, option.WithQuotaProject(quotaProject))
-	}
-	if c.GCPTokenSource != nil {
-		opts = append(opts, option.WithTokenSource(c.GCPTokenSource))
 	}
 
 	// TODO: support endpoints?
@@ -146,7 +148,11 @@ func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*http.Client, error) {
 	opts, err := c.RESTClientOptions()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating REST client options: %w", err)
+	}
+	if c.HTTPClient != nil {
+		c, _, err := htransport.NewClient(ctx, opts...)
+		return c, err
 	}
 
 	// Create an authenticated transport using htransport
@@ -159,7 +165,7 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 	// Create an authenticated transport
 	authTransport, err := htransport.NewTransport(ctx, baseTransport, opts...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating authenticated transport: %w", err)
 	}
 
 	return &http.Client{Transport: authTransport}, nil
