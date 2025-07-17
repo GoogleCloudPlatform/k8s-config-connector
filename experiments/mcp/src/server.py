@@ -75,7 +75,13 @@ class MCPForGKEServer(FastMCP):
         
         self.add_tool(
             name="promote_api",
-            description="Promotes a KCC API to a new version. This involves updating the API version and running validation.",
+            description="""Promotes a KCC API to a new version. This is a multi-step process that this tool automates. If this tool fails, you can attempt to perform the steps manually. The process involves:
+1. Copying the entire source API package directory (e.g., `apis/myservice/v1alpha1`) to a new target directory (e.g., `apis/myservice/v1beta1`).
+2. In the new target directory, for each `.go` file, it replaces all occurrences of the source version string (e.g., `v1alpha1`) with the target version string (e.g., `v1beta1`).
+3. For the main `_types.go` file in the new target directory, it ensures two specific annotations are present on the primary Kind's struct definition:
+    - It adds `// +kubebuilder:storageversion` to mark the new version as the storage version for the CRD.
+    - It adds or appends to `// +kubebuilder:metadata:labels` the label `"internal.cloud.google.com/additional-versions={source_version}"` (e.g., `"internal.cloud.google.com/additional-versions=v1alpha1"`) to maintain a link to the previous version.
+4. Finally, it runs a validation step to ensure the promotion was successful, which is equivalent to running `make generate-crds`.""",
             fn=self.promote_api,
             annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
         )
@@ -480,7 +486,21 @@ Return only YAML: Your final output should be only the generated YAML content, w
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
         go_module = "github.com/GoogleCloudPlatform/k8s-config-connector"
-        result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
+        service = apiPath.split('/')[1]
+        kind = promotion.get_kind_from_path(apiPath)
+        controller_dir = os.path.dirname(controllerPath)
+        
+        abs_controller_dir = promotion.to_abs_path(controller_dir)
+        controller_files = [f for f in os.listdir(abs_controller_dir) if f.endswith('_controller.go')]
+
+        if len(controller_files) > 1:
+            # Mixed versions case
+            promotion.split_controller_imports(controller_dir, kind, targetVersion, service, go_module)
+            result = {"new_controller_path": controllerPath}
+        else:
+            # Simple case
+            result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
+
         if "error" in result:
             return result
 

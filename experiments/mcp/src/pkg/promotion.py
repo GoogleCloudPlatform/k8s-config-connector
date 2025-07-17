@@ -52,60 +52,129 @@ def get_kind_from_path(path: str) -> str:
     # Convert snake_case to CamelCase
     return ''.join(word.title() for word in kind_name.split('_'))
 
+def get_controller_info(controller_path: str) -> (str, str):
+    with open(controller_path, 'r') as f:
+        content = f.read()
+    version_match = re.search(r'// crd.version: (v[a-z0-9]+)', content)
+    kind_match = re.search(r'// crd.type: (.*)', content)
+    
+    version = version_match.group(1).strip() if version_match else ""
+    kind = kind_match.group(1).strip() if kind_match else ""
+    return version, kind
+
+def split_controller_imports(controller_dir: str, promoted_kind: str, target_version: str, service: str, go_module: str):
+    abs_controller_dir = to_abs_path(controller_dir)
+    
+    # First, update the promoted controller's version comment
+    for filename in os.listdir(abs_controller_dir):
+        if filename.endswith('_controller.go'):
+            filepath = os.path.join(abs_controller_dir, filename)
+            version, kind = get_controller_info(filepath)
+            if kind == promoted_kind:
+                with open(filepath, 'r') as f:
+                    content = f.read()
+                new_content = content.replace(f'// crd.version: {version}', f'// crd.version: {target_version}')
+                with open(filepath, 'w') as f:
+                    f.write(new_content)
+                break
+
+    # Now, refactor all controllers
+    for filename in os.listdir(abs_controller_dir):
+        if filename.endswith('_controller.go'):
+            filepath = os.path.join(abs_controller_dir, filename)
+            version, _ = get_controller_info(filepath) # this will be the new version for the promoted one
+            
+            with open(filepath, 'r') as f:
+                content = f.read()
+
+            # Find the import path, which might have the old version
+            import_path_pattern = re.compile(r'"('+go_module+r'/apis/'+service+r'/(v[a-z0-9]+))"')
+            match = import_path_pattern.search(content)
+            if not match:
+                continue
+            
+            original_import_path = match.group(1)
+            
+            # The alias is based on the version from the crd.version comment
+            alias = f"{service}{version}"
+            
+            # The import path to use in the refactored file
+            new_import_path = f'"{go_module}/apis/{service}/{version}"'
+            
+            # Replace the whole import line
+            # from: krm "..."
+            # to: alias "..."
+            new_content = content.replace(f'krm "{original_import_path}"', f'{alias} {new_import_path}')
+            
+            # Replace krm.
+            new_content = new_content.replace('krm.', f'{alias}.')
+            
+            with open(filepath, 'w') as f:
+                f.write(new_content)
+
+
 def promote_api_file(api_path: str, target_version: str) -> dict:
     """
     Promotes an entire API package directory to a target version.
     """
     try:
         abs_api_path = to_abs_path(api_path)
-        # Determine the source version and directory from the input path.
         source_version = get_version_from_path(abs_api_path)
         source_dir = os.path.dirname(abs_api_path)
         
-        # Determine the target directory and create it.
         target_dir = source_dir.replace(source_version, target_version)
         os.makedirs(target_dir, exist_ok=True)
 
-        # Iterate through all files in the source directory.
         for filename in os.listdir(source_dir):
             source_filepath = os.path.join(source_dir, filename)
             target_filepath = os.path.join(target_dir, filename)
 
-            if os.path.isfile(source_filepath):
-                # If the file is a Go file, process its content.
-                if filename.endswith('.go'):
-                    with open(source_filepath, 'r') as f:
-                        content = f.read()
+            if os.path.isfile(source_filepath) and filename.endswith('.go'):
+                with open(source_filepath, 'r') as f:
+                    content = f.read()
+                
+                new_content = content.replace(f"package {source_version}", f"package {target_version}")
+                new_content = new_content.replace(source_version, target_version)
+                
+                with open(target_filepath, 'w') as f:
+                    f.write(new_content)
+
+                if filename.endswith('_types.go'):
+                    with open(target_filepath, 'r') as f:
+                        lines = f.readlines()
                     
-                    # Replace the package declaration.
-                    new_content = content.replace(f"package {source_version}", f"package {target_version}")
+                    # Handle additional-versions label
+                    labels_found = False
+                    for i, line in enumerate(lines):
+                        if "kubebuilder:metadata:labels" in line:
+                            line = lines[i].rstrip()
+                            if line.endswith('"'):
+                                new_label = f';"internal.cloud.google.com/additional-versions={source_version}"'
+                                lines[i] = line[:-1] + new_label + '"\n'
+                            labels_found = True
+                            break
                     
-                    # Replace other occurrences of the source version.
-                    new_content = new_content.replace(source_version, target_version)
+                    if not labels_found:
+                        for i, line in enumerate(lines):
+                            if "// +k8s:openapi-gen=true" in line:
+                                new_label_line = f'// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions={source_version}"\n'
+                                lines.insert(i, new_label_line)
+                                break
+
+                    # Handle storageversion
+                    storage_version_found = any("kubebuilder:storageversion" in line for line in lines)
+                    if not storage_version_found:
+                        for i, line in enumerate(lines):
+                            if "// +k8s:openapi-gen=true" in line:
+                                lines.insert(i, '// +kubebuilder:storageversion\n')
+                                break
                     
                     with open(target_filepath, 'w') as f:
-                        f.write(new_content)
+                        f.writelines(lines)
 
-                    # Add storage version annotation
-                    if filename.endswith('_types.go'):
-                        kind = get_kind_from_path(filename)
-                        with open(target_filepath, 'r') as f:
-                            lines = f.readlines()
-                        
-                        new_lines = []
-                        for line in lines:
-                            new_lines.append(line)
-                            if f"type {kind} struct" in line:
-                                new_lines.insert(len(new_lines) - 1, '// +kubebuilder:storageversion\n')
-                        
-                        with open(target_filepath, 'w') as f:
-                            f.writelines(new_lines)
+            elif os.path.isfile(source_filepath):
+                shutil.copy(source_filepath, target_filepath)
 
-                # Otherwise, just copy the file.
-                else:
-                    shutil.copy(source_filepath, target_filepath)
-
-        # Return the path to the new API file.
         return {"new_api_path": api_path.replace(source_version, target_version)}
     except Exception as e:
         return {"error": "ApiPromotionError", "message": str(e)}
