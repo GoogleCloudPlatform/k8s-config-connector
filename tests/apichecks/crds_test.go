@@ -450,7 +450,7 @@ func TestCRDShortNames(t *testing.T) {
 }
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
-func TestCRDFieldPresenceInUnstructured(t *testing.T) {
+func TestCRDFieldPresenceInTests(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -466,11 +466,16 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
 
+			kind := crd.Spec.Names.Kind
+
+			// Beta requires full API coverage so it should pass this test.
 			if version.Name == "v1alpha1" {
-				continue
+				// This env allows us to run the API coverage test for a certain alpha resource.
+				if os.Getenv("TARGET_KIND") == "" || os.Getenv("TARGET_KIND") != kind {
+					continue
+				}
 			}
 
-			kind := crd.Spec.Names.Kind
 			visitCRDVersion(version, func(field *CRDField) {
 				fieldPath := field.FieldPath
 				// Only consider fields under `spec`
