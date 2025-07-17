@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -214,13 +215,14 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
 
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
+	forwardingRule.Labels = sanitizedLabels
 
 	// API restriction: Cannot set labels during creation(by POST). But it can be set later by PATCH SetLabels.
 	// API error message: Labels are invalid in Private Service Connect Forwarding Rule.
@@ -268,7 +270,7 @@ func (a *forwardingRuleAdapter) Create(ctx context.Context, createOp *directbase
 	// Set labels for the created forwarding rule
 	// Add labels back for psc forwarding rule
 	if target == "all-apis" || target == "vpc-sc" || strings.Contains(target, "/serviceAttachments/") {
-		forwardingRule.Labels = desired.Labels
+		forwardingRule.Labels = sanitizedLabels
 	}
 	if forwardingRule.Labels != nil {
 		op, err := a.setLabels(ctx, created.LabelFingerprint, forwardingRule.Labels)
@@ -317,12 +319,13 @@ func (a *forwardingRuleAdapter) Update(ctx context.Context, updateOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	sanitizedLabels := label.NewGCPLabelsFromK8sLabels(desired.Labels)
 	forwardingRule := ComputeForwardingRuleSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	forwardingRule.Name = direct.LazyPtr(a.id.forwardingRule)
-	forwardingRule.Labels = desired.Labels
+	forwardingRule.Labels = sanitizedLabels
 
 	op := &gcp.Operation{}
 	updated := &computepb.ForwardingRule{}
