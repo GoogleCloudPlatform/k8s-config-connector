@@ -208,21 +208,21 @@ class MCPForGKEServer(FastMCP):
         The generated prompt instructs the LLM to use the `promote_api`, `promote_controller`, and `promote_tests` tools sequentially.
         
         Args:
-            kind: The kind of the resource to promote.
-            targetVersion: The target version to promote to.
-            service: The service name for the resource.
-            apiPath: The path to the API definition file.
-            controllerPath: The path to the controller file.
-            testFixturePath: The path to the test fixture.
+            kind: The kind of the resource to promote. For example: `APIQuotaAdjusterSettings`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
+            service: The service name for the resource. For example: `cloudquota`.
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
+            testFixturePath: The path to the test fixture. For example: `pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotaadjustersettings`.
         """
         # Prepare the instruction for Gemini
         instruction = f"""Promote the KCC resource of kind '{kind}' to version '{targetVersion}'. This is a three-step process.
 
-1.  **Promote the API**: Use the `promote_api` tool with `apiPath='{apiPath}'` and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
 
-2.  **Promote the Controller**: Use the `promote_controller` tool with `controllerPath='{controllerPath}'`, `apiPath='{apiPath}'`, and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
 
-3.  **Promote the Tests**: Use the `promote_tests` tool with `testFixturePath='{testFixturePath}'`, `kind='{kind}'`, and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
+3.  **Promote the Tests**: Use the `promote_tests` tool. For example: `promote_tests(testFixturePath='{testFixturePath}', kind='{kind}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
 
 If all three steps are successful, the promotion is complete.
 """
@@ -448,9 +448,14 @@ Return only YAML: Your final output should be only the generated YAML content, w
     async def promote_api(self, apiPath: str, targetVersion: str) -> dict:
         """Promotes a KCC API to a new version.
 
+        This function takes the path to an API definition file and a target version.
+        It copies the API file to a new directory corresponding to the target version,
+        updates the version information within the file, and then runs validation
+        to ensure the promoted API is well-formed.
+
         Args:
-            apiPath: The path to the API definition file.
-            targetVersion: The target version to promote to.
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
         """
         result = promotion.promote_api_file(apiPath, targetVersion)
         if "error" in result:
@@ -465,20 +470,16 @@ Return only YAML: Your final output should be only the generated YAML content, w
     async def promote_controller(self, controllerPath: str, apiPath: str, targetVersion: str) -> dict:
         """Promotes a KCC controller to a new version.
 
-        Args:
-            controllerPath: The path to the controller file.
-            apiPath: The path to the API definition file.
-            targetVersion: The target version to promote to.
-        """
-        # Read the go module from go.mod
-        with open('go.mod', 'r') as f:
-            for line in f:
-                if line.startswith('module'):
-                    go_module = line.split(' ')[1].strip()
-                    break
-            else:
-                return {"error": "GoModuleNotFound", "message": "Could not find module in go.mod"}
+        This function updates the controller file to use the new API version.
+        It modifies the import paths in the controller to point to the new API version
+        and then runs a validation step to ensure the controller code still compiles.
 
+        Args:
+            controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
+        """
+        go_module = "github.com/GoogleCloudPlatform/k8s-config-connector"
         result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
         if "error" in result:
             return result
@@ -492,10 +493,14 @@ Return only YAML: Your final output should be only the generated YAML content, w
     async def promote_tests(self, testFixturePath: str, kind: str, targetVersion: str) -> dict:
         """Promotes KCC test fixtures to a new version.
 
+        This function copies the test fixture to a new directory corresponding to the
+        target version, updates the `apiVersion` in the test YAML files, and then
+        runs validation to ensure the tests are still valid.
+
         Args:
-            testFixturePath: The path to the test fixture.
-            kind: The kind of the resource.
-            targetVersion: The target version to promote to.
+            testFixturePath: The path to the test fixture. For example: `pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotaadjustersettings`.
+            kind: The kind of the resource. For example: `APIQuotaAdjusterSettings`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
         """
         result = promotion.promote_test_fixture(testFixturePath, targetVersion)
         if "error" in result:
@@ -506,56 +511,4 @@ Return only YAML: Your final output should be only the generated YAML content, w
             return validation_result
 
         return result
-
-    async def promote(self, kind: str, service: str, apiPath: str, controllerPath: str, testFixturePath: str, targetVersion: str) -> str:
-        """Promotes a KCC resource to a new version.
-
-        Args:
-            kind: The kind of the resource.
-            service: The service name for the resource.
-            apiPath: The path to the API definition file.
-            controllerPath: The path to the controller file.
-            testFixturePath: The path to the test fixture.
-            targetVersion: The target version to promote to.
-        """
-        try:
-            # Read the go module from go.mod
-            with open('go.mod', 'r') as f:
-                for line in f:
-                    if line.startswith('module'):
-                        go_module = line.split(' ')[1].strip()
-                        break
-                else:
-                    return "Error: Could not find module in go.mod"
-
-            # Promote the API file and get the new path.
-            new_api_path = promotion.promote_api_file(apiPath, targetVersion)
-
-            # Validate the promotion.
-            success, output = promotion.validate_promotion(apiPath, targetVersion)
-            if not success:
-                return f"Validation failed after promotion. Error:\n{output}"
-
-            # Continue with the rest of the promotion process.
-            new_controller_path = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
-            
-            # Validate the controller compilation
-            success, output = promotion.validate_controller_compilation(new_controller_path)
-            if not success:
-                return f"Controller validation failed after promotion. Error:\n{output}"
-            
-            new_test_fixture_path = promotion.promote_test_fixture(testFixturePath, targetVersion)
-            
-            # Validate the test fixture
-            success, output = promotion.validate_test_fixture(kind)
-            if not success:
-                return f"Test fixture validation failed after promotion. Error:\n{output}"
-
-            return f"""Successfully promoted {kind} to {targetVersion}.
-New API path: {new_api_path}
-Modified controller path: {new_controller_path}
-New test fixture path: {new_test_fixture_path}
-Validation successful.
-"""
-        except Exception as e:
-            return f"Error promoting resource: {e}"
+       
