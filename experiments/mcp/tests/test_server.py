@@ -15,7 +15,16 @@
 import unittest
 from unittest.mock import MagicMock, AsyncMock, patch
 import kubernetes
+import os
+import sys
+import json
+import asyncio
+
+# Add the parent directory of 'mcp' to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.server import MCPForGKEServer
+from pkg import promotion
 
 class TestMCPForGKEServer(unittest.IsolatedAsyncioTestCase):
 
@@ -85,6 +94,74 @@ class TestMCPForGKEServer(unittest.IsolatedAsyncioTestCase):
 
         result = await self.server.describe_resource(resource_kind, resource_name, namespace)
         self.assertIn(f"Could not find CRD for resource kind: {resource_kind}", result)
+
+class TestPromotionTools(unittest.TestCase):
+    def setUp(self):
+        self.server = MCPForGKEServer(kubeconfig='')
+
+    @patch('pkg.promotion.promote_api_file')
+    @patch('pkg.promotion.validate_promotion')
+    def test_promote_api_success(self, mock_validate, mock_promote):
+        # Arrange
+        mock_promote.return_value = {"new_api_path": "/new/path"}
+        mock_validate.return_value = {"success": True}
+        
+        # Act
+        result = asyncio.run(self.server.promote_api(apiPath="/path", targetVersion="v1beta1"))
+
+        # Assert
+        self.assertEqual(result, {"new_api_path": "/new/path"})
+
+    @patch('pkg.promotion.promote_api_file')
+    def test_promote_api_promotion_error(self, mock_promote):
+        # Arrange
+        mock_promote.return_value = {"error": "ApiPromotionError", "message": "test error"}
+        
+        # Act
+        result = asyncio.run(self.server.promote_api(apiPath="/path", targetVersion="v1beta1"))
+
+        # Assert
+        self.assertEqual(result, {"error": "ApiPromotionError", "message": "test error"})
+
+    @patch('pkg.promotion.promote_api_file')
+    @patch('pkg.promotion.validate_promotion')
+    def test_promote_api_validation_error(self, mock_validate, mock_promote):
+        # Arrange
+        mock_promote.return_value = {"new_api_path": "/new/path"}
+        mock_validate.return_value = {"error": "ValidationFailed", "message": "validation error"}
+        
+        # Act
+        result = asyncio.run(self.server.promote_api(apiPath="/path", targetVersion="v1beta1"))
+
+        # Assert
+        self.assertEqual(result, {"error": "ValidationFailed", "message": "validation error"})
+
+    @patch('builtins.open', new_callable=unittest.mock.mock_open, read_data="module test")
+    @patch('pkg.promotion.promote_controller_file')
+    @patch('pkg.promotion.validate_controller_compilation')
+    def test_promote_controller_success(self, mock_validate, mock_promote, mock_open):
+        # Arrange
+        mock_promote.return_value = {"new_controller_path": "/new/path"}
+        mock_validate.return_value = {"success": True}
+        
+        # Act
+        result = asyncio.run(self.server.promote_controller(controllerPath="/path", apiPath="/path", targetVersion="v1beta1"))
+
+        # Assert
+        self.assertEqual(result, {"new_controller_path": "/new/path"})
+
+    @patch('pkg.promotion.promote_test_fixture')
+    @patch('pkg.promotion.validate_test_fixture')
+    def test_promote_tests_success(self, mock_validate, mock_promote):
+        # Arrange
+        mock_promote.return_value = {"new_test_fixture_path": "/new/path"}
+        mock_validate.return_value = {"success": True}
+        
+        # Act
+        result = asyncio.run(self.server.promote_tests(testFixturePath="/path", kind="mykind", targetVersion="v1beta1"))
+
+        # Assert
+        self.assertEqual(result, {"new_test_fixture_path": "/new/path"})
 
 if __name__ == '__main__':
     unittest.main()

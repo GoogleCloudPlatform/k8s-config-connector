@@ -74,10 +74,31 @@ class MCPForGKEServer(FastMCP):
         )
         
         self.add_tool(
-            name="promote",
-            description="Promotes a KCC resource. This involves updating the API version, controller, and test fixtures.",
-            fn=self.promote,
+            name="promote_api",
+            description="Promotes a KCC API to a new version. This involves updating the API version and running validation.",
+            fn=self.promote_api,
             annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
+        )
+        
+        self.add_tool(
+            name="promote_controller",
+            description="Promotes a KCC controller to a new version. This involves updating the controller's API imports and running validation.",
+            fn=self.promote_controller,
+            annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
+        )
+
+        self.add_tool(
+            name="promote_tests",
+            description="Promotes KCC test fixtures to a new version. This involves updating the test fixtures and running validation.",
+            fn=self.promote_tests,
+            annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
+        )
+
+        self.add_tool(
+            name="scenario_promote",
+            description="Gives a prompt to help Gemini promote a KCC resource to a target version. The prompt explains that the promotion happens in 3 steps, promote_api, promote_controller and promote_tests. the gemini should use the corresponding mcp tools, and if the step fails, gemini should fix it based on the response error and the expected output. If the step succeeds, move on to the next step.",
+            fn=self.scenario_promote,
+            annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_prompt(Prompt(
@@ -178,6 +199,33 @@ class MCPForGKEServer(FastMCP):
         to fix the CR.
         * If the CR is ready, return a message indicating that the CR is ready and healthy 
         """
+        return instruction
+
+    async def scenario_promote(self, kind: str, targetVersion: str, service: str, apiPath: str, controllerPath: str, testFixturePath: str) -> str:
+        """Constructs a detailed prompt that guides the LLM to promote a KCC resource to a new version.
+
+        This function translates a user's high-level request into a precise, multi-step plan for the LLM.
+        The generated prompt instructs the LLM to use the `promote_api`, `promote_controller`, and `promote_tests` tools sequentially.
+        
+        Args:
+            kind: The kind of the resource to promote.
+            targetVersion: The target version to promote to.
+            service: The service name for the resource.
+            apiPath: The path to the API definition file.
+            controllerPath: The path to the controller file.
+            testFixturePath: The path to the test fixture.
+        """
+        # Prepare the instruction for Gemini
+        instruction = f"""Promote the KCC resource of kind '{kind}' to version '{targetVersion}'. This is a three-step process.
+
+1.  **Promote the API**: Use the `promote_api` tool with `apiPath='{apiPath}'` and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+
+2.  **Promote the Controller**: Use the `promote_controller` tool with `controllerPath='{controllerPath}'`, `apiPath='{apiPath}'`, and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+
+3.  **Promote the Tests**: Use the `promote_tests` tool with `testFixturePath='{testFixturePath}'`, `kind='{kind}'`, and `targetVersion='{targetVersion}'`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
+
+If all three steps are successful, the promotion is complete.
+"""
         return instruction
 
     async def describe_resource(self, resource_kind: str, resource_name: str, namespace: str) -> str:
@@ -396,6 +444,68 @@ Return only YAML: Your final output should be only the generated YAML content, w
             return f"Error: kubeconform command timed out after {timeout} seconds."
         except Exception as e:
             return f"An unexpected error occurred while running kubeconform: {e}"
+
+    async def promote_api(self, apiPath: str, targetVersion: str) -> dict:
+        """Promotes a KCC API to a new version.
+
+        Args:
+            apiPath: The path to the API definition file.
+            targetVersion: The target version to promote to.
+        """
+        result = promotion.promote_api_file(apiPath, targetVersion)
+        if "error" in result:
+            return result
+        
+        validation_result = promotion.validate_promotion(apiPath, targetVersion)
+        if "error" in validation_result:
+            return validation_result
+            
+        return result
+
+    async def promote_controller(self, controllerPath: str, apiPath: str, targetVersion: str) -> dict:
+        """Promotes a KCC controller to a new version.
+
+        Args:
+            controllerPath: The path to the controller file.
+            apiPath: The path to the API definition file.
+            targetVersion: The target version to promote to.
+        """
+        # Read the go module from go.mod
+        with open('go.mod', 'r') as f:
+            for line in f:
+                if line.startswith('module'):
+                    go_module = line.split(' ')[1].strip()
+                    break
+            else:
+                return {"error": "GoModuleNotFound", "message": "Could not find module in go.mod"}
+
+        result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
+        if "error" in result:
+            return result
+
+        validation_result = promotion.validate_controller_compilation(controllerPath)
+        if "error" in validation_result:
+            return validation_result
+
+        return result
+
+    async def promote_tests(self, testFixturePath: str, kind: str, targetVersion: str) -> dict:
+        """Promotes KCC test fixtures to a new version.
+
+        Args:
+            testFixturePath: The path to the test fixture.
+            kind: The kind of the resource.
+            targetVersion: The target version to promote to.
+        """
+        result = promotion.promote_test_fixture(testFixturePath, targetVersion)
+        if "error" in result:
+            return result
+
+        validation_result = promotion.validate_test_fixture(kind)
+        if "error" in validation_result:
+            return validation_result
+
+        return result
 
     async def promote(self, kind: str, service: str, apiPath: str, controllerPath: str, testFixturePath: str, targetVersion: str) -> str:
         """Promotes a KCC resource to a new version.
