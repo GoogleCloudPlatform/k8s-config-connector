@@ -470,7 +470,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			t.Fatalf("error creating project: %v", err)
 		}
 
-		for i := 0; i < 10; i++ {
+		// Wait for the project to be created, up to 5 seconds.
+		for i := 0; i < 50; i++ {
 			if op.Done {
 				break
 			}
@@ -482,11 +483,11 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			op = latest
 		}
 		if !op.Done {
-			t.Fatalf("expected mock create project operation to be done")
+			t.Fatalf("FAIL: expected mock create project operation to be done (timed out after 5 seconds); operation state was %+v", op)
 		}
 		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
 		if err != nil {
-			t.Fatalf("error reading created project: %v", err)
+			t.Fatalf("FAIL: error reading created project: %v", err)
 		}
 		project := testgcp.GCPProject{
 			ProjectID:     found.ProjectId,
