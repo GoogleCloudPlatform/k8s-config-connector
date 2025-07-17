@@ -409,13 +409,38 @@ Return only YAML: Your final output should be only the generated YAML content, w
             targetVersion: The target version to promote to.
         """
         try:
+            # Read the go module from go.mod
+            with open('go.mod', 'r') as f:
+                for line in f:
+                    if line.startswith('module'):
+                        go_module = line.split(' ')[1].strip()
+                        break
+                else:
+                    return "Error: Could not find module in go.mod"
+
+            # Promote the API file and get the new path.
             new_api_path = promotion.promote_api_file(apiPath, targetVersion)
-            new_controller_path = promotion.promote_controller_file(controllerPath, targetVersion)
+
+            # Validate the promotion.
+            success, output = promotion.validate_promotion(apiPath, targetVersion)
+            if not success:
+                return f"Validation failed after promotion. Error:\n{output}"
+
+            # Continue with the rest of the promotion process.
+            new_controller_path = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
+            
+            # Validate the controller compilation
+            success, output = promotion.validate_controller_compilation(new_controller_path)
+            if not success:
+                return f"Controller validation failed after promotion. Error:\n{output}"
+            
             new_test_fixture_path = promotion.promote_test_fixture(testFixturePath, targetVersion)
+            
             return f"""Successfully promoted {kind} to {targetVersion}.
 New API path: {new_api_path}
 Modified controller path: {new_controller_path}
 New test fixture path: {new_test_fixture_path}
+Validation successful.
 """
         except Exception as e:
             return f"Error promoting resource: {e}"

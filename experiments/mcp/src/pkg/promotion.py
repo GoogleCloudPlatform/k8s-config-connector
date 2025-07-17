@@ -15,6 +15,7 @@
 import os
 import shutil
 import re
+import subprocess
 
 def get_version_from_path(path: str) -> str:
     """
@@ -76,25 +77,46 @@ def promote_api_file(api_path: str, target_version: str) -> str:
     # Return the path to the new API file.
     return api_path.replace(source_version, target_version)
 
-def promote_controller_file(controller_path: str, target_version: str) -> str:
+def promote_controller_file(controller_path: str, api_path: str, target_version: str, go_module: str) -> str:
     """
-    Promotes a controller file to a target version.
+    Updates the API import paths in all Go files within the controller's directory.
 
     This involves:
-    1.  Reading the content of the controller file.
-    2.  Replacing all occurrences of "v1alpha1" with the target version.
-    3.  Writing the modified content back to the controller file.
-    4.  Returning the path of the modified file.
+    1.  Determining the source and target API import paths.
+    2.  Iterating through all .go files in the controller's directory.
+    3.  Replacing the old API import path with the new one.
+    4.  Returning the path of the controller directory.
     """
-    with open(controller_path, 'r') as f:
-        content = f.read()
-
-    new_content = content.replace("v1alpha1", target_version)
-
-    with open(controller_path, 'w') as f:
-        f.write(new_content)
-        
+    source_version = get_version_from_path(api_path)
+    
+    controller_dir = os.path.dirname(controller_path)
+    for filename in os.listdir(controller_dir):
+        if filename.endswith('.go'):
+            filepath = os.path.join(controller_dir, filename)
+            with open(filepath, 'r') as f:
+                content = f.read()
+            
+            new_content = content.replace(f'/{source_version}', f'/{target_version}')
+            
+            with open(filepath, 'w') as f:
+                f.write(new_content)
+                
     return controller_path
+
+def validate_controller_compilation(controller_path: str) -> tuple[bool, str]:
+    """
+    Validates the controller by attempting to compile it.
+
+    This involves:
+    1.  Determining the controller's directory.
+    2.  Running `go build` in that directory.
+    3.  Returning whether the build was successful and any output.
+    """
+    controller_dir = os.path.dirname(controller_path)
+    result = subprocess.run(['go', 'build', './...'], cwd=controller_dir, capture_output=True, text=True)
+    if result.returncode != 0:
+        return False, result.stderr
+    return True, result.stdout
 
 def promote_test_fixture(test_fixture_path: str, target_version: str) -> str:
     """
@@ -122,3 +144,35 @@ def promote_test_fixture(test_fixture_path: str, target_version: str) -> str:
                 f.write(new_content)
 
     return new_test_fixture_path
+
+def validate_promotion(api_path: str, target_version: str) -> tuple[bool, str]:
+    """
+    Validates the promotion by running the CRD generation script.
+
+    This involves:
+    1.  Determining the source and target directories.
+    2.  Deleting the zz_generated.deepcopy.go files from both directories.
+    3.  Running the dev/tasks/generate-crds script.
+    4.  Returning whether the script was successful and any output.
+    """
+    # Determine source and target directories.
+    source_version = get_version_from_path(api_path)
+    source_dir = os.path.dirname(api_path)
+    target_dir = source_dir.replace(source_version, target_version)
+
+    # Define the paths for the generated files to be deleted.
+    source_generated_file = os.path.join(source_dir, 'zz_generated.deepcopy.go')
+    target_generated_file = os.path.join(target_dir, 'zz_generated.deepcopy.go')
+
+    # Delete the generated files if they exist.
+    if os.path.exists(source_generated_file):
+        os.remove(source_generated_file)
+    if os.path.exists(target_generated_file):
+        os.remove(target_generated_file)
+
+    # Run the generation script and check for errors.
+    result = subprocess.run(['./dev/tasks/generate-crds'], capture_output=True, text=True)
+    if result.returncode != 0:
+        return False, result.stderr
+
+    return True, result.stdout
