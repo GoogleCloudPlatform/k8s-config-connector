@@ -40,6 +40,8 @@ var preferredSampleForResource = map[string]string{
 	"bigtableinstance":                   "replicated-instance",
 	"bigquerydatatransferconfig":         "bigquerydatatransferconfig-scheduledquery",
 	"bigqueryconnectionconnection":       "cloudresource-connection",
+	"bigqueryreservationreservation":     "bigqueryreservationenterpriseplus",
+	"bigqueryreservationassignment":      "projectassignment",
 	"billingbudgetsbudget":               "calendar-budget",
 	"binaryauthorizationpolicy":          "cluster-policy",
 	"certificatemanagercertificate":      "self-managed-certificate",

@@ -23,7 +23,7 @@
 # wrong in the Update logic.
 
 # 01: Create a non-failover reservation
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
@@ -39,7 +39,7 @@ spec:
 ---
 # 02: Adding a seondary region should convert the reservation from
 #  non-failover to failover
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
