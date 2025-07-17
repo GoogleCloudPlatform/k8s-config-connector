@@ -508,16 +508,6 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 					return
 				}
 
-				// Skip non-terminal fields (fields with children or slices)
-				if field.props != nil {
-					if len(field.props.Properties) > 0 || field.props.Type == "object" {
-						return
-					}
-					if field.props.Type == "array" && field.props.Items != nil {
-						return // Skip the array itself; focus on its elements
-					}
-				}
-
 				// Any XYZRef field was already handled and handling the children will just double count
 				if strings.Contains(fieldPath, "Ref") {
 					return
@@ -549,6 +539,33 @@ func TestCRDFieldPresenceInUnstructured(t *testing.T) {
 	}
 
 	sort.Strings(errs)
+	// Filter out errors for fields that are also reported for their array equivalent.
+	// For example, if we have an error for "spec.foo" and "spec.foo[]", we only keep the latter.
+	if len(errs) > 0 {
+		filteredErrs := make([]string, 0, len(errs))
+		i := 0
+		for i < len(errs) {
+			addCurrent := true
+			if i+1 < len(errs) {
+				currentErr := errs[i]
+				nextErr := errs[i+1]
+				const suffix = "\" is not set in unstructured objects"
+				prefix := strings.TrimSuffix(currentErr, suffix)
+				if strings.HasPrefix(nextErr, prefix) {
+					diff := strings.TrimPrefix(nextErr, prefix)
+					if strings.Contains(diff, "[]") || strings.Contains(diff, ".") {
+						addCurrent = false
+					}
+				}
+			}
+			if addCurrent {
+				filteredErrs = append(filteredErrs, errs[i])
+			}
+			i++
+		}
+		errs = filteredErrs
+	}
+
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
 }
@@ -638,13 +655,13 @@ func hasField(obj map[string]interface{}, fieldPath string) bool {
 			if nextMap, ok := next.(map[string]interface{}); ok {
 				current = nextMap
 			} else {
-				return true
+				return i == len(parts)-1
 			}
 		} else {
 			return false
 		}
 	}
-	return false
+	return true
 }
 
 func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
