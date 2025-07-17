@@ -18,7 +18,6 @@ spec:
     plural: apiquotaadjustersettings
     shortNames:
     - gcpapiquotaadjustersettings
-    - apiquotaadjustersettings
     singular: apiquotaadjustersettings
   preserveUnknownFields: false
   scope: Namespaced
