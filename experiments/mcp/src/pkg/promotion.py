@@ -42,6 +42,16 @@ def get_version_from_path(path: str) -> str:
         return match.group(0)
     raise ValueError(f"Could not find version in path: {path}")
 
+def get_kind_from_path(path: str) -> str:
+    """
+    Extracts the kind from a file path.
+    Assumes the kind is in the format xxx_types.go.
+    """
+    base_name = os.path.basename(path)
+    kind_name = base_name.replace('_types.go', '')
+    # Convert snake_case to CamelCase
+    return ''.join(word.title() for word in kind_name.split('_'))
+
 def promote_api_file(api_path: str, target_version: str) -> dict:
     """
     Promotes an entire API package directory to a target version.
@@ -75,6 +85,22 @@ def promote_api_file(api_path: str, target_version: str) -> dict:
                     
                     with open(target_filepath, 'w') as f:
                         f.write(new_content)
+
+                    # Add storage version annotation
+                    if filename.endswith('_types.go'):
+                        kind = get_kind_from_path(filename)
+                        with open(target_filepath, 'r') as f:
+                            lines = f.readlines()
+                        
+                        new_lines = []
+                        for line in lines:
+                            new_lines.append(line)
+                            if f"type {kind} struct" in line:
+                                new_lines.insert(len(new_lines) - 1, '// +kubebuilder:storageversion\n')
+                        
+                        with open(target_filepath, 'w') as f:
+                            f.writelines(new_lines)
+
                 # Otherwise, just copy the file.
                 else:
                     shutil.copy(source_filepath, target_filepath)
