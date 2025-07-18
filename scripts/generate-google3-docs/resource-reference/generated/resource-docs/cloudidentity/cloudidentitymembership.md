@@ -307,7 +307,10 @@ externalRef: string
 observedGeneration: integer
 observedState:
   roles:
-  - restrictionEvaluations:
+  - expiryDetail:
+      expireTime: string
+    name: string
+    restrictionEvaluations:
       memberRestrictionEvaluation:
         state: string
 type: string
@@ -445,6 +448,27 @@ updateTime: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].expiryDetail</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The expiry details of the `MembershipRole`. Expiry details are only supported for `MEMBER` `MembershipRoles`. May be set if `name` is `MEMBER`. Must not be set if `name` is any other value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].expiryDetail.expireTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The time at which the `MembershipRole` will expire.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.roles[].name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the `MembershipRole`. Must be one of `OWNER`, `MANAGER`, `MEMBER`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

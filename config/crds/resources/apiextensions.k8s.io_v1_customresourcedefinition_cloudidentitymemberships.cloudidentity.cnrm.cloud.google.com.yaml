@@ -263,6 +263,22 @@ spec:
                     description: The `MembershipRole`s that apply to the `Membership`.
                     items:
                       properties:
+                        expiryDetail:
+                          description: The expiry details of the `MembershipRole`.
+                            Expiry details are only supported for `MEMBER` `MembershipRoles`.
+                            May be set if `name` is `MEMBER`. Must not be set if `name`
+                            is any other value.
+                          properties:
+                            expireTime:
+                              description: The time at which the `MembershipRole`
+                                will expire.
+                              format: date-time
+                              type: string
+                          type: object
+                        name:
+                          description: The name of the `MembershipRole`. Must be one
+                            of `OWNER`, `MANAGER`, `MEMBER`.
+                          type: string
                         restrictionEvaluations:
                           description: Evaluations of restrictions applied to parent
                             group on this membership.
@@ -278,6 +294,8 @@ spec:
                                   type: string
                               type: object
                           type: object
+                      required:
+                      - name
                       type: object
                     type: array
                 type: object

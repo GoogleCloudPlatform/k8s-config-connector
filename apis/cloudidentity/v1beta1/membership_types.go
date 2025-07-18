@@ -93,11 +93,11 @@ type CloudIdentityMembershipObservedState struct {
 	// Type
 	// DeliverySetting
 
-	// The state output field is in a list
-	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluation.state
+	// Duplicate Roles field into to ObservedState because
+	// .spec.[]roles.restrictionEvaluations.memberRestrictionEvaluation.state is output-only
 
 	// The `MembershipRole`s that apply to the `Membership`.
-	Roles []*MembershipRolesObservedState `json:"roles,omitempty"`
+	Roles []MembershipRoles `json:"roles,omitempty"`
 }
 
 // +kcc:proto=google.apps.cloudidentity.groups.v1beta1.ExpiryDetail
@@ -132,15 +132,6 @@ type MembershipRoles struct {
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.MembershipRole.name
 	// +required
 	Name *string `json:"name"`
-
-	// Evaluations of restrictions applied to parent group on this membership.
-	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.MembershipRole.restriction_evaluations
-	RestrictionEvaluations *MembershipRestrictionEvaluations `json:"restrictionEvaluations,omitempty"`
-}
-
-// +kcc:proto=google.apps.cloudidentity.groups.v1beta1.MembershipRole
-type MembershipRolesObservedState struct {
-	// Duplicate to ObservedState as this field is output-only
 
 	// Evaluations of restrictions applied to parent group on this membership.
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.MembershipRole.restriction_evaluations
