@@ -678,8 +678,6 @@ spec:
                           the Future Reservation properties.
                         type: string
                     type: object
-                  status:
-                    description: '[Output only] Status of the Future Reservation'
                   zone:
                     description: '[Output Only] URL of the Zone where this future
                       reservation resides.'

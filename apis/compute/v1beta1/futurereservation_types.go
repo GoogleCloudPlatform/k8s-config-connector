@@ -188,10 +188,6 @@ type FutureReservationObservedState struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.self_link_with_id
 	SelfLinkWithID *string `json:"selfLinkWithID,omitempty"`
 
-	// [Output only] Status of the Future Reservation
-	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.status
-	Status *FutureReservationStatus `json:"status,omitempty"`
-
 	// [Output Only] URL of the Zone where this future reservation resides.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.zone
 	Zone *string `json:"zone,omitempty"`

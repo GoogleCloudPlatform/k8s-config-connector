@@ -1312,11 +1312,6 @@ func (in *FutureReservationObservedState) DeepCopyInto(out *FutureReservationObs
 		*out = new(string)
 		**out = **in
 	}
-	if in.Status != nil {
-		in, out := &in.Status, &out.Status
-		*out = new(FutureReservationStatus)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Zone != nil {
 		in, out := &in.Zone, &out.Zone
 		*out = new(string)
