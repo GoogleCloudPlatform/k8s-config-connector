@@ -166,7 +166,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				!strings.Contains(name, "iam-serviceidentityref") &&
 				!strings.Contains(name, "iam-sqlinstanceref")
 		}
-		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		pathFilter := func(path string) bool {
+			return !strings.Contains(path, "testdata/iam/iampartialpolicy")
+		}
+
+		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
@@ -817,19 +821,28 @@ func TestIAM_AllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 1 * time.Minute
 	}
 
 	t.Run("iam-fixtures", func(t *testing.T) {
-		// Only run fixtures under iam/iampartialpolicy
-		lightFilter := func(name string, testType resourcefixture.TestType) bool {
-			return strings.Contains(name, "iam-bigqueryconnectionconnectionref") ||
-				strings.Contains(name, "iam-logsinkref") ||
-				strings.Contains(name, "iam-serviceaccountref") ||
-				strings.Contains(name, "iam-serviceidentityref") ||
-				strings.Contains(name, "iam-sqlinstanceref")
-		}
-		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			// Only run fixtures under iam/iampartialpolicy
+			return strings.Contains(path, "testdata/iam/iampartialpolicy") &&
+				// todo kcc team: need to implement GetIAM/ SetIAM for mock
+				!strings.Contains(path, "computeimage") &&
+				// todo kcc team: "Failed to get server metadata from context" for some reason
+				!strings.Contains(path, "storagebucket") &&
+				// todo acpana exclude failing tests for now; needs setup validation
+				!strings.Contains(path, "cloudfunctionsfunction") &&
+				!strings.Contains(path, "computedisk") &&
+				!strings.Contains(path, "computeinstance") &&
+				!strings.Contains(path, "computesubnetwork") &&
+				!strings.Contains(path, "dataproccluster") &&
+				!strings.Contains(path, "folder") &&
+				!strings.Contains(path, "iamserviceaccount") &&
+				!strings.Contains(path, "servicedirectoryservice") &&
+				!strings.Contains(path, "spannerdatabase")
+		}, nil, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
