@@ -2157,10 +2157,6 @@
 [missing_field] crd=iamauditconfigs.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.auditLogConfigs[].logType" is not set in unstructured objects
 [missing_field] crd=iamauditconfigs.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.resourceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iamauditconfigs.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.service" is not set in unstructured objects
-[missing_field] crd=iampartialpolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.bindings[].condition.description" is not set in unstructured objects
-[missing_field] crd=iampartialpolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.bindings[].condition.expression" is not set in unstructured objects
-[missing_field] crd=iampartialpolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.bindings[].condition.title" is not set in unstructured objects
-[missing_field] crd=iampartialpolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.bindings[].members[].member" is not set in unstructured objects
 [missing_field] crd=iampolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.auditConfigs[].auditLogConfigs[].exemptedMembers[]" is not set in unstructured objects
 [missing_field] crd=iampolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.auditConfigs[].auditLogConfigs[].logType" is not set in unstructured objects
 [missing_field] crd=iampolicies.iam.cnrm.cloud.google.com version=v1beta1: field ".spec.auditConfigs[].service" is not set in unstructured objects
