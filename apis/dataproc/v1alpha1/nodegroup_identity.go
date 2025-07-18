@@ -32,7 +32,7 @@ type NodeGroupIdentity struct {
 }
 
 func (i *NodeGroupIdentity) String() string {
-	return i.parent.String() + "/nodegroups/" + i.id
+	return i.parent.String() + "/nodeGroups/" + i.id
 }
 
 func (i *NodeGroupIdentity) ID() string {
@@ -46,10 +46,11 @@ func (i *NodeGroupIdentity) Parent() *NodeGroupParent {
 type NodeGroupParent struct {
 	ProjectID string
 	Location  string
+	Cluster   string
 }
 
 func (p *NodeGroupParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/regions/" + p.Location + "/clusters/" + p.Cluster
 }
 
 // New builds a NodeGroupIdentity from the Config Connector NodeGroup object.
@@ -65,6 +66,10 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
+	cluster, err := obj.Spec.ClusterRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve clusterRef: %w", err)
+	}
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -89,6 +94,9 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
+		if actualParent.Cluster != cluster {
+			return nil, fmt.Errorf("spec.clusterRef changed, expect %s, got %s", actualParent.Cluster, cluster)
+		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
@@ -98,6 +106,7 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 		parent: &NodeGroupParent{
 			ProjectID: projectID,
 			Location:  location,
+			Cluster:   cluster,
 		},
 		id: resourceID,
 	}, nil
@@ -105,13 +114,14 @@ func NewNodeGroupIdentity(ctx context.Context, reader client.Reader, obj *Datapr
 
 func ParseNodeGroupExternal(external string) (parent *NodeGroupParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "nodegroups" {
-		return nil, "", fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use projects/{{projectID}}/locations/{{location}}/nodegroups/{{nodegroupID}})", external)
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "regions" || tokens[4] != "clusters" || tokens[6] != "nodeGroups" {
+		return nil, "", fmt.Errorf("format of DataprocNodeGroup external=%q was not known (use projects/{{projectID}}/regions/{{region}}/clusters/{{cluster}}/nodeGroups/{{nodegroupID}})", external)
 	}
 	parent = &NodeGroupParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
+		Cluster:   tokens[5],
 	}
-	resourceID = tokens[5]
+	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
