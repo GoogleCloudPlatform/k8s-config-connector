@@ -20,21 +20,20 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: beta
     cnrm.cloud.google.com/system: "true"
-  name: kmskeyhandles.kms.cnrm.cloud.google.com
+  name: apigatewayapis.apigateway.cnrm.cloud.google.com
 spec:
-  group: kms.cnrm.cloud.google.com
+  group: apigateway.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: KMSKeyHandle
-    listKind: KMSKeyHandleList
-    plural: kmskeyhandles
+    kind: APIGatewayAPI
+    listKind: APIGatewayAPIList
+    plural: apigatewayapis
     shortNames:
-    - gcpkmskeyhandle
-    - gcpkmskeyhandles
-    singular: kmskeyhandle
+    - gcpapigatewayapi
+    - gcpapigatewayapis
+    singular: apigatewayapi
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -56,7 +55,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: KMSKeyHandle is the Schema for the KMSKeyHandle API
+        description: APIGatewayAPI is the Schema for the APIGatewayAPI API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -71,13 +70,26 @@ spec:
           metadata:
             type: object
           spec:
-            description: KMSKeyHandleSpec defines the desired state of KMSKeyHandle
+            description: APIGatewayAPISpec defines the desired state of APIGatewayAPI
             properties:
-              location:
-                description: Location name to create KeyHandle
+              displayName:
+                description: Optional. Display name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
+              managedService:
+                description: Optional. Immutable. The name of a Google Managed Service
+                  ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+                  If not specified, a new Service will automatically be created in
+                  the same project as this API.
                 type: string
               projectRef:
-                description: Project hosting KMSKeyHandle
+                description: ' Optional. The project that this resource belongs to.'
                 oneOf:
                 - not:
                     required:
@@ -109,21 +121,13 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: 'The KMS Key Handle ID used for resource creation or
-                  acquisition. For creation: If specified, this value is used as the
-                  key handle ID. If not provided, a UUID will be generated and assigned
-                  as the key handle ID. For acquisition: This field must be provided
-                  to identify the key handle resource to acquire.'
-                type: string
-              resourceTypeSelector:
-                description: Indicates the resource type that the resulting [CryptoKey][]
-                  is meant to protect, e.g. `{SERVICE}.googleapis.com/{TYPE}`. See
-                  documentation for supported resource types https://cloud.google.com/kms/docs/autokey-overview#compatible-services.
+                description: The APIGatewayAPI name. If not given, the metadata.name
+                  will be used.
                 type: string
             type: object
           status:
-            description: KMSKeyHandleStatus defines the config connector machine state
-              of KMSKeyHandle
+            description: APIGatewayAPIStatus defines the config connector machine
+              state of APIGatewayAPI
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -152,7 +156,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the KMSKeyHandle resource in GCP.
+                description: A unique specifier for the APIGatewayAPI resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -166,7 +171,17 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  kmsKey:
+                  createTime:
+                    description: Created time.
+                    type: string
+                  name:
+                    description: 'Resource name of the API. Format: projects/{project}/locations/global/apis/{api}'
+                    type: string
+                  state:
+                    description: ' State of the API.'
+                    type: string
+                  updateTime:
+                    description: Updated time.
                     type: string
                 type: object
             type: object
@@ -196,7 +211,7 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: KMSKeyHandle is the Schema for the KMSKeyHandle API
+        description: APIGatewayAPI is the Schema for the APIGatewayAPI API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -211,13 +226,29 @@ spec:
           metadata:
             type: object
           spec:
-            description: KMSKeyHandleSpec defines the desired state of KMSKeyHandle
+            description: APIGatewayAPISpec defines the desired state of APIGatewayAPI
             properties:
-              location:
-                description: Location name to create KeyHandle
+              displayName:
+                description: Optional. Display name.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
+              managedService:
+                description: Optional. Immutable. The name of a Google Managed Service
+                  ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+                  If not specified, a new Service will automatically be created in
+                  the same project as this API.
+                type: string
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               projectRef:
-                description: Project hosting KMSKeyHandle
+                description: ' Optional. The project that this resource belongs to.'
                 oneOf:
                 - not:
                     required:
@@ -249,21 +280,13 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: 'The KMS Key Handle ID used for resource creation or
-                  acquisition. For creation: If specified, this value is used as the
-                  key handle ID. If not provided, a UUID will be generated and assigned
-                  as the key handle ID. For acquisition: This field must be provided
-                  to identify the key handle resource to acquire.'
-                type: string
-              resourceTypeSelector:
-                description: Indicates the resource type that the resulting [CryptoKey][]
-                  is meant to protect, e.g. `{SERVICE}.googleapis.com/{TYPE}`. See
-                  documentation for supported resource types https://cloud.google.com/kms/docs/autokey-overview#compatible-services.
+                description: The APIGatewayAPI name. If not given, the metadata.name
+                  will be used.
                 type: string
             type: object
           status:
-            description: KMSKeyHandleStatus defines the config connector machine state
-              of KMSKeyHandle
+            description: APIGatewayAPIStatus defines the config connector machine
+              state of APIGatewayAPI
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -292,7 +315,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the KMSKeyHandle resource in GCP.
+                description: A unique specifier for the APIGatewayAPI resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -306,7 +330,17 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  kmsKey:
+                  createTime:
+                    description: Created time.
+                    type: string
+                  name:
+                    description: 'Resource name of the API. Format: projects/{project}/locations/global/apis/{api}'
+                    type: string
+                  state:
+                    description: ' State of the API.'
+                    type: string
+                  updateTime:
+                    description: Updated time.
                     type: string
                 type: object
             type: object
